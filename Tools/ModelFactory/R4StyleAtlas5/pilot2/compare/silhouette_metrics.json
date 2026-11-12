@@ -1,0 +1,611 @@
+{
+ "summary": {
+  "note": "IoU of black silhouettes rendered in the identical camera (1 = identical outline). The cube shares the mount-standard outline on purpose. A metric is evidence, not the artistic acceptance.",
+  "mean_iou_34_devices": 0.835,
+  "previous_atlas_mean_iou_34_devices": 0.969,
+  "mean_iou_34_all": 0.854,
+  "previous_atlas_mean_iou_34_all": 0.971
+ },
+ "types": {
+  "Cube": {
+   "id": "R4B_Cube",
+   "silhouette_iou": {
+    "front": {
+     "AB": 0.983,
+     "AC": 0.994,
+     "AD": 0.986,
+     "AE": 0.987,
+     "BC": 0.985,
+     "BD": 0.973,
+     "BE": 0.987,
+     "CD": 0.984,
+     "CE": 0.99,
+     "DE": 0.975
+    },
+    "side": {
+     "AB": 0.983,
+     "AC": 0.994,
+     "AD": 0.986,
+     "AE": 0.987,
+     "BC": 0.985,
+     "BD": 0.973,
+     "BE": 0.987,
+     "CD": 0.984,
+     "CE": 0.99,
+     "DE": 0.975
+    },
+    "34": {
+     "AB": 0.983,
+     "AC": 0.996,
+     "AD": 0.989,
+     "AE": 0.979,
+     "BC": 0.986,
+     "BD": 0.972,
+     "BE": 0.996,
+     "CD": 0.984,
+     "CE": 0.983,
+     "DE": 0.968
+    }
+   },
+   "mean_iou_34": 0.984,
+   "max_iou_34": 0.996,
+   "mean_iou_all_views": 0.984,
+   "max_iou_all_views": 0.996,
+   "previous_atlas_mean_iou_34": 0.984,
+   "previous_atlas_max_iou_34": 0.995,
+   "triangles": {
+    "A": 2912,
+    "B": 5372,
+    "C": 204,
+    "D": 1992,
+    "E": 1548
+   },
+   "triangles_lod1": {
+    "A": 572,
+    "B": 44,
+    "C": 44,
+    "D": 44,
+    "E": 44
+   },
+   "parts": {
+    "A": 13,
+    "B": 97,
+    "C": 1,
+    "D": 36,
+    "E": 1
+   },
+   "mesh_objects": {
+    "A": 1,
+    "B": 1,
+    "C": 1,
+    "D": 1,
+    "E": 1
+   }
+  },
+  "Strut": {
+   "id": "R4C_STRUT_STANDARD",
+   "silhouette_iou": {
+    "front": {
+     "AB": 0.986,
+     "AC": 0.996,
+     "AD": 0.992,
+     "AE": 0.989,
+     "BC": 0.987,
+     "BD": 0.982,
+     "BE": 0.991,
+     "CD": 0.993,
+     "CE": 0.988,
+     "DE": 0.982
+    },
+    "side": {
+     "AB": 0.86,
+     "AC": 0.935,
+     "AD": 0.951,
+     "AE": 0.945,
+     "BC": 0.918,
+     "BD": 0.886,
+     "BE": 0.892,
+     "CD": 0.954,
+     "CE": 0.939,
+     "DE": 0.936
+    },
+    "34": {
+     "AB": 0.917,
+     "AC": 0.979,
+     "AD": 0.977,
+     "AE": 0.979,
+     "BC": 0.935,
+     "BD": 0.916,
+     "BE": 0.927,
+     "CD": 0.964,
+     "CE": 0.973,
+     "DE": 0.958
+    }
+   },
+   "mean_iou_34": 0.953,
+   "max_iou_34": 0.979,
+   "mean_iou_all_views": 0.954,
+   "max_iou_all_views": 0.996,
+   "previous_atlas_mean_iou_34": 0.976,
+   "previous_atlas_max_iou_34": 0.992,
+   "triangles": {
+    "A": 7380,
+    "B": 12324,
+    "C": 520,
+    "D": 5008,
+    "E": 4198
+   },
+   "triangles_lod1": {
+    "A": 940,
+    "B": 964,
+    "C": 144,
+    "D": 712,
+    "E": 452
+   },
+   "parts": {
+    "A": 12,
+    "B": 231,
+    "C": 3,
+    "D": 89,
+    "E": 4
+   },
+   "mesh_objects": {
+    "A": 1,
+    "B": 1,
+    "C": 1,
+    "D": 1,
+    "E": 1
+   }
+  },
+  "Gun": {
+   "id": "R4W_Basic",
+   "silhouette_iou": {
+    "front": {
+     "AB": 0.836,
+     "AC": 0.835,
+     "AD": 0.83,
+     "AE": 0.847,
+     "BC": 0.85,
+     "BD": 0.792,
+     "BE": 0.881,
+     "CD": 0.86,
+     "CE": 0.855,
+     "DE": 0.816
+    },
+    "side": {
+     "AB": 0.762,
+     "AC": 0.835,
+     "AD": 0.764,
+     "AE": 0.842,
+     "BC": 0.826,
+     "BD": 0.791,
+     "BE": 0.864,
+     "CD": 0.776,
+     "CE": 0.88,
+     "DE": 0.785
+    },
+    "34": {
+     "AB": 0.803,
+     "AC": 0.841,
+     "AD": 0.852,
+     "AE": 0.878,
+     "BC": 0.838,
+     "BD": 0.804,
+     "BE": 0.848,
+     "CD": 0.831,
+     "CE": 0.88,
+     "DE": 0.835
+    }
+   },
+   "mean_iou_34": 0.841,
+   "max_iou_34": 0.88,
+   "mean_iou_all_views": 0.831,
+   "max_iou_all_views": 0.881,
+   "previous_atlas_mean_iou_34": 0.981,
+   "previous_atlas_max_iou_34": 0.99,
+   "triangles": {
+    "A": 3672,
+    "B": 3032,
+    "C": 580,
+    "D": 2052,
+    "E": 3142
+   },
+   "triangles_lod1": {
+    "A": 1794,
+    "B": 2040,
+    "C": 332,
+    "D": 1708,
+    "E": 1034
+   },
+   "parts": {
+    "A": 20,
+    "B": 54,
+    "C": 7,
+    "D": 33,
+    "E": 15
+   },
+   "mesh_objects": {
+    "A": 5,
+    "B": 5,
+    "C": 5,
+    "D": 5,
+    "E": 5
+   }
+  },
+  "Wheel": {
+   "id": "R4M_WheelM_Side_Offroad",
+   "silhouette_iou": {
+    "front": {
+     "AB": 0.609,
+     "AC": 0.631,
+     "AD": 0.654,
+     "AE": 0.702,
+     "BC": 0.954,
+     "BD": 0.917,
+     "BE": 0.865,
+     "CD": 0.937,
+     "CE": 0.882,
+     "DE": 0.93
+    },
+    "side": {
+     "AB": 0.914,
+     "AC": 0.946,
+     "AD": 0.942,
+     "AE": 0.964,
+     "BC": 0.921,
+     "BD": 0.913,
+     "BE": 0.91,
+     "CD": 0.924,
+     "CE": 0.918,
+     "DE": 0.945
+    },
+    "34": {
+     "AB": 0.786,
+     "AC": 0.826,
+     "AD": 0.849,
+     "AE": 0.921,
+     "BC": 0.941,
+     "BD": 0.911,
+     "BE": 0.845,
+     "CD": 0.956,
+     "CE": 0.892,
+     "DE": 0.916
+    }
+   },
+   "mean_iou_34": 0.884,
+   "max_iou_34": 0.956,
+   "mean_iou_all_views": 0.874,
+   "max_iou_all_views": 0.964,
+   "previous_atlas_mean_iou_34": 0.993,
+   "previous_atlas_max_iou_34": 0.996,
+   "triangles": {
+    "A": 3748,
+    "B": 3024,
+    "C": 788,
+    "D": 2768,
+    "E": 3104
+   },
+   "triangles_lod1": {
+    "A": 1762,
+    "B": 2212,
+    "C": 544,
+    "D": 2124,
+    "E": 1076
+   },
+   "parts": {
+    "A": 8,
+    "B": 59,
+    "C": 9,
+    "D": 48,
+    "E": 13
+   },
+   "mesh_objects": {
+    "A": 2,
+    "B": 2,
+    "C": 2,
+    "D": 2,
+    "E": 2
+   }
+  },
+  "Hover": {
+   "id": "R4M_HoverEngine",
+   "silhouette_iou": {
+    "front": {
+     "AB": 0.711,
+     "AC": 0.863,
+     "AD": 0.824,
+     "AE": 0.877,
+     "BC": 0.67,
+     "BD": 0.679,
+     "BE": 0.661,
+     "CD": 0.787,
+     "CE": 0.875,
+     "DE": 0.809
+    },
+    "side": {
+     "AB": 0.712,
+     "AC": 0.865,
+     "AD": 0.786,
+     "AE": 0.868,
+     "BC": 0.673,
+     "BD": 0.678,
+     "BE": 0.665,
+     "CD": 0.763,
+     "CE": 0.886,
+     "DE": 0.778
+    },
+    "34": {
+     "AB": 0.727,
+     "AC": 0.929,
+     "AD": 0.908,
+     "AE": 0.926,
+     "BC": 0.722,
+     "BD": 0.718,
+     "BE": 0.72,
+     "CD": 0.901,
+     "CE": 0.937,
+     "DE": 0.911
+    }
+   },
+   "mean_iou_34": 0.84,
+   "max_iou_34": 0.937,
+   "mean_iou_all_views": 0.794,
+   "max_iou_all_views": 0.937,
+   "previous_atlas_mean_iou_34": 0.987,
+   "previous_atlas_max_iou_34": 0.994,
+   "triangles": {
+    "A": 3486,
+    "B": 3384,
+    "C": 1364,
+    "D": 1904,
+    "E": 4964
+   },
+   "triangles_lod1": {
+    "A": 1692,
+    "B": 2232,
+    "C": 752,
+    "D": 1356,
+    "E": 1830
+   },
+   "parts": {
+    "A": 25,
+    "B": 52,
+    "C": 17,
+    "D": 32,
+    "E": 20
+   },
+   "mesh_objects": {
+    "A": 9,
+    "B": 9,
+    "C": 9,
+    "D": 9,
+    "E": 9
+   }
+  },
+  "Battery": {
+   "id": "R4X_Battery",
+   "silhouette_iou": {
+    "front": {
+     "AB": 0.748,
+     "AC": 0.752,
+     "AD": 0.814,
+     "AE": 0.686,
+     "BC": 0.722,
+     "BD": 0.694,
+     "BE": 0.665,
+     "CD": 0.788,
+     "CE": 0.828,
+     "DE": 0.726
+    },
+    "side": {
+     "AB": 0.78,
+     "AC": 0.718,
+     "AD": 0.821,
+     "AE": 0.762,
+     "BC": 0.817,
+     "BD": 0.824,
+     "BE": 0.827,
+     "CD": 0.835,
+     "CE": 0.847,
+     "DE": 0.796
+    },
+    "34": {
+     "AB": 0.833,
+     "AC": 0.859,
+     "AD": 0.913,
+     "AE": 0.805,
+     "BC": 0.842,
+     "BD": 0.8,
+     "BE": 0.818,
+     "CD": 0.84,
+     "CE": 0.899,
+     "DE": 0.836
+    }
+   },
+   "mean_iou_34": 0.845,
+   "max_iou_34": 0.913,
+   "mean_iou_all_views": 0.796,
+   "max_iou_all_views": 0.913,
+   "previous_atlas_mean_iou_34": 0.954,
+   "previous_atlas_max_iou_34": 0.984,
+   "triangles": {
+    "A": 5864,
+    "B": 4000,
+    "C": 752,
+    "D": 3016,
+    "E": 3126
+   },
+   "triangles_lod1": {
+    "A": 1976,
+    "B": 1552,
+    "C": 304,
+    "D": 640,
+    "E": 642
+   },
+   "parts": {
+    "A": 18,
+    "B": 63,
+    "C": 5,
+    "D": 61,
+    "E": 9
+   },
+   "mesh_objects": {
+    "A": 1,
+    "B": 1,
+    "C": 1,
+    "D": 1,
+    "E": 1
+   }
+  },
+  "Deployer": {
+   "id": "R4X_ExplosiveTrapDeployer",
+   "silhouette_iou": {
+    "front": {
+     "AB": 0.78,
+     "AC": 0.808,
+     "AD": 0.826,
+     "AE": 0.779,
+     "BC": 0.756,
+     "BD": 0.745,
+     "BE": 0.723,
+     "CD": 0.824,
+     "CE": 0.754,
+     "DE": 0.731
+    },
+    "side": {
+     "AB": 0.803,
+     "AC": 0.777,
+     "AD": 0.802,
+     "AE": 0.796,
+     "BC": 0.756,
+     "BD": 0.715,
+     "BE": 0.774,
+     "CD": 0.754,
+     "CE": 0.703,
+     "DE": 0.72
+    },
+    "34": {
+     "AB": 0.826,
+     "AC": 0.825,
+     "AD": 0.83,
+     "AE": 0.871,
+     "BC": 0.777,
+     "BD": 0.753,
+     "BE": 0.866,
+     "CD": 0.841,
+     "CE": 0.837,
+     "DE": 0.848
+    }
+   },
+   "mean_iou_34": 0.827,
+   "max_iou_34": 0.871,
+   "mean_iou_all_views": 0.787,
+   "max_iou_all_views": 0.871,
+   "previous_atlas_mean_iou_34": 0.982,
+   "previous_atlas_max_iou_34": 0.989,
+   "triangles": {
+    "A": 3336,
+    "B": 3564,
+    "C": 320,
+    "D": 2026,
+    "E": 4084
+   },
+   "triangles_lod1": {
+    "A": 1822,
+    "B": 2140,
+    "C": 192,
+    "D": 1262,
+    "E": 1210
+   },
+   "parts": {
+    "A": 24,
+    "B": 62,
+    "C": 5,
+    "D": 36,
+    "E": 16
+   },
+   "mesh_objects": {
+    "A": 2,
+    "B": 2,
+    "C": 2,
+    "D": 2,
+    "E": 2
+   }
+  },
+  "Trap": {
+   "id": "R4D_ExplosiveTrap",
+   "silhouette_iou": {
+    "front": {
+     "AB": 0.363,
+     "AC": 0.674,
+     "AD": 0.437,
+     "AE": 0.558,
+     "BC": 0.463,
+     "BD": 0.624,
+     "BE": 0.477,
+     "CD": 0.544,
+     "CE": 0.756,
+     "DE": 0.566
+    },
+    "side": {
+     "AB": 0.354,
+     "AC": 0.638,
+     "AD": 0.46,
+     "AE": 0.524,
+     "BC": 0.45,
+     "BD": 0.633,
+     "BE": 0.454,
+     "CD": 0.546,
+     "CE": 0.732,
+     "DE": 0.575
+    },
+    "34": {
+     "AB": 0.565,
+     "AC": 0.816,
+     "AD": 0.631,
+     "AE": 0.654,
+     "BC": 0.616,
+     "BD": 0.669,
+     "BE": 0.56,
+     "CD": 0.709,
+     "CE": 0.718,
+     "DE": 0.634
+    }
+   },
+   "mean_iou_34": 0.657,
+   "max_iou_34": 0.816,
+   "mean_iou_all_views": 0.58,
+   "max_iou_all_views": 0.816,
+   "previous_atlas_mean_iou_34": 0.912,
+   "previous_atlas_max_iou_34": 0.967,
+   "triangles": {
+    "A": 1236,
+    "B": 1352,
+    "C": 198,
+    "D": 722,
+    "E": 1544
+   },
+   "triangles_lod1": {
+    "A": 708,
+    "B": 1176,
+    "C": 92,
+    "D": 722,
+    "E": 440
+   },
+   "parts": {
+    "A": 9,
+    "B": 23,
+    "C": 2,
+    "D": 15,
+    "E": 8
+   },
+   "mesh_objects": {
+    "A": 2,
+    "B": 2,
+    "C": 2,
+    "D": 2,
+    "E": 2
+   }
+  }
+ }
+}

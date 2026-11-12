@@ -1,2 +1,5 @@
 mesh_source/
 __pycache__/
+pilot2/mesh_source/
+pilot2/preview/_stage/
+pilot2/_tables.md

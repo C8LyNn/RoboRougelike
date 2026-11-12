@@ -1,0 +1,107 @@
+<!doctype html><html lang="pl"><head><meta charset="utf-8"><title>R4 Style Atlas 5 — pilot 2: pięć niezależnych konstrukcji</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{color-scheme:dark}
+html,body{margin:0;height:100%;background:#15181c;color:#e8eaed;font:14px/1.4 system-ui,Segoe UI,Roboto,sans-serif;overflow:hidden}
+#side{position:fixed;left:0;top:0;bottom:0;width:250px;overflow-y:auto;background:rgba(16,18,22,.95);border-right:1px solid #2c3138;z-index:3;padding:10px 8px 20px;box-sizing:border-box}
+#side h1{font-size:15px;margin:2px 6px 8px}#side h2{font-size:12px;color:#9aa3ad;margin:12px 6px 4px;text-transform:uppercase;letter-spacing:.04em}
+#side button{display:block;width:100%;text-align:left;background:none;color:#e8eaed;border:1px solid transparent;border-radius:6px;padding:6px 8px;font:inherit;cursor:pointer}
+#side button:hover{background:#232830}#side button.on{background:#e8eaed;color:#15181c;font-weight:600}
+#side p{color:#9aa3ad;font-size:12px;margin:10px 6px}
+#bar{position:fixed;left:250px;right:0;top:0;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;padding:9px 14px;background:rgba(16,18,22,.9);border-bottom:1px solid #2c3138;z-index:3}
+select{background:#232830;color:#e8eaed;border:1px solid #39404a;border-radius:6px;padding:5px 9px;font:inherit}
+label{display:flex;gap:6px;align-items:center;cursor:pointer}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #7fb4ff;outline-offset:1px}
+#info{position:fixed;left:264px;right:14px;bottom:10px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;z-index:3}
+#info div{background:rgba(16,18,22,.88);border:1px solid #2c3138;border-radius:8px;padding:8px 10px;font-size:12px;cursor:pointer}
+#info div.off{opacity:.38}#info b{font-size:13px;color:#ffd078}#info small{color:#9aa3ad}
+body.sil #info div,body.sil .tag{color:#111}.tag{position:fixed;z-index:2;transform:translate(-50%,-100%);font-weight:700;font-size:13px;color:#ffd078;text-shadow:0 1px 3px #000;pointer-events:none;white-space:nowrap}
+body.sil .tag{text-shadow:none}
+canvas{display:block}
+</style></head><body>
+<nav id="side"><h1>#1239 · pilot 2<br><small style="font-weight:400;color:#9aa3ad">5 niezależnych konstrukcji × 8 typów</small></h1><div id="list"></div>
+<p>Te same pliki GLB, które przeszły QA (tekstury współdzielone). Wszystkie warianty typu stoją w tej samej scenie i kamerze; animacja jest zsynchronizowana. Kliknij kartę stylu na dole, aby go ukryć / pokazać. To nie jest import Unity.</p></nav>
+<div id="bar">
+ <label>Widok <select id="mode"><option value="mat">pełne materiały i tekstury</option><option value="clay">neutralny, jednolity materiał</option><option value="wire">wireframe</option><option value="sil">czarna sylwetka</option></select></label>
+ <label><input type="checkbox" id="anim" checked> animacja</label>
+ <label>klip <select id="clip"></select></label>
+ <label>tempo <select id="speed"><option value="1">1×</option><option value="0.5">0.5×</option><option value="0.25">0.25×</option></select></label>
+ <label><input type="checkbox" id="ports"> gniazda / kontakty</label>
+ <label><input type="checkbox" id="lod"> LOD1</label>
+ <label>kamera <select id="cam"><option value="34">3/4</option><option value="front">przód</option><option value="side">bok</option><option value="top">góra</option></select></label>
+</div>
+<div id="info"></div><div id="tags"></div>
+<script src="lib/three.min.js"></script><script src="lib/GLTFLoader.js"></script><script src="lib/OrbitControls.js"></script><script src="models.js"></script>
+<script>
+const D = window.R4_DATA, MODELS = window.R4_MODELS, TEX = window.R4_TEX, ST = ["A","B","C","D","E"];
+const state = {scene:D.order[0], mode:"mat", anim:true, clip:"", speed:1, ports:false, lod:false, cam:"34", hidden:{}, time:null};
+const renderer = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true}); document.body.appendChild(renderer.domElement);
+renderer.outputEncoding = THREE.sRGBEncoding; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.72; renderer.physicallyCorrectLights = true;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+const C = a => new THREE.Color(a[0],a[1],a[2]);
+function makeEnv(){
+  const s = new THREE.Scene(), geo = new THREE.SphereGeometry(50,48,48), top=C([0.45,0.52,0.62]), hor=C([0.62,0.63,0.63]), bot=C([0.10,0.10,0.11]);
+  const pos = geo.attributes.position, col = new Float32Array(pos.count*3), t = new THREE.Color();
+  for(let i=0;i<pos.count;i++){ const h=pos.getY(i)/50; if(h>=0) t.copy(hor).lerp(top,Math.pow(h,0.55)); else t.copy(hor).lerp(bot,Math.pow(-h,0.35)); col[i*3]=t.r; col[i*3+1]=t.g; col[i*3+2]=t.b; }
+  geo.setAttribute('color', new THREE.BufferAttribute(col,3)); s.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({side:THREE.BackSide, vertexColors:true})));
+  [[[8,14,6],[14,8],[5,5,4.7]],[[-12,6,-4],[10,10],[1.6,1.8,2.1]],[[2,5,-14],[16,6],[1.8,1.7,1.5]]].forEach(p=>{ const m=new THREE.Mesh(new THREE.PlaneGeometry(p[1][0],p[1][1]), new THREE.MeshBasicMaterial({color:C(p[2]), side:THREE.DoubleSide})); m.position.set(p[0][0],p[0][1],p[0][2]); m.lookAt(0,0,0); s.add(m); });
+  const pm = new THREE.PMREMGenerator(renderer), rt = pm.fromScene(s, 0.03); pm.dispose(); return rt.texture;
+}
+const scene = new THREE.Scene(); const ENV = makeEnv(); scene.environment = ENV; const BG = C([0.19,0.21,0.24]); scene.background = BG;
+const cam = new THREE.PerspectiveCamera(24, 1, 0.05, 200), ctl = new THREE.OrbitControls(cam, renderer.domElement); ctl.enableDamping = true;
+const key = new THREE.DirectionalLight(0xffffff, 3.4); key.castShadow = true; key.shadow.mapSize.set(2048,2048); key.shadow.bias=-0.0004; key.shadow.normalBias=0.004; key.shadow.radius=3; scene.add(key); scene.add(key.target);
+const fill = new THREE.DirectionalLight(0xbfd4ff, 0.5); fill.position.set(-4,2.5,-2); scene.add(fill);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(200,200), new THREE.MeshStandardMaterial({color:C([0.16,0.17,0.19]), roughness:0.92, metalness:0, envMapIntensity:0.5})); ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
+const manager = new THREE.LoadingManager(); manager.setURLModifier(u => { const k = u.split("/").pop(); return TEX[k] || u; });
+const loader = new THREE.GLTFLoader(manager), cache = {};
+function load(k){ if(!cache[k]) cache[k] = new Promise((res,rej)=>{ const bin = atob(MODELS[k]), buf = new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) buf[i]=bin.charCodeAt(i); loader.parse(buf.buffer, "", g=>res(g), rej); }); return cache[k]; }
+const CLAY = new THREE.MeshStandardMaterial({color:0x8d8f92, roughness:0.72, metalness:0}), WIRE = new THREE.MeshBasicMaterial({color:0xcfd6de, wireframe:true}), SIL = new THREE.MeshBasicMaterial({color:0x000000});
+let root = new THREE.Group(); scene.add(root); let players = [], groups = {}, span = 1, cy = 0, gen = 0;
+function dress(o){ o.traverse(n=>{ if(!n.isMesh) return; n.castShadow = n.receiveShadow = state.mode!=="sil"; if(!n.userData.orig) n.userData.orig = n.material;
+  n.material = state.mode==="clay" ? CLAY : state.mode==="wire" ? WIRE : state.mode==="sil" ? SIL : n.userData.orig; }); }
+function arrows(o){ o.traverse(n=>{ if(/^Port_|^Socket|^Deploy_|^Muzzle$|^P_/.test(n.name) && !n.isMesh){ const col = /^Socket/.test(n.name)?0xffd24a : /^Port|^P_/.test(n.name)?0x6dff9a : 0xff6ad5;
+  const a = new THREE.ArrowHelper(new THREE.Vector3(0,1,0), new THREE.Vector3(0,0,0), 0.14, col, 0.05, 0.03); a.rotation.x = Math.PI/2; a.userData.arrow = true; n.add(a); } }); }
+async function instance(style, type, lod){ const t = D.types[type], g = await load((lod?"L/":"")+style+"/"+t.id), inst = g.scene.clone(true); dress(inst);
+  let pl = null; if(!lod && g.animations && g.animations.length){ const mx = new THREE.AnimationMixer(inst); g.animations.forEach(c=>mx.clipAction(c).play()); pl = {mx, t, t0:t.t0[style]||0}; mx.setTime(pl.t0); }
+  return {inst, pl}; }
+function M4(r){ const m = new THREE.Matrix4(); m.set(...r); return m; }
+async function rebuild(){
+  const my = ++gen, nr = new THREE.Group(), np = [], ng = {}; const rb = D.robots[state.scene], lod = state.lod;
+  if(rb){ span = rb.span; cy = rb.cy; for(let i=0;i<5;i++){ const s = ST[i], G = new THREE.Group(); G.position.x = (i-2)*span;
+      for(const p of rb.parts){ const r = await instance(s, p.type, lod); const h = new THREE.Group(); h.add(r.inst); h.applyMatrix4(M4(p.matrix)); G.add(h); if(r.pl){ r.pl.clip = D.types[p.type].robotClip; np.push(r.pl); } }
+      ng[s] = G; nr.add(G); } ground.position.y = rb.groundY; }
+  else { const t = D.types[state.scene]; span = t.span; cy = t.cy; for(let i=0;i<5;i++){ const s = ST[i], r = await instance(s, state.scene, lod); const G = new THREE.Group(); G.position.x = (i-2)*span; const off = new THREE.Group(); off.position.set(-t.cx, 0, t.cz); off.add(r.inst); G.add(off);
+      if(state.ports && !lod) arrows(r.inst); if(r.pl){ r.pl.clip = null; np.push(r.pl); } ng[s] = G; nr.add(G); } ground.position.y = t.groundY; }
+  if(my !== gen) return; scene.remove(root); root = nr; players = np; groups = ng; scene.add(root); applyVis(); ui(); frame(); tclock = 0; }
+function applyVis(){ ST.forEach(s=>{ if(groups[s]) groups[s].visible = !state.hidden[s]; });
+  const sil = state.mode==="sil"; document.body.classList.toggle("sil", sil); scene.background = sil ? new THREE.Color(0xffffff) : state.mode==="wire" ? C([0.07,0.08,0.09]) : BG; ground.visible = !sil && state.mode!=="wire"; scene.environment = ENV; }
+function frame(){ const d = {"34":[0.0,0.5,1.0], front:[0,0.3,1], side:[0,0.3,1], top:[0,1,0.0001]}[state.cam], w = renderer.domElement.clientWidth/Math.max(1,renderer.domElement.clientHeight);
+  const yaw = {"34":-0.66, front:0, side:-Math.PI/2, top:0}[state.cam]; ST.forEach(s=>{ if(groups[s]) groups[s].rotation.y = yaw; });      // every variant is turned the same way, so all five show the same view
+  const W = 4*span + span*1.25, dist = W/2/(Math.tan(12*Math.PI/180)*Math.max(w,0.6)); const v = new THREE.Vector3(...d).normalize();
+  ctl.target.set(0,cy,0); cam.position.set(v.x*dist, cy+v.y*dist, v.z*dist); key.position.set(3.5,6+cy,4.5); key.target.position.set(0,cy,0); const ex = 2.6*span+1; Object.assign(key.shadow.camera,{left:-ex,right:ex,top:ex,bottom:-ex,near:0.1,far:40}); key.shadow.camera.updateProjectionMatrix(); ctl.update(); }
+function ui(){ const rb = D.robots[state.scene], t = D.types[state.scene]; const sel = document.getElementById("clip"); sel.innerHTML = "";
+  (rb ? [{name:"praca (pętle funkcjonalne)"}] : [{name:"cała oś czasu", start:1, end:t.frames}].concat(t.clips)).forEach(c=>{ const o = document.createElement("option"); o.value = c.name; o.textContent = c.start ? `${c.name} (${c.start}–${c.end})` : c.name; sel.appendChild(o); });
+  if(!rb){ const pref = t.clips.find(c=>c.name===state.clip) ? state.clip : t.defaultClip; sel.value = pref; state.clip = sel.value; }
+  document.getElementById("info").innerHTML = ST.map(s=>{ const v = rb ? null : t.variants[s]; return `<div data-s="${s}" class="${state.hidden[s]?"off":""}"><b>${D.styles[s]}</b><br>${rb ? D.character[s] : v.concept}<br><small>${rb ? "" : v.tris+" tris · LOD1 "+v.lod+" · "+v.parts+" części"}</small></div>`; }).join("");
+  document.querySelectorAll("#info div").forEach(x=>x.onclick=()=>{ state.hidden[x.dataset.s] = !state.hidden[x.dataset.s]; applyVis(); ui(); });
+  document.querySelectorAll("#list button").forEach(x=>x.classList.toggle("on", x.dataset.id===state.scene)); }
+const list = document.getElementById("list");
+function sect(title, ids, name){ const h = document.createElement("h2"); h.textContent = title; list.appendChild(h); ids.forEach(id=>{ const b = document.createElement("button"); b.dataset.id = id; b.textContent = name(id); b.onclick = ()=>{ state.scene = id; rebuild(); }; list.appendChild(b); }); }
+sect("Typy modeli", D.order, id=>D.types[id].name); sect("Te same konstrukcje robotów", Object.keys(D.robots), id=>D.robots[id].name);
+["mode","clip","speed","cam"].forEach(k=>document.getElementById(k).onchange = e=>{ state[k] = k==="speed" ? parseFloat(e.target.value) : e.target.value; if(k==="mode"){ dress(root); applyVis(); } if(k==="cam") frame(); if(k==="clip") tclock = 0; });
+["anim","ports","lod"].forEach(k=>document.getElementById(k).onchange = e=>{ state[k] = e.target.checked; if(k!=="anim") rebuild(); });
+const tags = document.getElementById("tags"); ST.forEach(s=>{ const d = document.createElement("div"); d.className = "tag"; d.id = "tag"+s; d.textContent = D.styles[s]; tags.appendChild(d); });
+let SIDE = 250, paused = false;
+function resize(){ const w = Math.max(200, window.innerWidth - SIDE), h = window.innerHeight; renderer.setSize(w,h); renderer.domElement.style.marginLeft = SIDE+"px"; cam.aspect = w/h; cam.updateProjectionMatrix(); }
+window.addEventListener("resize", ()=>{ resize(); frame(); }); resize();
+const clock = new THREE.Clock(); let tclock = 0;
+function range(pl){ const t = pl.t; let c = null; if(pl.clip) c = t.clips.find(x=>x.name===pl.clip); else if(state.clip && state.clip!=="cała oś czasu") c = t.clips.find(x=>x.name===state.clip); return c ? [c.start, c.end] : [1, t.frames]; }
+function setTimes(){ players.forEach(pl=>{ const [a,b] = range(pl), len = Math.max(1,b-a)/24; const f = state.time!==null ? state.time : (state.anim ? (tclock % len) : 0); pl.mx.setTime(pl.t0 + (a-1)/24 + Math.min(f, len)); }); }
+function tick(){ if(paused) return; requestAnimationFrame(tick); tclock += clock.getDelta()*state.speed; setTimes(); ctl.update(); renderer.render(scene, cam);
+  const v = new THREE.Vector3(); ST.forEach((s,i)=>{ const el = document.getElementById("tag"+s); v.set((i-2)*span, cy + D.tagH[state.scene], 0).project(cam); el.style.display = (state.hidden[s]||v.z>1) ? "none" : "block"; el.style.left = SIDE + (v.x*0.5+0.5)*(window.innerWidth-SIDE)+"px"; el.style.top = (-v.y*0.5+0.5)*window.innerHeight+"px"; }); }
+window.R4P = { async set(s){ const need = ["scene","lod","ports"].some(k=>k in s && s[k]!==state[k]); Object.assign(state, s); ["mode","cam"].forEach(k=>{ document.getElementById(k).value = state[k]; });
+    if(need) await rebuild(); else { dress(root); applyVis(); frame(); } if(s.clip) document.getElementById("clip").value = s.clip; setTimes(); renderer.render(scene, cam); return {tris: renderer.info.render.triangles, calls: renderer.info.render.calls}; },
+  chrome(on){ ["side","bar","info","tags"].forEach(i=>document.getElementById(i).style.display = on ? "" : "none"); SIDE = on ? 250 : 0; resize(); frame(); },
+  pause(p){ const was = paused; paused = p; if(was && !p) tick(); } };
+rebuild().then(()=>{ tick(); window.ready = true; });
+</script></body></html>

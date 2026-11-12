@@ -1,0 +1,1939 @@
+{
+ "issue": 1239,
+ "pilot": 2,
+ "variants": 40,
+ "blender_pass": 40,
+ "glb_tests_pass": 40,
+ "unity": "UNITY_NOT_RUN",
+ "artistic_acceptance": "PENDING_OWNER_REVIEW",
+ "silhouette": {
+  "note": "IoU of black silhouettes rendered in the identical camera (1 = identical outline). The cube shares the mount-standard outline on purpose. A metric is evidence, not the artistic acceptance.",
+  "mean_iou_34_devices": 0.835,
+  "previous_atlas_mean_iou_34_devices": 0.969,
+  "mean_iou_34_all": 0.854,
+  "previous_atlas_mean_iou_34_all": 0.971
+ },
+ "rows": [
+  {
+   "type": "Cube",
+   "id": "R4B_Cube",
+   "style": "A",
+   "style_label": "A_Sleek",
+   "path": "pilot2/variants/A_Sleek/R4B_Cube",
+   "construction": "lakierowana skorupa: 3 x 3 panele o nierównym podziale, w szczelinach paski światła",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 2912,
+   "triangles_lod1": 572,
+   "parts": 13,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "A_base.png",
+    "A_orm.png",
+    "A_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 6,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 1.637,
+   "files": [
+    "R4B_Cube.blend",
+    "R4B_Cube.fbx",
+    "R4B_Cube.glb",
+    "R4B_Cube_LOD1.fbx",
+    "R4B_Cube_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Cube",
+   "id": "R4B_Cube",
+   "style": "B",
+   "style_label": "B_Brutal",
+   "path": "pilot2/variants/B_Brutal/R4B_Cube",
+   "construction": "cztery przykręcone płyty pancerne na twarz, krzyżowy kanał ramy, śruby w narożach",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 5372,
+   "triangles_lod1": 44,
+   "parts": 97,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Metal",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "B_base.png",
+    "B_orm.png",
+    "B_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 6,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 2.815,
+   "files": [
+    "R4B_Cube.blend",
+    "R4B_Cube.fbx",
+    "R4B_Cube.glb",
+    "R4B_Cube_LOD1.fbx",
+    "R4B_Cube_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Cube",
+   "id": "R4B_Cube",
+   "style": "C",
+   "style_label": "C_Arcade",
+   "path": "pilot2/variants/C_Arcade/R4B_Cube",
+   "construction": "jedna gładka bryła z miękkim zaokrągleniem, bez paneli",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 204,
+   "triangles_lod1": 44,
+   "parts": 1,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base"
+   ],
+   "textures": [],
+   "ports_pass": true,
+   "ports": 6,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 3.81,
+   "files": [
+    "R4B_Cube.blend",
+    "R4B_Cube.fbx",
+    "R4B_Cube.glb",
+    "R4B_Cube_LOD1.fbx",
+    "R4B_Cube_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Cube",
+   "id": "R4B_Cube",
+   "style": "D",
+   "style_label": "D_Scrap",
+   "path": "pilot2/variants/D_Scrap/R4B_Cube",
+   "construction": "pozszywane blachy różnej wielkości, łaty, nity, rdza",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 1992,
+   "triangles_lod1": 44,
+   "parts": 36,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim",
+    "R4P_Wear"
+   ],
+   "textures": [
+    "D_base.png",
+    "D_orm.png",
+    "D_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 6,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 3.519,
+   "files": [
+    "R4B_Cube.blend",
+    "R4B_Cube.fbx",
+    "R4B_Cube.glb",
+    "R4B_Cube_LOD1.fbx",
+    "R4B_Cube_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Cube",
+   "id": "R4B_Cube",
+   "style": "E",
+   "style_label": "E_Toon",
+   "path": "pilot2/variants/E_Toon/R4B_Cube",
+   "construction": "jedna wypukła poducha na twarz w grubej kremowej ramie",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 1548,
+   "triangles_lod1": 44,
+   "parts": 1,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "E_base.png"
+   ],
+   "ports_pass": true,
+   "ports": 6,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 4.078,
+   "files": [
+    "R4B_Cube.blend",
+    "R4B_Cube.fbx",
+    "R4B_Cube.glb",
+    "R4B_Cube_LOD1.fbx",
+    "R4B_Cube_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Strut",
+   "id": "R4C_STRUT_STANDARD",
+   "style": "A",
+   "style_label": "A_Sleek",
+   "path": "pilot2/variants/A_Sleek/R4C_STRUT_STANDARD",
+   "construction": "sześciokątna belka-kręgosłup z kołnierzami, szynami światła i pierścieniem",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 7380,
+   "triangles_lod1": 940,
+   "parts": 12,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "A_base.png",
+    "A_orm.png",
+    "A_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 10,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4C_STRUT_STANDARD.blend",
+    "R4C_STRUT_STANDARD.fbx",
+    "R4C_STRUT_STANDARD.glb",
+    "R4C_STRUT_STANDARD_LOD1.fbx",
+    "R4C_STRUT_STANDARD_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Strut",
+   "id": "R4C_STRUT_STANDARD",
+   "style": "B",
+   "style_label": "B_Brutal",
+   "path": "pilot2/variants/B_Brutal/R4C_STRUT_STANDARD",
+   "construction": "dwuteownik z żebrami, krzyżulcami z prętów i śrubami pasów",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 12324,
+   "triangles_lod1": 964,
+   "parts": 231,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Metal",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "B_base.png",
+    "B_orm.png",
+    "B_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 10,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4C_STRUT_STANDARD.blend",
+    "R4C_STRUT_STANDARD.fbx",
+    "R4C_STRUT_STANDARD.glb",
+    "R4C_STRUT_STANDARD_LOD1.fbx",
+    "R4C_STRUT_STANDARD_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Strut",
+   "id": "R4C_STRUT_STANDARD",
+   "style": "C",
+   "style_label": "C_Arcade",
+   "path": "pilot2/variants/C_Arcade/R4C_STRUT_STANDARD",
+   "construction": "jedna gruba rura między klockami",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 520,
+   "triangles_lod1": 144,
+   "parts": 3,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary"
+   ],
+   "textures": [],
+   "ports_pass": true,
+   "ports": 10,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4C_STRUT_STANDARD.blend",
+    "R4C_STRUT_STANDARD.fbx",
+    "R4C_STRUT_STANDARD.glb",
+    "R4C_STRUT_STANDARD_LOD1.fbx",
+    "R4C_STRUT_STANDARD_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Strut",
+   "id": "R4C_STRUT_STANDARD",
+   "style": "D",
+   "style_label": "D_Scrap",
+   "path": "pilot2/variants/D_Scrap/R4C_STRUT_STANDARD",
+   "construction": "dwie niedopasowane rury, przyspawane blachy, pręt zbrojeniowy i łańcuch",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 5008,
+   "triangles_lod1": 712,
+   "parts": 89,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim",
+    "R4P_Wear"
+   ],
+   "textures": [
+    "D_base.png",
+    "D_orm.png",
+    "D_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 10,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4C_STRUT_STANDARD.blend",
+    "R4C_STRUT_STANDARD.fbx",
+    "R4C_STRUT_STANDARD.glb",
+    "R4C_STRUT_STANDARD_LOD1.fbx",
+    "R4C_STRUT_STANDARD_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Strut",
+   "id": "R4C_STRUT_STANDARD",
+   "style": "E",
+   "style_label": "E_Toon",
+   "path": "pilot2/variants/E_Toon/R4C_STRUT_STANDARD",
+   "construction": "belka-kość: dwa kielichy z talią i obręczą",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 4198,
+   "triangles_lod1": 452,
+   "parts": 4,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "E_base.png"
+   ],
+   "ports_pass": true,
+   "ports": 10,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 0.15,
+   "files": [
+    "R4C_STRUT_STANDARD.blend",
+    "R4C_STRUT_STANDARD.fbx",
+    "R4C_STRUT_STANDARD.glb",
+    "R4C_STRUT_STANDARD_LOD1.fbx",
+    "R4C_STRUT_STANDARD_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Gun",
+   "id": "R4W_Basic",
+   "style": "A",
+   "style_label": "A_Sleek",
+   "path": "pilot2/variants/A_Sleek/R4W_Basic",
+   "construction": "niska kopuła, wieża-dysk z dwoma płetwami, sześciokątny smukły korpus, cienka lufa emitera z pierścieniami światła",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 3672,
+   "triangles_lod1": 1794,
+   "parts": 20,
+   "mesh_objects": 5,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "A_base.png",
+    "A_orm.png",
+    "A_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 0.0,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "animated_objects": 4,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4W_Basic.blend",
+    "R4W_Basic.fbx",
+    "R4W_Basic.glb",
+    "R4W_Basic_LOD1.fbx",
+    "R4W_Basic_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Gun",
+   "id": "R4W_Basic",
+   "style": "B",
+   "style_label": "B_Brutal",
+   "path": "pilot2/variants/B_Brutal/R4W_Basic",
+   "construction": "pierścień łożyska na śrubach, jarzmo w kształcie U z zastrzałami, skrzynka amunicyjna, żebrowany płaszcz lufy i hamulec wylotowy",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 3032,
+   "triangles_lod1": 2040,
+   "parts": 54,
+   "mesh_objects": 5,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "B_base.png",
+    "B_orm.png",
+    "B_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 0.0,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "animated_objects": 4,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4W_Basic.blend",
+    "R4W_Basic.fbx",
+    "R4W_Basic.glb",
+    "R4W_Basic_LOD1.fbx",
+    "R4W_Basic_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Gun",
+   "id": "R4W_Basic",
+   "style": "C",
+   "style_label": "C_Arcade",
+   "path": "pilot2/variants/C_Arcade/R4W_Basic",
+   "construction": "walec, zaokrąglony blok i gruba lufa - trzy bryły",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 580,
+   "triangles_lod1": 332,
+   "parts": 7,
+   "mesh_objects": 5,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary"
+   ],
+   "textures": [],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 0.09,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "animated_objects": 4,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4W_Basic.blend",
+    "R4W_Basic.fbx",
+    "R4W_Basic.glb",
+    "R4W_Basic_LOD1.fbx",
+    "R4W_Basic_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Gun",
+   "id": "R4W_Basic",
+   "style": "D",
+   "style_label": "D_Scrap",
+   "path": "pilot2/variants/D_Scrap/R4W_Basic",
+   "construction": "beczka-podstawa, rama z rurek, asymetryczna osłona z blachy, kanister, celownik na opasce, lufa z rury w tulejach",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 2052,
+   "triangles_lod1": 1708,
+   "parts": 33,
+   "mesh_objects": 5,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim",
+    "R4P_Wear"
+   ],
+   "textures": [
+    "D_base.png",
+    "D_orm.png",
+    "D_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 2.29,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "animated_objects": 4,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4W_Basic.blend",
+    "R4W_Basic.fbx",
+    "R4W_Basic.glb",
+    "R4W_Basic_LOD1.fbx",
+    "R4W_Basic_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Gun",
+   "id": "R4W_Basic",
+   "style": "E",
+   "style_label": "E_Toon",
+   "path": "pilot2/variants/E_Toon/R4W_Basic",
+   "construction": "pękata podstawa, bębny czopów po bokach, baniasty blaster z płetwą i rozszerzonym wylotem",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 3142,
+   "triangles_lod1": 1034,
+   "parts": 15,
+   "mesh_objects": 5,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "E_base.png"
+   ],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 0.87,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "animated_objects": 4,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4W_Basic.blend",
+    "R4W_Basic.fbx",
+    "R4W_Basic.glb",
+    "R4W_Basic_LOD1.fbx",
+    "R4W_Basic_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Wheel",
+   "id": "R4M_WheelM_Side_Offroad",
+   "style": "A",
+   "style_label": "A_Sleek",
+   "path": "pilot2/variants/A_Sleek/R4M_WheelM_Side_Offroad",
+   "construction": "gładka opona-torus, pełna tarcza aero, pierścienie światła na obręczy, ramię-stożek",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 3748,
+   "triangles_lod1": 1762,
+   "parts": 8,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "A_base.png",
+    "A_orm.png",
+    "A_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 0.04,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4M_WheelM_Side_Offroad.blend",
+    "R4M_WheelM_Side_Offroad.fbx",
+    "R4M_WheelM_Side_Offroad.glb",
+    "R4M_WheelM_Side_Offroad_LOD1.fbx",
+    "R4M_WheelM_Side_Offroad_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Wheel",
+   "id": "R4M_WheelM_Side_Offroad",
+   "style": "B",
+   "style_label": "B_Brutal",
+   "path": "pilot2/variants/B_Brutal/R4M_WheelM_Side_Offroad",
+   "construction": "opona z 16 klockami, obręcz ze szprychami na śrubach, tarcza hamulca z zaciskiem, mocowanie z zastrzałami",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 3024,
+   "triangles_lod1": 2212,
+   "parts": 59,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "B_base.png",
+    "B_orm.png",
+    "B_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 0.0,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4M_WheelM_Side_Offroad.blend",
+    "R4M_WheelM_Side_Offroad.fbx",
+    "R4M_WheelM_Side_Offroad.glb",
+    "R4M_WheelM_Side_Offroad_LOD1.fbx",
+    "R4M_WheelM_Side_Offroad_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Wheel",
+   "id": "R4M_WheelM_Side_Offroad",
+   "style": "C",
+   "style_label": "C_Arcade",
+   "path": "pilot2/variants/C_Arcade/R4M_WheelM_Side_Offroad",
+   "construction": "masywna opona ze ściętym profilem, prosta piasta z pięcioma kołkami",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 788,
+   "triangles_lod1": 544,
+   "parts": 9,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 0.0,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4M_WheelM_Side_Offroad.blend",
+    "R4M_WheelM_Side_Offroad.fbx",
+    "R4M_WheelM_Side_Offroad.glb",
+    "R4M_WheelM_Side_Offroad_LOD1.fbx",
+    "R4M_WheelM_Side_Offroad_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Wheel",
+   "id": "R4M_WheelM_Side_Offroad",
+   "style": "D",
+   "style_label": "D_Scrap",
+   "path": "pilot2/variants/D_Scrap/R4M_WheelM_Side_Offroad",
+   "construction": "łatana opona z nierównymi klockami, kolce, łańcuch, pokrywa piasty na śrubach, resor piórowy i kątownik",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 2768,
+   "triangles_lod1": 2124,
+   "parts": 48,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim",
+    "R4P_Wear"
+   ],
+   "textures": [
+    "D_base.png",
+    "D_orm.png",
+    "D_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 0.0,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4M_WheelM_Side_Offroad.blend",
+    "R4M_WheelM_Side_Offroad.fbx",
+    "R4M_WheelM_Side_Offroad.glb",
+    "R4M_WheelM_Side_Offroad_LOD1.fbx",
+    "R4M_WheelM_Side_Offroad_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Wheel",
+   "id": "R4M_WheelM_Side_Offroad",
+   "style": "E",
+   "style_label": "E_Toon",
+   "path": "pilot2/variants/E_Toon/R4M_WheelM_Side_Offroad",
+   "construction": "opona-balon z ośmioma obłymi wypustkami, pękata piasta i kołpak-gwiazda",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 3104,
+   "triangles_lod1": 1076,
+   "parts": 13,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "E_base.png"
+   ],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 0.04,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4M_WheelM_Side_Offroad.blend",
+    "R4M_WheelM_Side_Offroad.fbx",
+    "R4M_WheelM_Side_Offroad.glb",
+    "R4M_WheelM_Side_Offroad_LOD1.fbx",
+    "R4M_WheelM_Side_Offroad_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Hover",
+   "id": "R4M_HoverEngine",
+   "style": "A",
+   "style_label": "A_Sleek",
+   "path": "pilot2/variants/A_Sleek/R4M_HoverEngine",
+   "construction": "zamknięta gładka gondola z pierścieniem światła, kopuła piasty, 9 cienkich łopatek",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 3486,
+   "triangles_lod1": 1692,
+   "parts": 25,
+   "mesh_objects": 9,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "A_base.png",
+    "A_orm.png",
+    "A_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 0.0,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "SpinUp",
+    "Lift",
+    "Pulse",
+    "Cooldown"
+   ],
+   "animated_objects": 8,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4M_HoverEngine.blend",
+    "R4M_HoverEngine.fbx",
+    "R4M_HoverEngine.glb",
+    "R4M_HoverEngine_LOD1.fbx",
+    "R4M_HoverEngine_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Hover",
+   "id": "R4M_HoverEngine",
+   "style": "B",
+   "style_label": "B_Brutal",
+   "path": "pilot2/variants/B_Brutal/R4M_HoverEngine",
+   "construction": "kwadratowa klatka z kształtowników, kanał, żebrowany silnik, zastrzały, 4 łopaty-wiosła",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 3384,
+   "triangles_lod1": 2232,
+   "parts": 52,
+   "mesh_objects": 9,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "B_base.png",
+    "B_orm.png",
+    "B_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 0.0,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "SpinUp",
+    "Lift",
+    "Pulse",
+    "Cooldown"
+   ],
+   "animated_objects": 8,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4M_HoverEngine.blend",
+    "R4M_HoverEngine.fbx",
+    "R4M_HoverEngine.glb",
+    "R4M_HoverEngine_LOD1.fbx",
+    "R4M_HoverEngine_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Hover",
+   "id": "R4M_HoverEngine",
+   "style": "C",
+   "style_label": "C_Arcade",
+   "path": "pilot2/variants/C_Arcade/R4M_HoverEngine",
+   "construction": "gruby pierścień, kolumna i trzy szerokie łopaty",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 1364,
+   "triangles_lod1": 752,
+   "parts": 17,
+   "mesh_objects": 9,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary"
+   ],
+   "textures": [],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 0.0,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "SpinUp",
+    "Lift",
+    "Pulse",
+    "Cooldown"
+   ],
+   "animated_objects": 8,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4M_HoverEngine.blend",
+    "R4M_HoverEngine.fbx",
+    "R4M_HoverEngine.glb",
+    "R4M_HoverEngine_LOD1.fbx",
+    "R4M_HoverEngine_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Hover",
+   "id": "R4M_HoverEngine",
+   "style": "D",
+   "style_label": "D_Scrap",
+   "path": "pilot2/variants/D_Scrap/R4M_HoverEngine",
+   "construction": "kanał z beczki z obręczami, krzywe rozpory z rur, boczny silnik z paskiem, 5 niedopasowanych łopat",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 1904,
+   "triangles_lod1": 1356,
+   "parts": 32,
+   "mesh_objects": 9,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim",
+    "R4P_Wear"
+   ],
+   "textures": [
+    "D_base.png",
+    "D_orm.png",
+    "D_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 0.0,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "SpinUp",
+    "Lift",
+    "Pulse",
+    "Cooldown"
+   ],
+   "animated_objects": 8,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4M_HoverEngine.blend",
+    "R4M_HoverEngine.fbx",
+    "R4M_HoverEngine.glb",
+    "R4M_HoverEngine_LOD1.fbx",
+    "R4M_HoverEngine_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Hover",
+   "id": "R4M_HoverEngine",
+   "style": "E",
+   "style_label": "E_Toon",
+   "path": "pilot2/variants/E_Toon/R4M_HoverEngine",
+   "construction": "kanał-pączek z obręczą, piasta-grzyb, 4 płatki",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 4964,
+   "triangles_lod1": 1830,
+   "parts": 20,
+   "mesh_objects": 9,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "E_base.png"
+   ],
+   "ports_pass": true,
+   "ports": 1,
+   "interface_vs_source": true,
+   "node_bounds_vs_source_mm": 1.34,
+   "inside_envelope": true,
+   "animation_mode": "transfer",
+   "clips": [
+    "Idle",
+    "SpinUp",
+    "Lift",
+    "Pulse",
+    "Cooldown"
+   ],
+   "animated_objects": 8,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4M_HoverEngine.blend",
+    "R4M_HoverEngine.fbx",
+    "R4M_HoverEngine.glb",
+    "R4M_HoverEngine_LOD1.fbx",
+    "R4M_HoverEngine_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Battery",
+   "id": "R4X_Battery",
+   "style": "A",
+   "style_label": "A_Sleek",
+   "path": "pilot2/variants/A_Sleek/R4X_Battery",
+   "construction": "pozioma kapsuła w dwóch kołyskach, widoczny świecący rdzeń między tulejami",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 5864,
+   "triangles_lod1": 1976,
+   "parts": 18,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "A_base.png",
+    "A_orm.png",
+    "A_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 2,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 1.825,
+   "files": [
+    "R4X_Battery.blend",
+    "R4X_Battery.fbx",
+    "R4X_Battery.glb",
+    "R4X_Battery_LOD1.fbx",
+    "R4X_Battery_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Battery",
+   "id": "R4X_Battery",
+   "style": "B",
+   "style_label": "B_Brutal",
+   "path": "pilot2/variants/B_Brutal/R4X_Battery",
+   "construction": "dwa stojące bębny z kołnierzami, zaciski, szyna łącząca, opaski na śrubach, radiatory po bokach",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 4000,
+   "triangles_lod1": 1552,
+   "parts": 63,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "B_base.png",
+    "B_orm.png",
+    "B_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 2,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 3.119,
+   "files": [
+    "R4X_Battery.blend",
+    "R4X_Battery.fbx",
+    "R4X_Battery.glb",
+    "R4X_Battery_LOD1.fbx",
+    "R4X_Battery_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Battery",
+   "id": "R4X_Battery",
+   "style": "C",
+   "style_label": "C_Arcade",
+   "path": "pilot2/variants/C_Arcade/R4X_Battery",
+   "construction": "jedno grube ogniwo z opaską i biegunem",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 752,
+   "triangles_lod1": 304,
+   "parts": 5,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary"
+   ],
+   "textures": [],
+   "ports_pass": true,
+   "ports": 2,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 4.073,
+   "files": [
+    "R4X_Battery.blend",
+    "R4X_Battery.fbx",
+    "R4X_Battery.glb",
+    "R4X_Battery_LOD1.fbx",
+    "R4X_Battery_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Battery",
+   "id": "R4X_Battery",
+   "style": "D",
+   "style_label": "D_Scrap",
+   "path": "pilot2/variants/D_Scrap/R4X_Battery",
+   "construction": "akumulator samochodowy w taśmach, przechylony kanister, kable rozruchowe",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 3016,
+   "triangles_lod1": 640,
+   "parts": 61,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim",
+    "R4P_Wear"
+   ],
+   "textures": [
+    "D_base.png",
+    "D_orm.png",
+    "D_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 2,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 3.247,
+   "files": [
+    "R4X_Battery.blend",
+    "R4X_Battery.fbx",
+    "R4X_Battery.glb",
+    "R4X_Battery_LOD1.fbx",
+    "R4X_Battery_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Battery",
+   "id": "R4X_Battery",
+   "style": "E",
+   "style_label": "E_Toon",
+   "path": "pilot2/variants/E_Toon/R4X_Battery",
+   "construction": "przechylona pękata kapsuła z piorunem i grubymi obręczami",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 3126,
+   "triangles_lod1": 642,
+   "parts": 9,
+   "mesh_objects": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "E_base.png"
+   ],
+   "ports_pass": true,
+   "ports": 2,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Hit",
+    "Damaged",
+    "Recover"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 4.555,
+   "files": [
+    "R4X_Battery.blend",
+    "R4X_Battery.fbx",
+    "R4X_Battery.glb",
+    "R4X_Battery_LOD1.fbx",
+    "R4X_Battery_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Deployer",
+   "id": "R4X_ExplosiveTrapDeployer",
+   "style": "A",
+   "style_label": "A_Sleek",
+   "path": "pilot2/variants/A_Sleek/R4X_ExplosiveTrapDeployer",
+   "construction": "kołyska-dysk z bocznymi płetwami, pierścień magnetyczny, szyny światła",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 3336,
+   "triangles_lod1": 1822,
+   "parts": 24,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "A_base.png",
+    "A_orm.png",
+    "A_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 2,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Deploy",
+    "Hit"
+   ],
+   "animated_objects": 2,
+   "sweep_outside_mm": 1.532,
+   "files": [
+    "R4X_ExplosiveTrapDeployer.blend",
+    "R4X_ExplosiveTrapDeployer.fbx",
+    "R4X_ExplosiveTrapDeployer.glb",
+    "R4X_ExplosiveTrapDeployer_LOD1.fbx",
+    "R4X_ExplosiveTrapDeployer_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Deployer",
+   "id": "R4X_ExplosiveTrapDeployer",
+   "style": "B",
+   "style_label": "B_Brutal",
+   "path": "pilot2/variants/B_Brutal/R4X_ExplosiveTrapDeployer",
+   "construction": "pochylnia rolkowa w ramie z blach, koła łańcuchowe, tłok dociskowy, magazyn z żebrami",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 3564,
+   "triangles_lod1": 2140,
+   "parts": 62,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "B_base.png",
+    "B_orm.png",
+    "B_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 2,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Deploy",
+    "Hit"
+   ],
+   "animated_objects": 2,
+   "sweep_outside_mm": 2.608,
+   "files": [
+    "R4X_ExplosiveTrapDeployer.blend",
+    "R4X_ExplosiveTrapDeployer.fbx",
+    "R4X_ExplosiveTrapDeployer.glb",
+    "R4X_ExplosiveTrapDeployer_LOD1.fbx",
+    "R4X_ExplosiveTrapDeployer_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Deployer",
+   "id": "R4X_ExplosiveTrapDeployer",
+   "style": "C",
+   "style_label": "C_Arcade",
+   "path": "pilot2/variants/C_Arcade/R4X_ExplosiveTrapDeployer",
+   "construction": "klin-rampa i blok magazynu",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 320,
+   "triangles_lod1": 192,
+   "parts": 5,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary"
+   ],
+   "textures": [],
+   "ports_pass": true,
+   "ports": 2,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Deploy",
+    "Hit"
+   ],
+   "animated_objects": 2,
+   "sweep_outside_mm": 4.073,
+   "files": [
+    "R4X_ExplosiveTrapDeployer.blend",
+    "R4X_ExplosiveTrapDeployer.fbx",
+    "R4X_ExplosiveTrapDeployer.glb",
+    "R4X_ExplosiveTrapDeployer_LOD1.fbx",
+    "R4X_ExplosiveTrapDeployer_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Deployer",
+   "id": "R4X_ExplosiveTrapDeployer",
+   "style": "D",
+   "style_label": "D_Scrap",
+   "path": "pilot2/variants/D_Scrap/R4X_ExplosiveTrapDeployer",
+   "construction": "prowadnice z dwóch rur, magazyn z beczki, łaty, pręt",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 2026,
+   "triangles_lod1": 1262,
+   "parts": 36,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim",
+    "R4P_Wear"
+   ],
+   "textures": [
+    "D_base.png",
+    "D_orm.png",
+    "D_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 2,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Deploy",
+    "Hit"
+   ],
+   "animated_objects": 2,
+   "sweep_outside_mm": 4.235,
+   "files": [
+    "R4X_ExplosiveTrapDeployer.blend",
+    "R4X_ExplosiveTrapDeployer.fbx",
+    "R4X_ExplosiveTrapDeployer.glb",
+    "R4X_ExplosiveTrapDeployer_LOD1.fbx",
+    "R4X_ExplosiveTrapDeployer_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Deployer",
+   "id": "R4X_ExplosiveTrapDeployer",
+   "style": "E",
+   "style_label": "E_Toon",
+   "path": "pilot2/variants/E_Toon/R4X_ExplosiveTrapDeployer",
+   "construction": "misa na sprężynie z obłą wieżą i gwiazdą",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 4084,
+   "triangles_lod1": 1210,
+   "parts": 16,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "E_base.png"
+   ],
+   "ports_pass": true,
+   "ports": 2,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Deploy",
+    "Hit"
+   ],
+   "animated_objects": 2,
+   "sweep_outside_mm": 4.555,
+   "files": [
+    "R4X_ExplosiveTrapDeployer.blend",
+    "R4X_ExplosiveTrapDeployer.fbx",
+    "R4X_ExplosiveTrapDeployer.glb",
+    "R4X_ExplosiveTrapDeployer_LOD1.fbx",
+    "R4X_ExplosiveTrapDeployer_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Trap",
+   "id": "R4D_ExplosiveTrap",
+   "style": "A",
+   "style_label": "A_Sleek",
+   "path": "pilot2/variants/A_Sleek/R4D_ExplosiveTrap",
+   "construction": "cienki dysk z trzema płatami i kopułką światła",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 1236,
+   "triangles_lod1": 708,
+   "parts": 9,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "A_base.png",
+    "A_orm.png",
+    "A_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 0,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Arm",
+    "Triggered",
+    "Recovery"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4D_ExplosiveTrap.blend",
+    "R4D_ExplosiveTrap.fbx",
+    "R4D_ExplosiveTrap.glb",
+    "R4D_ExplosiveTrap_LOD1.fbx",
+    "R4D_ExplosiveTrap_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Trap",
+   "id": "R4D_ExplosiveTrap",
+   "style": "B",
+   "style_label": "B_Brutal",
+   "path": "pilot2/variants/B_Brutal/R4D_ExplosiveTrap",
+   "construction": "mina morska: kula z rogami zapalników na kołnierzu ze śrubami",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 1352,
+   "triangles_lod1": 1176,
+   "parts": 23,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Trim"
+   ],
+   "textures": [
+    "B_base.png",
+    "B_orm.png",
+    "B_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 0,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Arm",
+    "Triggered",
+    "Recovery"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 24.0,
+   "files": [
+    "R4D_ExplosiveTrap.blend",
+    "R4D_ExplosiveTrap.fbx",
+    "R4D_ExplosiveTrap.glb",
+    "R4D_ExplosiveTrap_LOD1.fbx",
+    "R4D_ExplosiveTrap_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Trap",
+   "id": "R4D_ExplosiveTrap",
+   "style": "C",
+   "style_label": "C_Arcade",
+   "path": "pilot2/variants/C_Arcade/R4D_ExplosiveTrap",
+   "construction": "płaski krążek z dużym przyciskiem",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 198,
+   "triangles_lod1": 92,
+   "parts": 2,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow"
+   ],
+   "textures": [],
+   "ports_pass": true,
+   "ports": 0,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Arm",
+    "Triggered",
+    "Recovery"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4D_ExplosiveTrap.blend",
+    "R4D_ExplosiveTrap.fbx",
+    "R4D_ExplosiveTrap.glb",
+    "R4D_ExplosiveTrap_LOD1.fbx",
+    "R4D_ExplosiveTrap_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Trap",
+   "id": "R4D_ExplosiveTrap",
+   "style": "D",
+   "style_label": "D_Scrap",
+   "path": "pilot2/variants/D_Scrap/R4D_ExplosiveTrap",
+   "construction": "butla z gwoździami na skrzyżowanych blachach, zapalnik z puszki na kablu",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 722,
+   "triangles_lod1": 722,
+   "parts": 15,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim",
+    "R4P_Wear"
+   ],
+   "textures": [
+    "D_base.png",
+    "D_orm.png",
+    "D_normal.png"
+   ],
+   "ports_pass": true,
+   "ports": 0,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Arm",
+    "Triggered",
+    "Recovery"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4D_ExplosiveTrap.blend",
+    "R4D_ExplosiveTrap.fbx",
+    "R4D_ExplosiveTrap.glb",
+    "R4D_ExplosiveTrap_LOD1.fbx",
+    "R4D_ExplosiveTrap_LOD1.glb"
+   ]
+  },
+  {
+   "type": "Trap",
+   "id": "R4D_ExplosiveTrap",
+   "style": "E",
+   "style_label": "E_Toon",
+   "path": "pilot2/variants/E_Toon/R4D_ExplosiveTrap",
+   "construction": "gwiazda z kulami na ramionach i dużą kopułą",
+   "blender": "BLENDER_PASS",
+   "export_reimport": "EXPORT_REIMPORT_PASS",
+   "glb_tests": "PASS",
+   "unity": "UNITY_NOT_RUN",
+   "artistic_acceptance": "PENDING_OWNER_REVIEW",
+   "triangles": 1544,
+   "triangles_lod1": 440,
+   "parts": 8,
+   "mesh_objects": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary"
+   ],
+   "textures": [
+    "E_base.png"
+   ],
+   "ports_pass": true,
+   "ports": 0,
+   "interface_vs_source": null,
+   "node_bounds_vs_source_mm": null,
+   "inside_envelope": true,
+   "animation_mode": "procedural",
+   "clips": [
+    "Idle",
+    "Arm",
+    "Triggered",
+    "Recovery"
+   ],
+   "animated_objects": 1,
+   "sweep_outside_mm": 0.0,
+   "files": [
+    "R4D_ExplosiveTrap.blend",
+    "R4D_ExplosiveTrap.fbx",
+    "R4D_ExplosiveTrap.glb",
+    "R4D_ExplosiveTrap_LOD1.fbx",
+    "R4D_ExplosiveTrap_LOD1.glb"
+   ]
+  }
+ ]
+}

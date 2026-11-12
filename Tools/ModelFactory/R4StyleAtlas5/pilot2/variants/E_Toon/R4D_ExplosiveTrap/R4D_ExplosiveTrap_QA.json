@@ -1,0 +1,295 @@
+{
+ "id": "R4D_ExplosiveTrap",
+ "pilot_type": "Trap",
+ "construction": "gwiazda z kulami na ramionach i du\u017c\u0105 kopu\u0142\u0105",
+ "style_character": "soft exaggerated proportions, big friendly forms, saturated hero colours, painted light ramp, few details",
+ "artistic_acceptance": "PENDING_OWNER_REVIEW",
+ "textures": {
+  "base": "E_base.png",
+  "orm": null,
+  "normal": null,
+  "normal_strength": 0.0,
+  "uv": "height"
+ },
+ "material_textures": {
+  "R4P_Base": {
+   "base_texture": "E_base.png"
+  },
+  "R4P_Glow": {},
+  "R4P_Secondary": {
+   "base_texture": "E_base.png"
+  }
+ },
+ "board_frames": [
+  {
+   "clip": "Arm",
+   "frame": 33
+  },
+  {
+   "clip": "Arm",
+   "frame": 39
+  },
+  {
+   "clip": "Triggered",
+   "frame": 59
+  },
+  {
+   "clip": "Recovery",
+   "frame": 85
+  }
+ ],
+ "style": "E",
+ "style_label": "E_Toon",
+ "family": "world_trap",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4D_ExplosiveTrap_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1400,
+   "vertices": 714,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  },
+  {
+   "object": "R4D_ExplosiveTrap_Lamp",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 144,
+   "vertices": 74,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4D_ExplosiveTrap_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 440,
+  "vertices": 236,
+  "uv": true,
+  "material_slots": 3,
+  "ok": true
+ },
+ "triangles": 1544,
+ "triangles_lod1": 440,
+ "mesh_objects": 2,
+ "material_slots_total": 3,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary"
+ ],
+ "bounds_m": [
+  [
+   -0.245,
+   -0.2146,
+   0.0
+  ],
+  [
+   0.245,
+   0.2537,
+   0.18
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   0.0
+  ],
+  [
+   0.26,
+   0.26,
+   0.3
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [],
+ "port_contact_test": [],
+ "lod1_port_contact_test": [],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4D_ExplosiveTrap_ROOT": null,
+  "R4D_ExplosiveTrap_Body": "R4D_ExplosiveTrap_ROOT",
+  "R4D_ExplosiveTrap_Lamp": "R4D_ExplosiveTrap_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 103,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Arm",
+    "start": 27,
+    "end": 51,
+    "loop": false
+   },
+   {
+    "name": "Triggered",
+    "start": 53,
+    "end": 65,
+    "loop": false
+   },
+   {
+    "name": "Recovery",
+    "start": 67,
+    "end": 103,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Arm": 27,
+   "Armed": 51,
+   "Trigger": 53,
+   "Recovered": 103
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4D_ExplosiveTrap_Lamp"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 0.0,
+  "sweep_allowance_mm": 30,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "expressive: anticipation, overshoot, springy settle"
+ },
+ "parts": 8,
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 1544,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 3,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    59,
+    65,
+    67,
+    85,
+    103
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    59,
+    "R4D_ExplosiveTrap_Lamp",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 1544,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    59,
+    65,
+    67,
+    85,
+    103
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4D_ExplosiveTrap_34.jpg",
+  "R4D_ExplosiveTrap_anim1.jpg",
+  "R4D_ExplosiveTrap_anim2.jpg",
+  "R4D_ExplosiveTrap_anim3.jpg",
+  "R4D_ExplosiveTrap_anim4.jpg",
+  "R4D_ExplosiveTrap_clay_34.jpg",
+  "R4D_ExplosiveTrap_clay_front.jpg",
+  "R4D_ExplosiveTrap_clay_side.jpg",
+  "R4D_ExplosiveTrap_front.jpg",
+  "R4D_ExplosiveTrap_side.jpg",
+  "R4D_ExplosiveTrap_sil_34.png",
+  "R4D_ExplosiveTrap_sil_front.png",
+  "R4D_ExplosiveTrap_sil_side.png",
+  "R4D_ExplosiveTrap_top.jpg",
+  "R4D_ExplosiveTrap_wire.jpg"
+ ],
+ "files": {
+  "R4D_ExplosiveTrap.blend": {
+   "sha256": "521f6f8db105984dfe5d0886f3225fd1ee586fad65edd535fbfd93dee662cc94",
+   "bytes": 131916
+  },
+  "R4D_ExplosiveTrap.fbx": {
+   "sha256": "678e01ff18b7782b33ff227d73577a16f83785342115213947afdf6304ae1453",
+   "bytes": 86524
+  },
+  "R4D_ExplosiveTrap.glb": {
+   "sha256": "5d2807f49ef37f1287419d0bac86a668052ca2e2b502aa7e146ae4dc61c7343e",
+   "bytes": 53880
+  },
+  "R4D_ExplosiveTrap_LOD1.fbx": {
+   "sha256": "5013b7634066c0131b61b384b61225a179d81e752cd4229effbc23d69dd7826d",
+   "bytes": 28572
+  },
+  "R4D_ExplosiveTrap_LOD1.glb": {
+   "sha256": "41fa74369c40b0ff36674298dab2d21c535ff0b65a8203764df791a821638843",
+   "bytes": 23512
+  }
+ },
+ "seconds": 2.9,
+ "blender": "5.3.0",
+ "post_export_note": "after the Blender step: clay PNG renders converted to JPG + 1-bit silhouettes; local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; file hashes below describe the delivered files"
+}

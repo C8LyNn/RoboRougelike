@@ -1,0 +1,429 @@
+00:00.031  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+<WORKDIR>\R4_Atlas5_pilot2\scripts3\pbuild.py:42: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(zone); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tx = src["textures"]; m["paint_zone"] = zone
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\A_Sleek\\R4X_ExplosiveTrapDeployer\\R4X_ExplosiveTrapDeployer.fbx'
+export finished in 0.0342 sec.
+INFO Draco is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_meshopt_bridge.dll
+09:26:10 | INFO: Starting glTF 2.0 export
+09:26:10 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_Body
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | INFO: Primitives created: 4
+09:26:10 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_Payload
+09:26:10 | INFO: Primitives created: 4
+09:26:10 | INFO: Finished glTF 2.0 export in 0.04638075828552246 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\A_Sleek\\R4X_ExplosiveTrapDeployer\\R4X_ExplosiveTrapDeployer_LOD1.fbx'
+export finished in 0.0070 sec.
+09:26:10 | INFO: Starting glTF 2.0 export
+09:26:10 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_LOD1
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | INFO: Primitives created: 4
+09:26:10 | INFO: Finished glTF 2.0 export in 0.014234066009521484 s
+<WORKDIR>\R4_Atlas5_pilot2\scripts3\pbuild.py:116: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w = bpy.data.worlds.new("W"); scn.world = w; w.use_nodes = True; bg = w.node_tree.nodes.get("Background"); bg.inputs[0].default_value = (0.20, 0.21, 0.23, 1); bg.inputs[1].default_value = 0.9
+00:02.015  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_front.jpg'
+00:02.234  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_side.jpg'
+00:02.469  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_top.jpg'
+00:02.687  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_34.jpg'
+00:02.922  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim1.jpg'
+00:03.172  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim2.jpg'
+00:03.406  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim3.jpg'
+00:03.594  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim4.jpg'
+<WORKDIR>\R4_Atlas5_pilot2\scripts3\pbuild.py:389: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  lod.hide_render = True; clay = bpy.data.materials.new("Clay"); clay.use_nodes = True; cb = clay.node_tree.nodes.get("Principled BSDF"); cb.inputs["Base Color"].default_value = (0.5, 0.5, 0.5, 1); cb.inputs["Roughness"].default_value = 0.7
+00:03.875  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_front.png'
+00:04.000  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_side.png'
+00:04.281  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_34.png'
+<WORKDIR>\R4_Atlas5_pilot2\scripts3\pbuild.py:394: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  lod.hide_render = True; wm = bpy.data.materials.new("Wire"); wm.use_nodes = True; wb = wm.node_tree.nodes.get("Principled BSDF"); wb.inputs["Base Color"].default_value = (0.01, 0.01, 0.012, 1); wb.inputs["Roughness"].default_value = 1.0
+00:04.578  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_wire.jpg'
+
+Info: Saved as "R4X_ExplosiveTrapDeployer.blend"
+FBX version: 7400
+09:26:14 | INFO: Data are loaded, start creating Blender stuff
+09:26:14 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Body
+09:26:14 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Payload
+09:26:14 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT A_Sleek R4X_ExplosiveTrapDeployer BLENDER_PASS [] 3336 tris LOD1 1822
+<WORKDIR>\R4_Atlas5_pilot2\scripts3\pbuild.py:42: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(zone); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tx = src["textures"]; m["paint_zone"] = zone
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\B_Brutal\\R4X_ExplosiveTrapDeployer\\R4X_ExplosiveTrapDeployer.fbx'
+export finished in 0.0344 sec.
+09:26:14 | INFO: Starting glTF 2.0 export
+09:26:14 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_Body
+09:26:14 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:14 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:14 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:14 | INFO: Primitives created: 3
+09:26:14 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_Payload
+09:26:14 | INFO: Primitives created: 4
+09:26:14 | INFO: Finished glTF 2.0 export in 0.07280921936035156 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\B_Brutal\\R4X_ExplosiveTrapDeployer\\R4X_ExplosiveTrapDeployer_LOD1.fbx'
+export finished in 0.0114 sec.
+09:26:14 | INFO: Starting glTF 2.0 export
+09:26:14 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_LOD1
+09:26:14 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:14 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:14 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:14 | INFO: Primitives created: 4
+09:26:14 | INFO: Finished glTF 2.0 export in 0.02036452293395996 s
+00:05.640  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_front.jpg'
+00:05.781  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_side.jpg'
+00:05.984  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_top.jpg'
+00:06.250  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_34.jpg'
+00:06.500  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim1.jpg'
+00:06.765  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim2.jpg'
+00:07.031  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim3.jpg'
+00:07.312  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim4.jpg'
+00:07.656  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_front.png'
+00:07.875  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_side.png'
+00:08.187  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_34.png'
+00:08.469  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_wire.jpg'
+
+Info: Saved as "R4X_ExplosiveTrapDeployer.blend"
+FBX version: 7400
+09:26:17 | INFO: Data are loaded, start creating Blender stuff
+09:26:17 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Body
+09:26:17 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Payload
+09:26:17 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT B_Brutal R4X_ExplosiveTrapDeployer BLENDER_PASS [] 3564 tris LOD1 2140
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\C_Arcade\\R4X_ExplosiveTrapDeployer\\R4X_ExplosiveTrapDeployer.fbx'
+export finished in 0.0277 sec.
+09:26:18 | INFO: Starting glTF 2.0 export
+09:26:18 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_Body
+09:26:18 | INFO: Primitives created: 2
+09:26:18 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_Payload
+09:26:18 | INFO: Primitives created: 2
+09:26:18 | INFO: Finished glTF 2.0 export in 0.02939748764038086 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\C_Arcade\\R4X_ExplosiveTrapDeployer\\R4X_ExplosiveTrapDeployer_LOD1.fbx'
+export finished in 0.0054 sec.
+09:26:18 | INFO: Starting glTF 2.0 export
+09:26:18 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_LOD1
+09:26:18 | INFO: Primitives created: 3
+09:26:18 | INFO: Finished glTF 2.0 export in 0.005270481109619141 s
+00:08.984  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_front.jpg'
+00:09.140  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_side.jpg'
+00:09.406  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_top.jpg'
+00:09.656  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_34.jpg'
+00:09.937  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim1.jpg'
+00:10.172  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim2.jpg'
+00:10.406  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim3.jpg'
+00:10.594  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim4.jpg'
+00:10.844  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_front.png'
+00:11.094  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_side.png'
+00:11.297  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_34.png'
+00:11.484  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_wire.jpg'
+
+Info: Saved as "R4X_ExplosiveTrapDeployer.blend"
+FBX version: 7400
+09:26:20 | INFO: Data are loaded, start creating Blender stuff
+09:26:20 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Body
+09:26:20 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Payload
+09:26:20 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT C_Arcade R4X_ExplosiveTrapDeployer BLENDER_PASS [] 320 tris LOD1 192
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\D_Scrap\\R4X_ExplosiveTrapDeployer\\R4X_ExplosiveTrapDeployer.fbx'
+export finished in 0.0780 sec.
+09:26:21 | INFO: Starting glTF 2.0 export
+09:26:21 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_Body
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | INFO: Primitives created: 5
+09:26:21 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_Payload
+09:26:21 | INFO: Primitives created: 5
+09:26:21 | INFO: Finished glTF 2.0 export in 0.058567047119140625 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\D_Scrap\\R4X_ExplosiveTrapDeployer\\R4X_ExplosiveTrapDeployer_LOD1.fbx'
+export finished in 0.0096 sec.
+09:26:21 | INFO: Starting glTF 2.0 export
+09:26:21 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_LOD1
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | INFO: Primitives created: 6
+09:26:21 | INFO: Finished glTF 2.0 export in 0.028979063034057617 s
+00:12.359  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_front.jpg'
+00:12.500  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_side.jpg'
+00:12.734  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_top.jpg'
+00:12.984  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_34.jpg'
+00:13.234  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim1.jpg'
+00:13.469  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim2.jpg'
+00:13.750  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim3.jpg'
+00:14.015  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim4.jpg'
+00:14.187  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_front.png'
+00:14.422  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_side.png'
+00:14.672  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_34.png'
+00:14.781  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_wire.jpg'
+
+Info: Saved as "R4X_ExplosiveTrapDeployer.blend"
+FBX version: 7400
+09:26:24 | INFO: Data are loaded, start creating Blender stuff
+09:26:24 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Body
+09:26:24 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Payload
+09:26:24 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT D_Scrap R4X_ExplosiveTrapDeployer BLENDER_PASS [] 2026 tris LOD1 1262
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\E_Toon\\R4X_ExplosiveTrapDeployer\\R4X_ExplosiveTrapDeployer.fbx'
+export finished in 0.0305 sec.
+09:26:24 | INFO: Starting glTF 2.0 export
+09:26:24 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_Body
+09:26:24 | INFO: Primitives created: 4
+09:26:24 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_Payload
+09:26:24 | INFO: Primitives created: 3
+09:26:24 | INFO: Finished glTF 2.0 export in 0.04254341125488281 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\E_Toon\\R4X_ExplosiveTrapDeployer\\R4X_ExplosiveTrapDeployer_LOD1.fbx'
+export finished in 0.0070 sec.
+09:26:24 | INFO: Starting glTF 2.0 export
+09:26:24 | INFO: Extracting primitive: R4X_ExplosiveTrapDeployer_LOD1
+09:26:24 | INFO: Primitives created: 5
+09:26:24 | INFO: Finished glTF 2.0 export in 0.01424717903137207 s
+00:15.812  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_front.jpg'
+00:15.984  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_side.jpg'
+00:16.140  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_top.jpg'
+00:16.297  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_34.jpg'
+00:16.484  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim1.jpg'
+00:16.750  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim2.jpg'
+00:17.031  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim3.jpg'
+00:17.265  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_anim4.jpg'
+00:17.531  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_front.png'
+00:17.719  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_side.png'
+00:17.875  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_clay_34.png'
+00:18.031  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_ExplosiveTrapDeployer\renders\R4X_ExplosiveTrapDeployer_wire.jpg'
+
+Info: Saved as "R4X_ExplosiveTrapDeployer.blend"
+FBX version: 7400
+09:26:27 | INFO: Data are loaded, start creating Blender stuff
+09:26:27 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Body
+09:26:27 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Payload
+09:26:27 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT E_Toon R4X_ExplosiveTrapDeployer BLENDER_PASS [] 4084 tris LOD1 1210
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\A_Sleek\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap.fbx'
+export finished in 0.0206 sec.
+09:26:27 | INFO: Starting glTF 2.0 export
+09:26:27 | INFO: Extracting primitive: R4D_ExplosiveTrap_Body
+09:26:27 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:27 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:27 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:27 | INFO: Primitives created: 4
+09:26:27 | INFO: Extracting primitive: R4D_ExplosiveTrap_Lamp
+09:26:27 | INFO: Primitives created: 1
+09:26:27 | INFO: Finished glTF 2.0 export in 0.033627986907958984 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\A_Sleek\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap_LOD1.fbx'
+export finished in 0.0084 sec.
+09:26:27 | INFO: Starting glTF 2.0 export
+09:26:27 | INFO: Extracting primitive: R4D_ExplosiveTrap_LOD1
+09:26:27 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:27 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:27 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:27 | INFO: Primitives created: 4
+09:26:27 | INFO: Finished glTF 2.0 export in 0.020095348358154297 s
+00:18.672  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_front.jpg'
+00:18.812  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_side.jpg'
+00:18.937  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_top.jpg'
+00:19.078  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_34.jpg'
+00:19.219  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim1.jpg'
+00:19.406  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim2.jpg'
+00:19.640  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim3.jpg'
+00:19.922  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim4.jpg'
+00:20.234  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_front.png'
+00:20.484  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_side.png'
+00:20.750  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_34.png'
+00:20.906  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_wire.jpg'
+
+Info: Saved as "R4D_ExplosiveTrap.blend"
+FBX version: 7400
+09:26:30 | INFO: Data are loaded, start creating Blender stuff
+09:26:30 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Body
+09:26:30 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Lamp
+09:26:30 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT A_Sleek R4D_ExplosiveTrap BLENDER_PASS [] 1236 tris LOD1 708
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\B_Brutal\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap.fbx'
+export finished in 0.0227 sec.
+09:26:30 | INFO: Starting glTF 2.0 export
+09:26:30 | INFO: Extracting primitive: R4D_ExplosiveTrap_Body
+09:26:30 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:30 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:30 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:30 | INFO: Primitives created: 3
+09:26:30 | INFO: Extracting primitive: R4D_ExplosiveTrap_Lamp
+09:26:30 | INFO: Primitives created: 1
+09:26:30 | INFO: Finished glTF 2.0 export in 0.04700422286987305 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\B_Brutal\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap_LOD1.fbx'
+export finished in 0.0081 sec.
+09:26:30 | INFO: Starting glTF 2.0 export
+09:26:30 | INFO: Extracting primitive: R4D_ExplosiveTrap_LOD1
+09:26:30 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:30 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:30 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:30 | INFO: Primitives created: 4
+09:26:30 | INFO: Finished glTF 2.0 export in 0.01730656623840332 s
+00:21.625  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_front.jpg'
+00:21.734  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_side.jpg'
+00:21.844  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_top.jpg'
+00:21.984  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_34.jpg'
+00:22.094  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim1.jpg'
+00:22.234  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim2.jpg'
+00:22.359  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim3.jpg'
+00:22.500  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim4.jpg'
+00:22.734  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_front.png'
+00:23.000  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_side.png'
+00:23.250  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_34.png'
+00:23.484  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_wire.jpg'
+
+Info: Saved as "R4D_ExplosiveTrap.blend"
+FBX version: 7400
+09:26:32 | INFO: Data are loaded, start creating Blender stuff
+09:26:32 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Body
+09:26:32 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Lamp
+09:26:32 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT B_Brutal R4D_ExplosiveTrap BLENDER_PASS [] 1352 tris LOD1 1176
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\C_Arcade\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap.fbx'
+export finished in 0.0156 sec.
+09:26:33 | INFO: Starting glTF 2.0 export
+09:26:33 | INFO: Extracting primitive: R4D_ExplosiveTrap_Body
+09:26:33 | INFO: Primitives created: 1
+09:26:33 | INFO: Extracting primitive: R4D_ExplosiveTrap_Lamp
+09:26:33 | INFO: Primitives created: 1
+09:26:33 | INFO: Finished glTF 2.0 export in 0.014584064483642578 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\C_Arcade\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap_LOD1.fbx'
+export finished in 0.0056 sec.
+09:26:33 | INFO: Starting glTF 2.0 export
+09:26:33 | INFO: Extracting primitive: R4D_ExplosiveTrap_LOD1
+09:26:33 | INFO: Primitives created: 2
+09:26:33 | INFO: Finished glTF 2.0 export in 0.0051691532135009766 s
+00:24.062  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_front.jpg'
+00:24.281  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_side.jpg'
+00:24.531  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_top.jpg'
+00:24.719  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_34.jpg'
+00:24.906  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim1.jpg'
+00:25.015  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim2.jpg'
+00:25.250  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim3.jpg'
+00:25.531  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim4.jpg'
+00:25.797  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_front.png'
+00:25.969  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_side.png'
+00:26.187  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_34.png'
+00:26.437  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_wire.jpg'
+
+Info: Saved as "R4D_ExplosiveTrap.blend"
+FBX version: 7400
+09:26:35 | INFO: Data are loaded, start creating Blender stuff
+09:26:35 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Body
+09:26:35 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Lamp
+09:26:35 | INFO: glTF import finished in 0.00s
+[PILOT2] VARIANT C_Arcade R4D_ExplosiveTrap BLENDER_PASS [] 198 tris LOD1 92
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\D_Scrap\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap.fbx'
+export finished in 0.0197 sec.
+09:26:36 | INFO: Starting glTF 2.0 export
+09:26:36 | INFO: Extracting primitive: R4D_ExplosiveTrap_Body
+09:26:36 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:36 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:36 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:36 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:36 | INFO: Primitives created: 4
+09:26:36 | INFO: Extracting primitive: R4D_ExplosiveTrap_Lamp
+09:26:36 | INFO: Primitives created: 1
+09:26:36 | INFO: Finished glTF 2.0 export in 0.04222846031188965 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\D_Scrap\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap_LOD1.fbx'
+export finished in 0.0070 sec.
+09:26:36 | INFO: Starting glTF 2.0 export
+09:26:36 | INFO: Extracting primitive: R4D_ExplosiveTrap_LOD1
+09:26:36 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:36 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:36 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:36 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:36 | INFO: Primitives created: 5
+09:26:36 | INFO: Finished glTF 2.0 export in 0.018439292907714844 s
+00:27.140  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_front.jpg'
+00:27.390  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_side.jpg'
+00:27.578  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_top.jpg'
+00:27.781  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_34.jpg'
+00:27.984  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim1.jpg'
+00:28.219  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim2.jpg'
+00:28.453  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim3.jpg'
+00:28.656  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim4.jpg'
+00:28.875  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_front.png'
+00:29.047  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_side.png'
+00:29.203  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_34.png'
+00:29.344  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_wire.jpg'
+
+Info: Saved as "R4D_ExplosiveTrap.blend"
+FBX version: 7400
+09:26:38 | INFO: Data are loaded, start creating Blender stuff
+09:26:38 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Body
+09:26:38 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Lamp
+09:26:38 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT D_Scrap R4D_ExplosiveTrap BLENDER_PASS [] 722 tris LOD1 722
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\E_Toon\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap.fbx'
+export finished in 0.0193 sec.
+09:26:39 | INFO: Starting glTF 2.0 export
+09:26:39 | INFO: Extracting primitive: R4D_ExplosiveTrap_Body
+09:26:39 | INFO: Primitives created: 2
+09:26:39 | INFO: Extracting primitive: R4D_ExplosiveTrap_Lamp
+09:26:39 | INFO: Primitives created: 1
+09:26:39 | INFO: Finished glTF 2.0 export in 0.020786046981811523 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\E_Toon\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap_LOD1.fbx'
+export finished in 0.0055 sec.
+09:26:39 | INFO: Starting glTF 2.0 export
+09:26:39 | INFO: Extracting primitive: R4D_ExplosiveTrap_LOD1
+09:26:39 | INFO: Primitives created: 3
+09:26:39 | INFO: Finished glTF 2.0 export in 0.007495880126953125 s
+00:30.078  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_front.jpg'
+00:30.281  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_side.jpg'
+00:30.422  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_top.jpg'
+00:30.609  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_34.jpg'
+00:30.828  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim1.jpg'
+00:31.062  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim2.jpg'
+00:31.312  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim3.jpg'
+00:31.515  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim4.jpg'
+00:31.765  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_front.png'
+00:31.984  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_side.png'
+00:32.172  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_34.png'
+00:32.312  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_wire.jpg'
+
+Info: Saved as "R4D_ExplosiveTrap.blend"
+FBX version: 7400
+09:26:41 | INFO: Data are loaded, start creating Blender stuff
+09:26:41 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Body
+09:26:41 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Lamp
+09:26:41 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT E_Toon R4D_ExplosiveTrap BLENDER_PASS [] 1544 tris LOD1 440
+[PILOT2] BUILD_DONE 10 / 10
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit
