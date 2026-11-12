@@ -33,6 +33,47 @@ public sealed class MapStorageIntegrityTests
         var a=new MapDraft();a.Place(MapItemKind.Ground,0,0,0);MapStorage.Save(path,a);
         var b=new MapDraft();Assert.That(MapStorage.Load(path,b,out var error),Is.True,error);Assert.That(b.Items.Count,Is.EqualTo(1));
     }
+    [Test] public void SavedMapListShowsOnlyLoadableNamesWithoutChangingFiles()
+    {
+        var list=typeof(MapStorage).GetMethod("ListSavedNames");Assert.That(list,Is.Not.Null);
+        Assert.That((string[])list.Invoke(null,new object[]{Path.Combine(dir,"missing")}),Is.Empty);
+        var draft=new MapDraft();draft.Place(MapItemKind.Ground,0,0,0);
+        foreach(string name in new[]{"Zeta","Alfa 1"})
+        {Assert.That(MapStorage.TryPath(dir,name,out var path),Is.True);MapStorage.Save(path,draft);}
+        File.WriteAllText(Path.Combine(dir,"niepoprawna!.json"),"{}");
+        File.WriteAllText(Path.Combine(dir,"inne.txt"),"{}");
+        var before=Directory.GetFiles(dir);
+        var names=(string[])list.Invoke(null,new object[]{dir});
+        Assert.That(names,Is.EqualTo(new[]{"Alfa 1","Zeta"}));
+        foreach(var name in names)
+        {Assert.That(MapStorage.TryPath(dir,name,out var path),Is.True);Assert.That(MapStorage.Load(path,new MapDraft(),out _),Is.True);}
+        Assert.That(Directory.GetFiles(dir),Is.EquivalentTo(before));
+    }
+    [UnityTest] public IEnumerator SelectingSavedMapPreservesUnsavedChangesUntilConfirmed()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
+        var until=Time.realtimeSinceStartup+15;while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenMapEditor(),Is.True);
+        string name="browser"+Guid.NewGuid().ToString("N");Assert.That(MapStorage.TryPath(MapStorage.DirectoryPath,name,out var path),Is.True);
+        var saved=new MapDraft();saved.Place(MapItemKind.Ramp,2,2,0);MapStorage.Save(path,saved);
+        try
+        {
+            Assert.That(run.EditorDraft.Place(MapItemKind.Ground,0,0,0),Is.True);
+            string before=run.EditorDraft.ToJson();var hud=run.GetComponent<R1RunHUD>();
+            var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+            var open=typeof(R1RunHUD).GetMethod("OpenMapBrowser",flags);var select=typeof(R1RunHUD).GetMethod("LoadMapFromBrowser",flags);
+            Assert.That(open,Is.Not.Null);Assert.That(select,Is.Not.Null);
+            open.Invoke(hud,new object[]{run});Assert.That(run.EditorTextFocused,Is.True);
+            run.HandleEscape();Assert.That(run.Paused,Is.False);Assert.That(run.MapEditing,Is.True);Assert.That(run.EditorTextFocused,Is.False);
+            yield return null;
+            open.Invoke(hud,new object[]{run});select.Invoke(hud,new object[]{run,name});
+            Assert.That(run.MapLoadPending,Is.True);Assert.That(run.EditorDraft.ToJson(),Is.EqualTo(before));
+            run.LoadEditedMap();Assert.That(run.MapLoadPending,Is.False);
+            Assert.That(run.EditorDraft.ToJson(),Is.EqualTo(saved.ToJson()));
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+        yield return new ExitPlayMode();
+    }
     [Test] public void ExplicitOverwriteReplacesOnlyTheConfirmedExactFile()
     {
         Assert.That(MapStorage.TryPath(dir,"Tor",out var path),Is.True);

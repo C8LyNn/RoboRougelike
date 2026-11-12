@@ -11,6 +11,43 @@ namespace RoboRougelike.R1
         R3VehicleModel mapReadinessVehicle;
         float nextMapReadinessRefresh;
         string mapReadinessError;
+        bool mapBrowserOpen;
+        string[] savedMapNames=System.Array.Empty<string>();
+        string mapBrowserError;
+        Vector2 savedMapsScroll;
+        void OpenMapBrowser(R1RunController run)
+        {
+            mapBrowserOpen=true;savedMapsScroll=Vector2.zero;run.EditorTextFocused=true;
+            run.EditorWorld?.HideGhost();RefreshSavedMapNames();
+        }
+        void RefreshSavedMapNames()
+        {
+            try{savedMapNames=MapStorage.ListSavedNames(MapStorage.DirectoryPath);mapBrowserError=null;}
+            catch(System.Exception error){savedMapNames=System.Array.Empty<string>();mapBrowserError="Nie można odczytać listy map: "+error.Message;}
+        }
+        internal bool CloseMapBrowser(R1RunController run)
+        {if(!mapBrowserOpen)return false;mapBrowserOpen=false;run.EditorTextFocused=false;return true;}
+        void LoadMapFromBrowser(R1RunController run,string name)
+        {
+            if(!mapBrowserOpen||System.Array.IndexOf(savedMapNames,name)<0)return;
+            run.EditorName=name;run.CancelMapOverwrite();run.LoadEditedMap();CloseMapBrowser(run);
+        }
+        void DrawMapBrowser(R1RunController run)
+        {
+            run.EditorTextFocused=true;
+            Panel(new Rect(0,0,1280,720));Panel(new Rect(270,55,740,610));
+            GUI.Label(new Rect(300,75,680,45),"ZAPISANE MAPY",heading);
+            GUI.Label(new Rect(300,122,680,35),"Wybierz mapę, aby ją wczytać.",small);
+            var viewport=new Rect(300,165,680,390);
+            savedMapsScroll=GUI.BeginScrollView(viewport,savedMapsScroll,new Rect(0,0,650,Mathf.Max(viewport.height,savedMapNames.Length*48)));
+            for(int i=0;i<savedMapNames.Length;i++)
+                if(GUI.Button(new Rect(0,i*48,650,42),savedMapNames[i],compactButton))
+                {LoadMapFromBrowser(run,savedMapNames[i]);break;}
+            if(savedMapNames.Length==0)GUI.Label(new Rect(0,5,640,60),mapBrowserError??"Nie masz jeszcze zapisanych map.",small);
+            GUI.EndScrollView();
+            if(GUI.Button(new Rect(300,585,325,52),"Odśwież listę",compactButton)){savedMapsScroll=Vector2.zero;RefreshSavedMapNames();}
+            if(GUI.Button(new Rect(650,585,330,52),"Wróć do edytora",button))CloseMapBrowser(run);
+        }
         void DrawMapTestReadiness(R1RunController run)
         {
             // Checking floor coverage can visit thousands of cells. Refresh at
@@ -26,8 +63,10 @@ namespace RoboRougelike.R1
         }
         void DrawMapEditor(R1RunController run)
         {
+            if(mapBrowserOpen){DrawMapBrowser(run);return;}
             Panel(new Rect(10,10,305,660));
-            GUI.Label(new Rect(25,18,280,40),"EDYTOR MAP",heading);
+            GUI.Label(new Rect(25,18,150,40),"EDYTOR MAP",heading);
+            if(GUI.Button(new Rect(175,20,120,34),"Moje mapy",compactButton)){GUI.FocusControl(null);OpenMapBrowser(run);return;}
             GUI.Label(new Rect(25,58,280,30),"Wybierz element:",small);
             for(int i=0;i<mapNames.Length;i++)
             {

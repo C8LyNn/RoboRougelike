@@ -189,7 +189,7 @@ namespace RoboRougelike.R1
                     HandleQuickGarageKey(run,Event.current,false);
                 quickSearchEditing=quickSearchActive&&!run.Paused&&!catalogOpen&&!garageOptionsOpen&&
                     GUI.GetNameOfFocusedControl()==QuickSearchControlName;
-                if(!sessionOverlay&&run.MapEditing)run.MapEditorPointer(Event.current,rawPointer);
+                if(!sessionOverlay&&run.MapEditing){if(!mapBrowserOpen)run.MapEditorPointer(Event.current,rawPointer);}
                 else if(!garageSearchKey&&!sessionOverlay&&!catalogOpen&&!garageOptionsOpen&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
                 else run.Garage?.CancelPointerGesture();
             }
