@@ -28,6 +28,17 @@ namespace RoboRougelike.R1
                 starterDescriptions=starterDesigns.Select(StarterVehicleDescription).ToArray();
                 starterSummaries=starterDesigns.Select(StarterVehicleSummary).ToArray();
             }
+            if(run.Progress.State==R1RunState.Ready&&!run.MapEditing&&starterOffers!=null&&starterOffers.Length>0&&
+               !starterOffers.Any(offer=>(R3VehicleKind)(offer/4)==run.SelectedVehicle&&offer%4==run.SelectedVehicleVariant))
+                run.SelectVehicle((R3VehicleKind)(starterOffers[0]/4),starterOffers[0]%4);
+        }
+
+        private string StarterActionCaption(R1RunController run)
+        {
+            int selected=(int)run.SelectedVehicle*4+run.SelectedVehicleVariant;
+            int index=starterOffers==null?-1:System.Array.IndexOf(starterOffers,selected);
+            string name=index>=0&&starterDesigns!=null&&index<starterDesigns.Length?starterDesigns[index]?.Name:null;
+            return string.IsNullOrEmpty(name)?"Przygotuj pojazd  [Enter]":$"Przygotuj: {name}  [Enter]";
         }
 
         private readonly Color panel = new Color(0.04f, 0.06f, 0.08f, 0.94f);
@@ -131,9 +142,6 @@ namespace RoboRougelike.R1
             var run = R1RunController.Instance;
             if (run == null) return;
             RefreshStarterOffers(run);
-            if(run.Progress?.State==R1RunState.Ready&&!run.MapEditing&&starterOffers!=null&&
-               !starterOffers.Any(offer=>(R3VehicleKind)(offer/4)==run.SelectedVehicle&&offer%4==run.SelectedVehicleVariant))
-                run.SelectVehicle((R3VehicleKind)(starterOffers[0]/4),starterOffers[0]%4);
             Setup();
             bool sessionOverlay = run.Paused || run.QuitRequested;
             if(quickSearchReleasePending)
@@ -288,7 +296,7 @@ namespace RoboRougelike.R1
                 DrawSeedWarning(ReadySeedWarningRect(),run.RequestedSeed);
                 if(GUI.Button(new Rect(450,548,170,38),"Wczytaj wyprawę",compactButton))run.LoadRunCheckpoint();
                 if(!string.IsNullOrEmpty(run.RunSaveMessage))GUI.Label(ReadySaveMessageRect(),run.RunSaveMessage,small);
-                if (GUI.Button(new Rect(90,600,500,65), "Przygotuj pojazd  [Enter]", button)) run.PrepareUnifiedRun();
+                if (GUI.Button(new Rect(90,600,500,65), StarterActionCaption(run), button)) run.PrepareUnifiedRun();
                 if(GUI.Button(new Rect(640,600,550,65),"Poligon kreatywny — buduj od rdzenia",button))run.OpenCreativeGarage();
                 if(GUI.Button(new Rect(640,548,300,38),"Edytor map",compactButton))run.OpenMapEditor();
                 if(GUI.Button(new Rect(960,552,230,38),"Wyjdź z gry",button))run.RequestQuit();
@@ -342,7 +350,7 @@ namespace RoboRougelike.R1
             DrawSeedWarning(new Rect(600,700,144,42),run.RequestedSeed);
             if(GUI.Button(new Rect(340,700,250,40),"Wczytaj wyprawę",compactButton))run.LoadRunCheckpoint();
             if(!string.IsNullOrEmpty(run.RunSaveMessage))GUI.Label(new Rect(24,744,720,34),run.RunSaveMessage,small);
-            if(GUI.Button(PortraitActionRect(0),"Przygotuj pojazd  [Enter]",button))run.PrepareUnifiedRun();
+            if(GUI.Button(PortraitActionRect(0),StarterActionCaption(run),button))run.PrepareUnifiedRun();
             if(GUI.Button(PortraitActionRect(1),"Poligon kreatywny — buduj od rdzenia",button))run.OpenCreativeGarage();
             if(GUI.Button(PortraitActionRect(2),"Edytor map",compactButton))run.OpenMapEditor();
             if(GUI.Button(PortraitActionRect(3),"Wyjdź z gry",compactButton))run.RequestQuit();

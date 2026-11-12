@@ -199,6 +199,25 @@ public sealed class AutomaticScaleTwoTests
         Assert.That(run.VehicleModel.Design.Name,Is.EqualTo(R3VehicleCatalog.Create(kind,variant).Name));
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(R3VehicleCatalog.StartingScrap(kind)));
     }
+    [UnityTest] public IEnumerator InitialMenuSelectionIsAnOfferedVehicleBeforeRendering()
+    {
+        var run=R1RunController.Instance;var hud=run.GetComponent<R1RunHUD>();
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        int[] offers={4,8,9};
+        typeof(R1RunHUD).GetField("starterOffers",flags).SetValue(hud,offers);
+        typeof(R1RunHUD).GetField("starterDesigns",flags).SetValue(hud,offers.Select(id=>R3VehicleCatalog.Create((R3VehicleKind)(id/4),id%4)).ToArray());
+        Assert.That(run.SelectVehicle(R3VehicleKind.Standard,0),Is.True);
+        var refresh=typeof(R1RunHUD).GetMethod("RefreshStarterOffers",flags);refresh.Invoke(hud,new object[]{run});
+        Assert.That(run.SelectedVehicle,Is.EqualTo(R3VehicleKind.Light));Assert.That(run.SelectedVehicleVariant,Is.Zero);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Heavy,1),Is.True);refresh.Invoke(hud,new object[]{run});
+        Assert.That(run.SelectedVehicle,Is.EqualTo(R3VehicleKind.Heavy));Assert.That(run.SelectedVehicleVariant,Is.EqualTo(1));
+        var caption=typeof(R1RunHUD).GetMethod("StarterActionCaption",flags);Assert.That(caption,Is.Not.Null);
+        Assert.That((string)caption.Invoke(hud,new object[]{run}),Does.Contain(R3VehicleCatalog.Create(R3VehicleKind.Heavy,1).Name));
+        Assert.That(run.PrepareUnifiedRun(),Is.True);
+        Assert.That(run.VehicleModel.Design.Name,Is.EqualTo(R3VehicleCatalog.Create(R3VehicleKind.Heavy,1).Name));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(R3VehicleCatalog.StartingScrap(R3VehicleKind.Heavy)));
+        yield return null;
+    }
     [UnityTest] public IEnumerator AllTwelveVariantsBuildWithPhysicallyClearGuns()
     {
         var palette=R1RunController.Instance.GetComponent<R3VisualPalette>();Assert.That(palette,Is.Not.Null);
