@@ -99,9 +99,9 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(258,846,116,40),"Dopasuj",compactButton))garage.FrameVehicle();
             GUI.Label(new Rect(394,612,350,76),$"Komórka: {garage.Cell} • {PartName(selected?.Kind??garage.SelectedPart)}\n"+(selected==null?"Wybierz część.":$"HP: {selected.Health*100:0}% • naprawa {model.RepairCost(selected)} Z"),small);
             GUI.enabled=selected!=null&&model.RepairCost(selected)>0&&model.Scrap>=model.RepairCost(selected);
-            if(GUI.Button(new Rect(394,686,350,42),"Napraw wybraną część",compactButton))garage.Message=run.GarageRepair(garage.Cell)?"Naprawiono część.":"Nie można naprawić części.";
+            if(GUI.Button(new Rect(394,686,350,42),"Napraw wybraną część",compactButton))garage.RepairPartAt(garage.Cell);
             GUI.enabled=selected!=null;
-            if(GUI.Button(new Rect(394,734,350,42),"Zdejmij część",compactButton))garage.Message=run.GarageRemove(garage.Cell)?"Część wróciła do magazynu.":"Nie można usunąć rdzenia ani mostu.";
+            if(GUI.Button(new Rect(394,734,350,42),"Zdejmij część",compactButton))garage.RemovePartAt(garage.Cell);
             int bulk=model.AffordableRepairCost;GUI.enabled=bulk>0;
             if(GUI.Button(new Rect(394,782,350,42),$"Napraw możliwe — {bulk} Z",compactButton))garage.Message=run.GarageRepairAffordable()?"Naprawiono dostępne części.":"Nie można naprawić części.";
             int emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;

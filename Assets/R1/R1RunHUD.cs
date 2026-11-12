@@ -400,10 +400,10 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(970,216,280,48),"Montaż: wybierz egzemplarz i kliknij pojazd.",small);
             GUI.enabled=selected!=null&&model.RepairCost(selected)>0&&model.Scrap>=model.RepairCost(selected);
             if(GUI.Button(new Rect(970,275,280,48),selected!=null&&selected.Health<=0?"Odtwórz utraconą część":"Napraw wybraną część",button))
-                garage.Message=run.GarageRepair(garage.Cell)?"Przywrócono HP części.":"Najpierw odtwórz połączenie z konstrukcją.";
+                garage.RepairPartAt(garage.Cell);
             GUI.enabled=selected!=null;
             if(GUI.Button(new Rect(970,334,280,48),"Zdejmij część",compactButton))
-                garage.Message=run.GarageRemove(garage.Cell)?"Część wróciła do magazynu w obecnym stanie.":"Nie można usunąć rdzenia ani mostu; sprawdź także miejsce w magazynie.";
+                garage.RemovePartAt(garage.Cell);
             GUI.enabled=true;
             int bulkCost=model.AffordableRepairCost;
             GUI.enabled=bulkCost>0;
