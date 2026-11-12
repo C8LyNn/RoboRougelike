@@ -63,6 +63,23 @@ public sealed class CompactCombatHUDTests
         Assert.That(Warning(R3DriveKind.Wheels,6,4,true),Does.Contain("Uzbrojenie").And.Contain("nieaktywne"));
         Assert.That(Warning(R3DriveKind.Wheels,6,1,true),Does.Contain("koło"),"The imminent loss condition takes priority.");
     }
+    [Test] public void EnemyHealthRowsFitExistingPanelWithoutOverlapping()
+    {
+        var flags=BindingFlags.Static|BindingFlags.NonPublic;
+        var label=typeof(R1RunHUD).GetMethod("EnemyStatusLabelRect",flags);
+        var bar=typeof(R1RunHUD).GetMethod("EnemyStatusBarRect",flags);
+        Assert.That(label,Is.Not.Null);Assert.That(bar,Is.Not.Null);
+        var panel=new Rect(925,18,335,160);var previous=new Rect();
+        for(int i=0;i<4;i++)
+        {
+            var text=(Rect)label.Invoke(null,new object[]{i});var fill=(Rect)bar.Invoke(null,new object[]{i});
+            Assert.That(panel.Contains(text.min)&&panel.Contains(text.max-Vector2.one),Is.True);
+            Assert.That(panel.Contains(fill.min)&&panel.Contains(fill.max-Vector2.one),Is.True);
+            Assert.That(text.Overlaps(fill),Is.False);
+            if(i>0)Assert.That(previous.Overlaps(text),Is.False);
+            previous=fill;
+        }
+    }
     [Test] public void DetailsShortcutTogglesWithoutConsumingMovementOrMouse()
     {
         var go=new GameObject("HUD shortcut test");

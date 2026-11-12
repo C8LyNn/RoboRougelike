@@ -136,6 +136,13 @@ namespace RoboRougelike.R1
             if(weaponsInactive)return "Uzbrojenie nieaktywne — sprawdź stan broni.";
             return null;
         }
+        private static Rect EnemyStatusLabelRect(int row)=>new Rect(940,80+row*24,305,18);
+        private static Rect EnemyStatusBarRect(int row)=>new Rect(940,99+row*24,305,4);
+        private static string EnemyCoreStatus(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret enemy)
+        {
+            if(enemy==null||enemy.IsDefeated||enemy.Core==null)return null;
+            return $"{enemy.name} • rdzeń {enemy.Core.CurrentHp:0}/{enemy.Core.MaxHp:0} HP";
+        }
         private static string SeedInputWarning(string text,int lastValid)=>
             int.TryParse(text,out _)?null:$"Błędny seed\nUżyty: {lastValid}";
         private void DrawSeedWarning(Rect area,int lastValid)
@@ -292,9 +299,12 @@ namespace RoboRougelike.R1
                     GUI.Label(new Rect(940,28,305,48),run.CurrentEncounter.Title,heading);
                     int row=0;foreach(var enemy in run.Encounter.Enemies)
                     {
-                        if(enemy==null||enemy.IsDefeated)continue;
-                        GUI.Label(new Rect(940,80+row*24,305,25),$"{enemy.name}: rdzeń {enemy.Core.CurrentHp:0} HP",small);row++;
+                        string status=EnemyCoreStatus(enemy);if(status==null)continue;
+                        if(row>=4)break;
+                        GUI.Label(EnemyStatusLabelRect(row),status,small);
+                        DrawResourceBar(EnemyStatusBarRect(row),enemy.Core.CurrentHp,enemy.Core.MaxHp,new Color(.95f,.53f,.28f));row++;
                     }
+                    if(row==0&&run.Encounter.Enemies.Count>0)GUI.Label(new Rect(940,80,305,50),"Wszyscy przeciwnicy pokonani.",small);
                     }
                     if(GUI.Button(new Rect(1130,670,125,35),"Pauza",compactButton))run.TogglePause();
                     DrawAimReticle(run);
