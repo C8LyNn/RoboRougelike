@@ -189,6 +189,8 @@ public sealed class UI943PortraitCatalogActionsTests
 
     [TestCase(5,false,true,"Koło × 5 • napraw")]
     [TestCase(5,true,true,"Koło × 5")]
+    [TestCase(5,true,false,"Koło × 5")]
+    [TestCase(5,false,false,"Koło × 5 • napraw")]
     [TestCase(0,false,false,"Koło × 0 • blokada")]
     [TestCase(0,false,true,"Koło × 0")]
     public void StackCaptionDistinguishesWrecksFromUsableOrLockedParts(int count,bool usable,bool unlocked,string expected)
@@ -196,6 +198,18 @@ public sealed class UI943PortraitCatalogActionsTests
         var method=typeof(R1RunHUD).GetMethod("CatalogStackCaption",BindingFlags.Static|BindingFlags.NonPublic);
         Assert.That(method,Is.Not.Null);
         Assert.That((string)method.Invoke(null,new object[]{"Koło",count,usable,unlocked}),Is.EqualTo(expected));
+    }
+
+    [TestCase(true,R3PartKind.Armor,true,"za darmo")]
+    [TestCase(true,R3PartKind.BonusModule,true,"za darmo")]
+    [TestCase(false,R3PartKind.Gun,true,"Kup")]
+    [TestCase(false,R3PartKind.Gun,false,"odblokuj")]
+    [TestCase(false,R3PartKind.BonusModule,true,"nagród")]
+    public void EmptyStackExplainsHowToObtainPart(bool creative,R3PartKind kind,bool unlocked,string expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("CatalogEmptyStackHint",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((string)method.Invoke(null,new object[]{creative,kind,unlocked}),Does.Contain(expected));
     }
 
     [Test] public void InspectionSummaryUsesMountedPartHealthAndRepairQuote()
