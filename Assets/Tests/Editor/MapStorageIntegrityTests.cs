@@ -139,6 +139,34 @@ public sealed class MapStorageIntegrityTests
         finally{if(File.Exists(path))File.Delete(path);}
         yield return new ExitPlayMode();
     }
+    [UnityTest] public IEnumerator CancellingMapConfirmationsPreservesDraftFileAndRequiresFreshApproval()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
+        var until=Time.realtimeSinceStartup+15;while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenMapEditor(),Is.True);
+        run.EditorName="cancelconfirm"+Guid.NewGuid().ToString("N");Assert.That(MapStorage.TryPath(MapStorage.DirectoryPath,run.EditorName,out var path),Is.True);
+        try
+        {
+            Assert.That(run.EditorDraft.Place(MapItemKind.Ground,0,0,0),Is.True);run.SaveEditedMap();
+            var fileBefore=File.ReadAllBytes(path);
+            Assert.That(run.EditorDraft.Place(MapItemKind.Ground,1,0,0),Is.True);string draftBefore=run.EditorDraft.ToJson();
+            var cancel=typeof(R1RunController).GetMethod("CancelMapPendingAction");Assert.That(cancel,Is.Not.Null);
+            run.SaveEditedMap();Assert.That(run.MapOverwritePending,Is.True);
+            Assert.That((bool)cancel.Invoke(run,null),Is.True);Assert.That(run.MapOverwritePending,Is.False);
+            Assert.That(File.ReadAllBytes(path),Is.EqualTo(fileBefore));Assert.That(run.EditorDraft.ToJson(),Is.EqualTo(draftBefore));
+            run.SaveEditedMap();Assert.That(run.MapOverwritePending,Is.True,"Cancelled overwrite needs fresh confirmation.");cancel.Invoke(run,null);
+            run.LoadEditedMap();Assert.That(run.MapLoadPending,Is.True);
+            Assert.That((bool)cancel.Invoke(run,null),Is.True);Assert.That(run.MapLoadPending,Is.False);
+            Assert.That(run.EditorDraft.ToJson(),Is.EqualTo(draftBefore));
+            run.LoadEditedMap();Assert.That(run.MapLoadPending,Is.True,"Cancelled load needs fresh confirmation.");cancel.Invoke(run,null);
+            run.ReturnFromMapEditorToMenu();Assert.That(run.MapReturnPending,Is.True);
+            Assert.That((bool)cancel.Invoke(run,null),Is.True);Assert.That(run.MapExitPending,Is.False);
+            Assert.That(run.MapEditing,Is.True);Assert.That(run.EditorDraft.ToJson(),Is.EqualTo(draftBefore));
+            Assert.That((bool)cancel.Invoke(run,null),Is.False);
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+        yield return new ExitPlayMode();
+    }
     [UnityTest] public IEnumerator ReturningToMenuFromMapGarageWarnsAboutUnsavedDraft()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();

@@ -93,7 +93,12 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(25,635,270,28),run.MapReturnPending?"Potwierdź powrót":"Powrót do menu",compactButton))run.ReturnFromMapEditorToMenu();
             Panel(new Rect(340,615,920,88));
             DrawMapTestReadiness(run);
-            GUI.Label(new Rect(355,641,890,59),"LPM — postaw / usuń • PPM — obrót widoku • kółko — zoom • WASD — przesuwanie\nZielone widmo — można postawić • czerwone — pole zajęte / poza mapą • V — obrót\n"+run.EditorMessage,small);
+            if(run.MapOverwritePending||run.MapLoadPending||run.MapExitPending)
+            {
+                GUI.Label(new Rect(355,644,660,52),run.EditorMessage,small);
+                if(GUI.Button(new Rect(1040,647,205,44),"Anuluj",compactButton)){run.CancelMapPendingAction();GUI.FocusControl(null);}
+            }
+            else GUI.Label(new Rect(355,641,890,59),"LPM — postaw / usuń • PPM — obrót widoku • kółko — zoom • WASD — przesuwanie\nZielone widmo — można postawić • czerwone — pole zajęte / poza mapą • V — obrót\n"+run.EditorMessage,small);
         }
         void MapScalePicker(R1RunController run,float x,string axis,int index,int value)
         {
