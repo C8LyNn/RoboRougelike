@@ -1026,6 +1026,26 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True);
         yield return null;
     }
+    [UnityTest] public IEnumerator CatalogSearchKeepsVisibleSelectionButCancelsPendingDismantle()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        run.VehicleModel.Award(100);Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var item=run.VehicleModel.Inventory.Last();var hud=run.GetComponent<R1RunHUD>();
+        Field(hud,"catalogOpen",true);Invoke(hud,"PortraitCatalogSelectGroup",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        Invoke(hud,"SelectCatalogDetails",run,item.Id);Invoke(hud,"PortraitCatalogDismantle",run,item.Id);
+        int scrap=run.VehicleModel.Scrap,count=run.VehicleModel.Inventory.Count;
+        Invoke(hud,"ApplyCatalogSearch",run,"pancerz");
+        Assert.That(Field(hud,"catalogGroup"),Is.EqualTo(R3PartKind.Armor));
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id));
+        Assert.That(Field(hud,"dismantleConfirmation"),Is.Null,"Changing a search must cancel a pending destructive action.");
+        Invoke(hud,"ApplyCatalogSearch",run,"nieistniejący element");
+        Assert.That(Field(hud,"catalogGroup"),Is.Null);
+        Assert.That(run.Garage.SelectedInventoryId,Is.Null,"An invisible part must not remain selected.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(count));Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True);
+    }
     [Test] public void BatchRepairLabelExplainsShortfallAndFreeCreativeRepair()
     {
         var model=new R3VehicleModel(new R3VehicleDesign());model.Award(5);

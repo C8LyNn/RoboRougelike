@@ -33,7 +33,7 @@ namespace RoboRougelike.R1
             catalogScroll=GUI.BeginScrollView(groups,catalogScroll,new Rect(0,0,320,Mathf.Max(groups.height,entries.Length*56)));
             for(int row=0;row<entries.Length;row++)
             {var entry=entries[row];DrawPortraitCatalogGroup(run,entry.Kind,entry.Weapon,entry.Group,entry.Name,row);}
-            if(entries.Length==0)GUI.Label(new Rect(0,5,310,60),"Brak części pasujących do wyszukiwania.",small);
+            if(entries.Length==0)DrawEmptyCatalogResults(run,310);
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
 
             if(!catalogGroup.HasValue)
