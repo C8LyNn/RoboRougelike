@@ -55,9 +55,13 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(rect.x,rect.y,230,28),CatalogItemCaption(item,false),small);
                 if(GUI.Button(new Rect(rect.x+234,rect.y,96,28),"Akcje",compactButton))SelectCatalogDetails(run,item.Id);
                 GUI.backgroundColor=run.Garage.SelectedInventoryId==item.Id?new Color(.3f,.9f,.9f):Color.white;
-                if(GUI.Button(new Rect(rect.x,rect.y+31,102,60),item.Health<=0?"Szczegóły\nwraku":"Wybierz\ndo montażu",compactButton))PortraitCatalogSelectItem(run,item.Id);
+                int repair=model.RepairCost(item);bool wreck=item.Health<=0;
+                GUI.enabled=!wreck||R3VehicleModel.ValidEconomicPart(item)&&(model.CreativeMode||repair>0&&model.Scrap>=repair);
+                if(GUI.Button(new Rect(rect.x,rect.y+31,102,60),wreck?(model.CreativeMode?"Napraw i montuj\nza darmo":$"Napraw i montuj\n{repair} Z"):"Wybierz\ndo montażu",compactButton))
+                {if(wreck)RepairAndSelectCatalogItem(run,item.Id);else PortraitCatalogSelectItem(run,item.Id);}
+                GUI.enabled=true;
                 GUI.backgroundColor=Color.white;
-                int repair=model.RepairCost(item);GUI.enabled=(repair>0||(model.CreativeMode&&item.Health<1))&&model.Scrap>=repair;
+                GUI.enabled=(repair>0||(model.CreativeMode&&item.Health<1))&&model.Scrap>=repair;
                 if(GUI.Button(new Rect(rect.x+108,rect.y+31,102,60),model.CreativeMode&&item.Health<1?"Napraw 0 Z":GarageRepairCaption(item,repair,model.Scrap),compactButton))PortraitCatalogRepair(run,item.Id);
                 GUI.enabled=true;
                 if(GUI.Button(new Rect(rect.x+216,rect.y+31,114,60),dismantleConfirmation==item.Id?"Potwierdź\nrozmontowanie":$"Rozmontuj\n→ {model.PreviewAward(model.DismantleValue(item))} Z",compactButton))PortraitCatalogDismantle(run,item.Id);

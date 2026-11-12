@@ -251,16 +251,20 @@ namespace RoboRougelike.R1
             string name=kind==R3PartKind.Armor?R4WeaponDefinition.ArmorName(CatalogArmorShape(catalogBonusId)):
                 kind==R3PartKind.Wheel?R4WeaponDefinition.WheelName(CatalogWheelStyle(catalogBonusId)):
                 kind==R3PartKind.BonusModule&&items.Length>0?CatalogBonusGroupName(items[0]):R4WeaponDefinition.PartName(kind,weapon);
-            GUI.Label(new Rect(970,70,280,48),$"{name}  × {items.Length}\nHP — montaż • Akcje — łączenie i demontaż",small);
+            GUI.Label(new Rect(970,70,280,48),$"{name}  × {items.Length}\nHP — montaż lub naprawa • Akcje — szczegóły",small);
             stackScroll=GUI.BeginScrollView(new Rect(970,118,280,168),stackScroll,new Rect(0,0,255,Mathf.Max(168,items.Length*40)));
             for(int i=0;i<items.Length;i++)
             {
-                var item=items[i];GUI.backgroundColor=garage.SelectedInventoryId==item.Id?new Color(.3f,.9f,.9f):Color.white;
-                if(GUI.Button(new Rect(0,i*40,100,36),CatalogItemCaption(item,true),compactButton))
-                    SelectCatalogItem(run,item.Id);
+                var item=items[i];int itemRepair=model.RepairCost(item);
+                bool wreck=item.Health<=0;
+                GUI.backgroundColor=garage.SelectedInventoryId==item.Id?new Color(.3f,.9f,.9f):Color.white;
+                GUI.enabled=!wreck||R3VehicleModel.ValidEconomicPart(item)&&(model.CreativeMode||itemRepair>0&&model.Scrap>=itemRepair);
+                if(GUI.Button(new Rect(0,i*40,100,36),wreck?(model.CreativeMode?"Napraw +\nmontuj: 0 Z":$"Napraw +\nmontuj: {itemRepair} Z"):CatalogItemCaption(item,true),compactButton))
+                {if(wreck)RepairAndSelectCatalogItem(run,item.Id);else SelectCatalogItem(run,item.Id);}
+                GUI.enabled=true;
                 GUI.backgroundColor=Color.white;
                 if(GUI.Button(new Rect(104,i*40,55,36),"Akcje",compactButton))SelectCatalogDetails(run,item.Id);
-                int itemRepair=model.RepairCost(item);GUI.enabled=(itemRepair>0||(model.CreativeMode&&item.Health<1))&&model.Scrap>=itemRepair;
+                GUI.enabled=(itemRepair>0||(model.CreativeMode&&item.Health<1))&&model.Scrap>=itemRepair;
                 if(GUI.Button(new Rect(163,i*40,87,36),model.CreativeMode&&item.Health<1?"Napraw 0 Z":GarageRepairCaption(item,itemRepair,model.Scrap),compactButton))
                     RepairCatalogItem(run,item.Id);
                 GUI.enabled=true;
@@ -304,6 +308,20 @@ namespace RoboRougelike.R1
             SelectCatalogDetails(run,id);
             if(item.Health<=0){catalogFeedback=run.Garage.Message="Zniszczoną część napraw przed montażem.";return;}
             DismissCatalog();
+        }
+        private void RepairAndSelectCatalogItem(R1RunController run,string id)
+        {
+            var item=run.VehicleModel.Inventory.FirstOrDefault(p=>p.Id==id);
+            if(item==null)return;
+            if(item.Health>0){SelectCatalogItem(run,id);return;}
+            int price=run.VehicleModel.RepairCost(item);
+            if(!run.GarageRepairInventory(id))
+            {
+                catalogFeedback=price>run.VehicleModel.Scrap?$"Brakuje {price-run.VehicleModel.Scrap} Z na naprawę.":"Nie udało się naprawić części.";
+                return;
+            }
+            SelectCatalogItem(run,id);
+            run.Garage.Message=run.CreativeWorkshop?"Naprawiono za darmo. Wybierz miejsce montażu.":$"Naprawiono za {price} Z. Wybierz miejsce montażu.";
         }
         private void DrawFusionButton(R1RunController run,R3PartState selected,Rect rect)
         {

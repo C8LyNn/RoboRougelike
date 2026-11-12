@@ -627,6 +627,17 @@ namespace RoboRougelike.R3
         }
         public bool ClickScreen(Vector2 screen)
         {return InBuildArea(screen,Screen.width,Screen.height)&&Point(view.ScreenPointToRay(screen))&&ClickTarget();}
+        public bool SelectPartFromRay(Ray ray)
+        {
+            var prior=Tool;Tool=R41GarageTool.Inspect;
+            if(!Point(ray))
+            {SetTool(prior);Message="Wskaż część pojazdu, aby wybrać jej typ.";return false;}
+            var part=run.VehicleModel.At(Cell);
+            var hud=run.GetComponent<R1RunHUD>();
+            if(hud!=null&&hud.SelectMountedPartForBuilding(run,part))return true;
+            if(Tool==R41GarageTool.Inspect)SetTool(prior);
+            return false;
+        }
         private static R41GarageTool? ToolShortcut(KeyCode key,bool modified)
         {
             if(modified)return null;
@@ -711,6 +722,8 @@ namespace RoboRougelike.R3
                 return;
             }
             if(current.type==EventType.ScrollWheel){Zoom(current.delta.y*0.4f);current.Use();return;}
+            if(current.type==EventType.MouseDown&&current.button==2&&!orbitDragging)
+            {SelectPartFromRay(view.ScreenPointToRay(screen));current.Use();return;}
             if(current.type==EventType.Repaint&&!orbitDragging)Point(view.ScreenPointToRay(screen));
             if(current.type==EventType.MouseDown&&current.button==0&&!orbitDragging)
             {
