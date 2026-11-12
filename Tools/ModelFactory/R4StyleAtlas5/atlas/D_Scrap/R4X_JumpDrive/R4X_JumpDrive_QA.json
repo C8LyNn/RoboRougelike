@@ -1,0 +1,287 @@
+{
+ "id": "R4X_JumpDrive",
+ "style": "D",
+ "style_label": "D_Scrap",
+ "family": "module",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_JumpDrive_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1224,
+   "vertices": 632,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_JumpDrive_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 400,
+  "vertices": 212,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 1224,
+ "triangles_lod1": 400,
+ "mesh_objects": 1,
+ "material_slots_total": 5,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.232,
+   -0.2344,
+   -0.25
+  ],
+  [
+   0.2319,
+   0.2346,
+   0.26
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "up",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.25,
+    0.25
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_JumpDrive_ROOT": null,
+  "R4X_JumpDrive_Body": "R4X_JumpDrive_ROOT",
+  "Port_up_000_part": "R4X_JumpDrive_ROOT",
+  "Socket_Mount": "R4X_JumpDrive_ROOT",
+  "FX_Thrust": "R4X_JumpDrive_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 91,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 27,
+    "end": 39,
+    "loop": false
+   },
+   {
+    "name": "Damaged",
+    "start": 41,
+    "end": 65,
+    "loop": true
+   },
+   {
+    "name": "Recover",
+    "start": 67,
+    "end": 91,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Hit": 27
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_JumpDrive_Body"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 1.922,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Damaged",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "raw and uneven: stutter, rattle, slight drift (seeded)"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 1224,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 5,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 1224,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_JumpDrive_front.jpg",
+  "R4X_JumpDrive_side.jpg",
+  "R4X_JumpDrive_top.jpg",
+  "R4X_JumpDrive_34.jpg",
+  "R4X_JumpDrive_wire.jpg",
+  "R4X_JumpDrive_clay.jpg",
+  "R4X_JumpDrive_silhouette.png"
+ ],
+ "files": {
+  "R4X_JumpDrive.blend": {
+   "sha256": "e029f7c257e109a678d03ca1f31218dc4a41c10e0f35f4aab2e0c56e640f2b86",
+   "bytes": 134601
+  },
+  "R4X_JumpDrive.fbx": {
+   "sha256": "b7b1984a3833ef9e0994652e0b4084d6a3ac54aae9a500f775b341c13d544252",
+   "bytes": 106732
+  },
+  "R4X_JumpDrive.glb": {
+   "sha256": "bbe688e225280a5ecf5cfbfd766e4e63371501c2fe261836d4ab4f6c29e974cb",
+   "bytes": 83336
+  },
+  "R4X_JumpDrive_LOD1.fbx": {
+   "sha256": "dd84d23d5dc064e87c5b7c2baf95e1958bfe3d994711c28cfaaaf59009fbff6d",
+   "bytes": 32652
+  },
+  "R4X_JumpDrive_LOD1.glb": {
+   "sha256": "8d2a80446cff51102b9805aac49ce856477b58820785f3ada64744575a225c4c",
+   "bytes": 44124
+  }
+ },
+ "seconds": 1.5,
+ "blender": "5.3.0"
+}

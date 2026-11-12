@@ -1,0 +1,294 @@
+{
+ "id": "R4X_Radar",
+ "style": "B",
+ "style_label": "B_Brutal",
+ "family": "module",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_Radar_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1748,
+   "vertices": 940,
+   "uv": true,
+   "material_slots": 3,
+   "ok": true
+  },
+  {
+   "object": "R4X_Radar_Dish",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 552,
+   "vertices": 290,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_Radar_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 494,
+  "vertices": 267,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 2300,
+ "triangles_lod1": 494,
+ "mesh_objects": 2,
+ "material_slots_total": 8,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.2355
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_Radar_ROOT": null,
+  "R4X_Radar_Body": "R4X_Radar_ROOT",
+  "R4X_Radar_Dish": "R4X_Radar_ROOT",
+  "Port_down_000": "R4X_Radar_ROOT",
+  "Socket_Mount": "R4X_Radar_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 89,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Activate",
+    "start": 27,
+    "end": 75,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 77,
+    "end": 89,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Activate_Start": 27,
+   "Hit": 77
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_Radar_Body",
+   "R4X_Radar_Dish"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 3.203,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Activate",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "heavy and mechanical: slow start, hard stop, damped settle"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 2300,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 5,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    83,
+    89
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    1,
+    "R4X_Radar_Dish",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 2300,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    83,
+    89
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_Radar_front.jpg",
+  "R4X_Radar_side.jpg",
+  "R4X_Radar_top.jpg",
+  "R4X_Radar_34.jpg",
+  "R4X_Radar_wire.jpg",
+  "R4X_Radar_clay.jpg",
+  "R4X_Radar_silhouette.png"
+ ],
+ "files": {
+  "R4X_Radar.blend": {
+   "sha256": "603e5bbc97c55eda77097916bbed7bb1ce579065fcf74a573f511ed334ac0f8e",
+   "bytes": 159323
+  },
+  "R4X_Radar.fbx": {
+   "sha256": "e588bd0cd18edd1a2cea4ca1a17316dd0cbc7bad6ac4ea7b6023a7048c9a58d4",
+   "bytes": 125004
+  },
+  "R4X_Radar.glb": {
+   "sha256": "bd32da048b993aab72e700f5e080159c9dc18b1a86d4e33069f0f21ef10769a7",
+   "bytes": 169300
+  },
+  "R4X_Radar_LOD1.fbx": {
+   "sha256": "fe3db064477c73a2d40d2923b95cd7691629efd16586a79d6155d9e1cdad16e1",
+   "bytes": 35164
+  },
+  "R4X_Radar_LOD1.glb": {
+   "sha256": "7a003290184237ef45a8dbfc27246b127342c415a8c6235933c7314826481057",
+   "bytes": 65452
+  }
+ },
+ "seconds": 1.4,
+ "blender": "5.3.0"
+}

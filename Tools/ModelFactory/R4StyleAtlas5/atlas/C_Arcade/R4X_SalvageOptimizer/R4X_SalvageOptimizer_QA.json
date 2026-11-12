@@ -1,0 +1,291 @@
+{
+ "id": "R4X_SalvageOptimizer",
+ "style": "C",
+ "style_label": "C_Arcade",
+ "family": "module",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_SalvageOptimizer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 456,
+   "vertices": 246,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_SalvageOptimizer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 392,
+  "vertices": 214,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 456,
+ "triangles_lod1": 392,
+ "mesh_objects": 1,
+ "material_slots_total": 5,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.19
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_SalvageOptimizer_ROOT": null,
+  "R4X_SalvageOptimizer_Body": "R4X_SalvageOptimizer_ROOT",
+  "Port_down_000": "R4X_SalvageOptimizer_ROOT",
+  "Socket_Mount": "R4X_SalvageOptimizer_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 91,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 27,
+    "end": 39,
+    "loop": false
+   },
+   {
+    "name": "Damaged",
+    "start": 41,
+    "end": 65,
+    "loop": true
+   },
+   {
+    "name": "Recover",
+    "start": 67,
+    "end": 91,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Hit": 27
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_SalvageOptimizer_Body"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 4.073,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Damaged",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "simple, fast, readable: quick ease, short hold, no secondary motion"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 456,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 4,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    33,
+    "R4X_SalvageOptimizer_Body",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 456,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_SalvageOptimizer_front.jpg",
+  "R4X_SalvageOptimizer_side.jpg",
+  "R4X_SalvageOptimizer_top.jpg",
+  "R4X_SalvageOptimizer_34.jpg",
+  "R4X_SalvageOptimizer_wire.jpg",
+  "R4X_SalvageOptimizer_clay.jpg",
+  "R4X_SalvageOptimizer_silhouette.png"
+ ],
+ "files": {
+  "R4X_SalvageOptimizer.blend": {
+   "sha256": "7f0f7d12073e8c8b118f7031e6813e9e4054fe29e8338736b878ebb97762474b",
+   "bytes": 112734
+  },
+  "R4X_SalvageOptimizer.fbx": {
+   "sha256": "9f82c53ae4644da3bf6284f2960885d80f89cf64a36d086c00046ac189e33085",
+   "bytes": 74044
+  },
+  "R4X_SalvageOptimizer.glb": {
+   "sha256": "7ec4bc55f38d742ec88156f4717fd4a943c0c003507409c0c56f7072679a3668",
+   "bytes": 38156
+  },
+  "R4X_SalvageOptimizer_LOD1.fbx": {
+   "sha256": "ede6bab69b5409e6495778fc4a2ec9aa0e4d497f64c6f408b2e907687f7c7920",
+   "bytes": 29708
+  },
+  "R4X_SalvageOptimizer_LOD1.glb": {
+   "sha256": "a553cb59fc3dbc12d79183ce6dab089c30b8176c7013e9fbc770ef9df7146a67",
+   "bytes": 34276
+  }
+ },
+ "seconds": 1.7,
+ "blender": "5.3.0"
+}

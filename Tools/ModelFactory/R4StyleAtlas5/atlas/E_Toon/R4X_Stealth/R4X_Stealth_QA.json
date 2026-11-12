@@ -1,0 +1,285 @@
+{
+ "id": "R4X_Stealth",
+ "style": "E",
+ "style_label": "E_Toon",
+ "family": "module",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_Stealth_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 684,
+   "vertices": 356,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_Stealth_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 348,
+  "vertices": 188,
+  "uv": true,
+  "material_slots": 3,
+  "ok": true
+ },
+ "triangles": 684,
+ "triangles_lod1": 348,
+ "mesh_objects": 1,
+ "material_slots_total": 4,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.258,
+   -0.258,
+   -0.26
+  ],
+  [
+   0.258,
+   0.258,
+   0.2069
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_Stealth_ROOT": null,
+  "R4X_Stealth_Body": "R4X_Stealth_ROOT",
+  "Port_down_000": "R4X_Stealth_ROOT",
+  "Socket_Mount": "R4X_Stealth_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 91,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 27,
+    "end": 39,
+    "loop": false
+   },
+   {
+    "name": "Damaged",
+    "start": 41,
+    "end": 65,
+    "loop": true
+   },
+   {
+    "name": "Recover",
+    "start": 67,
+    "end": 91,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Hit": 27
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_Stealth_Body"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 4.622,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Damaged",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "expressive: anticipation, overshoot, springy settle"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 684,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 4,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 684,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_Stealth_front.jpg",
+  "R4X_Stealth_side.jpg",
+  "R4X_Stealth_top.jpg",
+  "R4X_Stealth_34.jpg",
+  "R4X_Stealth_wire.jpg",
+  "R4X_Stealth_clay.jpg",
+  "R4X_Stealth_silhouette.png"
+ ],
+ "files": {
+  "R4X_Stealth.blend": {
+   "sha256": "757b6b4394cb2212a9cedcc4db39306fb91376cd3a8e9c2c108f9948e23ccda4",
+   "bytes": 118558
+  },
+  "R4X_Stealth.fbx": {
+   "sha256": "aa5355785ddc66d7377599c5f331b5142a006af60ea01a9035cede3f28120389",
+   "bytes": 76348
+  },
+  "R4X_Stealth.glb": {
+   "sha256": "5c69e6cac93746d387d6a41b6083c64d727e72040e884d31e876038937712944",
+   "bytes": 40188
+  },
+  "R4X_Stealth_LOD1.fbx": {
+   "sha256": "62ebcfa34a42d52a36df12dfab81aa31e94f36d98e378f4ccb9722ada80abda3",
+   "bytes": 24924
+  },
+  "R4X_Stealth_LOD1.glb": {
+   "sha256": "94fd25cb29069389f9480b0005da19a5a397ce0730362efdbc5b92b97664f331",
+   "bytes": 31948
+  }
+ },
+ "seconds": 1.5,
+ "blender": "5.3.0"
+}

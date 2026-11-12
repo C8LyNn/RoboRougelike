@@ -1,0 +1,335 @@
+{
+ "id": "R4X_MagneticGrapple",
+ "style": "D",
+ "style_label": "D_Scrap",
+ "family": "module",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_MagneticGrapple_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2816,
+   "vertices": 1482,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_MagneticGrapple_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 460,
+  "vertices": 248,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 2816,
+ "triangles_lod1": 460,
+ "mesh_objects": 1,
+ "material_slots_total": 5,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.154
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "back",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.25,
+    0.25
+   ],
+   "offset": [
+    0.0,
+    -0.07273
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 80.2,
+   "recessed_pct": 19.8,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_MagneticGrapple_ROOT": null,
+  "R4X_MagneticGrapple_Body": "R4X_MagneticGrapple_ROOT",
+  "Port_down_000": "R4X_MagneticGrapple_ROOT",
+  "Port_back_000_part": "R4X_MagneticGrapple_ROOT",
+  "Socket_Mount": "R4X_MagneticGrapple_ROOT",
+  "FX_Grapple": "R4X_MagneticGrapple_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 91,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 27,
+    "end": 39,
+    "loop": false
+   },
+   {
+    "name": "Damaged",
+    "start": 41,
+    "end": 65,
+    "loop": true
+   },
+   {
+    "name": "Recover",
+    "start": 67,
+    "end": 91,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Hit": 27
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_MagneticGrapple_Body"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 4.453,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Damaged",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "raw and uneven: stutter, rattle, slight drift (seeded)"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 2816,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 6,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 2816,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_MagneticGrapple_front.jpg",
+  "R4X_MagneticGrapple_side.jpg",
+  "R4X_MagneticGrapple_top.jpg",
+  "R4X_MagneticGrapple_34.jpg",
+  "R4X_MagneticGrapple_wire.jpg",
+  "R4X_MagneticGrapple_clay.jpg",
+  "R4X_MagneticGrapple_silhouette.png"
+ ],
+ "files": {
+  "R4X_MagneticGrapple.blend": {
+   "sha256": "102e26001f5624d1c1d1cc0f46f21eaa20ef647886481c894ca7a545e0d2726b",
+   "bytes": 172739
+  },
+  "R4X_MagneticGrapple.fbx": {
+   "sha256": "67944d4b9edf27553120f79cf30ffe26aa562f312cf90e3cf74c1d3141afad2e",
+   "bytes": 157180
+  },
+  "R4X_MagneticGrapple.glb": {
+   "sha256": "4ce76271b5428596e6c99e3a462b7d819f9079a71195860adfb7531f85527bef",
+   "bytes": 185196
+  },
+  "R4X_MagneticGrapple_LOD1.fbx": {
+   "sha256": "9e5de10bc0ff765e3d971e0c7d731e8d1e0f270fab6c35124de2cfdbf8bbf413",
+   "bytes": 33804
+  },
+  "R4X_MagneticGrapple_LOD1.glb": {
+   "sha256": "11173b618444cdc095907ad56e07b8b8079f5a4cf9c4064c2db35b4ce9fcf326",
+   "bytes": 54388
+  }
+ },
+ "seconds": 2.0,
+ "blender": "5.3.0"
+}

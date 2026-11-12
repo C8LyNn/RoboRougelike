@@ -1,0 +1,392 @@
+{
+ "id": "R4X_DrivePower",
+ "style": "D",
+ "style_label": "D_Scrap",
+ "family": "module",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_DrivePower_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1932,
+   "vertices": 1012,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_DrivePower_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 416,
+  "vertices": 218,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 1932,
+ "triangles_lod1": 416,
+ "mesh_objects": 1,
+ "material_slots_total": 5,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.244
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "left",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.27,
+    0.27
+   ],
+   "offset": [
+    0.0,
+    0.08182
+   ]
+  },
+  {
+   "dir": "right",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.27,
+    0.27
+   ],
+   "offset": [
+    0.0,
+    0.08182
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 95.1,
+   "recessed_pct": 4.9,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 95.1,
+   "recessed_pct": 4.9,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 92.6,
+   "recessed_pct": 7.4,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 92.6,
+   "recessed_pct": 7.4,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_DrivePower_ROOT": null,
+  "R4X_DrivePower_Body": "R4X_DrivePower_ROOT",
+  "Port_down_000": "R4X_DrivePower_ROOT",
+  "Port_left_000_part": "R4X_DrivePower_ROOT",
+  "Port_right_000_part": "R4X_DrivePower_ROOT",
+  "Socket_Mount": "R4X_DrivePower_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 91,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 27,
+    "end": 39,
+    "loop": false
+   },
+   {
+    "name": "Damaged",
+    "start": 41,
+    "end": 65,
+    "loop": true
+   },
+   {
+    "name": "Recover",
+    "start": 67,
+    "end": 91,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Hit": 27
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_DrivePower_Body"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 3.209,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Damaged",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "raw and uneven: stutter, rattle, slight drift (seeded)"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 1932,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 6,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0396,
+   "worst": [
+    79,
+    "R4X_DrivePower_Body",
+    0.0,
+    0.04
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 1932,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0396,
+   "worst": [
+    79,
+    "R4X_DrivePower_Body",
+    0.0,
+    0.04
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_DrivePower_front.jpg",
+  "R4X_DrivePower_side.jpg",
+  "R4X_DrivePower_top.jpg",
+  "R4X_DrivePower_34.jpg",
+  "R4X_DrivePower_wire.jpg",
+  "R4X_DrivePower_clay.jpg",
+  "R4X_DrivePower_silhouette.png"
+ ],
+ "files": {
+  "R4X_DrivePower.blend": {
+   "sha256": "2b4409cc206c67fed5189b50145f3c7d01e84e7adc3645e0d9bf52ee63c243b3",
+   "bytes": 153038
+  },
+  "R4X_DrivePower.fbx": {
+   "sha256": "0fc23955c6b80089f7203ca311b94b8ab08b42d8b10b588ca51ac8c06844219f",
+   "bytes": 135708
+  },
+  "R4X_DrivePower.glb": {
+   "sha256": "e67d62d584c67500f9e50b20d2f484212b7793b5bfe237b634b0efbe3e04a471",
+   "bytes": 125132
+  },
+  "R4X_DrivePower_LOD1.fbx": {
+   "sha256": "26bc377f38f368601c186a056c5c71ea6efe868a84b4710df1372ea189053c7d",
+   "bytes": 33740
+  },
+  "R4X_DrivePower_LOD1.glb": {
+   "sha256": "5db86f738c9718c62b5507aa4a3e8585312c990d75fa3ab29d7bf9ce3d58192e",
+   "bytes": 47312
+  }
+ },
+ "seconds": 1.6,
+ "blender": "5.3.0"
+}

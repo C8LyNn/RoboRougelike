@@ -1,0 +1,342 @@
+{
+ "id": "R4X_Suspension",
+ "style": "D",
+ "style_label": "D_Scrap",
+ "family": "module",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_Suspension_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2640,
+   "vertices": 1358,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  },
+  {
+   "object": "R4X_Suspension_Piston",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 192,
+   "vertices": 98,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_Suspension_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 748,
+  "vertices": 384,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 2832,
+ "triangles_lod1": 748,
+ "mesh_objects": 2,
+ "material_slots_total": 7,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "up",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_Suspension_ROOT": null,
+  "R4X_Suspension_Body": "R4X_Suspension_ROOT",
+  "R4X_Suspension_Piston": "R4X_Suspension_ROOT",
+  "Port_down_000": "R4X_Suspension_ROOT",
+  "Port_up_000": "R4X_Suspension_ROOT",
+  "Socket_Mount": "R4X_Suspension_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 89,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Activate",
+    "start": 27,
+    "end": 75,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 77,
+    "end": 89,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Activate_Start": 27,
+   "Hit": 77
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_Suspension_Body",
+   "R4X_Suspension_Piston"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 3.932,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Activate",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "raw and uneven: stutter, rattle, slight drift (seeded)"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 2832,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 6,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    83,
+    89
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    51,
+    "R4X_Suspension_Piston",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 2832,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    83,
+    89
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_Suspension_front.jpg",
+  "R4X_Suspension_side.jpg",
+  "R4X_Suspension_top.jpg",
+  "R4X_Suspension_34.jpg",
+  "R4X_Suspension_wire.jpg",
+  "R4X_Suspension_clay.jpg",
+  "R4X_Suspension_silhouette.png"
+ ],
+ "files": {
+  "R4X_Suspension.blend": {
+   "sha256": "99eab82cf620ec64f1aef35c17bc273a2b1f581520437e63c91c55a8ae7bae1a",
+   "bytes": 171272
+  },
+  "R4X_Suspension.fbx": {
+   "sha256": "21e9b2d8a53a2da9769458b421b7be225e984b73385bdc9afb1f2b366b2d60f8",
+   "bytes": 155996
+  },
+  "R4X_Suspension.glb": {
+   "sha256": "4612b4e55ae55fef308a93dd6f5cec1f08a86afc1414c6dd93d763d41986a46e",
+   "bytes": 173400
+  },
+  "R4X_Suspension_LOD1.fbx": {
+   "sha256": "65a88be8e276514cb0d369e6e2c766fe61e8d6567e0f25b9f4f545b6e88cc245",
+   "bytes": 38700
+  },
+  "R4X_Suspension_LOD1.glb": {
+   "sha256": "4e04a81920917575a0ba1fd72d838d69b3c0307664a9463fb89ada465edcc40c",
+   "bytes": 64816
+  }
+ },
+ "seconds": 1.5,
+ "blender": "5.3.0"
+}

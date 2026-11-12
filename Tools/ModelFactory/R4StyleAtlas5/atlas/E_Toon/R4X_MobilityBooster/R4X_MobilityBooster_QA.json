@@ -1,0 +1,285 @@
+{
+ "id": "R4X_MobilityBooster",
+ "style": "E",
+ "style_label": "E_Toon",
+ "family": "module",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_MobilityBooster_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 3100,
+   "vertices": 1570,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_MobilityBooster_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 468,
+  "vertices": 254,
+  "uv": true,
+  "material_slots": 4,
+  "ok": true
+ },
+ "triangles": 3100,
+ "triangles_lod1": 468,
+ "mesh_objects": 1,
+ "material_slots_total": 4,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.257,
+   -0.257,
+   -0.26
+  ],
+  [
+   0.257,
+   0.257,
+   0.237
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_MobilityBooster_ROOT": null,
+  "R4X_MobilityBooster_Body": "R4X_MobilityBooster_ROOT",
+  "Port_down_000": "R4X_MobilityBooster_ROOT",
+  "Socket_Mount": "R4X_MobilityBooster_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 91,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 27,
+    "end": 39,
+    "loop": false
+   },
+   {
+    "name": "Damaged",
+    "start": 41,
+    "end": 65,
+    "loop": true
+   },
+   {
+    "name": "Recover",
+    "start": 67,
+    "end": 91,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Hit": 27
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_MobilityBooster_Body"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 4.589,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Damaged",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "expressive: anticipation, overshoot, springy settle"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 3100,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 4,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 3100,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_MobilityBooster_front.jpg",
+  "R4X_MobilityBooster_side.jpg",
+  "R4X_MobilityBooster_top.jpg",
+  "R4X_MobilityBooster_34.jpg",
+  "R4X_MobilityBooster_wire.jpg",
+  "R4X_MobilityBooster_clay.jpg",
+  "R4X_MobilityBooster_silhouette.png"
+ ],
+ "files": {
+  "R4X_MobilityBooster.blend": {
+   "sha256": "2bea0c0e1014250e6c4b6c0328212ad58b2f624226e220a5cfa48ede824fb743",
+   "bytes": 172483
+  },
+  "R4X_MobilityBooster.fbx": {
+   "sha256": "c1da2b119dfe469bdc5115657094cac78437ef79ae23acfec3e9385cabfd43b1",
+   "bytes": 127692
+  },
+  "R4X_MobilityBooster.glb": {
+   "sha256": "8f29ec04a27cca198bd40e6292cf5b6ad090f444de247e80e03da0df32a8ef53",
+   "bytes": 121900
+  },
+  "R4X_MobilityBooster_LOD1.fbx": {
+   "sha256": "719cab67ad47518dd877c35de075e05d747dd761f52b811caaadb3ed2ebfa052",
+   "bytes": 28380
+  },
+  "R4X_MobilityBooster_LOD1.glb": {
+   "sha256": "ac62abaca15c4d3af23823cd1a133c78ea59c54fb669b5d8e5bae1d60f8ee996",
+   "bytes": 41648
+  }
+ },
+ "seconds": 1.9,
+ "blender": "5.3.0"
+}

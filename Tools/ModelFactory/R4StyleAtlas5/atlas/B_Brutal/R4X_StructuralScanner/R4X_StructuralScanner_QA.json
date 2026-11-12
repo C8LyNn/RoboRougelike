@@ -1,0 +1,381 @@
+{
+ "id": "R4X_StructuralScanner",
+ "style": "B",
+ "style_label": "B_Brutal",
+ "family": "module",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_StructuralScanner_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 3204,
+   "vertices": 1704,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_StructuralScanner_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 308,
+  "vertices": 168,
+  "uv": true,
+  "material_slots": 3,
+  "ok": true
+ },
+ "triangles": 3204,
+ "triangles_lod1": 308,
+ "mesh_objects": 1,
+ "material_slots_total": 4,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.257
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "left",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.12,
+    0.12
+   ],
+   "offset": [
+    0.0,
+    0.03636
+   ]
+  },
+  {
+   "dir": "right",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.12,
+    0.12
+   ],
+   "offset": [
+    0.0,
+    0.03636
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_StructuralScanner_ROOT": null,
+  "R4X_StructuralScanner_Body": "R4X_StructuralScanner_ROOT",
+  "Port_down_000": "R4X_StructuralScanner_ROOT",
+  "Port_left_000_part": "R4X_StructuralScanner_ROOT",
+  "Port_right_000_part": "R4X_StructuralScanner_ROOT",
+  "Socket_Mount": "R4X_StructuralScanner_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 91,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 27,
+    "end": 39,
+    "loop": false
+   },
+   {
+    "name": "Damaged",
+    "start": 41,
+    "end": 65,
+    "loop": true
+   },
+   {
+    "name": "Recover",
+    "start": 67,
+    "end": 91,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Hit": 27
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_StructuralScanner_Body"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 3.203,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Damaged",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "heavy and mechanical: slow start, hard stop, damped settle"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 3204,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 6,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 3204,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_StructuralScanner_front.jpg",
+  "R4X_StructuralScanner_side.jpg",
+  "R4X_StructuralScanner_top.jpg",
+  "R4X_StructuralScanner_34.jpg",
+  "R4X_StructuralScanner_wire.jpg",
+  "R4X_StructuralScanner_clay.jpg",
+  "R4X_StructuralScanner_silhouette.png"
+ ],
+ "files": {
+  "R4X_StructuralScanner.blend": {
+   "sha256": "9bcf136f7744bf42b6e5784896964cd0cd9534645b4bffd7b10948ad4b3c6a21",
+   "bytes": 164805
+  },
+  "R4X_StructuralScanner.fbx": {
+   "sha256": "1f1c35cc4e2bd8c1dc87aaa6fe498341368a6c3432b6d2b603cc7c0a701d2840",
+   "bytes": 144444
+  },
+  "R4X_StructuralScanner.glb": {
+   "sha256": "2b8853a3cce79c62a4e303fca5adbb644eda8c050b00475b081cff779a78eb64",
+   "bytes": 227416
+  },
+  "R4X_StructuralScanner_LOD1.fbx": {
+   "sha256": "da3ab8721d59fe8518d722c53cf790f4fa5613be2e49831200c97f6ffd2857e5",
+   "bytes": 24588
+  },
+  "R4X_StructuralScanner_LOD1.glb": {
+   "sha256": "dd31870ecd790d0276cd8d06311862b72068932f160e7489ff3abe857c7bb4c0",
+   "bytes": 62416
+  }
+ },
+ "seconds": 1.3,
+ "blender": "5.3.0"
+}

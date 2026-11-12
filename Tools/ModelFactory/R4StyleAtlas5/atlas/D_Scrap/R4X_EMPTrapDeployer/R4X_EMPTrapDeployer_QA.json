@@ -1,0 +1,293 @@
+{
+ "id": "R4X_EMPTrapDeployer",
+ "style": "D",
+ "style_label": "D_Scrap",
+ "family": "deployer",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_EMPTrapDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1864,
+   "vertices": 978,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  },
+  {
+   "object": "R4X_EMPTrapDeployer_Payload",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 824,
+   "vertices": 436,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_EMPTrapDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1274,
+  "vertices": 667,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 2688,
+ "triangles_lod1": 1274,
+ "mesh_objects": 2,
+ "material_slots_total": 10,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.177
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_EMPTrapDeployer_ROOT": null,
+  "R4X_EMPTrapDeployer_Body": "R4X_EMPTrapDeployer_ROOT",
+  "R4X_EMPTrapDeployer_Payload": "R4X_EMPTrapDeployer_ROOT",
+  "Port_down_000": "R4X_EMPTrapDeployer_ROOT",
+  "Socket_Mount": "R4X_EMPTrapDeployer_ROOT",
+  "Deploy_Out": "R4X_EMPTrapDeployer_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 113,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Deploy",
+    "start": 27,
+    "end": 99,
+    "loop": false
+   },
+   {
+    "name": "Hit",
+    "start": 101,
+    "end": 113,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Deploy_Open": 27,
+   "Deploy_Out": 63,
+   "Deploy_Reset": 85,
+   "Hit": 101
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_EMPTrapDeployer_Body",
+   "R4X_EMPTrapDeployer_Payload"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 3.709,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "raw and uneven: stutter, rattle, slight drift (seeded)"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 2688,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 6,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    85,
+    "R4X_EMPTrapDeployer_Payload",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 2688,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_EMPTrapDeployer_front.jpg",
+  "R4X_EMPTrapDeployer_side.jpg",
+  "R4X_EMPTrapDeployer_top.jpg",
+  "R4X_EMPTrapDeployer_34.jpg",
+  "R4X_EMPTrapDeployer_wire.jpg",
+  "R4X_EMPTrapDeployer_clay.jpg",
+  "R4X_EMPTrapDeployer_silhouette.png"
+ ],
+ "files": {
+  "R4X_EMPTrapDeployer.blend": {
+   "sha256": "ab942fcff5ec0c014712e4dd3dd963f4072c20b8467d886a48f7070858bea0e6",
+   "bytes": 178466
+  },
+  "R4X_EMPTrapDeployer.fbx": {
+   "sha256": "b1776023c4a24074500a860cb2fb238bcf830c3bdfc7300676d9bd349ccebe31",
+   "bytes": 160684
+  },
+  "R4X_EMPTrapDeployer.glb": {
+   "sha256": "a970ea04c7ae6f9c0d496e3ae679d207dc9848abb88d319e5574ddf2750d75d9",
+   "bytes": 170552
+  },
+  "R4X_EMPTrapDeployer_LOD1.fbx": {
+   "sha256": "f94f1e65bc08ea356dc0fc23b9efd3a1b0e6e62be0b9fcad91d09ba2d0fdb447",
+   "bytes": 55852
+  },
+  "R4X_EMPTrapDeployer_LOD1.glb": {
+   "sha256": "53d2adda903d7feb1d12615eb4714f5b7e8038e15cce80be905f81b38533e900",
+   "bytes": 89028
+  }
+ },
+ "seconds": 2.2,
+ "blender": "5.3.0"
+}

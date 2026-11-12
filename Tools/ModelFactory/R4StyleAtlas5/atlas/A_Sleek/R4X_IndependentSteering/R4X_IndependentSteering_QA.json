@@ -1,0 +1,385 @@
+{
+ "id": "R4X_IndependentSteering",
+ "style": "A",
+ "style_label": "A_Sleek",
+ "family": "module",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_IndependentSteering_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2972,
+   "vertices": 1524,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  },
+  {
+   "object": "R4X_IndependentSteering_Turntable",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1412,
+   "vertices": 714,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_IndependentSteering_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1200,
+  "vertices": 638,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 4384,
+ "triangles_lod1": 1200,
+ "mesh_objects": 2,
+ "material_slots_total": 9,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.257,
+   -0.257,
+   -0.26
+  ],
+  [
+   0.26,
+   0.257,
+   0.26
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "up",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.24,
+    0.24
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "right",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.1,
+    0.1
+   ],
+   "offset": [
+    0.0,
+    0.22727
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 85.2,
+   "recessed_pct": 14.8,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_IndependentSteering_ROOT": null,
+  "R4X_IndependentSteering_Body": "R4X_IndependentSteering_ROOT",
+  "R4X_IndependentSteering_Turntable": "R4X_IndependentSteering_ROOT",
+  "Port_up_000": "R4X_IndependentSteering_ROOT",
+  "Port_down_000_part": "R4X_IndependentSteering_ROOT",
+  "Port_right_000_part": "R4X_IndependentSteering_ROOT",
+  "Socket_Mount": "R4X_IndependentSteering_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 89,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Activate",
+    "start": 27,
+    "end": 75,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 77,
+    "end": 89,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Activate_Start": 27,
+   "Hit": 77
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_IndependentSteering_Body",
+   "R4X_IndependentSteering_Turntable"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 0.594,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Activate",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "fluid and precise: long ease in / out, no overshoot"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 4384,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 7,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    83,
+    89
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 4384,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    83,
+    89
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_IndependentSteering_front.jpg",
+  "R4X_IndependentSteering_side.jpg",
+  "R4X_IndependentSteering_top.jpg",
+  "R4X_IndependentSteering_34.jpg",
+  "R4X_IndependentSteering_wire.jpg",
+  "R4X_IndependentSteering_clay.jpg",
+  "R4X_IndependentSteering_silhouette.png"
+ ],
+ "files": {
+  "R4X_IndependentSteering.blend": {
+   "sha256": "585830206a1ad101789ac20fc9c7430b9b27540d50baa27b9ffa9f783135dfeb",
+   "bytes": 200004
+  },
+  "R4X_IndependentSteering.fbx": {
+   "sha256": "3591457d005ce9b1470d502f2624d1c4c3d50a7f2a890955cc69697ad7ec333c",
+   "bytes": 188428
+  },
+  "R4X_IndependentSteering.glb": {
+   "sha256": "af9d4b03517850c5c3c1f4ce9441de2e5cbcef901bee99f8c63c89a1e82ec168",
+   "bytes": 205156
+  },
+  "R4X_IndependentSteering_LOD1.fbx": {
+   "sha256": "9cce2a56949213dd05221937e45ce9dc33e0ed512ec2773197a89aca9b60672a",
+   "bytes": 44268
+  },
+  "R4X_IndependentSteering_LOD1.glb": {
+   "sha256": "f808ef8cafb9f7d33588efc405f772fcc97a6439824a42bed34a79a5219196be",
+   "bytes": 79552
+  }
+ },
+ "seconds": 2.3,
+ "blender": "5.3.0"
+}
