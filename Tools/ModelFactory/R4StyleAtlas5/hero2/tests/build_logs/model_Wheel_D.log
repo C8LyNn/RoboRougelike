@@ -1,0 +1,42 @@
+00:00.031  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+<WORKDIR>\R4_Atlas5_hero2\hs7\scr\h2model.py:58: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new("SKIN"); m.use_nodes = True; nt = m.node_tree; b = nt.nodes["Principled BSDF"]
+<WORKDIR>\R4_Atlas5_hero2\hs7\scr\h2model.py:62: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  clay = bpy.data.materials.new("CLAY"); clay.use_nodes = True; cb = clay.node_tree.nodes["Principled BSDF"]; cb.inputs["Base Color"].default_value = (0.55, 0.55, 0.55, 1); cb.inputs["Roughness"].default_value = 0.6
+<WORKDIR>\R4_Atlas5_hero2\hs7\scr\h2model.py:84: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w = bpy.data.worlds.new("w"); sc.world = w; w.use_nodes = True; w.node_tree.nodes["Background"].inputs[0].default_value = (0.42, 0.44, 0.48, 1); w.node_tree.nodes["Background"].inputs[1].default_value = 1.0
+07:47.719  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\m\preview\D_Scrap\R4M_WheelM_Side_Offroad_lo.jpg'
+07:47.906  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\m\preview\D_Scrap\R4M_WheelM_Side_Offroad_lo_back.jpg'
+07:48.109  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\m\preview\D_Scrap\R4M_WheelM_Side_Offroad_hi_clay.jpg'
+07:48.297  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\m\preview\D_Scrap\R4M_WheelM_Side_Offroad_lo_clay.jpg'
+07:48.500  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\m\preview\D_Scrap\R4M_WheelM_Side_Offroad_lo_wire.jpg'
+07:48.672  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\m\preview\D_Scrap\R4M_WheelM_Side_Offroad_lod1.jpg'
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Saved as "R4M_WheelM_Side_Offroad_SOURCE.blend"
+[HERO2] MODEL_DONE Wheel D {'type': 'Wheel', 'style': 'D', 's_build_hi': 1.0, 's_build_lo': 0.5, 'tris_hi': {'Rotor': 27940, 'Body': 1996, 'Spring': 228, 'Flap': 52}, 'tris_lo': {'Rotor': 4416, 'Body': 264, 'Spring': 228, 'Flap': 52}, 'tris_hi_total': 30216, 'tris_lo_total': 4960, 'violations': [], 'template_nodes_not_modelled': [], 's_unwrap': 3.0, 's_bake': 379.2, 's_skin': 80.5, 'tris_lod1': 3012, 'lod1': {'method': 'planar dissolve', 'angle_deg': 14.0, 'triangles': 3012, 'of_lod0': 0.607}, 's_export_render': 4.0}
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

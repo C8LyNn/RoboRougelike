@@ -1,0 +1,170 @@
+00:00.031  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+<WORKDIR>\R4_Atlas5_hero2\hs7\scn\h2scene.py:18: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(pre + zone); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tx = src["textures"]
+<WORKDIR>\R4_Atlas5_hero2\hs7\scn\h2scene.py:65: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if m.get("toon") or not m.use_nodes: return
+INFO Draco is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_meshopt_bridge.dll
+15:12:40 | INFO: Starting glTF 2.0 export
+15:12:40 | INFO: Extracting primitive: cheek
+15:12:40 | INFO: Primitives created: 3
+15:12:40 | INFO: Extracting primitive: gasket
+15:12:40 | INFO: Primitives created: 1
+15:12:40 | INFO: Extracting primitive: lip
+15:12:40 | INFO: Primitives created: 1
+15:12:40 | INFO: Extracting primitive: nose_0
+15:12:40 | INFO: Primitives created: 3
+15:12:40 | INFO: Extracting primitive: nose_1
+15:12:40 | INFO: Primitives created: 3
+15:12:40 | INFO: Extracting primitive: nose_2
+15:12:40 | INFO: Primitives created: 3
+15:12:40 | INFO: Extracting primitive: nose_3
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_00
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_01
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_02
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_03
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_04
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_05
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_06
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_07
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_08
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_09
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_10
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_11
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_12
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_13
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_14
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: plate_15
+15:12:40 | INFO: Primitives created: 2
+15:12:40 | INFO: Extracting primitive: ramp
+15:12:40 | INFO: Primitives created: 3
+15:12:40 | INFO: Finished glTF 2.0 export in 0.05209088325500488 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_hero2\\f1\\kit\\E_Toon\\R4H_HullKit.fbx'
+export finished in 0.0232 sec.
+15:12:40 | INFO: Data are loaded, start creating Blender stuff
+15:12:40 | INFO: Blender create Mesh node R4B_Cube.001
+15:12:40 | INFO: glTF import finished in 0.01s
+15:12:40 | INFO: Data are loaded, start creating Blender stuff
+15:12:40 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Coil.001
+15:12:40 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Mount.001
+15:12:40 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Rotor.001
+15:12:40 | INFO: glTF import finished in 0.03s
+15:12:40 | INFO: Data are loaded, start creating Blender stuff
+15:12:40 | INFO: Blender create Mesh node R4W_Basic_Yaw.001
+15:12:40 | INFO: Blender create Mesh node R4W_Basic_Antenna.001
+15:12:40 | INFO: Blender create Mesh node R4W_Basic_Pitch.001
+15:12:40 | INFO: Blender create Mesh node MuzzleFlash.001
+15:12:40 | INFO: Blender create Mesh node R4W_Basic_Barrel.001
+15:12:40 | INFO: Blender create Mesh node R4W_Basic_Bell.001
+15:12:40 | INFO: Blender create Mesh node R4W_Basic_Base.001
+15:12:40 | INFO: glTF import finished in 0.06s
+15:12:40 | INFO: Data are loaded, start creating Blender stuff
+15:12:40 | INFO: Blender create Mesh node R4X_Battery_Body.001
+15:12:40 | INFO: Blender create Mesh node R4X_Battery_Jug.001
+15:12:40 | INFO: Blender create Mesh node R4X_Battery_Emblem.001
+15:12:40 | INFO: glTF import finished in 0.03s
+15:12:40 | INFO: Data are loaded, start creating Blender stuff
+15:12:40 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Body.001
+15:12:40 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Coil.001
+15:12:40 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Paddle.001
+15:12:40 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Payload.001
+15:12:40 | INFO: glTF import finished in 0.05s
+15:12:40 | INFO: Data are loaded, start creating Blender stuff
+15:12:40 | INFO: Blender create Mesh node R4B_Cube.001
+15:12:40 | INFO: glTF import finished in 0.17s
+<WORKDIR>\R4_Atlas5_hero2\hs7\scn\h2scene.py:47: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if not m or not m.use_nodes or m.get("repainted"): continue
+<WORKDIR>\R4_Atlas5_hero2\hs7\scn\h2scene.py:65: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if m.get("toon") or not m.use_nodes: return
+<WORKDIR>\R4_Atlas5_hero2\hs7\scn\h2scene.py:86: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  om = bpy.data.materials.new("ToonOutline"); om.use_nodes = True; nt = om.node_tree; nt.nodes.remove(nt.nodes.get("Principled BSDF")); em = nt.nodes.new("ShaderNodeEmission"); em.inputs[0].default_value = (0.004, 0.005, 0.01, 1); nt.links.new(em.outputs[0], next(n for n in nt.nodes if n.type == 'OUTPUT_MATERIAL').inputs["Surface"]); om.use_backface_culling = True
+15:12:41 | INFO: Data are loaded, start creating Blender stuff
+15:12:41 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Coil
+15:12:41 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Mount
+15:12:41 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Rotor
+15:12:41 | INFO: glTF import finished in 0.23s
+15:12:41 | INFO: Data are loaded, start creating Blender stuff
+15:12:41 | INFO: Blender create Mesh node R4W_Basic_Yaw
+15:12:41 | INFO: Blender create Mesh node R4W_Basic_Antenna
+15:12:41 | INFO: Blender create Mesh node R4W_Basic_Pitch
+15:12:41 | INFO: Blender create Mesh node MuzzleFlash
+15:12:41 | INFO: Blender create Mesh node R4W_Basic_Barrel
+15:12:41 | INFO: Blender create Mesh node R4W_Basic_Bell
+15:12:41 | INFO: Blender create Mesh node R4W_Basic_Base
+15:12:41 | INFO: glTF import finished in 0.24s
+15:12:41 | INFO: Data are loaded, start creating Blender stuff
+15:12:41 | INFO: Blender create Mesh node R4X_Battery_Body
+15:12:41 | INFO: Blender create Mesh node R4X_Battery_Jug
+15:12:42 | INFO: Blender create Mesh node R4X_Battery_Emblem
+15:12:42 | INFO: glTF import finished in 0.23s
+15:12:42 | INFO: Data are loaded, start creating Blender stuff
+15:12:42 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Body.001
+15:12:42 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Coil.001
+15:12:42 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Paddle.001
+15:12:42 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Payload.001
+15:12:42 | INFO: glTF import finished in 0.26s
+<WORKDIR>\R4_Atlas5_hero2\hs7\scn\h2scene.py:102: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(name); m.use_nodes = True; b = m.node_tree.nodes.get("Principled BSDF"); b.inputs["Base Color"].default_value = (*rgb, 1); b.inputs["Roughness"].default_value = rough; b.inputs["Metallic"].default_value = metal; return m
+<WORKDIR>\R4_Atlas5_hero2\hs7\scn\h2scene.py:104: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new("Ground"); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tc = nt.nodes.new("ShaderNodeTexCoord")
+<WORKDIR>\R4_Atlas5_hero2\hs7\scn\h2scene.py:192: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w = bpy.data.worlds.new("W"); scn.world = w; w.use_nodes = True; bg = w.node_tree.nodes.get("Background"); bg.inputs[0].default_value = (*shots["sky"]["color"], 1); bg.inputs[1].default_value = shots["sky"]["strength"]
+00:22.891  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\1_hero_before_1080.jpg'
+[POLISH] SHOT E 1_hero_before {'pieces': 32, 'triangles': 82060, 'hull_layer_triangles': 6094, 'hull_fragments': 94, 'objects': 374, 'render_s_1080': 1.6}
+00:23.891  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\1b_hero_side_before_1080.jpg'
+[POLISH] SHOT E 1b_hero_side_before {'pieces': 32, 'triangles': 82060, 'hull_layer_triangles': 6094, 'hull_fragments': 94, 'objects': 374, 'render_s_1080': 1.0}
+00:25.016  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\1c_hero_low_before_1080.jpg'
+[POLISH] SHOT E 1c_hero_low_before {'pieces': 32, 'triangles': 82060, 'hull_layer_triangles': 6094, 'hull_fragments': 94, 'objects': 374, 'render_s_1080': 1.1}
+00:26.219  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\2_weapon_before_1080.jpg'
+[POLISH] SHOT E 2_weapon_before {'pieces': 2, 'triangles': 13638, 'hull_layer_triangles': 268, 'hull_fragments': 5, 'objects': 25, 'render_s_1080': 1.2}
+00:27.375  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\3_drive_before_1080.jpg'
+[POLISH] SHOT E 3_drive_before {'pieces': 2, 'triangles': 8286, 'hull_layer_triangles': 576, 'hull_fragments': 6, 'objects': 22, 'render_s_1080': 1.2}
+00:28.406  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\4_energy_before_1080.jpg'
+[POLISH] SHOT E 4_energy_before {'pieces': 2, 'triangles': 3644, 'hull_layer_triangles': 268, 'hull_fragments': 5, 'objects': 21, 'render_s_1080': 1.0}
+00:29.156  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\7_distance_before_1080.jpg'
+00:29.672  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\7_distance_before_720.jpg'
+[POLISH] SHOT E 7_distance_before {'pieces': 96, 'triangles': 246180, 'hull_layer_triangles': 18282, 'hull_fragments': 282, 'objects': 1122, 'render_s_1080': 0.5, 'render_s_720': 0.5}
+00:33.000  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\1_hero_after_1080.jpg'
+[POLISH] SHOT E 1_hero_after {'pieces': 32, 'triangles': 49592, 'hull_layer_triangles': 6094, 'hull_fragments': 94, 'objects': 374, 'render_s_1080': 3.3}
+00:34.141  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\1b_hero_side_after_1080.jpg'
+[POLISH] SHOT E 1b_hero_side_after {'pieces': 32, 'triangles': 49592, 'hull_layer_triangles': 6094, 'hull_fragments': 94, 'objects': 374, 'render_s_1080': 1.1}
+00:35.141  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\1c_hero_low_after_1080.jpg'
+[POLISH] SHOT E 1c_hero_low_after {'pieces': 32, 'triangles': 49592, 'hull_layer_triangles': 6094, 'hull_fragments': 94, 'objects': 374, 'render_s_1080': 1.0}
+00:36.094  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\2_weapon_after_1080.jpg'
+[POLISH] SHOT E 2_weapon_after {'pieces': 2, 'triangles': 3484, 'hull_layer_triangles': 268, 'hull_fragments': 5, 'objects': 25, 'render_s_1080': 0.9}
+00:37.172  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\3_drive_after_1080.jpg'
+[POLISH] SHOT E 3_drive_after {'pieces': 2, 'triangles': 6058, 'hull_layer_triangles': 576, 'hull_fragments': 6, 'objects': 22, 'render_s_1080': 1.1}
+00:38.219  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\4_energy_after_1080.jpg'
+[POLISH] SHOT E 4_energy_after {'pieces': 2, 'triangles': 2020, 'hull_layer_triangles': 268, 'hull_fragments': 5, 'objects': 21, 'render_s_1080': 1.0}
+00:39.484  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\7_distance_after_1080.jpg'
+00:39.969  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\7_distance_after_720.jpg'
+[POLISH] SHOT E 7_distance_after {'pieces': 96, 'triangles': 148776, 'hull_layer_triangles': 18282, 'hull_fragments': 282, 'objects': 1122, 'render_s_1080': 0.9, 'render_s_720': 0.5}
+00:40.625  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\5_material_hull_after_1080.jpg'
+[POLISH] SHOT E 5_material_hull_after {'pieces': 32, 'triangles': 49592, 'hull_layer_triangles': 6094, 'hull_fragments': 94, 'objects': 374, 'render_s_1080': 0.6}
+00:41.187  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\5b_material_prow_after_1080.jpg'
+[POLISH] SHOT E 5b_material_prow_after {'pieces': 32, 'triangles': 49592, 'hull_layer_triangles': 6094, 'hull_fragments': 94, 'objects': 374, 'render_s_1080': 0.6}
+00:41.781  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\renders\E_Toon\6_material_mech_after_1080.jpg'
+[POLISH] SHOT E 6_material_mech_after {'pieces': 32, 'triangles': 49592, 'hull_layer_triangles': 6094, 'hull_fragments': 94, 'objects': 374, 'render_s_1080': 0.6}
+[POLISH] STYLE_DONE E 41.4 s ['taa_render_samples', 'use_raytracing', '!use_gtao', '!gtao_distance', 'use_shadows', 'shadow_ray_count', 'shadow_step_count', 'fast_gi_distance', 'use_fast_gi', 'view_transform', 'look', 'exposure']
+[POLISH] ALL_DONE
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

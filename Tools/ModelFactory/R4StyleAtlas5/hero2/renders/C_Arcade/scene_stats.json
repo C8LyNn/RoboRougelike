@@ -1,0 +1,256 @@
+{
+ "style": "C",
+ "applied": [
+  "taa_render_samples",
+  "use_raytracing",
+  "!use_gtao",
+  "!gtao_distance",
+  "use_shadows",
+  "shadow_ray_count",
+  "shadow_step_count",
+  "fast_gi_distance",
+  "use_fast_gi",
+  "view_transform",
+  "look",
+  "exposure"
+ ],
+ "shots": {
+  "1_hero_before": {
+   "pieces": 32,
+   "triangles": 38946,
+   "hull_layer_triangles": 5712,
+   "hull_fragments": 94,
+   "objects": 370,
+   "render_s_1080": 1.3
+  },
+  "1b_hero_side_before": {
+   "pieces": 32,
+   "triangles": 38946,
+   "hull_layer_triangles": 5712,
+   "hull_fragments": 94,
+   "objects": 370,
+   "render_s_1080": 0.7
+  },
+  "1c_hero_low_before": {
+   "pieces": 32,
+   "triangles": 38946,
+   "hull_layer_triangles": 5712,
+   "hull_fragments": 94,
+   "objects": 370,
+   "render_s_1080": 0.8
+  },
+  "2_weapon_before": {
+   "pieces": 2,
+   "triangles": 3582,
+   "hull_layer_triangles": 332,
+   "hull_fragments": 5,
+   "objects": 24,
+   "render_s_1080": 1.0
+  },
+  "3_drive_before": {
+   "pieces": 2,
+   "triangles": 4348,
+   "hull_layer_triangles": 508,
+   "hull_fragments": 6,
+   "objects": 22,
+   "render_s_1080": 1.1
+  },
+  "4_energy_before": {
+   "pieces": 2,
+   "triangles": 3140,
+   "hull_layer_triangles": 332,
+   "hull_fragments": 5,
+   "objects": 20,
+   "render_s_1080": 0.9
+  },
+  "7_distance_before": {
+   "pieces": 96,
+   "triangles": 116838,
+   "hull_layer_triangles": 17136,
+   "hull_fragments": 282,
+   "objects": 1110,
+   "render_s_1080": 0.4,
+   "render_s_720": 0.7
+  },
+  "1_hero_after": {
+   "pieces": 32,
+   "triangles": 37182,
+   "hull_layer_triangles": 5712,
+   "hull_fragments": 94,
+   "objects": 370,
+   "render_s_1080": 0.9
+  },
+  "1b_hero_side_after": {
+   "pieces": 32,
+   "triangles": 37182,
+   "hull_layer_triangles": 5712,
+   "hull_fragments": 94,
+   "objects": 370,
+   "render_s_1080": 0.7
+  },
+  "1c_hero_low_after": {
+   "pieces": 32,
+   "triangles": 37182,
+   "hull_layer_triangles": 5712,
+   "hull_fragments": 94,
+   "objects": 370,
+   "render_s_1080": 0.8
+  },
+  "2_weapon_after": {
+   "pieces": 2,
+   "triangles": 2716,
+   "hull_layer_triangles": 332,
+   "hull_fragments": 5,
+   "objects": 24,
+   "render_s_1080": 0.7
+  },
+  "3_drive_after": {
+   "pieces": 2,
+   "triangles": 5176,
+   "hull_layer_triangles": 508,
+   "hull_fragments": 6,
+   "objects": 22,
+   "render_s_1080": 0.8
+  },
+  "4_energy_after": {
+   "pieces": 2,
+   "triangles": 1468,
+   "hull_layer_triangles": 332,
+   "hull_fragments": 5,
+   "objects": 20,
+   "render_s_1080": 0.9
+  },
+  "7_distance_after": {
+   "pieces": 96,
+   "triangles": 111546,
+   "hull_layer_triangles": 17136,
+   "hull_fragments": 282,
+   "objects": 1110,
+   "render_s_1080": 0.8,
+   "render_s_720": 0.4
+  },
+  "5_material_hull_after": {
+   "pieces": 32,
+   "triangles": 37182,
+   "hull_layer_triangles": 5712,
+   "hull_fragments": 94,
+   "objects": 370,
+   "render_s_1080": 1.0
+  },
+  "5b_material_prow_after": {
+   "pieces": 32,
+   "triangles": 37182,
+   "hull_layer_triangles": 5712,
+   "hull_fragments": 94,
+   "objects": 370,
+   "render_s_1080": 1.0
+  },
+  "6_material_mech_after": {
+   "pieces": 32,
+   "triangles": 37182,
+   "hull_layer_triangles": 5712,
+   "hull_fragments": 94,
+   "objects": 370,
+   "render_s_1080": 0.8
+  }
+ },
+ "crops": {
+  "7_distance_before": [
+   {
+    "tag": "hero_20m",
+    "robot": "hero",
+    "px_1080": [
+     571.0,
+     676.8,
+     927.3,
+     1005.7
+    ],
+    "distance_m": 20.3,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "hero_36m",
+    "robot": "hero",
+    "px_1080": [
+     1199.8,
+     421.3,
+     1408.5,
+     571.2
+    ],
+    "distance_m": 35.4,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "hero_60m",
+    "robot": "hero",
+    "px_1080": [
+     725.4,
+     278.8,
+     841.0,
+     355.6
+    ],
+    "distance_m": 58.5,
+    "fully_inside_frame": true
+   }
+  ],
+  "7_distance_after": [
+   {
+    "tag": "hero_20m",
+    "robot": "hero",
+    "px_1080": [
+     571.0,
+     676.8,
+     927.3,
+     1005.7
+    ],
+    "distance_m": 20.3,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "hero_36m",
+    "robot": "hero",
+    "px_1080": [
+     1199.8,
+     421.3,
+     1408.5,
+     571.2
+    ],
+    "distance_m": 35.4,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "hero_60m",
+    "robot": "hero",
+    "px_1080": [
+     725.4,
+     278.8,
+     841.0,
+     355.6
+    ],
+    "distance_m": 58.5,
+    "fully_inside_frame": true
+   }
+  ]
+ },
+ "hull_kit": {
+  "meshes": 24,
+  "triangles": 1380,
+  "files": [
+   "R4H_HullKit.glb",
+   "R4H_HullKit.fbx"
+  ]
+ },
+ "sources": [
+  "R4_Atlas5_hero1/v3/C_Arcade/R4B_Cube/R4B_Cube.glb",
+  "R4_Atlas5_hero1/v3/C_Arcade/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+  "R4_Atlas5_hero1/v3/C_Arcade/R4W_Basic/R4W_Basic.glb",
+  "R4_Atlas5_hero1/v3/C_Arcade/R4X_Battery/R4X_Battery.glb",
+  "R4_Atlas5_hero1/v3/C_Arcade/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+  "f1/variants/C_Arcade/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+  "f1/variants/C_Arcade/R4W_Basic/R4W_Basic.glb",
+  "f1/variants/C_Arcade/R4X_Battery/R4X_Battery.glb"
+ ],
+ "seconds": 35.9,
+ "blender": "5.3.0",
+ "engine": "BLENDER_EEVEE"
+}

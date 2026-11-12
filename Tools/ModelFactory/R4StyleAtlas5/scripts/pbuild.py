@@ -35,7 +35,7 @@ def frame(n):
 
 
 def _img(name, colorspace):
-    img = bpy.data.images.get(name) or bpy.data.images.load(os.path.join(TEX, name)); img.colorspace_settings.name = colorspace; return img
+    img = bpy.data.images.get(os.path.basename(name)) or bpy.data.images.load(os.path.join(TEX, *name.split("/"))); img.colorspace_settings.name = colorspace; return img
 def make_material(zone, src):
     """paint colour and PBR factors stay FACTORS of the zone; the style texture set modulates them (glTF: baseColorTexture x factor,
     metallicRoughnessTexture G / B x factors, normalTexture with scale)"""
@@ -44,6 +44,15 @@ def make_material(zone, src):
         gl = src["glow"]; k = src["glow_strength"]; rgb = [c*(0.55 if k > 0 else 1.0) for c in gl]; metal, rough = 0.0, 0.45
         b.inputs["Emission Color"].default_value = (*gl, 1.0); b.inputs["Emission Strength"].default_value = k; m["emissive_default"] = gl; m["emissive_strength_default"] = k
         m.diffuse_color = (*rgb, 1.0); b.inputs["Base Color"].default_value = (*rgb, 1.0); b.inputs["Metallic"].default_value = metal; b.inputs["Roughness"].default_value = rough; return m
+    if tx.get("baked"):                                            # hero pass 2: one authored texture set per model (unique UV, baked from its high-poly source)
+        d = src["materials"][zone]; m.diffuse_color = (*d["rgb"], 1.0); m.metallic = d["metallic"]; m.roughness = d["roughness"]; m["baked"] = True
+        t = nt.nodes.new("ShaderNodeTexImage"); t.image = _img(tx["base"], "sRGB"); nt.links.new(t.outputs["Color"], b.inputs["Base Color"]); m["base_texture"] = tx["base"]
+        t = nt.nodes.new("ShaderNodeTexImage"); t.image = _img(tx["orm"], "Non-Color"); sp = nt.nodes.new("ShaderNodeSeparateColor"); nt.links.new(t.outputs["Color"], sp.inputs[0])
+        nt.links.new(sp.outputs["Green"], b.inputs["Roughness"]); nt.links.new(sp.outputs["Blue"], b.inputs["Metallic"]); m["orm_texture"] = tx["orm"]
+        t = nt.nodes.new("ShaderNodeTexImage"); t.image = _img(tx["normal"], "Non-Color"); nm = nt.nodes.new("ShaderNodeNormalMap"); nm.inputs["Strength"].default_value = tx.get("normal_strength", 1.0)
+        nt.links.new(t.outputs["Color"], nm.inputs["Color"]); nt.links.new(nm.outputs["Normal"], b.inputs["Normal"]); m["normal_texture"] = tx["normal"]
+        t = nt.nodes.new("ShaderNodeTexImage"); t.image = _img(tx["emission"], "sRGB"); nt.links.new(t.outputs["Color"], b.inputs["Emission Color"]); b.inputs["Emission Strength"].default_value = src["glow_strength"]; m["emission_texture"] = tx["emission"]
+        return m
     d = src["materials"][zone]; rgb, metal, rough = d["rgb"], d["metallic"], d["roughness"]
     m.diffuse_color = (*rgb, 1.0); m.metallic = metal; m.roughness = rough
     b.inputs["Base Color"].default_value = (*rgb, 1.0); b.inputs["Metallic"].default_value = metal; b.inputs["Roughness"].default_value = rough
@@ -431,7 +440,10 @@ def build(cid, style):
         vshade["gltf_export_options"] = dict(VCOL_EXPORT)
     base = os.path.join(od, cid)
     select([root] + mobjs + empties, root); export_fbx(base + ".fbx", has_anim); glb_mode = export_glb(base + ".glb", has_anim, anim_objs)
+    small = [im for im in bpy.data.images if src["textures"].get("baked") and im.source == 'FILE' and im.size[0] > 512]
+    for im in small: im.scale(512, 512)                              # LOD1 of an authored model carries its own 512 px copy of the texture set
     select([root, lod], root); export_fbx(base + "_LOD1.fbx", False); export_glb(base + "_LOD1.glb", False)
+    for im in small: im.reload()
     failures = []
     if unplaced: failures.append("hierarchy: unplaced " + ",".join(unplaced))
     if not (all(r["ok"] for r in reports) and lr["ok"]): failures.append("topology")
@@ -460,7 +472,8 @@ def build(cid, style):
     for o in mobjs: o.hide_render = o.name in fxn
     lod.hide_render = False
     for im in bpy.data.images:                                      # the .blend references the shared texture set relative to the package (not packed)
-        if im.name in (src["textures"].get("base"), src["textures"].get("orm"), src["textures"].get("normal")): im.filepath = "//../../../textures/" + im.name
+        tn = {os.path.basename(v): v for v in src["textures"].values() if isinstance(v, str) and v.lower().endswith((".png", ".jpg"))}
+        if im.name in tn: im.filepath = "//../../../textures/" + tn[im.name]
     bpy.ops.wm.save_as_mainfile(filepath=base + ".blend", compress=True)
     lod.hide_render = True; clay = bpy.data.materials.new("Clay"); clay.use_nodes = True; cb = clay.node_tree.nodes.get("Principled BSDF"); cb.inputs["Base Color"].default_value = (0.5, 0.5, 0.5, 1); cb.inputs["Roughness"].default_value = 0.7
     bpy.context.view_layer.material_override = clay; scn.render.film_transparent = True; scn.render.image_settings.file_format = 'PNG'; scn.render.image_settings.color_mode = 'RGBA'

@@ -11,9 +11,10 @@ Technical tests only - the artistic acceptance of the pilot is a separate decisi
 import os, sys, json, hashlib
 import numpy as np
 import astyle as ST, pstyle as PS
-PKG = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); ATL = os.path.join(PKG, "pilot2", "variants"); TST = os.path.join(PKG, "pilot2", "tests"); MODE = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] in ("polish1", "polish2", "hero1") else None; POLISH = MODE is not None
+PKG = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); ATL = os.path.join(PKG, "pilot2", "variants"); TST = os.path.join(PKG, "pilot2", "tests"); MODE = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] in ("polish1", "polish2", "hero1", "hero2") else None; POLISH = MODE is not None
+BAKED = False
 if POLISH:                                                      # Visual Polish Pass 1 / 2: same tests on <pass>/variants with its palette, plus T7 (baked vertex shading present)
-    PS = __import__({"polish1": "qstyle", "polish2": "rstyle", "hero1": "hstyle"}[MODE])
+    PS = __import__({"polish1": "qstyle", "polish2": "rstyle", "hero1": "hstyle", "hero2": "hstyle"}[MODE]); BAKED = MODE == "hero2"
     ATL = os.path.join(PKG, MODE, "variants"); TST = os.path.join(PKG, MODE, "tests")
 MF = os.path.dirname(PKG)
 sys.path.insert(0, os.path.join(MF, "R4BlocksRedesign1232", "scripts")); import glbio
@@ -35,10 +36,11 @@ def main():
             imgs = len(m.json.get("images", [])); tx = PS.TEXTURES[s]; painted = [x for x in m.json.get("materials", []) if x["name"] != "R4P_Glow"]; tex_mats = 0; fact = True
             for x in painted:
                 pb = x.get("pbrMetallicRoughness", {}); has = ("baseColorTexture" in pb, "metallicRoughnessTexture" in pb, "normalTexture" in x); want3 = (bool(tx["base"]), bool(tx["orm"]), bool(tx["normal"]))
+                if BAKED: tex_mats += all(has) and "emissiveTexture" in x; continue          # hero pass 2: authored texture set per model (base, ORM, normal, emission), factors are 1
                 tex_mats += has == want3; z = PS.MAT[s][x["name"]]
                 fact &= bool(np.allclose(pb.get("baseColorFactor", [1, 1, 1, 1])[:3], z[0], atol=2e-3) and abs(pb.get("metallicFactor", 1.0) - z[1]) < 2e-3 and abs(pb.get("roughnessFactor", 1.0) - z[2]) < 2e-3)
-            t5 = tex_mats == len(painted) and fact and imgs == sum(1 for k in ("base", "orm", "normal") if tx[k])
-            t7 = all("COLOR_0" in pr["attributes"] for me in m.json["meshes"] for pr in me["primitives"]) if POLISH else True; t5 = bool(t5 and t7)
+            t5 = tex_mats == len(painted) and fact and imgs == (4 if BAKED else sum(1 for k in ("base", "orm", "normal") if tx[k]))
+            t7 = all("COLOR_0" in pr["attributes"] for me in m.json["meshes"] for pr in me["primitives"]) if (POLISH and not BAKED) else True; t5 = bool(t5 and t7)
             h = hashlib.sha256(np.round(np.sort(V.view([("x", float), ("y", float), ("z", float)]), axis=0).view(float), 4).tobytes()).hexdigest()
             per[s] = dict(names=names, emp=emp, hash=h); r[s] = dict(T1=bool(t1), T2=bool(t2), outside_mm=round(max(out, 0)*1000, 3), T4=bool(t4), channels=chan, T5=bool(t5), images=imgs, textured_materials=tex_mats, tris=m.tri_count(), tris_lod1=l.tri_count(), blender=qa["status"])
         ok5 = len(per) == 5; t3 = ok5 and all(per[s]["names"] == per["A"]["names"] for s in per); dev = 0.0
@@ -51,8 +53,8 @@ def main():
     n = sum(1 for v in rep.values() if v["PASS"]); os.makedirs(TST, exist_ok=True)
     json.dump(dict(result="PASS" if n == len(rep) else "FAIL", assets=len(rep), assets_pass=n, variants=5*len(rep), detail=rep), open(os.path.join(TST, (MODE + "_glb_tests.json") if POLISH else "pilot2_glb_tests.json"), "w"), indent=1)
     with open(os.path.join(TST, (MODE.upper() + "_TEST_SUMMARY.md") if POLISH else "PILOT2_TEST_SUMMARY.md"), "w", encoding="utf-8") as f:
-        TITLE = {"pilot2": "Pilot 2", "polish1": "Visual Polish Pass 1", "polish2": "Visual Polish Pass 2", "hero1": "Hero Benchmark Pass"}.get(MODE if POLISH else "pilot2", "Pilot 2")
-        f.write(f"# {TITLE}: testy na wyeksportowanych GLB (numpy){' — T5 obejmuje też T7: każdy prymityw ma COLOR_0 (wypalone cieniowanie wierzchołków)' if POLISH else ''}\n\nWynik techniczny: **{n}/{len(rep)} typów z kompletem 5/5 stylów PASS** ({5*len(rep)} wariantów). Unity: UNITY_NOT_RUN. Odbiór artystyczny: **OCZEKUJE NA WŁAŚCICIELA** (testy techniczne go nie zastępują).\n\n" + __doc__.split("\n", 1)[1] + "\n\n| asset | T1 A-E | T2 | T3 | T4 | T5 | T6 | wynik |\n|---|---|---|---|---|---|---|---|\n")
+        TITLE = {"pilot2": "Pilot 2", "polish1": "Visual Polish Pass 1", "polish2": "Visual Polish Pass 2", "hero1": "Hero Benchmark Pass", "hero2": "Hero Benchmark Pass 2"}.get(MODE if POLISH else "pilot2", "Pilot 2")
+        f.write(f"# {TITLE}: testy na wyeksportowanych GLB (numpy){' — T5 obejmuje też T7: każdy prymityw ma COLOR_0 (wypalone cieniowanie wierzchołków)' if (POLISH and not BAKED) else (' — T5: każdy materiał ma własny zestaw tekstur modelu (base, ORM, normal, emisja)' if BAKED else '')}\n\nWynik techniczny: **{n}/{len(rep)} typów z kompletem 5/5 stylów PASS** ({5*len(rep)} wariantów). Unity: UNITY_NOT_RUN. Odbiór artystyczny: **OCZEKUJE NA WŁAŚCICIELA** (testy techniczne go nie zastępują).\n\n" + __doc__.split("\n", 1)[1] + "\n\n| asset | T1 A-E | T2 | T3 | T4 | T5 | T6 | wynik |\n|---|---|---|---|---|---|---|---|\n")
         for cid, v in rep.items():
             def col(k): return "".join(("P" if v[s].get(k) else "F") if isinstance(v.get(s), dict) and k in v[s] else "-" for s in ST.STYLES)
             f.write(f"| {cid} | {col('T1')} | {col('T2')} | {'P' if v['T3'] else 'F'} | {col('T4')} | {col('T5')} | {'P' if v['T6'] else 'F'} | {'PASS' if v['PASS'] else '**FAIL**'} |\n")
