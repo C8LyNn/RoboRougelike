@@ -31,6 +31,7 @@ namespace RoboRougelike.R1
         private static Rect PortraitRewardDismantleButton(int index)
         {var card=PortraitRewardInventoryCard(index);return new Rect(card.x+490,card.y+23,215,60);}
         private static Rect PortraitRewardInventoryPager()=>new Rect(24,800,720,52);
+        private static Rect PortraitRewardInventoryFilter()=>new Rect(484,802,260,48);
         private static Rect PortraitRewardInventoryBack()=>new Rect(24,930,720,64);
 
         private void DrawPortraitSalvage(R1RunController run)
@@ -69,11 +70,12 @@ namespace RoboRougelike.R1
             if(rewardBaskets.Count==0)GUI.Label(new Rect(36,495,680,50),"Brak części do odzyskania.",small);
             var pager=PortraitRewardPager();
             if(GUI.Button(new Rect(pager.x+370,pager.y,350,44),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity}",compactButton))rewardInventoryOpen=true;
-            bool room=run.VehicleModel.Inventory.Count+lootSelection.Count+1<=R3VehicleModel.InventoryCapacity;
+            int missing=RewardInventoryMissingSlots(run.VehicleModel.Inventory.Count,lootSelection.Count);
+            bool room=missing==0;
             GUI.Label(PortraitRewardSummary(),
                 $"Bonus: {(selectedBonus>=0?"wybrany":"wymagany")} • Zestaw: {(selectedBasket>=0?lootSelection.Count+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n"+
                 $"Niewybrane części → +{run.VehicleModel.PreviewAward(ledger.PreviewScrap(run.VehicleModel,lootSelection))} Z. Bonus jest nieaktywny do montażu.\n"+
-                (!room?"Brak miejsca na nagrody. Otwórz magazyn i rozmontuj część.":rewardClaimFeedback??""),small);
+                (!room?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. Otwórz magazyn, aby je zwolnić.":rewardClaimFeedback??""),small);
             GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count);
             if(GUI.Button(PortraitRewardConfirm(),RewardConfirmCaption(rewardBaskets.Count),button))PortraitRewardConfirm(run);
             GUI.enabled=true;
@@ -83,10 +85,13 @@ namespace RoboRougelike.R1
         {
             var model=run.VehicleModel;
             GUI.Label(new Rect(24,20,720,42),"MAGAZYN NAGRÓD",title);
-            GUI.Label(new Rect(24,70,720,84),$"Zajęte: {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • Potrzeba {lootSelection.Count+1} wolnych miejsc.\nRozmontowanie usuwa część i wypłaca złom. Wymaga drugiego kliknięcia.",body);
-            var items=model.Inventory.ToArray();int pages=Mathf.Max(1,Mathf.CeilToInt(items.Length/5f));
+            int missing=RewardInventoryMissingSlots(model.Inventory.Count,lootSelection.Count);
+            GUI.Label(new Rect(24,70,720,84),$"Zajęte: {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • Nagrody: {lootSelection.Count+1} miejsc.\n"+
+                (missing>0?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. ":"Obecny wybór się mieści. ")+"Rozmontowanie wymaga potwierdzenia.",body);
+            var items=RewardInventoryItems(model,rewardInventoryDamagedOnly);int pages=Mathf.Max(1,Mathf.CeilToInt(items.Length/5f));
             rewardInventoryPage=Mathf.Clamp(rewardInventoryPage,0,pages-1);
             var visible=items.Skip(rewardInventoryPage*5).Take(5).ToArray();
+            if(items.Length==0)GUI.Label(new Rect(36,180,680,48),rewardInventoryDamagedOnly?"Brak uszkodzonych części.":"Magazyn jest pusty.",body);
             for(int i=0;i<visible.Length;i++)
             {
                 var item=visible[i];var card=PortraitRewardInventoryCard(i);var detail=PortraitRewardInventoryDetails(i);Panel(card);
@@ -109,6 +114,7 @@ namespace RoboRougelike.R1
             GUI.enabled=rewardInventoryPage<pages-1;
             if(GUI.Button(new Rect(pager.x+310,pager.y,110,48),"→",compactButton)){rewardInventoryPage++;rewardDismantleConfirmation=null;}
             GUI.enabled=true;
+            DrawRewardInventoryFilter(model,PortraitRewardInventoryFilter());
             if(!string.IsNullOrEmpty(rewardInventoryFeedback))
                 GUI.Label(new Rect(24,865,720,52),rewardInventoryFeedback,small);
             if(GUI.Button(PortraitRewardInventoryBack(),"Wróć do nagród [Esc]",button))

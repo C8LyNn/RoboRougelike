@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using RoboRougelike.R1;
@@ -20,6 +21,31 @@ public sealed class UI943PortraitRewardsLayoutTests
         Assert.That((bool)Method("RewardSelectionReady").Invoke(null,new object[]{0,3,-1,0,0,0}),Is.True);
         Assert.That((bool)Method("RewardSelectionReady").Invoke(null,new object[]{0,3,-1,1,0,0}),Is.False);
         Assert.That((string)Method("RewardConfirmCaption").Invoke(null,new object[]{1}),Does.Contain("oba"));
+    }
+    [Test] public void DamagedRewardInventoryShowsWorstPartsFirstWithoutChangingInventory()
+    {
+        var model=new R3VehicleModel(new R3VehicleDesign());
+        var parts=new[]{new R3PartState(Vector3Int.zero,R3PartKind.Wheel,1),
+            new R3PartState(Vector3Int.zero,R3PartKind.Wheel,.5f),new R3PartState(Vector3Int.zero,R3PartKind.Wheel,.1f)};
+        Assert.That(model.ReceiveSalvage(parts),Is.True);
+        var before=model.Inventory.Select(part=>part.Id).ToArray();
+        var filtered=(R3PartState[])Method("RewardInventoryItems").Invoke(null,new object[]{model,true});
+        Assert.That(filtered.Select(part=>part.Id),Is.EqualTo(new[]{parts[2].Id,parts[1].Id}));
+        var all=(R3PartState[])Method("RewardInventoryItems").Invoke(null,new object[]{model,false});
+        Assert.That(all.Select(part=>part.Id),Is.EqualTo(before));
+        Assert.That(model.Inventory.Select(part=>part.Id),Is.EqualTo(before));
+    }
+    [TestCase(195,3,0)] [TestCase(197,3,1)] [TestCase(200,0,1)]
+    public void MissingRewardSpaceAccountsForSelectedLootAndBonus(int stored,int loot,int expected)
+    {
+        Assert.That((int)Method("RewardInventoryMissingSlots").Invoke(null,new object[]{stored,loot}),Is.EqualTo(expected));
+    }
+    [Test] public void RewardInventoryFilterFitsNextToPageControls()
+    {
+        var pager=RectOf("PortraitRewardInventoryPager");var filter=RectOf("PortraitRewardInventoryFilter");
+        In(pager,filter,"Filtr magazynu");
+        Assert.That(filter.Overlaps(new Rect(pager.x,pager.y,110,48)),Is.False);
+        Assert.That(filter.Overlaps(new Rect(pager.x+310,pager.y,110,48)),Is.False);
     }
     static void In(Rect outer,Rect inner,string name)
     {Assert.That(outer.Contains(inner.min)&&outer.Contains(inner.max-Vector2.one),Is.True,name);}
