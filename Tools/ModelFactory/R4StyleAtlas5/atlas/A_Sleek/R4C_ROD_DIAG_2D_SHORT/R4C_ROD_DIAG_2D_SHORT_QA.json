@@ -1,0 +1,469 @@
+{
+ "id": "R4C_ROD_DIAG_2D_SHORT",
+ "style": "A",
+ "style_label": "A_Sleek",
+ "family": "connector",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "source PR #1186 (connector contract = proposal there)",
+ "source": "#1186",
+ "meshes": [
+  {
+   "object": "R4C_ROD_DIAG_2D_SHORT",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1368,
+   "vertices": 708,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4C_ROD_DIAG_2D_SHORT_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 200,
+  "vertices": 108,
+  "uv": true,
+  "material_slots": 3,
+  "ok": true
+ },
+ "triangles": 1368,
+ "triangles_lod1": 200,
+ "mesh_objects": 1,
+ "material_slots_total": 4,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.81,
+   -0.1142
+  ],
+  [
+   0.81,
+   0.26,
+   0.1142
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.264,
+   -0.8140000000000001,
+   -0.11900000000000001
+  ],
+  [
+   0.8140000000000001,
+   0.264,
+   0.1206
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "id": "P_A_left",
+   "dir": "left",
+   "kind": "rod_mini",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "center_bl": [
+    -0.26,
+    0.0,
+    0.0
+   ],
+   "normal_bl": [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   "half_m": 0.09775425
+  },
+  {
+   "id": "P_A_back",
+   "dir": "back",
+   "kind": "rod_mini",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "center_bl": [
+    0.0,
+    0.26,
+    0.0
+   ],
+   "normal_bl": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "half_m": 0.09775425
+  },
+  {
+   "id": "P_B_right",
+   "dir": "right",
+   "kind": "rod_mini",
+   "cell": [
+    1,
+    0,
+    1
+   ],
+   "center_bl": [
+    0.81,
+    -0.55,
+    0.0
+   ],
+   "normal_bl": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "half_m": 0.09775425
+  },
+  {
+   "id": "P_B_forward",
+   "dir": "forward",
+   "kind": "rod_mini",
+   "cell": [
+    1,
+    0,
+    1
+   ],
+   "center_bl": [
+    0.55,
+    -0.81,
+    0.0
+   ],
+   "normal_bl": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "half_m": 0.09775425
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "rod_mini",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "rod_mini",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "rod_mini",
+   "cell": [
+    1,
+    0,
+    1
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "forward",
+   "kind": "rod_mini",
+   "cell": [
+    1,
+    0,
+    1
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "rod_mini",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "rod_mini",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "rod_mini",
+   "cell": [
+    1,
+    0,
+    1
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "forward",
+   "kind": "rod_mini",
+   "cell": [
+    1,
+    0,
+    1
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": {
+  "source_glb": "ModelFactory/R4ConnectorRods1182/R4C_ROD_DIAG_2D_SHORT/R4C_ROD_DIAG_2D_SHORT.glb",
+  "source_sha256": "8288465b3952c1c4339a6a52c4c7775f886d3204655ae6b470bc29a62ecdda4a",
+  "empties": [
+   "Node_A",
+   "Node_B",
+   "Port_back_0_0_0",
+   "Port_forward_1_0_1",
+   "Port_left_0_0_0",
+   "Port_right_1_0_1",
+   "Socket_End",
+   "Socket_Start"
+  ],
+  "missing": [],
+  "pos_dev_mm": 0.0,
+  "rot_dev_deg": 0.0396,
+  "mesh_nodes_source": [
+   "R4C_ROD_DIAG_2D_SHORT"
+  ],
+  "mesh_nodes_missing": [],
+  "PASS": true
+ },
+ "hierarchy": {
+  "R4C_ROD_DIAG_2D_SHORT_ROOT": null,
+  "R4C_ROD_DIAG_2D_SHORT": "R4C_ROD_DIAG_2D_SHORT_ROOT",
+  "Node_A": "R4C_ROD_DIAG_2D_SHORT_ROOT",
+  "Node_B": "R4C_ROD_DIAG_2D_SHORT_ROOT",
+  "Port_back_0_0_0": "R4C_ROD_DIAG_2D_SHORT_ROOT",
+  "Port_forward_1_0_1": "R4C_ROD_DIAG_2D_SHORT_ROOT",
+  "Port_left_0_0_0": "R4C_ROD_DIAG_2D_SHORT_ROOT",
+  "Port_right_1_0_1": "R4C_ROD_DIAG_2D_SHORT_ROOT",
+  "Socket_End": "R4C_ROD_DIAG_2D_SHORT_ROOT",
+  "Socket_Start": "R4C_ROD_DIAG_2D_SHORT_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 91,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 27,
+    "end": 39,
+    "loop": false
+   },
+   {
+    "name": "Damaged",
+    "start": 41,
+    "end": 65,
+    "loop": true
+   },
+   {
+    "name": "Recover",
+    "start": 67,
+    "end": 91,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Hit": 27
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4C_ROD_DIAG_2D_SHORT"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 0.0,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Damaged",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "fluid and precise: long ease in / out, no overshoot"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 1368,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 10,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 1368,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4C_ROD_DIAG_2D_SHORT_front.jpg",
+  "R4C_ROD_DIAG_2D_SHORT_side.jpg",
+  "R4C_ROD_DIAG_2D_SHORT_top.jpg",
+  "R4C_ROD_DIAG_2D_SHORT_34.jpg",
+  "R4C_ROD_DIAG_2D_SHORT_wire.jpg",
+  "R4C_ROD_DIAG_2D_SHORT_clay.jpg",
+  "R4C_ROD_DIAG_2D_SHORT_silhouette.png"
+ ],
+ "files": {
+  "R4C_ROD_DIAG_2D_SHORT.blend": {
+   "sha256": "acadc2cb2d117af2700a8e948f3637cf2cc53ef2b100d01ecfa321d82d783880",
+   "bytes": 131175
+  },
+  "R4C_ROD_DIAG_2D_SHORT.fbx": {
+   "sha256": "f1b496a1dd6beb71d80dce67ba86cccce7fcdfa9a82055f2c88e6ff187fa9461",
+   "bytes": 154876
+  },
+  "R4C_ROD_DIAG_2D_SHORT.glb": {
+   "sha256": "62152a97c99139592c7544b25d33c86aebfa6dbb2e2186d42ee10a7f0fd4ef71",
+   "bytes": 79896
+  },
+  "R4C_ROD_DIAG_2D_SHORT_LOD1.fbx": {
+   "sha256": "f4a36ae35460d80cd1933747a218311a3bebbdd572851cc3bd4949ed85699270",
+   "bytes": 23868
+  },
+  "R4C_ROD_DIAG_2D_SHORT_LOD1.glb": {
+   "sha256": "5ddd88cf38cb5d0d3904df129551eb9d223dd3395974c32db2aa24863e048b38",
+   "bytes": 17768
+  }
+ },
+ "seconds": 1.8,
+ "blender": "5.3.0"
+}
