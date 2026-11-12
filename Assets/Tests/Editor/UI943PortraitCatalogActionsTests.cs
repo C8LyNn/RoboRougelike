@@ -212,6 +212,26 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That((string)method.Invoke(null,new object[]{creative,kind,unlocked}),Does.Contain(expected));
     }
 
+    [UnityTest] public IEnumerator CatalogShowsDamageCountAndListsBestConditionFirst()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        for(int i=0;i<4;i++)Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);
+        var original=run.VehicleModel.Inventory.ToArray();
+        original[0].Health=.55f;original[1].Health=1;original[2].Health=0;original[3].Health=1;
+        var hud=run.GetComponent<R1RunHUD>();
+        var sorted=(R3PartState[])Invoke(hud,"CatalogItemsForGroup",run.VehicleModel,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        Assert.That(sorted.Select(p=>p.Id).ToArray(),Is.EqualTo(new[]{original[1].Id,original[3].Id,original[0].Id,original[2].Id}));
+        Assert.That(run.VehicleModel.Inventory.Select(p=>p.Id).ToArray(),Is.EqualTo(original.Select(p=>p.Id).ToArray()),"Display sorting must not mutate the inventory.");
+        string caption=(string)Invoke(hud,"CatalogGroupCaption",run,R3PartKind.Armor,R4WeaponKind.Basic,null,"Pancerz");
+        Assert.That(caption,Does.Contain("× 4").And.Contain("2 uszk."));
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(sorted[0].Id),"Quick selection matches the first item shown.");
+        yield return new ExitPlayMode();
+    }
+
     [UnityTest] public IEnumerator CatalogMarksStacksWithOnlyDamagedButUsableParts()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
