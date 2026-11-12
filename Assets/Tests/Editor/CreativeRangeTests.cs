@@ -25,6 +25,21 @@ public class CreativeRangeTests
     [UnityTearDown] public IEnumerator Teardown()
     { if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();} }
 
+    [UnityTest] public IEnumerator HomeFramesVehicleWithoutLosingBuildSelection()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var item=run.VehicleModel.Inventory.Last();var garage=run.Garage;garage.ChooseInventory(item.Id);
+        garage.Zoom(-100);Assert.That(garage.Distance,Is.EqualTo(3));
+        garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.Home},Vector2.zero);
+        Assert.That(garage.Distance,Is.GreaterThanOrEqualTo(4.5f));
+        Assert.That(garage.SelectedInventoryId,Is.EqualTo(item.Id));
+        garage.Zoom(-100);
+        garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.Home,control=true},Vector2.zero);
+        Assert.That(garage.Distance,Is.EqualTo(3),"Modified keys must not trigger the shortcut.");
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator CreativeGarageStartsWithCoreAndOffersFreeParts()
     {
         var run=R1RunController.Instance;

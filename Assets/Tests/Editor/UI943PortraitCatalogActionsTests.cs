@@ -650,6 +650,37 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(canvas.Contains(input.min)&&canvas.Contains(clear.max-Vector2.one),Is.True);
     }
 
+    [TestCase(KeyCode.Alpha5,false,0)] [TestCase(KeyCode.Alpha6,false,1)]
+    [TestCase(KeyCode.Alpha7,false,2)] [TestCase(KeyCode.Alpha8,false,3)]
+    [TestCase(KeyCode.Keypad5,false,0)] [TestCase(KeyCode.Keypad8,false,3)]
+    [TestCase(KeyCode.Alpha5,true,null)] [TestCase(KeyCode.Alpha4,false,null)]
+    public void CategoryShortcutsIgnoreModifiersAndOtherKeys(KeyCode key,bool modified,object expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("QuickCategoryShortcut",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);Assert.That(method.Invoke(null,new object[]{key,modified}),Is.EqualTo(expected));
+    }
+
+    [UnityTest] public IEnumerator CategoryShortcutClearsSearchWithoutBuyingAndIgnoresTyping()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var hud=run.GetComponent<R1RunHUD>();Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        Invoke(hud,"ApplyQuickSearch",run,"pancerz");int count=run.VehicleModel.Inventory.Count,scrap=run.VehicleModel.Scrap;
+        var key=new Event{type=EventType.KeyDown,keyCode=KeyCode.Alpha6};
+        Assert.That((bool)Invoke(hud,"HandleQuickGarageKey",run,key,false),Is.True);
+        Assert.That((int)Field(hud,"quickPartCategory"),Is.EqualTo(1));Assert.That((string)Field(hud,"quickPartSearch"),Is.Empty);
+        Assert.That(run.Garage.SelectedInventoryId,Is.Null);Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(count));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        key=new Event{type=EventType.KeyDown,keyCode=KeyCode.Alpha7};
+        Assert.That((bool)Invoke(hud,"HandleQuickGarageKey",run,key,true),Is.False,"Typing must not switch categories.");
+        Assert.That((int)Field(hud,"quickPartCategory"),Is.EqualTo(1));
+        key=new Event{type=EventType.KeyDown,keyCode=KeyCode.Alpha7,control=true};
+        Assert.That((bool)Invoke(hud,"HandleQuickGarageKey",run,key,false),Is.False);
+        Assert.That((int)Field(hud,"quickPartCategory"),Is.EqualTo(1));
+        yield return new ExitPlayMode();
+    }
+
     [TestCase(EventType.KeyDown,KeyCode.Escape,"GarageQuickSearch",true,true)]
     [TestCase(EventType.KeyDown,KeyCode.Return,"GarageQuickSearch",true,true)]
     [TestCase(EventType.KeyDown,KeyCode.KeypadEnter,"GarageQuickSearch",true,true)]

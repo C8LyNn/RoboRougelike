@@ -103,6 +103,32 @@ namespace RoboRougelike.R1
         static bool GarageSearchExitKey(EventType type,KeyCode key,string focused,bool active)=>
             active&&focused==QuickSearchControlName&&type==EventType.KeyDown&&
             (key==KeyCode.Escape||key==KeyCode.Return||key==KeyCode.KeypadEnter);
+        static int? QuickCategoryShortcut(KeyCode key,bool modified)
+        {
+            if(modified)return null;
+            switch(key)
+            {
+                case KeyCode.Alpha5:case KeyCode.Keypad5:return 0;
+                case KeyCode.Alpha6:case KeyCode.Keypad6:return 1;
+                case KeyCode.Alpha7:case KeyCode.Keypad7:return 2;
+                case KeyCode.Alpha8:case KeyCode.Keypad8:return 3;
+                default:return null;
+            }
+        }
+        bool HandleQuickGarageKey(R1RunController run,Event current,bool textFocused)
+        {
+            if(textFocused||current.type!=EventType.KeyDown)return false;
+            bool modified=current.shift||current.control||current.alt||current.command;
+            var category=QuickCategoryShortcut(current.keyCode,modified);
+            if(category.HasValue)
+            {
+                ApplyQuickSearch(run,string.Empty);SelectQuickCategory(run,category.Value);
+                current.Use();return true;
+            }
+            if(!modified&&(current.keyCode==KeyCode.Slash||current.keyCode==KeyCode.KeypadDivide))
+            {GUI.FocusControl(QuickSearchControlName);current.Use();return true;}
+            return false;
+        }
 
         static void QuickSearchRects(bool portrait,out Rect input,out Rect clear)
         {
@@ -117,7 +143,7 @@ namespace RoboRougelike.R1
             GUI.SetNextControlName(QuickSearchControlName);
             string next=GUI.TextField(rect,quickPartSearch,64);
             if(string.IsNullOrEmpty(next)&&GUI.GetNameOfFocusedControl()!=QuickSearchControlName)
-            {var previous=GUI.color;GUI.color=new Color(.62f,.7f,.75f,1);GUI.Label(new Rect(rect.x+5,rect.y,rect.width-10,rect.height),"Szukaj",small);GUI.color=previous;}
+            {var previous=GUI.color;GUI.color=new Color(.62f,.7f,.75f,1);GUI.Label(new Rect(rect.x+5,rect.y,rect.width-10,rect.height),"Szukaj /",small);GUI.color=previous;}
             if(GUI.Button(clear,"×",compactButton))next=string.Empty;
             ApplyQuickSearch(run,next);
         }
@@ -446,7 +472,7 @@ namespace RoboRougelike.R1
             var model=run.VehicleModel;
             ClearMissingOwnedSelection(run);
 
-            string[] categories={"Bloki","Koła","Broń","Moduły"};
+            string[] categories={"5 Bloki","6 Koła","7 Broń","8 Moduły"};
             if(quickCategoryButton==null)quickCategoryButton=new GUIStyle(compactButton){fontSize=13,wordWrap=false,padding=new RectOffset(1,1,2,2)};
             float categoryWidth=(area.width-12)/4;
             if(string.IsNullOrWhiteSpace(quickPartSearch))
@@ -551,7 +577,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(12,605,245,42),model.CreativeMode?$"Magazyn {model.Inventory.Count} • naprawy":$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
             if(garageShortcutLabel==null)garageShortcutLabel=new GUIStyle(small){fontSize=14,wordWrap=false};
-            GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • ŚPM: wybierz typ\nPPM przeciągnij: widok • U: spód\nQ/E R/F Z/X: obrót • Shift: część\nCtrl+LPM: napraw",garageShortcutLabel);
+            GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • ŚPM: wybierz typ\nPPM przeciągnij: widok • U: spód\nQ/E R/F Z/X: obrót • Shift: część\nCtrl+LPM: napraw • Home: widok",garageShortcutLabel);
             string garageFeedback=SimpleGarageFeedback(run);
             GUI.Label(new Rect(286,655,570,58),garageFeedback,small);
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);
@@ -621,7 +647,7 @@ namespace RoboRougelike.R1
             string garageFeedback=SimpleGarageFeedback(run);
             GUI.Label(new Rect(24,878,720,74),garageFeedback+
                 "\nPPM: zdejmij • ŚPM: wybierz typ • przeciągnij PPM: obrót widoku"+
-                "\nQ/E R/F Z/X: obrót • Shift + klawisz: zamontowana część • Ctrl + LPM: napraw",small);
+                "\nQ/E R/F Z/X: obrót • Shift: część • Ctrl+LPM: napraw • Home: widok",small);
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);
             if(run.MapEditorSession){if(GUI.Button(new Rect(24,960,350,44),"Wróć do edytora",compactButton))run.ReturnToMapEditorFromGarage();}
             else if(GUI.Button(new Rect(24,960,350,44),"Testuj pojazd",compactButton))run.EnterTestRange();
