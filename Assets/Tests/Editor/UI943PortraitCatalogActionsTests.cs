@@ -200,6 +200,29 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That((string)method.Invoke(null,new object[]{"Koło",count,usable,unlocked}),Is.EqualTo(expected));
     }
 
+    [UnityTest] public IEnumerator EmptyBonusStackStillNamesItsMountedPart()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        var definition=run.Definition.Upgrades.First(item=>R3VehicleModel.CreateBonusReward(item)!=null);
+        Assert.That(run.VehicleModel.ReceiveBonuses(new[]{definition}),Is.True);
+        var bonus=run.VehicleModel.Inventory.Last();var hud=run.GetComponent<R1RunHUD>();
+        var key=typeof(R1RunHUD).GetMethod("CatalogBonusKey",BindingFlags.Static|BindingFlags.NonPublic);
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.BonusModule,R4WeaponKind.Basic,key.Invoke(null,new object[]{bonus}));
+        var garage=run.Garage;yield return null;bool found=false;
+        foreach(var socket in garage.AvailableMountPoints.ToArray())
+        {
+            var normal=socket.Rotation*Vector3.forward;
+            if(garage.Point(new Ray(socket.Position+normal*2,-normal))&&garage.PreviewValid){found=true;break;}
+        }
+        Assert.That(found,Is.True);Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);
+        Assert.That(garage.SelectedInventoryId,Is.Null);
+        var text=(string)Invoke(hud,"GarageSelectionSummary",run,null,null);
+        Assert.That(text,Does.Contain(bonus.UpgradeTitle).And.Contain("nagrod"));
+        yield return new ExitPlayMode();
+    }
+
     [TestCase(true,R3PartKind.Armor,true,"za darmo")]
     [TestCase(true,R3PartKind.BonusModule,true,"za darmo")]
     [TestCase(false,R3PartKind.Gun,true,"Kup")]
@@ -469,6 +492,39 @@ public sealed class UI943PortraitCatalogActionsTests
         var feedback=(string)Invoke(run.GetComponent<R1RunHUD>(),"SimpleGarageFeedback",run);
         Assert.That(feedback,Does.Contain(run.VehicleModel.DeployError));
         yield return new ExitPlayMode();
+    }
+
+    [UnityTest] public IEnumerator GarageSelectionSummaryNamesThePartAndExplainsNextAction()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        var hud=run.GetComponent<R1RunHUD>();
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        var text=(string)Invoke(hud,"GarageSelectionSummary",run,null,null);
+        Assert.That(text,Does.Contain("Pancerz").And.Contain("Kup"));
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var item=run.VehicleModel.Inventory.Last();item.Health=.6f;
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        text=(string)Invoke(hud,"GarageSelectionSummary",run,null,item);
+        Assert.That(text,Does.Contain("Pancerz").And.Contain("60%"));
+        item.Health=0;Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        text=(string)Invoke(hud,"GarageSelectionSummary",run,null,null);
+        Assert.That(text,Does.Contain("Pancerz").And.Contain("napraw"));
+        yield return new ExitPlayMode();
+    }
+
+    [TestCase(false,R3PartKind.BonusModule,true,"nagród")]
+    [TestCase(false,R3PartKind.Gun,false,"odblokuj")]
+    [TestCase(false,R3PartKind.Armor,true,"Kup")]
+    [TestCase(true,R3PartKind.Armor,true,"darmow")]
+    public void EmptyMountedStackSuggestsAppropriateSource(bool creative,R3PartKind kind,bool unlocked,string expected)
+    {
+        var method=typeof(R3GarageView).GetMethod("ExhaustedStackFeedback",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        var text=(string)method.Invoke(null,new object[]{creative,kind,unlocked});
+        Assert.That(text.ToLowerInvariant(),Does.Contain(expected.ToLowerInvariant()));
+        if(kind==R3PartKind.BonusModule)Assert.That(text.ToLowerInvariant(),Does.Not.Contain("kup"));
     }
 
     [UnityTest] public IEnumerator WreckStackPointsToQuickRepairWithoutOpeningCatalog()
