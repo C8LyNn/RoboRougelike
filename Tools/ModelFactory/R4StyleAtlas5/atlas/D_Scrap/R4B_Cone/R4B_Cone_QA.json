@@ -1,0 +1,315 @@
+{
+ "id": "R4B_Cone",
+ "style": "D",
+ "style_label": "D_Scrap",
+ "family": "block",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "APPROVED",
+ "source": "#963",
+ "meshes": [
+  {
+   "object": "R4B_Cone",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 696,
+   "vertices": 356,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4B_Cone_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 120,
+  "vertices": 62,
+  "uv": true,
+  "material_slots": 1,
+  "ok": true
+ },
+ "triangles": 696,
+ "triangles_lod1": 120,
+ "mesh_objects": 1,
+ "material_slots_total": 4,
+ "materials": [
+  "R4P_Base",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.255,
+   -0.255,
+   -0.26
+  ],
+  [
+   0.255,
+   0.255,
+   0.2337
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": {
+  "source_glb": "ModelFactory/R4Blocks/R4B_Cone/R4B_Cone.glb",
+  "source_sha256": "f4beaf22dbbb8dc0e0aa729cc388890bccf3d5c7a34e63ed80547cf75cbd5c12",
+  "empties": [
+   "Port_down_000_part",
+   "Socket_Mount"
+  ],
+  "missing": [],
+  "pos_dev_mm": 0.0,
+  "rot_dev_deg": 0.0,
+  "mesh_nodes_source": [
+   "R4B_Cone"
+  ],
+  "mesh_nodes_missing": [],
+  "PASS": true
+ },
+ "hierarchy": {
+  "R4B_Cone_ROOT": null,
+  "R4B_Cone": "R4B_Cone_ROOT",
+  "Port_down_000_part": "R4B_Cone_ROOT",
+  "Socket_Mount": "R4B_Cone_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 91,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 27,
+    "end": 39,
+    "loop": false
+   },
+   {
+    "name": "Damaged",
+    "start": 41,
+    "end": 65,
+    "loop": true
+   },
+   {
+    "name": "Recover",
+    "start": 67,
+    "end": 91,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Hit": 27
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4B_Cone"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 2.575,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Damaged",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "raw and uneven: stutter, rattle, slight drift (seeded)"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 696,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 4,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0396,
+   "worst": [
+    79,
+    "R4B_Cone",
+    0.0,
+    0.04
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 696,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0396,
+   "worst": [
+    79,
+    "R4B_Cone",
+    0.0,
+    0.04
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4B_Cone_front.jpg",
+  "R4B_Cone_side.jpg",
+  "R4B_Cone_top.jpg",
+  "R4B_Cone_34.jpg",
+  "R4B_Cone_wire.jpg",
+  "R4B_Cone_clay.jpg",
+  "R4B_Cone_silhouette.png"
+ ],
+ "files": {
+  "R4B_Cone.blend": {
+   "sha256": "74a3fa142194fdd82c235bc8ba021cbfd8cca2d20e8723dcf1378e6b87560233",
+   "bytes": 115017
+  },
+  "R4B_Cone.fbx": {
+   "sha256": "d06f49da6850c83bfc7bb6c280819a87bd761f719e2992f6e96b3bcf036600a5",
+   "bytes": 76876
+  },
+  "R4B_Cone.glb": {
+   "sha256": "ce73d09b02a9e6120fe09fd92d16bf85f2b80858188ce82dd65af7840a08edaa",
+   "bytes": 52572
+  },
+  "R4B_Cone_LOD1.fbx": {
+   "sha256": "e7a51fe1be5cb1d287f1a4181153f5f6cf9ac404daaa76fe12ea52ff9cb11d1d",
+   "bytes": 18572
+  },
+  "R4B_Cone_LOD1.glb": {
+   "sha256": "f672460bded986e9fe34bbf3df5cd39a4b61cf769e7ae3cb779e58b9cc7dd513",
+   "bytes": 25740
+  }
+ },
+ "seconds": 1.7,
+ "blender": "5.3.0"
+}

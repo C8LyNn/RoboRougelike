@@ -1,0 +1,787 @@
+{
+ "id": "R4C_STRUT_SHORT",
+ "style": "D",
+ "style_label": "D_Scrap",
+ "family": "connector",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "source PR #1186 (connector contract = proposal there)",
+ "source": "#1186",
+ "meshes": [
+  {
+   "object": "R4C_STRUT_SHORT",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1400,
+   "vertices": 772,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4C_STRUT_SHORT_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 200,
+  "vertices": 108,
+  "uv": true,
+  "material_slots": 3,
+  "ok": true
+ },
+ "triangles": 1400,
+ "triangles_lod1": 200,
+ "mesh_objects": 1,
+ "material_slots_total": 4,
+ "materials": [
+  "R4P_Base",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.81,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.2648,
+   -0.8148,
+   -0.2648
+  ],
+  [
+   0.2648,
+   0.2648,
+   0.2648
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "id": "P_A_right",
+   "dir": "right",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "center_bl": [
+    0.26,
+    0.0,
+    0.0
+   ],
+   "normal_bl": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_A_left",
+   "dir": "left",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "center_bl": [
+    -0.26,
+    0.0,
+    0.0
+   ],
+   "normal_bl": [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_A_up",
+   "dir": "up",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "center_bl": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "normal_bl": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_A_down",
+   "dir": "down",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "center_bl": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "normal_bl": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_A_back",
+   "dir": "back",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "center_bl": [
+    0.0,
+    0.26,
+    0.0
+   ],
+   "normal_bl": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_B_right",
+   "dir": "right",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "center_bl": [
+    0.26,
+    -0.55,
+    0.0
+   ],
+   "normal_bl": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_B_left",
+   "dir": "left",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "center_bl": [
+    -0.26,
+    -0.55,
+    0.0
+   ],
+   "normal_bl": [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_B_up",
+   "dir": "up",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "center_bl": [
+    0.0,
+    -0.55,
+    0.26
+   ],
+   "normal_bl": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_B_down",
+   "dir": "down",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "center_bl": [
+    0.0,
+    -0.55,
+    -0.26
+   ],
+   "normal_bl": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_B_forward",
+   "dir": "forward",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "center_bl": [
+    0.0,
+    -0.81,
+    0.0
+   ],
+   "normal_bl": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "half_m": 0.219725
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "forward",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "forward",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": {
+  "source_glb": "ModelFactory/R4ConnectorRods1182/R4C_STRUT_SHORT/R4C_STRUT_SHORT.glb",
+  "source_sha256": "5ea49cdceb7dc47b3f5e5f366b06dbcf02cb533d49d6d3a014afa543ab2b2a6b",
+  "empties": [
+   "Node_A",
+   "Node_B",
+   "Port_back_0_0_0",
+   "Port_down_0_0_0",
+   "Port_down_0_0_1",
+   "Port_forward_0_0_1",
+   "Port_left_0_0_0",
+   "Port_left_0_0_1",
+   "Port_right_0_0_0",
+   "Port_right_0_0_1",
+   "Port_up_0_0_0",
+   "Port_up_0_0_1",
+   "Socket_End",
+   "Socket_Start"
+  ],
+  "missing": [],
+  "pos_dev_mm": 0.0,
+  "rot_dev_deg": 0.0396,
+  "mesh_nodes_source": [
+   "R4C_STRUT_SHORT"
+  ],
+  "mesh_nodes_missing": [],
+  "PASS": true
+ },
+ "hierarchy": {
+  "R4C_STRUT_SHORT_ROOT": null,
+  "R4C_STRUT_SHORT": "R4C_STRUT_SHORT_ROOT",
+  "Node_A": "R4C_STRUT_SHORT_ROOT",
+  "Node_B": "R4C_STRUT_SHORT_ROOT",
+  "Port_back_0_0_0": "R4C_STRUT_SHORT_ROOT",
+  "Port_down_0_0_0": "R4C_STRUT_SHORT_ROOT",
+  "Port_down_0_0_1": "R4C_STRUT_SHORT_ROOT",
+  "Port_forward_0_0_1": "R4C_STRUT_SHORT_ROOT",
+  "Port_left_0_0_0": "R4C_STRUT_SHORT_ROOT",
+  "Port_left_0_0_1": "R4C_STRUT_SHORT_ROOT",
+  "Port_right_0_0_0": "R4C_STRUT_SHORT_ROOT",
+  "Port_right_0_0_1": "R4C_STRUT_SHORT_ROOT",
+  "Port_up_0_0_0": "R4C_STRUT_SHORT_ROOT",
+  "Port_up_0_0_1": "R4C_STRUT_SHORT_ROOT",
+  "Socket_End": "R4C_STRUT_SHORT_ROOT",
+  "Socket_Start": "R4C_STRUT_SHORT_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 91,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 27,
+    "end": 39,
+    "loop": false
+   },
+   {
+    "name": "Damaged",
+    "start": 41,
+    "end": 65,
+    "loop": true
+   },
+   {
+    "name": "Recover",
+    "start": 67,
+    "end": 91,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Hit": 27
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4C_STRUT_SHORT"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 0.0,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Damaged",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "raw and uneven: stutter, rattle, slight drift (seeded)"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 1400,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 16,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 1400,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4C_STRUT_SHORT_front.jpg",
+  "R4C_STRUT_SHORT_side.jpg",
+  "R4C_STRUT_SHORT_top.jpg",
+  "R4C_STRUT_SHORT_34.jpg",
+  "R4C_STRUT_SHORT_wire.jpg",
+  "R4C_STRUT_SHORT_clay.jpg",
+  "R4C_STRUT_SHORT_silhouette.png"
+ ],
+ "files": {
+  "R4C_STRUT_SHORT.blend": {
+   "sha256": "2e9ba3310dca8e3c3e1b089202aac690c031640715ea3ae82f00bdf64abfd614",
+   "bytes": 130982
+  },
+  "R4C_STRUT_SHORT.fbx": {
+   "sha256": "a5172df0ff486cb51beb2ce106f616ee9c100ab7adf97bd2908d75119cc73c4c",
+   "bytes": 219340
+  },
+  "R4C_STRUT_SHORT.glb": {
+   "sha256": "d844152077fe21fc1674a402dae5dd7c68502d73f4b3b00897f15ce9d841bdd0",
+   "bytes": 96588
+  },
+  "R4C_STRUT_SHORT_LOD1.fbx": {
+   "sha256": "22bf5034f028738f78474d67b2859ab89c0514bdeb41cbdde38aa3e2a0d410f0",
+   "bytes": 24492
+  },
+  "R4C_STRUT_SHORT_LOD1.glb": {
+   "sha256": "9e05cff488f382bc53c583a6ee152182aa8bd7bf5c7f356a5fcd7df21894f370",
+   "bytes": 35496
+  }
+ },
+ "seconds": 1.9,
+ "blender": "5.3.0"
+}
