@@ -596,30 +596,14 @@ namespace RoboRougelike.R3
                         (p.Kind!=R3PartKind.Armor||p.ArmorShape==mounted.ArmorShape)&&
                         (p.Kind!=R3PartKind.BonusModule||R3VehicleModel.SameBonusType(p,mounted))).ToArray();
                     int tier=R3VehicleModel.NormalizedTier(mounted.Tier);
-                    var sameTier=remaining.Where(p=>R3VehicleModel.NormalizedTier(p.Tier)==tier).ToArray();
+                    var sameTier=remaining.Where(p=>R3VehicleModel.SameMountVariant(p,mounted)).ToArray();
                     var next=sameTier.Where(p=>p.Health>0).OrderByDescending(p=>p.Health).FirstOrDefault();
                     // Creative mode supplies another identical piece so one selection
                     // supports continuous building without repeated purchases.
-                    if(next==null&&run.VehicleModel.CreativeMode)
-                    {
-                        bool added=mounted.Kind==R3PartKind.BonusModule?run.AddCreativeBonus(mounted.UpgradeId):
-                            run.GaragePurchase(mounted.Kind,mounted.Weapon,mounted.WheelStyle,mounted.ArmorShape);
-                        if(added)
-                        {
-                            next=run.VehicleModel.Inventory.LastOrDefault();
-                            if(next!=null)
-                            {
-                                next.Tier=tier;next.FootprintRevision=mounted.FootprintRevision;
-                                next.ContactMask=R3VehicleModel.StoredWheelContacts(mounted);
-                                if(next.Kind==R3PartKind.BonusModule)
-                                {next.UpgradeId=mounted.UpgradeId;next.UpgradeTitle=mounted.UpgradeTitle;next.UpgradeDescription=mounted.UpgradeDescription;
-                                 next.UpgradeEffect=mounted.UpgradeEffect;next.UpgradeAmount=mounted.UpgradeAmount;}
-                            }
-                        }
-                    }
+                    if(next==null&&run.CreativeWorkshop)run.AddCreativeEquivalent(mounted,out next);
                     SelectedInventoryId=next?.Id;
                     Message=next==null&&remaining.Length>sameTier.Length?
-                        $"Zamontowano. Pozostałe części mają inny poziom lub wymagają naprawy — wybierz egzemplarz w magazynie.":
+                        "Zamontowano. Pozostałe części mają inny poziom, punkty mocowania lub wymagają naprawy — wybierz egzemplarz w magazynie.":
                         MountedStackFeedback(sameTier.Length,next!=null);
                 }
             }
