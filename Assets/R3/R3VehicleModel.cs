@@ -552,6 +552,8 @@ namespace RoboRougelike.R3
             (a.Kind!=R3PartKind.Wheel||(a.WheelStyle==b.WheelStyle&&a.FootprintRevision==b.FootprintRevision))&&
             (a.Kind!=R3PartKind.Armor||a.ArmorShape==b.ArmorShape)&&
             (a.Kind!=R3PartKind.BonusModule||SameBonusType(a,b));
+        public static bool SameMountVariant(R3PartState a,R3PartState b)=>
+            SameFusionType(a,b)&&PlacementContacts(a.Kind,a)==PlacementContacts(b.Kind,b);
         public bool FuseInventory(IEnumerable<string> ids)
         {
             if(ids==null)return false;

@@ -546,6 +546,47 @@ public sealed class UI943PortraitCatalogActionsTests
         yield return new ExitPlayMode();
     }
 
+    [Test] public void MountVariantKeepsSideWheelsSelectableOnEitherSide()
+    {
+        var left=new R3PartState(default,R3PartKind.Wheel){ContactMask=R3MountingGrid.FaceBit(Vector3Int.left)};
+        var right=new R3PartState(default,R3PartKind.Wheel){ContactMask=R3MountingGrid.FaceBit(Vector3Int.right)};
+        Assert.That(R3VehicleModel.SameMountVariant(left,right),Is.True,"Stored side wheels can connect on either side.");
+        right.Tier=2;
+        Assert.That(R3VehicleModel.SameMountVariant(left,right),Is.False,"Tier is still part of the intended variant.");
+    }
+
+    [UnityTest] public IEnumerator CopyMountedPartRespectsItsTierWithoutBuying()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        int count=run.VehicleModel.Inventory.Count;
+        var lower=run.VehicleModel.Inventory[count-2];var matching=run.VehicleModel.Inventory[count-1];
+        lower.Tier=1;lower.Health=1;matching.Tier=2;matching.Health=.4f;
+        R3PartState mounted=null;
+        foreach(var part in run.VehicleModel.Parts)if(part.Kind==R3PartKind.Armor&&part.ArmorShape==lower.ArmorShape){mounted=part;break;}
+        Assert.That(mounted,Is.Not.Null);mounted.Tier=2;
+        var hud=run.GetComponent<R1RunHUD>();int scrap=run.VehicleModel.Scrap;
+        Assert.That(hud.SelectMountedPartForBuilding(run,mounted),Is.True);
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(matching.Id),"Match tier before preferring more HP.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(count));
+        int oldMask=matching.ContactMask;
+        matching.ContactMask=mounted.ContactMask==R3MountingGrid.FaceBit(Vector3Int.down)?R3MountingGrid.AllFaces:R3MountingGrid.FaceBit(Vector3Int.down);
+        Assert.That(hud.SelectMountedPartForBuilding(run,mounted),Is.False,"A part with different mounting contacts is not an equivalent copy.");
+        Assert.That(run.Garage.SelectedInventoryId,Is.Null);Assert.That(run.Garage.Message,Does.Contain("mocowania"));
+        matching.ContactMask=oldMask;
+        matching.Health=0;
+        Assert.That(hud.SelectMountedPartForBuilding(run,mounted),Is.False);
+        Assert.That(run.Garage.SelectedInventoryId,Is.Null,"Do not silently substitute the healthy lower tier.");
+        Assert.That(run.Garage.Message,Does.Contain("T2").And.Contain("napraw"));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(lower.Tier,Is.EqualTo(1));
+        var copy=typeof(R1RunController).GetMethod("AddCreativeEquivalent");Assert.That(copy,Is.Not.Null);
+        var args=new object[]{mounted,null};Assert.That((bool)copy.Invoke(run,args),Is.False,"The expedition cannot mint free parts.");
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(count));
+        yield return new ExitPlayMode();
+    }
+
     [UnityTest] public IEnumerator CopyMountedPartSelectsOwnedInstanceWithoutSpending()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();

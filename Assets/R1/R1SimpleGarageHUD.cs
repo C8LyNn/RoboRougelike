@@ -361,14 +361,28 @@ namespace RoboRougelike.R1
             if(run?.Garage==null||run.VehicleModel==null||mounted==null||mounted.Health<=0)return false;
             var entry=BuildCatalogEntries(run.VehicleModel).FirstOrDefault(candidate=>
                 InCatalogGroup(mounted,candidate.Kind,candidate.Weapon,candidate.Group));
-            if(entry.Name==null){run.Garage.Message="Tego elementu nie można wybrać z katalogu.";return false;}
+            if(entry.Name==null){run.Garage.Message=mounted.Kind==R3PartKind.BonusModule?
+                "Brak kopii tego bonusu w magazynie.":"Tego elementu nie można wybrać z katalogu.";return false;}
             quickPartCategory=QuickCategoryFor(entry.Kind);quickPartsScroll=Vector2.zero;
             if(!CatalogNameMatches(entry.Name,quickPartSearch))quickPartSearch=string.Empty;
             if(quickOwnedOnly&&!CatalogEntryOwned(run.VehicleModel,entry))quickOwnedOnly=false;
-            SelectQuickPart(run,entry.Kind,entry.Weapon,entry.Group);
-            if(string.IsNullOrEmpty(run.Garage.SelectedInventoryId))return false;
+            catalogGroup=entry.Kind;catalogWeapon=entry.Weapon;catalogBonusId=entry.Group;
+            var garage=run.Garage;garage.SelectedPart=entry.Kind;garage.SelectedWeapon=entry.Weapon;garage.UseInventory=true;
+            var items=CatalogItemsForGroup(run.VehicleModel,entry.Kind,entry.Weapon,entry.Group);
+            var matching=items.FirstOrDefault(p=>p.Health>0&&R3VehicleModel.SameMountVariant(p,mounted));
+            if(matching==null&&run.CreativeWorkshop)run.AddCreativeEquivalent(mounted,out matching);
+            if(matching==null)
+            {
+                garage.SelectedInventoryId=null;garage.SetTool(R41GarageTool.Mount);
+                int tier=R3VehicleModel.NormalizedTier(mounted.Tier);
+                garage.Message=items.Any(p=>p.Health<=0&&R3VehicleModel.SameMountVariant(p,mounted))?
+                    $"Brak sprawnej części T{tier}. Użyj naprawy poniżej lub wybierz egzemplarz w magazynie.":
+                    $"Brak części T{tier} o tych punktach mocowania lub w tym wariancie. Wybierz inny egzemplarz w magazynie.";
+                return false;
+            }
+            garage.ChooseInventory(matching.Id);
             run.Garage.CopyMountedRotation(mounted);
-            run.Garage.Message="Wybrano ten typ części. Kliknij miejsce montażu.";
+            run.Garage.Message=$"Wybrano część T{R3VehicleModel.NormalizedTier(matching.Tier)}. Kliknij miejsce montażu.";
             return true;
         }
 

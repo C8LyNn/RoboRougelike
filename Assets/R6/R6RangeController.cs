@@ -34,6 +34,23 @@ namespace RoboRougelike.R1
             var bonus=System.Array.Find(Definition.Upgrades,item=>item!=null&&item.Id==id);
             return bonus!=null&&VehicleModel.ReceiveBonuses(new[]{bonus});
         }
+        public bool AddCreativeEquivalent(R3PartState source,out R3PartState created)
+        {
+            created=null;
+            if(!CreativeWorkshop||Transitioning||Progress?.State!=R1RunState.Garage||VehicleModel==null||
+               source==null||source.Kind==R3PartKind.Core||source.Health<=0||
+               !VehicleModel.Parts.Contains(source)||!R3VehicleModel.ValidEconomicPart(source))return false;
+            bool added=source.Kind==R3PartKind.BonusModule?AddCreativeBonus(source.UpgradeId):
+                GaragePurchase(source.Kind,source.Weapon,source.WheelStyle,source.ArmorShape);
+            if(!added)return false;
+            created=VehicleModel.Inventory[VehicleModel.Inventory.Count-1];
+            created.Tier=R3VehicleModel.NormalizedTier(source.Tier);created.FootprintRevision=source.FootprintRevision;
+            created.ContactMask=R3VehicleModel.StoredWheelContacts(source);
+            if(created.Kind==R3PartKind.BonusModule)
+            {created.UpgradeId=source.UpgradeId;created.UpgradeTitle=source.UpgradeTitle;created.UpgradeDescription=source.UpgradeDescription;
+             created.UpgradeEffect=source.UpgradeEffect;created.UpgradeAmount=source.UpgradeAmount;}
+            return true;
+        }
 
         public bool OpenSandboxGarage()
         {

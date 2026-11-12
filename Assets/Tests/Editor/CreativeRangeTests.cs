@@ -159,6 +159,27 @@ public class CreativeRangeTests
         Assert.That(GameObject.Find("P12_Ground"),Is.Not.Null);
     }
 
+    [UnityTest] public IEnumerator CreativeCopyFromRayCreatesCorrectTierWithoutChangingExistingParts()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        Assert.That(run.GarageBuy(Vector3Int.up,R3PartKind.Armor,new Vector3Int(0,1,0)),Is.True);
+        var source=run.VehicleModel.At(Vector3Int.up);source.Tier=2;
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var lower=run.VehicleModel.Inventory.Last();string lowerId=lower.Id;
+        yield return null;Physics.SyncTransforms();
+        var origin=run.Player.transform.TransformPoint(new Vector3(0,4,0));
+        var ray=new Ray(origin,run.Player.transform.TransformDirection(Vector3.down));
+        Assert.That(run.Garage.SelectPartFromRay(ray),Is.True);
+        R3PartState selected=null;
+        foreach(var item in run.VehicleModel.Inventory)if(item.Id==run.Garage.SelectedInventoryId){selected=item;break;}
+        Assert.That(selected,Is.Not.Null);Assert.That(selected.Tier,Is.EqualTo(2));
+        Assert.That(selected.Id,Is.Not.EqualTo(lowerId));Assert.That(lower.Tier,Is.EqualTo(1));
+        Assert.That(run.Garage.SelectedRotation,Is.EqualTo(source.RotationQuarterTurns));
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(2));Assert.That(run.VehicleModel.Scrap,Is.Zero);
+        Assert.That(run.Garage.SelectPartFromRay(ray),Is.True);
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(2),"Re-selecting must not mint duplicates.");
+    }
+
     [UnityTest] public IEnumerator CreativeRepeatedPlacementPreservesSelectedTier()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
@@ -180,12 +201,15 @@ public class CreativeRangeTests
         Assert.That(run.AddCreativeBonus(definition.Id),Is.True);
         var first=run.VehicleModel.Inventory.Last();first.Tier=3;
         first.ContactMask=R3MountingGrid.FaceBit(Vector3Int.down);string id=first.Id;
+        Assert.That(run.AddCreativeBonus(definition.Id),Is.True);
+        var other=run.VehicleModel.Inventory.Last();other.Tier=3;
         var garage=run.Garage;garage.ChooseInventory(id);garage.Select(Vector3Int.up);
         Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
         Assert.That(garage.ClickTarget(),Is.True,garage.Message);
         R3PartState next=null;
         foreach(var item in run.VehicleModel.Inventory)if(item.Id==garage.SelectedInventoryId){next=item;break;}
         Assert.That(next,Is.Not.Null);Assert.That(next.Id,Is.Not.EqualTo(id));Assert.That(next.Tier,Is.EqualTo(3));
+        Assert.That(next.Id,Is.Not.EqualTo(other.Id),"A different socket mask must not be selected silently.");
         Assert.That(R3VehicleModel.SameBonusType(first,next),Is.True);
         Assert.That(next.ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.down)));
         Assert.That(run.VehicleModel.Scrap,Is.Zero);
