@@ -10,6 +10,8 @@ namespace RoboRougelike.R1
         int weaponStatusPage;
         bool creativeEnemyMenu;
         string creativeEnemyMessage;
+        internal bool CloseCreativeEnemyMenu()
+        {if(!creativeEnemyMenu)return false;creativeEnemyMenu=false;return true;}
         void DrawCreativeEnemyMenu(R1RunController run)
         {
             Panel(new Rect(190,115,900,550));
@@ -19,12 +21,13 @@ namespace RoboRougelike.R1
             string[] names={"Zwiadowca","Taranujący","Strzelec","Osaczający"};
             for(int i=0;i<types.Length;i++)
                 if(GUI.Button(new Rect(230+(i%2)*420,280+(i/2)*65,395,52),names[i],button))
-                    creativeEnemyMessage=run.SpawnCreativeEnemy(types[i])?"Przeciwnik dodany.":"Nie znaleziono wolnego miejsca w pobliżu.";
+                    creativeEnemyMessage=run.SpawnCreativeEnemy(types[i])?names[i]+" dodany.":"Nie udało się dodać przeciwnika. Sprawdź wolne miejsce.";
             var range=run.GetComponent<R6TestRange>();
             if(GUI.Button(new Rect(230,430,395,52),"Usuń przeciwników",button))
             {run.ClearCreativeEnemies();creativeEnemyMessage="Usunięto przeciwników.";}
             if(GUI.Button(new Rect(650,430,400,52),"Wróć",button))creativeEnemyMenu=false;
-            GUI.Label(new Rect(230,505,820,55),$"Aktywni: {range?.CreativeEnemyCount??0} • {creativeEnemyMessage}",small);
+            GUI.Label(new Rect(230,505,820,55),$"Przeciwnicy: {range?.CreativeEnemyCount??0}"+
+                (string.IsNullOrEmpty(creativeEnemyMessage)?"":" • "+creativeEnemyMessage),small);
         }
         private static string ManualReloadAction(int ammo,int capacity,float reloadReadyAt,float now,bool available)
             =>!available?"niedostępne":reloadReadyAt>now?"ładowanie":ammo>=capacity?"pełny":"T przeładuj";
@@ -85,7 +88,8 @@ namespace RoboRougelike.R1
             DrawAimReticle(run);
             Panel(new Rect(18,625,1244,78));
             DrawFeedback();
-            GUI.Label(new Rect(34,635,1200,60),"WASD — napęd • Omni/Hover: A/D — bok, Z/C — obrót • LPM/PPM — ogień • R — reset • Esc — menu"+
+            GUI.Label(new Rect(34,635,1200,60),"WASD — napęd • Omni/Hover: A/D — bok, Z/C — obrót • LPM/PPM — ogień • R — reset • Esc — pauza"+
+                (run.CreativeWorkshop?" i przeciwnicy":"")+
                 (run.Player!=null&&run.Player.GetComponent<R3RepairPulse>()!=null?" • V — impuls naprawczy":"")+
                 "\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Zawieszenie: porównaj OFF/Assist/Full na torze x≈12 • Cele na północy",small);
         }

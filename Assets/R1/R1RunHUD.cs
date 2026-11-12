@@ -135,12 +135,17 @@ namespace RoboRougelike.R1
                 run.SelectVehicle((R3VehicleKind)(starterOffers[0]/4),starterOffers[0]%4);
             Setup();
             bool sessionOverlay = run.Paused || run.QuitRequested;
+            if(quickSearchReleasePending)
+            {GUI.FocusControl(null);GUIUtility.keyboardControl=0;quickSearchReleasePending=false;}
             string focused=GUI.GetNameOfFocusedControl();
             bool garageSearchKey=GarageSearchConsumesKey(Event.current.type,focused);
             bool quickSearchActive=run.Progress?.State==R1RunState.Garage&&!run.MapEditing&&!run.Transitioning&&
                 !sessionOverlay&&!catalogOpen&&!garageOptionsOpen&&run.Error==null;
             if(GarageSearchExitKey(Event.current.type,Event.current.keyCode,focused,quickSearchActive))
-            {GUI.FocusControl(null);GUIUtility.keyboardControl=0;Event.current.Use();}
+            {
+                if(Event.current.keyCode==KeyCode.Escape){quickSearchEditing=true;run.HandleEscape();}
+                GUI.FocusControl(null);GUIUtility.keyboardControl=0;quickSearchEditing=false;quickSearchReleasePending=false;Event.current.Use();
+            }
             else if(Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.Escape)
             {run.HandleEscape();Event.current.Use();}
             var rawPointer=Event.current.mousePosition;
@@ -173,6 +178,8 @@ namespace RoboRougelike.R1
                 if(run.Paused)LightStylePrototype.Instance?.DrawPausePanel();
                 if(quickSearchActive&&!garageSearchKey&&!catalogOpen&&!garageOptionsOpen)
                     HandleQuickGarageKey(run,Event.current,false);
+                quickSearchEditing=quickSearchActive&&!run.Paused&&!catalogOpen&&!garageOptionsOpen&&
+                    GUI.GetNameOfFocusedControl()==QuickSearchControlName;
                 if(!sessionOverlay&&run.MapEditing)run.MapEditorPointer(Event.current,rawPointer);
                 else if(!garageSearchKey&&!sessionOverlay&&!catalogOpen&&!garageOptionsOpen&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
                 else run.Garage?.CancelPointerGesture();

@@ -69,7 +69,7 @@ namespace RoboRougelike.R1
                 (pad != null && pad.dpad.up.wasPressedThisFrame)) PauseSelection = (PauseSelection + pauseOptions-1) % pauseOptions;
             if ((keys != null && keys.downArrowKey.wasPressedThisFrame) ||
                 (pad != null && pad.dpad.down.wasPressedThisFrame)) PauseSelection = (PauseSelection + 1) % pauseOptions;
-            if (pad != null && pad.buttonEast.wasPressedThisFrame) { TogglePause(); return true; }
+            if (pad != null && pad.buttonEast.wasPressedThisFrame) { HandleEscape(); return true; }
             if ((keys != null && keys.enterKey.wasPressedThisFrame) ||
                 (pad != null && pad.buttonSouth.wasPressedThisFrame))
             {
