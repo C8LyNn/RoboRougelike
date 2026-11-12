@@ -291,6 +291,13 @@ namespace RoboRougelike.R3
                 SelectedRotation=part.RotationQuarterTurns;}
             SetTool(R41GarageTool.Mount);
         }
+        public void CopyMountedRotation(R3PartState source)
+        {
+            if(source==null||Owned==null||source.Kind!=Owned.Kind)return;
+            var rotation=R3MountingGrid.Normalize(source.RotationQuarterTurns);
+            if(source.Kind==R3PartKind.Wheel&&!R3VehicleModel.ValidWheelOrientation(rotation))return;
+            SelectedRotation=rotation;RefreshMarker();
+        }
         public void Select(Vector3Int cell){Cell=cell;HasTarget=true;pointerSurfaceRejected=false;RefreshMarker();}
         private void UpdatePivot()
         {
@@ -684,19 +691,31 @@ namespace RoboRougelike.R3
             try
             {
                 bool hit=Point(ray);
-                var part=hit?run.VehicleModel.At(Cell):null;
-                // A wheel may only face sideways. Skip the forbidden 90°
-                // intermediate yaw so one shortcut reaches the next legal pose.
-                bool wheelYaw=part!=null&&part.Kind==R3PartKind.Wheel&&
-                    R3VehicleModel.ValidWheelOrientation(part.RotationQuarterTurns)&&
-                    turns.x==0&&turns.z==0&&Mathf.Abs(turns.y)==1;
-                if(wheelYaw)turns.y*=2;
-                bool done=hit&&run.GarageRotate(Cell,turns);
-                Message=done?(wheelYaw?"Obrócono koło o 180°.":"Obrócono wskazaną część."):
-                    "Nie można obrócić: połączenie, miejsce lub kolizja.";
-                return done;
+                if(!hit){Message="Wskaż część do obrócenia.";return false;}
+                return RotatePartAt(Cell,turns);
             }
             finally {Tool=prior;RefreshMarker();}
+        }
+        public bool RotatePartAt(Vector3Int cell,Vector3Int turns)
+        {
+            if(run.Transitioning||run.Progress?.State!=R1RunState.Garage||run.VehicleModel==null)
+            {Message="Garaż jest chwilowo niedostępny.";return false;}
+            var part=run.VehicleModel.At(cell);
+            if(part==null){Message="Wskaż część do obrócenia.";return false;}
+            if(part.Kind==R3PartKind.Core){Message="Nie można obrócić rdzenia.";return false;}
+            if(part.Health<=0){Message="Najpierw napraw zniszczoną część.";return false;}
+            bool wheelYaw=part.Kind==R3PartKind.Wheel&&R3VehicleModel.ValidWheelOrientation(part.RotationQuarterTurns)&&
+                turns.x==0&&turns.z==0&&Mathf.Abs(turns.y)==1;
+            if(wheelYaw)turns.y*=2;
+            var next=R3MountingGrid.Normalize(part.RotationQuarterTurns+turns);
+            if(next==R3MountingGrid.Normalize(part.RotationQuarterTurns))
+            {Message="Obrót nie zmienia ustawienia części.";return false;}
+            if(part.Kind==R3PartKind.Wheel&&!R3VehicleModel.ValidWheelOrientation(next))
+            {Message="Koło musi stać pionowo, a jego oś musi być skierowana na bok.";return false;}
+            bool done=run.GarageRotate(cell,turns);
+            Message=done?(wheelYaw?"Obrócono koło o 180°.":"Obrócono wskazaną część."):
+                "Nie można obrócić: sprawdź połączenia, wolne miejsce i kolizje.";
+            return done;
         }
         public void HandleGuiPointer(Event current,Vector2 rawTopLeft)
         {

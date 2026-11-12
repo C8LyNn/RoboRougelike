@@ -75,7 +75,8 @@ public class CreativeRangeTests
     [UnityTest] public IEnumerator CopyFromVehicleRaySuppliesFreePartForCreativeBuilding()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
-        Assert.That(run.GarageBuy(Vector3Int.up,R3PartKind.Armor),Is.True);
+        var rotation=new Vector3Int(0,1,0);
+        Assert.That(run.GarageBuy(Vector3Int.up,R3PartKind.Armor,rotation),Is.True);
         yield return null;Physics.SyncTransforms();
         var origin=run.Player.transform.TransformPoint(new Vector3(0,4,0));
         var ray=new Ray(origin,run.Player.transform.TransformDirection(Vector3.down));
@@ -83,6 +84,29 @@ public class CreativeRangeTests
         Assert.That(run.Garage.SelectPartFromRay(ray),Is.True,"The mounted armor should be selectable via a real ray.");
         var selected=run.VehicleModel.Inventory.Single(p=>p.Id==run.Garage.SelectedInventoryId);
         Assert.That(selected.Kind,Is.EqualTo(R3PartKind.Armor));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        Assert.That(run.Garage.SelectedRotation,Is.EqualTo(rotation),"The placement preview keeps the pointed part's rotation.");
+    }
+
+    [UnityTest] public IEnumerator MountedRotationExplainsCoreAndWheelRestrictions()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var garage=run.Garage;
+        var method=typeof(R3GarageView).GetMethod("RotatePartAt");Assert.That(method,Is.Not.Null);
+        Assert.That((bool)method.Invoke(garage,new object[]{Vector3Int.zero,Vector3Int.up}),Is.False);
+        Assert.That(garage.Message,Does.Contain("rdzenia"));
+        Assert.That((bool)method.Invoke(garage,new object[]{new Vector3Int(5,5,5),Vector3Int.up}),Is.False);
+        Assert.That(garage.Message,Does.Contain("Wskaż"));
+        Assert.That(run.GarageBuy(new Vector3Int(1,0,0),R3PartKind.Wheel),Is.True);
+        Assert.That((bool)method.Invoke(garage,new object[]{new Vector3Int(1,0,0),Vector3Int.right}),Is.False);
+        Assert.That(garage.Message,Does.Contain("Koło").And.Contain("pionowo"));
+        Assert.That(R3VehicleModel.ValidWheelOrientation(run.VehicleModel.At(new Vector3Int(1,0,0)).RotationQuarterTurns),Is.True);
+        Assert.That(run.GarageBuy(Vector3Int.up,R3PartKind.Armor),Is.True);
+        var armor=run.VehicleModel.At(Vector3Int.up);string id=armor.Id;int scrap=run.VehicleModel.Scrap;
+        Assert.That((bool)method.Invoke(garage,new object[]{Vector3Int.up,Vector3Int.up}),Is.True);
+        Assert.That(run.VehicleModel.At(Vector3Int.up).Id,Is.EqualTo(id));
+        Assert.That(run.VehicleModel.At(Vector3Int.up).RotationQuarterTurns,Is.EqualTo(Vector3Int.up));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        yield return null;
     }
 
     [UnityTest] public IEnumerator CreativeModeRemovesPartAndStockLimitsAndKeepsWeaponControls()

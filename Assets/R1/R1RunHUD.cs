@@ -135,8 +135,13 @@ namespace RoboRougelike.R1
                 run.SelectVehicle((R3VehicleKind)(starterOffers[0]/4),starterOffers[0]%4);
             Setup();
             bool sessionOverlay = run.Paused || run.QuitRequested;
-            bool garageSearchKey=GarageSearchConsumesKey(Event.current.type,GUI.GetNameOfFocusedControl());
-            if(Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.Escape)
+            string focused=GUI.GetNameOfFocusedControl();
+            bool garageSearchKey=GarageSearchConsumesKey(Event.current.type,focused);
+            bool quickSearchActive=run.Progress?.State==R1RunState.Garage&&!run.MapEditing&&!run.Transitioning&&
+                !sessionOverlay&&!catalogOpen&&!garageOptionsOpen&&run.Error==null;
+            if(GarageSearchExitKey(Event.current.type,Event.current.keyCode,focused,quickSearchActive))
+            {GUI.FocusControl(null);GUIUtility.keyboardControl=0;Event.current.Use();}
+            else if(Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.Escape)
             {run.HandleEscape();Event.current.Use();}
             var rawPointer=Event.current.mousePosition;
             var previous = GUI.matrix;
