@@ -1,0 +1,258 @@
+{
+ "style": "D",
+ "applied": [
+  "taa_render_samples",
+  "use_raytracing",
+  "!use_gtao",
+  "!gtao_distance",
+  "use_shadows",
+  "shadow_ray_count",
+  "shadow_step_count",
+  "fast_gi_distance",
+  "use_fast_gi",
+  "view_transform",
+  "look",
+  "exposure"
+ ],
+ "shots": {
+  "1_hero_before": {
+   "pieces": 32,
+   "triangles": 24658,
+   "hull_layer_triangles": 3448,
+   "hull_fragments": 80,
+   "objects": 364,
+   "render_s_1080": 2.1
+  },
+  "1b_hero_side_before": {
+   "pieces": 32,
+   "triangles": 24658,
+   "hull_layer_triangles": 3448,
+   "hull_fragments": 80,
+   "objects": 364,
+   "render_s_1080": 1.0
+  },
+  "1c_hero_low_before": {
+   "pieces": 32,
+   "triangles": 24658,
+   "hull_layer_triangles": 3448,
+   "hull_fragments": 80,
+   "objects": 364,
+   "render_s_1080": 1.0
+  },
+  "2_weapon_before": {
+   "pieces": 2,
+   "triangles": 2262,
+   "hull_layer_triangles": 120,
+   "hull_fragments": 4,
+   "objects": 24,
+   "render_s_1080": 1.0
+  },
+  "3_drive_before": {
+   "pieces": 2,
+   "triangles": 3236,
+   "hull_layer_triangles": 208,
+   "hull_fragments": 5,
+   "objects": 22,
+   "render_s_1080": 0.8
+  },
+  "4_energy_before": {
+   "pieces": 2,
+   "triangles": 1440,
+   "hull_layer_triangles": 120,
+   "hull_fragments": 4,
+   "objects": 20,
+   "render_s_1080": 1.0
+  },
+  "7_distance_before": {
+   "pieces": 96,
+   "triangles": 73974,
+   "hull_layer_triangles": 10344,
+   "hull_fragments": 240,
+   "objects": 1092,
+   "render_s_1080": 0.8,
+   "render_s_720": 0.5
+  },
+  "1_hero_after": {
+   "pieces": 32,
+   "triangles": 54172,
+   "hull_layer_triangles": 5484,
+   "hull_fragments": 86,
+   "objects": 370,
+   "render_s_1080": 1.2
+  },
+  "1b_hero_side_after": {
+   "pieces": 32,
+   "triangles": 54172,
+   "hull_layer_triangles": 5484,
+   "hull_fragments": 86,
+   "objects": 370,
+   "render_s_1080": 0.6
+  },
+  "1c_hero_low_after": {
+   "pieces": 32,
+   "triangles": 54172,
+   "hull_layer_triangles": 5484,
+   "hull_fragments": 86,
+   "objects": 370,
+   "render_s_1080": 0.6
+  },
+  "2_weapon_after": {
+   "pieces": 2,
+   "triangles": 4346,
+   "hull_layer_triangles": 120,
+   "hull_fragments": 4,
+   "objects": 24,
+   "render_s_1080": 0.8
+  },
+  "3_drive_after": {
+   "pieces": 2,
+   "triangles": 7136,
+   "hull_layer_triangles": 208,
+   "hull_fragments": 5,
+   "objects": 22,
+   "render_s_1080": 1.0
+  },
+  "4_energy_after": {
+   "pieces": 2,
+   "triangles": 3744,
+   "hull_layer_triangles": 120,
+   "hull_fragments": 4,
+   "objects": 20,
+   "render_s_1080": 1.1
+  },
+  "7_distance_after": {
+   "pieces": 96,
+   "triangles": 162516,
+   "hull_layer_triangles": 16452,
+   "hull_fragments": 258,
+   "objects": 1110,
+   "render_s_1080": 0.8,
+   "render_s_720": 0.4
+  },
+  "5_material_hull_after": {
+   "pieces": 32,
+   "triangles": 54172,
+   "hull_layer_triangles": 5484,
+   "hull_fragments": 86,
+   "objects": 370,
+   "render_s_1080": 1.0
+  },
+  "5b_material_prow_after": {
+   "pieces": 32,
+   "triangles": 54172,
+   "hull_layer_triangles": 5484,
+   "hull_fragments": 86,
+   "objects": 370,
+   "render_s_1080": 0.9
+  },
+  "6_material_mech_after": {
+   "pieces": 32,
+   "triangles": 54172,
+   "hull_layer_triangles": 5484,
+   "hull_fragments": 86,
+   "objects": 370,
+   "render_s_1080": 0.8
+  }
+ },
+ "crops": {
+  "7_distance_before": [
+   {
+    "tag": "hero_20m",
+    "robot": "hero",
+    "px_1080": [
+     571.0,
+     676.8,
+     927.3,
+     1005.7
+    ],
+    "distance_m": 20.3,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "hero_36m",
+    "robot": "hero",
+    "px_1080": [
+     1199.8,
+     421.3,
+     1408.5,
+     571.2
+    ],
+    "distance_m": 35.4,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "hero_60m",
+    "robot": "hero",
+    "px_1080": [
+     725.4,
+     278.8,
+     841.0,
+     355.6
+    ],
+    "distance_m": 58.5,
+    "fully_inside_frame": true
+   }
+  ],
+  "7_distance_after": [
+   {
+    "tag": "hero_20m",
+    "robot": "hero",
+    "px_1080": [
+     571.0,
+     676.8,
+     927.3,
+     1005.7
+    ],
+    "distance_m": 20.3,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "hero_36m",
+    "robot": "hero",
+    "px_1080": [
+     1199.8,
+     421.3,
+     1408.5,
+     571.2
+    ],
+    "distance_m": 35.4,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "hero_60m",
+    "robot": "hero",
+    "px_1080": [
+     725.4,
+     278.8,
+     841.0,
+     355.6
+    ],
+    "distance_m": 58.5,
+    "fully_inside_frame": true
+   }
+  ]
+ },
+ "hull_kit": {
+  "meshes": 56,
+  "triangles": 2932,
+  "files": [
+   "R4H_HullKit.glb",
+   "R4H_HullKit.fbx"
+  ]
+ },
+ "sources": [
+  "R4_Atlas5_hero1/v3/D_Scrap/R4B_Cube/R4B_Cube.glb",
+  "R4_Atlas5_hero1/v3/D_Scrap/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+  "R4_Atlas5_hero1/v3/D_Scrap/R4W_Basic/R4W_Basic.glb",
+  "R4_Atlas5_hero1/v3/D_Scrap/R4X_Battery/R4X_Battery.glb",
+  "R4_Atlas5_hero1/v3/D_Scrap/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+  "R4_Atlas5_polish2/v2/D_Scrap/R4B_Cube/R4B_Cube.glb",
+  "R4_Atlas5_polish2/v2/D_Scrap/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+  "R4_Atlas5_polish2/v2/D_Scrap/R4W_Basic/R4W_Basic.glb",
+  "R4_Atlas5_polish2/v2/D_Scrap/R4X_Battery/R4X_Battery.glb",
+  "R4_Atlas5_polish2/v2/D_Scrap/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb"
+ ],
+ "seconds": 35.3,
+ "blender": "5.3.0",
+ "engine": "BLENDER_EEVEE"
+}

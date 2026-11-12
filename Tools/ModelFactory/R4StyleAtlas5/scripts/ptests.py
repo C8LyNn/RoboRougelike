@@ -11,9 +11,9 @@ Technical tests only - the artistic acceptance of the pilot is a separate decisi
 import os, sys, json, hashlib
 import numpy as np
 import astyle as ST, pstyle as PS
-PKG = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); ATL = os.path.join(PKG, "pilot2", "variants"); TST = os.path.join(PKG, "pilot2", "tests"); MODE = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] in ("polish1", "polish2") else None; POLISH = MODE is not None
+PKG = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); ATL = os.path.join(PKG, "pilot2", "variants"); TST = os.path.join(PKG, "pilot2", "tests"); MODE = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] in ("polish1", "polish2", "hero1") else None; POLISH = MODE is not None
 if POLISH:                                                      # Visual Polish Pass 1 / 2: same tests on <pass>/variants with its palette, plus T7 (baked vertex shading present)
-    PS = __import__("qstyle" if MODE == "polish1" else "rstyle")
+    PS = __import__({"polish1": "qstyle", "polish2": "rstyle", "hero1": "hstyle"}[MODE])
     ATL = os.path.join(PKG, MODE, "variants"); TST = os.path.join(PKG, MODE, "tests")
 MF = os.path.dirname(PKG)
 sys.path.insert(0, os.path.join(MF, "R4BlocksRedesign1232", "scripts")); import glbio
@@ -51,7 +51,8 @@ def main():
     n = sum(1 for v in rep.values() if v["PASS"]); os.makedirs(TST, exist_ok=True)
     json.dump(dict(result="PASS" if n == len(rep) else "FAIL", assets=len(rep), assets_pass=n, variants=5*len(rep), detail=rep), open(os.path.join(TST, (MODE + "_glb_tests.json") if POLISH else "pilot2_glb_tests.json"), "w"), indent=1)
     with open(os.path.join(TST, (MODE.upper() + "_TEST_SUMMARY.md") if POLISH else "PILOT2_TEST_SUMMARY.md"), "w", encoding="utf-8") as f:
-        f.write(f"# {'Visual Polish Pass 1' if POLISH else 'Pilot 2'}: testy na wyeksportowanych GLB (numpy){' — T5 obejmuje też T7: każdy prymityw ma COLOR_0 (wypalone cieniowanie wierzchołków)' if POLISH else ''}\n\nWynik techniczny: **{n}/{len(rep)} typów z kompletem 5/5 stylów PASS** ({5*len(rep)} wariantów). Unity: UNITY_NOT_RUN. Odbiór artystyczny: **OCZEKUJE NA WŁAŚCICIELA** (testy techniczne go nie zastępują).\n\n" + __doc__.split("\n", 1)[1] + "\n\n| asset | T1 A-E | T2 | T3 | T4 | T5 | T6 | wynik |\n|---|---|---|---|---|---|---|---|\n")
+        TITLE = {"pilot2": "Pilot 2", "polish1": "Visual Polish Pass 1", "polish2": "Visual Polish Pass 2", "hero1": "Hero Benchmark Pass"}.get(MODE if POLISH else "pilot2", "Pilot 2")
+        f.write(f"# {TITLE}: testy na wyeksportowanych GLB (numpy){' — T5 obejmuje też T7: każdy prymityw ma COLOR_0 (wypalone cieniowanie wierzchołków)' if POLISH else ''}\n\nWynik techniczny: **{n}/{len(rep)} typów z kompletem 5/5 stylów PASS** ({5*len(rep)} wariantów). Unity: UNITY_NOT_RUN. Odbiór artystyczny: **OCZEKUJE NA WŁAŚCICIELA** (testy techniczne go nie zastępują).\n\n" + __doc__.split("\n", 1)[1] + "\n\n| asset | T1 A-E | T2 | T3 | T4 | T5 | T6 | wynik |\n|---|---|---|---|---|---|---|---|\n")
         for cid, v in rep.items():
             def col(k): return "".join(("P" if v[s].get(k) else "F") if isinstance(v.get(s), dict) and k in v[s] else "-" for s in ST.STYLES)
             f.write(f"| {cid} | {col('T1')} | {col('T2')} | {'P' if v['T3'] else 'F'} | {col('T4')} | {col('T5')} | {'P' if v['T6'] else 'F'} | {'PASS' if v['PASS'] else '**FAIL**'} |\n")

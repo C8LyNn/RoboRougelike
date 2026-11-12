@@ -1,0 +1,233 @@
+00:00.031  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+<WORKDIR>\R4_Atlas5_hero1\scripts4\hscene.py:17: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(pre + zone); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tx = src["textures"]
+INFO Draco is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_meshopt_bridge.dll
+12:27:41 | INFO: Starting glTF 2.0 export
+12:27:41 | INFO: Extracting primitive: cheek
+12:27:41 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+12:27:41 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+12:27:41 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+12:27:41 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+12:27:41 | INFO: Primitives created: 4
+12:27:41 | INFO: Extracting primitive: gasket
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: lip
+12:27:41 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: nose_0
+12:27:41 | INFO: Primitives created: 3
+12:27:41 | INFO: Extracting primitive: nose_1
+12:27:41 | INFO: Primitives created: 3
+12:27:41 | INFO: Extracting primitive: nose_2
+12:27:41 | INFO: Primitives created: 3
+12:27:41 | INFO: Extracting primitive: nose_3
+12:27:41 | INFO: Primitives created: 3
+12:27:41 | INFO: Extracting primitive: plate_00_0
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_00_1
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_00_2
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_01_0
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_01_1
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_01_2
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_02_0
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_02_1
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_02_2
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_03_0
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_03_1
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_03_2
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_04_0
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_04_1
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_04_2
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_05_0
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_05_1
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_05_2
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_06_0
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_06_1
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_06_2
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_07_0
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_07_1
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_07_2
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_08_0
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_08_1
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_08_2
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_09_0
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_09_1
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_09_2
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_10_0
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_10_1
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_10_2
+12:27:41 | INFO: Primitives created: 2
+12:27:41 | INFO: Extracting primitive: plate_11_0
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_11_1
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_11_2
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_12_0
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_12_1
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_12_2
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_13_0
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_13_1
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_13_2
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_14_0
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_14_1
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_14_2
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_15_0
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_15_1
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: plate_15_2
+12:27:41 | INFO: Primitives created: 1
+12:27:41 | INFO: Extracting primitive: ramp
+12:27:41 | INFO: Primitives created: 3
+12:27:41 | INFO: Finished glTF 2.0 export in 0.10846376419067383 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_hero1\\kit2\\D_Scrap\\R4H_HullKit.fbx'
+export finished in 0.0357 sec.
+12:27:41 | INFO: Data are loaded, start creating Blender stuff
+12:27:41 | INFO: Blender create Mesh node R4B_Cube
+12:27:41 | INFO: glTF import finished in 0.01s
+12:27:41 | INFO: Data are loaded, start creating Blender stuff
+12:27:41 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Flap
+12:27:41 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Mount
+12:27:41 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Rotor
+12:27:41 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Spring
+12:27:41 | INFO: glTF import finished in 0.04s
+12:27:42 | INFO: Data are loaded, start creating Blender stuff
+12:27:42 | INFO: Blender create Mesh node R4W_Basic_Yaw
+12:27:42 | INFO: Blender create Mesh node R4W_Basic_Crank
+12:27:42 | INFO: Blender create Mesh node R4W_Basic_Pitch
+12:27:42 | INFO: Blender create Mesh node MuzzleFlash
+12:27:42 | INFO: Blender create Mesh node R4W_Basic_Barrel
+12:27:42 | INFO: Blender create Mesh node R4W_Basic_Rattle
+12:27:42 | INFO: Blender create Mesh node R4W_Basic_Base
+12:27:42 | INFO: glTF import finished in 0.04s
+12:27:42 | INFO: Data are loaded, start creating Blender stuff
+12:27:42 | INFO: Blender create Mesh node R4X_Battery_Body
+12:27:42 | INFO: Blender create Mesh node R4X_Battery_Clamp
+12:27:42 | INFO: Blender create Mesh node R4X_Battery_Needle
+12:27:42 | INFO: glTF import finished in 0.03s
+12:27:42 | INFO: Data are loaded, start creating Blender stuff
+12:27:42 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Arm
+12:27:42 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Body
+12:27:42 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Latch
+12:27:42 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Payload
+12:27:42 | INFO: glTF import finished in 0.04s
+12:27:42 | INFO: Data are loaded, start creating Blender stuff
+12:27:42 | INFO: Blender create Mesh node R4B_Cube.001
+12:27:42 | INFO: glTF import finished in 0.11s
+12:27:42 | INFO: Data are loaded, start creating Blender stuff
+12:27:42 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Flap.001
+12:27:42 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Mount.001
+12:27:42 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Rotor.001
+12:27:42 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Spring.001
+12:27:42 | INFO: glTF import finished in 0.18s
+12:27:42 | INFO: Data are loaded, start creating Blender stuff
+12:27:42 | INFO: Blender create Mesh node R4W_Basic_Yaw.001
+12:27:42 | INFO: Blender create Mesh node R4W_Basic_Crank.001
+12:27:42 | INFO: Blender create Mesh node R4W_Basic_Pitch
+12:27:42 | INFO: Blender create Mesh node MuzzleFlash.001
+12:27:42 | INFO: Blender create Mesh node R4W_Basic_Barrel.001
+12:27:42 | INFO: Blender create Mesh node R4W_Basic_Rattle.001
+12:27:42 | INFO: Blender create Mesh node R4W_Basic_Base.001
+12:27:43 | INFO: glTF import finished in 0.18s
+12:27:43 | INFO: Data are loaded, start creating Blender stuff
+12:27:43 | INFO: Blender create Mesh node R4X_Battery_Body.001
+12:27:43 | INFO: Blender create Mesh node R4X_Battery_Clamp.001
+12:27:43 | INFO: Blender create Mesh node R4X_Battery_Needle.001
+12:27:43 | INFO: glTF import finished in 0.18s
+12:27:43 | INFO: Data are loaded, start creating Blender stuff
+12:27:43 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Arm.001
+12:27:43 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Body.001
+12:27:43 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Latch.001
+12:27:43 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Payload.001
+12:27:43 | INFO: glTF import finished in 0.19s
+<WORKDIR>\R4_Atlas5_hero1\scripts4\hscene.py:77: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(name); m.use_nodes = True; b = m.node_tree.nodes.get("Principled BSDF"); b.inputs["Base Color"].default_value = (*rgb, 1); b.inputs["Roughness"].default_value = rough; b.inputs["Metallic"].default_value = metal; return m
+<WORKDIR>\R4_Atlas5_hero1\scripts4\hscene.py:79: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new("Ground"); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tc = nt.nodes.new("ShaderNodeTexCoord")
+<WORKDIR>\R4_Atlas5_hero1\scripts4\hscene.py:165: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w = bpy.data.worlds.new("W"); scn.world = w; w.use_nodes = True; bg = w.node_tree.nodes.get("Background"); bg.inputs[0].default_value = (*shots["sky"]["color"], 1); bg.inputs[1].default_value = shots["sky"]["strength"]
+00:21.000  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\1_hero_before_1080.jpg'
+[POLISH] SHOT D 1_hero_before {'pieces': 32, 'triangles': 24658, 'hull_layer_triangles': 3448, 'hull_fragments': 80, 'objects': 364, 'render_s_1080': 2.1}
+00:21.953  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\1b_hero_side_before_1080.jpg'
+[POLISH] SHOT D 1b_hero_side_before {'pieces': 32, 'triangles': 24658, 'hull_layer_triangles': 3448, 'hull_fragments': 80, 'objects': 364, 'render_s_1080': 1.0}
+00:22.969  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\1c_hero_low_before_1080.jpg'
+[POLISH] SHOT D 1c_hero_low_before {'pieces': 32, 'triangles': 24658, 'hull_layer_triangles': 3448, 'hull_fragments': 80, 'objects': 364, 'render_s_1080': 1.0}
+00:23.922  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\2_weapon_before_1080.jpg'
+[POLISH] SHOT D 2_weapon_before {'pieces': 2, 'triangles': 2262, 'hull_layer_triangles': 120, 'hull_fragments': 4, 'objects': 24, 'render_s_1080': 1.0}
+00:24.703  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\3_drive_before_1080.jpg'
+[POLISH] SHOT D 3_drive_before {'pieces': 2, 'triangles': 3236, 'hull_layer_triangles': 208, 'hull_fragments': 5, 'objects': 22, 'render_s_1080': 0.8}
+00:25.703  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\4_energy_before_1080.jpg'
+[POLISH] SHOT D 4_energy_before {'pieces': 2, 'triangles': 1440, 'hull_layer_triangles': 120, 'hull_fragments': 4, 'objects': 20, 'render_s_1080': 1.0}
+00:26.797  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\7_distance_before_1080.jpg'
+00:27.281  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\7_distance_before_720.jpg'
+[POLISH] SHOT D 7_distance_before {'pieces': 96, 'triangles': 73974, 'hull_layer_triangles': 10344, 'hull_fragments': 240, 'objects': 1092, 'render_s_1080': 0.8, 'render_s_720': 0.5}
+00:28.516  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\1_hero_after_1080.jpg'
+[POLISH] SHOT D 1_hero_after {'pieces': 32, 'triangles': 54172, 'hull_layer_triangles': 5484, 'hull_fragments': 86, 'objects': 370, 'render_s_1080': 1.2}
+00:29.141  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\1b_hero_side_after_1080.jpg'
+[POLISH] SHOT D 1b_hero_side_after {'pieces': 32, 'triangles': 54172, 'hull_layer_triangles': 5484, 'hull_fragments': 86, 'objects': 370, 'render_s_1080': 0.6}
+00:29.797  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\1c_hero_low_after_1080.jpg'
+[POLISH] SHOT D 1c_hero_low_after {'pieces': 32, 'triangles': 54172, 'hull_layer_triangles': 5484, 'hull_fragments': 86, 'objects': 370, 'render_s_1080': 0.6}
+00:30.610  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\2_weapon_after_1080.jpg'
+[POLISH] SHOT D 2_weapon_after {'pieces': 2, 'triangles': 4346, 'hull_layer_triangles': 120, 'hull_fragments': 4, 'objects': 24, 'render_s_1080': 0.8}
+00:31.578  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\3_drive_after_1080.jpg'
+[POLISH] SHOT D 3_drive_after {'pieces': 2, 'triangles': 7136, 'hull_layer_triangles': 208, 'hull_fragments': 5, 'objects': 22, 'render_s_1080': 1.0}
+00:32.641  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\4_energy_after_1080.jpg'
+[POLISH] SHOT D 4_energy_after {'pieces': 2, 'triangles': 3744, 'hull_layer_triangles': 120, 'hull_fragments': 4, 'objects': 20, 'render_s_1080': 1.1}
+00:33.688  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\7_distance_after_1080.jpg'
+00:34.141  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\7_distance_after_720.jpg'
+[POLISH] SHOT D 7_distance_after {'pieces': 96, 'triangles': 162516, 'hull_layer_triangles': 16452, 'hull_fragments': 258, 'objects': 1110, 'render_s_1080': 0.8, 'render_s_720': 0.4}
+00:35.141  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\5_material_hull_after_1080.jpg'
+[POLISH] SHOT D 5_material_hull_after {'pieces': 32, 'triangles': 54172, 'hull_layer_triangles': 5484, 'hull_fragments': 86, 'objects': 370, 'render_s_1080': 1.0}
+00:36.000  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\5b_material_prow_after_1080.jpg'
+[POLISH] SHOT D 5b_material_prow_after {'pieces': 32, 'triangles': 54172, 'hull_layer_triangles': 5484, 'hull_fragments': 86, 'objects': 370, 'render_s_1080': 0.9}
+00:36.813  render           | Saved: '<WORKDIR>\R4_Atlas5_hero1\r2\D_Scrap\6_material_mech_after_1080.jpg'
+[POLISH] SHOT D 6_material_mech_after {'pieces': 32, 'triangles': 54172, 'hull_layer_triangles': 5484, 'hull_fragments': 86, 'objects': 370, 'render_s_1080': 0.8}
+[POLISH] STYLE_DONE D 35.3 s ['taa_render_samples', 'use_raytracing', '!use_gtao', '!gtao_distance', 'use_shadows', 'shadow_ray_count', 'shadow_step_count', 'fast_gi_distance', 'use_fast_gi', 'view_transform', 'look', 'exposure']
+[POLISH] ALL_DONE
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

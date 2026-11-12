@@ -1,0 +1,487 @@
+{
+ "id": "R4M_WheelM_Side_Offroad",
+ "pilot_type": "Wheel",
+ "construction": "Scrap: recapped tyre with uneven lugs, two welded spike plates and a wrapped chain, rim from a cut gear with a bolted bearing cover; angle-iron arm on a leaf-spring pack with a torn mud flap. Mechanisms: the spring pack flexes unevenly, the flap swings and slaps on braking.",
+ "style_character": "salvage: dark worn sheet metal, rust, welded patches, pipes, asymmetry, rough PBR",
+ "artistic_acceptance": "PENDING_OWNER_REVIEW",
+ "textures": {
+  "base": "D_base.png",
+  "orm": "D_orm.png",
+  "normal": "D_normal.png",
+  "normal_strength": 1.3,
+  "uv": "triplanar"
+ },
+ "material_textures": {
+  "R4P_Metal": {
+   "base_texture": "D_base.png",
+   "orm_texture": "D_orm.png",
+   "normal_texture": "D_normal.png"
+  },
+  "R4P_Secondary": {
+   "base_texture": "D_base.png",
+   "orm_texture": "D_orm.png",
+   "normal_texture": "D_normal.png"
+  },
+  "R4P_Trim": {
+   "base_texture": "D_base.png",
+   "orm_texture": "D_orm.png",
+   "normal_texture": "D_normal.png"
+  },
+  "R4P_Wear": {
+   "base_texture": "D_base.png",
+   "orm_texture": "D_orm.png",
+   "normal_texture": "D_normal.png"
+  }
+ },
+ "board_frames": [
+  {
+   "clip": "Roll",
+   "frame": 33
+  },
+  {
+   "clip": "Roll",
+   "frame": 39
+  },
+  {
+   "clip": "Reverse",
+   "frame": 65
+  },
+  {
+   "clip": "Brake",
+   "frame": 91
+  }
+ ],
+ "style": "D",
+ "style_label": "D_Scrap",
+ "family": "wheel",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "APPROVED rig / sockets (from source GLB)",
+ "source": "#1018",
+ "meshes": [
+  {
+   "object": "R4M_WheelM_Side_Offroad_Mount",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 464,
+   "vertices": 240,
+   "uv": true,
+   "material_slots": 3,
+   "ok": true
+  },
+  {
+   "object": "R4M_WheelM_Side_Offroad_Spring",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 520,
+   "vertices": 272,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  },
+  {
+   "object": "R4M_WheelM_Side_Offroad_Flap",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 156,
+   "vertices": 82,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  },
+  {
+   "object": "R4M_WheelM_Side_Offroad_Rotor",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 5696,
+   "vertices": 2906,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4M_WheelM_Side_Offroad_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 2700,
+  "vertices": 1432,
+  "uv": true,
+  "material_slots": 4,
+  "ok": true
+ },
+ "triangles": 6836,
+ "triangles_lod1": 2700,
+ "mesh_objects": 4,
+ "material_slots_total": 11,
+ "materials": [
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim",
+  "R4P_Wear"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.3853,
+   -0.3761
+  ],
+  [
+   0.186,
+   0.372,
+   0.3843
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.262,
+   -0.392,
+   -0.392
+  ],
+  [
+   0.194,
+   0.392,
+   0.392
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": {
+  "max_outside_source_node_bounds_mm": 0.0,
+  "per_node_mm": {
+   "R4M_WheelM_Side_Offroad_Mount": 0.0,
+   "R4M_WheelM_Side_Offroad_Rotor": 0
+  },
+  "PASS": true
+ },
+ "ports": [
+  {
+   "dir": "left",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": {
+  "source_glb": "ModelFactory/R4Wheels/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+  "source_sha256": "6f5fb68eab1dc4e61917c0f6de9db1cb65ea7e3e6ce8eedffefd1ed09a079ca6",
+  "empties": [
+   "GroundProbe",
+   "Socket_Mount",
+   "Wheel_Axle"
+  ],
+  "missing": [],
+  "pos_dev_mm": 0.0,
+  "rot_dev_deg": 0.0396,
+  "mesh_nodes_source": [
+   "R4M_WheelM_Side_Offroad_Mount",
+   "R4M_WheelM_Side_Offroad_Rotor"
+  ],
+  "mesh_nodes_missing": [],
+  "PASS": true
+ },
+ "hierarchy": {
+  "R4M_WheelM_Side_Offroad_ROOT": null,
+  "R4M_WheelM_Side_Offroad_Mount": "R4M_WheelM_Side_Offroad_ROOT",
+  "R4M_WheelM_Side_Offroad_Spring": "R4M_WheelM_Side_Offroad_ROOT",
+  "R4M_WheelM_Side_Offroad_Flap": "R4M_WheelM_Side_Offroad_ROOT",
+  "R4M_WheelM_Side_Offroad_Rotor": "R4M_WheelM_Side_Offroad_ROOT",
+  "GroundProbe": "R4M_WheelM_Side_Offroad_ROOT",
+  "Socket_Mount": "R4M_WheelM_Side_Offroad_ROOT",
+  "Wheel_Axle": "R4M_WheelM_Side_Offroad_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "transfer",
+  "fps": 24,
+  "frames": 103,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Roll",
+    "start": 27,
+    "end": 51,
+    "loop": true
+   },
+   {
+    "name": "Reverse",
+    "start": 53,
+    "end": 77,
+    "loop": true
+   },
+   {
+    "name": "Brake",
+    "start": 79,
+    "end": 103,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Roll_Start": 27,
+   "Reverse_Start": 53,
+   "Brake_Start": 79
+  },
+  "warped_clips": [
+   "Brake"
+  ],
+  "animated_objects": [
+   "R4M_WheelM_Side_Offroad_Rotor",
+   "R4M_WheelM_Side_Offroad_Spring",
+   "R4M_WheelM_Side_Offroad_Flap"
+  ],
+  "objects_with_real_motion": 3,
+  "sweep_outside_envelope_mm": 0.0,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Roll",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Reverse",
+    "start_vs_end_dev": 0.0396,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "raw and uneven: stutter, rattle, slight drift (seeded)"
+ },
+ "parts": 56,
+ "vertex_shading": {
+  "corners": 14396,
+  "worn_edge_samples": 603,
+  "recipe": {
+   "flat": 0.74,
+   "cavity": [
+    0.26,
+    0.17,
+    0.11
+   ],
+   "gamma": 1.5,
+   "edge": [
+    1.0,
+    0.94,
+    0.84
+   ],
+   "edge_amount": 0.85,
+   "dist": 0.16
+  },
+  "lod1": 5772,
+  "gltf_export_options": {
+   "export_vertex_color": "ACTIVE",
+   "export_active_vertex_color_when_no_material": true
+  }
+ },
+ "polish_pass": "hero1",
+ "mechanisms": {
+  "Spring": {
+   "parent": "root",
+   "pivot": [
+    -0.12,
+    0.0,
+    -0.1
+   ]
+  },
+  "Flap": {
+   "parent": "root",
+   "pivot": [
+    -0.19,
+    0.215,
+    0.1
+   ]
+  }
+ },
+ "bevel": {
+  "width": 0.0022,
+  "segments": 1
+ },
+ "beveled_nodes": [
+  "R4M_WheelM_Side_Offroad_Flap",
+  "R4M_WheelM_Side_Offroad_Mount",
+  "R4M_WheelM_Side_Offroad_Rotor",
+  "R4M_WheelM_Side_Offroad_Spring"
+ ],
+ "bevel_rejected_nodes": [],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 4,
+   "triangles": 6836,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 8,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    65,
+    77,
+    79,
+    91,
+    103
+   ],
+   "nodes_compared": 4,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0396,
+   "worst": [
+    53,
+    "R4M_WheelM_Side_Offroad_Flap",
+    0.0,
+    0.04
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 4,
+   "triangles": 6836,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    65,
+    77,
+    79,
+    91,
+    103
+   ],
+   "nodes_compared": 4,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0396,
+   "worst": [
+    53,
+    "R4M_WheelM_Side_Offroad_Flap",
+    0.0,
+    0.04
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4M_WheelM_Side_Offroad_34.jpg",
+  "R4M_WheelM_Side_Offroad_anim1.jpg",
+  "R4M_WheelM_Side_Offroad_anim2.jpg",
+  "R4M_WheelM_Side_Offroad_anim3.jpg",
+  "R4M_WheelM_Side_Offroad_anim4.jpg",
+  "R4M_WheelM_Side_Offroad_clay_34.jpg",
+  "R4M_WheelM_Side_Offroad_clay_front.jpg",
+  "R4M_WheelM_Side_Offroad_clay_side.jpg",
+  "R4M_WheelM_Side_Offroad_front.jpg",
+  "R4M_WheelM_Side_Offroad_side.jpg",
+  "R4M_WheelM_Side_Offroad_sil_34.png",
+  "R4M_WheelM_Side_Offroad_sil_front.png",
+  "R4M_WheelM_Side_Offroad_sil_side.png",
+  "R4M_WheelM_Side_Offroad_top.jpg",
+  "R4M_WheelM_Side_Offroad_wire.jpg"
+ ],
+ "files": {
+  "R4M_WheelM_Side_Offroad.blend": {
+   "sha256": "0529e5245e7be0f084a9189d33d9792baab99ef842cd1bcf9ab4b57f904a8294",
+   "bytes": 396505
+  },
+  "R4M_WheelM_Side_Offroad.fbx": {
+   "sha256": "fa58aa0b578d6100e325f93346a91f53d45ae595fe53f8a5b9f2739f08a6e701",
+   "bytes": 356252
+  },
+  "R4M_WheelM_Side_Offroad.glb": {
+   "sha256": "da17856b4f27a5b4ce085c45cd8d49d29b88c0f637d4ee913e1a0155c09a625a",
+   "bytes": 793524
+  },
+  "R4M_WheelM_Side_Offroad_LOD1.fbx": {
+   "sha256": "c349025dcfa846b2963ecf9601164503fb07b65d3e78dcc08b4918b61b8c29d5",
+   "bytes": 130908
+  },
+  "R4M_WheelM_Side_Offroad_LOD1.glb": {
+   "sha256": "f8ad4c964bb152e7defe81985e36e261ee85f07c87dafcaed38ce69265f081b1",
+   "bytes": 684436
+  }
+ },
+ "seconds": 4.7,
+ "blender": "5.3.0",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

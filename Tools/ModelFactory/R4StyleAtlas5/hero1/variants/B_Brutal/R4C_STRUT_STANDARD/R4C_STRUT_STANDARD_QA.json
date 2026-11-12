@@ -1,0 +1,887 @@
+{
+ "id": "R4C_STRUT_STANDARD",
+ "pilot_type": "Strut",
+ "construction": "pilot-2 member between two structural core node blocks",
+ "style_character": "heavy machinery: bare gun-metal, exposed mechanisms, bolts, ribs, gussets, cast surface",
+ "artistic_acceptance": "PENDING_OWNER_REVIEW",
+ "textures": {
+  "base": "B_base.png",
+  "orm": "B_orm.png",
+  "normal": "B_normal.png",
+  "normal_strength": 1.0,
+  "uv": "triplanar"
+ },
+ "material_textures": {
+  "R4P_Base": {
+   "base_texture": "B_base.png",
+   "orm_texture": "B_orm.png",
+   "normal_texture": "B_normal.png"
+  },
+  "R4P_Metal": {
+   "base_texture": "B_base.png",
+   "orm_texture": "B_orm.png",
+   "normal_texture": "B_normal.png"
+  },
+  "R4P_Trim": {
+   "base_texture": "B_base.png",
+   "orm_texture": "B_orm.png",
+   "normal_texture": "B_normal.png"
+  }
+ },
+ "board_frames": [
+  {
+   "clip": "Hit",
+   "frame": 30
+  },
+  {
+   "clip": "Hit",
+   "frame": 33
+  },
+  {
+   "clip": "Damaged",
+   "frame": 53
+  },
+  {
+   "clip": "Recover",
+   "frame": 79
+  }
+ ],
+ "style": "B",
+ "style_label": "B_Brutal",
+ "family": "connector",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "source PR #1186 (connector contract = proposal there)",
+ "source": "#1186",
+ "meshes": [
+  {
+   "object": "R4C_STRUT_STANDARD",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2452,
+   "vertices": 1272,
+   "uv": true,
+   "material_slots": 3,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4C_STRUT_STANDARD_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 964,
+  "vertices": 528,
+  "uv": true,
+  "material_slots": 3,
+  "ok": true
+ },
+ "triangles": 2452,
+ "triangles_lod1": 964,
+ "mesh_objects": 1,
+ "material_slots_total": 3,
+ "materials": [
+  "R4P_Base",
+  "R4P_Metal",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -1.36,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.2648,
+   -1.3648,
+   -0.2648
+  ],
+  [
+   0.2648,
+   0.2648,
+   0.2648
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "id": "P_A_right",
+   "dir": "right",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "center_bl": [
+    0.26,
+    0.0,
+    0.0
+   ],
+   "normal_bl": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_A_left",
+   "dir": "left",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "center_bl": [
+    -0.26,
+    0.0,
+    0.0
+   ],
+   "normal_bl": [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_A_up",
+   "dir": "up",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "center_bl": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "normal_bl": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_A_down",
+   "dir": "down",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "center_bl": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "normal_bl": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_A_back",
+   "dir": "back",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "center_bl": [
+    0.0,
+    0.26,
+    0.0
+   ],
+   "normal_bl": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_B_right",
+   "dir": "right",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "center_bl": [
+    0.26,
+    -1.1,
+    0.0
+   ],
+   "normal_bl": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_B_left",
+   "dir": "left",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "center_bl": [
+    -0.26,
+    -1.1,
+    0.0
+   ],
+   "normal_bl": [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_B_up",
+   "dir": "up",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "center_bl": [
+    0.0,
+    -1.1,
+    0.26
+   ],
+   "normal_bl": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_B_down",
+   "dir": "down",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "center_bl": [
+    0.0,
+    -1.1,
+    -0.26
+   ],
+   "normal_bl": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "half_m": 0.219725
+  },
+  {
+   "id": "P_B_forward",
+   "dir": "forward",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "center_bl": [
+    0.0,
+    -1.36,
+    0.0
+   ],
+   "normal_bl": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "half_m": 0.219725
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "forward",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "forward",
+   "kind": "r4_full",
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": {
+  "source_glb": "ModelFactory/R4ConnectorRods1182/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD.glb",
+  "source_sha256": "b2bd14759d0f90ec6dd16ead8fd7035ec9bb209a9b474f8d46abdc994eecb887",
+  "empties": [
+   "Node_A",
+   "Node_B",
+   "Port_back_0_0_0",
+   "Port_down_0_0_0",
+   "Port_down_0_0_2",
+   "Port_forward_0_0_2",
+   "Port_left_0_0_0",
+   "Port_left_0_0_2",
+   "Port_right_0_0_0",
+   "Port_right_0_0_2",
+   "Port_up_0_0_0",
+   "Port_up_0_0_2",
+   "Socket_End",
+   "Socket_Start"
+  ],
+  "missing": [],
+  "pos_dev_mm": 0.0,
+  "rot_dev_deg": 0.0396,
+  "mesh_nodes_source": [
+   "R4C_STRUT_STANDARD"
+  ],
+  "mesh_nodes_missing": [],
+  "PASS": true
+ },
+ "hierarchy": {
+  "R4C_STRUT_STANDARD_ROOT": null,
+  "R4C_STRUT_STANDARD": "R4C_STRUT_STANDARD_ROOT",
+  "Node_A": "R4C_STRUT_STANDARD_ROOT",
+  "Node_B": "R4C_STRUT_STANDARD_ROOT",
+  "Port_back_0_0_0": "R4C_STRUT_STANDARD_ROOT",
+  "Port_down_0_0_0": "R4C_STRUT_STANDARD_ROOT",
+  "Port_down_0_0_2": "R4C_STRUT_STANDARD_ROOT",
+  "Port_forward_0_0_2": "R4C_STRUT_STANDARD_ROOT",
+  "Port_left_0_0_0": "R4C_STRUT_STANDARD_ROOT",
+  "Port_left_0_0_2": "R4C_STRUT_STANDARD_ROOT",
+  "Port_right_0_0_0": "R4C_STRUT_STANDARD_ROOT",
+  "Port_right_0_0_2": "R4C_STRUT_STANDARD_ROOT",
+  "Port_up_0_0_0": "R4C_STRUT_STANDARD_ROOT",
+  "Port_up_0_0_2": "R4C_STRUT_STANDARD_ROOT",
+  "Socket_End": "R4C_STRUT_STANDARD_ROOT",
+  "Socket_Start": "R4C_STRUT_STANDARD_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 91,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 27,
+    "end": 39,
+    "loop": false
+   },
+   {
+    "name": "Damaged",
+    "start": 41,
+    "end": 65,
+    "loop": true
+   },
+   {
+    "name": "Recover",
+    "start": 67,
+    "end": 91,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Hit": 27
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4C_STRUT_STANDARD"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 0.0,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Damaged",
+    "start_vs_end_dev": 0.0396,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "heavy and mechanical: slow start, hard stop, damped settle"
+ },
+ "parts": 23,
+ "vertex_shading": {
+  "corners": 5280,
+  "worn_edge_samples": 151,
+  "recipe": {
+   "flat": 0.72,
+   "cavity": [
+    0.22,
+    0.21,
+    0.2
+   ],
+   "gamma": 1.3,
+   "edge": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "edge_amount": 0.95,
+   "dist": 0.14
+  },
+  "lod1": 2160,
+  "gltf_export_options": {
+   "export_vertex_color": "ACTIVE",
+   "export_active_vertex_color_when_no_material": true
+  }
+ },
+ "polish_pass": "hero1",
+ "mechanisms": {},
+ "bevel": {
+  "width": 0.0032,
+  "segments": 1
+ },
+ "beveled_nodes": [
+  "R4C_STRUT_STANDARD"
+ ],
+ "bevel_rejected_nodes": [],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 2452,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 16,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0396,
+   "worst": [
+    41,
+    "R4C_STRUT_STANDARD",
+    0.0,
+    0.04
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 2452,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0396,
+   "worst": [
+    41,
+    "R4C_STRUT_STANDARD",
+    0.0,
+    0.04
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4C_STRUT_STANDARD_34.jpg",
+  "R4C_STRUT_STANDARD_anim1.jpg",
+  "R4C_STRUT_STANDARD_anim2.jpg",
+  "R4C_STRUT_STANDARD_anim3.jpg",
+  "R4C_STRUT_STANDARD_anim4.jpg",
+  "R4C_STRUT_STANDARD_clay_34.jpg",
+  "R4C_STRUT_STANDARD_clay_front.jpg",
+  "R4C_STRUT_STANDARD_clay_side.jpg",
+  "R4C_STRUT_STANDARD_front.jpg",
+  "R4C_STRUT_STANDARD_side.jpg",
+  "R4C_STRUT_STANDARD_sil_34.png",
+  "R4C_STRUT_STANDARD_sil_front.png",
+  "R4C_STRUT_STANDARD_sil_side.png",
+  "R4C_STRUT_STANDARD_top.jpg",
+  "R4C_STRUT_STANDARD_wire.jpg"
+ ],
+ "files": {
+  "R4C_STRUT_STANDARD.blend": {
+   "sha256": "118802b1b441436d3f26660d7b7fe2491075d12833825dd371d8e4427a3b38b8",
+   "bytes": 184915
+  },
+  "R4C_STRUT_STANDARD.fbx": {
+   "sha256": "2b87522bcc7daf746d88a98d6eb4be544d1d0e23a28cf4d2e3428a82d9a087a0",
+   "bytes": 260844
+  },
+  "R4C_STRUT_STANDARD.glb": {
+   "sha256": "b3582e4b0a306d8fdfc30301253f0cb1b57caeb12547c32a12c8d32eca29262a",
+   "bytes": 661244
+  },
+  "R4C_STRUT_STANDARD_LOD1.fbx": {
+   "sha256": "047a777a6a515616ab232f2098d2df101943841512e50ff78b35900919d3e486",
+   "bytes": 48540
+  },
+  "R4C_STRUT_STANDARD_LOD1.glb": {
+   "sha256": "b7f18b1cca6dd998c4722208c76163b9fec14f3f99dac889051ece1e01458d2b",
+   "bytes": 626264
+  }
+ },
+ "seconds": 2.8,
+ "blender": "5.3.0",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}
