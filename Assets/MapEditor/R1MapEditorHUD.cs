@@ -1,11 +1,29 @@
 using UnityEngine;
 using RoboRougelike.MapEditor;
+using RoboRougelike.R3;
 
 namespace RoboRougelike.R1
 {
     public sealed partial class R1RunHUD
     {
         static readonly string[] mapNames={"Podłoże","Ściana","Rampa","Przeszkoda","Start pojazdu","Meta","Platforma","Filar","Niska bariera","Schody"};
+        MapDraft mapReadinessDraft;
+        R3VehicleModel mapReadinessVehicle;
+        float nextMapReadinessRefresh;
+        string mapReadinessError;
+        void DrawMapTestReadiness(R1RunController run)
+        {
+            // Checking floor coverage can visit thousands of cells. Refresh at
+            // a bounded rate, while the actual test rechecks synchronously.
+            if(mapReadinessDraft!=run.EditorDraft||mapReadinessVehicle!=run.VehicleModel||Time.realtimeSinceStartup>=nextMapReadinessRefresh)
+            {
+                mapReadinessDraft=run.EditorDraft;mapReadinessVehicle=run.VehicleModel;
+                mapReadinessError=run.MapTestReadiness();nextMapReadinessRefresh=Time.realtimeSinceStartup+.5f;
+            }
+            var before=GUI.color;GUI.color=mapReadinessError==null?new Color(.55f,.96f,.72f):new Color(1f,.75f,.42f);
+            GUI.Label(new Rect(355,619,890,22),"Test mapy: "+(mapReadinessError??"mapa i pojazd gotowe."),small);
+            GUI.color=before;
+        }
         void DrawMapEditor(R1RunController run)
         {
             Panel(new Rect(10,10,305,660));
@@ -35,7 +53,8 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(25,595,270,35),"Dostosuj pojazd w garażu",compactButton))run.MapEditorGarage();
             if(GUI.Button(new Rect(25,635,270,28),run.MapReturnPending?"Potwierdź powrót":"Powrót do menu",compactButton))run.ReturnFromMapEditorToMenu();
             Panel(new Rect(340,615,920,88));
-            GUI.Label(new Rect(355,624,890,65),"LPM — postaw / usuń • PPM — obrót widoku • kółko — zoom • WASD — przesuwanie\nZielone widmo — można postawić • czerwone — pole zajęte / poza mapą • V — obrót\n"+run.EditorMessage,small);
+            DrawMapTestReadiness(run);
+            GUI.Label(new Rect(355,641,890,59),"LPM — postaw / usuń • PPM — obrót widoku • kółko — zoom • WASD — przesuwanie\nZielone widmo — można postawić • czerwone — pole zajęte / poza mapą • V — obrót\n"+run.EditorMessage,small);
         }
         void MapScalePicker(R1RunController run,float x,string axis,int index,int value)
         {

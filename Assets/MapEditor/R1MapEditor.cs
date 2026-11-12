@@ -71,10 +71,16 @@ namespace RoboRougelike.R1
             if(EditorWorld.Layout!=null)EditorWorld.Layout.gameObject.SetActive(false);
             if(editorGround!=null)editorGround.SetActive(true);Player.gameObject.SetActive(true);followCamera.enabled=true;Garage.Open();
         }
+        public string MapTestReadiness()
+        {
+            if(EditorDraft==null)return "Brak otwartej mapy.";
+            if(VehicleModel==null)return "Przygotuj pojazd w garażu.";
+            return EditorDraft.TestError()??VehicleModel.DeployError;
+        }
         public bool TestEditedMap()
         {
             if(!MapEditing||Transitioning||VehicleModel==null)return false;
-            string error=EditorDraft.TestError()??VehicleModel.DeployError;
+            string error=MapTestReadiness();
             if(error!=null){EditorMessage=error;return false;}
             workshopModel=VehicleModel;testStats=Progress.Stats.Copy();workshopPosition=Player.transform.position;workshopRotation=Player.transform.rotation;
             if(!Progress.BeginTest())return false;pendingMapExitSnapshot=null;
