@@ -451,6 +451,20 @@ public sealed class UI943PortraitCatalogActionsTests
         yield return new ExitPlayMode();
     }
 
+    [UnityTest] public IEnumerator WreckStackPointsToQuickRepairWithoutOpeningCatalog()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var item=run.VehicleModel.Inventory.Last();item.Health=0;
+        var hud=run.GetComponent<R1RunHUD>();Field(hud,"catalogOpen",false);
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        Assert.That(run.Garage.Message.ToLowerInvariant(),Does.Contain("napraw").And.Contain("poniżej"));
+        Assert.That((bool)Field(hud,"catalogOpen"),Is.False);
+        yield return new ExitPlayMode();
+    }
+
     [UnityTest] public IEnumerator GarageActionsExplainRepairAndRemovalFailures()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
@@ -539,6 +553,20 @@ public sealed class UI943PortraitCatalogActionsTests
         var input=(Rect)args[1];var clear=(Rect)args[2];var canvas=new Rect(0,0,width,height);
         Assert.That(input.Overlaps(clear),Is.False);Assert.That(input.width,Is.GreaterThan(65));
         Assert.That(canvas.Contains(input.min)&&canvas.Contains(clear.max-Vector2.one),Is.True);
+    }
+
+    [TestCase(EventType.KeyDown,KeyCode.Escape,"GarageQuickSearch",true,true)]
+    [TestCase(EventType.KeyDown,KeyCode.Return,"GarageQuickSearch",true,true)]
+    [TestCase(EventType.KeyDown,KeyCode.KeypadEnter,"GarageQuickSearch",true,true)]
+    [TestCase(EventType.KeyUp,KeyCode.Escape,"GarageQuickSearch",true,false)]
+    [TestCase(EventType.KeyDown,KeyCode.Escape,"GarageQuickSearch",false,false)]
+    [TestCase(EventType.KeyDown,KeyCode.Escape,"",true,false)]
+    [TestCase(EventType.KeyDown,KeyCode.Q,"GarageQuickSearch",true,false)]
+    public void SearchExitKeysOnlyFinishActiveGarageInput(EventType type,KeyCode key,string focus,bool active,bool expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("GarageSearchExitKey",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((bool)method.Invoke(null,new object[]{type,key,focus,active}),Is.EqualTo(expected));
     }
 
     [TestCase(EventType.KeyDown,"GarageQuickSearch",true)]

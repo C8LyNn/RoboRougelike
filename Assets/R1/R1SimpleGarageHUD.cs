@@ -99,6 +99,9 @@ namespace RoboRougelike.R1
 
         static bool GarageSearchConsumesKey(EventType type,string focused)=>
             (type==EventType.KeyDown||type==EventType.KeyUp)&&focused==QuickSearchControlName;
+        static bool GarageSearchExitKey(EventType type,KeyCode key,string focused,bool active)=>
+            active&&focused==QuickSearchControlName&&type==EventType.KeyDown&&
+            (key==KeyCode.Escape||key==KeyCode.Return||key==KeyCode.KeypadEnter);
 
         static void QuickSearchRects(bool portrait,out Rect input,out Rect clear)
         {
@@ -363,6 +366,7 @@ namespace RoboRougelike.R1
             if(quickOwnedOnly&&!CatalogEntryOwned(run.VehicleModel,entry))quickOwnedOnly=false;
             SelectQuickPart(run,entry.Kind,entry.Weapon,entry.Group);
             if(string.IsNullOrEmpty(run.Garage.SelectedInventoryId))return false;
+            run.Garage.CopyMountedRotation(mounted);
             run.Garage.Message="Wybrano ten typ części. Kliknij miejsce montażu.";
             return true;
         }
@@ -389,8 +393,8 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.Wheel?GarageWheelSelection(part):"Kliknij pojazd, aby zamontować część.";}
             else {garage.SelectedInventoryId=null;garage.SetTool(R41GarageTool.Mount);
                 garage.Message=run.CreativeWorkshop?"Ta część jest obecnie niedostępna w poligonie.":
-                    kind==R3PartKind.BonusModule?"Brak sprawnego bonusu. Otwórz egzemplarze i napraw część.":
-                    run.VehicleModel.Inventory.Any(p=>InCatalogGroup(p,kind,weapon,bonus))?"Brak sprawnej części. Otwórz egzemplarze i napraw ją.":
+                    kind==R3PartKind.BonusModule?"Brak sprawnego bonusu. Użyj naprawy poniżej.":
+                    run.VehicleModel.Inventory.Any(p=>InCatalogGroup(p,kind,weapon,bonus))?"Brak sprawnej części. Użyj naprawy poniżej.":
                     !run.CanBuyTechnology(kind,weapon)?"Zablokowane: pokonaj przeciwnika z tą bronią, aby odkryć technologię.":kind==R3PartKind.Battery?
                     $"Bateria T1: +{VehicleEnergyState.BatteryCapacity:0} maks. energii. Kup część lub otwórz szczegóły.":kind==R3PartKind.RepairPulse?
                     $"Impuls naprawczy: V, {R3RepairPulse.EnergyCost:0} energii, {R3RepairPulse.Duration:0} s. Kup część lub otwórz szczegóły.":
