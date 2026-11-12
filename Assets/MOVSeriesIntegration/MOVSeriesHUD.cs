@@ -163,6 +163,8 @@ namespace RoboRougelike.R1
             item.Kind==kind&&(kind!=R3PartKind.Gun||item.Weapon==weapon)&&(kind!=R3PartKind.BonusModule||CatalogBonusKey(item)==bonus)&&
             (kind!=R3PartKind.Wheel||item.WheelStyle==CatalogWheelStyle(bonus))&&
             (kind!=R3PartKind.Armor||item.ArmorShape==CatalogArmorShape(bonus));
+        R3PartState[] CatalogItemsForGroup(R3VehicleModel model,R3PartKind kind,R4WeaponKind weapon,string bonus)=>
+            model.Inventory.Where(item=>InCatalogGroup(item,kind,weapon,bonus)).OrderByDescending(item=>item.Health).ToArray();
         static string CatalogBonusGroupName(R3PartState part) =>
             string.IsNullOrWhiteSpace(part.UpgradeTitle)?"Moduł bonusu":part.UpgradeTitle;
         static string CatalogStackCaption(string name,int count,bool usable,bool unlocked) =>
@@ -174,11 +176,11 @@ namespace RoboRougelike.R1
             "Brak egzemplarzy. Kup część przyciskiem poniżej.";
         string CatalogGroupCaption(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name)
         {
-            int count=0;bool usable=false,healthy=false;
+            int count=0,damaged=0;bool usable=false,healthy=false;
             foreach(var item in run.VehicleModel.Inventory)
-                if(InCatalogGroup(item,kind,weapon,bonus)){count++;if(item.Health>0)usable=true;if(item.Health>=1)healthy=true;}
+                if(InCatalogGroup(item,kind,weapon,bonus)){count++;if(item.Health>0)usable=true;if(item.Health>=1)healthy=true;else damaged++;}
             string caption=CatalogStackCaption(name,count,usable,run.CanBuyTechnology(kind,weapon));
-            return usable&&!healthy?caption+" • uszkodzone":caption;
+            return usable&&!healthy?caption+" • uszkodzone":healthy&&damaged>0?caption+$" • {damaged} uszk.":caption;
         }
         void DrawCatalogRow(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name,int row)
         {

@@ -42,7 +42,7 @@ namespace RoboRougelike.R1
                 return;
             }
             var selectedKind=catalogGroup.Value;var selectedWeapon=catalogWeapon;
-            var items=model.Inventory.Where(p=>InCatalogGroup(p,selectedKind,selectedWeapon,catalogBonusId)).ToArray();
+            var items=CatalogItemsForGroup(model,selectedKind,selectedWeapon,catalogBonusId);
             string name=selectedKind==R3PartKind.Armor?R4WeaponDefinition.ArmorName(CatalogArmorShape(catalogBonusId)):
                 selectedKind==R3PartKind.Wheel?R4WeaponDefinition.WheelName(CatalogWheelStyle(catalogBonusId)):
                 selectedKind==R3PartKind.BonusModule&&items.Length>0?CatalogBonusGroupName(items[0]):R4WeaponDefinition.PartName(selectedKind,selectedWeapon);

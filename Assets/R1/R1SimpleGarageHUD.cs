@@ -378,8 +378,7 @@ namespace RoboRougelike.R1
             catalogGroup=kind;catalogWeapon=weapon;catalogBonusId=bonus;
             var garage=run.Garage;
             garage.SelectedPart=kind;garage.SelectedWeapon=weapon;garage.UseInventory=true;
-            var part=run.VehicleModel.Inventory.Where(p=>InCatalogGroup(p,kind,weapon,bonus)&&p.Health>0)
-                .OrderByDescending(p=>p.Health).FirstOrDefault();
+            var part=CatalogItemsForGroup(run.VehicleModel,kind,weapon,bonus).FirstOrDefault(p=>p.Health>0);
             if(part==null&&run.CreativeWorkshop&&AddSelectedCatalogPart(run,kind,weapon))
                 part=run.VehicleModel.Inventory.LastOrDefault();
             if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.BonusModule?
