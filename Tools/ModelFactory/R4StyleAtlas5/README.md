@@ -3,7 +3,13 @@
 Eksperymentalna biblioteka pięciu stylów A/B/C/D/E dla istniejących assetów RoboRougelike. Tylko art: nic w `Assets/`,
 bez kodu, bez integracji z Unity, bez scalania. Unity: **UNITY_NOT_RUN**. Windows player: **WINDOWS_PLAYER_NOT_RUN**.
 
-## Visual Polish Pass 2 (najnowsze)
+## Hero Benchmark Pass (najnowsze)
+
+Zmiana kierunku artystycznego: pięć stylów zbliżanych do nazwanych wzorców (Destiny 2 / AC VI, ciężka maszyna wojskowa, Astroneer, Crossout,
+Overwatch + Roboquest). Na styl: hero robot, broń, napęd, moduł energetyczny; prawdziwe fazki, palety pod wzorce, owiewki sylwetki kadłuba,
+look-dev toon. Plansze, decyzje i uczciwy opis dystansu do wzorców — [`hero1/README.md`](hero1/README.md).
+
+## Visual Polish Pass 2
 
 Sześć typów × 5 stylów z animacjami mechanizmów, warstwa kadłuba z właścicielem każdego fragmentu, manifest dla prototypu
 runtime, testy BEFORE / AFTER w skali gry i test niszczenia — [`polish2/README.md`](polish2/README.md).

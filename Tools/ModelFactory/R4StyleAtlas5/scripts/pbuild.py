@@ -47,6 +47,9 @@ def make_material(zone, src):
     d = src["materials"][zone]; rgb, metal, rough = d["rgb"], d["metallic"], d["roughness"]
     m.diffuse_color = (*rgb, 1.0); m.metallic = metal; m.roughness = rough
     b.inputs["Base Color"].default_value = (*rgb, 1.0); b.inputs["Metallic"].default_value = metal; b.inputs["Roughness"].default_value = rough
+    if d.get("coat"):                                              # clear coat (glTF KHR_materials_clearcoat)
+        try: b.inputs["Coat Weight"].default_value = d["coat"]; b.inputs["Coat Roughness"].default_value = 0.08; m["coat"] = d["coat"]
+        except Exception: pass
     if tx.get("base"):
         t = nt.nodes.new("ShaderNodeTexImage"); t.image = _img(tx["base"], "sRGB"); mx = nt.nodes.new("ShaderNodeMix"); mx.data_type = 'RGBA'; mx.blend_type = 'MULTIPLY'; mx.inputs[0].default_value = 1.0
         nt.links.new(t.outputs["Color"], mx.inputs[6]); mx.inputs[7].default_value = (*rgb, 1.0); nt.links.new(mx.outputs[2], b.inputs["Base Color"]); m["base_texture"] = tx["base"]
@@ -61,6 +64,22 @@ def make_material(zone, src):
     return m
 
 
+BEVEL = None
+def bevel_object(o, bv):
+    """hero pass: real rounded / chamfered edges. Hard edges (dihedral > 38 deg) get a bevel of the style's width; the result is kept only if it is still
+    a closed manifold, otherwise the node keeps its unbevelled mesh"""
+    me0 = o.data; md = o.modifiers.new("Bevel", 'BEVEL'); md.width = bv["width"]; md.segments = bv["segments"]; md.limit_method = 'ANGLE'; md.angle_limit = math.radians(38); md.use_clamp_overlap = True; md.miter_outer = 'MITER_ARC' if bv["segments"] > 1 else 'MITER_SHARP'
+    try: md.harden_normals = False
+    except Exception: pass
+    bpy.context.view_layer.update(); ev = o.evaluated_get(bpy.context.evaluated_depsgraph_get()); me = bpy.data.meshes.new_from_object(ev); o.modifiers.clear(); o.data = me
+    bm = bmesh.new(); bm.from_mesh(me); bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=2e-6); bmesh.ops.dissolve_degenerate(bm, dist=2e-6, edges=bm.edges)     # clamped bevels leave slivers
+    ok = len(bm.faces) > 0 and all(e.is_manifold and not e.is_boundary and (len(e.link_faces) != 2 or e.is_contiguous) for e in bm.edges) and all(f.calc_area() >= 1e-10 for f in bm.faces)
+    if ok: bm.to_mesh(me)
+    bm.free()
+    if not ok: o.data = me0; bpy.data.meshes.remove(me); return False
+    for p_ in me.polygons: p_.use_smooth = True
+    me.set_sharp_from_angle(angle=math.radians(38)); me.update()
+    me.name = me0.name; return True
 def mesh_from_source(ms, name, mats, col):
     me = bpy.data.meshes.new(name); me.from_pydata([tuple(v) for v in ms["verts"]], [], [tuple(f["v"]) for f in ms["faces"]])
     for z in PS.ZONE_ORDER:
@@ -69,7 +88,10 @@ def mesh_from_source(ms, name, mats, col):
     for poly, f in zip(me.polygons, ms["faces"]):
         poly.material_index = slot[f["zone"]]; poly.use_smooth = True
         for k, li in enumerate(poly.loop_indices): uv.data[li].uv = f["uv"][k]; normals.append(tuple(f["n"][k]))
-    me.update(); me.normals_split_custom_set(normals); me.update()
+    me.update()
+    if BEVEL and not name.endswith("_LOD1"):
+        me.set_sharp_from_angle(angle=math.radians(38)); o = bpy.data.objects.new(name, me); col.objects.link(o); o["beveled"] = bevel_object(o, BEVEL); return o
+    me.normals_split_custom_set(normals); me.update()
     o = bpy.data.objects.new(name, me); col.objects.link(o); return o
 
 
@@ -268,7 +290,8 @@ def build(cid, style):
     t0 = time.time(); src = json.load(open(os.path.join(SRC, ST.LABEL[style], cid + ".json"))); an = src["animation"]; F = an["frames"]
     ref = reference(src) if src["ref"] else None
     od = os.path.join(OUT, ST.LABEL[style], cid); os.makedirs(os.path.join(od, "renders"), exist_ok=True)
-    scn = reset_scene(F); env = src["envelope"]; mats = {z: make_material(z, src) for z in PS.ZONE_ORDER if z == "R4P_Glow" or z in src["materials"]}; col = bpy.data.collections.new(cid); scn.collection.children.link(col)
+    global BEVEL
+    BEVEL = src.get("bevel"); scn = reset_scene(F); env = src["envelope"]; mats = {z: make_material(z, src) for z in PS.ZONE_ORDER if z == "R4P_Glow" or z in src["materials"]}; col = bpy.data.collections.new(cid); scn.collection.children.link(col)
     lcol = bpy.data.collections.new(cid + "_LOD1"); scn.collection.children.link(lcol)
     root = bpy.data.objects.new(cid + "_ROOT", None); col.objects.link(root); root.empty_display_size = 0.1
     objs = {cid + "_ROOT": root}; pending = []; meshes = {}; fxn = {src["node_names"][n] for n in src["fx"]}
@@ -397,6 +420,7 @@ def build(cid, style):
         iface = {"source_glb": ref["path"], "source_sha256": ref["sha256"], "empties": sorted(n for n in ref["empties"] if not n.endswith("_ROOT")), "missing": miss, "pos_dev_mm": round(dev, 4), "rot_dev_deg": round(adev, 4),
                  "mesh_nodes_source": sorted(ref["meshes"]), "mesh_nodes_missing": [n for n in ref["meshes"] if n not in objs], "PASS": not miss and dev < 0.01 and adev < 0.1 and not [n for n in ref["meshes"] if n not in objs]}
     mat_names = sorted({s_.material.name for o in mobjs for s_ in o.material_slots if s_.material}); vshade = None
+    bev_ok = sorted(o.name for o in mobjs if o.get("beveled")); bev_rej = sorted(o.name for o in mobjs if src.get("bevel") and not o.get("beveled"))
     global VCOL_EXPORT
     VCOL_EXPORT = {}
     if src.get("vcol"):
@@ -462,7 +486,7 @@ def build(cid, style):
           "bounds_m": [[round(x, 4) for x in lo], [round(x, 4) for x in hi]], "envelope_m": env, "inside_envelope": inside, "lod1_inside_envelope": lod_inside, "node_bounds_vs_source": node_vs_src,
           "ports": src["ports"], "port_contact_test": ptest, "lod1_port_contact_test": lptest, "interface_vs_source": iface, "hierarchy": hier, "fx_objects": sorted(fxn),
           "animation": {"glb_animation_mode": glb_mode, "mode": an["mode"], "fps": FPS, "frames": F, "clips": an["clips"], "events": an["events"], "warped_clips": an["warped_clips"], "animated_objects": anim_names, "objects_with_real_motion": moving,
-                        "sweep_outside_envelope_mm": round(max(sweep, 0)*1000, 3), "sweep_allowance_mm": round(allow*1000), "loop_seams": seams, "motion_character": ST.MOTION[style]}, "parts": src["stats"]["parts"], "vertex_shading": vshade, "polish_pass": src.get("polish_pass"), "mechanisms": src.get("mechanisms"),
+                        "sweep_outside_envelope_mm": round(max(sweep, 0)*1000, 3), "sweep_allowance_mm": round(allow*1000), "loop_seams": seams, "motion_character": ST.MOTION[style]}, "parts": src["stats"]["parts"], "vertex_shading": vshade, "polish_pass": src.get("polish_pass"), "mechanisms": src.get("mechanisms"), "bevel": src.get("bevel"), "beveled_nodes": bev_ok, "bevel_rejected_nodes": bev_rej,
           "reimport": re_, "renders": renders, "files": files, "seconds": round(time.time() - t0, 1), "blender": bpy.app.version_string}
     json.dump(qa, open(base + "_QA.json", "w", encoding="utf-8"), indent=1)
     log("VARIANT", ST.LABEL[style], cid, stat, failures, tris, "tris", "LOD1", lr["triangles"])

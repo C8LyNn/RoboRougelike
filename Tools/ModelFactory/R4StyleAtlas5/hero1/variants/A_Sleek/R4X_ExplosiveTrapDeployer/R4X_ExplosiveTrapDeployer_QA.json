@@ -1,0 +1,503 @@
+{
+ "id": "R4X_ExplosiveTrapDeployer",
+ "pilot_type": "Deployer",
+ "construction": "Sleek mag-cradle: two swept rails with light strips, lift pad with a light ring, rear pad with a fin. Mechanisms: two clamp arms swing open before release and close on reset, the lift pad kicks at the release.",
+ "style_character": "advanced technology: smooth compound housings, lacquer / ceramic, graphite frames, light strips and rings",
+ "artistic_acceptance": "PENDING_OWNER_REVIEW",
+ "textures": {
+  "base": "A_base.png",
+  "orm": "A_orm.png",
+  "normal": "A_normal.png",
+  "normal_strength": 0.35,
+  "uv": "triplanar"
+ },
+ "material_textures": {
+  "R4P_Base": {
+   "base_texture": "A_base.png",
+   "orm_texture": "A_orm.png",
+   "normal_texture": "A_normal.png"
+  },
+  "R4P_Glow": {},
+  "R4P_Secondary": {
+   "base_texture": "A_base.png",
+   "orm_texture": "A_orm.png",
+   "normal_texture": "A_normal.png"
+  },
+  "R4P_Trim": {
+   "base_texture": "A_base.png",
+   "orm_texture": "A_orm.png",
+   "normal_texture": "A_normal.png"
+  }
+ },
+ "board_frames": [
+  {
+   "clip": "Deploy",
+   "frame": 45
+  },
+  {
+   "clip": "Deploy",
+   "frame": 63
+  },
+  {
+   "clip": "Deploy",
+   "frame": 85
+  },
+  {
+   "clip": "Hit",
+   "frame": 107
+  }
+ ],
+ "style": "A",
+ "style_label": "A_Sleek",
+ "family": "deployer",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_ExplosiveTrapDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1156,
+   "vertices": 596,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4X_ExplosiveTrapDeployer_ClampL",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 132,
+   "vertices": 68,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  },
+  {
+   "object": "R4X_ExplosiveTrapDeployer_ClampR",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 132,
+   "vertices": 68,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  },
+  {
+   "object": "R4X_ExplosiveTrapDeployer_Lift",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2176,
+   "vertices": 1090,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  },
+  {
+   "object": "R4X_ExplosiveTrapDeployer_Payload",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2258,
+   "vertices": 1145,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_ExplosiveTrapDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1518,
+  "vertices": 799,
+  "uv": true,
+  "material_slots": 4,
+  "ok": true
+ },
+ "triangles": 5854,
+ "triangles_lod1": 1518,
+ "mesh_objects": 5,
+ "material_slots_total": 12,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.2147
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "back",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.0,
+    0.01818
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_ExplosiveTrapDeployer_ROOT": null,
+  "R4X_ExplosiveTrapDeployer_Body": "R4X_ExplosiveTrapDeployer_ROOT",
+  "R4X_ExplosiveTrapDeployer_ClampL": "R4X_ExplosiveTrapDeployer_ROOT",
+  "R4X_ExplosiveTrapDeployer_ClampR": "R4X_ExplosiveTrapDeployer_ROOT",
+  "R4X_ExplosiveTrapDeployer_Lift": "R4X_ExplosiveTrapDeployer_ROOT",
+  "R4X_ExplosiveTrapDeployer_Payload": "R4X_ExplosiveTrapDeployer_ROOT",
+  "Port_down_000": "R4X_ExplosiveTrapDeployer_ROOT",
+  "Port_back_000_part": "R4X_ExplosiveTrapDeployer_ROOT",
+  "Socket_Mount": "R4X_ExplosiveTrapDeployer_ROOT",
+  "Deploy_Out": "R4X_ExplosiveTrapDeployer_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 113,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Deploy",
+    "start": 27,
+    "end": 99,
+    "loop": false
+   },
+   {
+    "name": "Hit",
+    "start": 101,
+    "end": 113,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Deploy_Open": 27,
+   "Deploy_Out": 63,
+   "Deploy_Reset": 85,
+   "Hit": 101
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_ExplosiveTrapDeployer_Body",
+   "R4X_ExplosiveTrapDeployer_Payload",
+   "R4X_ExplosiveTrapDeployer_ClampL",
+   "R4X_ExplosiveTrapDeployer_ClampR",
+   "R4X_ExplosiveTrapDeployer_Lift"
+  ],
+  "objects_with_real_motion": 5,
+  "sweep_outside_envelope_mm": 1.561,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "fluid and precise: long ease in / out, no overshoot"
+ },
+ "parts": 22,
+ "vertex_shading": {
+  "corners": 11926,
+  "worn_edge_samples": 378,
+  "recipe": {
+   "flat": 0.94,
+   "cavity": [
+    0.4,
+    0.43,
+    0.5
+   ],
+   "gamma": 1.0,
+   "edge": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "edge_amount": 0.35,
+   "dist": 0.12
+  },
+  "lod1": 3260,
+  "gltf_export_options": {
+   "export_vertex_color": "ACTIVE",
+   "export_active_vertex_color_when_no_material": true
+  }
+ },
+ "polish_pass": "hero1",
+ "mechanisms": {
+  "ClampL": {
+   "parent": "root",
+   "pivot": [
+    -0.185,
+    -0.07,
+    -0.05
+   ]
+  },
+  "ClampR": {
+   "parent": "root",
+   "pivot": [
+    0.185,
+    -0.07,
+    -0.05
+   ]
+  },
+  "Lift": {
+   "parent": "root",
+   "pivot": [
+    0.0,
+    -0.07,
+    -0.17
+   ]
+  }
+ },
+ "bevel": {
+  "width": 0.004,
+  "segments": 2
+ },
+ "beveled_nodes": [
+  "R4X_ExplosiveTrapDeployer_Body",
+  "R4X_ExplosiveTrapDeployer_ClampL",
+  "R4X_ExplosiveTrapDeployer_ClampR",
+  "R4X_ExplosiveTrapDeployer_Lift",
+  "R4X_ExplosiveTrapDeployer_Payload"
+ ],
+ "bevel_rejected_nodes": [],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 5,
+   "triangles": 5854,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 10,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 5,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    1,
+    "R4X_ExplosiveTrapDeployer_Lift",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 5,
+   "triangles": 5854,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 5,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_ExplosiveTrapDeployer_34.jpg",
+  "R4X_ExplosiveTrapDeployer_anim1.jpg",
+  "R4X_ExplosiveTrapDeployer_anim2.jpg",
+  "R4X_ExplosiveTrapDeployer_anim3.jpg",
+  "R4X_ExplosiveTrapDeployer_anim4.jpg",
+  "R4X_ExplosiveTrapDeployer_clay_34.jpg",
+  "R4X_ExplosiveTrapDeployer_clay_front.jpg",
+  "R4X_ExplosiveTrapDeployer_clay_side.jpg",
+  "R4X_ExplosiveTrapDeployer_front.jpg",
+  "R4X_ExplosiveTrapDeployer_side.jpg",
+  "R4X_ExplosiveTrapDeployer_sil_34.png",
+  "R4X_ExplosiveTrapDeployer_sil_front.png",
+  "R4X_ExplosiveTrapDeployer_sil_side.png",
+  "R4X_ExplosiveTrapDeployer_top.jpg",
+  "R4X_ExplosiveTrapDeployer_wire.jpg"
+ ],
+ "files": {
+  "R4X_ExplosiveTrapDeployer.blend": {
+   "sha256": "bbc1615d1ad1376b9fe78e9f21ce959888f3e76c0181f52f90975cdce1c98ed3",
+   "bytes": 265969
+  },
+  "R4X_ExplosiveTrapDeployer.fbx": {
+   "sha256": "88874ad81cb5e2b6fbcd98335cdb0d13a10401436d85dfb2b5b43ac2f3bd8ba8",
+   "bytes": 298492
+  },
+  "R4X_ExplosiveTrapDeployer.glb": {
+   "sha256": "cb17ccec223ebcc0cc8ee9bb77c498c7997f36c7522139685951fe9411805a9e",
+   "bytes": 260408
+  },
+  "R4X_ExplosiveTrapDeployer_LOD1.fbx": {
+   "sha256": "a2028450edf2ee05c816bff6a2c0ee4d7c2ef10da6b6b0f8ebfca8c9f8385f6b",
+   "bytes": 66588
+  },
+  "R4X_ExplosiveTrapDeployer_LOD1.glb": {
+   "sha256": "397b72932a0b6c5fed51562eefba2298611267f785a4efd8f3f359ce50be4fff",
+   "bytes": 121648
+  }
+ },
+ "seconds": 3.9,
+ "blender": "5.3.0",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

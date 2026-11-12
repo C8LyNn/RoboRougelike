@@ -1,0 +1,595 @@
+{
+ "note": "generator-side test (numpy), not a Unity test",
+ "scenarios": {
+  "A": [
+   {
+    "scenario": "F0_intact",
+    "removed_cells": [],
+    "parts_gone": 0,
+    "fragments": 94,
+    "fairings_left": 6,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F1_lower_cube_under_ramp",
+    "removed_cells": [
+     [
+      0,
+      2,
+      0
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 88,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F2_upper_cube_behind_ramp",
+    "removed_cells": [
+     [
+      0,
+      1,
+      1
+     ]
+    ],
+    "parts_gone": 2,
+    "fragments": 87,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F3_prow_cube",
+    "removed_cells": [
+     [
+      1,
+      5,
+      0
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 86,
+    "fairings_left": 3,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F4_cheek_neighbour",
+    "removed_cells": [
+     [
+      0,
+      4,
+      0
+     ]
+    ],
+    "parts_gone": 2,
+    "fragments": 87,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F5_spine",
+    "removed_cells": [
+     [
+      1,
+      2,
+      1
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 87,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F6_front_section",
+    "removed_cells": [
+     [
+      0,
+      4,
+      0
+     ],
+     [
+      1,
+      4,
+      0
+     ],
+     [
+      2,
+      4,
+      0
+     ]
+    ],
+    "parts_gone": 6,
+    "fragments": 77,
+    "fairings_left": 4,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   }
+  ],
+  "B": [
+   {
+    "scenario": "F0_intact",
+    "removed_cells": [],
+    "parts_gone": 0,
+    "fragments": 94,
+    "fairings_left": 6,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F1_lower_cube_under_ramp",
+    "removed_cells": [
+     [
+      0,
+      2,
+      0
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 88,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F2_upper_cube_behind_ramp",
+    "removed_cells": [
+     [
+      0,
+      1,
+      1
+     ]
+    ],
+    "parts_gone": 2,
+    "fragments": 87,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F3_prow_cube",
+    "removed_cells": [
+     [
+      1,
+      5,
+      0
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 86,
+    "fairings_left": 3,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F4_cheek_neighbour",
+    "removed_cells": [
+     [
+      0,
+      4,
+      0
+     ]
+    ],
+    "parts_gone": 2,
+    "fragments": 87,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F5_spine",
+    "removed_cells": [
+     [
+      1,
+      2,
+      1
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 87,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F6_front_section",
+    "removed_cells": [
+     [
+      0,
+      4,
+      0
+     ],
+     [
+      1,
+      4,
+      0
+     ],
+     [
+      2,
+      4,
+      0
+     ]
+    ],
+    "parts_gone": 6,
+    "fragments": 77,
+    "fairings_left": 4,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   }
+  ],
+  "C": [
+   {
+    "scenario": "F0_intact",
+    "removed_cells": [],
+    "parts_gone": 0,
+    "fragments": 94,
+    "fairings_left": 6,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F1_lower_cube_under_ramp",
+    "removed_cells": [
+     [
+      0,
+      2,
+      0
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 88,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F2_upper_cube_behind_ramp",
+    "removed_cells": [
+     [
+      0,
+      1,
+      1
+     ]
+    ],
+    "parts_gone": 2,
+    "fragments": 87,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F3_prow_cube",
+    "removed_cells": [
+     [
+      1,
+      5,
+      0
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 86,
+    "fairings_left": 3,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F4_cheek_neighbour",
+    "removed_cells": [
+     [
+      0,
+      4,
+      0
+     ]
+    ],
+    "parts_gone": 2,
+    "fragments": 87,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F5_spine",
+    "removed_cells": [
+     [
+      1,
+      2,
+      1
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 87,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F6_front_section",
+    "removed_cells": [
+     [
+      0,
+      4,
+      0
+     ],
+     [
+      1,
+      4,
+      0
+     ],
+     [
+      2,
+      4,
+      0
+     ]
+    ],
+    "parts_gone": 6,
+    "fragments": 77,
+    "fairings_left": 4,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   }
+  ],
+  "D": [
+   {
+    "scenario": "F0_intact",
+    "removed_cells": [],
+    "parts_gone": 0,
+    "fragments": 86,
+    "fairings_left": 6,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F1_lower_cube_under_ramp",
+    "removed_cells": [
+     [
+      0,
+      2,
+      0
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 81,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F2_upper_cube_behind_ramp",
+    "removed_cells": [
+     [
+      0,
+      1,
+      1
+     ]
+    ],
+    "parts_gone": 2,
+    "fragments": 79,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F3_prow_cube",
+    "removed_cells": [
+     [
+      1,
+      5,
+      0
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 80,
+    "fairings_left": 3,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F4_cheek_neighbour",
+    "removed_cells": [
+     [
+      0,
+      4,
+      0
+     ]
+    ],
+    "parts_gone": 2,
+    "fragments": 79,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F5_spine",
+    "removed_cells": [
+     [
+      1,
+      2,
+      1
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 79,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F6_front_section",
+    "removed_cells": [
+     [
+      0,
+      4,
+      0
+     ],
+     [
+      1,
+      4,
+      0
+     ],
+     [
+      2,
+      4,
+      0
+     ]
+    ],
+    "parts_gone": 6,
+    "fragments": 69,
+    "fairings_left": 4,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   }
+  ],
+  "E": [
+   {
+    "scenario": "F0_intact",
+    "removed_cells": [],
+    "parts_gone": 0,
+    "fragments": 94,
+    "fairings_left": 6,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F1_lower_cube_under_ramp",
+    "removed_cells": [
+     [
+      0,
+      2,
+      0
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 88,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F2_upper_cube_behind_ramp",
+    "removed_cells": [
+     [
+      0,
+      1,
+      1
+     ]
+    ],
+    "parts_gone": 2,
+    "fragments": 87,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F3_prow_cube",
+    "removed_cells": [
+     [
+      1,
+      5,
+      0
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 86,
+    "fairings_left": 3,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F4_cheek_neighbour",
+    "removed_cells": [
+     [
+      0,
+      4,
+      0
+     ]
+    ],
+    "parts_gone": 2,
+    "fragments": 87,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F5_spine",
+    "removed_cells": [
+     [
+      1,
+      2,
+      1
+     ]
+    ],
+    "parts_gone": 1,
+    "fragments": 87,
+    "fairings_left": 5,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   },
+   {
+    "scenario": "F6_front_section",
+    "removed_cells": [
+     [
+      0,
+      4,
+      0
+     ],
+     [
+      1,
+      4,
+      0
+     ],
+     [
+      2,
+      4,
+      0
+     ]
+    ],
+    "parts_gone": 6,
+    "fragments": 77,
+    "fairings_left": 4,
+    "fairings_of_removed_parts": 0,
+    "errors": 0,
+    "result": "PASS"
+   }
+  ]
+ }
+}
