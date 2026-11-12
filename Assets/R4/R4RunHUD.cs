@@ -393,12 +393,13 @@ namespace RoboRougelike.R1
             if(model.CreativeMode)return $"Napraw {planned} • za darmo";
             return $"Napraw {planned}/{eligible} • {total} Z"+(planned<eligible?" • najtaniej":"");
         }
-        private void DrawCatalogBulkRepair(R1RunController run,R3PartState[] items,Rect rect,bool garageQuick=false)
+        private void DrawCatalogBulkRepair(R1RunController run,R3PartState[] items,Rect rect,bool garageQuick=false,bool compact=false)
         {
             var plan=CatalogRepairPlan(run.VehicleModel,items,out int eligible,out int total);
             bool previouslyEnabled=GUI.enabled;GUI.enabled=previouslyEnabled&&plan.Length>0;
             string label=CatalogRepairLabel(run.VehicleModel,items,plan.Length,eligible,total);
-            if(garageQuick)label="Magazyn: "+label;
+            if(compact)label=eligible==0?"Stos: sprawny":plan.Length==0?"Stos: brak środków":$"Stos {plan.Length}/{eligible} • {total} Z";
+            else if(garageQuick)label="Magazyn: "+label;
             if(GUI.Button(rect,label,compactButton))RepairCatalogStack(run,items);
             GUI.enabled=previouslyEnabled;
         }
