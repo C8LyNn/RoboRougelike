@@ -33133,8 +33133,8 @@
   }
  ],
  "legacy_branch_sources": {
-  "status": "OUT_OF_FROZEN_CATALOGUE - OWNER_DECISION",
-  "note": "Older single-asset feature branches (rrl-model M01-M04, rrl-env) that contain OBJ/GLB experiments. They are not R4-standard parts, have no port / socket manifests and are not referenced by the families named in #1239. Listed so nothing is hidden; not scheduled for 5-style production unless the owner adds them.",
+  "status": "LEGACY_EXPERIMENT / OUT_OF_SCOPE (owner decision 2026-11-12)",
+  "note": "Older single-asset feature branches (rrl-model M01-M04, rrl-env) that contain OBJ/GLB experiments. They are not R4-standard parts, have no port / socket manifests and are not referenced by the families named in #1239. Kept in the register only; not reworked and not counted as missing models.",
   "branches": [
    {
     "branch": "feature/rrl-env01-001-protective-barrier-20261027",
@@ -33385,5 +33385,9 @@
   "scan": "145 candidate branches scanned (legacy_branch_scan.tsv); 1171 remote heads exist, branches without art-like names were not opened"
  },
  "BLOCKED_SOURCE": [],
- "NEW_ASSET_DELTA": []
+ "NEW_ASSET_DELTA": [],
+ "out_of_scope_by_owner": [
+  "mech / spider legs: separate modelling task, to be added to the five styles later",
+  "terrain and props: separate modular environment library later"
+ ]
 }
