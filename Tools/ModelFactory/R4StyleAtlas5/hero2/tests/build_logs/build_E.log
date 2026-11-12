@@ -1,0 +1,182 @@
+00:00.031  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+15:12:23 | INFO: Data are loaded, start creating Blender stuff
+15:12:23 | INFO: Blender create Mesh node R4W_Basic_Yaw
+15:12:23 | INFO: Blender create Mesh node R4W_Basic_Pitch
+15:12:23 | INFO: Blender create Mesh node MuzzleFlash
+15:12:23 | INFO: Blender create Mesh node R4W_Basic_Barrel
+15:12:23 | INFO: Blender create Mesh node R4W_Basic_Base
+15:12:23 | INFO: glTF import finished in 0.05s
+<WORKDIR>\R4_Atlas5_hero2\hs7\scr\pbuild.py:42: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(zone); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tx = src["textures"]; m["paint_zone"] = zone
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_hero2\\f1\\variants\\E_Toon\\R4W_Basic\\R4W_Basic.fbx'
+export finished in 0.0544 sec.
+INFO Draco is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_meshopt_bridge.dll
+15:12:23 | INFO: Starting glTF 2.0 export
+15:12:23 | INFO: Extracting primitive: R4W_Basic_Yaw
+15:12:23 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:23 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:23 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:23 | INFO: Primitives created: 3
+15:12:23 | INFO: Extracting primitive: R4W_Basic_Antenna
+15:12:23 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:23 | INFO: Primitives created: 2
+15:12:23 | INFO: Extracting primitive: R4W_Basic_Pitch
+15:12:23 | INFO: Primitives created: 3
+15:12:23 | INFO: Extracting primitive: MuzzleFlash
+15:12:23 | INFO: Primitives created: 1
+15:12:23 | INFO: Extracting primitive: R4W_Basic_Barrel
+15:12:23 | INFO: Primitives created: 2
+15:12:23 | INFO: Extracting primitive: R4W_Basic_Bell
+15:12:23 | INFO: Primitives created: 2
+15:12:23 | INFO: Extracting primitive: R4W_Basic_Base
+15:12:23 | INFO: Primitives created: 4
+15:12:23 | INFO: Finished glTF 2.0 export in 0.2491452693939209 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_hero2\\f1\\variants\\E_Toon\\R4W_Basic\\R4W_Basic_LOD1.fbx'
+export finished in 0.0152 sec.
+15:12:23 | INFO: Starting glTF 2.0 export
+15:12:23 | INFO: Extracting primitive: R4W_Basic_LOD1
+15:12:24 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:24 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:24 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:24 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:24 | INFO: Primitives created: 4
+15:12:24 | INFO: Finished glTF 2.0 export in 0.7838008403778076 s
+<WORKDIR>\R4_Atlas5_hero2\hs7\scr\pbuild.py:181: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w = bpy.data.worlds.new("W"); scn.world = w; w.use_nodes = True; bg = w.node_tree.nodes.get("Background"); bg.inputs[0].default_value = (0.20, 0.21, 0.23, 1); bg.inputs[1].default_value = 0.9
+00:02.968  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4W_Basic\renders\R4W_Basic_front.jpg'
+00:03.296  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4W_Basic\renders\R4W_Basic_side.jpg'
+00:03.640  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4W_Basic\renders\R4W_Basic_top.jpg'
+00:03.953  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4W_Basic\renders\R4W_Basic_34.jpg'
+00:04.250  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4W_Basic\renders\R4W_Basic_anim1.jpg'
+00:04.531  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4W_Basic\renders\R4W_Basic_anim2.jpg'
+00:04.765  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4W_Basic\renders\R4W_Basic_anim3.jpg'
+00:05.031  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4W_Basic\renders\R4W_Basic_anim4.jpg'
+<WORKDIR>\R4_Atlas5_hero2\hs7\scr\pbuild.py:478: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  lod.hide_render = True; clay = bpy.data.materials.new("Clay"); clay.use_nodes = True; cb = clay.node_tree.nodes.get("Principled BSDF"); cb.inputs["Base Color"].default_value = (0.5, 0.5, 0.5, 1); cb.inputs["Roughness"].default_value = 0.7
+00:05.468  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4W_Basic\renders\R4W_Basic_clay_front.png'
+00:05.703  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4W_Basic\renders\R4W_Basic_clay_side.png'
+00:05.968  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4W_Basic\renders\R4W_Basic_clay_34.png'
+<WORKDIR>\R4_Atlas5_hero2\hs7\scr\pbuild.py:483: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  lod.hide_render = True; wm = bpy.data.materials.new("Wire"); wm.use_nodes = True; wb = wm.node_tree.nodes.get("Principled BSDF"); wb.inputs["Base Color"].default_value = (0.01, 0.01, 0.012, 1); wb.inputs["Roughness"].default_value = 1.0
+00:06.156  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4W_Basic\renders\R4W_Basic_wire.jpg'
+
+Info: Saved as "R4W_Basic.blend"
+FBX version: 7400
+15:12:29 | INFO: Data are loaded, start creating Blender stuff
+15:12:29 | INFO: Blender create Mesh node R4W_Basic_Yaw
+15:12:29 | INFO: Blender create Mesh node R4W_Basic_Antenna
+15:12:29 | INFO: Blender create Mesh node R4W_Basic_Pitch
+15:12:29 | INFO: Blender create Mesh node MuzzleFlash
+15:12:29 | INFO: Blender create Mesh node R4W_Basic_Barrel
+15:12:29 | INFO: Blender create Mesh node R4W_Basic_Bell
+15:12:29 | INFO: Blender create Mesh node R4W_Basic_Base
+15:12:29 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT E_Toon R4W_Basic BLENDER_PASS [] 3028 tris LOD1 1992
+15:12:29 | INFO: Data are loaded, start creating Blender stuff
+15:12:29 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Mount
+15:12:29 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Rotor
+15:12:29 | INFO: glTF import finished in 0.03s
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_hero2\\f1\\variants\\E_Toon\\R4M_WheelM_Side_Offroad\\R4M_WheelM_Side_Offroad.fbx'
+export finished in 0.0363 sec.
+15:12:29 | INFO: Starting glTF 2.0 export
+15:12:29 | INFO: Extracting primitive: R4M_WheelM_Side_Offroad_Coil
+15:12:29 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:29 | INFO: Primitives created: 1
+15:12:29 | INFO: Extracting primitive: R4M_WheelM_Side_Offroad_Mount
+15:12:29 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:29 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:29 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:29 | INFO: Primitives created: 4
+15:12:29 | INFO: Extracting primitive: R4M_WheelM_Side_Offroad_Rotor
+15:12:29 | INFO: Primitives created: 4
+15:12:29 | INFO: Finished glTF 2.0 export in 0.20421671867370605 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_hero2\\f1\\variants\\E_Toon\\R4M_WheelM_Side_Offroad\\R4M_WheelM_Side_Offroad_LOD1.fbx'
+export finished in 0.0120 sec.
+15:12:29 | INFO: Starting glTF 2.0 export
+15:12:29 | INFO: Extracting primitive: R4M_WheelM_Side_Offroad_LOD1
+15:12:30 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:30 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:30 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:30 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:30 | INFO: Primitives created: 4
+15:12:30 | INFO: Finished glTF 2.0 export in 0.9520294666290283 s
+00:08.343  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_front.jpg'
+00:08.671  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_side.jpg'
+00:09.000  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_top.jpg'
+00:09.265  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_34.jpg'
+00:09.609  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_anim1.jpg'
+00:09.906  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_anim2.jpg'
+00:10.234  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_anim3.jpg'
+00:10.484  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_anim4.jpg'
+00:10.796  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_clay_front.png'
+00:11.078  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_clay_side.png'
+00:11.359  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_clay_34.png'
+00:11.671  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_wire.jpg'
+
+Info: Saved as "R4M_WheelM_Side_Offroad.blend"
+FBX version: 7400
+15:12:34 | INFO: Data are loaded, start creating Blender stuff
+15:12:34 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Coil
+15:12:34 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Mount
+15:12:34 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Rotor
+15:12:34 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT E_Toon R4M_WheelM_Side_Offroad BLENDER_PASS [] 5294 tris LOD1 3346
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_hero2\\f1\\variants\\E_Toon\\R4X_Battery\\R4X_Battery.fbx'
+export finished in 0.0323 sec.
+15:12:35 | INFO: Starting glTF 2.0 export
+15:12:35 | INFO: Extracting primitive: R4X_Battery_Body
+15:12:35 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:35 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:35 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:35 | INFO: Primitives created: 3
+15:12:35 | INFO: Extracting primitive: R4X_Battery_Jug
+15:12:35 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:35 | INFO: Primitives created: 3
+15:12:35 | INFO: Extracting primitive: R4X_Battery_Emblem
+15:12:35 | INFO: Primitives created: 2
+15:12:35 | INFO: Finished glTF 2.0 export in 0.09112334251403809 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_hero2\\f1\\variants\\E_Toon\\R4X_Battery\\R4X_Battery_LOD1.fbx'
+export finished in 0.0123 sec.
+15:12:35 | INFO: Starting glTF 2.0 export
+15:12:35 | INFO: Extracting primitive: R4X_Battery_LOD1
+15:12:35 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:35 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:35 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:35 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:12:35 | INFO: Primitives created: 4
+15:12:35 | INFO: Finished glTF 2.0 export in 0.4627249240875244 s
+00:12.984  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4X_Battery\renders\R4X_Battery_front.jpg'
+00:13.156  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4X_Battery\renders\R4X_Battery_side.jpg'
+00:13.375  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4X_Battery\renders\R4X_Battery_top.jpg'
+00:13.593  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4X_Battery\renders\R4X_Battery_34.jpg'
+00:13.890  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4X_Battery\renders\R4X_Battery_anim1.jpg'
+00:14.125  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4X_Battery\renders\R4X_Battery_anim2.jpg'
+00:14.375  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4X_Battery\renders\R4X_Battery_anim3.jpg'
+00:14.640  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4X_Battery\renders\R4X_Battery_anim4.jpg'
+00:14.937  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4X_Battery\renders\R4X_Battery_clay_front.png'
+00:15.171  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4X_Battery\renders\R4X_Battery_clay_side.png'
+00:15.406  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4X_Battery\renders\R4X_Battery_clay_34.png'
+00:15.640  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\variants\E_Toon\R4X_Battery\renders\R4X_Battery_wire.jpg'
+
+Info: Saved as "R4X_Battery.blend"
+FBX version: 7400
+15:12:38 | INFO: Data are loaded, start creating Blender stuff
+15:12:38 | INFO: Blender create Mesh node R4X_Battery_Body
+15:12:38 | INFO: Blender create Mesh node R4X_Battery_Jug
+15:12:38 | INFO: Blender create Mesh node R4X_Battery_Emblem
+15:12:38 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT E_Toon R4X_Battery BLENDER_PASS [] 1564 tris LOD1 1156
+[PILOT2] BUILD_DONE 3 / 3
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

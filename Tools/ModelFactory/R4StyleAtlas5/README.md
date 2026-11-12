@@ -3,7 +3,13 @@
 Eksperymentalna biblioteka pięciu stylów A/B/C/D/E dla istniejących assetów RoboRougelike. Tylko art: nic w `Assets/`,
 bez kodu, bez integracji z Unity, bez scalania. Unity: **UNITY_NOT_RUN**. Windows player: **WINDOWS_PLAYER_NOT_RUN**.
 
-## Hero Benchmark Pass (najnowsze)
+## Hero Benchmark Pass 2 — high-fidelity modelling (najnowsze)
+
+Nowy potok: model źródłowy high-poly → siatka gry → wypalanie → tekstury per model. Basic Gun, Wheel, Battery × 5 stylów (15 modeli) i pięć
+robotów, zestawione z pięcioma planszami referencyjnymi właściciela. Plansze, liczby, przeszkody kontraktu i uczciwy opis dystansu do referencji —
+[`hero2/README.md`](hero2/README.md).
+
+## Hero Benchmark Pass
 
 Zmiana kierunku artystycznego: pięć stylów zbliżanych do nazwanych wzorców (Destiny 2 / AC VI, ciężka maszyna wojskowa, Astroneer, Crossout,
 Overwatch + Roboquest). Na styl: hero robot, broń, napęd, moduł energetyczny; prawdziwe fazki, palety pod wzorce, owiewki sylwetki kadłuba,

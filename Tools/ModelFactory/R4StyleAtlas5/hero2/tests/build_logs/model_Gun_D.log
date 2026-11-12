@@ -1,0 +1,54 @@
+00:00.016  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+<WORKDIR>\R4_Atlas5_hero2\hs7\scr\h2model.py:58: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new("SKIN"); m.use_nodes = True; nt = m.node_tree; b = nt.nodes["Principled BSDF"]
+<WORKDIR>\R4_Atlas5_hero2\hs7\scr\h2model.py:62: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  clay = bpy.data.materials.new("CLAY"); clay.use_nodes = True; cb = clay.node_tree.nodes["Principled BSDF"]; cb.inputs["Base Color"].default_value = (0.55, 0.55, 0.55, 1); cb.inputs["Roughness"].default_value = 0.6
+<WORKDIR>\R4_Atlas5_hero2\hs7\scr\h2model.py:84: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w = bpy.data.worlds.new("w"); sc.world = w; w.use_nodes = True; w.node_tree.nodes["Background"].inputs[0].default_value = (0.42, 0.44, 0.48, 1); w.node_tree.nodes["Background"].inputs[1].default_value = 1.0
+05:33.422  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\m\preview\D_Scrap\R4W_Basic_lo.jpg'
+05:33.641  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\m\preview\D_Scrap\R4W_Basic_lo_back.jpg'
+05:33.844  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\m\preview\D_Scrap\R4W_Basic_hi_clay.jpg'
+05:34.047  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\m\preview\D_Scrap\R4W_Basic_lo_clay.jpg'
+05:34.250  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\m\preview\D_Scrap\R4W_Basic_lo_wire.jpg'
+05:34.422  render           | Saved: '<WORKDIR>\R4_Atlas5_hero2\f1\m\preview\D_Scrap\R4W_Basic_lod1.jpg'
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Saved as "R4W_Basic_SOURCE.blend"
+[HERO2] MODEL_DONE Gun D {'type': 'Gun', 'style': 'D', 's_build_hi': 23.3, 's_build_lo': 0.3, 'tris_hi': {'Body': 2364, 'Yaw': 2532, 'Crank': 76, 'Pitch': 3224, 'Rattle': 12, 'Barrel': 1508}, 'tris_lo': {'Body': 180, 'Yaw': 552, 'Crank': 68, 'Pitch': 532, 'Rattle': 12, 'Barrel': 284}, 'tris_hi_total': 9716, 'tris_lo_total': 1628, 'violations': [], 'template_nodes_not_modelled': [], 's_unwrap': 4.1, 's_bake': 220.5, 's_skin': 80.8, 'tris_lod1': 1406, 'lod1': {'method': 'planar dissolve', 'angle_deg': 14.0, 'triangles': 1406, 'of_lod0': 0.864}, 's_export_render': 4.9}
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit
