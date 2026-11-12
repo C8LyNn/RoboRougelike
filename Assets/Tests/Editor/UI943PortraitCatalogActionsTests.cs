@@ -559,9 +559,11 @@ public sealed class UI943PortraitCatalogActionsTests
         var hud=run.GetComponent<R1RunHUD>();Field(hud,"catalogOpen",false);
         Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
         Assert.That(run.Garage.Message.ToLowerInvariant(),Does.Contain("napraw").And.Contain("poniżej"));
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id),"The player should be able to repair only this part from the quick panel.");
         Assert.That((bool)Field(hud,"catalogOpen"),Is.False);
         yield return new ExitPlayMode();
     }
+
 
     [UnityTest] public IEnumerator GarageActionsExplainRepairAndRemovalFailures()
     {
@@ -1164,11 +1166,11 @@ public sealed class UI943PortraitCatalogActionsTests
         var item=run.VehicleModel.Inventory.Last();item.Health=0;
         var hud=run.GetComponent<R1RunHUD>();Field(hud,"catalogOpen",false);
         Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
-        Assert.That(run.Garage.SelectedInventoryId,Is.Null);
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id));
         Invoke(hud,"RepairCatalogStack",run,new[]{item});
         Assert.That(item.Health,Is.EqualTo(1));Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id));
         Assert.That(run.Garage.Tool,Is.EqualTo(R41GarageTool.Mount));
-        Assert.That(run.Garage.Message,Does.Contain("miejsce montażu"));
+        Assert.That(run.Garage.Message,Does.Contain("Naprawiono"));
 
         item.Health=0;run.Garage.SelectedInventoryId=null;run.Garage.SetTool(R41GarageTool.Inspect);
         Invoke(hud,"RepairCatalogStack",run,new[]{item});
