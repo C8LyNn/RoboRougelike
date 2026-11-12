@@ -134,9 +134,21 @@ namespace RoboRougelike.R1
         {
             if(next==catalogSearch)return;
             catalogSearch=next;catalogScroll=Vector2.zero;stackScroll=Vector2.zero;
+            dismantleConfirmation=null;catalogFeedback=null;
+            // Keep the selected group and physical item when the current search
+            // still displays them. A hidden group must never remain actionable.
+            if(catalogGroup.HasValue&&BuildCatalogEntries(run.VehicleModel).Any(entry=>
+                QuickEntrySelected(entry)&&CatalogNameMatches(entry.Name,catalogSearch)))return;
             // A hidden old group must never remain the target of a purchase.
-            catalogGroup=null;catalogBonusId=null;dismantleConfirmation=null;catalogFeedback=null;
+            catalogGroup=null;catalogBonusId=null;
             run.Garage.SelectedInventoryId=null;run.Garage.UseInventory=true;run.Garage.SetTool(R41GarageTool.Mount);
+        }
+        void DrawEmptyCatalogResults(R1RunController run,float width)
+        {
+            GUI.Label(new Rect(0,5,width,42),"Brak części pasujących do wyszukiwania.",small);
+            if(!string.IsNullOrWhiteSpace(catalogSearch)&&
+               GUI.Button(new Rect(0,52,Mathf.Min(260,width),42),"Pokaż wszystkie części",compactButton))
+            {ApplyCatalogSearch(run,string.Empty);GUI.FocusControl(null);GUIUtility.keyboardControl=0;}
         }
         void DrawMovementCatalog(R1RunController run)
         {
@@ -154,7 +166,7 @@ namespace RoboRougelike.R1
             catalogScroll=GUI.BeginScrollView(new Rect(25,98,900,570),catalogScroll,new Rect(0,0,875,Mathf.Max(570,Mathf.CeilToInt(entries.Length/3f)*55)));
             for(int row=0;row<entries.Length;row++)
             {var entry=entries[row];DrawCatalogRow(run,entry.Kind,entry.Weapon,entry.Group,entry.Name,row);}
-            if(entries.Length==0)GUI.Label(new Rect(0,5,800,35),"Brak części pasujących do wyszukiwania.",small);
+            if(entries.Length==0)DrawEmptyCatalogResults(run,800);
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
             DrawInventory(run);
             if(!string.IsNullOrEmpty(catalogFeedback))GUI.Label(new Rect(25,675,900,30),catalogFeedback,small);
