@@ -492,6 +492,40 @@ public sealed class UI943PortraitCatalogActionsTests
         yield return new ExitPlayMode();
     }
 
+    [UnityTest] public IEnumerator RepeatedPlacementNeverSilentlySwitchesToAnotherTier()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(200);
+        for(int i=0;i<3;i++)Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        int count=run.VehicleModel.Inventory.Count;
+        var first=run.VehicleModel.Inventory[count-3];var same=run.VehicleModel.Inventory[count-2];var higher=run.VehicleModel.Inventory[count-1];
+        first.Tier=1;same.Tier=1;same.Health=.5f;higher.Tier=2;higher.Health=1;
+        var garage=run.Garage;garage.ChooseInventory(first.Id);yield return null;
+        bool found=false;
+        foreach(var socket in garage.AvailableMountPoints.ToArray())
+        {
+            var normal=socket.Rotation*Vector3.forward;
+            if(garage.Point(new Ray(socket.Position+normal*2,-normal))&&garage.PreviewValid){found=true;break;}
+        }
+        Assert.That(found,Is.True,"A valid real mount point must exist.");
+        int scrap=run.VehicleModel.Scrap;
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);
+        Assert.That(garage.SelectedInventoryId,Is.EqualTo(same.Id),"Keep the same tier even if another is healthier.");
+        yield return null;found=false;
+        foreach(var socket in garage.AvailableMountPoints.ToArray())
+        {
+            var normal=socket.Rotation*Vector3.forward;
+            if(garage.Point(new Ray(socket.Position+normal*2,-normal))&&garage.PreviewValid){found=true;break;}
+        }
+        Assert.That(found,Is.True);Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);
+        Assert.That(garage.SelectedInventoryId,Is.Null,"A different tier requires an explicit player choice.");
+        Assert.That(garage.Message,Does.Contain("poziom"));
+        Assert.That(run.VehicleModel.Inventory.Contains(higher),Is.True);Assert.That(higher.Tier,Is.EqualTo(2));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        yield return new ExitPlayMode();
+    }
+
     [UnityTest] public IEnumerator CopyMountedPartSelectsOwnedInstanceWithoutSpending()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
@@ -578,6 +612,31 @@ public sealed class UI943PortraitCatalogActionsTests
         var method=typeof(R1RunHUD).GetMethod("GarageSearchConsumesKey",BindingFlags.Static|BindingFlags.NonPublic);
         Assert.That(method,Is.Not.Null);
         Assert.That((bool)method.Invoke(null,new object[]{type,focus}),Is.EqualTo(expected));
+    }
+
+    [UnityTest] public IEnumerator QuickSearchCoversAllCategoriesAndRespectsOwnedFilter()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var hud=run.GetComponent<R1RunHUD>();
+        var matches=((IEnumerable)Invoke(hud,"BuildFilteredQuickCatalogEntries",run.VehicleModel,0,false,"kOLO")).Cast<object>().ToArray();
+        Assert.That(matches.Length,Is.GreaterThan(1),"Searching for wheels must work even when Bloki was selected.");
+        Assert.That(matches.All(entry=>(R3PartKind)entry.GetType().GetField("Kind").GetValue(entry)==R3PartKind.Wheel),Is.True);
+        var owned=((IEnumerable)Invoke(hud,"BuildFilteredQuickCatalogEntries",run.VehicleModel,0,true,"kolo")).Cast<object>().ToArray();
+        Assert.That(owned,Is.Empty);
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);
+        owned=((IEnumerable)Invoke(hud,"BuildFilteredQuickCatalogEntries",run.VehicleModel,0,true,"kolo")).Cast<object>().ToArray();
+        Assert.That(owned.Length,Is.EqualTo(1));
+        Invoke(hud,"ApplyQuickSearch",run,"kolo");
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Wheel,R4WeaponKind.Basic,null);
+        string selected=run.Garage.SelectedInventoryId;
+        Assert.That(selected,Is.Not.Null);Assert.That((int)Field(hud,"quickPartCategory"),Is.EqualTo(1));
+        Invoke(hud,"ApplyQuickSearch",run,"");
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(selected),"Clearing search keeps the chosen wheel in its category.");
+        var category=((IEnumerable)Invoke(hud,"BuildFilteredQuickCatalogEntries",run.VehicleModel,0,false,"")).Cast<object>().ToArray();
+        Assert.That(category.All(entry=>(R3PartKind)entry.GetType().GetField("Kind").GetValue(entry)==R3PartKind.Armor),Is.True);
+        yield return new ExitPlayMode();
     }
 
     [UnityTest] public IEnumerator QuickSearchFindsPartsAndClearsOnlyHiddenSelection()

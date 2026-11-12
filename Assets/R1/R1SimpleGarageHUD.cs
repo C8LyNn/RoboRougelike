@@ -80,7 +80,8 @@ namespace RoboRougelike.R1
                 (!ownedOnly||CatalogEntryOwned(model,entry))).ToList();
 
         System.Collections.Generic.List<CatalogEntry> BuildFilteredQuickCatalogEntries(R3VehicleModel model,int category,bool ownedOnly,string search)=>
-            BuildQuickCatalogEntries(model,category,ownedOnly).Where(entry=>CatalogNameMatches(entry.Name,search)).ToList();
+            string.IsNullOrWhiteSpace(search)?BuildQuickCatalogEntries(model,category,ownedOnly):
+            BuildCatalogEntries(model).Where(entry=>(!ownedOnly||CatalogEntryOwned(model,entry))&&CatalogNameMatches(entry.Name,search)).ToList();
 
         bool QuickEntrySelected(CatalogEntry entry)=>catalogGroup==entry.Kind&&
             (entry.Kind!=R3PartKind.Gun||catalogWeapon==entry.Weapon)&&
@@ -373,6 +374,7 @@ namespace RoboRougelike.R1
 
         void SelectQuickPart(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus)
         {
+            quickPartCategory=QuickCategoryFor(kind);
             catalogGroup=kind;catalogWeapon=weapon;catalogBonusId=bonus;
             var garage=run.Garage;
             garage.SelectedPart=kind;garage.SelectedWeapon=weapon;garage.UseInventory=true;
@@ -434,19 +436,23 @@ namespace RoboRougelike.R1
             string[] categories={"Bloki","Koła","Broń","Moduły"};
             if(quickCategoryButton==null)quickCategoryButton=new GUIStyle(compactButton){fontSize=13,wordWrap=false,padding=new RectOffset(1,1,2,2)};
             float categoryWidth=(area.width-12)/4;
-            for(int i=0;i<categories.Length;i++)
+            if(string.IsNullOrWhiteSpace(quickPartSearch))
             {
-                quickCategoryButton.normal.background=quickPartCategory==i?buttonPressed:buttonNormal;
-                if(GUI.Button(new Rect(area.x+i*(categoryWidth+4),area.y,categoryWidth,34),categories[i],quickCategoryButton))
-                    SelectQuickCategory(run,i);
+                for(int i=0;i<categories.Length;i++)
+                {
+                    quickCategoryButton.normal.background=quickPartCategory==i?buttonPressed:buttonNormal;
+                    if(GUI.Button(new Rect(area.x+i*(categoryWidth+4),area.y,categoryWidth,34),categories[i],quickCategoryButton))
+                        SelectQuickCategory(run,i);
+                }
             }
+            else GUI.Label(new Rect(area.x,area.y,area.width,34),"Wyniki • wszystkie kategorie",small);
             GUI.backgroundColor=Color.white;
             var listArea=new Rect(area.x,area.y+40,area.width,area.height-40);
             var entries=BuildFilteredQuickCatalogEntries(model,quickPartCategory,quickOwnedOnly,quickPartSearch);
             quickPartsScroll=GUI.BeginScrollView(listArea,quickPartsScroll,new Rect(0,0,rowWidth,Mathf.Max(listArea.height,entries.Count*38)));
             for(int row=0;row<entries.Count;row++)
             {var entry=entries[row];DrawQuickPartRow(run,entry.Kind,entry.Weapon,entry.Group,entry.Name,row,rowWidth);}
-            if(entries.Count==0)GUI.Label(new Rect(0,5,rowWidth,70),string.IsNullOrWhiteSpace(quickPartSearch)?"Brak posiadanych części w tej kategorii. Wyłącz filtr, aby zobaczyć wszystkie.":"Brak wyników. Zmień wyszukiwanie, kategorię lub filtr.",small);
+            if(entries.Count==0)GUI.Label(new Rect(0,5,rowWidth,70),string.IsNullOrWhiteSpace(quickPartSearch)?"Brak posiadanych części w tej kategorii. Wyłącz filtr, aby zobaczyć wszystkie.":"Brak wyników. Zmień wyszukiwanie lub filtr.",small);
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
         }
 
