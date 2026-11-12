@@ -13,7 +13,11 @@ def D(typ, style):
     def deco(fn): P.setdefault(typ, {})[style] = fn; return fn
     return deco
 def T(loc=(0, 0, 0), ax=(0, 0, 1), deg=0.0, s=1.0): return (tuple(loc), tuple(ax), float(deg), float(s))
-def mech(name, pivot, parent, fn): node(name, pivot, parent=parent); MECH[name] = fn
+def mech(name, pivot, parent, fn):
+    if K._GRP: return                                             # inside a payload miniature the mechanism is frozen into the payload
+    node(name, pivot, parent=parent); MECH[name] = fn
+def body():
+    if not K._GRP: node()
 def sm(u, a=0.0, b=1.0): t = min(1.0, max(0.0, (u - a)/(b - a))); return t*t*(3 - 2*t)
 def bump(u, a, m, b): return sm(u, a, m)*(1 - sm(u, m, b))
 def spring(u, n=3.0, d=4.0): return math.exp(-d*u)*math.sin(2*math.pi*n*u)
@@ -343,3 +347,213 @@ def hover_e():
     node("Rotor", RP_, parent=None); ball(0.06, "sec", 14, 8, at=(0, 0, -0.222), squash=0.4)
     for i in range(4): sbox(0.04, 0.17, -0.05, 0.05, -0.008, 0.008, "base", 0.006, rot(Z, 90*i) @ rot(X, 16), (0, 0, -0.222))
     PD.hover_fx()
+
+# =================================================================================================== BATTERY (clips Idle, Activate (loop), Hit)
+def biface(h, pad): core_box(-H, H, -H, H, -H, -H + h); port("down"); core_box(-pad[0], pad[0], pad[1], H, pad[2], pad[3]); port("back", "partial", 0.14, (0, 0, -0.07))
+def act(c, u, k=1.0): return math.sin(2*math.pi*k*u) if c == "Activate" else 0.0
+@D("Battery", "A")
+def bat_a():
+    """Sleek reactor cell: capsule on two swept pylons, armoured end sleeves with emitter caps, a wide open core section. Mechanisms: the centre
+    sleeve with four studs rotates while the cell works, the lit core breathes."""
+    biface(0.045, (0.09, 0.16, -0.20, 0.03)); C0 = (0, -0.045, 0.035)
+    for sx in (-1, 1):
+        slab([(-0.16, -0.215), (0.12, -0.215), (0.10, -0.11), (0.045, -0.04), (-0.075, -0.04), (-0.14, -0.11)], sx*0.172 - 0.022, sx*0.172 + 0.022, (Y, Z, X), "base")
+        tube(0.06, 0.118, 0.0, 0.105, "base", 0.012, 32, R=R_to((sx, 0, 0)), at=(sx*0.125, C0[1], C0[2])); lathe([(0, 0), (0.118, 0), (0.09, 0.022), (0.05, 0.03), (0, 0.03)], ["base", "sec", "sec", "glow"], 32, crease=60, R=R_to((sx, 0, 0)), at=(sx*0.23, C0[1], C0[2]))
+        tube(0.119, 0.123, 0.03, 0.04, "glow", 0.001, 32, R=R_to((sx, 0, 0)), at=(sx*0.125, C0[1], C0[2]))
+    sbox(-0.15, 0.15, -0.09, 0.0, -0.215, -0.19, "dark", 0.006); sbox(-0.12, 0.12, C0[1] - 0.02, C0[1] + 0.02, 0.158, 0.172, "sec", 0.004)
+    mech("Core", C0, None, lambda c, u: T(s=1 + 0.07*act(c, u, 3) + (0.02*math.sin(6.283*u) if c == "Idle" else 0)))
+    cyl(0.055, -0.125, 0.125, "glow", 0.006, 24, R=R_to(X), at=C0)
+    mech("Sleeve", C0, None, lambda c, u: T(ax=X, deg=360*u if c == "Activate" else 0))
+    tube(0.075, 0.108, -0.04, 0.04, "base", 0.01, 32, R=R_to(X), at=C0)
+    for a in range(4): sbox(-0.03, 0.03, -0.014, 0.014, 0.106, 0.118, "sec", 0.003, rot(X, 90*a + 45), C0)
+    body()
+@D("Battery", "B")
+def bat_b():
+    """Brutal accumulator: finned transformer block, two ribbed insulator stacks with a copper busbar, hazard-painted fan housing.
+    Mechanisms: the cooling fan runs, the relay plunger hammers while the bank is active."""
+    biface(0.07, (0.10, 0.10, -0.185, 0.06))
+    sbox(-0.165, 0.165, -0.19, 0.07, -0.19, 0.075, "base", 0.008); sbox(-0.175, 0.175, -0.20, 0.08, 0.075, 0.095, "dark", 0.006)
+    for sx in (-1, 1):
+        for y in (-0.15, -0.095, -0.04, 0.015): sbox(sx*0.19 - 0.03, sx*0.19 + 0.03, y - 0.011, y + 0.011, -0.175, 0.06, "dark", 0.003)
+        lathe([(0, 0.095), (0.05, 0.095), (0.05, 0.11), (0.034, 0.12), (0.05, 0.135), (0.034, 0.15), (0.05, 0.165), (0.034, 0.18), (0.045, 0.195), (0.022, 0.205), (0.022, 0.235), (0, 0.235)], "metal", 14, crease=20, at=(sx*0.09, -0.06, 0))
+        bolt((sx*0.09, -0.06, 0.235), Z, 0.02)
+    rod((-0.09, -0.06, 0.225), (0.09, -0.06, 0.225), 0.014, "sec", 0.003, 8)
+    sbox(-0.11, 0.11, -0.225, -0.19, -0.16, 0.05, "sec", 0.006); tube(0.07, 0.09, 0.0, 0.02, "dark", 0.003, 16, R=R_to(-Y), at=(0, -0.225, -0.055))
+    mech("Fan", (0, -0.232, -0.055), None, lambda c, u: T(ax=Y, deg=720*u if c == "Activate" else 90*u if c == "Idle" else 0))
+    cyl(0.022, 0.0, 0.018, "metal", 0.003, 8, R=R_to(-Y), at=(0, -0.225, -0.055))
+    for a in range(6): sbox(0.018, 0.066, -0.004, 0.004, -0.014, 0.014, "metal", 0.002, rot(Y, 60*a) @ rot(X, 25), (0, -0.236, -0.055))
+    mech("Relay", (0, 0.03, 0.095), None, lambda c, u: T((0, 0, 0.02*max(0.0, act(c, u, 4)))))
+    sbox(-0.04, 0.04, 0.0, 0.06, 0.095, 0.15, "rust", 0.006); cyl(0.012, 0.15, 0.175, "metal", 0.002, 6, at=(0, 0.03, 0))
+    body()
+@D("Battery", "C")
+def bat_c():
+    """Arcade cell: one accent-coloured cell in a dark cradle with two clamps and a three-step charge window. Mechanism: the terminal cap pumps."""
+    biface(0.06, (0.10, 0.12, -0.20, 0.02)); sbox(-0.21, 0.21, -0.23, 0.10, -0.20, -0.10, "dark", 0.016)
+    cyl(0.155, -0.10, 0.15, "sec", 0.03, 22, at=(0, -0.065, 0)); cyl(0.115, 0.15, 0.19, "dark", 0.012, 18, at=(0, -0.065, 0))
+    for sx in (-1, 1): sbox(sx*0.185 - 0.03, sx*0.185 + 0.03, -0.12, -0.01, -0.10, 0.06, "base", 0.014)
+    for k in range(3): sbox(-0.035, 0.035, -0.226, -0.214, -0.05 + k*0.055, -0.01 + k*0.055, "glow", 0.004)
+    mech("Cap", (0, -0.065, 0.19), None, lambda c, u: T((0, 0, 0.022*(0.5 - 0.5*math.cos(6.283*2*u)) if c == "Activate" else 0)))
+    cyl(0.06, 0.19, 0.235, "metal", 0.012, 14, at=(0, -0.065, 0))
+    body()
+@D("Battery", "D")
+def bat_d():
+    """Scrap power pack: strapped truck battery with filler caps and a cracked gauge, jerrycan cell, rebar cage, jumper cables.
+    Mechanisms: the gauge needle swings erratically, the jumper clamp twitches on its terminal."""
+    biface(0.05, (0.10, 0.07, -0.20, 0.03))
+    sbox(-0.215, 0.045, -0.215, 0.06, -0.21, 0.04, "sec", 0.006); sbox(-0.22, 0.05, -0.22, 0.065, 0.04, 0.062, "dark", 0.004)
+    for x in (-0.16, -0.02): sbox(x - 0.016, x + 0.016, -0.223, 0.068, -0.21, 0.07, "rust", 0.003)
+    for k in range(5): cyl(0.014, 0.062, 0.078, "dark", 0.002, 6, at=(-0.19 + k*0.05, 0.0, 0))
+    for (x, g) in ((-0.17, "metal"), (-0.03, "rust")): cyl(0.02, 0.062, 0.105, g, 0.003, 7, at=(x, -0.14, 0))
+    sbox(0.075, 0.225, -0.20, 0.0, -0.21, 0.12, "rust", 0.008, rot(Z, 5)); cyl(0.028, 0.12, 0.155, "metal", 0.004, 7, at=(0.16, -0.14, 0)); sbox(0.10, 0.20, -0.215, -0.203, -0.10, 0.03, "patch", 0.003, rot(Z, 5))
+    for (x, y) in ((-0.235, -0.235), (0.24, -0.235), (0.24, 0.05), (-0.235, 0.05)): rod((x, y, -0.21), (x*0.97, y*0.97, 0.19), 0.008, "metal", 0.002, 5)
+    rod((-0.228, -0.228, 0.19), (0.233, -0.228, 0.185), 0.008, "metal", 0.002, 5); rod((0.233, -0.228, 0.185), (0.233, 0.048, 0.19), 0.008, "rust", 0.002, 5); rod((-0.228, 0.048, 0.19), (-0.228, -0.228, 0.19), 0.008, "metal", 0.002, 5)
+    rod((-0.03, -0.14, 0.10), (0.05, -0.19, 0.15), 0.008, "dark", 0.001, 5); rod((0.05, -0.19, 0.15), (0.15, -0.15, 0.15), 0.008, "dark", 0.001, 5)
+    cyl(0.05, 0.0, 0.02, "patch", 0.003, 9, R=R_to(-Y), at=(-0.085, -0.222, -0.08))
+    mech("Needle", (-0.085, -0.245, -0.08), None, lambda c, u: T(ax=Y, deg={"Activate": 35*math.sin(6.283*u) + 22*jit(u, 0.25), "Idle": 3*math.sin(6.283*u), "Hit": 60*spring(u, 3, 3)}.get(c, 0)))
+    sbox(-0.089, -0.081, -0.248, -0.243, -0.08, -0.038, "glow", 0.001)
+    mech("Clamp", (-0.17, -0.14, 0.105), None, lambda c, u: T(ax=Y, deg={"Activate": 7*jit(u, 0.3, 1.0), "Hit": 25*spring(u, 3, 3)}.get(c, 0)))
+    slab([(-0.03, 0.0), (0.03, 0.0), (0.045, 0.055), (0.0, 0.03), (-0.045, 0.055)], -0.012, 0.012, (X, Z, -Y), "rust", org=(-0.17, -0.14, 0.105)); rod((-0.17, -0.14, 0.15), (-0.10, -0.20, 0.17), 0.008, "rust", 0.001, 5)
+    body()
+@D("Battery", "E")
+def bat_e():
+    """Heroic power jug: one big round-shouldered capsule with a navy belt and cap and a lit bolt emblem, on two cream feet.
+    Mechanisms: the whole jug bounces and swells to the beat while active, the emblem pulses."""
+    biface(0.07, (0.10, 0.14, -0.19, 0.03)); J = (0, -0.05, -0.19)
+    for sx in (-1, 1): ball(0.05, "sec", 12, 8, at=(sx*0.15, -0.19, -0.165), squash=0.7)
+    mech("Jug", J, None, lambda c, u: T((0, 0, 0.014*abs(act(c, u, 2))), s={"Activate": 1 + 0.035*act(c, u, 4), "Hit": 1 - 0.08*bump(u, 0, 0.25, 1.0) + 0.04*spring(u, 3, 4)}.get(c, 1.0)))
+    lathe([(0, 0), (0.12, 0), (0.165, 0.05), (0.176, 0.19), (0.15, 0.29), (0.10, 0.35), (0.075, 0.36), (0, 0.36)], ["dark", "base", "base", "base", "sec", "sec", "dark"], 30, crease=75, at=J)
+    torus(0.174, 0.022, "dark", 30, 10, at=(J[0], J[1], -0.02)); lathe([(0, 0.36), (0.08, 0.36), (0.085, 0.40), (0.05, 0.43), (0, 0.435)], ["dark", "dark", "dark", "metal"], 20, crease=75, at=J)
+    mech("Emblem", (0, -0.232, 0.045), "Jug", lambda c, u: T(s=1 + (0.22*(0.5 - 0.5*math.cos(6.283*4*u)) if c == "Activate" else 0.05*math.sin(6.283*u) if c == "Idle" else 0)))
+    slab([(0.03, 0.10), (-0.06, -0.012), (-0.008, -0.012), (-0.036, -0.10), (0.06, 0.018), (0.008, 0.018), (0.05, 0.10)], 0.218, 0.238, (X, Z, -Y), "glow", org=(0, 0, 0.045))
+    body()
+
+# =================================================================================================== EXPLOSIVE TRAP (world object; clips Idle, Arm, Triggered, Recovery; node Lamp)
+def trap_k(c, u): return {"Arm": sm(u), "Triggered": 1.0, "Recovery": 1 - sm(u, 0, 0.5)}.get(c, 0.0)
+def lamp(fn):
+    if not K._GRP: node("Lamp", (0, 0, 0.10), dict(type="slide", axis=(0, 0, 1), amount=0.015, frames=24))
+    fn(); body()
+@D("Trap", "A")
+def trap_a():
+    """Sleek lotus mine: thin disc with a light ring and three armour petals. Mechanisms: the petals lift when it arms and snap flat on the trigger."""
+    lathe([(0, 0), (0.17, 0), (0.2, 0.012), (0.2, 0.026), (0.13, 0.05), (0, 0.055)], ["dark", "sec", "sec", "base", "base"], 36, crease=50); tube(0.197, 0.203, 0.013, 0.023, "glow", 0.002, 36)
+    for i, a in enumerate((30, 150, 270)):
+        t = rot(Z, a) @ np.array([0, 1.0, 0]); mech("Petal%d" % (i + 1), tuple(rot(Z, a) @ np.array([0.105, 0, 0.034])), None, lambda c, u, t=t: T(ax=t, deg=-38*({"Arm": sm(u), "Triggered": 1 - sm(u, 0, 0.25)*1.12, "Recovery": -0.12*(1 - sm(u, 0, 0.3))}.get(c, 0))))
+        slab([(0.10, -0.06), (0.235, -0.034), (0.255, 0.0), (0.235, 0.034), (0.10, 0.06)], 0.028, 0.042, "z", "base", R=rot(Z, a)); sbox(0.13, 0.235, -0.004, 0.004, 0.041, 0.045, "glow", 0.001, rot(Z, a))
+    body(); lamp(lambda: lathe([(0, 0.05), (0.07, 0.05), (0.064, 0.08), (0.035, 0.10), (0, 0.105)], "glow", 22, crease=70))
+@D("Trap", "B")
+def trap_b():
+    """Brutal contact mine: bolted flange, toothed locking collar, steel sphere with a belt and five horns. Mechanisms: the collar turns and locks
+    when it arms, the horns push out and stay out until it recovers."""
+    cyl(0.205, 0.0, 0.03, "dark", 0.004, 14); ring_of(8, lambda R, i: bolt(R @ np.array([0.172, 0, 0.03]), Z, 0.014)); cyl(0.07, 0.03, 0.07, "metal", 0.004, 10)
+    ball(0.135, "base", 18, 9, at=(0, 0, 0.165)); torus(0.137, 0.014, "dark", 18, 4, at=(0, 0, 0.165))
+    mech("Collar", (0, 0, 0.05), None, lambda c, u: T(ax=Z, deg=90*trap_k(c, u)))
+    tube(0.085, 0.12, 0.032, 0.068, "rust", 0.004, 12); ring_of(6, lambda R, i: sbox(0.115, 0.145, -0.02, 0.02, 0.036, 0.064, "rust", 0.003, R))
+    mech("Horns", (0, 0, 0.165), None, lambda c, u: T(s=1 + 0.13*trap_k(c, u) + (0.10*bump(u, 0, 0.2, 0.8) if c == "Triggered" else 0)))
+    def horn(R, i):
+        d = R @ np.array([math.cos(math.radians(35)), 0, math.sin(math.radians(35))]); c0 = np.array([0, 0, 0.165]); rod(c0 + d*0.11, c0 + d*0.168, 0.02, "metal", 0.004, 8); cyl(0.028, 0.0, 0.012, "dark", 0.003, 8, R=R_to(d), at=c0 + d*0.166)
+    ring_of(5, horn); body(); lamp(lambda: cyl(0.035, 0.288, 0.30, "glow", 0.003, 10))
+@D("Trap", "C")
+def trap_c():
+    """Arcade puck: flat body, accent ring, big button. Mechanism: the ring rises when armed and drops the moment it is triggered."""
+    cyl(0.225, 0.0, 0.06, "base", 0.02, 24); cyl(0.20, 0.0, 0.012, "dark", 0.003, 20)
+    mech("Ring", (0, 0, 0.06), None, lambda c, u: T((0, 0, 0.04*({"Arm": sm(u), "Triggered": 1 - sm(u, 0, 0.2)}.get(c, 0)))))
+    tube(0.13, 0.20, 0.045, 0.078, "sec", 0.012, 24)
+    body(); lamp(lambda: lathe([(0, 0.06), (0.115, 0.06), (0.105, 0.10), (0.06, 0.13), (0, 0.135)], "glow", 18, crease=70))
+@D("Trap", "D")
+def trap_d():
+    """Scrap charge: banded gas bottle with nails on crossed planks, a tin-can detonator on a wire, a pressure plate cut from a road sign.
+    Mechanisms: the plate rocks and slams, the aerial wire whips."""
+    sbox(-0.23, 0.21, -0.11, 0.10, 0.0, 0.02, "patch", 0.004, rot(Z, 12)); sbox(-0.10, 0.12, -0.23, 0.22, 0.018, 0.034, "rust", 0.004, rot(Z, -20))
+    cyl(0.085, 0.03, 0.22, "rust", 0.006, 9, at=(0.03, 0.03, 0)); lathe([(0, 0.22), (0.06, 0.22), (0.03, 0.26), (0.02, 0.285), (0, 0.285)], "metal", 7, crease=0.5, at=(0.03, 0.03, 0))
+    for z in (0.08, 0.17): tube(0.083, 0.092, z - 0.008, z + 0.008, "metal", 0.002, 9, at=(0.03, 0.03, 0))
+    for i, a in enumerate((10, 55, 120, 170, 230, 300)): cone(0.008, 0.002, 0.0, 0.07, "metal", 5, R=rot(Z, a) @ rot(Y, 75 + 8*(i % 3)), at=rot(Z, a) @ np.array([0.085, 0, 0.10 + 0.03*(i % 2)]) + np.array([0.03, 0.03, 0]))
+    cyl(0.035, 0.03, 0.10, "metal", 0.003, 7, at=(-0.14, 0.10, 0)); rod((-0.14, 0.10, 0.10), (-0.04, 0.05, 0.19), 0.006, "dark", 0.001, 4)
+    mech("Plate", (-0.10, -0.13, 0.04), None, lambda c, u: T(ax=(1, 0.3, 0), deg={"Arm": 7*sm(u) + 2*jit(u, 0.4), "Triggered": 7 - 16*sm(u, 0, 0.2) + 5*spring(u, 3, 3), "Recovery": -9*(1 - sm(u, 0, 0.4)) + 2*jit(u, 0.3)*(1 - u)}.get(c, 0)))
+    slab(ngon(8, 0.105, 22.5), 0.036, 0.046, "z", "sec", org=(-0.10, -0.13, 0)); sbox(-0.14, -0.06, -0.14, -0.12, 0.045, 0.049, "glow", 0.001)
+    mech("Wire", (0.03, 0.03, 0.285), None, lambda c, u: T(ax=(1, 1, 0), deg={"Arm": 6*jit(u, 0.5), "Triggered": 30*spring(u, 3, 2.5), "Recovery": 8*spring(u, 4, 3), "Idle": 2*math.sin(6.283*u)}.get(c, 0)))
+    rod((0.03, 0.03, 0.283), (0.035, 0.03, 0.299), 0.004, "dark", 0.001, 4)
+    body(); lamp(lambda: sbox(-0.155, -0.125, 0.085, 0.115, 0.10, 0.115, "glow", 0.004))
+@D("Trap", "E")
+def trap_e():
+    """Heroic star popper: chunky star on five cream feet, navy crown star, big lit dome. Mechanisms: the crown star winds up and swells when
+    armed, pops and spins on the trigger and springs back."""
+    star = lambda r, k, ph=90: [(r*math.cos(math.radians(ph + 36*i))*(1 if i % 2 == 0 else k), r*math.sin(math.radians(ph + 36*i))*(1 if i % 2 == 0 else k)) for i in range(10)]
+    slab(star(0.25, 0.56), 0.0, 0.05, "z", "base")
+    for i in range(5): ball(0.052, "sec", 12, 8, at=(0.205*math.cos(math.radians(90 + 72*i)), 0.205*math.sin(math.radians(90 + 72*i)), 0.05), squash=0.8)
+    lathe([(0, 0.045), (0.125, 0.045), (0.135, 0.075), (0, 0.075)], "sec", 24, crease=75)
+    mech("Crown", (0, 0, 0.06), None, lambda c, u: T(ax=Z, deg={"Arm": 36*sm(u), "Triggered": 36 + 72*sm(u, 0, 0.5), "Recovery": 108 - 108*sm(u, 0, 0.6) + 10*spring(u, 3, 3)}.get(c, 0), s={"Arm": 1 + 0.10*sm(u), "Triggered": 1.1 + 0.28*bump(u, 0, 0.2, 0.9), "Recovery": 1 + 0.10*(1 - sm(u, 0, 0.5))}.get(c, 1.0)))
+    slab(star(0.17, 0.5, 126), 0.05, 0.072, "z", "dark")
+    body(); lamp(lambda: lathe([(0, 0.07), (0.10, 0.07), (0.098, 0.12), (0.058, 0.165), (0, 0.18)], "glow", 22, crease=70))
+
+# =================================================================================================== EXPLOSIVE TRAP DEPLOYER (clips Idle, Deploy [Open 27 / Out 63 / Reset 85], Hit; node Payload)
+def dface(h, pad):
+    core_box(-H, H, -H, H, -H, -H + h); port("down"); core_box(-pad[0], pad[0], pad[1], H, pad[2], pad[3]); port("back", "partial", 0.2, (0, 0, 0.01)); empty("Deploy_Out", (0, 0.26, 0.0), (0, 1, 0))
+def payload(style, s, at, R=None):
+    with K.group(R=R, s=s, at=at, lod=True): P["Trap"][style]()
+    node()
+def dk(c, u): return sm(u, 0.02, 0.30)*(1 - sm(u, 0.80, 0.98)) if c == "Deploy" else 0.0        # open ... closed again (Open event at u = 0, Reset at 0.8)
+def kick(c, u): return bump(u, 0.46, 0.53, 0.78) if c == "Deploy" else 0.0                       # the shove at the Deploy_Out event (u = 0.5)
+@D("Deployer", "A")
+def dep_a():
+    """Sleek mag-cradle: two swept rails with light strips, lift pad with a light ring, rear pad with a fin. Mechanisms: two clamp arms swing open
+    before release and close on reset, the lift pad kicks at the release."""
+    dface(0.045, (0.11, 0.17, -0.20, 0.14)); slab([(0.17, 0.14), (0.26, 0.14), (0.26, 0.175), (0.215, 0.215)], -0.03, 0.03, (Y, Z, X), "sec"); sbox(-0.07, 0.07, 0.163, 0.171, -0.03, 0.10, "glow", 0.002)
+    for sx in (-1, 1):
+        slab([(-0.25, -0.215), (0.14, -0.215), (0.14, -0.07), (0.03, -0.02), (-0.21, -0.11)], sx*0.20 - 0.018, sx*0.20 + 0.018, (Y, Z, X), "base"); sbox(sx*0.20 - 0.021, sx*0.20 + 0.021, -0.18, 0.05, -0.006, 0.002, "glow", 0.001, rot(X, 20), (0, 0, -0.078))
+        mech("Clamp" + ("L" if sx < 0 else "R"), (sx*0.185, -0.07, -0.05), None, lambda c, u, sx=sx: T(ax=Y, deg=-sx*55*dk(c, u)))
+        pr = [(0.185, -0.05), (0.20, -0.02), (0.13, 0.035), (0.055, 0.04), (0.05, 0.02), (0.12, 0.012)]; slab(pr if sx > 0 else [(-x, z) for (x, z) in reversed(pr)], 0.03, 0.11, (X, Z, -Y), "sec")
+    body(); sbox(-0.18, 0.18, -0.24, 0.13, -0.215, -0.17, "dark", 0.006)
+    mech("Lift", (0, -0.07, -0.17), None, lambda c, u: T((0, 0, 0.010*dk(c, u) + 0.035*kick(c, u))))
+    cyl(0.125, -0.17, -0.142, "sec", 0.006, 28, at=(0, -0.07, 0)); tube(0.125, 0.132, -0.15, -0.142, "glow", 0.002, 28, at=(0, -0.07, 0))
+    body(); payload("A", 0.55, (0, -0.07, -0.142))
+@D("Deployer", "B")
+def dep_b():
+    """Brutal ram chute: two frame beams, five rollers, hydraulic ram on a bracket, two latch hooks, sprocket drive. Mechanisms: the hooks open, the
+    ram shoves the mine off the rollers at the release and retracts, the sprocket indexes the next one."""
+    dface(0.075, (0.13, 0.17, -0.185, 0.14))
+    for z in (0.02, 0.10): sbox(-0.137, 0.137, 0.158, 0.172, z - 0.014, z + 0.014, "dark", 0.003)
+    for sx in (-1, 1): sbox(sx*0.215 - 0.03, sx*0.215 + 0.03, -0.25, 0.25, -0.185, -0.085, "base", 0.006); bolt((sx*0.246, -0.2, -0.13), (sx, 0, 0), 0.012); bolt((sx*0.246, 0.2, -0.13), (sx, 0, 0), 0.012)
+    for k in range(5): cyl(0.02, -0.185, 0.185, "metal", 0.003, 8, R=R_to(X), at=(0, -0.10 + k*0.06, -0.125))
+    sbox(-0.07, 0.07, -0.25, -0.21, -0.185, 0.0, "dark", 0.006); cyl(0.046, 0.0, 0.12, "rust", 0.005, 12, R=R_to(Y), at=(0, -0.25, -0.04)); tube(0.046, 0.056, 0.10, 0.12, "dark", 0.003, 12, R=R_to(Y), at=(0, -0.25, -0.04))
+    mech("Ram", (0, -0.13, -0.04), None, lambda c, u: T((0, 0.09*kick(c, u), 0)))
+    cyl(0.02, 0.0, 0.07, "metal", 0.003, 8, R=R_to(Y), at=(0, -0.14, -0.04)); sbox(-0.09, 0.09, -0.075, -0.055, -0.105, 0.02, "sec", 0.005)
+    for sx in (-1, 1):
+        mech("Hook" + ("L" if sx < 0 else "R"), (sx*0.185, 0.04, -0.085), None, lambda c, u, sx=sx: T(ax=Y, deg=-sx*42*dk(c, u)))
+        pr = [(0.185, -0.085), (0.20, -0.04), (0.13, 0.03), (0.10, 0.02), (0.14, -0.05)]; slab(pr if sx > 0 else [(-x, z) for (x, z) in reversed(pr)], -0.06, -0.02, (X, Z, -Y), "metal")
+    mech("Sprocket", (0.249, -0.12, -0.03), None, lambda c, u: T(ax=X, deg=(90*sm(u, 0, 0.3) + 90*sm(u, 0.8, 1.0)) if c == "Deploy" else 0))
+    cyl(0.05, 0.0, 0.008, "metal", 0.002, 10, R=R_to(X), at=(0.247, -0.12, -0.03))
+    for a in range(8): sbox(0.247, 0.255, -0.009, 0.009, 0.045, 0.062, "metal", 0.002, rot(X, 45*a), (0, -0.12, -0.03))
+    body(); payload("B", 0.45, (0, 0.03, -0.105))
+@D("Deployer", "C")
+def dep_c():
+    """Arcade ramp: one wedge, one dark rear block, one accent gate. Mechanisms: the gate drops flat before release, the kicker pad pops."""
+    dface(0.06, (0.12, 0.14, -0.20, 0.13)); slab([(-0.25, -0.20), (0.14, -0.20), (0.14, -0.10), (-0.25, -0.16)], -0.21, 0.21, (Y, Z, X), "base")
+    mech("Gate", (0, -0.24, -0.165), None, lambda c, u: T(ax=X, deg=85*dk(c, u))); sbox(-0.21, 0.21, -0.256, -0.226, -0.165, -0.075, "sec", 0.01)
+    mech("Kicker", (0, -0.05, -0.13), None, lambda c, u: T((0, 0, 0.035*kick(c, u)))); cyl(0.11, -0.145, -0.115, "sec", 0.01, 18, R=rot(X, 8.7), at=(0, -0.05, 0))
+    body(); payload("C", 0.6, (0, -0.05, -0.113), rot(X, 8.7))
+@D("Deployer", "D")
+def dep_d():
+    """Scrap catapult: angle-iron frame, drum magazine, leaf spring, throwing arm with a basket cut from sheet. Mechanisms: the latch shakes loose,
+    the arm snaps up at the release and wobbles down."""
+    dface(0.05, (0.11, 0.19, -0.21, 0.13))
+    for sx in (-1, 1): rod((sx*0.21, -0.24, -0.20), (sx*0.20, 0.17, -0.19), 0.016, "metal" if sx < 0 else "rust", 0.003, 6)
+    for y in (-0.20, 0.0): rod((-0.21, y, -0.195), (0.21, y + 0.01, -0.195), 0.012, "rust", 0.002, 5)
+    cyl(0.085, -0.21, 0.07, "rust", 0.006, 9, at=(-0.16, 0.09, 0)); tube(0.083, 0.092, -0.07, -0.05, "metal", 0.002, 9, at=(-0.16, 0.09, 0)); sbox(0.09, 0.24, 0.02, 0.15, -0.21, -0.12, "patch", 0.004, rot(Z, 8))
+    for k in range(3): sbox(-0.04, 0.04, -0.18 + k*0.02, 0.10 - k*0.04, -0.19 + k*0.014, -0.18 + k*0.014, "metal", 0.002)
+    mech("Arm", (0.02, 0.12, -0.14), None, lambda c, u: T(ax=X, deg=(48*bump(u, 0.46, 0.53, 0.7) + 9*spring(max(0.0, u - 0.53)*2.2, 3, 3)*(u > 0.53) + 3*jit(u, 0.3)*dk(c, u)) if c == "Deploy" else 0))
+    rod((0.02, 0.12, -0.14), (0.02, -0.07, -0.12), 0.014, "metal", 0.003, 6); slab([(-0.10, -0.17), (0.13, -0.18), (0.14, -0.02), (0.02, 0.03), (-0.09, -0.01)], -0.125, -0.115, "z", "patch")
+    mech("Latch", (0.20, -0.12, -0.12), None, lambda c, u: T(ax=Y, deg=(40*dk(c, u) + 5*jit(u, 0.6)*dk(c, u)) if c == "Deploy" else 0))
+    slab([(0.20, -0.12), (0.215, -0.07), (0.15, -0.045), (0.14, -0.065), (0.185, -0.085)], -0.14, -0.10, (X, Z, -Y), "rust")
+    body(); payload("D", 0.42, (0.02, -0.08, -0.114))
+@D("Deployer", "E")
+def dep_e():
+    """Heroic flipper: red bowl on a stout stem, big cream paddle on a coil hinge, rounded rear pad. Mechanisms: the paddle winds back, slaps
+    through at the release with overshoot, the coil squashes and rings."""
+    dface(0.07, (0.12, 0.15, -0.19, 0.12)); lathe([(0, 0.0), (0.095, 0.0), (0.085, 0.035), (0.045, 0.06), (0, 0.066)], ["dark", "dark", "dark", "dark"], 20, crease=75, at=(0, 0.162, 0.12))
+    lathe([(0, -0.19), (0.07, -0.19), (0.06, -0.13), (0.155, -0.10), (0.182, -0.055), (0.168, -0.045), (0.135, -0.085), (0, -0.095)], ["dark", "dark", "base", "base", "sec", "dark", "dark"], 28, crease=75, at=(0, -0.07, 0))
+    mech("Coil", (0, 0.105, -0.19), None, lambda c, u: T(s=(1 - 0.22*sm(u, 0.05, 0.4)*(1 - sm(u, 0.46, 0.5)) + 0.2*bump(u, 0.46, 0.52, 0.62) + 0.08*spring(max(0.0, u - 0.52)*2.0, 3, 3)*(u > 0.52)) if c == "Deploy" else 1.0))
+    for i in range(4): torus(0.045, 0.015, "metal", 16, 8, at=(0, 0.105, -0.175 + i*0.026))
+    mech("Paddle", (0, 0.105, -0.075), None, lambda c, u: T(ax=X, deg=(22*sm(u, 0.05, 0.4)*(1 - sm(u, 0.46, 0.5)) - 62*bump(u, 0.46, 0.52, 0.72) - 10*spring(max(0.0, u - 0.52)*2.0, 3, 3)*(u > 0.52)) if c == "Deploy" else 0))
+    lathe([(0, 0), (0.03, 0), (0.03, 0.03), (0, 0.03)], "dark", 12, crease=75, R=R_to(X), at=(-0.015, 0.105, -0.075))
+    slab([(0.105, -0.085), (0.125, -0.06), (0.11, 0.07), (0.07, 0.115), (0.035, 0.115), (0.06, 0.06), (0.075, -0.07)], -0.07, 0.07, (Y, Z, X), "sec")
+    body(); payload("E", 0.5, (0, -0.07, -0.088))
