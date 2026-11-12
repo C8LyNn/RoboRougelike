@@ -13,6 +13,8 @@ namespace RoboRougelike.R1
         string garageOptionsFeedback;
         int quickPartCategory;
         bool quickOwnedOnly;
+        const string QuickSearchControlName="GarageQuickSearch";
+        string quickPartSearch=string.Empty;
         GUIStyle quickCategoryButton,garageShortcutLabel;
         Vector2 quickPartsScroll;
         R3VehicleModel repairQuoteModel;
@@ -65,8 +67,9 @@ namespace RoboRougelike.R1
             if(quickOwnedOnly&&model!=null&&!model.Inventory.Any(part=>
                 InCatalogGroup(part,catalogGroup.Value,catalogWeapon,catalogBonusId)))quickOwnedOnly=false;
             int category=QuickCategoryFor(catalogGroup.Value);
-            if(category==quickPartCategory)return;
-            quickPartCategory=category;quickPartsScroll=Vector2.zero;
+            if(category!=quickPartCategory){quickPartCategory=category;quickPartsScroll=Vector2.zero;}
+            if(model!=null&&!BuildFilteredQuickCatalogEntries(model,category,quickOwnedOnly,quickPartSearch).Any(QuickEntrySelected))
+                quickPartSearch=string.Empty;
         }
 
         bool CatalogEntryOwned(R3VehicleModel model,CatalogEntry entry)=>
@@ -75,6 +78,36 @@ namespace RoboRougelike.R1
         System.Collections.Generic.List<CatalogEntry> BuildQuickCatalogEntries(R3VehicleModel model,int category,bool ownedOnly)=>
             BuildCatalogEntries(model).Where(entry=>QuickCategoryIncludes(category,entry.Kind)&&
                 (!ownedOnly||CatalogEntryOwned(model,entry))).ToList();
+
+        System.Collections.Generic.List<CatalogEntry> BuildFilteredQuickCatalogEntries(R3VehicleModel model,int category,bool ownedOnly,string search)=>
+            BuildQuickCatalogEntries(model,category,ownedOnly).Where(entry=>CatalogNameMatches(entry.Name,search)).ToList();
+
+        bool QuickEntrySelected(CatalogEntry entry)=>catalogGroup==entry.Kind&&
+            (entry.Kind!=R3PartKind.Gun||catalogWeapon==entry.Weapon)&&
+            (entry.Kind!=R3PartKind.BonusModule&&entry.Kind!=R3PartKind.Wheel&&entry.Kind!=R3PartKind.Armor||catalogBonusId==entry.Group);
+
+        void ApplyQuickSearch(R1RunController run,string next)
+        {
+            next=next??string.Empty;if(next==quickPartSearch)return;
+            quickPartSearch=next;quickPartsScroll=Vector2.zero;
+            if(!catalogGroup.HasValue||BuildFilteredQuickCatalogEntries(run.VehicleModel,quickPartCategory,quickOwnedOnly,next).Any(QuickEntrySelected))return;
+            catalogGroup=null;catalogBonusId=null;dismantleConfirmation=null;catalogFeedback=null;
+            var garage=run.Garage;garage.SelectedInventoryId=null;garage.UseInventory=true;
+            if(garage.Tool==R41GarageTool.Mount)
+            {garage.SetTool(R41GarageTool.Mount);garage.Message="Wybierz część z listy.";}
+        }
+
+        static bool GarageSearchConsumesKey(EventType type,string focused)=>
+            (type==EventType.KeyDown||type==EventType.KeyUp)&&focused==QuickSearchControlName;
+
+        void DrawQuickSearch(R1RunController run,Rect rect)
+        {
+            GUI.SetNextControlName(QuickSearchControlName);
+            string next=GUI.TextField(rect,quickPartSearch,64);
+            if(string.IsNullOrEmpty(next)&&GUI.GetNameOfFocusedControl()!=QuickSearchControlName)
+            {var previous=GUI.color;GUI.color=new Color(.62f,.7f,.75f,1);GUI.Label(new Rect(rect.x+5,rect.y,rect.width-10,rect.height),"Szukaj części",small);GUI.color=previous;}
+            ApplyQuickSearch(run,next);
+        }
 
         void ToggleQuickOwnedOnly(R1RunController run)
         {
@@ -381,11 +414,11 @@ namespace RoboRougelike.R1
             }
             GUI.backgroundColor=Color.white;
             var listArea=new Rect(area.x,area.y+40,area.width,area.height-40);
-            var entries=BuildQuickCatalogEntries(model,quickPartCategory,quickOwnedOnly);
+            var entries=BuildFilteredQuickCatalogEntries(model,quickPartCategory,quickOwnedOnly,quickPartSearch);
             quickPartsScroll=GUI.BeginScrollView(listArea,quickPartsScroll,new Rect(0,0,rowWidth,Mathf.Max(listArea.height,entries.Count*38)));
             for(int row=0;row<entries.Count;row++)
             {var entry=entries[row];DrawQuickPartRow(run,entry.Kind,entry.Weapon,entry.Group,entry.Name,row,rowWidth);}
-            if(entries.Count==0)GUI.Label(new Rect(0,5,rowWidth,70),"Brak posiadanych części w tej kategorii. Wyłącz filtr, aby zobaczyć wszystkie.",small);
+            if(entries.Count==0)GUI.Label(new Rect(0,5,rowWidth,70),string.IsNullOrWhiteSpace(quickPartSearch)?"Brak posiadanych części w tej kategorii. Wyłącz filtr, aby zobaczyć wszystkie.":"Brak wyników. Zmień wyszukiwanie, kategorię lub filtr.",small);
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
         }
 
@@ -437,7 +470,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(760,15,145,42),"Ustawienia",compactButton))OpenSimpleGarageOptions(0);
             if(GUI.Button(new Rect(913,15,145,42),"Aktywności",compactButton))OpenSimpleGarageOptions(1);
             if(GUI.Button(new Rect(1066,15,195,42),"Dopasuj widok",compactButton))garage.FrameVehicle();
-            GUI.Label(new Rect(12,79,112,24),"CZĘŚCI",small);
+            DrawQuickSearch(run,new Rect(12,78,112,25));
             DrawQuickOwnedFilter(run,new Rect(130,78,127,25));
             DrawQuickParts(run,QuickPartsArea(false),225);
             DrawQuickStackRepair(run,QuickRepairArea(false));
@@ -502,7 +535,7 @@ namespace RoboRougelike.R1
                 compactButton.normal.background=buttonNormal;
             }
             GUI.backgroundColor=Color.white;
-            GUI.Label(new Rect(24,632,190,24),"CZĘŚCI",small);
+            DrawQuickSearch(run,new Rect(24,628,190,27));
             DrawQuickOwnedFilter(run,new Rect(240,628,190,27));
             DrawQuickParts(run,QuickPartsArea(true),392);
             DrawQuickStackRepair(run,QuickRepairArea(true));

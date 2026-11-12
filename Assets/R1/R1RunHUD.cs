@@ -135,6 +135,7 @@ namespace RoboRougelike.R1
                 run.SelectVehicle((R3VehicleKind)(starterOffers[0]/4),starterOffers[0]%4);
             Setup();
             bool sessionOverlay = run.Paused || run.QuitRequested;
+            bool garageSearchKey=GarageSearchConsumesKey(Event.current.type,GUI.GetNameOfFocusedControl());
             if(Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.Escape)
             {run.HandleEscape();Event.current.Use();}
             var rawPointer=Event.current.mousePosition;
@@ -166,7 +167,7 @@ namespace RoboRougelike.R1
                 Draw(run,portraitReady,portraitGarage,portraitRoute,portraitSalvage);
                 if(run.Paused)LightStylePrototype.Instance?.DrawPausePanel();
                 if(!sessionOverlay&&run.MapEditing)run.MapEditorPointer(Event.current,rawPointer);
-                else if(!sessionOverlay&&!catalogOpen&&!garageOptionsOpen&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
+                else if(!garageSearchKey&&!sessionOverlay&&!catalogOpen&&!garageOptionsOpen&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
                 else run.Garage?.CancelPointerGesture();
             }
             finally { GUI.matrix = previous; GUI.enabled = true; }

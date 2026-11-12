@@ -451,6 +451,36 @@ public sealed class UI943PortraitCatalogActionsTests
         yield return new ExitPlayMode();
     }
 
+    [TestCase(EventType.KeyDown,"GarageQuickSearch",true)]
+    [TestCase(EventType.KeyUp,"GarageQuickSearch",true)]
+    [TestCase(EventType.MouseDown,"GarageQuickSearch",false)]
+    [TestCase(EventType.KeyDown,"",false)]
+    public void TypingInQuickSearchDoesNotTriggerGarageShortcuts(EventType type,string focus,bool expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("GarageSearchConsumesKey",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((bool)method.Invoke(null,new object[]{type,focus}),Is.EqualTo(expected));
+    }
+
+    [UnityTest] public IEnumerator QuickSearchFindsPartsAndClearsOnlyHiddenSelection()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var hud=run.GetComponent<R1RunHUD>();
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        string selected=run.Garage.SelectedInventoryId;int count=run.VehicleModel.Inventory.Count,scrap=run.VehicleModel.Scrap;
+        Invoke(hud,"ApplyQuickSearch",run,"pAnCeRz");
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(selected),"A matching selected item stays ready to mount.");
+        var entries=((IEnumerable)Invoke(hud,"BuildFilteredQuickCatalogEntries",run.VehicleModel,0,false,"półklin")).Cast<object>().ToArray();
+        Assert.That(entries.Length,Is.EqualTo(1),"Search is case and accent insensitive.");
+        Invoke(hud,"ApplyQuickSearch",run,"półklin");
+        Assert.That(run.Garage.SelectedInventoryId,Is.Null,"A hidden part cannot remain the target of placement.");
+        Assert.That(Field(hud,"catalogGroup"),Is.Null);
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(count));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        yield return new ExitPlayMode();
+    }
+
     [Test] public void QuickCategoriesCoverEveryCatalogKindWithoutOverlap()
     {
         var method=typeof(R1RunHUD).GetMethod("QuickCategoryIncludes",BindingFlags.Static|BindingFlags.NonPublic);
