@@ -1,0 +1,196 @@
+{
+ "id": "R4D_SlowTrap",
+ "style": "B",
+ "style_label": "B_Brutal",
+ "family": "world_trap",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4D_SlowTrap_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 748,
+   "vertices": 392,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4D_SlowTrap_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 568,
+  "vertices": 302,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 748,
+ "triangles_lod1": 568,
+ "mesh_objects": 1,
+ "material_slots_total": 5,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.24,
+   -0.2441,
+   0.0
+  ],
+  [
+   0.24,
+   0.2078,
+   0.15
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   0.0
+  ],
+  [
+   0.26,
+   0.26,
+   0.3
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [],
+ "port_contact_test": [],
+ "lod1_port_contact_test": [],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4D_SlowTrap_ROOT": null,
+  "R4D_SlowTrap_Body": "R4D_SlowTrap_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "static",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 103,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Arm",
+    "start": 27,
+    "end": 51,
+    "loop": false
+   },
+   {
+    "name": "Triggered",
+    "start": 53,
+    "end": 65,
+    "loop": false
+   },
+   {
+    "name": "Recovery",
+    "start": 67,
+    "end": 103,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Arm": 27,
+   "Armed": 51,
+   "Trigger": 53,
+   "Recovered": 103
+  },
+  "warped_clips": [],
+  "animated_objects": [],
+  "objects_with_real_motion": 0,
+  "sweep_outside_envelope_mm": 0.0,
+  "sweep_allowance_mm": 30,
+  "loop_seams": [],
+  "motion_character": "heavy and mechanical: slow start, hard stop, damped settle"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 748,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 0,
+   "key_frames_compared": [],
+   "nodes_compared": 0,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 748,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 0,
+   "key_frames_compared": [],
+   "nodes_compared": 0,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 0
+  }
+ },
+ "renders": [
+  "R4D_SlowTrap_front.jpg",
+  "R4D_SlowTrap_side.jpg",
+  "R4D_SlowTrap_top.jpg",
+  "R4D_SlowTrap_34.jpg",
+  "R4D_SlowTrap_wire.jpg",
+  "R4D_SlowTrap_clay.jpg",
+  "R4D_SlowTrap_silhouette.png"
+ ],
+ "files": {
+  "R4D_SlowTrap.blend": {
+   "sha256": "20d7b8ab0d2bb30bb0c7fecf8c76b70e232bed8fb0aa9f7b0969c5ad84afd81f",
+   "bytes": 120339
+  },
+  "R4D_SlowTrap.fbx": {
+   "sha256": "5a0d67d8e206a23b969b97256fd6771530d09e8506d8cca9df70f6e519ee18a4",
+   "bytes": 40764
+  },
+  "R4D_SlowTrap.glb": {
+   "sha256": "8d0cb933249903098030c969f052a809280b94bfe02f09cac41349d44e64a6d9",
+   "bytes": 75356
+  },
+  "R4D_SlowTrap_LOD1.fbx": {
+   "sha256": "465c094f9431a7264d2d10339bec3d2a6ef201c8c4223e11120367004eccc50c",
+   "bytes": 36220
+  },
+  "R4D_SlowTrap_LOD1.glb": {
+   "sha256": "15249853aba71c177161fa6fcedaf8f2d4f62311c25f2d023326ebd77bbdf2e6",
+   "bytes": 67960
+  }
+ },
+ "seconds": 1.8,
+ "blender": "5.3.0"
+}

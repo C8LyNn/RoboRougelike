@@ -1,0 +1,268 @@
+{
+ "id": "R4D_SnareTrap",
+ "style": "C",
+ "style_label": "C_Arcade",
+ "family": "world_trap",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4D_SnareTrap_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 488,
+   "vertices": 250,
+   "uv": true,
+   "material_slots": 3,
+   "ok": true
+  },
+  {
+   "object": "R4D_SnareTrap_JawL",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 320,
+   "vertices": 176,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  },
+  {
+   "object": "R4D_SnareTrap_JawR",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 320,
+   "vertices": 176,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4D_SnareTrap_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 944,
+  "vertices": 510,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 1128,
+ "triangles_lod1": 944,
+ "mesh_objects": 3,
+ "material_slots_total": 7,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.231,
+   -0.234,
+   0.0
+  ],
+  [
+   0.235,
+   0.234,
+   0.1997
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   0.0
+  ],
+  [
+   0.26,
+   0.26,
+   0.3
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [],
+ "port_contact_test": [],
+ "lod1_port_contact_test": [],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4D_SnareTrap_ROOT": null,
+  "R4D_SnareTrap_Body": "R4D_SnareTrap_ROOT",
+  "R4D_SnareTrap_JawL": "R4D_SnareTrap_ROOT",
+  "R4D_SnareTrap_JawR": "R4D_SnareTrap_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 103,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Arm",
+    "start": 27,
+    "end": 51,
+    "loop": false
+   },
+   {
+    "name": "Triggered",
+    "start": 53,
+    "end": 65,
+    "loop": false
+   },
+   {
+    "name": "Recovery",
+    "start": 67,
+    "end": 103,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Arm": 27,
+   "Armed": 51,
+   "Trigger": 53,
+   "Recovered": 103
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4D_SnareTrap_JawL",
+   "R4D_SnareTrap_JawR"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 0.0,
+  "sweep_allowance_mm": 30,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "simple, fast, readable: quick ease, short hold, no secondary motion"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 3,
+   "triangles": 1128,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 4,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    59,
+    65,
+    67,
+    85,
+    103
+   ],
+   "nodes_compared": 3,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0396,
+   "worst": [
+    39,
+    "R4D_SnareTrap_JawL",
+    0.0,
+    0.04
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 3,
+   "triangles": 1128,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    59,
+    65,
+    67,
+    85,
+    103
+   ],
+   "nodes_compared": 3,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0396,
+   "worst": [
+    39,
+    "R4D_SnareTrap_JawL",
+    0.0,
+    0.04
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4D_SnareTrap_front.jpg",
+  "R4D_SnareTrap_side.jpg",
+  "R4D_SnareTrap_top.jpg",
+  "R4D_SnareTrap_34.jpg",
+  "R4D_SnareTrap_wire.jpg",
+  "R4D_SnareTrap_clay.jpg",
+  "R4D_SnareTrap_silhouette.png"
+ ],
+ "files": {
+  "R4D_SnareTrap.blend": {
+   "sha256": "1dc2224b9a703ac887342220dfd0cdcaf0dff5473408dbb42d6127c793eb15e9",
+   "bytes": 133200
+  },
+  "R4D_SnareTrap.fbx": {
+   "sha256": "e5988237a1e25d3788689a585b64cce46564a65aee98c41899a8426df826d946",
+   "bytes": 99372
+  },
+  "R4D_SnareTrap.glb": {
+   "sha256": "f5b8ac054ee8f78916d7b2f51fe673aa3be92ed1074f145ad77ca7f0f45274e2",
+   "bytes": 66648
+  },
+  "R4D_SnareTrap_LOD1.fbx": {
+   "sha256": "6c508782a9cd29f653f92bb592d8efda91debc809e1b1efbcde41a44587e0a70",
+   "bytes": 43820
+  },
+  "R4D_SnareTrap_LOD1.glb": {
+   "sha256": "0a931b2d223d99dc30e02d5adf0cdbe4342d805979c792f340779110941a2fcf",
+   "bytes": 53276
+  }
+ },
+ "seconds": 1.5,
+ "blender": "5.3.0"
+}

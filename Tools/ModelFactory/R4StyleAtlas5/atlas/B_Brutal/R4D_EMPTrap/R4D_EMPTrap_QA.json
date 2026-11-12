@@ -1,0 +1,249 @@
+{
+ "id": "R4D_EMPTrap",
+ "style": "B",
+ "style_label": "B_Brutal",
+ "family": "world_trap",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4D_EMPTrap_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1054,
+   "vertices": 549,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4D_EMPTrap_Core",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 170,
+   "vertices": 87,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4D_EMPTrap_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 778,
+  "vertices": 413,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 1224,
+ "triangles_lod1": 778,
+ "mesh_objects": 2,
+ "material_slots_total": 5,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.2152,
+   -0.2188,
+   0.0
+  ],
+  [
+   0.22,
+   0.2188,
+   0.25
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   0.0
+  ],
+  [
+   0.26,
+   0.26,
+   0.3
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [],
+ "port_contact_test": [],
+ "lod1_port_contact_test": [],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4D_EMPTrap_ROOT": null,
+  "R4D_EMPTrap_Body": "R4D_EMPTrap_ROOT",
+  "R4D_EMPTrap_Core": "R4D_EMPTrap_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 103,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Arm",
+    "start": 27,
+    "end": 51,
+    "loop": false
+   },
+   {
+    "name": "Triggered",
+    "start": 53,
+    "end": 65,
+    "loop": false
+   },
+   {
+    "name": "Recovery",
+    "start": 67,
+    "end": 103,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Arm": 27,
+   "Armed": 51,
+   "Trigger": 53,
+   "Recovered": 103
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4D_EMPTrap_Core"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 0.0,
+  "sweep_allowance_mm": 30,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "heavy and mechanical: slow start, hard stop, damped settle"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 1224,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 3,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    59,
+    65,
+    67,
+    85,
+    103
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    1,
+    "R4D_EMPTrap_Core",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 1224,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    59,
+    65,
+    67,
+    85,
+    103
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4D_EMPTrap_front.jpg",
+  "R4D_EMPTrap_side.jpg",
+  "R4D_EMPTrap_top.jpg",
+  "R4D_EMPTrap_34.jpg",
+  "R4D_EMPTrap_wire.jpg",
+  "R4D_EMPTrap_clay.jpg",
+  "R4D_EMPTrap_silhouette.png"
+ ],
+ "files": {
+  "R4D_EMPTrap.blend": {
+   "sha256": "6e1b57e095d6cef5224ea37c772cc92a5c7c18d35376e70bf78352ff894181a1",
+   "bytes": 140003
+  },
+  "R4D_EMPTrap.fbx": {
+   "sha256": "d45dc66cfc83790d16ecfa6a7ce53be932e1e55c785e1904a7d09a9868df40d4",
+   "bytes": 87164
+  },
+  "R4D_EMPTrap.glb": {
+   "sha256": "41f4a25bbee8746f370e3b3257ed852020fffe225b81200815e091e15ce155e4",
+   "bytes": 101192
+  },
+  "R4D_EMPTrap_LOD1.fbx": {
+   "sha256": "171efa9dc50035152904abe43d846e8e5252e1dd9be13e7abfe36dc15c8a4e24",
+   "bytes": 39612
+  },
+  "R4D_EMPTrap_LOD1.glb": {
+   "sha256": "f2e3429161de594bbd59b3345d0e6688fd01a6d7f1ec6f6520ad525edd2de79b",
+   "bytes": 81180
+  }
+ },
+ "seconds": 1.8,
+ "blender": "5.3.0"
+}

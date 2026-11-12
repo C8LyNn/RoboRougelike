@@ -1,0 +1,249 @@
+{
+ "id": "R4D_ExplosiveTrap",
+ "style": "A",
+ "style_label": "A_Sleek",
+ "family": "world_trap",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4D_ExplosiveTrap_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1344,
+   "vertices": 698,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  },
+  {
+   "object": "R4D_ExplosiveTrap_Lamp",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 196,
+   "vertices": 100,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4D_ExplosiveTrap_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 810,
+  "vertices": 433,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 1540,
+ "triangles_lod1": 810,
+ "mesh_objects": 2,
+ "material_slots_total": 6,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.248,
+   -0.2183,
+   0.0
+  ],
+  [
+   0.248,
+   0.2183,
+   0.16
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   0.0
+  ],
+  [
+   0.26,
+   0.26,
+   0.3
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [],
+ "port_contact_test": [],
+ "lod1_port_contact_test": [],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4D_ExplosiveTrap_ROOT": null,
+  "R4D_ExplosiveTrap_Body": "R4D_ExplosiveTrap_ROOT",
+  "R4D_ExplosiveTrap_Lamp": "R4D_ExplosiveTrap_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 103,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Arm",
+    "start": 27,
+    "end": 51,
+    "loop": false
+   },
+   {
+    "name": "Triggered",
+    "start": 53,
+    "end": 65,
+    "loop": false
+   },
+   {
+    "name": "Recovery",
+    "start": 67,
+    "end": 103,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Arm": 27,
+   "Armed": 51,
+   "Trigger": 53,
+   "Recovered": 103
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4D_ExplosiveTrap_Lamp"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 0.0,
+  "sweep_allowance_mm": 30,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "fluid and precise: long ease in / out, no overshoot"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 1540,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 3,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    59,
+    65,
+    67,
+    85,
+    103
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    59,
+    "R4D_ExplosiveTrap_Lamp",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 1540,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    59,
+    65,
+    67,
+    85,
+    103
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4D_ExplosiveTrap_front.jpg",
+  "R4D_ExplosiveTrap_side.jpg",
+  "R4D_ExplosiveTrap_top.jpg",
+  "R4D_ExplosiveTrap_34.jpg",
+  "R4D_ExplosiveTrap_wire.jpg",
+  "R4D_ExplosiveTrap_clay.jpg",
+  "R4D_ExplosiveTrap_silhouette.png"
+ ],
+ "files": {
+  "R4D_ExplosiveTrap.blend": {
+   "sha256": "66aec9bc87a9997080cff43bc8a4549d72659f8c21486bede888eb03fb38cf42",
+   "bytes": 137586
+  },
+  "R4D_ExplosiveTrap.fbx": {
+   "sha256": "a33fad891da60ec239af6d99ffbe9aac809c5dfd9c521cac7c6c21702fc120a7",
+   "bytes": 90156
+  },
+  "R4D_ExplosiveTrap.glb": {
+   "sha256": "1c88695ed2bdef2b43dd975184bc0ff5fe38062f0e5a8c875ce0024a2b617525",
+   "bytes": 73180
+  },
+  "R4D_ExplosiveTrap_LOD1.fbx": {
+   "sha256": "df52f11e6d75b8998bb69f0fae715af1e8e4e27bdc16a46969c0f1aa9518d189",
+   "bytes": 40412
+  },
+  "R4D_ExplosiveTrap_LOD1.glb": {
+   "sha256": "ae5ba8709a12b8da7764b6423ed0da15b040e3c24072dbab5eff58e3708c03e3",
+   "bytes": 48624
+  }
+ },
+ "seconds": 1.9,
+ "blender": "5.3.0"
+}

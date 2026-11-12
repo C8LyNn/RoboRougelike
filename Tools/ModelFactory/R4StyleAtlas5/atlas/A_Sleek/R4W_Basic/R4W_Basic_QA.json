@@ -1,0 +1,400 @@
+{
+ "id": "R4W_Basic",
+ "style": "A",
+ "style_label": "A_Sleek",
+ "family": "weapon",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "APPROVED rig / sockets (from source GLB)",
+ "source": "#939",
+ "meshes": [
+  {
+   "object": "R4W_Basic_Base",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1824,
+   "vertices": 930,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4W_Basic_Yaw",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1256,
+   "vertices": 646,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4W_Basic_Pitch",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 912,
+   "vertices": 470,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4W_Basic_Barrel",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 224,
+   "vertices": 116,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  },
+  {
+   "object": "MuzzleFlash",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 32,
+   "vertices": 18,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4W_Basic_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1004,
+  "vertices": 538,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 4248,
+ "triangles_lod1": 1004,
+ "mesh_objects": 5,
+ "material_slots_total": 15,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.255,
+   -0.618,
+   -0.26
+  ],
+  [
+   0.255,
+   0.255,
+   0.234
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.2585,
+   -0.6262,
+   -0.262
+  ],
+  [
+   0.2585,
+   0.259,
+   0.238
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": {
+  "max_outside_source_node_bounds_mm": 0.0,
+  "per_node_mm": {
+   "R4W_Basic_Base": 0,
+   "R4W_Basic_Yaw": 0,
+   "R4W_Basic_Pitch": 0,
+   "R4W_Basic_Barrel": 0
+  },
+  "PASS": true
+ },
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": {
+  "source_glb": "ModelFactory/R4Weapons938/R4W_Basic/R4W_Basic.glb",
+  "source_sha256": "9535f7deb4e52b998e5d2f663d77807bddf295cdba014fafb6c38851d1262631",
+  "empties": [
+   "GunPivot",
+   "Muzzle",
+   "Socket_Mount_Bottom"
+  ],
+  "missing": [],
+  "pos_dev_mm": 0.0,
+  "rot_dev_deg": 0.0,
+  "mesh_nodes_source": [
+   "MuzzleFlash",
+   "R4W_Basic_Barrel",
+   "R4W_Basic_Base",
+   "R4W_Basic_Pitch",
+   "R4W_Basic_Yaw"
+  ],
+  "mesh_nodes_missing": [],
+  "PASS": true
+ },
+ "hierarchy": {
+  "R4W_Basic_ROOT": null,
+  "R4W_Basic_Base": "R4W_Basic_ROOT",
+  "R4W_Basic_Yaw": "GunPivot",
+  "R4W_Basic_Pitch": "R4W_Basic_Yaw",
+  "R4W_Basic_Barrel": "R4W_Basic_Pitch",
+  "MuzzleFlash": "R4W_Basic_Pitch",
+  "GunPivot": "R4W_Basic_ROOT",
+  "Muzzle": "R4W_Basic_Pitch",
+  "Socket_Mount_Bottom": "R4W_Basic_ROOT"
+ },
+ "fx_objects": [
+  "MuzzleFlash"
+ ],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "transfer",
+  "fps": 24,
+  "frames": 139,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "AimYaw",
+    "start": 27,
+    "end": 75,
+    "loop": false
+   },
+   {
+    "name": "AimPitch",
+    "start": 77,
+    "end": 113,
+    "loop": false
+   },
+   {
+    "name": "Fire",
+    "start": 115,
+    "end": 124,
+    "loop": false
+   },
+   {
+    "name": "Recoil",
+    "start": 126,
+    "end": 129,
+    "loop": false
+   },
+   {
+    "name": "Return",
+    "start": 131,
+    "end": 139,
+    "loop": false
+   }
+  ],
+  "events": {
+   "AimYaw_Start": 27,
+   "AimPitch_Start": 77,
+   "Fire_Start": 115,
+   "Recoil_Start": 126,
+   "Return_Start": 131
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4W_Basic_Yaw",
+   "R4W_Basic_Pitch",
+   "R4W_Basic_Barrel",
+   "MuzzleFlash"
+  ],
+  "objects_with_real_motion": 4,
+  "sweep_outside_envelope_mm": 0.0,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "fluid and precise: long ease in / out, no overshoot"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 5,
+   "triangles": 4248,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 9,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    95,
+    113,
+    115,
+    119,
+    124,
+    126,
+    127,
+    129,
+    131,
+    135,
+    139
+   ],
+   "nodes_compared": 5,
+   "max_pos_dev_mm": 0.0001,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    115,
+    "MuzzleFlash",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 5,
+   "triangles": 4248,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    95,
+    113,
+    115,
+    119,
+    124,
+    126,
+    127,
+    129,
+    131,
+    135,
+    139
+   ],
+   "nodes_compared": 5,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4W_Basic_front.jpg",
+  "R4W_Basic_side.jpg",
+  "R4W_Basic_top.jpg",
+  "R4W_Basic_34.jpg",
+  "R4W_Basic_wire.jpg",
+  "R4W_Basic_clay.jpg",
+  "R4W_Basic_silhouette.png"
+ ],
+ "files": {
+  "R4W_Basic.blend": {
+   "sha256": "1c7e4224ddcb7a1d19359581ff5f6e92a1eca02322df704600c4ab46567406a2",
+   "bytes": 213614
+  },
+  "R4W_Basic.fbx": {
+   "sha256": "30987228f2e3ae5bb408ab1f45f3a23d50f1a3070529d56b2530ad60c51f791d",
+   "bytes": 240524
+  },
+  "R4W_Basic.glb": {
+   "sha256": "abd8a62246c7e2f2da9b9296db558704f2a22d79df22a094101aada3705391f7",
+   "bytes": 217744
+  },
+  "R4W_Basic_LOD1.fbx": {
+   "sha256": "c2eed2266619feb761474a8c73f001f9262440635468f482c2dea7cd87fbc9ed",
+   "bytes": 42796
+  },
+  "R4W_Basic_LOD1.glb": {
+   "sha256": "0382b6dd209e60401d7611bf023131d0fd1411e8ff6f695879ee93f0f4ba1299",
+   "bytes": 65528
+  }
+ },
+ "seconds": 2.2,
+ "blender": "5.3.0"
+}

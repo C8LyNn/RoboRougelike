@@ -1,0 +1,249 @@
+{
+ "id": "R4D_KnockbackTrap",
+ "style": "A",
+ "style_label": "A_Sleek",
+ "family": "world_trap",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4D_KnockbackTrap_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 412,
+   "vertices": 218,
+   "uv": true,
+   "material_slots": 3,
+   "ok": true
+  },
+  {
+   "object": "R4D_KnockbackTrap_Plate",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 352,
+   "vertices": 188,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4D_KnockbackTrap_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 460,
+  "vertices": 250,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 764,
+ "triangles_lod1": 460,
+ "mesh_objects": 2,
+ "material_slots_total": 7,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.237,
+   -0.237,
+   0.0
+  ],
+  [
+   0.237,
+   0.237,
+   0.156
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   0.0
+  ],
+  [
+   0.26,
+   0.26,
+   0.3
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [],
+ "port_contact_test": [],
+ "lod1_port_contact_test": [],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4D_KnockbackTrap_ROOT": null,
+  "R4D_KnockbackTrap_Body": "R4D_KnockbackTrap_ROOT",
+  "R4D_KnockbackTrap_Plate": "R4D_KnockbackTrap_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 103,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Arm",
+    "start": 27,
+    "end": 51,
+    "loop": false
+   },
+   {
+    "name": "Triggered",
+    "start": 53,
+    "end": 65,
+    "loop": false
+   },
+   {
+    "name": "Recovery",
+    "start": 67,
+    "end": 103,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Arm": 27,
+   "Armed": 51,
+   "Trigger": 53,
+   "Recovered": 103
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4D_KnockbackTrap_Plate"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 0.0,
+  "sweep_allowance_mm": 30,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "fluid and precise: long ease in / out, no overshoot"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 764,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 3,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    59,
+    65,
+    67,
+    85,
+    103
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    59,
+    "R4D_KnockbackTrap_Plate",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 764,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    59,
+    65,
+    67,
+    85,
+    103
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4D_KnockbackTrap_front.jpg",
+  "R4D_KnockbackTrap_side.jpg",
+  "R4D_KnockbackTrap_top.jpg",
+  "R4D_KnockbackTrap_34.jpg",
+  "R4D_KnockbackTrap_wire.jpg",
+  "R4D_KnockbackTrap_clay.jpg",
+  "R4D_KnockbackTrap_silhouette.png"
+ ],
+ "files": {
+  "R4D_KnockbackTrap.blend": {
+   "sha256": "54a12bad4d754e9fefa2d396b5477092401dba9aaee61cc2f38fc5bd15778701",
+   "bytes": 117969
+  },
+  "R4D_KnockbackTrap.fbx": {
+   "sha256": "a864f4cd6700bcd18c07e6fff752b172725908a842dd1c7a98b137439f930d30",
+   "bytes": 71212
+  },
+  "R4D_KnockbackTrap.glb": {
+   "sha256": "1a7801d6238d77a1a72ec15b44a856deddabd066711f6f0478c4759a48d32769",
+   "bytes": 47676
+  },
+  "R4D_KnockbackTrap_LOD1.fbx": {
+   "sha256": "27f4034c24e37fad44c601e4aa07a117476b8c3eb5cdb92c4922044fc1951906",
+   "bytes": 29228
+  },
+  "R4D_KnockbackTrap_LOD1.glb": {
+   "sha256": "a6a978d21b7dc5daca90c9930ac933f0153d44174cc17b7cc6612eace490479b",
+   "bytes": 31156
+  }
+ },
+ "seconds": 1.9,
+ "blender": "5.3.0"
+}

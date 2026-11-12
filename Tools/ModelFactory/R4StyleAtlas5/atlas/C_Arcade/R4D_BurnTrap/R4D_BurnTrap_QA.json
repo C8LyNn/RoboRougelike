@@ -1,0 +1,249 @@
+{
+ "id": "R4D_BurnTrap",
+ "style": "C",
+ "style_label": "C_Arcade",
+ "family": "world_trap",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4D_BurnTrap_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 692,
+   "vertices": 358,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  },
+  {
+   "object": "R4D_BurnTrap_Flame",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 48,
+   "vertices": 26,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4D_BurnTrap_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 602,
+  "vertices": 315,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 740,
+ "triangles_lod1": 602,
+ "mesh_objects": 2,
+ "material_slots_total": 6,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.185,
+   -0.1804,
+   0.0
+  ],
+  [
+   0.185,
+   0.1804,
+   0.2928
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   0.0
+  ],
+  [
+   0.26,
+   0.26,
+   0.3
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [],
+ "port_contact_test": [],
+ "lod1_port_contact_test": [],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4D_BurnTrap_ROOT": null,
+  "R4D_BurnTrap_Body": "R4D_BurnTrap_ROOT",
+  "R4D_BurnTrap_Flame": "R4D_BurnTrap_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 103,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Arm",
+    "start": 27,
+    "end": 51,
+    "loop": false
+   },
+   {
+    "name": "Triggered",
+    "start": 53,
+    "end": 65,
+    "loop": false
+   },
+   {
+    "name": "Recovery",
+    "start": 67,
+    "end": 103,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Arm": 27,
+   "Armed": 51,
+   "Trigger": 53,
+   "Recovered": 103
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4D_BurnTrap_Flame"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 12.0,
+  "sweep_allowance_mm": 30,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "simple, fast, readable: quick ease, short hold, no secondary motion"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 740,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 3,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    59,
+    65,
+    67,
+    85,
+    103
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    59,
+    "R4D_BurnTrap_Flame",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 740,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    59,
+    65,
+    67,
+    85,
+    103
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4D_BurnTrap_front.jpg",
+  "R4D_BurnTrap_side.jpg",
+  "R4D_BurnTrap_top.jpg",
+  "R4D_BurnTrap_34.jpg",
+  "R4D_BurnTrap_wire.jpg",
+  "R4D_BurnTrap_clay.jpg",
+  "R4D_BurnTrap_silhouette.png"
+ ],
+ "files": {
+  "R4D_BurnTrap.blend": {
+   "sha256": "7a1e1702597b39369633ccc0f7061d76938ab69184fdf40a304da3b02b373564",
+   "bytes": 120001
+  },
+  "R4D_BurnTrap.fbx": {
+   "sha256": "4f44114a72122ea7d6759948e3fdb58cc7afdbc2e729a9b8681b092aa1b708b8",
+   "bytes": 71772
+  },
+  "R4D_BurnTrap.glb": {
+   "sha256": "32139f34675bcf0e5026996893b80b4379d7b9e6c11e90171eea660094c8f8e4",
+   "bytes": 39372
+  },
+  "R4D_BurnTrap_LOD1.fbx": {
+   "sha256": "ba6da543306c039f2b2f52a75f049cefed9e4237effacca6479669620656de2d",
+   "bytes": 32476
+  },
+  "R4D_BurnTrap_LOD1.glb": {
+   "sha256": "bbccde7ecf171d88e4f5621f9ca4a067e54211f5eb48e976accc744bcbe74345",
+   "bytes": 31932
+  }
+ },
+ "seconds": 1.4,
+ "blender": "5.3.0"
+}
