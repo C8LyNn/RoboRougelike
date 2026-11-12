@@ -26,6 +26,24 @@ public sealed class MapEditorIntegrationTests
         if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
     }
+    [UnityTest] public IEnumerator ReadinessExplainsMissingMapRequirementsBeforeStartingTest()
+    {
+        Assert.That(run.OpenMapEditor(),Is.True);
+        var method=typeof(R1RunController).GetMethod("MapTestReadiness");Assert.That(method,Is.Not.Null);
+        string Reason()=>(string)method.Invoke(run,null);
+        Assert.That(Reason(),Does.Contain("punkt startowy"));
+        Assert.That(run.EditorDraft.Place(MapItemKind.Spawn,0,0,0),Is.True);
+        Assert.That(Reason(),Does.Contain("metę"));
+        Assert.That(run.EditorDraft.Place(MapItemKind.Finish,0,3,0),Is.True);
+        Assert.That(Reason(),Does.Contain("podłoże"));
+        Assert.That(run.EditorDraft.SetGlobalFloor(true),Is.True);
+        Assert.That(Reason(),Is.Null,"A usable map and vehicle should be ready.");
+        Assert.That(run.EditorDraft.Remove(0,3),Is.True);
+        Assert.That(Reason(),Does.Contain("metę"));
+        Assert.That(run.TestEditedMap(),Is.False);Assert.That(run.EditorMessage,Is.EqualTo(Reason()));
+        Assert.That(run.MapEditing,Is.True);
+        yield return null;
+    }
     [UnityTest] public IEnumerator MenuEditorGarageVehicleTestAndReturnPreserveMap()
     {
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Ready));
