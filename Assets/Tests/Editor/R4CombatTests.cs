@@ -54,6 +54,20 @@ public class R4CombatTests
         Assert.That(player.DefeatReason,Is.Null,"One structurally surviving wheel must not itself cause defeat.");
         yield return null;
     }
+    [UnityTest] public IEnumerator EnemyStatusShowsCurrentAndMaximumCoreHealth()
+    {
+        var enemy=Run.Encounter.Enemies.First();var core=enemy.Core;
+        var method=typeof(R1RunHUD).GetMethod("EnemyCoreStatus",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        string Status()=>(string)method.Invoke(null,new object[]{enemy});
+        Assert.That(Status(),Does.Contain($"{core.CurrentHp:0}/{core.MaxHp:0}"));
+        float before=core.CurrentHp;core.ApplyDamage(core.MaxHp*.4f,core.transform.position,Vector3.zero);
+        Assert.That(core.CurrentHp,Is.LessThan(before));
+        Assert.That(Status(),Does.Contain($"{core.CurrentHp:0}/{core.MaxHp:0}"));
+        core.ApplyDamage(100000,core.transform.position,Vector3.zero);
+        Assert.That(Status(),Is.Null,"A defeated enemy must not remain on the active list.");
+        yield return null;
+    }
     [UnityTest] public IEnumerator DisabledWeaponsWarnWithoutTreatingEmpAsDestruction()
     {
         var player=Run.Player;
