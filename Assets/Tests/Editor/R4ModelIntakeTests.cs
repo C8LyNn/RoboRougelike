@@ -11,9 +11,27 @@ public sealed class R4ModelIntakeTests
     static string[] ModelPaths()=>Directory.GetFiles("Assets/Art/R4Intake","*.fbx",SearchOption.AllDirectories)
         .Select(p=>p.Replace('\\','/')).OrderBy(p=>p).ToArray();
     static string[] AnimatedModelPaths()=>ModelPaths().Where(p=>File.Exists(Path.ChangeExtension(p,null)+"_animation_manifest.json")).ToArray();
-    [Test] public void AllFortyNineFbxModelsArePresentAndImported()
+    // Original intake at 497c13dc. Later model additions must not hide removal
+    // of any of these assets or fail merely because the catalogue has grown.
+    static readonly string[] OriginalBlocks=("Arch Beam2 Beam3 BigCube2 Cone CornerL3 CornerWedge CoveEdge Cube Cylinder Dome HalfBlock HalfWedge HexColumn InnerCorner LongWedge OctColumn Plate1x2 Plate2x2 Pyramid RoundCorner RoundEdge RoundTop Slab2x2 Step Tee4 Tetra TrussCube Wedge WideWedge").Split(' ');
+    static readonly string[] OriginalMovement=("Blink Booster CrawlerTrack Gyroscope HoverEngine IndependentSteering JumpDrive MagneticGrapple OmniDrive Suspension Wheel").Split(' ');
+    static readonly string[] OriginalWeapons=("Basic BeamCutter EmpEmitter Heavy Railgun RocketLauncher RotarySaw Shotgun").Split(' ');
+    static string[] OriginalModels(string folder,string prefix,string[] names)=>
+        names.Select(name=>$"Assets/Art/R4Intake/{folder}/{prefix}{name}/{prefix}{name}.fbx").ToArray();
+    static string[] MissingOriginalModels(string[] actual)=>
+        OriginalModels("Blocks","R4B_",OriginalBlocks).Concat(OriginalModels("Movement","R4M_",OriginalMovement))
+            .Concat(OriginalModels("Weapons","R4W_",OriginalWeapons)).Except(actual,System.StringComparer.Ordinal).ToArray();
+
+    [Test] public void IntakeValidationAllowsAdditionsButDetectsMissingOriginalModel()
     {
-        var paths=ModelPaths();Assert.That(paths.Length,Is.EqualTo(49));
+        var paths=ModelPaths();Assert.That(MissingOriginalModels(paths),Is.Empty);
+        var required=OriginalModels("Blocks","R4B_",OriginalBlocks)[0];
+        var withoutRequired=paths.Where(path=>path!=required).Concat(new[]{"Assets/Art/R4Intake/new-model.fbx"}).ToArray();
+        Assert.That(MissingOriginalModels(withoutRequired),Is.EquivalentTo(new[]{required}));
+    }
+    [Test] public void OriginalAndNewFbxModelsArePresentAndImported()
+    {
+        var paths=ModelPaths();Assert.That(MissingOriginalModels(paths),Is.Empty,"An original intake model is missing.");
         foreach(var path in paths)
         {
             Assert.That(AssetDatabase.LoadAssetAtPath<GameObject>(path),Is.Not.Null,path);
@@ -22,7 +40,8 @@ public sealed class R4ModelIntakeTests
             Assert.That(importer.useFileScale&&importer.bakeAxisConversion&&importer.preserveHierarchy,Is.True,path);
             Assert.That(importer.importCameras||importer.importLights||importer.addCollider,Is.False,path);
         }
-        Assert.That(AnimatedModelPaths().Length,Is.EqualTo(19));
+        foreach(var path in OriginalModels("Movement","R4M_",OriginalMovement).Concat(OriginalModels("Weapons","R4W_",OriginalWeapons)))
+            Assert.That(File.Exists(Path.ChangeExtension(path,null)+"_animation_manifest.json"),Is.True,"Missing original animation manifest: "+path);
     }
     [TestCaseSource(nameof(ModelPaths))] public void MountSocketPositionInPrefabSpaceMatchesGrid(string path)
     {
