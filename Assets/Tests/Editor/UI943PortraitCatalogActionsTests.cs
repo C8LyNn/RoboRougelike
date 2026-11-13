@@ -56,6 +56,23 @@ public sealed class UI943PortraitCatalogActionsTests
             "The current placement issue must return after the action feedback expires.");
     }
 
+    [UnityTest] public IEnumerator RotationFailureIsVisibleWhileMountingAnotherPart()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);
+        var garage=run.Garage;var core=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Core);
+        garage.UseInventory=false;garage.SelectedInventoryId=null;garage.SelectedPart=R3PartKind.Armor;
+        garage.Cell=core.Cell;
+        typeof(R3GarageView).GetProperty("HasTarget").GetSetMethod(true).Invoke(garage,new object[]{true});
+        Assert.That(garage.RotatePartAt(core.Cell,Vector3Int.up),Is.False);
+        Assert.That((string)Invoke(run.GetComponent<R1RunHUD>(),"SimpleGarageFeedback",run),
+            Does.Contain("obrócić rdzenia"),"A failed Shift-rotation must explain the protected core.");
+        yield return null;
+    }
+
     [TestCase(false,5,2,false,"Brakuje 3 Z")]
     [TestCase(false,5,5,false,"5 Z")]
     [TestCase(true,0,0,false,"0 Z")]
