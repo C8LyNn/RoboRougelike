@@ -184,6 +184,28 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That((string)method.Invoke(null,new object[]{ready,reason,drive}),Is.EqualTo(expected));
     }
 
+    [UnityTest] public IEnumerator ActivityMenuExplainsUnavailableArenasAndFinalStage()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.PrepareUnifiedRun(),Is.True);
+        Assert.That(run.VehicleModel.CanDeploy,Is.True);
+        Assert.That(run.RouteOffers.Length,Is.GreaterThan(0));
+        var offer=run.RouteOffers[0];Assert.That(offer.IsBoss,Is.False);
+        offer.EnemyCount=3;
+        Assert.That(offer.SpawnCount,Is.EqualTo(4));
+        Assert.That(run.CanChooseGeneratedArena,Is.False);
+        Assert.That(run.CanChooseLD02Arena,Is.False);
+        var hud=run.GetComponent<R1RunHUD>();
+        Assert.That((string)Invoke(hud,"ActivityContextHint",run),Does.Contain("3").And.Contain("aren").IgnoreCase);
+        typeof(R1RunProgress).GetProperty("EncounterIndex").GetSetMethod(true).Invoke(run.Progress,new object[]{run.Progress.TotalEncounters-1});
+        Assert.That(run.CanChooseReactorDefense,Is.False);
+        Assert.That((string)Invoke(hud,"ActivityContextHint",run),Does.Contain("finał").IgnoreCase);
+        yield return null;
+    }
+
     [TestCase(true,null,"Zapisano wyprawę w garażu.","Zapisano wyprawę w garażu.")]
     [TestCase(false,"stary","Nie zapisano wyprawy: brak miejsca.","Nie zapisano wyprawy: brak miejsca.")]
     [TestCase(false,"Nie zapisano wyprawy: brak miejsca.","Nie zapisano wyprawy: brak miejsca.","Nie zapisano wyprawy: brak miejsca.")]

@@ -16,6 +16,19 @@ namespace RoboRougelike.R1
         static string ActivityReadinessHint(bool canDeploy,string reason,R3DriveKind drive)=>!canDeploy?
             "Start zablokowany: "+(string.IsNullOrWhiteSpace(reason)?"Sprawdź konstrukcję.":reason):
             drive!=R3DriveKind.Wheels?"Wyścig, tryby drogowe i generowana arena wymagają kół.":null;
+        string ActivityContextHint(R1RunController run)
+        {
+            var model=run.VehicleModel;
+            if(!model.CanDeploy)
+                return ActivityReadinessHint(false,model.CriticalReadinessMessage??model.DeployError,model.SelectedDrive);
+            if(run.Progress.EncounterIndex>=run.Progress.TotalEncounters-1)
+                return "Finał: dodatkowe aktywności są niedostępne. Wybierz następną trasę.";
+            string hint=ActivityReadinessHint(true,null,model.SelectedDrive);
+            var offers=run.RouteOffers;
+            if(offers.Length>0&&offers[0].SpawnCount>3)
+                hint=(hint==null?"":hint+"\n")+"Areny dodatkowe obsługują do 3 przeciwników na tej trasie.";
+            return hint;
+        }
         static string ActivityLaunchResult(bool started,string detail)=>started?null:
             string.IsNullOrWhiteSpace(detail)?"Nie udało się uruchomić aktywności.":detail;
         void AttemptGarageActivity(R1RunController run,System.Func<bool> start)
@@ -134,10 +147,8 @@ namespace RoboRougelike.R1
                 activitySaveFeedback=ActivitySaveResult(saved,previous,run.RunSaveMessage);
             }
             if(!string.IsNullOrEmpty(activitySaveFeedback))GUI.Label(new Rect(24,800,720,70),activitySaveFeedback,small);
-            bool ready=run.VehicleModel.CanDeploy;
-            string reason=ready?null:run.VehicleModel.CriticalReadinessMessage??run.VehicleModel.DeployError;
-            string hint=ActivityReadinessHint(ready,reason,run.VehicleModel.SelectedDrive);
-            if(hint!=null)GUI.Label(new Rect(24,875,720,25),hint,small);
+            string hint=ActivityContextHint(run);
+            if(hint!=null)GUI.Label(new Rect(24,875,720,50),hint,small);
         }
     }
 }
