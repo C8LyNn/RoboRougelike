@@ -96,7 +96,11 @@ public class RRLW6ShieldPhysicalTests
         binding.Device.Damageable.ApplyDamage(45,binding.transform.position,Vector3.up);
         binding.Generator.RestoreState(35,1.2f);binding.CaptureState();
         string id=binding.Device.State.Id;
-        enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        // A huge overkill now correctly propagates into the shield, changing the
+        // snapshot under test. Finish the weakened core with a bounded real hit.
+        enemy.Core.RestoreHealthRatio(.001f);
+        enemy.Core.ApplyDamageResolvedTyped(enemy.Core.CurrentHp/.9f+1,enemy.Core.transform.position,Vector3.up,
+            R3DamagePropagation.DamageKind.Piercing);
         var item=run.Salvage.Items.Single(p=>p.Id==id);var recovered=item.ToPart();
         Assert.That(item.Selectable,Is.True);Assert.That(item.Health,Is.EqualTo(.75f).Within(.001));
         Assert.That(recovered.Kind,Is.EqualTo(R3PartKind.DirectionalShield));
