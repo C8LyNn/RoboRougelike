@@ -1,10 +1,22 @@
 using UnityEngine;
 using RoboRougelike.R5;
+using RoboRougelike.R3;
 namespace RoboRougelike.R1
 {
     public sealed partial class R1RunHUD
     {
         private string seedText="2026";
+        private static string RouteStageCaption(int index,int completed,int current,bool portrait)
+        {
+            string status=index<completed?"ukończone":index==current?"teraz":"dalej";
+            if(index==5)return portrait?$"6\nOBLĘŻNIK\n{status}":$"6 • OBLĘŻNIK\n{status}";
+            return portrait?$"{index+1}\n{status}":$"{index+1} • {status}";
+        }
+        private static string RouteRewardText(R3VehicleModel model,int reward)
+        {
+            int credited=model.PreviewAward(reward);
+            return $"Złom za wygraną: +{credited} Z"+(credited<reward?" (limit portfela)":"");
+        }
         private void DrawRoute(R1RunController run)
         {
             GUI.Label(new Rect(80,45,1120,60),"WYBIERZ TRASĘ",title);
@@ -14,7 +26,7 @@ namespace RoboRougelike.R1
                 GUI.color=i<run.Progress.CompletedEncounters?new Color(.08f,.3f,.22f):i==run.Progress.EncounterIndex?new Color(.04f,.32f,.38f):new Color(.12f,.15f,.19f);
                 GUI.DrawTexture(new Rect(85+i*185,165,160,44),Texture2D.whiteTexture);GUI.color=Color.white;
                 var nodeStyle=new GUIStyle(small){alignment=TextAnchor.MiddleCenter,fontStyle=FontStyle.Bold};
-                GUI.Label(new Rect(85+i*185,165,160,44),i==5?"6 • OBLĘŻNIK":$"{i+1} • {(i<run.Progress.CompletedEncounters?"ukończone":i==run.Progress.EncounterIndex?"teraz":"dalej")}",nodeStyle);
+                GUI.Label(new Rect(85+i*185,165,160,44),RouteStageCaption(i,run.Progress.CompletedEncounters,run.Progress.EncounterIndex,false),nodeStyle);
             }
             GUI.color=Color.white;
             var offers=run.RouteOffers;
@@ -23,7 +35,7 @@ namespace RoboRougelike.R1
                 var item=offers[i];float x=80+i*580;
                 Panel(new Rect(x,245,550,350));
                 GUI.Label(new Rect(x+20,265,510,48),item.Title,heading);
-                GUI.Label(new Rect(x+20,320,510,180),$"{R5RunPlan.ArenaName(item.Arena)}\nRyzyko: {item.Risk} • Zagrożenie {R5RunPlan.Threat(item):0.0}\nWrogowie: {item.SpawnCount} • Złom: {item.ScrapReward}\nŁupy: {item.Loot}\n{item.Rule}",body);
+                GUI.Label(new Rect(x+20,320,510,180),$"{R5RunPlan.ArenaName(item.Arena)}\nRyzyko: {item.Risk} • Zagrożenie {R5RunPlan.Threat(item):0.0}\nWrogowie: {item.SpawnCount} • {RouteRewardText(run.VehicleModel,item.ScrapReward)}\nŁupy: {item.Loot}\n{item.Rule}",body);
                 if(GUI.Button(new Rect(x+20,520,510,55),"Wyrusz — "+item.Title,button)){run.ChooseRoute(i);break;}
             }
             GUI.Label(new Rect(80,630,820,55),"Odebrane części są sprawne; złom za niewybrane zależy od stanu wraków. Wybór jest ostateczny dla tego etapu.",small);

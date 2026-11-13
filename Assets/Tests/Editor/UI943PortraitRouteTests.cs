@@ -1,11 +1,31 @@
 using System.Reflection;
 using NUnit.Framework;
 using RoboRougelike.R1;
+using RoboRougelike.R3;
 using UnityEngine;
 
 public sealed class UI943PortraitRouteTests
 {
     static MethodInfo Method(string name)=>typeof(R1RunHUD).GetMethod(name,BindingFlags.Static|BindingFlags.NonPublic);
+    [TestCase(5,0,5,false,"teraz")] [TestCase(5,6,5,false,"ukończone")]
+    [TestCase(5,0,1,true,"dalej")] [TestCase(5,0,5,true,"teraz")]
+    public void FinalRouteStageShowsBossAndProgressWithoutRelyingOnColor(int index,int completed,int current,bool portrait,string status)
+    {
+        var method=Method("RouteStageCaption");Assert.That(method,Is.Not.Null);
+        var text=(string)method.Invoke(null,new object[]{index,completed,current,portrait});
+        Assert.That(text,Does.Contain("OBLĘŻNIK").And.Contain(status));
+    }
+    [Test]
+    public void RouteRewardPreviewUsesActualWalletCapacityWithoutSpending()
+    {
+        var method=Method("RouteRewardText");Assert.That(method,Is.Not.Null);
+        var model=new R3VehicleModel(new R3VehicleDesign());
+        string Text()=>(string)method.Invoke(null,new object[]{model,50});
+        Assert.That(Text(),Does.Contain("+50 Z").And.Not.Contain("limit"));
+        model.Award(R3VehicleModel.MaxScrap-10);int before=model.Scrap;
+        Assert.That(Text(),Does.Contain("+10 Z").And.Contain("limit"));
+        Assert.That(model.Scrap,Is.EqualTo(before));
+    }
     [Test]
     public void PortraitRouteIsLimitedToItsOwnUnobscuredScreen()
     {
