@@ -276,7 +276,7 @@ namespace RoboRougelike.R1
             switch(item.UpgradeEffect)
             {
                 case R1UpgradeEffect.Hull:name="Wytrzymałość";percent=(stats.Hull-1)*100;break;
-                case R1UpgradeEffect.Damage:name="Obrażenia";percent=(stats.Damage-1)*100;break;
+                case R1UpgradeEffect.Damage:name="Obrażenia";percent=item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.Reload:name="Czas przeładowania";percent=(1-stats.FireInterval)*100;reduction=true;break;
                 case R1UpgradeEffect.Mobility:name="Mobilność";percent=(stats.Mobility-1)*100;break;
                 case R1UpgradeEffect.Core:name="Rdzeń";percent=(stats.Core-1)*100;break;

@@ -71,7 +71,7 @@ public sealed class BacklogBonusTierGameplayTests
         Assert.That(run.GarageMount(state.Id, cell), Is.True);
         yield return null;
         var effects = run.Player.GetComponent<R3MountedBonusEffects>();
-        Assert.That(effects.EffectiveStats.Damage, Is.EqualTo(1.44f).Within(.001f));
+        Assert.That(effects.EffectiveStats.Damage, Is.EqualTo(1.4f).Within(.001f));
         var part = run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p => p.Id == state.Id);
         part.Damageable.ApplyDamage(100000, part.transform.position, Vector3.up);
         yield return null;
@@ -97,9 +97,9 @@ public sealed class BacklogBonusTierGameplayTests
         part.gameObject.SetActive(true);yield return null;
         Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.2f).Within(.001f));
         part.Tier=2;yield return null;
-        Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.44f).Within(.001f),"The live tier is part of the effect, even if the part ID is unchanged.");
+        Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.4f).Within(.001f),"The live tier is part of the effect, even if the part ID is unchanged.");
         part.UpgradeAmount=.3f;yield return null;
-        Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.69f).Within(.001f));
+        Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.6f).Within(.001f));
         part.UpgradeEffect=R1UpgradeEffect.Mobility;yield return null;
         Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1f).Within(.001f));
         Assert.That(effects.EffectiveStats.Mobility,Is.EqualTo(1.69f).Within(.001f));

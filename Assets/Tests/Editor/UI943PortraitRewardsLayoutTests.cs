@@ -108,7 +108,7 @@ public sealed class UI943PortraitRewardsLayoutTests
     {
         var item=new R3PartState(Vector3Int.zero,R3PartKind.BonusModule,1){Tier=2,UpgradeEffect=R1UpgradeEffect.Damage,UpgradeAmount=.2f};
         string Text()=>(string)Method("BonusInstanceText").Invoke(null,new object[]{item});
-        Assert.That(Text(),Does.Contain("44%"));
+        Assert.That(Text(),Does.Contain("40%"));
         item.UpgradeEffect=R1UpgradeEffect.Reload;Assert.That(Text(),Does.Contain("36%"));
         item.UpgradeEffect=R1UpgradeEffect.Repair;Assert.That(Text(),Does.Contain("5%"));
         item.Tier=3;Assert.That(Text(),Does.Contain("10%"),"Four repair contributions each provide 2.5% per second.");

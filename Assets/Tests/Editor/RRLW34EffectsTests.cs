@@ -43,7 +43,14 @@ public class RRLW34EffectsTests
         var m=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
         Assert.That(m.ReceiveBonuses(bonuses),Is.True);
         var ids=m.Inventory.Select(p=>p.Id).ToArray();
-        for(int i=0;i<ids.Length;i++)Assert.That(m.Mount(ids[i],Slot(i)),Is.True,"mount "+i);
+        for(int i=0;i<ids.Length;i++)
+        {
+            var cell=Slot(i);
+            if(m.OwnedPlacementError(ids[i],cell,default)!=null)
+                cell=m.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                    .First(c=>m.OwnedPlacementError(ids[i],c,default)==null);
+            Assert.That(m.Mount(ids[i],cell),Is.True,"mount "+i);
+        }
         return m;
     }
     R1VehicleState Build(R3VehicleModel model,R1RunStats baseline=null,float x=0)
@@ -64,6 +71,35 @@ public class RRLW34EffectsTests
             .First(c=>model.OwnedPlacementError(item.Id,c,default)==null);
         Assert.That(model.Mount(item.Id,cell),Is.True);return model;
     }
+    R3VehicleModel ModelWithDamageBonuses(params float[] amounts)
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        Assert.That(model.ReceiveBonuses(amounts.Select(amount=>Upgrade(R1UpgradeEffect.Damage,amount))),Is.True);
+        foreach(var item in model.Inventory.ToArray())
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(item.Id,c,default)==null);
+            Assert.That(model.Mount(item.Id,cell),Is.True);
+        }
+        return model;
+    }
+    [UnityTest] public IEnumerator MountedDamageBonusesAddAndReachPhysicalShotsWithoutOldCap()
+    {
+        var small=Build(ModelWithDamageBonuses(.25f,.2f),x:-40);
+        Assert.That(Effects(small).EffectiveStats.Damage,Is.EqualTo(1.45f).Within(.001));
+        Assert.That(small.Controller.PackageDamageScale,Is.EqualTo(1.45f).Within(.001));
+        var strong=Build(ModelWithDamageBonuses(1f,1f,1f,1f),x:0);
+        Assert.That(Effects(strong).EffectiveStats.Damage,Is.EqualTo(5f).Within(.001));
+        Assert.That(strong.Controller.PackageDamageScale,Is.EqualTo(5f).Within(.001));
+        var barrel=new GameObject("Additive bonus test muzzle").transform;barrel.SetParent(fixtures.transform);
+        barrel.position=new Vector3(40,20,1000);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.SetParent(fixtures.transform);
+        target.transform.position=barrel.position+Vector3.forward*4;
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
+        strong.Controller.FireFrom(barrel,R4WeaponKind.Basic,"additive-test");
+        yield return Until(()=>hp.CurrentHp<1000,"Physical shot reaches target");
+        Assert.That(hp.CurrentHp,Is.EqualTo(1000-R4WeaponDefinition.Get(R4WeaponKind.Basic).Damage*5f).Within(.01));
+    }
     [UnityTest] public IEnumerator InventoryIsInactiveAndAllMountedEffectsReachLiveWeaponsHpAndOmni()
     {
         var m=Model(Upgrade(R1UpgradeEffect.Damage,.25f),Upgrade(R1UpgradeEffect.Damage,.2f),
@@ -74,8 +110,8 @@ public class RRLW34EffectsTests
         var unboosted=m.DeepCopy();unboosted.Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeEffect==R1UpgradeEffect.Mobility).UpgradeAmount=0;
         var reference=Build(unboosted,x:-40);float unboostedSpeed=reference.Controller.EffectiveForwardSpeed;reference.gameObject.SetActive(false);
         var v=Build(m);var tank=v.Controller;var stats=Effects(v).EffectiveStats;
-        Assert.That(stats.Damage,Is.EqualTo(1.5f).Within(.001));Assert.That(stats.Mobility,Is.EqualTo(1.3f).Within(.001));
-        Assert.That(tank.EffectiveDamage,Is.EqualTo(60).Within(.001));
+        Assert.That(stats.Damage,Is.EqualTo(1.45f).Within(.001));Assert.That(stats.Mobility,Is.EqualTo(1.3f).Within(.001));
+        Assert.That(tank.EffectiveDamage,Is.EqualTo(58).Within(.001));
         Assert.That(tank.WeaponInterval(R4WeaponKind.Basic),Is.EqualTo(R4WeaponDefinition.Get(R4WeaponKind.Basic).Interval*.8f).Within(.001));
         Assert.That(v.Core.MaxHp,Is.EqualTo(210).Within(.001));
         var gun=v.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Gun);
@@ -90,7 +126,7 @@ public class RRLW34EffectsTests
         var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
         tank.FireFrom(barrel,R4WeaponKind.Basic,"w34-live-bonus");
         yield return Until(()=>hp.CurrentHp<1000,"Physical bonus shot reaches target");
-        Assert.That(hp.CurrentHp,Is.EqualTo(1000-R4WeaponDefinition.Get(R4WeaponKind.Basic).Damage*1.5f).Within(.01));
+        Assert.That(hp.CurrentHp,Is.EqualTo(1000-R4WeaponDefinition.Get(R4WeaponKind.Basic).Damage*1.45f).Within(.01));
         Assert.That(run.Progress.Stats.Damage,Is.EqualTo(1));
     }
     [UnityTest] public IEnumerator DestructionAndBridgeDetachmentRemoveEffectsWithoutHealing()

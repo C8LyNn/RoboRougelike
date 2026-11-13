@@ -91,7 +91,7 @@ namespace RogueMachine.P12PipelineSafe
 
         public void SetRunModifiers(float damage, float interval, float mobility)
         {
-            damageModifier = Mathf.Clamp(damage, 1f, 3f);
+            damageModifier = float.IsNaN(damage)||float.IsInfinity(damage)?1f:Mathf.Max(0,damage);
             intervalModifier = Mathf.Clamp(interval, 0.35f, 1f);
             mobilityModifier = Mathf.Clamp(mobility, 1f, 2f);
         }
