@@ -88,6 +88,10 @@ namespace RoboRougelike.R3
             foreach(var part in Parts)
             {
                 if(part==null||part.Kind!=R3PartKind.Gun)continue;
+                bool rawHeld=false;
+                for(int slot=0;slot<4;slot++)
+                    if(pressed[slot]&&R3VehicleModel.MatchesWeaponSlot(part.Weapon,slot,slots,Model.CreativeMode)){rawHeld=true;break;}
+                part.GetComponent<RoboRougelike.WeaponIntegration.RRLDamageAuraBinding>()?.SetTriggerHeld(rawHeld);
                 bool held=false;
                 if(part.Operational&&part.gameObject.activeInHierarchy&&part.transform.IsChildOf(transform)&&
                    !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
@@ -223,11 +227,7 @@ namespace RoboRougelike.R3
                 {
                     part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>()?.Sync();
                     if(RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))continue;
-                    if(part.Weapon==R4WeaponKind.EmpEmitter)
-                    {
-                        var emp=part.GetComponent<RoboRougelike.WeaponIntegration.RRLEmpBinding>();
-                        if(emp!=null&&emp.Fire())part.NextFireTime=emp.State.DeviceReadyAt;continue;
-                    }
+                    if(part.Weapon==R4WeaponKind.EmpEmitter)continue; // toggled by the slot's press edge
                     if(part.Weapon==R4WeaponKind.BeamCutter||part.Weapon==R4WeaponKind.RotarySaw)continue;
                     if((part.Weapon<=R4WeaponKind.Railgun||part.Weapon==R4WeaponKind.RocketLauncher)
                        &&!ClearProjectilePath(part))continue;
@@ -411,7 +411,7 @@ namespace RoboRougelike.R3
                 root.AddComponent<RoboRougelike.WeaponIntegration.RRLWeaponControls>();
             foreach(var part in assembly.Parts)
                 if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.EmpEmitter)
-                    part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLEmpBinding>().Bind(model.Parts.First(p=>p.Id==part.Id),root.transform);
+                    part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLDamageAuraBinding>().Bind(model.Parts.First(p=>p.Id==part.Id),root.transform);
             foreach(var part in assembly.Parts)
                 if(part.Kind==R3PartKind.StructuralScanner)
                     part.gameObject.AddComponent<RoboRougelike.PackageIntegration.RRLStructuralScannerBinding>()

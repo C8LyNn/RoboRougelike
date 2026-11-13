@@ -79,6 +79,7 @@ namespace RoboRougelike.WeaponIntegration
             {
                 if(part==null||part.Kind!=R3PartKind.Gun||!part.Operational||!part.gameObject.activeInHierarchy||
                     !part.transform.IsChildOf(assembly.transform)||part.Muzzle==null)continue;
+                if(part.Weapon==R4WeaponKind.EmpEmitter)continue; // aura has no aim direction
                 bool emp=part.Weapon==R4WeaponKind.EmpEmitter, saw=part.Weapon==R4WeaponKind.RotarySaw;
                 Vector3 origin=emp?part.transform.position:part.Muzzle.position;
                 float range=RRLAimFeedback.Range(part,controller);

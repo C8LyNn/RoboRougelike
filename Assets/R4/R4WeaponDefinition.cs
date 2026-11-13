@@ -25,7 +25,7 @@ namespace RoboRougelike.R4
             new R4WeaponDefinition("WPN-003 Beam Cutter",35,.02f,0,.065f,0,30,130,55,new Color(.15f,1,.9f)),
             new R4WeaponDefinition("WPN-004 Rocket Launcher",60,1.7f,18,.24f,1,38,160,60,new Color(1,.65f,.15f)),
             new R4WeaponDefinition("WPN-005 Rotary Saw",52,.02f,0,1.8f,0,25,130,50,new Color(.9f,.3f,.2f)),
-            new R4WeaponDefinition("WPN-006 EMP Emitter",0,12,0,0,0,30,140,65,new Color(.5f,.6f,1)) };
+            new R4WeaponDefinition("WPN-006 Aura energetyczna",25,1,0,0,0,30,140,65,new Color(.5f,.6f,1)) };
         public static int Count => definitions.Length;
         public static string Brief(R3PartState part,float damageScale=1,float intervalScale=1)
         {
@@ -38,7 +38,7 @@ namespace RoboRougelike.R4
                 R4WeaponKind.BeamCutter=>$"{35*damageScale:0} obrażeń/s • 16 m\nWiązka • ciepło • puść przycisk ognia, by schłodzić",
                 R4WeaponKind.RocketLauncher=>$"Wybuch do {60*damageScale:0} obrażeń • 3,2 m\n{Ammo(10)} rakiet • automatyczne przeładowanie (T: ręcznie)",
                 R4WeaponKind.RotarySaw=>"Kontakt • do 2800 RPM\nTwarde cele blokują; kontroluj ciepło",
-                R4WeaponKind.EmpEmitter=>$"EMP 9 m • zakłócenie do {3*R3VehicleModel.TierEffectUnits(part.Tier):0} s\nOdnowienie {12*intervalScale:0.0} s • widoczny cel",
+                R4WeaponKind.EmpEmitter=>$"Aura {RoboRougelike.WeaponIntegration.RRLDamageAuraBinding.Radius:0} m • {25*damageScale:0} obrażeń/s\nNaciśnij: włącz / wyłącz • {RoboRougelike.WeaponIntegration.RRLDamageAuraBinding.EnergyPerSecond*R3VehicleModel.TierActivationCost(part.Tier):0} energii/s",
                 _=>$"{profile.Damage*damageScale:0} obrażeń • co {profile.Interval*intervalScale:0.00} s\n{profile.Speed:0} m/s"};
         }
         public static R4WeaponDefinition Get(R4WeaponKind kind)

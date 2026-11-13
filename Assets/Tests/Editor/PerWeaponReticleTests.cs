@@ -244,13 +244,12 @@ public sealed class PerWeaponReticleTests
             Assert.That(maximum,Is.GreaterThanOrEqualTo(1024*1024),"A profiler control must observe a known allocation.");
         }
     }
-    [Test]public void AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators()
+    [Test]public void AuraHasNoAimMarkerButSawAndBarrelsStillHaveIndicators()
     {
         left.Weapon=R4WeaponKind.EmpEmitter;right.Weapon=R4WeaponKind.RotarySaw;
-        var area=Collect(target);Assert.That(area.Count,Is.EqualTo(2));
-        Assert.That(Field<bool>(area[0],"AreaWeapon"),Is.True);Assert.That(Field<bool>(area[1],"AreaWeapon"),Is.True);
-        Assert.That(Field<Vector2>(area[0],"Viewport").x,Is.EqualTo(.5f).Within(.001f),"EMP is radial and tracks the selected point rather than inventing a projectile");
-        Assert.That(Field<Vector2>(area[1],"Viewport").x,Is.GreaterThan(.5f),"Saw indicator uses the blade's real position");
+        var area=Collect(target);Assert.That(area.Count,Is.EqualTo(1),"A radial aura has no aiming direction or misleading marker");
+        Assert.That(Field<bool>(area[0],"AreaWeapon"),Is.True);
+        Assert.That(Field<Vector2>(area[0],"Viewport").x,Is.GreaterThan(.5f),"Saw indicator uses the blade's real position");
         left.Weapon=R4WeaponKind.Basic;left.Muzzle.forward=Vector3.back;
         var away=Collect(target);Assert.That(away.Count,Is.EqualTo(2));
         Assert.That(Field<bool>(away[0],"Offscreen"),Is.True);

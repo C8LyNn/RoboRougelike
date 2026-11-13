@@ -60,7 +60,7 @@ namespace RogueMachine.P12PipelineSafe
         private RoboRougelike.WeaponIntegration.RRLRailgunBinding packageRailgun;
         private RoboRougelike.WeaponIntegration.RRLBeamBinding packageBeam;
         private RoboRougelike.WeaponIntegration.RRLSawBinding packageSaw;
-        private RoboRougelike.WeaponIntegration.RRLEmpBinding packageEmp;
+        private RoboRougelike.WeaponIntegration.RRLDamageAuraBinding packageEmp;
         private RoboRougelike.WeaponIntegration.RRLRocketBinding packageRocket;
         private RoboRougelike.WeaponIntegration.RRLPointDefenseBinding packagePointDefense;
         private RoboRougelike.WeaponIntegration.RRLShieldBinding packageShield;
@@ -241,8 +241,8 @@ namespace RogueMachine.P12PipelineSafe
             var state=new RoboRougelike.R3.R3PartState(default,RoboRougelike.R3.R3PartKind.Gun)
                 {Id=EquipmentInstanceId("gun"),Weapon=WeaponKind,Source=name+" / uzbrojenie"};
             AttachPrimaryGunArt();
-            packageEmp=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLEmpBinding>();
-            packageEmp.Bind(state,transform,cadence);packageWeaponState=state;preferredDistance=6;moveSpeed=Mathf.Max(moveSpeed,2.5f);return true;
+            packageEmp=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLDamageAuraBinding>();
+            packageEmp.Bind(state,transform,ds);packageWeaponState=state;preferredDistance=5;moveSpeed=Mathf.Max(moveSpeed,2.5f);return true;
         }
         public bool EquipSaw()
         {
@@ -706,7 +706,7 @@ namespace RogueMachine.P12PipelineSafe
             if(packageSaw!=null){packageSaw.SetMotorRequested(!FriendlyInLine(aimPoint));return;}
             if(packageBeam!=null)
             {packageBeam.SetTriggerHeld(!FriendlyInLine(aimPoint));return;}
-            if(packageEmp!=null&&distance>8.5f)return;
+            if(packageEmp!=null&&distance>RoboRougelike.WeaponIntegration.RRLDamageAuraBinding.Radius)return;
             if (Time.time <
                 nextFireTime)
                 return;

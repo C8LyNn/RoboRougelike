@@ -141,6 +141,45 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,run.VehicleModel.Economy,Time.time,out var restored,out var error),Is.True,error);
         Assert.That(restored.TargetedEmpReadyAt,Is.GreaterThan(Time.time));Assert.That(restored.AreaEmpReadyAt,Is.GreaterThan(Time.time));
     }
+    [UnityTest] public IEnumerator EnergyAuraTogglesOnPressAndDamagesOnlyEnemiesWhileConsumingEnergy()
+    {
+        Assert.That(run.GaragePurchase(R3PartKind.Gun,RoboRougelike.R4.R4WeaponKind.EmpEmitter),Is.True);
+        var gun=run.VehicleModel.Inventory.Last(p=>p.Kind==R3PartKind.Gun&&p.Weapon==RoboRougelike.R4.R4WeaponKind.EmpEmitter);
+        var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+        var cell=cells.First(c=>run.VehicleModel.OwnedPlacementError(gun.Id,c,default)==null);
+        Assert.That(run.GarageMount(gun.Id,cell),Is.True);Assert.That(run.EnterTestRange(),Is.True);
+        for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,run.Player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"aura-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();enemy.ConfigureMovement(0,12,0);
+        var body=run.Player.GetComponent<Rigidbody>();body.position=new Vector3(100,5,100);body.isKinematic=true;
+        var enemyBody=enemy.GetComponent<Rigidbody>();enemyBody.position=new Vector3(100,4,104);enemyBody.isKinematic=true;Physics.SyncTransforms();
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var mounted=assembly.Parts.Single(p=>p.Id==gun.Id);
+        var type=System.Type.GetType("RoboRougelike.WeaponIntegration.RRLDamageAuraBinding, Assembly-CSharp");
+        Assert.That(type,Is.Not.Null,"Energy aura binding must replace the old EMP weapon");
+        var aura=mounted.GetComponent(type);Assert.That(aura,Is.Not.Null);
+        var active=type.GetProperty("IsActive");Assert.That(active,Is.Not.Null);
+        int slot=System.Array.FindIndex(run.VehicleModel.GetWeaponSlots(),s=>s==RoboRougelike.R4.R4WeaponKind.EmpEmitter);
+        Assert.That(slot,Is.GreaterThanOrEqualTo(0));
+        void Triggers(bool held)=>assembly.SetSlotTriggers(slot==0&&held,slot==1&&held,slot==2&&held,slot==3&&held);
+        float hp=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        var energy=run.Player.GetComponent<VehicleEnergyBank>();float before=energy.Current;
+        Triggers(true);Assert.That((bool)active.GetValue(aura),Is.True);
+        Triggers(true);Assert.That((bool)active.GetValue(aura),Is.True,"Holding must not toggle repeatedly");
+        for(int i=0;i<10;i++)yield return new WaitForFixedUpdate();
+        var nearby=Physics.OverlapSphere(body.position,6f).Where(c=>c.GetComponentInParent<RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret>()==enemy).ToArray();
+        Assert.That(enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.LessThan(hp),
+            $"active={active.GetValue(aura)}, energy={energy.Current}, enemy colliders={nearby.Length}, eligible={nearby.Count(c=>RoboRougelike.WeaponIntegration.RRLHitRouter.CanHit(c,body.transform))}, withHp={nearby.Count(c=>c.GetComponentInParent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>()!=null)}, targets={((System.Collections.IDictionary)type.GetField("targets",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(aura)).Count}, origin={body.transform.position}, physics={body.position}, enemy={enemy.transform.position}, damageScale={run.Player.Controller.PackageDamageScale}");
+        Assert.That(energy.Current,Is.LessThan(before));
+        Assert.That(enemy.GetComponentsInChildren<RoboRougelike.Mechanics.EMP.EmpReceiver>().Any(r=>r.IsDisrupted),Is.False);
+        Triggers(false);Triggers(true);Assert.That((bool)active.GetValue(aura),Is.False);
+        Triggers(false);Assert.That(energy.TrySpend(energy.Current),Is.True);
+        Triggers(true);Assert.That((bool)active.GetValue(aura),Is.False,"Empty energy must prevent activation");
+        Triggers(false);energy.Recharge(100);Triggers(true);Assert.That((bool)active.GetValue(aura),Is.True);
+        mounted.Damageable.ApplyDamage(10000,mounted.transform.position,Vector3.up);
+        Assert.That((bool)active.GetValue(aura),Is.False,"Destroying the weapon must stop the aura immediately");
+    }
     [UnityTest] public IEnumerator OverdriveCombinesMountedCopiesAndCostsEnergyOnce()
     {
         Assert.That(System.Enum.TryParse("Overdrive",out R3PartKind kind),Is.True);

@@ -38,7 +38,7 @@ public sealed class BacklogEmpTierPhysicsTests
         yield return new EnterPlayMode();
     }
 
-    [UnityTest] public IEnumerator TierTwoEmpSpendsEnergyAndDisruptsARealCollider()
+    [UnityTest] public IEnumerator TierTwoAuraSpendsEnergyAndDamagesAnEnemyCollider()
     {
         var model = new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
         var state = model.Parts.First(p => p.Kind == R3PartKind.Gun);
@@ -51,17 +51,19 @@ public sealed class BacklogEmpTierPhysicsTests
         var vehicle = R3VehicleAssembly.Build(model, new R1RunStats(), palette, new Vector3(0,20,0), Quaternion.identity);
         vehicle.GetComponent<Rigidbody>().isKinematic = true;
         var gun = vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p => p.Id == state.Id);
-        var target = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        target.transform.position = gun.Muzzle.position + gun.Muzzle.forward * 2f;
-        var receiver = target.AddComponent<EmpReceiver>(); receiver.ConfigureOwnership(target.transform, 12345, 2);
+        var enemy = new GameObject("enemy fixture");
+        enemy.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret>().enabled=false;
+        var target = GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.SetParent(enemy.transform);
+        target.transform.position = vehicle.GetComponent<Rigidbody>().position + Vector3.forward * 2f;
+        var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(500,false);
         var bank = vehicle.GetComponent<VehicleEnergyBank>(); float before = bank.Current;
         Physics.SyncTransforms();
-        var binding = gun.GetComponent<RRLEmpBinding>();
+        var binding = gun.GetComponent<RRLDamageAuraBinding>();
         Assert.That(binding.Fire(), Is.True);
-        Assert.That(bank.Current, Is.EqualTo(before - 15f).Within(.001f));
-        Assert.That(receiver.IsDisrupted, Is.True);
-        Assert.That(receiver.RemainingSeconds, Is.GreaterThan(3f));
-        Object.Destroy(vehicle.gameObject); Object.Destroy(target); Object.Destroy(paletteObject); Object.Destroy(material);
+        typeof(RRLDamageAuraBinding).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(binding,null);
+        Assert.That(bank.Current, Is.EqualTo(before-RRLDamageAuraBinding.EnergyPerSecond*1.2f*Time.fixedDeltaTime).Within(.001f));
+        Assert.That(hp.CurrentHp, Is.EqualTo(500-RRLDamageAuraBinding.DamagePerSecond*2*Time.fixedDeltaTime).Within(.001f));
+        Object.Destroy(vehicle.gameObject); Object.Destroy(enemy); Object.Destroy(paletteObject); Object.Destroy(material);
         yield return null;
     }
 

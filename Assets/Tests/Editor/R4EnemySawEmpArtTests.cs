@@ -73,7 +73,7 @@ public sealed class R4EnemySawEmpArtTests
         finally{catalog.Models=original;}
         yield return null;
     }
-    [UnityTest] public IEnumerator MissingEmpModelPreservesLegacyRenderAndPulseOrigin()
+    [UnityTest] public IEnumerator MissingAuraModelPreservesLegacyRenderAndWeaponBinding()
     {
         yield return StartCombat();var enemy=R1RunController.Instance.Encounter.Enemies.First();
         var catalog=Resources.Load<R4WeaponArtCatalog>("R4Art/WeaponCatalog");Assert.That(catalog,Is.Not.Null);
@@ -83,29 +83,30 @@ public sealed class R4EnemySawEmpArtTests
             for(int i=0;i<catalog.Models.Length;i++)if(catalog.Models[i].Kind==R4WeaponKind.EmpEmitter)
                 catalog.Models[i]=new R4WeaponArtEntry{Kind=R4WeaponKind.EmpEmitter,Model=null};
             var legacy=enemy.transform.Find("Enemy_Yaw/Enemy_Muzzle");Assert.That(enemy.EquipEmp(),Is.True);
-            var binding=enemy.WeaponBlock.GetComponent<RRLEmpBinding>();
+            var binding=enemy.WeaponBlock.GetComponent<RRLDamageAuraBinding>();
             Assert.That(typeof(P12PipelineSafeEnemyTurret).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(enemy),Is.SameAs(legacy));
-            Assert.That(binding.Module.GetType().GetField("pulseOrigin",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(binding.Module),Is.SameAs(enemy.WeaponBlock.transform));
+            Assert.That(binding.Device.Owner,Is.SameAs(enemy.transform));
             Assert.That(enemy.WeaponBlock.GetComponent<Renderer>().enabled,Is.True);
         }
         finally{catalog.Models=original;}
         yield return null;
     }
-    [UnityTest] public IEnumerator EnemyEmpModelKeepsPhysicalPulseOriginAndDisruptsTarget()
+    [UnityTest] public IEnumerator EnemyAuraModelKeepsArtAndDamagesPlayerWithoutEmp()
     {
         yield return StartCombat();var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
         var legacy=enemy.transform.Find("Enemy_Yaw/Enemy_Muzzle");Assert.That(enemy.EquipEmp(),Is.True);
-        var binding=enemy.WeaponBlock.GetComponent<RRLEmpBinding>();var art=enemy.WeaponBlock.GetComponentsInChildren<R4WeaponArt>(true).SingleOrDefault(v=>v.gameObject.activeInHierarchy);
-        Assert.That(art,Is.Not.Null,"Enemy EMP must show its supplied model.");
+        var binding=enemy.WeaponBlock.GetComponent<RRLDamageAuraBinding>();var art=enemy.WeaponBlock.GetComponentsInChildren<R4WeaponArt>(true).SingleOrDefault(v=>v.gameObject.activeInHierarchy);
+        Assert.That(art,Is.Not.Null,"Enemy aura must show its supplied model.");
         Assert.That(art.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4W_EmpEmitter_ROOT"),Is.True);
         Assert.That(typeof(P12PipelineSafeEnemyTurret).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(enemy),Is.SameAs(legacy));
-        Assert.That(binding.Module.GetType().GetField("pulseOrigin",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(binding.Module),Is.SameAs(enemy.WeaponBlock.transform));
-        var body=enemy.GetComponent<Rigidbody>();body.isKinematic=true;body.position=new Vector3(100,4,100);Physics.SyncTransforms();
-        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=enemy.WeaponBlock.transform.position+Vector3.up*4;
-        var receiver=target.AddComponent<EmpReceiver>();receiver.ConfigureOwnership(target.transform,1234,1);
-        enemy.GetComponent<VehicleEnergyBank>()?.Recharge(1000);Physics.SyncTransforms();enemy.SetCombatActive(true);
-        Assert.That(binding.Fire(),Is.True);Assert.That(receiver.IsDisrupted,Is.True,"Real pulse must disrupt the visible receiver.");
-        Assert.That(binding.Fire(),Is.False,"Committed cooldown remains active.");Object.Destroy(target);yield return null;
+        Assert.That(binding.Device.Owner,Is.SameAs(enemy.transform));
+        var body=enemy.GetComponent<Rigidbody>();body.isKinematic=true;body.position=new Vector3(100,4,100);
+        var playerBody=run.Player.GetComponent<Rigidbody>();playerBody.isKinematic=true;playerBody.position=new Vector3(100,4,104);Physics.SyncTransforms();
+        var hp=run.Player.GetComponentsInChildren<P12PipelineSafeDamageable>();float before=hp.Sum(p=>p.CurrentHp);
+        enemy.GetComponent<VehicleEnergyBank>()?.Recharge(1000);enemy.SetCombatActive(true);
+        Assert.That(binding.Fire(),Is.True);for(int i=0;i<8;i++)yield return new WaitForFixedUpdate();
+        Assert.That(hp.Sum(p=>p.CurrentHp),Is.LessThan(before),"The actual enemy aura must damage the player.");
+        Assert.That(run.Player.GetComponentsInChildren<EmpReceiver>().Any(r=>r.IsDisrupted),Is.False);
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

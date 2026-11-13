@@ -224,8 +224,8 @@ namespace RoboRougelike.R1
                     var saw=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>();
                     string status=saw!=null?($"{saw.Module.Motor.Rpm:0} RPM • {saw.Module.Motor.Heat:0}%"+(saw.Module.Motor.JamRemaining>0?" • blokada":"")):rocket!=null?RocketWeaponStatus(rocket.State.Ammo,rocket.State.ReloadReadyAt,rocket.State.DeviceReadyAt,Time.time):beam!=null?($"temperatura {beam.Module.HeatFraction*100:0}%"+(beam.Module.IsOverheated?" • przegrzana":"")):rail!=null?ManualReloadWeaponStatus(rail.State.Ammo,RoboRougelike.WeaponIntegration.RRLRailgunBinding.Magazine,rail.State.ReloadReadyAt,Time.time,rail.Device.Available):shotgun!=null?ManualReloadWeaponStatus(shotgun.State.Ammo,RoboRougelike.WeaponIntegration.RRLShotgunBinding.MagazineSalvos,shotgun.State.ReloadReadyAt,Time.time,shotgun.Available):
                         (reload>0?$"{reload:0.0} s":"gotowa");
-                    var emp=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLEmpBinding>();
-                    if(emp!=null)status=$"{emp.Module.CooldownRemaining:0.0}s • impuls {emp.LastReport.ReceiversAffected} modułów";
+                    var aura=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLDamageAuraBinding>();
+                    if(aura!=null)status=aura.IsActive?"aura włączona":"aura wyłączona";
                     var disrupted=gun.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();
                     if(disrupted!=null&&disrupted.IsDisrupted)status=$"EMP {disrupted.RemainingSeconds:0.0}s";
                     GUI.Label(new Rect(940,278+extraRows+row*26,305,26),(start+row+1)+". "+RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).ShortName+" • "+status,small);row++;
