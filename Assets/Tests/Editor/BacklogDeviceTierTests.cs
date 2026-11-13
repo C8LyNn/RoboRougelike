@@ -89,6 +89,80 @@ public sealed class BacklogDeviceTierGameplayTests
         var cell=cells.First(c=>run.VehicleModel.OwnedPlacementError(part.Id,c,default)==null);
         Assert.That(run.GarageMount(part.Id,cell),Is.True);return part;
     }
+    [UnityTest] public IEnumerator OverdriveCombinesMountedCopiesAndCostsEnergyOnce()
+    {
+        Assert.That(System.Enum.TryParse("Overdrive",out R3PartKind kind),Is.True);
+        for(int i=0;i<2;i++)
+        {
+            Assert.That(run.GaragePurchase(kind),Is.True);
+            var owned=run.VehicleModel.Inventory.Last(p=>p.Kind==kind);
+            var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            var cell=cells.First(c=>run.VehicleModel.OwnedPlacementError(owned.Id,c,default)==null);
+            Assert.That(run.GarageMount(owned.Id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);
+        for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);
+        var componentType=System.Type.GetType("RoboRougelike.R3.R3OffensiveOverdrive, Assembly-CSharp");
+        Assert.That(componentType,Is.Not.Null);
+        var component=run.Player.GetComponent(componentType);Assert.That(component,Is.Not.Null);
+        var activate=componentType.GetMethod("TryActivate");Assert.That(activate,Is.Not.Null);
+        var bank=run.Player.GetComponent<VehicleEnergyBank>();
+        Assert.That(bank.TrySpend(bank.Current-20),Is.True);
+        Assert.That((int)activate.Invoke(component,null),Is.Zero,"Two copies must not partially activate with insufficient energy.");
+        Assert.That(bank.Current,Is.EqualTo(20).Within(.01f));bank.Recharge(100);
+        float before=bank.Current;
+        Assert.That((int)activate.Invoke(component,null),Is.EqualTo(2));
+        Assert.That(bank.Current,Is.EqualTo(before-30).Within(.01f));
+        var effects=run.Player.GetComponent<R3MountedBonusEffects>();
+        Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.4f).Within(.001f));
+        Assert.That((int)activate.Invoke(component,null),Is.Zero,"A running shared effect cannot be activated again.");
+        var copy=run.VehicleModel.DeepCopy();copy.Parts.RemoveAll(p=>p.Kind==kind);
+        float now=Time.time;var checkpoint=copy.MakeCheckpoint(now);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,copy.Economy,now,out var restored,out var error),Is.True,error);
+        Assert.That(restored.OverdriveReadyAt,Is.GreaterThan(now),"Removing all copies cannot reset the shared cooldown.");
+        var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==kind);
+        part.gameObject.SetActive(false);yield return null;
+        Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.2f).Within(.001f));
+        var remaining=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==kind&&p!=part);
+        var receiver=remaining.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();Assert.That(receiver,Is.Not.Null);
+        receiver.ApplyEmp(2);yield return null;
+        Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1f).Within(.001f));
+        Assert.That((int)activate.Invoke(component,null),Is.Zero,"Shared cooldown remains after all copies stop working.");
+    }
+    [UnityTest] public IEnumerator OverdriveSlotRaisesActualBasicProjectileDamage()
+    {
+        Assert.That(run.GaragePurchase(R3PartKind.Overdrive),Is.True);
+        var owned=run.VehicleModel.Inventory.Last(p=>p.Kind==R3PartKind.Overdrive);
+        var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+        var cell=cells.First(c=>run.VehicleModel.OwnedPlacementError(owned.Id,c,default)==null);
+        Assert.That(run.GarageMount(owned.Id,cell),Is.True);
+        var reward=ScriptableObject.CreateInstance<R1UpgradeDefinition>();
+        reward.Id="overdrive-synergy";reward.Effect=R1UpgradeEffect.Damage;reward.Amount=.25f;
+        Assert.That(run.VehicleModel.ReceiveBonuses(new[]{reward}),Is.True);
+        var bonus=run.VehicleModel.Inventory.Single(p=>p.Kind==R3PartKind.BonusModule);
+        cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+        var bonusCell=cells.First(c=>run.VehicleModel.OwnedPlacementError(bonus.Id,c,default)==null);
+        Assert.That(run.GarageMount(bonus.Id,bonusCell),Is.True);
+        Assert.That(run.VehicleModel.ActiveSlotLabel(R3PartKind.Overdrive),Is.Not.EqualTo("—"));
+        Assert.That(run.EnterTestRange(),Is.True);
+        for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);
+        var input=run.Player.GetComponent<RoboRougelike.MOVSeries.MOVSeriesInput>();
+        typeof(RoboRougelike.MOVSeries.MOVSeriesInput).GetMethod("Activate",BindingFlags.Instance|BindingFlags.NonPublic)
+            .Invoke(input,new object[]{run,R3PartKind.Overdrive});
+        var effects=run.Player.GetComponent<R3MountedBonusEffects>();Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.45f).Within(.001f));
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        run.Player.GetComponent<Rigidbody>().isKinematic=true;
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=gun.Muzzle.position+gun.Muzzle.forward*4f;
+        var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(1000,false);
+        Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(gun),Is.True);
+        assembly.FireGroup(false);
+        float deadline=Time.realtimeSinceStartup+5;
+        while(hp.CurrentHp>=1000&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(942).Within(.1f),"20% Overdrive and 25% passive damage must add before the shot.");
+        Object.Destroy(target);Object.Destroy(reward);
+    }
     [UnityTest] public IEnumerator SalvageOptimizerConsumesEnergyAndCaptureDropsDestroyedBonus()
     {
         var bank=run.Player.GetComponent<VehicleEnergyBank>();float before=bank.Maximum;

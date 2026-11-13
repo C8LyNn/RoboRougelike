@@ -65,6 +65,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Booster: sprawne kopie aktywują się razem, każda dodaje własny ciąg i koszt energii. Przy braku energii na cały zestaw żadna kopia nie startuje; czas odnowienia jest wspólny i zachowany w zapisie po wymianie części. Usunięto dzielenie limitu przyspieszenia między kopie. Zestaw Unity: **14 PASS, 0 FAIL**, kod 0, `C:\Users\kubap\Desktop\Prototypy\booster-stack-final.xml` oraz `.log`; obejmuje porównanie jednego i dwóch fizycznych boosterów, koszt, cooldown, zapis i współdziałanie skoku oraz żyroskopu.
 - Inne aktywne rodzaje i uniwersalny system ładunków wymagają dalszej pracy; nie oznacza to zamknięcia całych punktów 16–19. Ręczny Windows Player: **NOT RUN**.
 
+## 20. Overdrive — prototyp częściowy
+
+- Dodano fizyczny aktywny moduł Overdrive do katalogu i istniejących slotów 1–4. Domyślnie każda jednostka tieru daje +20% obrażeń przez 5 s; koszt T1 to 15 energii, wspólny cooldown 15 s. Wartości są konfigurowalne i wymagają playtestu. Kopie aktywują się razem i sumują wkład oraz koszt; przy braku energii nie aktywuje się żadna. Utrata lub zakłócenie kopii odbiera jej wkład. Odnowienie rodzaju zachowuje się po usunięciu wszystkich kopii i zapisie.
+- Unity 6000.3.14f1: **9 PASS, 0 FAIL**, kod 0, `C:\Users\kubap\Desktop\Prototypy\overdrive-integration-final.xml` oraz `.log`. Test w scenie sprawdza zakup, montaż, slot, łączenie dwóch kopii, brak energii, utratę i EMP, zapis cooldownu oraz rzeczywisty pocisk o 48 zamiast 40 obrażeń; osobno regresję impulsu naprawczego i addytywnych premii. Dodatkowo **2 PASS**, kod 0, `overdrive-synergy-final.xml` i `.log`: pocisk z Overdrive +20% i fizycznym bonusem +25% zadał 58 obrażeń, czyli premie sumują się addytywnie. Aktywację slotu wywołano przez API, bez ręcznego testu gracza.
+- Rapid Fire, Double Shot i Double Shot Overdrive pozostają do wykonania, więc cały punkt 20 nie jest ukończony. Ręczny Windows Player: **NOT RUN**.
+
 ## 34. Ceny zwykłego sklepu — prototyp
 
 - Zakup części w zwykłym garażu używa konfigurowalnego mnożnika ceny bazowej, domyślnie ×3. Dotyczy zwykłych i specjalnych broni oraz innych kupowanych części. Poligon kreatywny pozostaje darmowy. Naprawa, wartość demontażu i fuzja nadal korzystają z dotychczasowych zasad i nie są mnożone przez ×3.

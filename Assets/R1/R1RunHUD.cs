@@ -285,13 +285,19 @@ namespace RoboRougelike.R1
                     DrawResourceBar(new Rect(215,65,110,12),hp,maxHp,lowCore?new Color(1f,.35f,.25f):new Color(.35f,.85f,.67f));
                     GUI.Label(new Rect(340,58,325,28),ActivityGoal(run),small);
                     var repairPulse=player.GetComponent<R3RepairPulse>();
+                    var overdrive=player.GetComponent<R3OffensiveOverdrive>();
                     if(energy!=null)
                     {
                         if(lowEnergy)GUI.contentColor=new Color(1f,.78f,.38f);
                         GUI.Label(new Rect(36,90,175,25),$"Energia{(lowEnergy?"!":":")} {currentEnergy:0}/{maxEnergy:0}",small);
                         GUI.contentColor=beforeText;
                         DrawResourceBar(new Rect(215,95,110,12),currentEnergy,maxEnergy,lowEnergy?new Color(1f,.68f,.24f):new Color(.25f,.65f,.95f));
-                        if(repairPulse!=null)GUI.Label(new Rect(340,90,190,25),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RepairPulse)} — naprawa: {repairPulse.Status}",small);
+                        if(repairPulse!=null||overdrive!=null)
+                        {
+                            string repair=repairPulse!=null?$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RepairPulse)} naprawa: {repairPulse.Status}":null;
+                            string offense=overdrive!=null?$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.Overdrive)} Overdrive: {overdrive.Status}":null;
+                            GUI.Label(new Rect(340,90,190,25),string.Join(" • ",new[]{repair,offense}.Where(s=>!string.IsNullOrEmpty(s))),small);
+                        }
                     }
                     if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?"Mniej [I]":"Szczegóły [I]",compactButton))combatDetailsOpen=!combatDetailsOpen;
                     if(combatDetailsOpen)

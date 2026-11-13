@@ -76,6 +76,6 @@ namespace RoboRougelike.R4
                 R3PartKind.Booster=>"Booster",R3PartKind.JumpDrive=>"Napęd skokowy",R3PartKind.Blink=>"Blink",
                 R3PartKind.Gyroscope=>"Żyroskop",R3PartKind.OmniDrive=>"Omni",R3PartKind.MagneticGrapple=>"Zaczep magnetyczny",
                 R3PartKind.HoverEngine=>"Silnik zawisu",R3PartKind.CrawlerTrack=>"Gąsienica",
-                R3PartKind.Battery=>"Bateria",R3PartKind.RepairPulse=>"Impuls naprawczy",R3PartKind.DrivePower=>"Silnik kół",R3PartKind.EnergyRegenerator=>"Regenerator energii",R3PartKind.SalvageOptimizer=>"Optymalizator odzysku",R3PartKind.BonusModule=>"Moduł bonusu 1×1×1",R3PartKind.DirectionalShield=>"DEF-001 Tarcza kierunkowa",R3PartKind.PointDefense=>"DEF-002 Obrona punktowa",R3PartKind.StructuralScanner=>"COM-001 Skan struktury",R3PartKind.ScannerPulse=>"SEN-001 Impuls skanera",R3PartKind.IndependentSteering=>"MOV-011 Sterowanie osiami",_=>"Pancerz"};
+                R3PartKind.Battery=>"Bateria",R3PartKind.RepairPulse=>"Impuls naprawczy",R3PartKind.DrivePower=>"Silnik kół",R3PartKind.EnergyRegenerator=>"Regenerator energii",R3PartKind.SalvageOptimizer=>"Optymalizator odzysku",R3PartKind.Overdrive=>"Overdrive",R3PartKind.BonusModule=>"Moduł bonusu 1×1×1",R3PartKind.DirectionalShield=>"DEF-001 Tarcza kierunkowa",R3PartKind.PointDefense=>"DEF-002 Obrona punktowa",R3PartKind.StructuralScanner=>"COM-001 Skan struktury",R3PartKind.ScannerPulse=>"SEN-001 Impuls skanera",R3PartKind.IndependentSteering=>"MOV-011 Sterowanie osiami",_=>"Pancerz"};
     }
 }
