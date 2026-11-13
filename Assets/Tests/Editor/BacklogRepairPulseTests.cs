@@ -36,6 +36,46 @@ public sealed class BacklogRepairPulseIntegrationTests
         Assert.That(run?.Progress,Is.Not.Null,"Game controller must finish initialization before the test.");
     }
     [UnityTest]
+    public IEnumerator TwoCopiesActivateOneCombinedPulseWithAtomicCostAndSharedCooldown()
+    {
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(500);
+        for(int i=0;i<2;i++)
+        {
+            Assert.That(run.GaragePurchase(R3PartKind.RepairPulse),Is.True);
+            var item=run.VehicleModel.Inventory.Last(p=>p.Kind==R3PartKind.RepairPulse);
+            var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>run.VehicleModel.OwnedPlacementError(item.Id,c,default)==null);
+            Assert.That(run.GarageMount(item.Id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);
+        for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var energy=run.Player.GetComponent<VehicleEnergyBank>();
+        var pulse=run.Player.GetComponent<R3RepairPulse>();var devices=assembly.Parts.Where(p=>p.Kind==R3PartKind.RepairPulse).ToArray();
+        var target=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational);target.Damageable.RestoreHealthRatio(.3f);
+        Assert.That(energy.TrySpend(energy.Current-20),Is.True);
+        Assert.That(pulse.TryActivate(),Is.Zero,"Half the required energy must never activate only one copy.");
+        Assert.That(energy.Current,Is.EqualTo(20).Within(.001f));
+        energy.Recharge(100);float before=energy.Current;
+        Assert.That(pulse.TryActivate(),Is.EqualTo(2));Assert.That(pulse.ActiveCount,Is.EqualTo(1),"One kind creates one shared pulse.");
+        Assert.That(energy.Current,Is.EqualTo(before-30).Within(.001f));
+        var ready=typeof(R3VehicleModel).GetProperty("RepairPulseReadyAt");Assert.That(ready,Is.Not.Null,"The kind's cooldown must survive replacing all its physical copies.");
+        var copy=run.VehicleModel.DeepCopy();copy.Parts.RemoveAll(p=>p.Kind==R3PartKind.RepairPulse);
+        Assert.That((float)ready.GetValue(copy),Is.GreaterThan(Time.time));
+        var checkpoint=copy.MakeCheckpoint(Time.time);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,copy.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That((float)ready.GetValue(restored),Is.GreaterThan(Time.time));
+        var tick=typeof(R3RepairPulse).GetMethod("Tick",BindingFlags.Instance|BindingFlags.NonPublic);
+        tick.Invoke(pulse,new object[]{1f});
+        Assert.That(target.Damageable.CurrentHp/target.Damageable.MaxHp,Is.EqualTo(.4f).Within(.001f));
+        devices[0].gameObject.SetActive(false);tick.Invoke(pulse,new object[]{1f});
+        Assert.That(target.Damageable.CurrentHp/target.Damageable.MaxHp,Is.EqualTo(.45f).Within(.001f),"Losing one copy reduces the combined effect.");
+        Assert.That(pulse.TryActivate(),Is.Zero);
+        Assert.That(run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.RepairPulse).All(p=>p.DeviceReadyAt>Time.time),Is.True);
+        yield return null;
+    }
+    [UnityTest]
     public IEnumerator RealMountedModuleSpendsEnergyHealsGraduallyAndStopsWhenDestroyed()
     {
         Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True,"Vehicle selection");
@@ -87,6 +127,7 @@ public sealed class BacklogRepairPulseIntegrationTests
         Assert.That(pulse.ActiveCount,Is.Zero);Assert.That(pulse.Status,Is.EqualTo("nieaktywny"));
         Assert.That(armor.Damageable.CurrentHp/armor.Damageable.MaxHp,Is.EqualTo(.65f).Within(.001f),"An inactive device must stop its pulse.");
         device.gameObject.SetActive(true);state.DeviceReadyAt=0;
+        typeof(R3VehicleModel).GetProperty("RepairPulseReadyAt").SetValue(run.VehicleModel,0f); // simulate the shared cooldown expiring
         Assert.That(pulse.TryActivate(),Is.EqualTo(1));
         // A killing blow can also damage connected armor. Use a bounded hit
         // and measure after routing instead of assuming neighbours stay intact.
@@ -127,7 +168,7 @@ public sealed class BacklogRepairPulseIntegrationTests
         }
     }
     [UnityTest]
-    public IEnumerator StatusUsesAvailableDeviceWhenOtherIsCoolingOrDisrupted()
+    public IEnumerator StatusReflectsSharedCooldownWhenAnyCopyIsCoolingOrDisrupted()
     {
         Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);
         Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(500);
@@ -146,18 +187,18 @@ public sealed class BacklogRepairPulseIntegrationTests
         assembly.Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational).Damageable.RestoreHealthRatio(.5f);
         var cooling=run.VehicleModel.Parts.Single(p=>p.Id==devices[0].Id);
         cooling.DeviceReadyAt=Time.time+10f;
-        Assert.That(pulse.Status,Is.EqualTo("gotowy"));
+        Assert.That(pulse.Status,Does.StartWith("odnowienie "));
         var emp=devices[1].GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();
         Assert.That(emp,Is.Not.Null);emp.ApplyEmp(3f);
         Assert.That(pulse.Status,Does.StartWith("odnowienie "));
         emp.Advance(3f);
-        Assert.That(pulse.Status,Is.EqualTo("gotowy"));
+        Assert.That(pulse.Status,Does.StartWith("odnowienie "));
         devices[1].gameObject.SetActive(false);
         Assert.That(pulse.Status,Does.StartWith("odnowienie "),"An inactive available device must not mask the other device's cooldown.");
         devices[0].gameObject.SetActive(false);
         Assert.That(pulse.Status,Is.EqualTo("nieaktywny"));
         devices[0].gameObject.SetActive(true);devices[1].gameObject.SetActive(true);
-        Assert.That(pulse.Status,Is.EqualTo("gotowy"));
+        Assert.That(pulse.Status,Does.StartWith("odnowienie "));
         yield return null;
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}

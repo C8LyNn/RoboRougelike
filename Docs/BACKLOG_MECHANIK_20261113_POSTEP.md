@@ -48,3 +48,10 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Usunięto limit 8% HP/s z pasywnej naprawy polowej: każdy wkład dodaje 2,5% HP/s, więc T3 daje 10% HP/s. Opis w interfejsie pokazuje rzeczywistą wartość. Zniszczone części nadal nie są automatycznie wskrzeszane, a pojedyncza część nie może przekroczyć swojego maksymalnego HP.
 - Celowane Unity: **7 PASS, 0 FAIL**, kod 0, `C:\Users\kubap\Desktop\Prototypy\repair-stack-final2.xml` oraz `.log`. Sprawdzono rzeczywiste leczenie żyjącego rdzenia, pełną siłę T3, zanik leczenia po zniszczeniu modułu oraz opis.
 - Nadal pozostają ogólne grupy `increased/reduced` i `more/less`, zakresy i typy obrażeń oraz inne istniejące ograniczenia. Ta zmiana nie oznacza ukończenia punktów 12–14.
+
+## 16–19. Wspólny aktywny impuls naprawczy — częściowo
+
+- Sprawne kopie Repair Pulse wyzwalają jeden wspólny impuls; ich wkłady tierów sumują tempo naprawy wybranego celu. Utrata lub zakłócenie kopii w trakcie działania zmniejsza jego siłę. Aktywacja pobiera łączny koszt atomowo: przy braku energii na całą grupę nie uruchamia się żadna część.
+- Rodzaj ma wspólny cooldown, zachowany także po zdjęciu wszystkich kopii, kopiowaniu konstrukcji i zapisie. Przy wczytywaniu starszych zapisów nadal uwzględniane są czasy odnowienia poszczególnych części. Aktywna naprawa nie wskrzesza zniszczonych części.
+- Unity 6000.3.14f1: **15 PASS, 0 FAIL**, kod 0: `C:\Users\kubap\Desktop\Prototypy\repair-combined-final.xml` oraz `.log`. Test sprawdza dwie fizyczne kopie, częściową energię, jeden wspólny efekt, utratę kopii, cooldown i zachowanie w zapisie; osobne testy sprawdzają T2 i zgodność checkpointów.
+- Inne aktywne rodzaje, Booster i uniwersalny system ładunków wymagają dalszej pracy; nie oznacza to zamknięcia całych punktów 16–19. Ręczny Windows Player: **NOT RUN**.
