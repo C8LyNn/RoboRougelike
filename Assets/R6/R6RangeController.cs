@@ -139,7 +139,7 @@ namespace RoboRougelike.R1
         {
             if(Paused)return;
             bool defeated=Player==null||(CreativeWorkshop?Player.Structure==null||!Player.Structure.CoreAlive:Player.DefeatReason!=null);
-            if(defeated){RangeDisabled=true;Paused=true;SetSimulation(false);}
+            if(defeated){RangeDisabled=true;Paused=true;PauseSelection=1;SetSimulation(false);}
         }
     }
 }

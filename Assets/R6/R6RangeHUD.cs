@@ -10,6 +10,7 @@ namespace RoboRougelike.R1
         int weaponStatusPage;
         bool creativeEnemyMenu;
         string creativeEnemyMessage;
+        internal bool CreativeEnemyMenuOpen=>creativeEnemyMenu;
         internal bool CloseCreativeEnemyMenu()
         {if(!creativeEnemyMenu)return false;creativeEnemyMenu=false;return true;}
         void DrawCreativeEnemyMenu(R1RunController run)
@@ -51,7 +52,7 @@ namespace RoboRougelike.R1
                 if(run.CreativeWorkshop&&creativeEnemyMenu&&!run.RangeDisabled){DrawCreativeEnemyMenu(run);return;}
                 Panel(new Rect(190,115,900,550));
                 GUI.Label(new Rect(230,145,820,65),run.RangeDisabled?"Pojazd testowy unieruchomiony":"POLIGON • PAUZA",title);
-                GUI.Label(new Rect(230,225,820,50),"Testujesz kopię. Uszkodzenia, Złom i części z tej próby nie zmieniają konstrukcji w garażu.",body);
+                GUI.Label(new Rect(230,225,820,50),"Testujesz kopię — uszkodzenia i złom nie zmieniają garażu.\nGłówne akcje: ↑ / ↓ i Enter • pad: krzyżak, A, B / Start",small);
                 var pausedRange=run.GetComponent<R6TestRange>();
                 if(run.CreativeWorkshop&&!run.RangeDisabled&&GUI.Button(new Rect(230,280,820,36),"Przeciwnicy — dodaj lub usuń",compactButton))
                 {creativeEnemyMenu=true;creativeEnemyMessage=null;}
@@ -62,13 +63,13 @@ namespace RoboRougelike.R1
                         pausedRange.SetTrainingFire(!pausedRange.TrainingFireRequested);
                     GUI.enabled=true;
                 }
-                if(!run.RangeDisabled&&GUI.Button(new Rect(230,325,820,60),"Wznów  [Esc]",button))run.TogglePause();
-                if(GUI.Button(new Rect(230,400,395,60),"Reset próby  [R]",button))run.ResetTestRange();
-                if(GUI.Button(new Rect(650,400,400,60),"Powrót do garażu",button))run.ReturnFromTestRange();
+                if(!run.RangeDisabled&&GUI.Button(new Rect(230,325,820,60),PauseCaption(run,0,"Wznów  [Esc]"),button))run.TogglePause();
+                if(GUI.Button(new Rect(230,400,395,60),PauseCaption(run,1,"Reset próby  [R]"),button))run.ResetTestRange();
+                if(GUI.Button(new Rect(650,400,400,60),PauseCaption(run,2,"Powrót do garażu"),button))run.ReturnFromTestRange();
                 DrawSuspensionPause(run);
                 DrawMovementPause(run);
-                if(GUI.Button(new Rect(230,660,395,42),PauseCaption(run,1,"Powrót do menu głównego"),compactButton))run.RestartRun();
-                if(GUI.Button(new Rect(650,660,400,42),PauseCaption(run,2,"Wyjdź z gry"),compactButton))run.RequestQuit();
+                if(GUI.Button(new Rect(230,660,395,42),PauseCaption(run,3,"Powrót do menu głównego"),compactButton))run.RestartRun();
+                if(GUI.Button(new Rect(650,660,400,42),PauseCaption(run,4,"Wyjdź z gry"),compactButton))run.RequestQuitFromMenu();
                 return;
             }
             creativeEnemyMenu=false;
