@@ -33,6 +33,13 @@ namespace RoboRougelike.R1
             double result=(double)Mobility*(1d+increase);
             Mobility=(float)Math.Min(float.MaxValue,result);
         }
+        public void ApplyAdditiveDurability(float hullIncrease,float coreIncrease)
+        {
+            if(!float.IsNaN(hullIncrease)&&!float.IsInfinity(hullIncrease)&&hullIncrease>=0)
+                Hull=(float)Math.Min(float.MaxValue,(double)Hull*(1d+hullIncrease));
+            if(!float.IsNaN(coreIncrease)&&!float.IsInfinity(coreIncrease)&&coreIncrease>=0)
+                Core=(float)Math.Min(float.MaxValue,(double)Core*(1d+coreIncrease));
+        }
         internal static bool TryRestore(R1ProgressCheckpoint c,out R1RunStats stats)
         {
             stats=null;

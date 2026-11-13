@@ -48,7 +48,8 @@ namespace RogueMachine.P12PipelineSafe
             if (dead) return;
             if (baseMaxHp <= 0f) baseMaxHp = Mathf.Max(1f, maxHp);
             float ratio = Mathf.Clamp01(currentHp / Mathf.Max(1f, maxHp));
-            maxHp = baseMaxHp * Mathf.Clamp(multiplier, 0.1f, 12f);
+            if(float.IsNaN(multiplier)||float.IsInfinity(multiplier))return;
+            maxHp = (float)System.Math.Min(float.MaxValue,(double)baseMaxHp*Mathf.Max(.0001f,multiplier));
             currentHp = maxHp * ratio;
             SetColor(DamagedColor());
         }

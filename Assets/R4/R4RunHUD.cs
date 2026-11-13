@@ -275,11 +275,11 @@ namespace RoboRougelike.R1
             string name;float percent;bool reduction=false;
             switch(item.UpgradeEffect)
             {
-                case R1UpgradeEffect.Hull:name="Wytrzymałość";percent=(stats.Hull-1)*100;break;
+                case R1UpgradeEffect.Hull:name="Wytrzymałość";percent=item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.Damage:name="Obrażenia";percent=item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.Reload:name="Czas przeładowania";percent=(1-stats.FireInterval)*100;reduction=true;break;
                 case R1UpgradeEffect.Mobility:name="Mobilność";percent=item.UpgradeAmount*units*100;break;
-                case R1UpgradeEffect.Core:name="Rdzeń";percent=(stats.Core-1)*100;break;
+                case R1UpgradeEffect.Core:name="Rdzeń";percent=item.UpgradeAmount*units*100;break;
                 default:return "Nieznany bonus";
             }
             return $"{name} do {(reduction?"−":"+")}{percent:0.#}%";

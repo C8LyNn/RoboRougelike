@@ -120,6 +120,26 @@ public class RRLW34EffectsTests
         Assert.That(Effects(vehicle).EffectiveStats.Mobility,Is.EqualTo(3f).Within(.001));
         Assert.That(vehicle.Controller.EffectiveForwardSpeed,Is.EqualTo(baseSpeed*3f).Within(.01));
     }
+    [UnityTest] public IEnumerator HullAndCoreBonusesAddWithinTheirGroupsAndExceedOldDurabilityCap()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        Assert.That(model.ReceiveBonuses(new[]{Upgrade(R1UpgradeEffect.Hull,1f),Upgrade(R1UpgradeEffect.Hull,1f),
+            Upgrade(R1UpgradeEffect.Hull,1f),Upgrade(R1UpgradeEffect.Hull,1f),
+            Upgrade(R1UpgradeEffect.Core,1f),Upgrade(R1UpgradeEffect.Core,1f)}),Is.True);
+        foreach(var item in model.Inventory.ToArray())
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(item.Id,c,default)==null);
+            Assert.That(model.Mount(item.Id,cell),Is.True);
+        }
+        var vehicle=Build(model);var stats=Effects(vehicle).EffectiveStats;
+        Assert.That(stats.Hull,Is.EqualTo(5f).Within(.001));Assert.That(stats.Core,Is.EqualTo(3f).Within(.001));
+        Assert.That(vehicle.Core.MaxHp,Is.EqualTo(1500f).Within(.01),"Independent hull and core groups combine without the old 12x cap.");
+        vehicle.Core.RestoreHealthRatio(.4f);
+        var hullModule=Module(vehicle,R1UpgradeEffect.Hull);hullModule.gameObject.SetActive(false);yield return null;
+        Assert.That(vehicle.Core.MaxHp,Is.EqualTo(1200f).Within(.01));
+        Assert.That(vehicle.Core.CurrentHp/vehicle.Core.MaxHp,Is.EqualTo(.4f).Within(.001),"Changing bonuses preserves HP percentage.");
+    }
     [UnityTest] public IEnumerator InventoryIsInactiveAndAllMountedEffectsReachLiveWeaponsHpAndOmni()
     {
         var m=Model(Upgrade(R1UpgradeEffect.Damage,.25f),Upgrade(R1UpgradeEffect.Damage,.2f),
