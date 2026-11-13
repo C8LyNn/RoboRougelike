@@ -164,6 +164,7 @@ namespace RoboRougelike.R1
         private static Rect DefenseTitleRect() => new Rect(33,210,580,30);
         private static Rect DefenseRowRect(int index) => new Rect(33,246+index*25,580,25);
         private static Rect DamageNoticePanelRect(int index) => new Rect(925,516+index*36,335,35);
+        private static Rect CombatWeaponPanelRect(int count)=>new Rect(925,190,335,94+26*Mathf.Clamp(count,0,2));
         void DrawFeedback()
         {
             var run=R1RunController.Instance;
@@ -171,7 +172,6 @@ namespace RoboRougelike.R1
             if(run!=null)DrawSuspensionTelemetry(run);
             if(run?.Player!=null)
             {
-                Panel(new Rect(925,190,335,158));GUI.Label(new Rect(940,195,305,30),"UZBROJENIE",heading);
                 var assembly=run.Player.GetComponent<RoboRougelike.R3.R3VehicleAssembly>();
                 var a=run.VehicleModel.WeaponGroupA;var b=run.VehicleModel.WeaponGroupB;
                 int countA=0,countB=0,totalGuns=0;
@@ -179,6 +179,8 @@ namespace RoboRougelike.R1
                     if(part!=null&&part.Kind==RoboRougelike.R3.R3PartKind.Gun&&part.Operational&&part.transform.IsChildOf(assembly.transform))
                     {totalGuns++;if(R3VehicleModel.MatchesWeaponGroup(part.Weapon,false,a,b,run.CreativeWorkshop))countA++;
                         if(R3VehicleModel.MatchesWeaponGroup(part.Weapon,true,a,b,run.CreativeWorkshop))countB++;}
+                CombatPanel(CombatWeaponPanelRect(totalGuns),new Color(.28f,.76f,.75f));
+                GUI.Label(new Rect(940,195,305,30),"UZBROJENIE",heading);
                 int pages=WeaponStatusPageCount(totalGuns);
                 weaponStatusPage=Mathf.Clamp(weaponStatusPage,0,pages-1);
                 if(pages>1)
