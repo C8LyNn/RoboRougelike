@@ -50,8 +50,8 @@ namespace RogueMachine.P12PipelineSafe
 
         private float moveInput;
         private float turnInput;
-        private bool fireHeld, secondaryFireHeld;
-        private bool waitForPrimaryRelease, waitForSecondaryRelease;
+        private bool fireHeld, secondaryFireHeld, thirdFireHeld, fourthFireHeld;
+        private bool waitForPrimaryRelease, waitForSecondaryRelease, waitForThirdRelease, waitForFourthRelease;
 
         private float currentSpeed;
 
@@ -103,9 +103,9 @@ namespace RogueMachine.P12PipelineSafe
             AimFeedback=default;
             weaponReticles.Clear();
             moveInput = turnInput = currentSpeed = 0;
-            fireHeld = secondaryFireHeld = false;
-            waitForPrimaryRelease = waitForSecondaryRelease = true;
-            if(modularAssembly!=null)modularAssembly.SetGroupTriggers(false,false);
+            fireHeld = secondaryFireHeld = thirdFireHeld = fourthFireHeld = false;
+            waitForPrimaryRelease = waitForSecondaryRelease = waitForThirdRelease = waitForFourthRelease = true;
+            if(modularAssembly!=null)modularAssembly.SetSlotTriggers(false,false,false,false);
             GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>()?.CancelActions();
             if (rb != null) StopResidualPhysics();
         }
@@ -170,7 +170,7 @@ public float CurrentForwardSpeed =>
         {
             moveInput = 0f;
             turnInput = 0f;
-            fireHeld = secondaryFireHeld = false;
+            fireHeld = secondaryFireHeld = thirdFireHeld = fourthFireHeld = false;
             if (!gameplayInputEnabled) return;
 
 #if ENABLE_INPUT_SYSTEM
@@ -197,6 +197,8 @@ public float CurrentForwardSpeed =>
 
             bool primaryPressed=Mouse.current != null && Mouse.current.leftButton.isPressed;
             bool secondaryPressed=Mouse.current != null && Mouse.current.rightButton.isPressed;
+            bool thirdPressed=keyboard!=null&&keyboard.qKey.isPressed;
+            bool fourthPressed=keyboard!=null&&keyboard.eKey.isPressed;
 #else
             if (Input.GetKey(KeyCode.W) ||
                 Input.GetKey(KeyCode.UpArrow))
@@ -216,11 +218,17 @@ public float CurrentForwardSpeed =>
 
             bool primaryPressed=Input.GetMouseButton(0);
             bool secondaryPressed=Input.GetMouseButton(1);
+            bool thirdPressed=Input.GetKey(KeyCode.Q);
+            bool fourthPressed=Input.GetKey(KeyCode.E);
 #endif
             if(!primaryPressed)waitForPrimaryRelease=false;
             if(!secondaryPressed)waitForSecondaryRelease=false;
+            if(!thirdPressed)waitForThirdRelease=false;
+            if(!fourthPressed)waitForFourthRelease=false;
             fireHeld=primaryPressed&&!waitForPrimaryRelease;
             secondaryFireHeld=secondaryPressed&&!waitForSecondaryRelease;
+            thirdFireHeld=thirdPressed&&!waitForThirdRelease;
+            fourthFireHeld=fourthPressed&&!waitForFourthRelease;
         }
 
         private RoboRougelike.R6.R6VehicleDrive drive;
@@ -279,9 +287,11 @@ public float CurrentForwardSpeed =>
 
             if(modularAssembly!=null)
             {
-                modularAssembly.SetGroupTriggers(fireHeld,secondaryFireHeld);
+                modularAssembly.SetSlotTriggers(fireHeld,secondaryFireHeld,thirdFireHeld,fourthFireHeld);
                 if(fireHeld)modularAssembly.FireGroup(false);
                 if(secondaryFireHeld)modularAssembly.FireGroup(true);
+                if(thirdFireHeld)modularAssembly.FireSlot(2);
+                if(fourthFireHeld)modularAssembly.FireSlot(3);
             }
             else if (fireHeld && Time.time >= nextFireTime)
             {

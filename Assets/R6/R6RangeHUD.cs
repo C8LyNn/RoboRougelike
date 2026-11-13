@@ -89,9 +89,8 @@ namespace RoboRougelike.R1
             DrawAimReticle(run);
             Panel(new Rect(18,625,1244,78));
             DrawFeedback();
-            GUI.Label(new Rect(34,635,1200,60),"WASD — napęd • Omni/Hover: A/D — bok, Z/C — obrót • LPM/PPM — ogień • R — reset • Esc — pauza"+
+            GUI.Label(new Rect(34,635,1200,60),"WASD — napęd • Omni/Hover: A/D — bok, Z/C — obrót • LPM/PPM/Q/E — broń • 1–4 — moduły • R — reset • Esc — pauza"+
                 (run.CreativeWorkshop?" i przeciwnicy":"")+
-                (run.Player!=null&&run.Player.GetComponent<R3RepairPulse>()!=null?" • V — impuls naprawczy":"")+
                 "\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Zawieszenie: porównaj OFF/Assist/Full na torze x≈12 • Cele na północy",small);
         }
         private static Rect AimStatusPanelRect(float textHeight)
@@ -186,13 +185,14 @@ namespace RoboRougelike.R1
             if(run?.Player!=null)
             {
                 var assembly=run.Player.GetComponent<RoboRougelike.R3.R3VehicleAssembly>();
-                var a=run.VehicleModel.WeaponGroupA;var b=run.VehicleModel.WeaponGroupB;
-                int countA=0,countB=0,totalGuns=0;
+                var slots=run.VehicleModel.GetWeaponSlots();var a=slots[0];var b=slots[1];
+                var counts=new int[4];int totalGuns=0;
                 foreach(var part in assembly.Parts)
                     if(part!=null&&part.Kind==RoboRougelike.R3.R3PartKind.Gun&&part.Operational&&part.transform.IsChildOf(assembly.transform))
-                    {totalGuns++;if(R3VehicleModel.MatchesWeaponGroup(part.Weapon,false,a,b,run.CreativeWorkshop))countA++;
-                        if(R3VehicleModel.MatchesWeaponGroup(part.Weapon,true,a,b,run.CreativeWorkshop))countB++;}
-                CombatPanel(CombatWeaponPanelRect(totalGuns),new Color(.28f,.76f,.75f));
+                    {totalGuns++;for(int i=0;i<4;i++)if(R3VehicleModel.MatchesWeaponSlot(part.Weapon,i,slots,run.CreativeWorkshop))counts[i]++;}
+                int extraRows=slots[2].HasValue||slots[3].HasValue?48:0;
+                var weaponPanel=CombatWeaponPanelRect(totalGuns);weaponPanel.height+=extraRows;
+                CombatPanel(weaponPanel,new Color(.28f,.76f,.75f));
                 GUI.Label(new Rect(940,195,305,30),"UZBROJENIE",heading);
                 int pages=WeaponStatusPageCount(totalGuns);
                 weaponStatusPage=Mathf.Clamp(weaponStatusPage,0,pages-1);
@@ -202,9 +202,14 @@ namespace RoboRougelike.R1
                     {AdvanceWeaponStatusPage(totalGuns);Event.current.Use();}
                     GUI.Label(new Rect(1112,199,130,25),$"Tab: {weaponStatusPage+1}/{pages}",small);
                 }
-                GUI.Label(new Rect(940,228,305,24),$"A / LPM: {WeaponGroupName(a)} ({countA})",small);
-                string extra=run.CreativeWorkshop&&run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>2?" + inne":"";
-                GUI.Label(new Rect(940,252,305,24),$"B / PPM: {WeaponGroupName(b)}{extra} ({countB})",small);
+                GUI.Label(new Rect(940,228,305,24),$"A / LPM: {WeaponGroupName(a)} ({counts[0]})",small);
+                string extra=run.CreativeWorkshop&&run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>4?" + inne":"";
+                GUI.Label(new Rect(940,252,305,24),$"B / PPM: {WeaponGroupName(b)}{extra} ({counts[1]})",small);
+                if(extraRows>0)
+                {
+                    GUI.Label(new Rect(940,276,305,24),$"C / Q: {WeaponGroupName(slots[2])} ({counts[2]})",small);
+                    GUI.Label(new Rect(940,300,305,24),$"D / E: {WeaponGroupName(slots[3])} ({counts[3]})",small);
+                }
                 int row=0,index=0,start=WeaponStatusPageStart(totalGuns,weaponStatusPage);
                 foreach(var gun in assembly.Parts)
                 {
@@ -223,7 +228,7 @@ namespace RoboRougelike.R1
                     if(emp!=null)status=$"{emp.Module.CooldownRemaining:0.0}s • impuls {emp.LastReport.ReceiversAffected} modułów";
                     var disrupted=gun.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();
                     if(disrupted!=null&&disrupted.IsDisrupted)status=$"EMP {disrupted.RemainingSeconds:0.0}s";
-                    GUI.Label(new Rect(940,278+row*26,305,26),(start+row+1)+". "+RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).ShortName+" • "+status,small);row++;
+                    GUI.Label(new Rect(940,278+extraRows+row*26,305,26),(start+row+1)+". "+RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).ShortName+" • "+status,small);row++;
                 }
                 var defenses=run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();
                 var shields=run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>();

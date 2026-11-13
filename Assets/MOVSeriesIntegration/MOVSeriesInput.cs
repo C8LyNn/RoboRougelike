@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using RoboRougelike.R1;
+using RoboRougelike.R3;
+using RoboRougelike.PackageIntegration;
 
 namespace RoboRougelike.MOVSeries
 {
@@ -10,14 +12,29 @@ namespace RoboRougelike.MOVSeries
         public void Bind(MOVSeriesVehicleAdapter adapter)=>owner=adapter;
         void Update()
         {
-            if(owner==null)return;owner.IndependentYaw=0;
+            if(owner!=null)owner.IndependentYaw=0;
             var run=R1RunController.Instance;
             if(run==null||run.Player==null||run.Player.gameObject!=gameObject||!run.CanUseMovement)return;
             var keys=Keyboard.current;if(keys==null)return;
-            owner.IndependentYaw=(keys.cKey.isPressed?1:0)-(keys.zKey.isPressed?1:0);
-            if(keys.leftShiftKey.wasPressedThisFrame||keys.rightShiftKey.wasPressedThisFrame)run.UseBooster();
-            if(keys.spaceKey.wasPressedThisFrame)run.UseJump();if(keys.qKey.wasPressedThisFrame)run.UseBlink();
-            if(keys.eKey.wasPressedThisFrame)run.UseGrapple();if(keys.gKey.wasPressedThisFrame)run.ToggleGyro();
+            if(owner!=null)owner.IndependentYaw=(keys.cKey.isPressed?1:0)-(keys.zKey.isPressed?1:0);
+            var slots=run.VehicleModel.GetActiveSlots();
+            var pressed=new[]{keys.digit1Key.wasPressedThisFrame,keys.digit2Key.wasPressedThisFrame,
+                keys.digit3Key.wasPressedThisFrame,keys.digit4Key.wasPressedThisFrame};
+            for(int i=0;i<4;i++)if(pressed[i]&&slots[i].HasValue)Activate(run,slots[i].Value);
+            if(keys.gKey.wasPressedThisFrame)run.ToggleGyro();
+        }
+        void Activate(R1RunController run,R3PartKind kind)
+        {
+            switch(kind)
+            {
+                case R3PartKind.Booster:run.UseBooster();break;
+                case R3PartKind.JumpDrive:run.UseJump();break;
+                case R3PartKind.Blink:run.UseBlink();break;
+                case R3PartKind.MagneticGrapple:run.UseGrapple();break;
+                case R3PartKind.RepairPulse:GetComponent<R3RepairPulse>()?.TryActivate();break;
+                case R3PartKind.StructuralScanner:GetComponent<RRLScannerControls>()?.Activate(RRLScanKind.Structural);break;
+                case R3PartKind.ScannerPulse:GetComponent<RRLScannerControls>()?.Activate(RRLScanKind.Pulse);break;
+            }
         }
     }
 }

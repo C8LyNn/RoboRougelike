@@ -180,34 +180,100 @@ namespace RoboRougelike.R3
         public float HoverHeightMeters=1;
         public float GrappleReadyAt;
         // Assignments follow mounted types, including damaged plans that can be repaired.
-        R4WeaponKind? weaponGroupA, weaponGroupB;
+        R4WeaponKind? weaponGroupA, weaponGroupB, weaponGroupC, weaponGroupD;
         readonly Dictionary<string,bool> weaponGroupPreference=new Dictionary<string,bool>(StringComparer.Ordinal);
-        public R4WeaponKind? WeaponGroupA { get { SyncWeaponGroups(); return weaponGroupA; } }
-        public R4WeaponKind? WeaponGroupB { get { SyncWeaponGroups(); return weaponGroupB; } }
-        public void SyncWeaponGroups()
+        readonly Dictionary<string,int> weaponSlotPreference=new Dictionary<string,int>(StringComparer.Ordinal);
+        readonly R3PartKind?[] activeSlots=new R3PartKind?[4];
+        readonly Dictionary<R3PartKind,int> activeSlotPreference=new Dictionary<R3PartKind,int>();
+        public static bool IsActiveSlotPart(R3PartKind kind)=>
+            kind==R3PartKind.Booster||kind==R3PartKind.JumpDrive||kind==R3PartKind.Blink||
+            kind==R3PartKind.MagneticGrapple||kind==R3PartKind.StructuralScanner||
+            kind==R3PartKind.ScannerPulse||kind==R3PartKind.RepairPulse;
+        public static bool IsPassiveSlotPart(R3PartKind kind)=>
+            kind==R3PartKind.Suspension||kind==R3PartKind.Gyroscope||kind==R3PartKind.BonusModule||
+            kind==R3PartKind.DirectionalShield||kind==R3PartKind.PointDefense||kind==R3PartKind.IndependentSteering||
+            kind==R3PartKind.Battery||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator;
+        static string ModuleTypeKey(R3PartState part)=>part.Kind==R3PartKind.BonusModule?
+            "bonus:"+(part.UpgradeId??string.Empty):"part:"+(int)part.Kind;
+        bool ExceedsModuleTypeLimit(R3PartState candidate,bool active)
         {
-            var types=Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Take(2).ToList();
-            if(weaponGroupA.HasValue&&!types.Contains(weaponGroupA.Value))weaponGroupA=null;
-            if(weaponGroupB.HasValue&&!types.Contains(weaponGroupB.Value))weaponGroupB=null;
+            var types=Parts.Where(p=>active?IsActiveSlotPart(p.Kind):IsPassiveSlotPart(p.Kind))
+                .Select(ModuleTypeKey).Distinct().ToArray();
+            return types.Length>=(active?4:8)&&!types.Contains(ModuleTypeKey(candidate));
+        }
+        public R3PartKind?[] GetActiveSlots()
+        {
+            var types=Parts.Where(p=>IsActiveSlotPart(p.Kind)).Select(p=>p.Kind).Distinct().ToArray();
+            for(int i=0;i<activeSlots.Length;i++)if(activeSlots[i].HasValue&&!types.Contains(activeSlots[i].Value))activeSlots[i]=null;
             foreach(var kind in types)
             {
-                if(weaponGroupA==kind||weaponGroupB==kind)continue;
-                var remembered=Parts.FirstOrDefault(p=>p.Kind==R3PartKind.Gun&&p.Weapon==kind&&
-                    !string.IsNullOrEmpty(p.Id)&&weaponGroupPreference.ContainsKey(p.Id));
-                if(remembered!=null&&weaponGroupPreference[remembered.Id]&&!weaponGroupB.HasValue)weaponGroupB=kind;
-                else if(remembered!=null&&!weaponGroupPreference[remembered.Id]&&!weaponGroupA.HasValue)weaponGroupA=kind;
-                else if(!weaponGroupA.HasValue)weaponGroupA=kind;
-                else if(!weaponGroupB.HasValue)weaponGroupB=kind;
+                if(activeSlots.Contains(kind))continue;
+                int available=activeSlotPreference.TryGetValue(kind,out var old)&&old>=0&&old<4&&!activeSlots[old].HasValue?
+                    old:Array.FindIndex(activeSlots,p=>!p.HasValue);
+                if(available>=0){activeSlots[available]=kind;activeSlotPreference[kind]=available;}
             }
+            return (R3PartKind?[])activeSlots.Clone();
+        }
+        public bool AssignActiveSlot(R3PartKind kind,int slot)
+        {
+            if(slot<0||slot>=4)return false;
+            GetActiveSlots();int old=Array.FindIndex(activeSlots,p=>p==kind);
+            if(old<0&&(!CreativeMode||!Parts.Any(p=>p.Kind==kind&&IsActiveSlotPart(p.Kind))))return false;
+            var displaced=activeSlots[slot];activeSlots[slot]=kind;if(old>=0)activeSlots[old]=displaced;
+            for(int i=0;i<4;i++)if(activeSlots[i].HasValue)activeSlotPreference[activeSlots[i].Value]=i;
+            return true;
+        }
+        public string ActiveSlotLabel(R3PartKind kind)
+        {
+            int slot=Array.FindIndex(GetActiveSlots(),p=>p==kind);
+            return slot<0?"—":(slot+1).ToString();
+        }
+        public R4WeaponKind? WeaponGroupA { get { SyncWeaponGroups(); return weaponGroupA; } }
+        public R4WeaponKind? WeaponGroupB { get { SyncWeaponGroups(); return weaponGroupB; } }
+        public R4WeaponKind? WeaponAtSlot(int slot)
+        {
+            if(slot<0||slot>=4)return null;
+            SyncWeaponGroups();return CurrentWeaponSlots()[slot];
+        }
+        public R4WeaponKind?[] GetWeaponSlots(){SyncWeaponGroups();return CurrentWeaponSlots();}
+        R4WeaponKind?[] CurrentWeaponSlots()=>new[]{weaponGroupA,weaponGroupB,weaponGroupC,weaponGroupD};
+        void SetWeaponSlots(R4WeaponKind?[] slots)
+        {weaponGroupA=slots[0];weaponGroupB=slots[1];weaponGroupC=slots[2];weaponGroupD=slots[3];}
+        public void SyncWeaponGroups()
+        {
+            var types=Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().ToList();
+            var slots=CurrentWeaponSlots();
+            for(int i=0;i<slots.Length;i++)if(slots[i].HasValue&&!types.Contains(slots[i].Value))slots[i]=null;
+            foreach(var kind in types)
+            {
+                if(slots.Contains(kind))continue;
+                var remembered=Parts.FirstOrDefault(p=>p.Kind==R3PartKind.Gun&&p.Weapon==kind&&
+                    !string.IsNullOrEmpty(p.Id)&&(weaponSlotPreference.ContainsKey(p.Id)||weaponGroupPreference.ContainsKey(p.Id)));
+                int preferred=remembered==null?-1:weaponSlotPreference.TryGetValue(remembered.Id,out var saved)?saved:
+                    weaponGroupPreference[remembered.Id]?1:0;
+                int available=preferred>=0&&preferred<slots.Length&&!slots[preferred].HasValue?preferred:Array.FindIndex(slots,s=>!s.HasValue);
+                if(available>=0)slots[available]=kind;
+            }
+            SetWeaponSlots(slots);
             RememberWeaponGroups();
         }
         void RememberWeaponGroups()
         {
+            var slots=CurrentWeaponSlots();
             foreach(var part in Parts.Where(p=>p.Kind==R3PartKind.Gun&&!string.IsNullOrEmpty(p.Id)))
             {
-                if(weaponGroupA==part.Weapon)weaponGroupPreference[part.Id]=false;
-                else if(weaponGroupB==part.Weapon)weaponGroupPreference[part.Id]=true;
+                int slot=Array.IndexOf(slots,(R4WeaponKind?)part.Weapon);
+                if(slot>=0)weaponSlotPreference[part.Id]=slot;
+                if(slot==0||slot==1)weaponGroupPreference[part.Id]=slot==1;
             }
+        }
+        public bool AssignWeaponSlot(R4WeaponKind kind,int slot)
+        {
+            if(slot<0||slot>=4)return false;
+            SyncWeaponGroups();var slots=CurrentWeaponSlots();int old=Array.FindIndex(slots,s=>s==kind);
+            if(old<0&&(!CreativeMode||!Parts.Any(p=>p.Kind==R3PartKind.Gun&&p.Weapon==kind)))return false;
+            var displaced=slots[slot];slots[slot]=kind;if(old>=0)slots[old]=displaced;
+            SetWeaponSlots(slots);RememberWeaponGroups();return true;
         }
         public void SwapWeaponGroups()
         { SyncWeaponGroups(); var old=weaponGroupA; weaponGroupA=weaponGroupB; weaponGroupB=old; RememberWeaponGroups(); }
@@ -229,8 +295,11 @@ namespace RoboRougelike.R3
             copy.SelectedDrive=SelectedDrive;copy.GyroEnabled=GyroEnabled;copy.BoosterThrustNewtons=BoosterThrustNewtons;
             copy.BoosterDurationSeconds=BoosterDurationSeconds;copy.GrappleReadyAt=GrappleReadyAt;
             copy.HoverHeightMeters=HoverHeightMeters;
-            SyncWeaponGroups();copy.weaponGroupA=weaponGroupA;copy.weaponGroupB=weaponGroupB;
+            SyncWeaponGroups();copy.weaponGroupA=weaponGroupA;copy.weaponGroupB=weaponGroupB;copy.weaponGroupC=weaponGroupC;copy.weaponGroupD=weaponGroupD;
             foreach(var preference in weaponGroupPreference)copy.weaponGroupPreference[preference.Key]=preference.Value;
+            foreach(var preference in weaponSlotPreference)copy.weaponSlotPreference[preference.Key]=preference.Value;
+            GetActiveSlots();Array.Copy(activeSlots,copy.activeSlots,4);
+            foreach(var preference in activeSlotPreference)copy.activeSlotPreference[preference.Key]=preference.Value;
             return copy;
         }
         public const int MaxScrap=100000;
@@ -308,20 +377,24 @@ namespace RoboRougelike.R3
             kind==R3PartKind.Gun&&weapon!=R4WeaponKind.Basic?R4WeaponDefinition.Get(weapon).Price:Economy.Price(kind));
         public bool Owns(string id) => Parts.Concat(inventory).Any(p=>p.Id==id);
         // Mounted wreck plans reserve their type too: rebuilding them must not
-        // turn a legal two-type design into a three-type vehicle. Inventory
+        // turn a legal four-type design into a five-type vehicle. Inventory
         // parts remain unrestricted until the player actually mounts them.
-        const int MaxWeaponTypes=2;
-        const string WeaponTypeLimitError="Maksymalnie 2 różne typy broni na pojeździe.";
+        const int MaxWeaponTypes=4;
+        const string WeaponTypeLimitError="Maksymalnie 4 różne typy broni na pojeździe.";
         HashSet<R4WeaponKind> MountedWeaponTypes() => new HashSet<R4WeaponKind>(
             Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon));
         bool InvalidWeaponTypes => !CreativeMode&&MountedWeaponTypes().Count>MaxWeaponTypes;
-        public bool WeaponInGroup(R4WeaponKind weapon,bool secondary)
-        {
-            var a=WeaponGroupA;var b=WeaponGroupB;
-            return MatchesWeaponGroup(weapon,secondary,a,b,CreativeMode);
-        }
+        public bool WeaponInGroup(R4WeaponKind weapon,bool secondary)=>WeaponInSlot(weapon,secondary?1:0);
         public static bool MatchesWeaponGroup(R4WeaponKind weapon,bool secondary,R4WeaponKind? a,R4WeaponKind? b,bool creative) =>
             secondary ? (b==weapon || (creative&&weapon!=a&&weapon!=b)) : a==weapon;
+        public bool WeaponInSlot(R4WeaponKind weapon,int slot)
+        {
+            if(slot<0||slot>=4)return false;
+            return MatchesWeaponSlot(weapon,slot,GetWeaponSlots(),CreativeMode);
+        }
+        public static bool MatchesWeaponSlot(R4WeaponKind weapon,int slot,R4WeaponKind?[] slots,bool creative)=>
+            slot>=0&&slot<4&&slots!=null&&slots.Length==4&&
+            (slots[slot]==weapon||(creative&&slot==1&&!slots.Contains(weapon)));
         public string PlacementError(Vector3Int cell, R3PartKind kind, bool owned=false,
             R4WeaponKind weapon=R4WeaponKind.Basic,Vector3Int rotation=default,
             int contactMask=R3MountingGrid.AllFaces)
@@ -363,10 +436,8 @@ namespace RoboRougelike.R3
                     return "Zachowaj co najmniej jedno wolne pole odstępu między broniami.";
             }
             if (!CreativeMode&&kind == R3PartKind.Wheel && Parts.Count(p => p.Kind == kind) >= 16) return "Limit 16 kół.";
-            if (!CreativeMode&&kind == R3PartKind.Suspension && Parts.Count(p => p.Kind == kind) >= 8) return "Limit 8 modułów zawieszenia.";
-            int limit=kind switch {R3PartKind.Booster=>4,R3PartKind.JumpDrive=>2,R3PartKind.Blink=>1,
-                R3PartKind.Gyroscope=>2,R3PartKind.MagneticGrapple=>2,R3PartKind.DirectionalShield=>2,R3PartKind.PointDefense=>2,R3PartKind.StructuralScanner=>1,R3PartKind.ScannerPulse=>1,R3PartKind.IndependentSteering=>1,_=>8};
-            if(!CreativeMode&&kind>=R3PartKind.Booster&&kind!=R3PartKind.Battery&&kind!=R3PartKind.RepairPulse&&kind!=R3PartKind.DrivePower&&kind!=R3PartKind.EnergyRegenerator&&Parts.Count(p=>p.Kind==kind)>=limit)return "Limit modułów: "+limit+".";
+            if(!CreativeMode&&IsActiveSlotPart(kind)&&ExceedsModuleTypeLimit(candidate,true))return "Maksymalnie 4 różne rodzaje modułów aktywnych.";
+            if(!CreativeMode&&IsPassiveSlotPart(kind)&&ExceedsModuleTypeLimit(candidate,false))return "Maksymalnie 8 różnych rodzajów modułów pasywnych.";
             if(kind==R3PartKind.CrawlerTrack&&cell.x==0)return "Gąsienicę zamontuj po lewej lub prawej stronie.";
             if (!HasAliveExternalNeighbour(cell,kind,rotation,contactMask,candidate))
                 return "Brak zgodnych punktów mocowania ze sprawną konstrukcją.";
@@ -589,7 +660,7 @@ namespace RoboRougelike.R3
         {
             var part=inventory.FirstOrDefault(p=>p.Id==id);if(!ValidEconomicPart(part))return false;
             int quote=DismantleValue(part);
-            inventory.Remove(part);weaponGroupPreference.Remove(part.Id);Award(quote);return true;
+            inventory.Remove(part);weaponGroupPreference.Remove(part.Id);weaponSlotPreference.Remove(part.Id);Award(quote);return true;
         }
         public static bool Connected(IEnumerable<R3PartState> parts)
         {

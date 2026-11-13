@@ -158,9 +158,21 @@ public class CreativeRangeTests
         Assert.That(model.Buy(new Vector3Int(0,1,3),R3PartKind.Gun,R4WeaponKind.Basic),Is.True);
         Assert.That(model.Buy(new Vector3Int(0,1,6),R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
         Assert.That(model.Buy(new Vector3Int(0,1,9),R3PartKind.Gun,R4WeaponKind.Heavy),Is.True);
-        Assert.That(model.WeaponInGroup(R4WeaponKind.Heavy,true),Is.True,"Dodatkowe typy obsługuje PPM.");
+        Assert.That(model.Buy(new Vector3Int(0,1,12),R3PartKind.Gun,R4WeaponKind.Shotgun),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,15),R3PartKind.Gun,R4WeaponKind.Railgun),Is.True);
+        Assert.That(model.WeaponInSlot(R4WeaponKind.Heavy,2),Is.True,"Trzeci typ ma własny slot.");
+        Assert.That(model.WeaponInSlot(R4WeaponKind.Railgun,1),Is.True,"Nadmiarowe typy kreatywne obsługuje PPM.");
         var groups=typeof(R1RunHUD).GetMethod("GarageWeaponGroups",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
         Assert.That((string)groups.Invoke(null,new object[]{model}),Does.Contain("PPM").And.Contain("pozostałe"));
+        Assert.That(model.AssignWeaponSlot(R4WeaponKind.Railgun,2),Is.True,"Nadmiarowy rodzaj w trybie kreatywnym musi dać się wybrać do slotu.");
+        Assert.That(model.WeaponAtSlot(2),Is.EqualTo(R4WeaponKind.Railgun));
+        Assert.That(model.Buy(new Vector3Int(0,1,20),R3PartKind.Booster),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,22),R3PartKind.JumpDrive),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,24),R3PartKind.Blink),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,26),R3PartKind.MagneticGrapple),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,28),R3PartKind.RepairPulse),Is.True);
+        Assert.That(model.AssignActiveSlot(R3PartKind.RepairPulse,3),Is.True,"Nadmiarowy moduł kreatywny musi dać się wybrać do slotu.");
+        Assert.That(model.GetActiveSlots()[3],Is.EqualTo(R3PartKind.RepairPulse));
         Assert.That(model.Scrap,Is.Zero);
         yield return null;
     }

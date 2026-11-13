@@ -31,6 +31,38 @@ public sealed class WeaponTypeLimitTests
 
     static Vector3Int Cell(int index) => new Vector3Int((index%6)*2-5,2,(index/6)*2-2);
 
+    [Test] public void ActiveTypeLimitCountsTypesRatherThanCopies()
+    {
+        var model=Model();
+        var kinds=new[]{R3PartKind.Blink,R3PartKind.MagneticGrapple,R3PartKind.Booster,R3PartKind.RepairPulse};
+        for(int i=0;i<kinds.Length;i++)model.Parts.Add(new R3PartState(new Vector3Int(30+i,1,0),kinds[i]));
+        for(int i=0;i<6;i++)model.Parts.Add(new R3PartState(new Vector3Int(40+i,1,0),R3PartKind.Booster));
+        Assert.That(model.PlacementError(Cell(0),R3PartKind.Booster),Is.Null,"Copies do not use new type slots.");
+        Assert.That(model.PlacementError(Cell(0),R3PartKind.ScannerPulse),Does.Contain("4"));
+    }
+    [Test] public void PassiveTypeLimitCountsBonusIdentityAndPermitsCopies()
+    {
+        var model=Model();
+        var kinds=new[]{R3PartKind.Suspension,R3PartKind.Gyroscope,R3PartKind.DirectionalShield,R3PartKind.PointDefense,
+            R3PartKind.IndependentSteering,R3PartKind.Battery,R3PartKind.DrivePower};
+        for(int i=0;i<kinds.Length;i++)model.Parts.Add(new R3PartState(new Vector3Int(30+i,1,1),kinds[i]));
+        model.Parts.Add(new R3PartState(new Vector3Int(40,1,1),R3PartKind.BonusModule){UpgradeId="damage"});
+        Assert.That(model.PlacementError(Cell(0),R3PartKind.Battery),Is.Null);
+        Assert.That(model.PlacementError(Cell(0),R3PartKind.EnergyRegenerator),Does.Contain("8"));
+    }
+
+    [Test] public void FourTypesCanMountAndFifthIsRejectedWithoutSpending()
+    {
+        var model=Model();
+        var kinds=new[]{R4WeaponKind.Automatic,R4WeaponKind.Heavy,R4WeaponKind.Shotgun};
+        for(int i=0;i<kinds.Length;i++)Assert.That(model.Buy(Cell(i),R3PartKind.Gun,kinds[i]),Is.True,$"type {kinds[i]}");
+        var funds=model.Scrap;
+        Assert.That(model.Buy(Cell(3),R3PartKind.Gun,R4WeaponKind.Railgun),Is.False);
+        Assert.That(model.Scrap,Is.EqualTo(funds));
+        Assert.That(model.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count(),Is.EqualTo(4));
+        Assert.That(model.Buy(Cell(3),R3PartKind.Gun,R4WeaponKind.Basic),Is.True,"Additional copies do not use another type slot.");
+    }
+
     [TestCase(1)] [TestCase(2)] [TestCase(4)] [TestCase(12)]
     public void TwoTypesPermitRequestedNumberOfGuns(int count)
     {
@@ -48,51 +80,59 @@ public sealed class WeaponTypeLimitTests
         Assert.That(model.Parts.Count(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Basic),Is.EqualTo(12));
     }
 
-    [Test] public void ThirdTypeRejectedWithoutSpendingAndAnotherExistingTypeAllowed()
+    static R3VehicleModel ModelWithFourTypes()
     {
-        var model=Model();Assert.That(model.Buy(Cell(0),R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
+        var model=Model();
+        Assert.That(model.Buy(Cell(0),R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
+        Assert.That(model.Buy(Cell(1),R3PartKind.Gun,R4WeaponKind.Heavy),Is.True);
+        Assert.That(model.Buy(Cell(2),R3PartKind.Gun,R4WeaponKind.Shotgun),Is.True);
+        return model;
+    }
+    [Test] public void FifthTypeRejectedWithoutSpendingAndAnotherExistingTypeAllowed()
+    {
+        var model=ModelWithFourTypes();
         var funds=model.Scrap;var count=model.Parts.Count;
-        Assert.That(model.PlacementError(Cell(1),R3PartKind.Gun,false,R4WeaponKind.Heavy),Is.Not.Null);
-        Assert.That(model.Buy(Cell(1),R3PartKind.Gun,R4WeaponKind.Heavy),Is.False);
+        Assert.That(model.PlacementError(Cell(3),R3PartKind.Gun,false,R4WeaponKind.Railgun),Is.Not.Null);
+        Assert.That(model.Buy(Cell(3),R3PartKind.Gun,R4WeaponKind.Railgun),Is.False);
         Assert.That(model.Scrap,Is.EqualTo(funds));Assert.That(model.Parts.Count,Is.EqualTo(count));
-        Assert.That(model.Buy(Cell(1),R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
+        Assert.That(model.Buy(Cell(3),R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
     }
 
     [Test] public void LostPlanReservesItsTypeUntilRemovedSoRepairCannotBypassLimit()
     {
-        var model=Model();Assert.That(model.Buy(Cell(0),R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
-        var automatic=model.At(Cell(0));automatic.Health=0;
-        Assert.That(model.Buy(Cell(1),R3PartKind.Gun,R4WeaponKind.Heavy),Is.False);
-        Assert.That(model.Repair(Cell(0)),Is.True);
-        Assert.That(model.Buy(Cell(1),R3PartKind.Gun,R4WeaponKind.Heavy),Is.False);
-        Assert.That(model.Remove(Cell(0)),Is.True);
-        Assert.That(model.Buy(Cell(1),R3PartKind.Gun,R4WeaponKind.Heavy),Is.True);
+        var model=ModelWithFourTypes();
+        var shotgun=model.At(Cell(2));shotgun.Health=0;
+        Assert.That(model.Buy(Cell(3),R3PartKind.Gun,R4WeaponKind.Railgun),Is.False);
+        Assert.That(model.Repair(Cell(2)),Is.True);
+        Assert.That(model.Buy(Cell(3),R3PartKind.Gun,R4WeaponKind.Railgun),Is.False);
+        Assert.That(model.Remove(Cell(2)),Is.True);
+        Assert.That(model.Buy(Cell(3),R3PartKind.Gun,R4WeaponKind.Railgun),Is.True);
     }
 
-    [Test] public void RecoveredThirdTypeMayBeStoredAndRepairedButNotMounted()
+    [Test] public void RecoveredFifthTypeMayBeStoredAndRepairedButNotMounted()
     {
-        var model=Model();Assert.That(model.Buy(Cell(0),R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
-        var recovered=new R3PartState(Vector3Int.zero,R3PartKind.Gun,0){Weapon=R4WeaponKind.Heavy};
+        var model=ModelWithFourTypes();
+        var recovered=new R3PartState(Vector3Int.zero,R3PartKind.Gun,0){Weapon=R4WeaponKind.Railgun};
         Assert.That(model.ReceiveSalvage(new[]{recovered}),Is.True);
         Assert.That(model.RepairInventory(recovered.Id),Is.True);
-        Assert.That(model.OwnedPlacementError(recovered.Id,Cell(1),Vector3Int.zero),Is.Not.Null);
-        Assert.That(model.Mount(recovered.Id,Cell(1)),Is.False);
+        Assert.That(model.OwnedPlacementError(recovered.Id,Cell(3),Vector3Int.zero),Is.Not.Null);
+        Assert.That(model.Mount(recovered.Id,Cell(3)),Is.False);
         Assert.That(model.Inventory.Any(p=>p.Id==recovered.Id),Is.True);
         var restored=model.DeepCopy();
-        Assert.That(restored.Mount(recovered.Id,Cell(1)),Is.False);
+        Assert.That(restored.Mount(recovered.Id,Cell(3)),Is.False);
         Assert.That(restored.Inventory.Any(p=>p.Id==recovered.Id),Is.True);
     }
 
-    [Test] public void CopyAndDeserializedInvalidDesignCannotDeployOrRestoreThirdType()
+    [Test] public void CopyAndDeserializedInvalidDesignCannotDeployOrRestoreFifthType()
     {
-        var source=Model();Assert.That(source.Buy(Cell(0),R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
-        var copied=source.DeepCopy();Assert.That(copied.Buy(Cell(1),R3PartKind.Gun,R4WeaponKind.Heavy),Is.False);
+        var source=ModelWithFourTypes();
+        var copied=source.DeepCopy();Assert.That(copied.Buy(Cell(3),R3PartKind.Gun,R4WeaponKind.Railgun),Is.False);
         var design=new R3VehicleDesign();
         foreach(var p in source.Parts)design.Parts.Add(JsonUtility.FromJson<R3PartState>(JsonUtility.ToJson(p)));
-        design.Parts.Add(new R3PartState(Cell(1),R3PartKind.Gun,0){Weapon=R4WeaponKind.Heavy});
+        design.Parts.Add(new R3PartState(Cell(3),R3PartKind.Gun,0){Weapon=R4WeaponKind.Railgun});
         var loaded=new R3VehicleModel(design);loaded.Award(10000);
         Assert.That(loaded.CanDeploy,Is.False);
-        Assert.That(loaded.Repair(Cell(1)),Is.False);
+        Assert.That(loaded.Repair(Cell(3)),Is.False);
         Assert.That(loaded.EmergencyRepair(),Is.False);
         Assert.That(loaded.EmergencyRepairCost,Is.Zero);
         Assert.That(loaded.DeepCopy().CanDeploy,Is.False);
@@ -127,7 +167,9 @@ public sealed class WeaponTypeLimitTests
             }
             rig=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
             Assert.That(rig.GetComponent<R3VehicleAssembly>().Parts.Count(p=>p.Kind==R3PartKind.Gun),Is.EqualTo(12));
-            Assert.That(model.PlacementError(new Vector3Int(6,2,4),R3PartKind.Gun,false,R4WeaponKind.Heavy,new Vector3Int(0,2,0)),Does.Contain("2 różne typy"));
+            var existing=model.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray();
+            existing[0].Weapon=R4WeaponKind.Heavy;existing[1].Weapon=R4WeaponKind.Shotgun;
+            Assert.That(model.PlacementError(new Vector3Int(6,2,4),R3PartKind.Gun,false,R4WeaponKind.Railgun,new Vector3Int(0,2,0)),Does.Contain("4 różne typy"));
         }
         finally
         {

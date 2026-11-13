@@ -5,6 +5,8 @@ using NUnit.Framework;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
 using RoboRougelike.R6;
@@ -25,17 +27,44 @@ public class RRLW8PulseScannerTests
     IEnumerator Build(bool withStructural=false)
     {
         Assert.That(run.OpenSandboxGarage(),Is.True);
-        Assert.That(run.GarageBuy(new Vector3Int(0,2,-2),kind),Is.True);
-        if(withStructural)Assert.That(run.GarageBuy(new Vector3Int(-2,2,1),R3PartKind.StructuralScanner),Is.True);
+        MountScanner(kind);
+        if(withStructural)MountScanner(R3PartKind.StructuralScanner);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         module=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==kind);
         pulse=module.GetComponent<ScannerPulse>();Assert.That(pulse,Is.Not.Null);Physics.SyncTransforms();yield return new WaitForFixedUpdate();
+    }
+    void MountScanner(R3PartKind scanner)
+    {
+        var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .OrderBy(c=>c.y).ThenBy(c=>Math.Abs(c.x)).ToArray();
+        foreach(var cell in cells)
+            if(run.VehicleModel.PlacementError(cell,scanner)==null&&run.GarageBuy(cell,scanner))return;
+        Assert.Fail("No valid physical garage placement for "+scanner);
     }
     bool Activate(R3MountedPart part=null)
     {
         var binding=(part??module).GetComponents<MonoBehaviour>().SingleOrDefault(c=>c.GetType().Name=="RRLPulseScannerBinding");
         Assert.That(binding,Is.Not.Null,"SEN must use the shared physical device boundary");
         return (bool)binding.GetType().GetMethod("TryActivate").Invoke(binding,null);
+    }
+    [UnityTest] public IEnumerator ScannerOnlyVehicleRespondsToItsAssignedActiveSlot()
+    {
+        kind=R3PartKind.ScannerPulse;yield return Build();
+        Assert.That(run.Player.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>(),Is.Null,"The fixture must not rely on a movement module.");
+        int slot=Array.FindIndex(run.VehicleModel.GetActiveSlots(),p=>p==kind);Assert.That(slot,Is.InRange(0,3));
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        InputSystem.settings=settings;
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            var key=(Key)((int)Key.Digit1+slot);
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(key));
+            yield return null;yield return null;
+            Assert.That(pulse.RemainingCooldown,Is.GreaterThan(0),"The real input loop must activate the installed scanner.");
+        }
+        finally{InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
     }
     [UnityTest] public IEnumerator PulseRevealsRealEnemyThroughWallWhileStructuralScanCannotSeeHp()
     {
@@ -93,11 +122,13 @@ public class RRLW8PulseScannerTests
         var restored=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);Assert.That(restored.GetComponent<ScannerPulse>().RemainingCooldown,Is.GreaterThan(0));Assert.That(Activate(restored),Is.False);
         Assert.That(copy.Parts.Single(p=>p.Id==id).DeviceReadyAt,Is.EqualTo(ready));yield return null;
     }
-    [UnityTest] public IEnumerator PlayerGuiLUsesOwnModuleAndRejectsPausedOrDestroyedActivation()
+    [UnityTest] public IEnumerator PlayerGuiSlotUsesOwnModuleAndRejectsPausedOrDestroyedActivation()
     {
         Assert.That(Enum.TryParse("ScannerPulse",out kind),Is.True,"SEN must be an owned physical garage module");
         yield return Build();var controls=run.Player.GetComponent<RRLScannerControls>();Assert.That(controls,Is.Not.Null);
-        var key=new Event{type=EventType.KeyDown,keyCode=KeyCode.None,character='l'};
+        int slot=Array.FindIndex(run.VehicleModel.GetActiveSlots(),p=>p==R3PartKind.ScannerPulse);
+        Assert.That(slot,Is.InRange(0,3));
+        var key=new Event{type=EventType.KeyDown,keyCode=(KeyCode)((int)KeyCode.Alpha1+slot)};
         run.TogglePause();Assert.That(controls.HandleGuiInput(key),Is.False);Assert.That(pulse.RemainingCooldown,Is.Zero);
         run.TogglePause();Assert.That(controls.HandleGuiInput(key),Is.True);Assert.That(pulse.Revealed,Is.Not.Empty);
         Assert.That(controls.HandleGuiInput(key),Is.False);module.Damageable.ApplyDamage(100000,module.transform.position,Vector3.up);Assert.That(controls.HandleGuiInput(key),Is.False);

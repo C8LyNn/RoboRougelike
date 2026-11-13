@@ -37,14 +37,24 @@ namespace RoboRougelike.R3
     {public string id;public Vector3Int cell,rotation;public int contacts;}
     [Serializable] public sealed class R3GroupCheckpoint
     {public string id;public bool secondary;}
+    [Serializable] public sealed class R3WeaponSlotCheckpoint
+    {public string id;public int slot;}
+    [Serializable] public sealed class R3ActiveSlotCheckpoint
+    {public int kind,slot;}
     [Serializable] public sealed class R3ModelCheckpoint
     {
         public R3PartState[] mounted,inventory;
         public R3WheelCheckpoint[] wheels;
         public R3GroupCheckpoint[] groups;
+        // Version 0 saves have only the former two-group fields above.
+        public int weaponSlotsVersion;
+        public R3WeaponSlotCheckpoint[] weaponSlots;
+        public int activeSlotsVersion;
+        public int[] activeSlots;
+        public R3ActiveSlotCheckpoint[] activePreferences;
         public int scrap;
-        public bool suspensionEnabled,gyroEnabled,hasA,hasB;
-        public int groupA,groupB;
+        public bool suspensionEnabled,gyroEnabled,hasA,hasB,hasC,hasD;
+        public int groupA,groupB,groupC,groupD;
         public ActiveSuspensionSupportMode suspensionMode;
         public float suspensionHeight,boosterThrust,boosterDuration,hoverHeight,grappleRemaining;
         // Version 0 checkpoints predate energy and start with the core's charge.
@@ -116,15 +126,20 @@ namespace RoboRougelike.R3
         public R3ModelCheckpoint MakeCheckpoint(float now)
         {
             SyncWeaponGroups();
+            GetActiveSlots();
             return new R3ModelCheckpoint {
                 mounted=Parts.Select(p=>SavePart(p,now)).ToArray(),inventory=inventory.Select(p=>SavePart(p,now)).ToArray(),
                 wheels=factoryWheels.Select(p=>new R3WheelCheckpoint{id=p.Key,cell=p.Value.Cell,rotation=p.Value.Rotation,contacts=p.Value.Contacts}).ToArray(),
                 groups=weaponGroupPreference.Select(p=>new R3GroupCheckpoint{id=p.Key,secondary=p.Value}).ToArray(),scrap=Scrap,
+                weaponSlotsVersion=1,weaponSlots=weaponSlotPreference.Select(p=>new R3WeaponSlotCheckpoint{id=p.Key,slot=p.Value}).ToArray(),
+                activeSlotsVersion=1,activeSlots=activeSlots.Select(p=>p.HasValue?(int)p.Value:-1).ToArray(),
+                activePreferences=activeSlotPreference.Select(p=>new R3ActiveSlotCheckpoint{kind=(int)p.Key,slot=p.Value}).ToArray(),
                 energyVersion=1,energy=Energy.Current,hasInitialEnergyPrepared=true,initialEnergyPrepared=InitialEnergyPrepared,
                 suspensionEnabled=SuspensionEnabled,suspensionMode=SuspensionMode,suspensionHeight=SuspensionHeightOffset,
                 gyroEnabled=GyroEnabled,drive=SelectedDrive,boosterThrust=BoosterThrustNewtons,boosterDuration=BoosterDurationSeconds,
                 hoverHeight=HoverHeightMeters,grappleRemaining=Remaining(GrappleReadyAt,now),
-                hasA=weaponGroupA.HasValue,groupA=(int)(weaponGroupA??0),hasB=weaponGroupB.HasValue,groupB=(int)(weaponGroupB??0)
+                hasA=weaponGroupA.HasValue,groupA=(int)(weaponGroupA??0),hasB=weaponGroupB.HasValue,groupB=(int)(weaponGroupB??0),
+                hasC=weaponGroupC.HasValue,groupC=(int)(weaponGroupC??0),hasD=weaponGroupD.HasValue,groupD=(int)(weaponGroupD??0)
             };
         }
         static bool Finite(float value)=>!float.IsNaN(value)&&!float.IsInfinity(value);
@@ -158,7 +173,7 @@ namespace RoboRougelike.R3
             if(data.energyVersion==0&&all.Any(p=>p!=null&&p.FootprintRevision!=0))return false;
             if(all.Any(p=>!ValidCheckpointPart(p))||all.Select(p=>p.Id).Distinct(StringComparer.Ordinal).Count()!=all.Length||
                 data.mounted.Count(p=>p.Kind==R3PartKind.Core)!=1||data.inventory.Any(p=>p.Kind==R3PartKind.Core)||
-                data.mounted.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>2||
+                data.mounted.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>4||
                 data.mounted.SelectMany(OccupiedCells).GroupBy(c=>c).Any(g=>g.Count()>1))return false;
             var mounted=data.mounted;var inventory=data.inventory;int migratedCount=0;
             if(!Connected(mounted)||!Connected(mounted.Where(p=>p.Health>0)))
@@ -253,7 +268,23 @@ namespace RoboRougelike.R3
                 data.groups.Any(p=>p==null||string.IsNullOrWhiteSpace(p.id))||
                 data.groups.Select(p=>p.id).Distinct(StringComparer.Ordinal).Count()!=data.groups.Length||
                 (data.hasA&&!Enum.IsDefined(typeof(R4WeaponKind),data.groupA))||(data.hasB&&!Enum.IsDefined(typeof(R4WeaponKind),data.groupB))||
-                (data.hasA&&data.hasB&&data.groupA==data.groupB))return false;
+                (data.hasA&&data.hasB&&data.groupA==data.groupB)||
+                data.weaponSlotsVersion<0||data.weaponSlotsVersion>1||
+                (data.weaponSlotsVersion==1&&(data.weaponSlots==null||data.weaponSlots.Length>4000||
+                    data.weaponSlots.Any(p=>p==null||string.IsNullOrWhiteSpace(p.id)||p.slot<0||p.slot>=4)||
+                    data.weaponSlots.Select(p=>p.id).Distinct(StringComparer.Ordinal).Count()!=data.weaponSlots.Length||
+                    (data.hasC&&!Enum.IsDefined(typeof(R4WeaponKind),data.groupC))||
+                    (data.hasD&&!Enum.IsDefined(typeof(R4WeaponKind),data.groupD))||
+                    new[]{data.hasA?(int?)data.groupA:null,data.hasB?(int?)data.groupB:null,
+                          data.hasC?(int?)data.groupC:null,data.hasD?(int?)data.groupD:null}
+                        .Where(p=>p.HasValue).GroupBy(p=>p.Value).Any(g=>g.Count()>1)))||
+                data.activeSlotsVersion<0||data.activeSlotsVersion>1||
+                (data.activeSlotsVersion==1&&(data.activeSlots==null||data.activeSlots.Length!=4||data.activePreferences==null||
+                    data.activePreferences.Length>Enum.GetValues(typeof(R3PartKind)).Length||
+                    data.activeSlots.Any(p=>p!=-1&&(!Enum.IsDefined(typeof(R3PartKind),p)||!IsActiveSlotPart((R3PartKind)p)))||
+                    data.activeSlots.Where(p=>p!=-1).GroupBy(p=>p).Any(g=>g.Count()>1)||
+                    data.activePreferences.Any(p=>p==null||p.slot<0||p.slot>=4||!Enum.IsDefined(typeof(R3PartKind),p.kind)||!IsActiveSlotPart((R3PartKind)p.kind))||
+                    data.activePreferences.Select(p=>p.kind).Distinct().Count()!=data.activePreferences.Length)))return false;
             var restored=new R3VehicleModel(R3VehicleCatalog.Create(kind,variant),economy);
             restored.Parts.Clear();restored.inventory.Clear();
             foreach(var source in mounted){var p=source.Copy();p.Tier=NormalizedTier(p.Tier);p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.Parts.Add(p);}
@@ -271,6 +302,17 @@ namespace RoboRougelike.R3
             }
             restored.weaponGroupPreference.Clear();foreach(var group in data.groups)restored.weaponGroupPreference.Add(group.id,group.secondary);
             restored.weaponGroupA=data.hasA?(R4WeaponKind?)data.groupA:null;restored.weaponGroupB=data.hasB?(R4WeaponKind?)data.groupB:null;
+            if(data.weaponSlotsVersion==1)
+            {
+                foreach(var slot in data.weaponSlots)restored.weaponSlotPreference.Add(slot.id,slot.slot);
+                restored.weaponGroupC=data.hasC?(R4WeaponKind?)data.groupC:null;
+                restored.weaponGroupD=data.hasD?(R4WeaponKind?)data.groupD:null;
+            }
+            if(data.activeSlotsVersion==1)
+            {
+                for(int i=0;i<4;i++)restored.activeSlots[i]=data.activeSlots[i]<0?(R3PartKind?)null:(R3PartKind)data.activeSlots[i];
+                foreach(var preference in data.activePreferences)restored.activeSlotPreference.Add((R3PartKind)preference.kind,preference.slot);
+            }
             restored.Scrap=data.scrap;restored.SelectedDrive=data.drive;restored.SuspensionEnabled=data.suspensionEnabled;
             restored.SuspensionMode=data.suspensionMode;restored.SuspensionHeightOffset=data.suspensionHeight;restored.GyroEnabled=data.gyroEnabled;
             restored.BoosterThrustNewtons=data.boosterThrust;restored.BoosterDurationSeconds=data.boosterDuration;restored.HoverHeightMeters=data.hoverHeight;

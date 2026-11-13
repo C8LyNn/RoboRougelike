@@ -356,8 +356,40 @@ namespace RoboRougelike.R1
 
         static string GarageWeaponGroups(R3VehicleModel model)
         {
-            bool extra=model.CreativeMode&&model.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>2;
-            return "A / LPM: "+WeaponGroupName(model.WeaponGroupA)+"\nB / PPM: "+WeaponGroupName(model.WeaponGroupB)+(extra?" + pozostałe":"");
+            var slots=model.GetWeaponSlots();
+            bool extra=model.CreativeMode&&model.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>4;
+            return "LPM: "+WeaponGroupName(slots[0])+"  •  PPM: "+WeaponGroupName(slots[1])+
+                "\nQ: "+WeaponGroupName(slots[2])+"  •  E: "+WeaponGroupName(slots[3])+(extra?" + pozostałe":"");
+        }
+        void DrawSlotAssignments(R3VehicleModel model,float x,float y,float width)
+        {
+            float col=(width-12)/2;var weapons=model.GetWeaponSlots();var active=model.GetActiveSlots();
+            var keys=new[]{"LPM","PPM","Q","E"};
+            GUI.Label(new Rect(x,y,col,30),"BROŃ",heading);
+            GUI.Label(new Rect(x+col+12,y,col,30),"MODUŁY AKTYWNE",heading);
+            for(int i=0;i<4;i++)
+            {
+                float row=y+40+i*50;
+                GUI.enabled=weapons[i].HasValue;
+                if(GUI.Button(new Rect(x,row,col,44),keys[i]+": "+WeaponGroupName(weapons[i]),compactButton))
+                    model.AssignWeaponSlot(weapons[i].Value,(i+1)%4);
+                GUI.enabled=active[i].HasValue;
+                if(GUI.Button(new Rect(x+col+12,row,col,44),(i+1)+": "+(active[i].HasValue?R4WeaponDefinition.PartName(active[i].Value):"—"),compactButton))
+                    model.AssignActiveSlot(active[i].Value,(i+1)%4);
+            }
+            GUI.enabled=true;
+            if(model.CreativeMode)
+            {
+                var extraWeapon=model.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct()
+                    .Where(kind=>!weapons.Contains(kind)).Select(kind=>(R4WeaponKind?)kind).FirstOrDefault();
+                var extraActive=model.Parts.Where(p=>R3VehicleModel.IsActiveSlotPart(p.Kind)).Select(p=>p.Kind).Distinct()
+                    .Where(kind=>!active.Contains(kind)).Select(kind=>(R3PartKind?)kind).FirstOrDefault();
+                if(extraWeapon.HasValue&&GUI.Button(new Rect(x,y+245,col,44),"Slot E: "+WeaponGroupName(extraWeapon),compactButton))
+                    model.AssignWeaponSlot(extraWeapon.Value,3);
+                if(extraActive.HasValue&&GUI.Button(new Rect(x+col+12,y+245,col,44),"Slot 4: "+R4WeaponDefinition.PartName(extraActive.Value),compactButton))
+                    model.AssignActiveSlot(extraActive.Value,3);
+            }
+            GUI.Label(new Rect(x,y+296,width,42),"Kliknij rodzaj, aby przenieść go do kolejnego slotu. Zajęte sloty zamienią się miejscami.",small);
         }
 
         static string GarageInspectionSummary(R3VehicleModel model,R3PartState part)
@@ -795,7 +827,7 @@ namespace RoboRougelike.R1
         void DrawSimplePortraitOptions(R1RunController run)
         {
             Panel(new Rect(12,90,744,800));
-            GUI.Label(new Rect(24,105,540,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":"WYBÓR AKTYWNOŚCI",heading);
+            GUI.Label(new Rect(24,105,540,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":"WYBÓR AKTYWNOŚCI",heading);
             if(GUI.Button(new Rect(606,105,138,40),"Zamknij",compactButton)){garageOptionsOpen=false;return;}
             if(garageOptionsTab==0)
             {
@@ -804,7 +836,7 @@ namespace RoboRougelike.R1
                 finally{GUI.matrix=matrix;}
                 var model=run.VehicleModel;
                 GUI.Label(new Rect(350,180,380,70),GarageWeaponGroups(model),small);
-                if(GUI.Button(new Rect(350,255,380,44),"Zamień grupy broni",compactButton))model.SwapWeaponGroups();
+                if(GUI.Button(new Rect(350,255,380,44),"Konfiguruj sloty",compactButton))garageOptionsTab=2;
                 int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0||(model.CreativeMode&&model.Parts.Any(p=>p.Health<1));
                 if(GUI.Button(new Rect(350,309,380,44),GarageBulkRepairCaption(model,repair),compactButton))
                     RepairFromGarageOptions(run,false);
@@ -814,6 +846,11 @@ namespace RoboRougelike.R1
                 GUI.enabled=true;
                 GUI.Label(new Rect(350,425,380,135),GarageDriveSummary(run),small);
                 if(!string.IsNullOrEmpty(garageOptionsFeedback))GUI.Label(new Rect(350,575,380,60),garageOptionsFeedback,small);
+            }
+            else if(garageOptionsTab==2)
+            {
+                DrawSlotAssignments(run.VehicleModel,24,165,720);
+                if(GUI.Button(new Rect(24,510,250,44),"Wróć do ustawień",compactButton))garageOptionsTab=0;
             }
             else
             {
@@ -826,7 +863,7 @@ namespace RoboRougelike.R1
         void DrawSimpleGarageOptions(R1RunController run)
         {
             Panel(new Rect(280,90,800,545));
-            GUI.Label(new Rect(300,105,570,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":"WYBÓR AKTYWNOŚCI",heading);
+            GUI.Label(new Rect(300,105,570,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":"WYBÓR AKTYWNOŚCI",heading);
             if(GUI.Button(new Rect(925,105,135,40),"Zamknij",compactButton)){garageOptionsOpen=false;return;}
             if(garageOptionsTab==0)
             {
@@ -835,7 +872,7 @@ namespace RoboRougelike.R1
                 finally{GUI.matrix=matrix;}
                 var model=run.VehicleModel;
                 GUI.Label(new Rect(680,190,350,70),GarageWeaponGroups(model),small);
-                if(GUI.Button(new Rect(680,270,300,40),"Zamień grupy broni",compactButton))model.SwapWeaponGroups();
+                if(GUI.Button(new Rect(680,270,300,40),"Konfiguruj sloty",compactButton))garageOptionsTab=2;
                 int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0||(model.CreativeMode&&model.Parts.Any(p=>p.Health<1));
                 if(GUI.Button(new Rect(680,325,300,40),GarageBulkRepairCaption(model,repair),compactButton))
                     RepairFromGarageOptions(run,false);
@@ -845,6 +882,11 @@ namespace RoboRougelike.R1
                 GUI.enabled=true;
                 GUI.Label(new Rect(680,435,350,145),GarageDriveSummary(run),small);
                 if(!string.IsNullOrEmpty(garageOptionsFeedback))GUI.Label(new Rect(680,585,350,40),garageOptionsFeedback,small);
+            }
+            else if(garageOptionsTab==2)
+            {
+                DrawSlotAssignments(run.VehicleModel,300,165,740);
+                if(GUI.Button(new Rect(300,505,250,44),"Wróć do ustawień",compactButton))garageOptionsTab=0;
             }
             else
             {

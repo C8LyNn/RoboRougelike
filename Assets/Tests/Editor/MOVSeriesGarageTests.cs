@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
+using RoboRougelike.R4;
 using RoboRougelike.MOVSeries;
 using RoboRougelike.Mechanics.Booster;
 using RoboRougelike.Mechanics.MOV004GyroscopicStabilizer;
@@ -53,7 +54,7 @@ public class MOVSeriesGarageTests
         Assert.That(build,Is.Not.Null);Assert.That(rowsField,Is.Not.Null);
         build.Invoke(hud,new object[]{run,adapter,null});
         var rows=((System.Collections.Generic.List<string>)rowsField.GetValue(hud)).ToArray();
-        Assert.That(rows.Any(row=>row.Contains("Shift Booster")&&row.Contains("Spacja skok")),Is.True);
+        Assert.That(rows.Any(row=>row.Contains(run.VehicleModel.ActiveSlotLabel(R3PartKind.Booster)+" Booster")&&row.Contains(run.VehicleModel.ActiveSlotLabel(R3PartKind.JumpDrive)+" skok")),Is.True);
         Assert.That(rows.Any(row=>row.Contains("Blink")||row.Contains("zaczep")||row.Contains("żyroskop")||row.Contains("Hover")),Is.False);
         Assert.That(rows.Length,Is.EqualTo(2),"Unused abilities must not reserve a HUD row.");
         yield return null;
@@ -89,6 +90,46 @@ public class MOVSeriesGarageTests
     {
         InputSystem.QueueStateEvent(keyboard,new KeyboardState(keys));yield return null;yield return null;
         InputSystem.QueueStateEvent(keyboard,new KeyboardState());yield return null;yield return null;
+    }
+    void BuyWeaponOnAvailableSupport(R4WeaponKind kind)
+    {
+        var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .OrderByDescending(c=>Math.Abs(c.x)).ThenBy(c=>c.y).ToArray();
+        foreach(var cell in cells)
+            if(run.VehicleModel.PlacementError(cell,R3PartKind.Gun,false,kind)==null&&run.GarageBuyWeapon(cell,kind))return;
+        Assert.Fail("No valid physical garage placement for "+kind);
+    }
+    R3MountedPart GunAtSlot(int slot)
+    {
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var kind=assembly.Model.WeaponAtSlot(slot);
+        Assert.That(kind.HasValue,Is.True,"Expected weapon slot "+slot);
+        return assembly.Parts.First(p=>p.Kind==R3PartKind.Gun&&p.Weapon==kind.Value);
+    }
+    bool ThirdFireInputReady()=>!(bool)typeof(P12PipelineSafeTankController).GetField("waitForThirdRelease",
+        System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(run.Player.Controller);
+    [UnityTest] public IEnumerator QAndEFireOnlyTheirAssignedWeaponSlots()
+    {
+        run.VehicleModel.Award(2000);
+        BuyWeaponOnAvailableSupport(R4WeaponKind.Automatic);
+        BuyWeaponOnAvailableSupport(R4WeaponKind.Heavy);
+        BuyWeaponOnAvailableSupport(R4WeaponKind.Shotgun);
+        VirtualInput();Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning);
+        var aimObject=new GameObject("Four-slot input test camera");aimObject.transform.SetParent(run.Player.transform,false);
+        aimObject.transform.localPosition=new Vector3(0,5,-5);aimObject.transform.localRotation=Quaternion.Euler(-70,0,0);
+        var aimCamera=aimObject.AddComponent<Camera>();aimCamera.enabled=false;
+        var aimField=typeof(P12PipelineSafeTankController).GetField("aimCamera",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        aimField.SetValue(run.Player.Controller,aimCamera);
+        yield return Until(()=>run.Player.Controller.LastConsumedAimFrame>0&&
+            run.Player.GetComponent<R3VehicleAssembly>().ClearProjectilePath(GunAtSlot(2))&&
+            run.Player.GetComponent<R3VehicleAssembly>().ClearProjectilePath(GunAtSlot(3)));
+        Assert.That(GunAtSlot(2).NextFireTime,Is.Zero);Assert.That(GunAtSlot(3).NextFireTime,Is.Zero);
+        yield return Until(ThirdFireInputReady);
+        yield return KeyPress(Key.Q);
+        Assert.That(GunAtSlot(2).NextFireTime,Is.GreaterThan(0),"Q must fire slot 3.");
+        Assert.That(GunAtSlot(3).NextFireTime,Is.Zero,"Q must not fire slot 4.");
+        yield return KeyPress(Key.E);
+        Assert.That(GunAtSlot(3).NextFireTime,Is.GreaterThan(0),"E must fire slot 4.");
+        UnityEngine.Object.Destroy(aimObject);
     }
     [UnityTest] public IEnumerator AllOriginalPartsSettingsInventoryAndResourcesSurviveRangeDamageResetAndReturn()
     {
@@ -126,14 +167,38 @@ public class MOVSeriesGarageTests
     }
     [UnityTest] public IEnumerator ActualKeyboardActivatesAbilitiesAndExistingMouseStillFires()
     {
-        // This input test needs a clear barrel; the old Blink placement intersected it.
-        FullConstruction(keepGunClear:true);VirtualInput();Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning);yield return MOVSeriesDeviceTests.Seconds(.6f);
-        yield return KeyPress(Key.LeftShift);Assert.That(run.Player.GetComponentInChildren<VehicleBooster>().IsBoosting,Is.True);
+        // Starter layouts evolve: find real valid placements instead of assuming
+        // the old light chassis has vacant cells at fixed coordinates.
+        run.VehicleModel.Award(2000);
+        var devices=new System.Collections.Generic.List<R3PartKind>();
+        devices.Add(R3PartKind.Booster);devices.Add(R3PartKind.JumpDrive);devices.Add(R3PartKind.Blink);
+        devices.Add(R3PartKind.Gyroscope);devices.Add(R3PartKind.MagneticGrapple);
+        foreach(var kind in devices)
+        {
+            var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .OrderByDescending(c=>Math.Abs(c.x)).ThenBy(c=>c.y).ToArray();
+            bool mounted=false;
+            foreach(var cell in cells)
+                if(run.VehicleModel.PlacementError(cell,kind)==null&&run.GarageBuy(cell,kind)){mounted=true;break;}
+            Assert.That(mounted,Is.True,"No valid physical garage placement for "+kind);
+        }
+        VirtualInput();Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning);yield return MOVSeriesDeviceTests.Seconds(.6f);
+        Key ActiveKey(R3PartKind kind)
+        {
+            int slot=Array.FindIndex(run.VehicleModel.GetActiveSlots(),p=>p==kind);
+            Assert.That(slot,Is.InRange(0,3),kind+" must have an active slot");
+            return slot==0?Key.Digit1:slot==1?Key.Digit2:slot==2?Key.Digit3:Key.Digit4;
+        }
+        float blinkReady=run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.Blink).DeviceReadyAt;
+        yield return KeyPress(Key.Q);yield return KeyPress(Key.E);
+        Assert.That(run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.Blink).DeviceReadyAt,Is.EqualTo(blinkReady),"Q must not also activate Blink.");
+        Assert.That(run.Player.GetComponent<MOVSeriesVehicleAdapter>().GrappleAttached,Is.False,"E must not also activate the grapple.");
+        yield return KeyPress(ActiveKey(R3PartKind.Booster));Assert.That(run.Player.GetComponentInChildren<VehicleBooster>().IsBoosting,Is.True);
         bool gyro=run.VehicleModel.GyroEnabled;yield return KeyPress(Key.G);Assert.That(run.VehicleModel.GyroEnabled,Is.EqualTo(!gyro));
-        yield return KeyPress(Key.Q);Assert.That(run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.Blink).DeviceReadyAt,Is.GreaterThan(Time.time));
-        yield return KeyPress(Key.Space);Assert.That(run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.JumpDrive).DeviceReadyAt,Is.GreaterThan(Time.time));
-        yield return MOVSeriesDeviceTests.Seconds(1.4f);yield return KeyPress(Key.E);Assert.That(run.Player.GetComponent<MOVSeriesVehicleAdapter>().GrappleAttached,Is.True);
-        yield return KeyPress(Key.E);Assert.That(run.Player.GetComponent<MOVSeriesVehicleAdapter>().GrappleAttached,Is.False);
+        yield return KeyPress(ActiveKey(R3PartKind.Blink));Assert.That(run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.Blink).DeviceReadyAt,Is.GreaterThan(Time.time));
+        yield return KeyPress(ActiveKey(R3PartKind.JumpDrive));Assert.That(run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.JumpDrive).DeviceReadyAt,Is.GreaterThan(Time.time));
+        yield return MOVSeriesDeviceTests.Seconds(1.4f);yield return KeyPress(ActiveKey(R3PartKind.MagneticGrapple));Assert.That(run.Player.GetComponent<MOVSeriesVehicleAdapter>().GrappleAttached,Is.True);
+        yield return KeyPress(ActiveKey(R3PartKind.MagneticGrapple));Assert.That(run.Player.GetComponent<MOVSeriesVehicleAdapter>().GrappleAttached,Is.False);
         var assembly=run.Player.GetComponent<R3VehicleAssembly>();
         // The real aiming loop follows its camera every frame. Point a dedicated test
         // camera into open sky so it does not turn the barrel back into the grapple.

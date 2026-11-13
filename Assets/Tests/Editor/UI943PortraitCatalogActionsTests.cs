@@ -657,7 +657,9 @@ public sealed class UI943PortraitCatalogActionsTests
         run.VehicleModel.Parts.RemoveAll(p=>p.Kind==R3PartKind.Wheel);
         run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(6,5,6),R3PartKind.Gun){Weapon=R4WeaponKind.Automatic});
         run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(6,5,7),R3PartKind.Gun){Weapon=R4WeaponKind.Heavy});
-        Assert.That(run.VehicleModel.DeployError,Does.Contain("2 różne typy"));
+        run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(6,5,8),R3PartKind.Gun){Weapon=R4WeaponKind.Shotgun});
+        run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(6,5,9),R3PartKind.Gun){Weapon=R4WeaponKind.Railgun});
+        Assert.That(run.VehicleModel.DeployError,Does.Contain("4 różne typy"));
         Assert.That(run.VehicleModel.CriticalReadinessMessage,Does.Contain("napędu"));
         var feedback=(string)Invoke(run.GetComponent<R1RunHUD>(),"SimpleGarageFeedback",run);
         Assert.That(feedback,Does.Contain(run.VehicleModel.DeployError));

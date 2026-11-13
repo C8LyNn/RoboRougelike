@@ -255,7 +255,7 @@ namespace RoboRougelike.R1
             else if(selected==R3PartKind.Battery)
                 GUI.Label(new Rect(30,355,280,95),"Bateria: T1 +100, T2 +200, T3 +400 maks. energii.\nDziała po zamontowaniu.\nPole ładowania przyspiesza regenerację.",small);
             else if(selected==R3PartKind.RepairPulse)
-                GUI.Label(new Rect(30,355,280,100),"V — impuls naprawczy\nDziała 5 s • odnowienie 15 s\nWyższy tier leczy szybciej.\nNie odbudowuje zniszczonych.",small);
+                GUI.Label(new Rect(30,355,280,100),"Impuls naprawczy — przypisz slot 1–4\nDziała 5 s • odnowienie 15 s\nWyższy tier leczy szybciej.\nNie odbudowuje zniszczonych.",small);
             else if(selected==R3PartKind.DrivePower)
                 GUI.Label(new Rect(30,355,280,100),$"Silnik kół wspomaga\nprzyspieszanie i skręcanie.\nRezerwa: {VehicleEnergyState.PassiveReservation:0} energii na moduł.\nPotrzebuje kół na podłożu.",small);
             else if(selected==R3PartKind.EnergyRegenerator)
@@ -275,7 +275,7 @@ namespace RoboRougelike.R1
             }
             else
             {
-                string hint=selected==R3PartKind.JumpDrive?"Spacja — skok z podłoża.\nKilka modułów zwiększa impuls.":selected==R3PartKind.Blink?"Q — Blink do przodu (8 m).\nDroga i lądowanie muszą być wolne.":selected==R3PartKind.MagneticGrapple?"E — zaczep w punkt celowania.\nE ponownie — zwolnij linę.":"Kliknij ścianę bloku, aby montować.\nZielony ghost: miejsce poprawne.\nOmni i gąsienice montuj nisko.";
+                string hint=selected==R3PartKind.JumpDrive?"Slot 1–4 — skok z podłoża.\nKilka modułów zwiększa impuls.":selected==R3PartKind.Blink?"Slot 1–4 — Blink do przodu (8 m).\nDroga i lądowanie muszą być wolne.":selected==R3PartKind.MagneticGrapple?"Slot 1–4 — zaczep w punkt celowania.\nNaciśnij ponownie, aby zwolnić linę.":"Kliknij ścianę bloku, aby montować.\nZielony ghost: miejsce poprawne.\nOmni i gąsienice montuj nisko.";
                 GUI.Label(new Rect(30,355,280,92),hint,small);
             }
         }
@@ -304,12 +304,12 @@ namespace RoboRougelike.R1
             bool Installed(R3PartKind kind)=>m.Parts.Any(p=>p.Kind==kind);
             void AddPair(string first,string second)
             {string line=CompactMovementPair(first,second);if(!string.IsNullOrEmpty(line))compactMovementRows.Add(line);}
-            AddPair(Installed(R3PartKind.Booster)?$"Shift Booster: {(a.Boosting?"aktywny":AbilityStatus(a,R3PartKind.Booster))}":null,
-                Installed(R3PartKind.JumpDrive)?$"Spacja skok: {AbilityStatus(a,R3PartKind.JumpDrive)}":null);
+            AddPair(Installed(R3PartKind.Booster)?$"{m.ActiveSlotLabel(R3PartKind.Booster)} Booster: {(a.Boosting?"aktywny":AbilityStatus(a,R3PartKind.Booster))}":null,
+                Installed(R3PartKind.JumpDrive)?$"{m.ActiveSlotLabel(R3PartKind.JumpDrive)} skok: {AbilityStatus(a,R3PartKind.JumpDrive)}":null);
             string grapple=Installed(R3PartKind.MagneticGrapple)?a.OperationalCount(R3PartKind.MagneticGrapple)==0?"niedostępny":
-                a.GrappleAttached?"E zwalnia":m.GrappleReadyAt>Time.time?$"{m.GrappleReadyAt-Time.time:0.0} s":"gotowy":null;
-            AddPair(Installed(R3PartKind.Blink)?$"Q Blink: {AbilityStatus(a,R3PartKind.Blink)}":null,
-                grapple!=null?$"E zaczep: {grapple}":null);
+                a.GrappleAttached?"ponownie zwalnia":m.GrappleReadyAt>Time.time?$"{m.GrappleReadyAt-Time.time:0.0} s":"gotowy":null;
+            AddPair(Installed(R3PartKind.Blink)?$"{m.ActiveSlotLabel(R3PartKind.Blink)} Blink: {AbilityStatus(a,R3PartKind.Blink)}":null,
+                grapple!=null?$"{m.ActiveSlotLabel(R3PartKind.MagneticGrapple)} zaczep: {grapple}":null);
             AddPair(Installed(R3PartKind.Gyroscope)?$"G żyroskop: {(a.OperationalCount(R3PartKind.Gyroscope)==0?"niedostępny":m.GyroEnabled?"ON":"OFF")}":null,
                 m.SelectedDrive==R3DriveKind.Hover?$"Hover: {m.HoverHeightMeters:0.0} m":null);
             string detail=steeringStatus??a.Feedback;

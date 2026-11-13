@@ -81,15 +81,18 @@ namespace RoboRougelike.R3
                     part.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>()?.SetMotorRequested(held);
         }
         public void SetGroupTriggers(bool groupA,bool groupB)
+            =>SetSlotTriggers(groupA,groupB,false,false);
+        public void SetSlotTriggers(bool groupA,bool groupB,bool groupC,bool groupD)
         {
-            var a=Model.WeaponGroupA;var b=Model.WeaponGroupB;
+            var pressed=new[]{groupA,groupB,groupC,groupD};var slots=Model.GetWeaponSlots();
             foreach(var part in Parts)
             {
                 if(part==null||part.Kind!=R3PartKind.Gun)continue;
-                bool held=part.Operational&&part.gameObject.activeInHierarchy&&part.transform.IsChildOf(transform)&&
-                    !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject)&&
-                    ((groupA&&R3VehicleModel.MatchesWeaponGroup(part.Weapon,false,a,b,Model.CreativeMode))||
-                     (groupB&&R3VehicleModel.MatchesWeaponGroup(part.Weapon,true,a,b,Model.CreativeMode)));
+                bool held=false;
+                if(part.Operational&&part.gameObject.activeInHierarchy&&part.transform.IsChildOf(transform)&&
+                   !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
+                    for(int slot=0;slot<4;slot++)
+                        if(pressed[slot]&&R3VehicleModel.MatchesWeaponSlot(part.Weapon,slot,slots,Model.CreativeMode)){held=true;break;}
                 part.GetComponent<RoboRougelike.WeaponIntegration.RRLBeamBinding>()?.SetTriggerHeld(held);
                 part.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>()?.SetMotorRequested(held);
             }
@@ -192,12 +195,12 @@ namespace RoboRougelike.R3
             return own>other || float.IsPositiveInfinity(own);
         }
         public void FireGroup(bool secondary)
+            =>FireSlot(secondary?1:0);
+        public void FireSlot(int slot)
         {
-            var a=Model.WeaponGroupA;var b=Model.WeaponGroupB;
-            var kind=secondary?b:a;
-            if(!kind.HasValue)return;
+            var slots=Model.GetWeaponSlots();if(slot<0||slot>=4||!slots[slot].HasValue)return;
             foreach(var part in Parts)
-                if(part!=null && part.Kind==R3PartKind.Gun && R3VehicleModel.MatchesWeaponGroup(part.Weapon,secondary,a,b,Model.CreativeMode) && part.Operational && part.gameObject.activeInHierarchy && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
+                if(part!=null && part.Kind==R3PartKind.Gun && R3VehicleModel.MatchesWeaponSlot(part.Weapon,slot,slots,Model.CreativeMode) && part.Operational && part.gameObject.activeInHierarchy && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
                 {
                     part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>()?.Sync();
                     if(RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))continue;
@@ -346,6 +349,7 @@ namespace RoboRougelike.R3
                 root.AddComponent<RoboRougelike.MOV009Integration.MOV009VehicleAdapter>().Configure(assembly);
             if(model.Parts.Any(p=>p.Kind>=R3PartKind.Booster&&p.Kind<=R3PartKind.CrawlerTrack))
                 root.AddComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>().Configure(assembly);
+            root.AddComponent<RoboRougelike.MOVSeries.MOVSeriesInput>().Bind(root.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>());
             root.AddComponent<R3MountedBonusEffects>().Configure(assembly,vehicle,stats);
             if(assembly.Parts.Any(p=>p.Kind==R3PartKind.RepairPulse))
                 root.AddComponent<R3RepairPulse>().Configure(assembly);

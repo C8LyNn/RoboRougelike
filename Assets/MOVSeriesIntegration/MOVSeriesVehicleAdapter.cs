@@ -24,7 +24,6 @@ namespace RoboRougelike.MOVSeries
             // Compound wheel contacts amplify Coulomb stiction. The drive already models
             // finite rolling/lateral resistance; retain a small physical contact friction.
             drive.RefreshMass();drive.EnableSuspensionPhysics(.05f);ConfigureDevices();ConfigureSpecialDevices();ConfigureDrives();SyncDevices();SyncDrives();
-            gameObject.AddComponent<MOVSeriesInput>().Bind(this);
         }
         internal bool Available(R3MountedPart part)=>StructurallyAvailable(part)&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject);
         internal bool StructurallyAvailable(R3MountedPart part)=>part!=null&&part.Operational&&

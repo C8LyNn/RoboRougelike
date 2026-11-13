@@ -26,15 +26,12 @@ namespace RoboRougelike.PackageIntegration
         public bool HandleGuiInput(Event input)
         {
             if(input==null||input.type!=EventType.KeyDown||input.alt||input.control||input.command)return false;
-            if(input.keyCode==KeyCode.K||input.character=='k'||input.character=='K')return Activate(RRLScanKind.Structural);
-            return (input.keyCode==KeyCode.L||input.character=='l'||input.character=='L')&&Activate(RRLScanKind.Pulse);
-        }
-        void Update()
-        {
-#if ENABLE_INPUT_SYSTEM
-            if(Keyboard.current?.kKey.wasPressedThisFrame==true)Activate(RRLScanKind.Structural);
-            if(Keyboard.current?.lKey.wasPressedThisFrame==true)Activate(RRLScanKind.Pulse);
-#endif
+            int key=(int)input.keyCode;
+            int index=key>=(int)KeyCode.Alpha1&&key<=(int)KeyCode.Alpha4?key-(int)KeyCode.Alpha1:-1;
+            var slots=R1RunController.Instance?.VehicleModel?.GetActiveSlots();
+            if(index<0||slots==null)return false;
+            return slots[index]==RoboRougelike.R3.R3PartKind.StructuralScanner?Activate(RRLScanKind.Structural):
+                slots[index]==RoboRougelike.R3.R3PartKind.ScannerPulse&&Activate(RRLScanKind.Pulse);
         }
         static string PartLabel(StructuralPartType type)=>type==StructuralPartType.Core?"Rdzeń":
             type==StructuralPartType.Weapon?"Broń":type==StructuralPartType.Wheel?"Koło":"Pancerz";
@@ -42,7 +39,6 @@ namespace RoboRougelike.PackageIntegration
             kind==ScannerSignalKind.Salvage?"Wrak":kind==ScannerSignalKind.Hazard?"Zagrożenie":"Cel";
         void OnGUI()
         {
-            if(HandleGuiInput(Event.current))Event.current.Use();
             if(!PlayerScope||R1RunController.Instance.Paused)return;if(scanners==null)Cache();
             if(label==null)label=new GUIStyle(GUI.skin.label){fontSize=15,wordWrap=true};
             var previous=GUI.matrix;float scale=Mathf.Min(Screen.width/1280f,Screen.height/720f);
@@ -57,7 +53,7 @@ namespace RoboRougelike.PackageIntegration
                     GUI.Box(new Rect(20,top,410,58+rows*22),GUIContent.none);
                     string readiness=!scanner.Device.HardwareAvailable?"Moduł niesprawny":
                         scanner.CooldownLeft>0?$"Odnowienie {scanner.CooldownLeft:0.0} s":"Gotowy • wymaga widocznego celu";
-                    GUI.Label(new Rect(30,top+5,390,46),$"K • Skan struktury • 60 m / 85° • {source.Contacts.Count} części\n{readiness}",label);
+                    GUI.Label(new Rect(30,top+5,390,46),$"{R1RunController.Instance.VehicleModel.ActiveSlotLabel(RoboRougelike.R3.R3PartKind.StructuralScanner)} • Skan struktury • 60 m / 85° • {source.Contacts.Count} części\n{readiness}",label);
                     int row=0;foreach(var contact in source.Contacts.Take(3))
                         GUI.Label(new Rect(30,top+52+22*row++,390,22),$"{PartLabel(contact.Type)} • HP {contact.HealthFraction*100:0}% • {(contact.Functional?"sprawny":"niesprawny")} • odczyt {source.DisplayLeft:0.0}s",label);
                     top+=66+rows*22;
@@ -71,7 +67,7 @@ namespace RoboRougelike.PackageIntegration
                     GUI.Box(new Rect(20,top,410,58+signals.Length*22),GUIContent.none);
                     string readiness=!scanner.Device.HardwareAvailable?"Moduł niesprawny":
                         scanner.CooldownLeft>0?$"Odnowienie {scanner.CooldownLeft:0.0} s":"Gotowy • sygnały także przez ściany";
-                    GUI.Label(new Rect(30,top+5,390,46),$"L • Impuls skanera • 20 m / 3 s • {visible.Length} sygnałów\n{readiness}",label);
+                    GUI.Label(new Rect(30,top+5,390,46),$"{R1RunController.Instance.VehicleModel.ActiveSlotLabel(RoboRougelike.R3.R3PartKind.ScannerPulse)} • Impuls skanera • 20 m / 3 s • {visible.Length} sygnałów\n{readiness}",label);
                     int row=0;foreach(var signal in signals)
                     {
                         var offset=signal.transform.position-transform.position;

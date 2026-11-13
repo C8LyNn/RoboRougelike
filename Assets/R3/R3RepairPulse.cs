@@ -83,11 +83,6 @@ namespace RoboRougelike.R3
         {
             var run=R1RunController.Instance;
             if(run==null||run.Player==null||run.Player.gameObject!=gameObject||!run.CanUseMovement)return;
-#if ENABLE_INPUT_SYSTEM
-            if(Keyboard.current?.vKey.wasPressedThisFrame==true)TryActivate();
-#else
-            if(Input.GetKeyDown(KeyCode.V))TryActivate();
-#endif
             Tick(Time.deltaTime);
         }
         void Tick(float delta)
