@@ -53,7 +53,7 @@ namespace RoboRougelike.R3
         public int[] activeSlots;
         public R3ActiveSlotCheckpoint[] activePreferences;
         public int constructionBudgetVersion,constructionBudgetLimit,constructionBudgetMilestonesApplied;
-        public float repairPulseRemaining,boosterRemaining,overdriveRemaining,rapidFireRemaining,doubleShotOverdriveRemaining;
+        public float repairPulseRemaining,boosterRemaining,overdriveRemaining,rapidFireRemaining,doubleShotOverdriveRemaining,targetedEmpRemaining,areaEmpRemaining;
         public int scrap;
         public bool suspensionEnabled,gyroEnabled,hasA,hasB,hasC,hasD;
         public int groupA,groupB,groupC,groupD;
@@ -137,7 +137,7 @@ namespace RoboRougelike.R3
                 activeSlotsVersion=1,activeSlots=activeSlots.Select(p=>p.HasValue?(int)p.Value:-1).ToArray(),
                 activePreferences=activeSlotPreference.Select(p=>new R3ActiveSlotCheckpoint{kind=(int)p.Key,slot=p.Value}).ToArray(),
                 constructionBudgetVersion=1,constructionBudgetLimit=ConstructionBudgetLimit,constructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied,
-                repairPulseRemaining=Remaining(RepairPulseReadyAt,now),boosterRemaining=Remaining(BoosterReadyAt,now),overdriveRemaining=Remaining(OverdriveReadyAt,now),rapidFireRemaining=Remaining(RapidFireReadyAt,now),doubleShotOverdriveRemaining=Remaining(DoubleShotOverdriveReadyAt,now),
+                repairPulseRemaining=Remaining(RepairPulseReadyAt,now),boosterRemaining=Remaining(BoosterReadyAt,now),overdriveRemaining=Remaining(OverdriveReadyAt,now),rapidFireRemaining=Remaining(RapidFireReadyAt,now),doubleShotOverdriveRemaining=Remaining(DoubleShotOverdriveReadyAt,now),targetedEmpRemaining=Remaining(TargetedEmpReadyAt,now),areaEmpRemaining=Remaining(AreaEmpReadyAt,now),
                 energyVersion=1,energy=Energy.Current,hasInitialEnergyPrepared=true,initialEnergyPrepared=InitialEnergyPrepared,
                 suspensionEnabled=SuspensionEnabled,suspensionMode=SuspensionMode,suspensionHeight=SuspensionHeightOffset,
                 gyroEnabled=GyroEnabled,drive=SelectedDrive,boosterThrust=BoosterThrustNewtons,boosterDuration=BoosterDurationSeconds,
@@ -175,7 +175,7 @@ namespace RoboRougelike.R3
                 !Finite(data.boosterDuration)||data.boosterDuration<.2f||data.boosterDuration>2||
                 !Finite(data.hoverHeight)||data.hoverHeight<.7f||data.hoverHeight>1.6f||
                 !Finite(data.grappleRemaining)||data.grappleRemaining<0||!Finite(data.repairPulseRemaining)||data.repairPulseRemaining<0||
-                !Finite(data.boosterRemaining)||data.boosterRemaining<0||!Finite(data.overdriveRemaining)||data.overdriveRemaining<0||!Finite(data.rapidFireRemaining)||data.rapidFireRemaining<0||!Finite(data.doubleShotOverdriveRemaining)||data.doubleShotOverdriveRemaining<0)return false;
+                !Finite(data.boosterRemaining)||data.boosterRemaining<0||!Finite(data.overdriveRemaining)||data.overdriveRemaining<0||!Finite(data.rapidFireRemaining)||data.rapidFireRemaining<0||!Finite(data.doubleShotOverdriveRemaining)||data.doubleShotOverdriveRemaining<0||!Finite(data.targetedEmpRemaining)||data.targetedEmpRemaining<0||!Finite(data.areaEmpRemaining)||data.areaEmpRemaining<0)return false;
             var all=data.mounted.Concat(data.inventory).ToArray();
             if(data.energyVersion==0&&all.Any(p=>p!=null&&p.FootprintRevision!=0))return false;
             if(all.Any(p=>!ValidCheckpointPart(p))||all.Select(p=>p.Id).Distinct(StringComparer.Ordinal).Count()!=all.Length||
@@ -326,6 +326,8 @@ namespace RoboRougelike.R3
             restored.OverdriveReadyAt=data.overdriveRemaining>0?now+data.overdriveRemaining:0;
             restored.RapidFireReadyAt=data.rapidFireRemaining>0?now+data.rapidFireRemaining:0;
             restored.DoubleShotOverdriveReadyAt=data.doubleShotOverdriveRemaining>0?now+data.doubleShotOverdriveRemaining:0;
+            restored.TargetedEmpReadyAt=data.targetedEmpRemaining>0?now+data.targetedEmpRemaining:0;
+            restored.AreaEmpReadyAt=data.areaEmpRemaining>0?now+data.areaEmpRemaining:0;
             restored.BoosterReadyAt=data.boosterRemaining>0?now+data.boosterRemaining:0;
             restored.SuspensionMode=data.suspensionMode;restored.SuspensionHeightOffset=data.suspensionHeight;restored.GyroEnabled=data.gyroEnabled;
             restored.BoosterThrustNewtons=data.boosterThrust;restored.BoosterDurationSeconds=data.boosterDuration;restored.HoverHeightMeters=data.hoverHeight;

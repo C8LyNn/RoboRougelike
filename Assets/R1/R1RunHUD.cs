@@ -272,7 +272,10 @@ namespace RoboRougelike.R1
                 bool hasOverdrive=offensive!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.Overdrive);
                 bool hasRapidFire=offensive!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.RapidFire);
                 bool hasDoubleBoost=offensive!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.DoubleShotOverdrive);
-                int extraStatusHeight=energy!=null?CombatAbilityExtraHeight((repairPulse!=null?1:0)+(hasOverdrive?1:0)+(hasRapidFire?1:0)+(hasDoubleBoost?1:0)):0;
+                var emp=player!=null?player.GetComponent<R3EmpDevices>():null;
+                bool hasTargetEmp=emp!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.TargetedEmp);
+                bool hasAreaEmp=emp!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.AreaEmp);
+                int extraStatusHeight=energy!=null?CombatAbilityExtraHeight((repairPulse!=null?1:0)+(hasOverdrive?1:0)+(hasRapidFire?1:0)+(hasDoubleBoost?1:0)+(hasTargetEmp?1:0)+(hasAreaEmp?1:0)):0;
                 if(!lowCore&&modules!=null&&run.VehicleModel!=null)
                 {
                     var drive=run.VehicleModel.SelectedDrive;
@@ -302,7 +305,9 @@ namespace RoboRougelike.R1
                         if(repairPulse!=null)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RepairPulse)} naprawa: {repairPulse.Status}",small);
                         if(hasOverdrive)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.Overdrive)} Overdrive: {offensive.OverdriveStatus}",small);
                         if(hasRapidFire)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RapidFire)} Rapid: {offensive.RapidFireStatus}",small);
-                        if(hasDoubleBoost)GUI.Label(CombatAbilityStatusRect(statusRow),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.DoubleShotOverdrive)} Double: {offensive.DoubleShotOverdriveStatus}",small);
+                        if(hasDoubleBoost)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.DoubleShotOverdrive)} Double: {offensive.DoubleShotOverdriveStatus}",small);
+                        if(hasTargetEmp)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.TargetedEmp)} EMP cel.: {emp.Status(R3PartKind.TargetedEmp)}",small);
+                        if(hasAreaEmp)GUI.Label(CombatAbilityStatusRect(statusRow),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.AreaEmp)} EMP obsz.: {emp.Status(R3PartKind.AreaEmp)}",small);
                     }
                     if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?"Mniej [I]":"Szczegóły [I]",compactButton))combatDetailsOpen=!combatDetailsOpen;
                     if(combatDetailsOpen)

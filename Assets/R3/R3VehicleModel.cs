@@ -8,7 +8,7 @@ using RoboRougelike.R1;
 namespace RoboRougelike.R3
 {
     // Append new values: checkpoints store these numeric IDs.
-    public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery, RepairPulse, DrivePower, EnergyRegenerator, SalvageOptimizer, Overdrive, RapidFire, DoubleShot, DoubleShotOverdrive }
+    public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery, RepairPulse, DrivePower, EnergyRegenerator, SalvageOptimizer, Overdrive, RapidFire, DoubleShot, DoubleShotOverdrive, TargetedEmp, AreaEmp }
     public enum R3WheelStyle { Offroad, Slick, LargeOffroad, Monster, SmallFork, BalloonFork, SpikedFork, TwinRoad, SteerRoad, SteerOffroad, CasterSlick, SwingOffroad }
     // Zero preserves the shape of every pre-existing checkpoint.
     public enum R3ArmorShape { Cube, Wedge, HalfBlock, Pyramid, RoundEdge, HalfWedge, Dome }
@@ -106,7 +106,7 @@ namespace RoboRougelike.R3
             R3PartKind.Booster=>35, R3PartKind.JumpDrive=>45, R3PartKind.Blink=>60,
             R3PartKind.Gyroscope=>30, R3PartKind.OmniDrive=>40, R3PartKind.MagneticGrapple=>45,
             R3PartKind.HoverEngine=>35, R3PartKind.CrawlerTrack=>45,
-            R3PartKind.BonusModule=>60,R3PartKind.DirectionalShield=>60,R3PartKind.PointDefense=>70,R3PartKind.StructuralScanner=>40,R3PartKind.ScannerPulse=>30,R3PartKind.IndependentSteering=>45,R3PartKind.Battery=>25,R3PartKind.RepairPulse=>50,R3PartKind.DrivePower=>45,R3PartKind.EnergyRegenerator=>40,R3PartKind.SalvageOptimizer=>40,R3PartKind.Overdrive=>40,R3PartKind.RapidFire=>40,R3PartKind.DoubleShot=>40,R3PartKind.DoubleShotOverdrive=>40, _=>ArmorCost };
+            R3PartKind.BonusModule=>60,R3PartKind.DirectionalShield=>60,R3PartKind.PointDefense=>70,R3PartKind.StructuralScanner=>40,R3PartKind.ScannerPulse=>30,R3PartKind.IndependentSteering=>45,R3PartKind.Battery=>25,R3PartKind.RepairPulse=>50,R3PartKind.DrivePower=>45,R3PartKind.EnergyRegenerator=>40,R3PartKind.SalvageOptimizer=>40,R3PartKind.Overdrive=>40,R3PartKind.RapidFire=>40,R3PartKind.DoubleShot=>40,R3PartKind.DoubleShotOverdrive=>40,R3PartKind.TargetedEmp=>50,R3PartKind.AreaEmp=>50, _=>ArmorCost };
     }
     public sealed partial class R3VehicleModel
     {
@@ -184,7 +184,7 @@ namespace RoboRougelike.R3
         public static float TierPassiveExtra(int tier)=>0f;
         public static float TierActivationCost(int tier)=>NormalizedTier(tier)==3?1.4f:NormalizedTier(tier)==2?1.2f:1f;
         public static bool SupportsFusion(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||
-            kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.SalvageOptimizer||kind==R3PartKind.Overdrive||kind==R3PartKind.RapidFire||kind==R3PartKind.DoubleShot||kind==R3PartKind.DoubleShotOverdrive||kind==R3PartKind.BonusModule||kind==R3PartKind.PointDefense||
+            kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.SalvageOptimizer||kind==R3PartKind.Overdrive||kind==R3PartKind.RapidFire||kind==R3PartKind.DoubleShot||kind==R3PartKind.DoubleShotOverdrive||kind==R3PartKind.TargetedEmp||kind==R3PartKind.AreaEmp||kind==R3PartKind.BonusModule||kind==R3PartKind.PointDefense||
             (kind==R3PartKind.Gun&&weapon>=R4WeaponKind.Basic&&weapon<=R4WeaponKind.EmpEmitter);
         public R3VehicleDesign Design { get; }
         // A disposable workshop model; never serialized into an expedition.
@@ -226,7 +226,7 @@ namespace RoboRougelike.R3
         public static bool IsActiveSlotPart(R3PartKind kind)=>
             kind==R3PartKind.Booster||kind==R3PartKind.JumpDrive||kind==R3PartKind.Blink||
             kind==R3PartKind.MagneticGrapple||kind==R3PartKind.StructuralScanner||
-            kind==R3PartKind.ScannerPulse||kind==R3PartKind.RepairPulse||kind==R3PartKind.Overdrive||kind==R3PartKind.RapidFire||kind==R3PartKind.DoubleShotOverdrive;
+            kind==R3PartKind.ScannerPulse||kind==R3PartKind.RepairPulse||kind==R3PartKind.Overdrive||kind==R3PartKind.RapidFire||kind==R3PartKind.DoubleShotOverdrive||kind==R3PartKind.TargetedEmp||kind==R3PartKind.AreaEmp;
         public static bool IsPassiveSlotPart(R3PartKind kind)=>
             kind==R3PartKind.Suspension||kind==R3PartKind.Gyroscope||kind==R3PartKind.BonusModule||
             kind==R3PartKind.DirectionalShield||kind==R3PartKind.PointDefense||kind==R3PartKind.IndependentSteering||
@@ -324,6 +324,8 @@ namespace RoboRougelike.R3
         public float OverdriveReadyAt {get;internal set;}
         public float RapidFireReadyAt {get;internal set;}
         public float DoubleShotOverdriveReadyAt {get;internal set;}
+        public float TargetedEmpReadyAt {get;internal set;}
+        public float AreaEmpReadyAt {get;internal set;}
         public float BoosterReadyAt {get;internal set;}
         public long ConstructionBudgetUsed=>Parts.Sum(p=>(long)ConstructionPartCost(p));
         public int PhysicalPartCount=>Parts.Count(p=>p.Health>0);
@@ -354,7 +356,7 @@ namespace RoboRougelike.R3
             var design=new R3VehicleDesign{Name=Design.Name,Description=Design.Description,Speed=Design.Speed,TurnSpeed=Design.TurnSpeed,CoreHp=Design.CoreHp};
             design.Parts.AddRange(Design.Parts.Select(p=>p.Copy()));
             var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost,StandardPurchaseMultiplier=Economy.StandardPurchaseMultiplier,SalvageOptimizerBonus=Economy.SalvageOptimizerBonus,SalvageOptimizerExtraOffersPerUnit=Economy.SalvageOptimizerExtraOffersPerUnit,OverdriveBonusPerUnit=Economy.OverdriveBonusPerUnit,OverdriveEnergyPerCopy=Economy.OverdriveEnergyPerCopy,OverdriveDuration=Economy.OverdriveDuration,OverdriveCooldown=Economy.OverdriveCooldown,RapidFireReductionPerUnit=Economy.RapidFireReductionPerUnit,RapidFireEnergyPerCopy=Economy.RapidFireEnergyPerCopy,RapidFireDuration=Economy.RapidFireDuration,RapidFireCooldown=Economy.RapidFireCooldown,DoubleShotChancePerUnit=Economy.DoubleShotChancePerUnit,DoubleShotOverdriveEnergyPerCopy=Economy.DoubleShotOverdriveEnergyPerCopy,DoubleShotOverdriveDuration=Economy.DoubleShotOverdriveDuration,DoubleShotOverdriveCooldown=Economy.DoubleShotOverdriveCooldown,DoubleShotOverdriveExtraPerUnit=Economy.DoubleShotOverdriveExtraPerUnit,BlockGrantQuantity=Economy.BlockGrantQuantity,DriveGrantQuantity=Economy.DriveGrantQuantity,Construction=ConstructionSettings.Copy()});
-            copy.CreativeMode=CreativeMode;copy.ConstructionBudgetLimit=ConstructionBudgetLimit;copy.ConstructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied;copy.RepairPulseReadyAt=RepairPulseReadyAt;copy.OverdriveReadyAt=OverdriveReadyAt;copy.RapidFireReadyAt=RapidFireReadyAt;copy.DoubleShotOverdriveReadyAt=DoubleShotOverdriveReadyAt;copy.BoosterReadyAt=BoosterReadyAt;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
+            copy.CreativeMode=CreativeMode;copy.ConstructionBudgetLimit=ConstructionBudgetLimit;copy.ConstructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied;copy.RepairPulseReadyAt=RepairPulseReadyAt;copy.OverdriveReadyAt=OverdriveReadyAt;copy.RapidFireReadyAt=RapidFireReadyAt;copy.DoubleShotOverdriveReadyAt=DoubleShotOverdriveReadyAt;copy.TargetedEmpReadyAt=TargetedEmpReadyAt;copy.AreaEmpReadyAt=AreaEmpReadyAt;copy.BoosterReadyAt=BoosterReadyAt;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
             copy.factoryWheels.Clear();foreach(var item in factoryWheels)copy.factoryWheels.Add(item.Key,item.Value);
             copy.SuspensionEnabled=SuspensionEnabled;copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset;
             copy.RefreshEnergyLayout();copy.Energy.Restore(Energy.Current);copy.InitialEnergyPrepared=InitialEnergyPrepared;

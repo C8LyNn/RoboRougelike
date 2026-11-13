@@ -12,6 +12,15 @@ using UnityEngine.TestTools;
 public sealed class BacklogDeviceTierTests
 {
     R3VehicleModel Model()=>new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+    [TestCase("TargetedEmp")][TestCase("AreaEmp")]
+    public void EmpDevicesAreActiveSlotsAndSupportFusionAndCheckpoint(string name)
+    {
+        Assert.That(System.Enum.TryParse(name,out R3PartKind kind),Is.True,"Missing EMP device: "+name);
+        Assert.That(R3VehicleModel.IsActiveSlotPart(kind),Is.True);
+        var model=Model();var part=FuseThree(model,kind);Mount(model,part);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(model.MakeCheckpoint(0),R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==part.Id).Tier,Is.EqualTo(2));
+    }
     R3PartState FuseThree(R3VehicleModel model,R3PartKind kind)
     {
         model.Award(2000);
@@ -96,6 +105,41 @@ public sealed class BacklogDeviceTierGameplayTests
         var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
         var cell=cells.First(c=>run.VehicleModel.OwnedPlacementError(part.Id,c,default)==null);
         Assert.That(run.GarageMount(part.Id,cell),Is.True);return part;
+    }
+    [UnityTest] public IEnumerator EmpDevicesDisruptRealEnemyWithoutDamageAndPreserveCooldown()
+    {
+        FuseAndMount(R3PartKind.TargetedEmp);FuseAndMount(R3PartKind.AreaEmp);
+        Assert.That(run.EnterTestRange(),Is.True);
+        for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,run.Player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"new-emp-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();enemy.ConfigureMovement(0,12,0);
+        run.Player.GetComponent<Rigidbody>().position=new Vector3(100,5,100);
+        enemy.GetComponent<Rigidbody>().position=new Vector3(100,4,106);Physics.SyncTransforms();
+        yield return new WaitForFixedUpdate();
+        var target=enemy.WeaponBlock;var receiver=target.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();
+        Assert.That(receiver,Is.Not.Null);
+        float hp=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        var device=run.Player.GetComponent<R3EmpDevices>();var energy=run.Player.GetComponent<VehicleEnergyBank>();
+        Assert.That(device,Is.Not.Null);float before=energy.Current;
+        Assert.That(device.TryTargeted(null),Is.False);Assert.That(energy.Current,Is.EqualTo(before));
+        Assert.That(device.TryTargeted(run.Player.GetComponentInChildren<Collider>()),Is.False);
+        Assert.That(energy.Current,Is.EqualTo(before),"An invalid target must not consume energy");
+        Assert.That(device.TryTargeted(target.GetComponent<Collider>()),Is.True);
+        Assert.That(receiver.IsDisrupted,Is.True);Assert.That(energy.Current,Is.EqualTo(before-18).Within(.1));
+        Assert.That(device.TryTargeted(target.GetComponent<Collider>()),Is.False);
+        receiver.ClearEmp();
+        var all=enemy.GetComponentsInChildren<RoboRougelike.Mechanics.EMP.EmpReceiver>();
+        foreach(var r in all)r.ClearEmp();
+        Assert.That(device.TryArea(),Is.True);
+        Assert.That(all.Any(r=>r.IsDisrupted),Is.True,"Area pulse must reach at least one electronic component");
+        Assert.That(device.TryArea(),Is.False);
+        Assert.That(enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.EqualTo(hp));
+        var checkpoint=run.VehicleModel.MakeCheckpoint(Time.time);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,run.VehicleModel.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.TargetedEmpReadyAt,Is.GreaterThan(Time.time));Assert.That(restored.AreaEmpReadyAt,Is.GreaterThan(Time.time));
     }
     [UnityTest] public IEnumerator OverdriveCombinesMountedCopiesAndCostsEnergyOnce()
     {

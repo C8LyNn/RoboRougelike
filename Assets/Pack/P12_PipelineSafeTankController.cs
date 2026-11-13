@@ -405,6 +405,12 @@ public float CurrentForwardSpeed =>
             if(aimCamera==null)aimCamera=Camera.main;
             return aimCamera!=null?FindAimPoint():transform.position+transform.forward*24;
         }
+        public Collider ModuleAimCollider()
+        {
+            if(aimCamera==null)aimCamera=Camera.main;
+            if(aimCamera==null)return null;
+            FindAimPoint(true);return LastConsumedAimCollider;
+        }
         public Vector3 LastConsumedAimPoint {get;private set;}
         public Collider LastConsumedAimCollider {get;private set;}
         public int LastConsumedAimFrame {get;private set;}=-1;
