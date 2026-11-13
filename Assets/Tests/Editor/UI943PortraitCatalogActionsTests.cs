@@ -36,6 +36,26 @@ public sealed class UI943PortraitCatalogActionsTests
         return default;
     }
 
+    [UnityTest] public IEnumerator GarageActionFeedbackRemainsVisibleBeforePlacementHintReturns()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);
+        var garage=run.Garage;var hud=run.GetComponent<R1RunHUD>();
+        garage.UseInventory=false;garage.SelectedInventoryId=null;garage.SelectedPart=R3PartKind.Armor;
+        garage.Cell=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Core).Cell;
+        typeof(R3GarageView).GetProperty("HasTarget").GetSetMethod(true).Invoke(garage,new object[]{true});
+        Assert.That(garage.RemovePartAt(garage.Cell),Is.False);
+        Assert.That(garage.Message,Does.Contain("rdzenia"));
+        Assert.That((string)Invoke(hud,"SimpleGarageFeedback",run),Does.Contain("rdzenia"),
+            "The reason for a rejected action must not immediately disappear behind the ghost hint.");
+        yield return new WaitForSecondsRealtime(3.2f);
+        Assert.That((string)Invoke(hud,"SimpleGarageFeedback",run),Does.Contain(garage.PlacementIssue),
+            "The current placement issue must return after the action feedback expires.");
+    }
+
     [TestCase(false,5,2,false,"Brakuje 3 Z")]
     [TestCase(false,5,5,false,"5 Z")]
     [TestCase(true,0,0,false,"0 Z")]

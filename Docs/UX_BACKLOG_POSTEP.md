@@ -16,6 +16,8 @@ Bazowy kod tej listy: `675fe0b80da184e4f8db8bf2c5f3e446ee8aeb63` (PR #1289).
 - [x] Podsumowanie wyprawy: zgodny z restartem opis nowego losowania pojazdu, poprawna nazwa licznika części i neutralny opis zwycięstwa — celowany EditMode 4/4, `run-summary-final.xml`.
 - [x] Poligon kreatywny: informacja o braku napędu nie blokuje uruchomienia testu — celowany EditMode 5/5, `creative-drive-final.xml`.
 - [x] Sekwencja garażu: montaż ostatniej sprawnej części → wskazanie wraku → odmowa montażu → jawna naprawa → montaż tego samego ID — 1/1 test sceny sterowany API, `mount-repair-no-closure.xml`.
+- [x] Garaż: wynik zdejmowania lub naprawy nie znika natychmiast pod komunikatem widma; po chwili wraca aktualna wskazówka montażu — 5/5 celowanych testów sceny sterowanych API, `garage-feedback-green.xml`.
+- [x] Celowana kontrola istniejącej energii i naprawy: regeneracja w ruchu i na postoju, pole ładowania, pasywna rezerwa, zapis energii oraz aktywny moduł naprawczy — 10/10 EditMode, `energy-repair-current.xml`.
 
 Wyniki dotyczą odpowiednich SHA poszczególnych zmian, a nie pełnej regresji końcowej.
 Oryginalne XML i logi znajdują się lokalnie w katalogu `RoboRougelike-LekkaStylizacja-QA`.
