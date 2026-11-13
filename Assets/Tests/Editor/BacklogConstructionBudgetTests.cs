@@ -44,7 +44,7 @@ public sealed class BacklogConstructionBudgetTests
         design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
         design.Parts.Add(new R3PartState(Vector3Int.right,R3PartKind.Armor));
         var economy=new R3GarageEconomy{Construction=new R3ConstructionSettings{StartingBudget=8}};
-        var model=new R3VehicleModel(design,economy);model.Award(100);
+        var model=new R3VehicleModel(design,economy);model.Award(200); // isolate construction budget from shop prices
         Assert.That(model.ConstructionBudgetUsed,Is.EqualTo(4));
         Assert.That(model.PurchaseToInventory(R3PartKind.Battery),Is.True);
         Assert.That(model.ConstructionBudgetUsed,Is.EqualTo(4),"Inventory is not mounted construction.");

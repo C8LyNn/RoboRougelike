@@ -11,7 +11,21 @@ public sealed class OwnedRebuildPricingTests
     public void OwnedDestroyedRebuildCostsLessThanPurchase(R3PartKind kind,int purchase)
     {
         var m=Model();var p=new R3PartState(Vector3Int.zero,kind,0);int quote=m.RepairCost(p);
-        Assert.That(m.Price(kind),Is.EqualTo(purchase));Assert.That(quote,Is.GreaterThan(0).And.LessThan(purchase));
+        Assert.That(m.Price(kind),Is.EqualTo(purchase*3));Assert.That(quote,Is.GreaterThan(0).And.LessThan(purchase));
+    }
+    [Test] public void StoreMultiplierDoesNotChangeOwnedRepairOrDismantling()
+    {
+        var economy=new R3GarageEconomy();
+        var multiplier=typeof(R3GarageEconomy).GetField("StandardPurchaseMultiplier");
+        Assert.That(multiplier,Is.Not.Null,"Ordinary shop multiplier must be configurable.");
+        var model=Model(economy);var wheel=new R3PartState(Vector3Int.zero,R3PartKind.Wheel,.5f);
+        int repair=model.RepairCost(wheel),sale=model.DismantleValue(wheel);
+        Assert.That(model.Price(R3PartKind.Wheel),Is.EqualTo(45));
+        Assert.That(model.Price(R3PartKind.Gun,R4WeaponKind.RocketLauncher),Is.EqualTo(3*R4WeaponDefinition.Get(R4WeaponKind.RocketLauncher).Price));
+        multiplier.SetValue(economy,2f);
+        Assert.That(model.Price(R3PartKind.Wheel),Is.EqualTo(30));
+        Assert.That(model.DeepCopy().Price(R3PartKind.Wheel),Is.EqualTo(30));
+        Assert.That(model.RepairCost(wheel),Is.EqualTo(repair));Assert.That(model.DismantleValue(wheel),Is.EqualTo(sale));
     }
     [TestCase(R3PartKind.Wheel)][TestCase(R3PartKind.Gun)]
     public void OwnedRebuildChargesOnceAndKeepsPhysicalGuid(R3PartKind kind)

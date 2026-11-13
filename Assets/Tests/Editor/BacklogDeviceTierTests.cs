@@ -14,7 +14,7 @@ public sealed class BacklogDeviceTierTests
     R3VehicleModel Model()=>new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
     R3PartState FuseThree(R3VehicleModel model,R3PartKind kind)
     {
-        model.Award(500);
+        model.Award(2000);
         for(int i=0;i<3;i++)Assert.That(model.PurchaseToInventory(kind),Is.True);
         var ids=model.Inventory.Where(p=>p.Kind==kind).Take(3).Select(p=>p.Id).ToArray();
         Assert.That(model.FuseInventory(ids),Is.True);
@@ -48,7 +48,7 @@ public sealed class BacklogDeviceTierTests
     }
     [Test] public void TierThreeRegeneratorHasFourTimesTheEffectAndTwentyFiveReservation()
     {
-        var model=Model();model.Award(500);float baseline=model.Energy.Maximum;
+        var model=Model();model.Award(2000);float baseline=model.Energy.Maximum;
         for(int i=0;i<9;i++)Assert.That(model.PurchaseToInventory(R3PartKind.EnergyRegenerator),Is.True);
         for(int i=0;i<3;i++)Assert.That(model.FuseInventory(model.Inventory.Where(p=>p.Kind==R3PartKind.EnergyRegenerator&&p.Tier==1).Take(3).Select(p=>p.Id).ToArray()),Is.True);
         Assert.That(model.FuseInventory(model.Inventory.Select(p=>p.Id).ToArray()),Is.True);

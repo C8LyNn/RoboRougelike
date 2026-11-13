@@ -91,6 +91,7 @@ namespace RoboRougelike.R3
     public sealed class R3GarageEconomy
     {
         public int ArmorCost = 5, WheelCost = 15, GunCost = 30, MaxRepairCost = 3;
+        public float StandardPurchaseMultiplier=3f;
         public R3ConstructionSettings Construction = new R3ConstructionSettings();
         public int Price(R3PartKind kind) => kind switch {
             R3PartKind.Suspension=>25, R3PartKind.Wheel=>WheelCost, R3PartKind.Gun=>GunCost,
@@ -341,7 +342,7 @@ namespace RoboRougelike.R3
         {
             var design=new R3VehicleDesign{Name=Design.Name,Description=Design.Description,Speed=Design.Speed,TurnSpeed=Design.TurnSpeed,CoreHp=Design.CoreHp};
             design.Parts.AddRange(Design.Parts.Select(p=>p.Copy()));
-            var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost,Construction=ConstructionSettings.Copy()});
+            var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost,StandardPurchaseMultiplier=Economy.StandardPurchaseMultiplier,Construction=ConstructionSettings.Copy()});
             copy.CreativeMode=CreativeMode;copy.ConstructionBudgetLimit=ConstructionBudgetLimit;copy.ConstructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied;copy.RepairPulseReadyAt=RepairPulseReadyAt;copy.BoosterReadyAt=BoosterReadyAt;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
             copy.factoryWheels.Clear();foreach(var item in factoryWheels)copy.factoryWheels.Add(item.Key,item.Value);
             copy.SuspensionEnabled=SuspensionEnabled;copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset;
@@ -427,8 +428,15 @@ namespace RoboRougelike.R3
         public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && ValidWheelStyle(part) && ValidArmorShape(part) && ValidFootprint(part) && part.Tier>=0&&part.Tier<=3&&
             (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&
             !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
-        public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => !ValidEconomicKind(kind,weapon)||CreativeMode?0:Math.Max(1,
+        int BasePrice(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>!ValidEconomicKind(kind,weapon)?0:Math.Max(1,
             kind==R3PartKind.Gun&&weapon!=R4WeaponKind.Basic?R4WeaponDefinition.Get(weapon).Price:Economy.Price(kind));
+        public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)
+        {
+            if(!ValidEconomicKind(kind,weapon)||CreativeMode)return 0;
+            float multiplier=Economy.StandardPurchaseMultiplier;
+            if(float.IsNaN(multiplier)||float.IsInfinity(multiplier))multiplier=3f;
+            return (int)Math.Min(int.MaxValue,Math.Max(1d,Math.Ceiling(BasePrice(kind,weapon)*(double)Math.Max(0,multiplier))));
+        }
         public bool Owns(string id) => Parts.Concat(inventory).Any(p=>p.Id==id);
         // Mounted wreck plans reserve their type too: rebuilding them must not
         // turn a legal four-type design into a five-type vehicle. Inventory
@@ -665,7 +673,7 @@ namespace RoboRougelike.R3
             if(part==null||!ValidEconomicPart(part)||part.Health>=1||(cost<=0&&!CreativeMode)||Scrap<cost)return false;
             Scrap-=cost;part.Health=1;return true;
         }
-        int OwnedPartValue(R3PartState part)=>Price(part.Kind,part.Weapon)*(NormalizedTier(part.Tier)==3?9:NormalizedTier(part.Tier)==2?3:1);
+        int OwnedPartValue(R3PartState part)=>(int)Math.Min(int.MaxValue,(long)BasePrice(part.Kind,part.Weapon)*(NormalizedTier(part.Tier)==3?9:NormalizedTier(part.Tier)==2?3:1));
         public int DismantleValue(R3PartState part) => !ValidEconomicPart(part)?0:Mathf.FloorToInt(OwnedPartValue(part)*0.25f*Mathf.Clamp01(part.Health));
         public static bool SameBonusType(R3PartState a,R3PartState b)=>a!=null&&b!=null&&
             a.Kind==R3PartKind.BonusModule&&b.Kind==R3PartKind.BonusModule&&
