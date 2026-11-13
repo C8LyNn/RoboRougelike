@@ -175,7 +175,7 @@ namespace RoboRougelike.R1
             catalogGroup=null;catalogBonusId=null;dismantleConfirmation=null;catalogFeedback=null;
             var garage=run.Garage;garage.SelectedInventoryId=null;garage.UseInventory=true;
             if(garage.Tool==R41GarageTool.Mount)
-            {garage.SetTool(R41GarageTool.Mount);garage.Message="Wybierz posiadaną część z listy.";}
+            {garage.SetTool(R41GarageTool.Mount);garage.Message="Wybierz posiadaną część albo pokaż wszystkie części w filtrze.";}
         }
 
         void DrawQuickOwnedFilter(R1RunController run,Rect rect)
@@ -225,6 +225,16 @@ namespace RoboRougelike.R1
             kind==R3PartKind.BonusModule?"Tylko z nagród":
             !unlocked?"Pokonaj wroga z tą bronią":full?"Magazyn pełny":
             price==0?"Dodaj za darmo":scrap<price?$"Brakuje {price-scrap} Z":toInventory?$"Kup do magazynu — {price} Z":$"Kup — {price} Z";
+
+        static string QuickPurchaseCaption(bool creative,R3PartKind kind,bool unlocked,int price,int scrap,bool full)
+        {
+            if(!unlocked)return "Pokonaj wroga z tą bronią";
+            if(full)return "Magazyn pełny";
+            if(creative)return "Dodaj i wybierz\n0 Z";
+            if(kind==R3PartKind.BonusModule||price<=0||scrap<price)
+                return GaragePurchaseCaption(kind,unlocked,price,scrap,full);
+            return $"Kup i wybierz\n{price} Z";
+        }
 
         static bool CanBuyFive(R3PartKind kind,bool unlocked,int price,int scrap,int inventoryCount)=>
             kind!=R3PartKind.BonusModule&&unlocked&&price>0&&scrap>=0&&inventoryCount>=0&&
@@ -463,6 +473,16 @@ namespace RoboRougelike.R1
             if(matching==null&&run.CreativeWorkshop)run.AddCreativeEquivalent(mounted,out matching);
             if(matching==null)
             {
+                var wreck=items.FirstOrDefault(p=>p.Health<=0&&R3VehicleModel.SameMountVariant(p,mounted));
+                if(wreck!=null)
+                {
+                    garage.ChooseInventory(wreck.Id);garage.CopyMountedRotation(mounted);
+                    garage.Message=$"Część T{R3VehicleModel.NormalizedTier(wreck.Tier)} jest zniszczona. Użyj naprawy poniżej.";
+                    return true;
+                }
+            }
+            if(matching==null)
+            {
                 garage.SelectedInventoryId=null;garage.SetTool(R41GarageTool.Mount);
                 int tier=R3VehicleModel.NormalizedTier(mounted.Tier);
                 garage.Message=items.Any(p=>p.Health<=0&&R3VehicleModel.SameMountVariant(p,mounted))?
@@ -654,7 +674,7 @@ namespace RoboRougelike.R1
                 var kind=catalogGroup.Value;int price=model.Price(kind,catalogWeapon);
                 bool unlocked=run.CanBuyTechnology(kind,catalogWeapon);
                 GUI.enabled=!garageOptionsOpen&&unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&model.Inventory.Count<model.AvailableInventoryCapacity;
-                if(GUI.Button(new Rect(12,560,120,42),model.CreativeMode?"Dodaj za darmo":GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))BuyQuickPart(run);
+                if(GUI.Button(new Rect(12,560,120,42),QuickPurchaseCaption(model.CreativeMode,kind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))BuyQuickPart(run);
                 DrawBuyFive(run,kind,catalogWeapon,new Rect(137,560,120,42));
                 GUI.enabled=!garageOptionsOpen;
             }
@@ -718,7 +738,7 @@ namespace RoboRougelike.R1
                 var kind=catalogGroup.Value;int price=model.Price(kind,catalogWeapon);
                 bool unlocked=run.CanBuyTechnology(kind,catalogWeapon);
                 GUI.enabled=!garageOptionsOpen&&unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&model.Inventory.Count<model.AvailableInventoryCapacity;
-                if(GUI.Button(new Rect(458,690,140,40),model.CreativeMode?"Dodaj za darmo":GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))BuyQuickPart(run);
+                if(GUI.Button(new Rect(458,690,140,40),QuickPurchaseCaption(model.CreativeMode,kind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))BuyQuickPart(run);
                 DrawBuyFive(run,kind,catalogWeapon,new Rect(604,690,140,40));
                 GUI.enabled=!garageOptionsOpen;
             }

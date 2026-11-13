@@ -23,6 +23,18 @@ public sealed class UI943PortraitCatalogActionsTests
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
 
+    [TestCase(false,R3PartKind.Armor,true,5,20,false,"Kup i wybierz")]
+    [TestCase(false,R3PartKind.Armor,true,5,3,false,"Brakuje 2 Z")]
+    [TestCase(false,R3PartKind.Armor,true,5,20,true,"Magazyn pełny")]
+    [TestCase(false,R3PartKind.Gun,false,20,100,false,"Pokonaj")]
+    [TestCase(true,R3PartKind.Armor,true,0,0,false,"Dodaj i wybierz")]
+    public void QuickPurchaseExplainsSelectionAndUnavailableActions(bool creative,R3PartKind kind,bool unlocked,int price,int scrap,bool full,string expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("QuickPurchaseCaption",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((string)method.Invoke(null,new object[]{creative,kind,unlocked,price,scrap,full}),Does.Contain(expected));
+    }
+
     [TestCase(true,"stary błąd",null)]
     [TestCase(false,"Pojazd jest zbyt szeroki.","Pojazd jest zbyt szeroki.")]
     [TestCase(false,null,"Nie udało się uruchomić aktywności.")]
@@ -657,8 +669,8 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(run.Garage.SelectedInventoryId,Is.Null);Assert.That(run.Garage.Message,Does.Contain("mocowania"));
         matching.ContactMask=oldMask;
         matching.Health=0;
-        Assert.That(hud.SelectMountedPartForBuilding(run,mounted),Is.False);
-        Assert.That(run.Garage.SelectedInventoryId,Is.Null,"Do not silently substitute the healthy lower tier.");
+        Assert.That(hud.SelectMountedPartForBuilding(run,mounted),Is.True);
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(matching.Id),"Select the matching wreck, not the healthy lower tier.");
         Assert.That(run.Garage.Message,Does.Contain("T2").And.Contain("napraw"));
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(lower.Tier,Is.EqualTo(1));
         var copy=typeof(R1RunController).GetMethod("AddCreativeEquivalent");Assert.That(copy,Is.Not.Null);
@@ -693,8 +705,9 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(run.Garage.Tool,Is.EqualTo(R41GarageTool.Mount));
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(count));
         first.Health=0;second.Health=0;
-        Assert.That((bool)method.Invoke(hud,new object[]{run,mounted}),Is.False);
-        Assert.That(run.Garage.SelectedInventoryId,Is.Null);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        Assert.That((bool)method.Invoke(hud,new object[]{run,mounted}),Is.True);
+        Assert.That(new[]{first.Id,second.Id},Does.Contain(run.Garage.SelectedInventoryId));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
         Assert.That(run.Garage.Message,Does.Contain("napraw"));
         yield return new ExitPlayMode();
     }
@@ -1193,6 +1206,7 @@ public sealed class UI943PortraitCatalogActionsTests
         Invoke(hud,"ToggleQuickOwnedOnly",run);
         Assert.That((bool)Field(hud,"quickOwnedOnly"),Is.True);
         Assert.That(Field(hud,"catalogGroup"),Is.Null,"A non-owned group must not remain a hidden purchase target.");
+        Assert.That(run.Garage.Message,Does.Contain("wszystkie"),"The filter must explain how to reach other parts.");
         var owned=((IEnumerable)Invoke(hud,"BuildQuickCatalogEntries",run.VehicleModel,0,true)).Cast<object>().ToArray();
         Assert.That(owned.Length,Is.EqualTo(1),"A wreck must remain listed so the player can repair it.");
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(ContainsId(run.VehicleModel,wreck.Id),Is.True);
