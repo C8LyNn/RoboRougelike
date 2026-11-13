@@ -1,0 +1,451 @@
+{
+ "id": "R4M_WheelM_Side_Offroad",
+ "pilot_type": "Wheel",
+ "construction": "Brutal, proposal P (from the Pass 1 wheel: blocky lugs, six-spoke rim, bolted hub). New: paddle blocks in two staggered rows that wrap over the shoulder; cast six-spoke centre with a bolted bead-lock ring; a planetary hub housing that stands proud of the tyre with six wheel nuts; ventilated brake disc with a caliper that clamps; heavy coil-over shock; gusseted carrier plate",
+ "style_character": "heavy machinery: bare gun-metal, exposed mechanisms, bolts, ribs, gussets, cast surface",
+ "artistic_acceptance": "PENDING_OWNER_REVIEW",
+ "textures": {
+  "base": "B_Brutal/R4M_WheelM_Side_Offroad_base.jpg",
+  "orm": "B_Brutal/R4M_WheelM_Side_Offroad_orm.jpg",
+  "normal": "B_Brutal/R4M_WheelM_Side_Offroad_normal.png",
+  "emission": "B_Brutal/R4M_WheelM_Side_Offroad_emission.jpg",
+  "normal_strength": 1.0,
+  "uv": "baked",
+  "baked": true,
+  "paintmask": "B_Brutal/R4M_WheelM_Side_Offroad_paintmask.png",
+  "size": 2048
+ },
+ "material_textures": {
+  "R4P_Base": {
+   "base_texture": "B_Brutal/R4M_WheelM_Side_Offroad_base.jpg",
+   "orm_texture": "B_Brutal/R4M_WheelM_Side_Offroad_orm.jpg",
+   "normal_texture": "B_Brutal/R4M_WheelM_Side_Offroad_normal.png"
+  },
+  "R4P_Metal": {
+   "base_texture": "B_Brutal/R4M_WheelM_Side_Offroad_base.jpg",
+   "orm_texture": "B_Brutal/R4M_WheelM_Side_Offroad_orm.jpg",
+   "normal_texture": "B_Brutal/R4M_WheelM_Side_Offroad_normal.png"
+  },
+  "R4P_Secondary": {
+   "base_texture": "B_Brutal/R4M_WheelM_Side_Offroad_base.jpg",
+   "orm_texture": "B_Brutal/R4M_WheelM_Side_Offroad_orm.jpg",
+   "normal_texture": "B_Brutal/R4M_WheelM_Side_Offroad_normal.png"
+  },
+  "R4P_Trim": {
+   "base_texture": "B_Brutal/R4M_WheelM_Side_Offroad_base.jpg",
+   "orm_texture": "B_Brutal/R4M_WheelM_Side_Offroad_orm.jpg",
+   "normal_texture": "B_Brutal/R4M_WheelM_Side_Offroad_normal.png"
+  }
+ },
+ "board_frames": [
+  {
+   "clip": "Roll",
+   "frame": 33
+  },
+  {
+   "clip": "Roll",
+   "frame": 39
+  },
+  {
+   "clip": "Reverse",
+   "frame": 65
+  },
+  {
+   "clip": "Brake",
+   "frame": 91
+  }
+ ],
+ "style": "B",
+ "style_label": "B_Brutal",
+ "family": "wheel",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "APPROVED rig / sockets (from source GLB)",
+ "source": "#1018",
+ "meshes": [
+  {
+   "object": "R4M_WheelM_Side_Offroad_Rotor",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 4852,
+   "vertices": 2568,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4M_WheelM_Side_Offroad_Caliper",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 84,
+   "vertices": 48,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  },
+  {
+   "object": "R4M_WheelM_Side_Offroad_Shock",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 522,
+   "vertices": 267,
+   "uv": true,
+   "material_slots": 3,
+   "ok": true
+  },
+  {
+   "object": "R4M_WheelM_Side_Offroad_Mount",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 368,
+   "vertices": 202,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4M_WheelM_Side_Offroad_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 4526,
+  "vertices": 2435,
+  "uv": true,
+  "material_slots": 4,
+  "ok": true
+ },
+ "triangles": 5826,
+ "triangles_lod1": 4526,
+ "mesh_objects": 4,
+ "material_slots_total": 11,
+ "materials": [
+  "R4P_Base",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.2604,
+   -0.3906,
+   -0.388
+  ],
+  [
+   0.191,
+   0.3906,
+   0.388
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.262,
+   -0.392,
+   -0.392
+  ],
+  [
+   0.194,
+   0.392,
+   0.392
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": {
+  "max_outside_source_node_bounds_mm": 0.64,
+  "per_node_mm": {
+   "R4M_WheelM_Side_Offroad_Rotor": 0.64,
+   "R4M_WheelM_Side_Offroad_Mount": 0.0
+  },
+  "PASS": true
+ },
+ "ports": [
+  {
+   "dir": "left",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": {
+  "source_glb": "ModelFactory/R4Wheels/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+  "source_sha256": "6f5fb68eab1dc4e61917c0f6de9db1cb65ea7e3e6ce8eedffefd1ed09a079ca6",
+  "empties": [
+   "GroundProbe",
+   "Socket_Mount",
+   "Wheel_Axle"
+  ],
+  "missing": [],
+  "pos_dev_mm": 0.0,
+  "rot_dev_deg": 0.0396,
+  "mesh_nodes_source": [
+   "R4M_WheelM_Side_Offroad_Mount",
+   "R4M_WheelM_Side_Offroad_Rotor"
+  ],
+  "mesh_nodes_missing": [],
+  "PASS": true
+ },
+ "hierarchy": {
+  "R4M_WheelM_Side_Offroad_ROOT": null,
+  "R4M_WheelM_Side_Offroad_Rotor": "R4M_WheelM_Side_Offroad_ROOT",
+  "R4M_WheelM_Side_Offroad_Caliper": "R4M_WheelM_Side_Offroad_ROOT",
+  "R4M_WheelM_Side_Offroad_Shock": "R4M_WheelM_Side_Offroad_ROOT",
+  "R4M_WheelM_Side_Offroad_Mount": "R4M_WheelM_Side_Offroad_ROOT",
+  "GroundProbe": "R4M_WheelM_Side_Offroad_ROOT",
+  "Socket_Mount": "R4M_WheelM_Side_Offroad_ROOT",
+  "Wheel_Axle": "R4M_WheelM_Side_Offroad_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "transfer",
+  "fps": 24,
+  "frames": 103,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Roll",
+    "start": 27,
+    "end": 51,
+    "loop": true
+   },
+   {
+    "name": "Reverse",
+    "start": 53,
+    "end": 77,
+    "loop": true
+   },
+   {
+    "name": "Brake",
+    "start": 79,
+    "end": 103,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Roll_Start": 27,
+   "Reverse_Start": 53,
+   "Brake_Start": 79
+  },
+  "warped_clips": [
+   "Brake"
+  ],
+  "animated_objects": [
+   "R4M_WheelM_Side_Offroad_Rotor",
+   "R4M_WheelM_Side_Offroad_Shock",
+   "R4M_WheelM_Side_Offroad_Caliper"
+  ],
+  "objects_with_real_motion": 3,
+  "sweep_outside_envelope_mm": 0.0,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Roll",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Reverse",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "heavy and mechanical: slow start, hard stop, damped settle"
+ },
+ "parts": 89,
+ "vertex_shading": null,
+ "polish_pass": "hero4",
+ "mechanisms": {
+  "Shock": {
+   "parent": "root",
+   "pivot": [
+    -0.14,
+    0.0,
+    0.18
+   ]
+  },
+  "Caliper": {
+   "parent": "root",
+   "pivot": [
+    -0.11,
+    0.17,
+    0.0
+   ]
+  }
+ },
+ "bevel": null,
+ "beveled_nodes": [],
+ "bevel_rejected_nodes": [],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 4,
+   "triangles": 5826,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 8,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    65,
+    77,
+    79,
+    91,
+    103
+   ],
+   "nodes_compared": 4,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    1,
+    "R4M_WheelM_Side_Offroad_Shock",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 4,
+   "triangles": 5826,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    65,
+    77,
+    79,
+    91,
+    103
+   ],
+   "nodes_compared": 4,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4M_WheelM_Side_Offroad_34.jpg",
+  "R4M_WheelM_Side_Offroad_anim1.jpg",
+  "R4M_WheelM_Side_Offroad_anim2.jpg",
+  "R4M_WheelM_Side_Offroad_anim3.jpg",
+  "R4M_WheelM_Side_Offroad_anim4.jpg",
+  "R4M_WheelM_Side_Offroad_clay_34.jpg",
+  "R4M_WheelM_Side_Offroad_clay_front.jpg",
+  "R4M_WheelM_Side_Offroad_clay_side.jpg",
+  "R4M_WheelM_Side_Offroad_front.jpg",
+  "R4M_WheelM_Side_Offroad_side.jpg",
+  "R4M_WheelM_Side_Offroad_top.jpg",
+  "R4M_WheelM_Side_Offroad_wire.jpg"
+ ],
+ "files": {
+  "R4M_WheelM_Side_Offroad.blend": {
+   "sha256": "8e596346901dbad644f1fda7ffee8b5ac38a938d25d87419b5a4537d4639e2f8",
+   "bytes": 343710
+  },
+  "R4M_WheelM_Side_Offroad.fbx": {
+   "sha256": "b4c0b6b1406dbfa6934317b22e8937b4abd999319a177f8aad8937232fba48d5",
+   "bytes": 278732
+  },
+  "R4M_WheelM_Side_Offroad.glb": {
+   "sha256": "f8f0a4920d259dc91703f79185d992497d148f0cae0155c945886cb6a9706d2c",
+   "bytes": 5030608
+  },
+  "R4M_WheelM_Side_Offroad_LOD1.fbx": {
+   "sha256": "3e84d891d22dd809f278df971f27a8c9b2a8495bf5ed20d655d23cb720fc5800",
+   "bytes": 167372
+  },
+  "R4M_WheelM_Side_Offroad_LOD1.glb": {
+   "sha256": "b7ce850f9d11586a306bf14d58cb9948534ef86cef2ee4b40536de40d4571fe8",
+   "bytes": 690616
+  }
+ },
+ "seconds": 15.8,
+ "blender": "5.3.0",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

@@ -1,0 +1,418 @@
+{
+ "id": "R4X_Battery",
+ "pilot_type": "Battery",
+ "construction": "Arcade, proposal Q (from the Pass 2 battery: a navy cube with windows and orange corners). New: an eight-sided chamfered body instead of a sharp cube, 15 % lower so the gun stays the tallest thing on the roof; FOUR full-height chamfered corner posts instead of eight small cubes; one large lit window per side; a white lid with a single big handle that pumps",
+ "style_character": "simple readable volumes, very few parts, calm matte colours, no emission, no textures (by design)",
+ "artistic_acceptance": "PENDING_OWNER_REVIEW",
+ "textures": {
+  "base": "C_Arcade/R4X_Battery_base.jpg",
+  "orm": "C_Arcade/R4X_Battery_orm.jpg",
+  "normal": "C_Arcade/R4X_Battery_normal.png",
+  "emission": "C_Arcade/R4X_Battery_emission.jpg",
+  "normal_strength": 1.0,
+  "uv": "baked",
+  "baked": true,
+  "paintmask": "C_Arcade/R4X_Battery_paintmask.png",
+  "size": 2048
+ },
+ "material_textures": {
+  "R4P_Base": {
+   "base_texture": "C_Arcade/R4X_Battery_base.jpg",
+   "orm_texture": "C_Arcade/R4X_Battery_orm.jpg",
+   "normal_texture": "C_Arcade/R4X_Battery_normal.png"
+  },
+  "R4P_Metal": {
+   "base_texture": "C_Arcade/R4X_Battery_base.jpg",
+   "orm_texture": "C_Arcade/R4X_Battery_orm.jpg",
+   "normal_texture": "C_Arcade/R4X_Battery_normal.png"
+  },
+  "R4P_Secondary": {
+   "base_texture": "C_Arcade/R4X_Battery_base.jpg",
+   "orm_texture": "C_Arcade/R4X_Battery_orm.jpg",
+   "normal_texture": "C_Arcade/R4X_Battery_normal.png"
+  },
+  "R4P_Trim": {
+   "base_texture": "C_Arcade/R4X_Battery_base.jpg",
+   "orm_texture": "C_Arcade/R4X_Battery_orm.jpg",
+   "normal_texture": "C_Arcade/R4X_Battery_normal.png"
+  }
+ },
+ "board_frames": [
+  {
+   "clip": "Activate",
+   "frame": 39
+  },
+  {
+   "clip": "Activate",
+   "frame": 51
+  },
+  {
+   "clip": "Activate",
+   "frame": 65
+  },
+  {
+   "clip": "Hit",
+   "frame": 83
+  }
+ ],
+ "style": "C",
+ "style_label": "C_Arcade",
+ "family": "module",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_Battery_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 592,
+   "vertices": 324,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4X_Battery_Cap",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 216,
+   "vertices": 112,
+   "uv": true,
+   "material_slots": 3,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_Battery_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 808,
+  "vertices": 436,
+  "uv": true,
+  "material_slots": 4,
+  "ok": true
+ },
+ "triangles": 808,
+ "triangles_lod1": 808,
+ "mesh_objects": 2,
+ "material_slots_total": 7,
+ "materials": [
+  "R4P_Base",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.245,
+   -0.245,
+   -0.26
+  ],
+  [
+   0.245,
+   0.26,
+   0.196
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "back",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.14,
+    0.14
+   ],
+   "offset": [
+    0.0,
+    -0.12727
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_Battery_ROOT": null,
+  "R4X_Battery_Body": "R4X_Battery_ROOT",
+  "R4X_Battery_Cap": "R4X_Battery_ROOT",
+  "Port_down_000": "R4X_Battery_ROOT",
+  "Port_back_000_part": "R4X_Battery_ROOT",
+  "Socket_Mount": "R4X_Battery_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 89,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Activate",
+    "start": 27,
+    "end": 75,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 77,
+    "end": 89,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Activate_Start": 27,
+   "Hit": 77
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_Battery_Body",
+   "R4X_Battery_Cap"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 3.915,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Activate",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "simple, fast, readable: quick ease, short hold, no secondary motion"
+ },
+ "parts": 18,
+ "vertex_shading": null,
+ "polish_pass": "hero4",
+ "mechanisms": {
+  "Cap": {
+   "parent": "root",
+   "pivot": [
+    0.0,
+    -0.065,
+    0.19
+   ]
+  }
+ },
+ "bevel": null,
+ "beveled_nodes": [],
+ "bevel_rejected_nodes": [],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 808,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 6,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    83,
+    89
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    1,
+    "R4X_Battery_Cap",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 808,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    83,
+    89
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_Battery_34.jpg",
+  "R4X_Battery_anim1.jpg",
+  "R4X_Battery_anim2.jpg",
+  "R4X_Battery_anim3.jpg",
+  "R4X_Battery_anim4.jpg",
+  "R4X_Battery_clay_34.jpg",
+  "R4X_Battery_clay_front.jpg",
+  "R4X_Battery_clay_side.jpg",
+  "R4X_Battery_front.jpg",
+  "R4X_Battery_side.jpg",
+  "R4X_Battery_top.jpg",
+  "R4X_Battery_wire.jpg"
+ ],
+ "files": {
+  "R4X_Battery.blend": {
+   "sha256": "930e004b8f5fe8878ba33231d71840f2099be4b68347124bd017651e620960af",
+   "bytes": 130844
+  },
+  "R4X_Battery.fbx": {
+   "sha256": "c0b1f8bc6f93d97d7056c3068f802b260dc33eee7c73acddca12c7d94ea414e2",
+   "bytes": 117116
+  },
+  "R4X_Battery.glb": {
+   "sha256": "619a3975e77305a5bbbaf6014437aab8d9bcf7e57170c85385df51c5d59d66be",
+   "bytes": 2395932
+  },
+  "R4X_Battery_LOD1.fbx": {
+   "sha256": "512e29ee20595337dca654f57089096e1fb7c8f046e5e23ee3ff77c8afbbda69",
+   "bytes": 52524
+  },
+  "R4X_Battery_LOD1.glb": {
+   "sha256": "14b18f98a92529bd034ed2f35b02d4b11ee51e2b1cd01661a7f1c1fc5e85a81c",
+   "bytes": 260532
+  }
+ },
+ "seconds": 13.7,
+ "blender": "5.3.0",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}
