@@ -93,7 +93,7 @@ namespace RogueMachine.P12PipelineSafe
         {
             damageModifier = float.IsNaN(damage)||float.IsInfinity(damage)?1f:Mathf.Max(0,damage);
             intervalModifier = Mathf.Clamp(interval, 0.35f, 1f);
-            mobilityModifier = Mathf.Clamp(mobility, 1f, 2f);
+            mobilityModifier = float.IsNaN(mobility)||float.IsInfinity(mobility)?1f:Mathf.Max(0,mobility);
         }
 
         public void SetGameplayInputEnabled(bool active)

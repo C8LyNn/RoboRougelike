@@ -27,6 +27,12 @@ namespace RoboRougelike.R1
             double result=(double)Damage*(1d+increase);
             Damage=(float)Math.Min(float.MaxValue,result);
         }
+        public void ApplyAdditiveMobility(float increase)
+        {
+            if(float.IsNaN(increase)||float.IsInfinity(increase)||increase<0)return;
+            double result=(double)Mobility*(1d+increase);
+            Mobility=(float)Math.Min(float.MaxValue,result);
+        }
         internal static bool TryRestore(R1ProgressCheckpoint c,out R1RunStats stats)
         {
             stats=null;

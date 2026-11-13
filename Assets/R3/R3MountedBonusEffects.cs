@@ -61,12 +61,15 @@ namespace RoboRougelike.R3
             snapshot.Clear();active.Clear();
             foreach(var part in nextActive){active.Add(part);snapshot.Add(new BonusSnapshot(part));}
             var stats=baseStats.Copy();
-            float addedDamage=0;
+            float addedDamage=0,addedMobility=0;
             foreach(var module in active)
                 if(module.UpgradeEffect==R1UpgradeEffect.Damage)
                     addedDamage+=module.UpgradeAmount*R3VehicleModel.TierEffectUnits(module.Tier);
+                else if(module.UpgradeEffect==R1UpgradeEffect.Mobility)
+                    addedMobility+=module.UpgradeAmount*R3VehicleModel.TierEffectUnits(module.Tier);
                 else for(int i=0;i<R3VehicleModel.TierEffectUnits(module.Tier);i++)stats.Apply(module.UpgradeEffect,module.UpgradeAmount);
             stats.ApplyAdditiveDamage(addedDamage);
+            stats.ApplyAdditiveMobility(addedMobility);
             EffectiveStats=stats;
             player.Apply(stats);
         }

@@ -100,6 +100,26 @@ public class RRLW34EffectsTests
         yield return Until(()=>hp.CurrentHp<1000,"Physical shot reaches target");
         Assert.That(hp.CurrentHp,Is.EqualTo(1000-R4WeaponDefinition.Get(R4WeaponKind.Basic).Damage*5f).Within(.01));
     }
+    [UnityTest] public IEnumerator MountedMobilityBonusesAddWithoutArtificialMultiplierCap()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        Assert.That(model.ReceiveBonuses(new[]{Upgrade(R1UpgradeEffect.Mobility,.25f),Upgrade(R1UpgradeEffect.Mobility,.2f)}),Is.True);
+        foreach(var item in model.Inventory.ToArray())
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(item.Id,c,default)==null);
+            Assert.That(model.Mount(item.Id,cell),Is.True);
+        }
+        var baseline=Build(model.DeepCopy(),x:-40);
+        foreach(var part in baseline.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.BonusModule))part.gameObject.SetActive(false);
+        yield return null;float baseSpeed=baseline.Controller.EffectiveForwardSpeed;
+        var vehicle=Build(model);Assert.That(Effects(vehicle).EffectiveStats.Mobility,Is.EqualTo(1.45f).Within(.001));
+        Assert.That(vehicle.Controller.EffectiveForwardSpeed,Is.EqualTo(baseSpeed*1.45f).Within(.01));
+        foreach(var part in vehicle.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.BonusModule))part.UpgradeAmount=1f;
+        yield return null;
+        Assert.That(Effects(vehicle).EffectiveStats.Mobility,Is.EqualTo(3f).Within(.001));
+        Assert.That(vehicle.Controller.EffectiveForwardSpeed,Is.EqualTo(baseSpeed*3f).Within(.01));
+    }
     [UnityTest] public IEnumerator InventoryIsInactiveAndAllMountedEffectsReachLiveWeaponsHpAndOmni()
     {
         var m=Model(Upgrade(R1UpgradeEffect.Damage,.25f),Upgrade(R1UpgradeEffect.Damage,.2f),

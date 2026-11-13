@@ -102,7 +102,7 @@ public sealed class BacklogBonusTierGameplayTests
         Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.6f).Within(.001f));
         part.UpgradeEffect=R1UpgradeEffect.Mobility;yield return null;
         Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1f).Within(.001f));
-        Assert.That(effects.EffectiveStats.Mobility,Is.EqualTo(1.69f).Within(.001f));
+        Assert.That(effects.EffectiveStats.Mobility,Is.EqualTo(1.6f).Within(.001f));
         Object.Destroy(reward);
     }
     [UnityTearDown] public IEnumerator Cleanup()
