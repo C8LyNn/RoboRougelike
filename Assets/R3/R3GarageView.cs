@@ -118,7 +118,15 @@ namespace RoboRougelike.R3
         public R4WeaponKind SelectedWeapon;
         public string SelectedInventoryId;
         public bool UseInventory;
-        public string Message = "LPM — montaż; PPM — zdejmij; przeciągnij PPM — obrót widoku.";
+        string message = "LPM — montaż; PPM — zdejmij; przeciągnij PPM — obrót widoku.";
+        float actionMessageAt=float.NegativeInfinity;
+        public string Message
+        {
+            get=>message;
+            set { message=value;actionMessageAt=float.NegativeInfinity; }
+        }
+        void ActionMessage(string value){Message=value;actionMessageAt=Time.unscaledTime;}
+        public bool HasRecentActionMessage=>!string.IsNullOrEmpty(message)&&Time.unscaledTime-actionMessageAt<2.5f;
         public R41GarageTool Tool { get; private set; }
         public bool HasTarget { get; private set; }
         bool pointerSurfaceRejected;
@@ -626,31 +634,31 @@ namespace RoboRougelike.R3
         public bool RepairPartAt(Vector3Int cell)
         {
             if(run.Transitioning||run.Progress?.State!=R1RunState.Garage||run.VehicleModel==null)
-            {Message="Garaż jest chwilowo niedostępny.";return false;}
+            {ActionMessage("Garaż jest chwilowo niedostępny.");return false;}
             var model=run.VehicleModel;var part=model.At(cell);
-            if(part==null){Message="Wskaż część do naprawy.";return false;}
-            if(part.Health>=1){Message="Ta część jest już sprawna.";return false;}
+            if(part==null){ActionMessage("Wskaż część do naprawy.");return false;}
+            if(part.Health>=1){ActionMessage("Ta część jest już sprawna.");return false;}
             int price=model.RepairCost(part);
             if(!R3VehicleModel.ValidEconomicPart(part)||(!model.CreativeMode&&price<=0))
-            {Message="Tej części nie można naprawić.";return false;}
-            if(price>model.Scrap){Message=$"Brakuje {price-model.Scrap} Z na naprawę.";return false;}
+            {ActionMessage("Tej części nie można naprawić.");return false;}
+            if(price>model.Scrap){ActionMessage($"Brakuje {price-model.Scrap} Z na naprawę.");return false;}
             if(!run.GarageRepair(cell))
-            {Message="Nie można naprawić. Sprawdź połączenie, wolne miejsce i typy broni.";return false;}
-            Message=model.CreativeMode?"Naprawiono część za darmo.":$"Naprawiono część • {price} Z.";
+            {ActionMessage("Nie można naprawić. Sprawdź połączenie, wolne miejsce i typy broni.");return false;}
+            ActionMessage(model.CreativeMode?"Naprawiono część za darmo.":$"Naprawiono część • {price} Z.");
             return true;
         }
         public bool RemovePartAt(Vector3Int cell)
         {
             if(run.Transitioning||run.Progress?.State!=R1RunState.Garage||run.VehicleModel==null)
-            {Message="Garaż jest chwilowo niedostępny.";return false;}
+            {ActionMessage("Garaż jest chwilowo niedostępny.");return false;}
             var model=run.VehicleModel;var part=model.At(cell);
-            if(part==null){Message="Wskaż część do zdjęcia.";return false;}
-            if(part.Kind==R3PartKind.Core){Message="Nie można zdjąć rdzenia.";return false;}
+            if(part==null){ActionMessage("Wskaż część do zdjęcia.");return false;}
+            if(part.Kind==R3PartKind.Core){ActionMessage("Nie można zdjąć rdzenia.");return false;}
             if(model.Inventory.Count>=model.AvailableInventoryCapacity)
-            {Message="Nie można zdjąć: magazyn jest pełny.";return false;}
+            {ActionMessage("Nie można zdjąć: magazyn jest pełny.");return false;}
             if(!run.GarageRemove(cell))
-            {Message="Nie można zdjąć: część podtrzymuje konstrukcję lub jest ona rozłączona.";return false;}
-            Message=$"Część wróciła do magazynu • HP {part.Health*100:0}%.";
+            {ActionMessage("Nie można zdjąć: część podtrzymuje konstrukcję lub jest ona rozłączona.");return false;}
+            ActionMessage($"Część wróciła do magazynu • HP {part.Health*100:0}%.");
             return true;
         }
         public static bool InBuildArea(Vector2 screen,int width,int height)

@@ -425,7 +425,7 @@ namespace RoboRougelike.R1
             // The visible ghost can move onto a blocked cell after a previous
             // successful purchase. Explain that current placement before the
             // player clicks, rather than leaving the old purchase message.
-            if(run.Garage.Tool==R41GarageTool.Mount&&run.Garage.HasTarget&&run.Garage.HasMountSelection)
+            if(!run.Garage.HasRecentActionMessage&&run.Garage.Tool==R41GarageTool.Mount&&run.Garage.HasTarget&&run.Garage.HasMountSelection)
             {
                 string placement=run.Garage.PlacementIssue;
                 message=placement??"Można zamontować • LPM — zamontuj część.";
