@@ -53,7 +53,7 @@ namespace RoboRougelike.R3
         public int[] activeSlots;
         public R3ActiveSlotCheckpoint[] activePreferences;
         public int constructionBudgetVersion,constructionBudgetLimit,constructionBudgetMilestonesApplied;
-        public float repairPulseRemaining;
+        public float repairPulseRemaining,boosterRemaining;
         public int scrap;
         public bool suspensionEnabled,gyroEnabled,hasA,hasB,hasC,hasD;
         public int groupA,groupB,groupC,groupD;
@@ -137,7 +137,7 @@ namespace RoboRougelike.R3
                 activeSlotsVersion=1,activeSlots=activeSlots.Select(p=>p.HasValue?(int)p.Value:-1).ToArray(),
                 activePreferences=activeSlotPreference.Select(p=>new R3ActiveSlotCheckpoint{kind=(int)p.Key,slot=p.Value}).ToArray(),
                 constructionBudgetVersion=1,constructionBudgetLimit=ConstructionBudgetLimit,constructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied,
-                repairPulseRemaining=Remaining(RepairPulseReadyAt,now),
+                repairPulseRemaining=Remaining(RepairPulseReadyAt,now),boosterRemaining=Remaining(BoosterReadyAt,now),
                 energyVersion=1,energy=Energy.Current,hasInitialEnergyPrepared=true,initialEnergyPrepared=InitialEnergyPrepared,
                 suspensionEnabled=SuspensionEnabled,suspensionMode=SuspensionMode,suspensionHeight=SuspensionHeightOffset,
                 gyroEnabled=GyroEnabled,drive=SelectedDrive,boosterThrust=BoosterThrustNewtons,boosterDuration=BoosterDurationSeconds,
@@ -174,7 +174,8 @@ namespace RoboRougelike.R3
                 !Finite(data.boosterThrust)||data.boosterThrust<500||data.boosterThrust>6000||
                 !Finite(data.boosterDuration)||data.boosterDuration<.2f||data.boosterDuration>2||
                 !Finite(data.hoverHeight)||data.hoverHeight<.7f||data.hoverHeight>1.6f||
-                !Finite(data.grappleRemaining)||data.grappleRemaining<0||!Finite(data.repairPulseRemaining)||data.repairPulseRemaining<0)return false;
+                !Finite(data.grappleRemaining)||data.grappleRemaining<0||!Finite(data.repairPulseRemaining)||data.repairPulseRemaining<0||
+                !Finite(data.boosterRemaining)||data.boosterRemaining<0)return false;
             var all=data.mounted.Concat(data.inventory).ToArray();
             if(data.energyVersion==0&&all.Any(p=>p!=null&&p.FootprintRevision!=0))return false;
             if(all.Any(p=>!ValidCheckpointPart(p))||all.Select(p=>p.Id).Distinct(StringComparer.Ordinal).Count()!=all.Length||
@@ -322,6 +323,7 @@ namespace RoboRougelike.R3
             restored.Scrap=data.scrap;restored.SelectedDrive=data.drive;restored.SuspensionEnabled=data.suspensionEnabled;
             if(data.constructionBudgetVersion==1){restored.ConstructionBudgetLimit=data.constructionBudgetLimit;restored.ConstructionBudgetMilestonesApplied=data.constructionBudgetMilestonesApplied;}
             restored.RepairPulseReadyAt=data.repairPulseRemaining>0?now+data.repairPulseRemaining:0;
+            restored.BoosterReadyAt=data.boosterRemaining>0?now+data.boosterRemaining:0;
             restored.SuspensionMode=data.suspensionMode;restored.SuspensionHeightOffset=data.suspensionHeight;restored.GyroEnabled=data.gyroEnabled;
             restored.BoosterThrustNewtons=data.boosterThrust;restored.BoosterDurationSeconds=data.boosterDuration;restored.HoverHeightMeters=data.hoverHeight;
             restored.GrappleReadyAt=data.grappleRemaining>0?now+data.grappleRemaining:0;

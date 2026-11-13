@@ -16,7 +16,6 @@ namespace RoboRougelike.MOVSeries
         Transform jumpProbe;
         void ConfigureDevices()
         {
-            int boostCount=Mathf.Max(1,Model.Parts.Count(p=>p.Kind==R3PartKind.Booster));
             int gyroCount=Mathf.Max(1,Model.Parts.Count(p=>p.Kind==R3PartKind.Gyroscope));
             jumpProbe=new GameObject("Jump ground probe").transform;jumpProbe.SetParent(transform,false);
             foreach(var part in assembly.Parts)
@@ -27,7 +26,7 @@ namespace RoboRougelike.MOVSeries
                 {
                     case R3PartKind.Booster:
                         var booster=part.gameObject.AddComponent<VehicleBooster>();booster.Bind(body,part.transform);
-                        booster.Configure(Mathf.Clamp(Model.BoosterThrustNewtons,500,6000),Mathf.Clamp(Model.BoosterDurationSeconds,.2f,2),5,10f/boostCount,20,VehicleEnergyCosts.BoosterActivation);
+                        booster.Configure(Mathf.Clamp(Model.BoosterThrustNewtons,500,6000),Mathf.Clamp(Model.BoosterDurationSeconds,.2f,2),5,0,0,VehicleEnergyCosts.BoosterActivation);
                         booster.SetEnergySource(GetComponent<VehicleEnergyBank>());
                         booster.SetAvailabilityFilter(()=>Available(part));boosters.Add(booster);break;
                     case R3PartKind.JumpDrive:
@@ -48,14 +47,28 @@ namespace RoboRougelike.MOVSeries
         }
         public bool TryBoost()
         {
-            if(!PrepareAction())return false;bool success=false;
-            foreach(var b in boosters)
+            if(!PrepareAction())return false;
+            if(Model.BoosterReadyAt>Time.time||Model.Parts.Any(p=>p.Kind==R3PartKind.Booster&&p.DeviceReadyAt>Time.time))
+            {Feedback="Booster: trwa odnowienie";return false;}
+            var eligible=boosters.Where(b=>b!=null&&b.isActiveAndEnabled&&b.IsOperational).ToArray();
+            var energy=GetComponent<VehicleEnergyBank>();float cost=eligible.Length*VehicleEnergyCosts.BoosterActivation;
+            if(eligible.Length==0||eligible.Any(b=>!b.IsReady)||energy==null||!energy.CanSpend(cost))
+            {Feedback="Booster niedostępny / brak energii";return false;}
+            var started=new List<VehicleBooster>();
+            foreach(var b in eligible)
             {
-                if(b==null)continue;var state=State(b.GetComponent<R3MountedPart>());
-                if(Time.time<state.DeviceReadyAt||!b.TryActivate())continue;
-                state.DeviceReadyAt=Time.time+b.RemainingBoostSeconds+5;success=true;
+                if(!b.TryActivate())
+                {
+                    foreach(var previous in started)
+                        previous.Configure(Mathf.Clamp(Model.BoosterThrustNewtons,500,6000),Mathf.Clamp(Model.BoosterDurationSeconds,.2f,2),5,0,0,VehicleEnergyCosts.BoosterActivation);
+                    energy.Refund(started.Count*VehicleEnergyCosts.BoosterActivation);
+                    Feedback="Booster niedostępny";return false;
+                }
+                started.Add(b);
             }
-            Feedback=success?"Booster aktywny":"Booster niedostępny / cooldown";return success;
+            Model.BoosterReadyAt=Time.time+started.Max(b=>b.RemainingBoostSeconds)+5;
+            foreach(var state in Model.Parts)if(state.Kind==R3PartKind.Booster)state.DeviceReadyAt=Model.BoosterReadyAt;
+            Feedback="Booster aktywny";return true;
         }
         public bool TryJump()
         {
@@ -77,8 +90,7 @@ namespace RoboRougelike.MOVSeries
         }
         public void ApplyDeviceSettings()
         {
-            int count=Mathf.Max(1,Model.Parts.Count(p=>p.Kind==R3PartKind.Booster));
-            foreach(var b in boosters)if(b!=null)b.Configure(Model.BoosterThrustNewtons,Model.BoosterDurationSeconds,5,10f/count,20,VehicleEnergyCosts.BoosterActivation);
+            foreach(var b in boosters)if(b!=null)b.Configure(Mathf.Clamp(Model.BoosterThrustNewtons,500,6000),Mathf.Clamp(Model.BoosterDurationSeconds,.2f,2),5,0,0,VehicleEnergyCosts.BoosterActivation);
             foreach(var pod in GetComponentsInChildren<RoboRougelike.Mechanics.MOV007.HoverLiftPod>())pod.targetHeightMeters=Model.HoverHeightMeters;
             SyncDevices();
         }
@@ -88,7 +100,8 @@ namespace RoboRougelike.MOVSeries
         {
             var parts=assembly.Parts.Where(p=>p.Kind==kind&&Available(p)).Select(State).ToArray();
             if(parts.Length==0)return float.PositiveInfinity;
-            float gate=kind==R3PartKind.JumpDrive?Model.Parts.Where(p=>p.Kind==kind).Max(p=>p.DeviceReadyAt):parts.Min(p=>p.DeviceReadyAt);
+            float gate=kind==R3PartKind.Booster?Mathf.Max(Model.BoosterReadyAt,Model.Parts.Where(p=>p.Kind==kind).Max(p=>p.DeviceReadyAt)):
+                kind==R3PartKind.JumpDrive?Model.Parts.Where(p=>p.Kind==kind).Max(p=>p.DeviceReadyAt):parts.Min(p=>p.DeviceReadyAt);
             return Mathf.Max(0,gate-Time.time);
         }
     }

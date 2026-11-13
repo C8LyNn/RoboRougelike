@@ -312,6 +312,7 @@ namespace RoboRougelike.R3
         public int ConstructionBudgetLimit {get;private set;}
         public int ConstructionBudgetMilestonesApplied {get;private set;}
         public float RepairPulseReadyAt {get;internal set;}
+        public float BoosterReadyAt {get;internal set;}
         public long ConstructionBudgetUsed=>Parts.Sum(p=>(long)ConstructionPartCost(p));
         public int PhysicalPartCount=>Parts.Count(p=>p.Health>0);
         public R3ConstructionSize ConstructionSizeClass=>PhysicalPartCount<=Math.Max(0,ConstructionSettings.SmallPhysicalParts)?R3ConstructionSize.Small:
@@ -341,7 +342,7 @@ namespace RoboRougelike.R3
             var design=new R3VehicleDesign{Name=Design.Name,Description=Design.Description,Speed=Design.Speed,TurnSpeed=Design.TurnSpeed,CoreHp=Design.CoreHp};
             design.Parts.AddRange(Design.Parts.Select(p=>p.Copy()));
             var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost,Construction=ConstructionSettings.Copy()});
-            copy.CreativeMode=CreativeMode;copy.ConstructionBudgetLimit=ConstructionBudgetLimit;copy.ConstructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied;copy.RepairPulseReadyAt=RepairPulseReadyAt;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
+            copy.CreativeMode=CreativeMode;copy.ConstructionBudgetLimit=ConstructionBudgetLimit;copy.ConstructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied;copy.RepairPulseReadyAt=RepairPulseReadyAt;copy.BoosterReadyAt=BoosterReadyAt;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
             copy.factoryWheels.Clear();foreach(var item in factoryWheels)copy.factoryWheels.Add(item.Key,item.Value);
             copy.SuspensionEnabled=SuspensionEnabled;copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset;
             copy.RefreshEnergyLayout();copy.Energy.Restore(Energy.Current);copy.InitialEnergyPrepared=InitialEnergyPrepared;

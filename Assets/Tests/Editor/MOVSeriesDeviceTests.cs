@@ -60,6 +60,38 @@ public class MOVSeriesDeviceTests
         Assert.That(type,Is.Not.Null,"Real vehicle coordinator missing.");var c=v.GetComponent(type);Assert.That(c,Is.Not.Null);return c;
     }
     static bool Action(R1VehicleState v,string method)=>(bool)Adapter(v).GetType().GetMethod(method).Invoke(Adapter(v),null);
+    [UnityTest] public IEnumerator TwoBoostersRequireCombinedEnergyAndBothProducePhysicalThrust()
+    {
+        var v=Build(R3VehicleKind.Light,0,R3PartKind.Booster,R3PartKind.Booster);yield return Seconds(.6f);
+        var bank=v.GetComponent<VehicleEnergyBank>();var boosters=v.GetComponentsInChildren<VehicleBooster>();
+        Assert.That(boosters.Length,Is.EqualTo(2));
+        float oneCost=VehicleEnergyCosts.BoosterActivation;
+        Assert.That(bank.TrySpend(bank.Current-oneCost-1f),Is.True);
+        Assert.That(Action(v,"TryBoost"),Is.False,"Energy sufficient for one copy must not start a partial boost.");
+        Assert.That(boosters.All(b=>!b.IsBoosting),Is.True);
+        bank.Recharge(100);float before=bank.Current;
+        Assert.That(Action(v,"TryBoost"),Is.True);Assert.That(boosters.All(b=>b.IsBoosting),Is.True);
+        Assert.That(bank.Current,Is.EqualTo(before-2*oneCost).Within(.001f));
+        var copy=v.GetComponent<R3VehicleAssembly>().Model.DeepCopy();copy.Parts.RemoveAll(p=>p.Kind==R3PartKind.Booster);
+        Assert.That(copy.BoosterReadyAt,Is.GreaterThan(Time.time));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(copy.MakeCheckpoint(Time.time),R3VehicleKind.Light,copy.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.BoosterReadyAt,Is.GreaterThan(Time.time),"Removing every copy must not reset the shared cooldown in a save.");
+        float speed=v.GetComponent<Rigidbody>().linearVelocity.z;yield return Seconds(.25f);
+        Assert.That(v.GetComponent<Rigidbody>().linearVelocity.z,Is.GreaterThan(speed+.2f),"Real boosters must accelerate the vehicle.");
+        Assert.That(Action(v,"TryBoost"),Is.False,"Copies share their activation cycle.");
+    }
+    [UnityTest] public IEnumerator TwoBoostersAccelerateMoreThanOneOnComparablePhysicalVehicles()
+    {
+        var one=Build(R3VehicleKind.Light,-20,R3PartKind.Booster,R3PartKind.Booster);
+        var two=Build(R3VehicleKind.Light,20,R3PartKind.Booster,R3PartKind.Booster);
+        one.GetComponentsInChildren<VehicleBooster>()[1].gameObject.SetActive(false);
+        yield return Seconds(.6f);
+        var a=one.GetComponent<Rigidbody>();var b=two.GetComponent<Rigidbody>();
+        a.linearVelocity=Vector3.zero;b.linearVelocity=Vector3.zero;
+        Assert.That(Action(one,"TryBoost"),Is.True);Assert.That(Action(two,"TryBoost"),Is.True);
+        yield return Seconds(.3f);
+        Assert.That(b.linearVelocity.z,Is.GreaterThan(a.linearVelocity.z+.2f),"A second working copy must add thrust, rather than sharing a fixed total cap.");
+    }
     [UnityTest] public IEnumerator ActualPartsBindOneBodyWithoutBecomingWeapons()
     {
         var v=Build(R3VehicleKind.Light,0,R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Gyroscope);
