@@ -9,6 +9,8 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunHUD : MonoBehaviour
     {
         private GUIStyle title, heading, body, small, button, compactButton;
+        private static int CombatAbilityExtraHeight(int count)=>Mathf.Max(0,count-1)*22;
+        private static Rect CombatAbilityStatusRect(int row)=>new Rect(340,90+22*row,190,22);
         private Texture2D buttonNormal,buttonHover,buttonPressed;
         private bool combatDetailsOpen;
         private int[] starterOffers;
@@ -265,6 +267,11 @@ namespace RoboRougelike.R1
                 bool lowCore=CombatResourceLow(hp,maxHp,.25f),lowEnergy=CombatResourceLow(currentEnergy,maxEnergy,.2f);
                 string resourceWarning=CombatResourceWarning(hp,maxHp,currentEnergy,maxEnergy);
                 var modules=player!=null?player.Modules:null;
+                var repairPulse=player!=null?player.GetComponent<R3RepairPulse>():null;
+                var offensive=player!=null?player.GetComponent<R3OffensiveDevices>():null;
+                bool hasOverdrive=offensive!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.Overdrive);
+                bool hasRapidFire=offensive!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.RapidFire);
+                int extraStatusHeight=energy!=null?CombatAbilityExtraHeight((repairPulse!=null?1:0)+(hasOverdrive?1:0)+(hasRapidFire?1:0)):0;
                 if(!lowCore&&modules!=null&&run.VehicleModel!=null)
                 {
                     var drive=run.VehicleModel.SelectedDrive;
@@ -273,7 +280,7 @@ namespace RoboRougelike.R1
                     bool weaponsInactive=modules.ActiveWeaponCount==0&&modules.HasSurvivingWeapon;
                     resourceWarning=CombatEquipmentWarning(drive,modules.InitialWheelCount,surviving,weaponsInactive)??resourceWarning;
                 }
-                CombatPanel(new Rect(20,18,660,(combatDetailsOpen?180:125)+(resourceWarning!=null?25:0)+(run.PickupGraceRemaining>0?25:0)),
+                CombatPanel(new Rect(20,18,660,(combatDetailsOpen?180:125)+extraStatusHeight+(resourceWarning!=null?25:0)+(run.PickupGraceRemaining>0?25:0)),
                     lowCore?new Color(1f,.42f,.32f):new Color(.28f,.76f,.75f));
                 GUI.Label(new Rect(36, 27, 630, 30), $"STARCIE {progress.EncounterIndex + 1}/{progress.TotalEncounters}   •   Wrogowie: {run.Encounter.AliveCount}   •   Złom: {run.VehicleModel.Scrap}", body);
                 if (player != null)
@@ -284,30 +291,26 @@ namespace RoboRougelike.R1
                     GUI.contentColor=beforeText;
                     DrawResourceBar(new Rect(215,65,110,12),hp,maxHp,lowCore?new Color(1f,.35f,.25f):new Color(.35f,.85f,.67f));
                     GUI.Label(new Rect(340,58,325,28),ActivityGoal(run),small);
-                    var repairPulse=player.GetComponent<R3RepairPulse>();
-                    var overdrive=player.GetComponent<R3OffensiveOverdrive>();
                     if(energy!=null)
                     {
                         if(lowEnergy)GUI.contentColor=new Color(1f,.78f,.38f);
                         GUI.Label(new Rect(36,90,175,25),$"Energia{(lowEnergy?"!":":")} {currentEnergy:0}/{maxEnergy:0}",small);
                         GUI.contentColor=beforeText;
                         DrawResourceBar(new Rect(215,95,110,12),currentEnergy,maxEnergy,lowEnergy?new Color(1f,.68f,.24f):new Color(.25f,.65f,.95f));
-                        if(repairPulse!=null||overdrive!=null)
-                        {
-                            string repair=repairPulse!=null?$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RepairPulse)} naprawa: {repairPulse.Status}":null;
-                            string offense=overdrive!=null?$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.Overdrive)} Overdrive: {overdrive.Status}":null;
-                            GUI.Label(new Rect(340,90,190,25),string.Join(" • ",new[]{repair,offense}.Where(s=>!string.IsNullOrEmpty(s))),small);
-                        }
+                        int statusRow=0;
+                        if(repairPulse!=null)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RepairPulse)} naprawa: {repairPulse.Status}",small);
+                        if(hasOverdrive)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.Overdrive)} Overdrive: {offensive.OverdriveStatus}",small);
+                        if(hasRapidFire)GUI.Label(CombatAbilityStatusRect(statusRow),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RapidFire)} Rapid: {offensive.RapidFireStatus}",small);
                     }
                     if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?"Mniej [I]":"Szczegóły [I]",compactButton))combatDetailsOpen=!combatDetailsOpen;
                     if(combatDetailsOpen)
                     {
                         int plannedGuns=run.VehicleModel.Parts.FindAll(p=>p.Kind==R3PartKind.Gun).Count;
-                        GUI.Label(new Rect(36,120,630,26),$"Konstrukcja: {player.Structure.ConnectedBlockCount}/{player.Structure.InitialStructuralBlockCount} • Koła: {player.Modules.ActiveWheelCount}/{player.Modules.InitialWheelCount} • Bronie: {player.Modules.ActiveWeaponCount}/{plannedGuns}",small);
+                        GUI.Label(new Rect(36,120+extraStatusHeight,630,26),$"Konstrukcja: {player.Structure.ConnectedBlockCount}/{player.Structure.InitialStructuralBlockCount} • Koła: {player.Modules.ActiveWheelCount}/{player.Modules.InitialWheelCount} • Bronie: {player.Modules.ActiveWeaponCount}/{plannedGuns}",small);
                         var physicsBody=player.GetComponent<Rigidbody>();
-                        GUI.Label(new Rect(36,148,630,25),$"Masa: {physicsBody.mass:0} kg • Prędkość: {physicsBody.linearVelocity.magnitude:0.0} m/s • Esc — pauza",small);
+                        GUI.Label(new Rect(36,148+extraStatusHeight,630,25),$"Masa: {physicsBody.mass:0} kg • Prędkość: {physicsBody.linearVelocity.magnitude:0.0} m/s • Esc — pauza",small);
                     }
-                    float noticeY=combatDetailsOpen?174:121;
+                    float noticeY=(combatDetailsOpen?174:121)+extraStatusHeight;
                     if(resourceWarning!=null)
                     {var before=GUI.contentColor;GUI.contentColor=lowCore?new Color(1f,.62f,.52f):new Color(1f,.8f,.48f);
                      GUI.Label(new Rect(36,noticeY,630,22),resourceWarning,small);GUI.contentColor=before;noticeY+=25;}

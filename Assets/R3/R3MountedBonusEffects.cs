@@ -35,6 +35,7 @@ namespace RoboRougelike.R3
         }
         private float lastRepairPulse;
         private float overdriveIncrease;
+        private float rapidFireReduction;
         public R1RunStats EffectiveStats {get;private set;}
 
         public void SetOverdriveIncrease(float increase)
@@ -42,6 +43,12 @@ namespace RoboRougelike.R3
             if(float.IsNaN(increase)||float.IsInfinity(increase)||increase<0)increase=0;
             if(overdriveIncrease==increase)return;
             overdriveIncrease=increase;Refresh(true);
+        }
+        public void SetRapidFireReduction(float reduction)
+        {
+            if(float.IsNaN(reduction)||float.IsInfinity(reduction)||reduction<0)reduction=0;
+            if(rapidFireReduction==reduction)return;
+            rapidFireReduction=reduction;Refresh(true);
         }
 
         public void Configure(R3VehicleAssembly owner,R1VehicleState vehicle,R1RunStats baseline)
@@ -69,7 +76,7 @@ namespace RoboRougelike.R3
             snapshot.Clear();active.Clear();
             foreach(var part in nextActive){active.Add(part);snapshot.Add(new BonusSnapshot(part));}
             var stats=baseStats.Copy();
-            float addedDamage=overdriveIncrease,addedMobility=0,addedHull=0,addedCore=0,addedReloadReduction=0;
+            float addedDamage=overdriveIncrease,addedMobility=0,addedHull=0,addedCore=0,addedReloadReduction=rapidFireReduction;
             foreach(var module in active)
                 if(module.UpgradeEffect==R1UpgradeEffect.Damage)
                     addedDamage+=module.UpgradeAmount*R3VehicleModel.TierEffectUnits(module.Tier);

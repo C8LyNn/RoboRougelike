@@ -33,7 +33,8 @@ namespace RoboRougelike.MOVSeries
                 case R3PartKind.Blink:run.UseBlink();break;
                 case R3PartKind.MagneticGrapple:run.UseGrapple();break;
                 case R3PartKind.RepairPulse:GetComponent<R3RepairPulse>()?.TryActivate();break;
-                case R3PartKind.Overdrive:GetComponent<R3OffensiveOverdrive>()?.TryActivate();break;
+                case R3PartKind.Overdrive:GetComponent<R3OffensiveDevices>()?.TryActivate();break;
+                case R3PartKind.RapidFire:GetComponent<R3OffensiveDevices>()?.TryActivateRapidFire();break;
                 case R3PartKind.StructuralScanner:GetComponent<RRLScannerControls>()?.Activate(RRLScanKind.Structural);break;
                 case R3PartKind.ScannerPulse:GetComponent<RRLScannerControls>()?.Activate(RRLScanKind.Pulse);break;
             }

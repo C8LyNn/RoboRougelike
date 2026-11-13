@@ -103,7 +103,7 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(run.EnterTestRange(),Is.True);
         for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
         Assert.That(run.CanUseMovement,Is.True);
-        var componentType=System.Type.GetType("RoboRougelike.R3.R3OffensiveOverdrive, Assembly-CSharp");
+        var componentType=System.Type.GetType("RoboRougelike.R3.R3OffensiveDevices, Assembly-CSharp");
         Assert.That(componentType,Is.Not.Null);
         var component=run.Player.GetComponent(componentType);Assert.That(component,Is.Not.Null);
         var activate=componentType.GetMethod("TryActivate");Assert.That(activate,Is.Not.Null);
@@ -162,6 +162,63 @@ public sealed class BacklogDeviceTierGameplayTests
         while(hp.CurrentHp>=1000&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
         Assert.That(hp.CurrentHp,Is.EqualTo(942).Within(.1f),"20% Overdrive and 25% passive damage must add before the shot.");
         Object.Destroy(target);Object.Destroy(reward);
+    }
+    [UnityTest] public IEnumerator RapidFireCopiesShareCostAndShortenActualWeaponInterval()
+    {
+        Assert.That(System.Enum.TryParse("RapidFire",out R3PartKind kind),Is.True);
+        for(int i=0;i<2;i++)
+        {
+            Assert.That(run.GaragePurchase(kind),Is.True);
+            var owned=run.VehicleModel.Inventory.Last(p=>p.Kind==kind);
+            var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            var cell=cells.First(c=>run.VehicleModel.OwnedPlacementError(owned.Id,c,default)==null);
+            Assert.That(run.GarageMount(owned.Id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);
+        for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);
+        var type=System.Type.GetType("RoboRougelike.R3.R3OffensiveDevices, Assembly-CSharp");
+        Assert.That(type,Is.Not.Null);var component=run.Player.GetComponent(type);Assert.That(component,Is.Not.Null);
+        var activate=type.GetMethod("TryActivateRapidFire");Assert.That(activate,Is.Not.Null);
+        var bank=run.Player.GetComponent<VehicleEnergyBank>();
+        Assert.That(bank.TrySpend(bank.Current-20),Is.True);
+        Assert.That((int)activate.Invoke(component,null),Is.Zero);
+        Assert.That(bank.Current,Is.EqualTo(20).Within(.01f));bank.Recharge(100);float before=bank.Current;
+        Assert.That((int)activate.Invoke(component,null),Is.EqualTo(2));
+        Assert.That(bank.Current,Is.EqualTo(before-30).Within(.01f));
+        var effects=run.Player.GetComponent<R3MountedBonusEffects>();Assert.That(effects.EffectiveStats.FireInterval,Is.EqualTo(.6f).Within(.001f));
+        Assert.That(run.Player.Controller.WeaponInterval(RoboRougelike.R4.R4WeaponKind.Basic),Is.EqualTo(.38f*.6f).Within(.001f));
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(gun),Is.True);
+        float firedAt=Time.time;assembly.FireGroup(false);
+        Assert.That(gun.NextFireTime-firedAt,Is.EqualTo(.38f*.6f).Within(.001f),"The fired physical gun must use the reduced interval.");
+        var copy=run.VehicleModel.DeepCopy();copy.Parts.RemoveAll(p=>p.Kind==kind);float now=Time.time;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(copy.MakeCheckpoint(now),R3VehicleKind.Light,copy.Economy,now,out var restored,out var error),Is.True,error);
+        var ready=typeof(R3VehicleModel).GetProperty("RapidFireReadyAt");Assert.That(ready,Is.Not.Null);
+        Assert.That((float)ready.GetValue(restored),Is.GreaterThan(now));
+        var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==kind);
+        part.gameObject.SetActive(false);yield return null;
+        Assert.That(effects.EffectiveStats.FireInterval,Is.EqualTo(.8f).Within(.001f));
+    }
+    [UnityTest] public IEnumerator RapidFireAndOverdriveHaveIndependentSlotsAndCooldowns()
+    {
+        foreach(var kind in new[]{R3PartKind.Overdrive,R3PartKind.RapidFire})
+        {
+            Assert.That(run.GaragePurchase(kind),Is.True);
+            var part=run.VehicleModel.Inventory.Last(p=>p.Kind==kind);
+            var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            Assert.That(run.GarageMount(part.Id,cells.First(c=>run.VehicleModel.OwnedPlacementError(part.Id,c,default)==null)),Is.True);
+        }
+        Assert.That(run.VehicleModel.ActiveSlotLabel(R3PartKind.Overdrive),Is.Not.EqualTo(run.VehicleModel.ActiveSlotLabel(R3PartKind.RapidFire)));
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);
+        var devices=run.Player.GetComponent<R3OffensiveDevices>();var effects=run.Player.GetComponent<R3MountedBonusEffects>();
+        Assert.That(devices.TryActivate(),Is.EqualTo(1));Assert.That(devices.TryActivateRapidFire(),Is.EqualTo(1));
+        Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.2f).Within(.001f));
+        Assert.That(effects.EffectiveStats.FireInterval,Is.EqualTo(.8f).Within(.001f));
+        Assert.That(run.VehicleModel.OverdriveReadyAt,Is.GreaterThan(Time.time));
+        Assert.That(run.VehicleModel.RapidFireReadyAt,Is.GreaterThan(Time.time));
+        yield return null;
     }
     [UnityTest] public IEnumerator SalvageOptimizerConsumesEnergyAndCaptureDropsDestroyedBonus()
     {

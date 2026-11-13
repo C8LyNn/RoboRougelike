@@ -353,8 +353,8 @@ namespace RoboRougelike.R3
             root.AddComponent<R3MountedBonusEffects>().Configure(assembly,vehicle,stats);
             if(assembly.Parts.Any(p=>p.Kind==R3PartKind.RepairPulse))
                 root.AddComponent<R3RepairPulse>().Configure(assembly);
-            if(assembly.Parts.Any(p=>p.Kind==R3PartKind.Overdrive))
-                root.AddComponent<R3OffensiveOverdrive>().Configure(assembly);
+            if(assembly.Parts.Any(p=>p.Kind==R3PartKind.Overdrive||p.Kind==R3PartKind.RapidFire))
+                root.AddComponent<R3OffensiveDevices>().Configure(assembly);
             foreach(var part in assembly.Parts)
                 if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.Shotgun)
                     part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>()
