@@ -5,6 +5,29 @@ using UnityEngine;
 
 public sealed class UI943CombatHudLayoutTests
 {
+    [TestCase(18,42)] [TestCase(36,50)] [TestCase(90,65)]
+    public void AimStatusPanelFitsTextAndStaysOutsideCombatPanels(float textHeight,float expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("AimStatusPanelRect",BindingFlags.NonPublic|BindingFlags.Static);
+        Assert.That(method,Is.Not.Null);
+        var rect=(Rect)method.Invoke(null,new object[]{textHeight});
+        Assert.That(rect.height,Is.EqualTo(expected));
+        Assert.That(rect.Overlaps(new Rect(20,18,660,250)),Is.False);
+        Assert.That(rect.Overlaps(new Rect(925,18,335,160)),Is.False);
+        Assert.That(rect.Overlaps(new Rect(624,344,32,32)),Is.False);
+    }
+
+    [Test] public void AimWarningOnlyHighlightsUnavailableOrPartiallyBlockedShots()
+    {
+        var method=typeof(R1RunHUD).GetMethod("AimStatusNeedsAttention",BindingFlags.NonPublic|BindingFlags.Static);
+        Assert.That(method,Is.Not.Null);
+        bool Warn(int guns,bool surface,int clear)=>(bool)method.Invoke(null,new object[]{guns,surface,clear});
+        Assert.That(Warn(0,false,0),Is.True);
+        Assert.That(Warn(2,false,0),Is.False,"Looking at empty space is not an error.");
+        Assert.That(Warn(2,true,0),Is.True);
+        Assert.That(Warn(2,true,1),Is.True,"A partly blocked group is still worth noticing.");
+        Assert.That(Warn(2,true,2),Is.False);
+    }
     [TestCase(0,false)] [TestCase(1,false)] [TestCase(2,false)] [TestCase(4,false)] [TestCase(0,true)]
     public void EncounterPanelFitsVisibleRowsAndAvoidsCenter(int rows,bool defeated)
     {
