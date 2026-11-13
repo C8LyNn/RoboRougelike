@@ -72,4 +72,19 @@ public sealed class UI943PortraitGarageTests
         Assert.That(repair.Overlaps(list),Is.False);
         if(portrait)Assert.That(repair.Overlaps(R3GarageView.PortraitOpening),Is.False);
     }
+
+    [TestCase(false)]
+    [TestCase(true)]
+    public void GarageStatusPanelKeepsVehicleViewAndMainActionsClear(bool portrait)
+    {
+        var method=typeof(R1RunHUD).GetMethod("GarageNoticeRect",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        var notice=(Rect)method.Invoke(null,new object[]{portrait});
+        var view=portrait?R3GarageView.PortraitOpening:new Rect(276,86,994,562);
+        var test=portrait?new Rect(24,960,350,44):new Rect(870,663,185,43);
+        var next=portrait?new Rect(394,960,350,44):new Rect(1066,663,195,43);
+        Assert.That(notice.Overlaps(view),Is.False);
+        Assert.That(notice.Overlaps(test),Is.False);
+        Assert.That(notice.Overlaps(next),Is.False);
+    }
 }
