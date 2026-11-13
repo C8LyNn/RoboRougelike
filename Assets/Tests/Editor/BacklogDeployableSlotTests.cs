@@ -5,6 +5,29 @@ using RoboRougelike.R3;
 
 public sealed class BacklogDeployableSlotTests
 {
+    [Test] public void CheckpointCannotRestoreFiveMountedDeployableTypes()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(5000);
+        foreach(var kind in new[]{R3PartKind.RampDeployer,R3PartKind.WallDeployer,R3PartKind.JumpPadDeployer,R3PartKind.BlastTrapDeployer})
+        {
+            Assert.That(model.PurchaseToInventory(kind),Is.True);var part=model.Inventory.Last(p=>p.Kind==kind);
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(part.Id,c,default)==null);
+            Assert.That(model.Mount(part.Id,cell),Is.True);
+        }
+        var validCheckpoint=model.MakeCheckpoint(0);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(validCheckpoint,R3VehicleKind.Light,model.Economy,0,out _,out var error),Is.True,error);
+        // Creative mode is the actual supported way to construct more than four kinds.
+        typeof(R3VehicleModel).GetProperty("CreativeMode").SetValue(model,true);
+        Assert.That(model.PurchaseToInventory(R3PartKind.EmpTrapDeployer),Is.True);
+        var fifth=model.Inventory.Last(p=>p.Kind==R3PartKind.EmpTrapDeployer);
+        var valid=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(fifth.Id,c,default)==null);
+        Assert.That(model.Mount(fifth.Id,valid),Is.True);
+        var saved=model.MakeCheckpoint(0);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,0,out _,out _),Is.False,
+            "A modified save must not bypass the shared four-type limit");
+    }
     [Test] public void FifthDistinctDeployableIsRejectedButExtraCopiesUseTheExistingSlot()
     {
         Assert.That(Enum.TryParse("BlastTrapDeployer",out R3PartKind blast),Is.True);
