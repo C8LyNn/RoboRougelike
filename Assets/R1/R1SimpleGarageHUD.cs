@@ -605,6 +605,8 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.ChargeRegenerator?$"Regenerator: +{run.VehicleModel.Economy.ChargesPerSecondPerRegenerator*R3VehicleModel.TierEffectUnits(part.Tier):0.##} ładunku/s na urządzenie. Rezerwa {VehicleEnergyState.PassiveReservation:0} energii.":
                 kind==R3PartKind.RechargePulse?$"Impuls: +{run.VehicleModel.Economy.RechargePulseChargesPerUnit*R3VehicleModel.TierEffectUnits(part.Tier)} ładunków każdemu sprawnemu urządzeniu. Slot 1–4.":
                 kind==R3PartKind.RampDeployer?$"Wyrzutnik ramp: stawia rampę za jadącym pojazdem. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.RampEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii. Więcej kopii poszerza rampę.":
+                kind==R3PartKind.WallDeployer?$"Wyrzutnik murków: stawia osłonę za jadącym pojazdem. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.WallEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.JumpPadDeployer?$"Wyrzutnik jump padów: stawia wyrzutnię skoku za jadącym pojazdem. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.JumpPadEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kliknij, aby zamontować.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kliknij, aby zamontować.":
                 kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
@@ -629,6 +631,8 @@ namespace RoboRougelike.R1
                     kind==R3PartKind.ChargeRegenerator?$"Regenerator: +{run.VehicleModel.Economy.ChargesPerSecondPerRegenerator:0.##} ładunku/s na urządzenie. Rezerwa {VehicleEnergyState.PassiveReservation:0} energii.":
                     kind==R3PartKind.RechargePulse?$"Impuls: +{run.VehicleModel.Economy.RechargePulseChargesPerUnit} ładunek każdemu sprawnemu urządzeniu za {run.VehicleModel.Economy.RechargePulseEnergyPerCopy:0} energii. Slot 1–4.":
                     kind==R3PartKind.RampDeployer?$"Wyrzutnik ramp: stawia rampę za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.RampEnergyPerCopy:0} energii. Slot Z/X/C/V.":
+                    kind==R3PartKind.WallDeployer?$"Wyrzutnik murków: stawia osłonę za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.WallEnergyPerCopy:0} energii. Slot Z/X/C/V.":
+                    kind==R3PartKind.JumpPadDeployer?$"Wyrzutnik jump padów: stawia wyrzutnię skoku za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.JumpPadEnergyPerCopy:0} energii. Slot Z/X/C/V.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kup część.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kup część.":
                     kind==R3PartKind.Armor&&CatalogArmorShape(bonus)==R3ArmorShape.Wedge?"Klin 1×1×1: mocowanie od spodu i z tyłu. Kup część.":

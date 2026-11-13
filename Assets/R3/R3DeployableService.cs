@@ -13,9 +13,43 @@ namespace RoboRougelike.R3
         public int TeamId {get;private set;}
         public void Configure(int team)=>TeamId=team;
     }
+    public sealed class R3JumpPad : MonoBehaviour
+    {
+        readonly Dictionary<Rigidbody,HashSet<Collider>> contacts=new Dictionary<Rigidbody,HashSet<Collider>>();
+        float launchSpeed;
+        BoxCollider sensor;
+        public int ActivationCount {get;private set;}
+        public Rigidbody LastActivatedBody {get;private set;}
+        public void Configure(float speed,BoxCollider trigger){launchSpeed=speed;sensor=trigger;}
+        void OnTriggerEnter(Collider other)
+        {
+            var body=other!=null?other.attachedRigidbody:null;
+            if(body==null||body.isKinematic||body.GetComponent<R1VehicleState>()==null&&body.GetComponent<P12PipelineSafeEnemyTurret>()==null)return;
+            if(contacts.TryGetValue(body,out var previous))
+            {
+                previous.RemoveWhere(c=>c==null||!c.enabled||!c.gameObject.activeInHierarchy||c.attachedRigidbody!=body||sensor==null||!c.bounds.Intersects(sensor.bounds));
+                if(previous.Count==0)contacts.Remove(body);
+            }
+            if(!contacts.TryGetValue(body,out var colliders))
+            {
+                contacts.Add(body,colliders=new HashSet<Collider>());
+                ActivationCount++;LastActivatedBody=body;
+                body.AddForce(Vector3.up*launchSpeed,ForceMode.VelocityChange);
+            }
+            colliders.Add(other);
+        }
+        void OnTriggerExit(Collider other)
+        {
+            var body=other!=null?other.attachedRigidbody:null;
+            if(body==null||!contacts.TryGetValue(body,out var colliders))return;
+            colliders.Remove(other);if(colliders.Count==0)contacts.Remove(body);
+        }
+    }
     public sealed class R3DeployableService : MonoBehaviour
     {
         public const string RampPool="deployable-ramp";
+        public const string WallPool="deployable-wall",JumpPadPool="deployable-jump-pad";
+        static readonly R3PartKind[] Kinds={R3PartKind.RampDeployer,R3PartKind.WallDeployer,R3PartKind.JumpPadDeployer};
         R3VehicleAssembly assembly;
         VehicleEnergyBank energy;
         Rigidbody body;
@@ -29,41 +63,61 @@ namespace RoboRougelike.R3
             return assembly!=null&&energy!=null&&body!=null&&run!=null&&run.Player!=null&&
                 run.Player.gameObject==gameObject&&run.CanUseMovement;
         }
-        bool Ready(R3MountedPart part)=>part!=null&&part.Kind==R3PartKind.RampDeployer&&part.Operational&&
+        bool Ready(R3MountedPart part,R3PartKind kind)=>part!=null&&part.Kind==kind&&part.Operational&&
             part.gameObject.activeInHierarchy&&part.transform.IsChildOf(transform)&&!RRLEmpPartState.IsBlocked(part.gameObject);
+        static string Pool(R3PartKind kind)=>kind==R3PartKind.RampDeployer?RampPool:kind==R3PartKind.WallDeployer?WallPool:JumpPadPool;
+        float ReadyAt(R3PartKind kind)=>kind==R3PartKind.RampDeployer?assembly.Model.RampDeployerReadyAt:
+            kind==R3PartKind.WallDeployer?assembly.Model.WallDeployerReadyAt:assembly.Model.JumpPadDeployerReadyAt;
+        void SetReadyAt(R3PartKind kind,float value)
+        {if(kind==R3PartKind.RampDeployer)assembly.Model.RampDeployerReadyAt=value;else if(kind==R3PartKind.WallDeployer)assembly.Model.WallDeployerReadyAt=value;else assembly.Model.JumpPadDeployerReadyAt=value;}
         void EnsurePools()
         {
             if(poolsInitialized||assembly==null)return;
-            foreach(var part in assembly.Parts)if(part.Kind==R3PartKind.RampDeployer)
-            {assembly.Model.Charges.EnsurePool(RampPool,System.Math.Max(0,assembly.Model.Economy.DeviceBaseCharges));break;}
+            foreach(var part in assembly.Parts)if(R3VehicleModel.IsDeployableSlotPart(part.Kind))
+                assembly.Model.Charges.EnsurePool(Pool(part.Kind),System.Math.Max(0,assembly.Model.Economy.DeviceBaseCharges));
             poolsInitialized=true;
         }
         void Update(){if(PlayerCanUse())EnsurePools();}
-        bool HasGenerator(){foreach(var part in assembly.Parts)if(Ready(part))return true;return false;}
-        public bool CanRecharge()=>assembly!=null&&HasGenerator()&&assembly.Model.Charges.Current(RampPool)<assembly.Model.Charges.Maximum(RampPool);
-        public void Recharge(int amount){if(assembly!=null&&HasGenerator())assembly.Model.Charges.Recharge(RampPool,amount);}
-        public string Status
+        bool HasGenerator(R3PartKind kind){foreach(var part in assembly.Parts)if(Ready(part,kind))return true;return false;}
+        public bool CanRecharge()
         {
-            get
-            {
-                if(assembly==null||!HasGenerator())return "niedostępny";
+            if(assembly==null)return false;
+            foreach(var kind in Kinds)if(HasGenerator(kind)&&assembly.Model.Charges.Current(Pool(kind))<assembly.Model.Charges.Maximum(Pool(kind)))return true;
+            return false;
+        }
+        public void Recharge(int amount)
+        {if(assembly!=null)foreach(var kind in Kinds)if(HasGenerator(kind))assembly.Model.Charges.Recharge(Pool(kind),amount);}
+        public string Status=>StatusFor(R3PartKind.RampDeployer);
+        public string StatusFor(R3PartKind kind)
+        {
+                if(assembly==null||!R3VehicleModel.IsDeployableSlotPart(kind)||!HasGenerator(kind))return "niedostępny";
                 if(PlayerCanUse())EnsurePools();
-                float remaining=assembly.Model.RampDeployerReadyAt-Time.time;
+                float remaining=ReadyAt(kind)-Time.time;
                 if(remaining>0)return $"odnowienie {Mathf.CeilToInt(remaining)} s";
-                int current=assembly.Model.Charges.Current(RampPool),maximum=assembly.Model.Charges.Maximum(RampPool);
+                string pool=Pool(kind);
+                int current=assembly.Model.Charges.Current(pool),maximum=assembly.Model.Charges.Maximum(pool);
                 if(current==0)return "brak ładunków";
-                float cost=0;foreach(var part in assembly.Parts)if(Ready(part))cost+=assembly.Model.Economy.RampEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier);
+                float cost=0;foreach(var part in assembly.Parts)if(Ready(part,kind))cost+=EnergyPerCopy(kind)*R3VehicleModel.TierActivationCost(part.Tier);
                 if(energy==null||!energy.CanSpend(cost))return "brak energii";
                 return body==null||body.linearVelocity.sqrMagnitude<.25f?$"{current}/{maximum} • wymagany ruch":$"gotowy • {current}/{maximum}";
-            }
         }
-        public bool TryDeployRamp()
+        float EnergyPerCopy(R3PartKind kind)=>kind==R3PartKind.RampDeployer?assembly.Model.Economy.RampEnergyPerCopy:
+            kind==R3PartKind.WallDeployer?assembly.Model.Economy.WallEnergyPerCopy:assembly.Model.Economy.JumpPadEnergyPerCopy;
+        float Cooldown(R3PartKind kind)=>kind==R3PartKind.RampDeployer?assembly.Model.Economy.RampCooldown:
+            kind==R3PartKind.WallDeployer?assembly.Model.Economy.WallCooldown:assembly.Model.Economy.JumpPadCooldown;
+        float Lifetime(R3PartKind kind)=>kind==R3PartKind.RampDeployer?assembly.Model.Economy.RampLifetime:
+            kind==R3PartKind.WallDeployer?assembly.Model.Economy.WallLifetime:assembly.Model.Economy.JumpPadLifetime;
+        public bool TryDeployRamp()=>TryDeploy(R3PartKind.RampDeployer);
+        public bool TryDeploy(R3PartKind kind)
         {
-            if(!PlayerCanUse()||Time.time<assembly.Model.RampDeployerReadyAt||body.linearVelocity.sqrMagnitude<.25f)return false;
-            EnsurePools();if(assembly.Model.Charges.Current(RampPool)<1)return false;
+            if(!R3VehicleModel.IsDeployableSlotPart(kind)||!PlayerCanUse()||Time.time<ReadyAt(kind)||body.linearVelocity.sqrMagnitude<.25f)return false;
+            EnsurePools();string pool=Pool(kind);if(assembly.Model.Charges.Current(pool)<1)return false;
             int units=0;float cost=0;R3MountedPart source=null;
-            foreach(var part in assembly.Parts)if(Ready(part))
-            {source=part;units+=R3VehicleModel.TierEffectUnits(part.Tier);cost+=assembly.Model.Economy.RampEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier);}
+            foreach(var part in assembly.Parts)if(Ready(part,kind))
+            {
+                source=part;units+=R3VehicleModel.TierEffectUnits(part.Tier);
+                cost+=EnergyPerCopy(kind)*R3VehicleModel.TierActivationCost(part.Tier);
+            }
             if(units<=0||source==null||float.IsNaN(cost)||float.IsInfinity(cost)||cost<0||!energy.CanSpend(cost))return false;
             Vector3 forward=Vector3.ProjectOnPlane(body.rotation*Vector3.forward,Vector3.up).normalized;
             if(forward.sqrMagnitude<.5f)return false;
@@ -75,7 +129,8 @@ namespace RoboRougelike.R3
                 float projected=Vector3.Dot(bounds.center-body.position,behind)+Mathf.Abs(behind.x)*ext.x+Mathf.Abs(behind.z)*ext.z;
                 rear=Mathf.Max(rear,projected);
             }
-            float width=3*Mathf.Sqrt(units),length=4f,thickness=.3f,angle=18f;
+            float width=3*Mathf.Sqrt(units),length=kind==R3PartKind.WallDeployer?.35f:kind==R3PartKind.JumpPadDeployer?3f:4f;
+            float thickness=kind==R3PartKind.WallDeployer?2f:.3f,angle=kind==R3PartKind.RampDeployer?18f:0f;
             Vector3 at=body.position+behind*(rear+length*.5f+.6f);
             var groundHits=Physics.RaycastAll(at+Vector3.up*20,Vector3.down,60,~0,QueryTriggerInteraction.Ignore);
             System.Array.Sort(groundHits,(a,b)=>a.distance.CompareTo(b.distance));
@@ -89,15 +144,22 @@ namespace RoboRougelike.R3
             Vector3 center=groundPoint+Vector3.up*(lift+.02f);
             foreach(var hit in Physics.OverlapBox(center,new Vector3(width,thickness,length)*.49f,rotation,~0,QueryTriggerInteraction.Ignore))
                 if(hit!=null&&hit!=ground)return false;
-            float lifetime=assembly.Model.Economy.RampLifetime,cooldown=assembly.Model.Economy.RampCooldown;
+            float lifetime=Lifetime(kind),cooldown=Cooldown(kind),launch=assembly.Model.Economy.JumpPadLaunchSpeed;
             if(float.IsNaN(lifetime)||float.IsInfinity(lifetime)||lifetime<=0||float.IsNaN(cooldown)||float.IsInfinity(cooldown)||cooldown<0)return false;
+            if(kind==R3PartKind.JumpPadDeployer&&(float.IsNaN(launch)||float.IsInfinity(launch)||launch<=0))return false;
             if(!energy.TrySpend(cost))return false;
-            assembly.Model.Charges.TrySpend(RampPool,1);assembly.Model.RampDeployerReadyAt=Time.time+cooldown;
-            var ramp=GameObject.CreatePrimitive(PrimitiveType.Cube);ramp.name="Rozstawiona rampa";
+            assembly.Model.Charges.TrySpend(pool,1);SetReadyAt(kind,Time.time+cooldown);
+            var ramp=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            ramp.name=kind==R3PartKind.RampDeployer?"Rozstawiona rampa":kind==R3PartKind.WallDeployer?"Rozstawiony murek":"Rozstawiony jump pad";
             ramp.transform.SetPositionAndRotation(center,rotation);ramp.transform.localScale=new Vector3(width,thickness,length);
             var renderer=source.GetComponent<Renderer>();if(renderer!=null)ramp.GetComponent<Renderer>().sharedMaterial=renderer.sharedMaterial;
             ramp.AddComponent<R3DeployableSurface>().Configure(RRLHitRouter.Team(transform));
             ramp.AddComponent<P12PipelineSafeDamageable>().Configure(150,false);
+            if(kind==R3PartKind.JumpPadDeployer)
+            {
+                var trigger=ramp.AddComponent<BoxCollider>();trigger.isTrigger=true;trigger.center=new Vector3(0,2,0);trigger.size=new Vector3(1,4,1);
+                ramp.AddComponent<R3JumpPad>().Configure(launch,trigger);
+            }
             spawned.Add(ramp);Destroy(ramp,lifetime);return true;
         }
         void OnDestroy(){foreach(var item in spawned)if(item!=null)Destroy(item);spawned.Clear();}

@@ -228,6 +228,38 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(ramp.GetComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().IsDead,Is.True);
         Object.Destroy(enemy);Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator WallAndJumpPadUseIndependentChargesAndLaunchARealVehicle()
+    {
+        run.VehicleModel.Award(2000);FuseAndMount(R3PartKind.WallDeployer);FuseAndMount(R3PartKind.JumpPadDeployer);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return new WaitForFixedUpdate();body.linearVelocity=Vector3.forward*3;
+        Assert.That(service.TryDeploy(R3PartKind.WallDeployer),Is.True);
+        var wall=GameObject.Find("Rozstawiony murek");Assert.That(wall,Is.Not.Null);Assert.That(wall.transform.localScale.y,Is.EqualTo(2));
+        Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.WallPool),Is.EqualTo(2));
+        Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.JumpPadPool),Is.EqualTo(3));
+        body.position=new Vector3(120,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return new WaitForFixedUpdate();body.linearVelocity=Vector3.forward*3;
+        Assert.That(service.TryDeploy(R3PartKind.JumpPadDeployer),Is.True);
+        var pad=GameObject.Find("Rozstawiony jump pad");Assert.That(pad,Is.Not.Null);
+        var jump=pad.GetComponent<R3JumpPad>();Assert.That(jump,Is.Not.Null);
+        Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.JumpPadPool),Is.EqualTo(2));
+        Assert.That(jump.ActivationCount,Is.Zero,"The placement must not launch the deploying vehicle");
+        body.position=pad.transform.position+Vector3.up*1.3f;body.rotation=Quaternion.identity;body.linearVelocity=Vector3.down;Physics.SyncTransforms();
+        float deadline=Time.realtimeSinceStartup+5;bool lifted=false;
+        while(Time.realtimeSinceStartup<deadline&&jump.ActivationCount==0)
+        {yield return MOVSeriesDeviceTests.FixedStep();if(body.linearVelocity.y>2)lifted=true;}
+        Assert.That(jump.ActivationCount,Is.GreaterThan(0),"The actual physics trigger must recognize the vehicle");
+        Assert.That(jump.LastActivatedBody,Is.SameAs(body));
+        float peak=body.linearVelocity.y;
+        for(int i=0;i<10;i++){yield return MOVSeriesDeviceTests.FixedStep();peak=Mathf.Max(peak,body.linearVelocity.y);}
+        Assert.That(lifted||peak>2,Is.True,$"The real Rigidbody must receive an upward impulse (peak={peak:0.00}, kinematic={body.isKinematic})");
+        Assert.That(jump.ActivationCount,Is.EqualTo(1),"Multiple part colliders must not launch the same vehicle repeatedly");
+        Assert.That(peak,Is.LessThan(8),"The pad must not multiply its impulse by the number of vehicle colliders");
+        Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator EnergyAuraTogglesOnPressAndDamagesOnlyEnemiesWhileConsumingEnergy()
     {
         Assert.That(run.GaragePurchase(R3PartKind.Gun,RoboRougelike.R4.R4WeaponKind.EmpEmitter),Is.True);

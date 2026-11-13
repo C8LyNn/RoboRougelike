@@ -5,6 +5,25 @@ using RoboRougelike.R3;
 
 public sealed class BacklogDeployableSlotTests
 {
+    [Test] public void RampWallAndJumpPadShareOneFourSlotPool()
+    {
+        Assert.That(Enum.TryParse("WallDeployer",out R3PartKind wall),Is.True);
+        Assert.That(Enum.TryParse("JumpPadDeployer",out R3PartKind jump),Is.True);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(3000);
+        foreach(var kind in new[]{R3PartKind.RampDeployer,wall,jump})
+        {
+            Assert.That(model.PurchaseToInventory(kind),Is.True);var part=model.Inventory.Last(p=>p.Kind==kind);
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(part.Id,c,default)==null);
+            Assert.That(model.Mount(part.Id,cell),Is.True);
+        }
+        var slots=model.GetDeployableSlots();Assert.That(slots.Count(p=>p.HasValue),Is.EqualTo(3));
+        Assert.That(slots.Where(p=>p.HasValue).Select(p=>p.Value).Distinct().Count(),Is.EqualTo(3));
+        Assert.That(model.AssignDeployableSlot(jump,3),Is.True);
+        var checkpoint=model.MakeCheckpoint(0);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.GetDeployableSlots()[3],Is.EqualTo(jump));
+    }
     [Test] public void RampGeneratorUsesItsOwnSlotPoolAndSurvivesAJsonCheckpoint()
     {
         Assert.That(Enum.TryParse("RampDeployer",out R3PartKind kind),Is.True,"Missing ramp generator");

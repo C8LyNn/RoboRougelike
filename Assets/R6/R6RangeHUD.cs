@@ -90,7 +90,9 @@ namespace RoboRougelike.R1
                 if(run.Player.GetComponent<R3DeployableService>()!=null)
                 {
                     var bank=run.VehicleModel.Charges;
-                    charges+=$" • Rampa {bank.Current(R3DeployableService.RampPool)}/{bank.Maximum(R3DeployableService.RampPool)}";
+                    if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.RampDeployer))charges+=$" • Rampa {bank.Current(R3DeployableService.RampPool)}/{bank.Maximum(R3DeployableService.RampPool)}";
+                    if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.WallDeployer))charges+=$" • Murek {bank.Current(R3DeployableService.WallPool)}/{bank.Maximum(R3DeployableService.WallPool)}";
+                    if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.JumpPadDeployer))charges+=$" • Skok {bank.Current(R3DeployableService.JumpPadPool)}/{bank.Maximum(R3DeployableService.JumpPadPool)}";
                 }
                 GUI.Label(new Rect(34,151,580,22),$"Energia: {energy.Current:0}/{energy.Maximum:0}{charges}",small);
             }
