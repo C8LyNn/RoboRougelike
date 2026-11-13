@@ -24,6 +24,7 @@ Bazowy kod tej listy: `675fe0b80da184e4f8db8bf2c5f3e446ee8aeb63` (PR #1289).
 - [x] Regresja importu modeli: test sprawdza komplet 49 oryginalnych modeli i ustawienia importu wszystkich 62 bieżących modeli, dopuszczając dalsze dodatki — 2/2 EditMode, `model-manifest-final.xml`. Poprzednie sztywne oczekiwanie 49 odtworzono jako FAIL w `model-manifest-red.xml`.
 - [x] Pauza poligonu: osobne wybory resetu, powrotu do garażu, menu i wyjścia; przy unieruchomieniu domyślnie zaznaczony reset — 5/5 EditMode, `range-pause-final-v2.xml`. Przejście na scenie wykonano przez API; skrót R sprawdzono istniejącym testem wejścia.
 - [x] Pauza poligonu: wejście strzałka w dół → strzałka w dół → Enter przeprowadza do garażu przez wirtualną klawiaturę w realnej klatce Unity — 2/2 EditMode, `range-pause-virtual-input.xml`.
+- [x] Regresja powiązana z pauzą: test własnej mapy wraca do edytora z zachowaniem pojazdu i projektu — 2/2 EditMode, `map-pause-return-regression.xml`; test mety wykorzystuje kontrolowane przemieszczenie, a nie przejazd gracza.
 
 Wyniki dotyczą odpowiednich SHA poszczególnych zmian, a nie pełnej regresji końcowej.
 Oryginalne XML i logi znajdują się lokalnie w katalogu `RoboRougelike-LekkaStylizacja-QA`.
