@@ -715,6 +715,8 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(model.Scrap,Is.EqualTo(balance-quote));
         Assert.That(wreck.Health,Is.EqualTo(1));
         Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(wreck.Id));
+        Assert.That((string)Invoke(hud,"SimpleGarageFeedback",run),Does.Contain($"koszt {quote} Z"),
+            "The quick repair must show the amount actually spent even while a ghost is visible.");
         run.Garage.Select(AvailableOwnedMountCell(model,wreck));
         Assert.That(run.Garage.ClickTarget(),Is.True,"The same repaired part is mountable without reselection.");
         Assert.That(model.Inventory,Is.Empty);
@@ -1326,10 +1328,13 @@ public sealed class UI943PortraitCatalogActionsTests
         var hud=run.GetComponent<R1RunHUD>();Field(hud,"catalogOpen",false);
         Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
         Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id));
+        run.Garage.Select(run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Core).Cell);
         Invoke(hud,"RepairCatalogStack",run,new[]{item});
         Assert.That(item.Health,Is.EqualTo(1));Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id));
         Assert.That(run.Garage.Tool,Is.EqualTo(R41GarageTool.Mount));
         Assert.That(run.Garage.Message,Does.Contain("Naprawiono"));
+        Assert.That((string)Invoke(hud,"SimpleGarageFeedback",run),Does.Contain("Naprawiono"),
+            "Bulk repair feedback must remain visible while a placement ghost is present.");
 
         item.Health=0;run.Garage.SelectedInventoryId=null;run.Garage.SetTool(R41GarageTool.Inspect);
         Invoke(hud,"RepairCatalogStack",run,new[]{item});
