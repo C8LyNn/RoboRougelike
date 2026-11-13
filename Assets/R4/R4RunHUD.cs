@@ -18,7 +18,7 @@ namespace RoboRougelike.R1
         private int selectedBasket=-1;
         private int selectedBonus=-1;
         private R4SalvageLedger displayedLedger;
-        private int lootPage,inventoryPage;
+        private int lootPage,inventoryPage,basketPage;
         private bool inventoryOpen;
         private string dismantleConfirmation;
         private string catalogFeedback;
@@ -49,9 +49,9 @@ namespace RoboRougelike.R1
         private void TrackRewardLedger(R4SalvageLedger ledger)
         {
             if(displayedLedger==ledger)return;
-            displayedLedger=ledger;lootSelection.Clear();selectedBonus=-1;lootPage=0;basketRerollCount=0;
+            displayedLedger=ledger;lootSelection.Clear();selectedBonus=-1;lootPage=0;basketPage=0;basketRerollCount=0;
             var run=R1RunController.Instance;
-            rewardBaskets=ledger?.CreateBasketOffers((run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397),run?.Progress?.EncounterIndex??0)
+            rewardBaskets=ledger?.CreateBasketOffers((run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397),run?.Progress?.EncounterIndex??0,run?.VehicleModel?.RewardBasketOfferCount??3)
                 ??System.Array.Empty<R4SalvageBasket>();
             selectedBasket=-1;
             rewardInventoryOpen=false;rewardInventoryDamagedOnly=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;rewardClaimFeedback=null;
@@ -79,6 +79,20 @@ namespace RoboRougelike.R1
             selectedBasket=index;rewardClaimFeedback=null;lootSelection.Clear();
             foreach(var item in rewardBaskets[index].Items)lootSelection.Add(item.Id);
         }
+        private void DrawBasketPager(Rect rect)
+        {
+            int pages=(int)System.Math.Max(1,((long)rewardBaskets.Count+2)/3);
+            basketPage=Mathf.Clamp(basketPage,0,pages-1);
+            if(pages<=1)return;
+            bool enabled=GUI.enabled;
+            GUI.enabled=enabled&&basketPage>0;
+            if(GUI.Button(new Rect(rect.x,rect.y,54,rect.height),"‹",compactButton))basketPage--;
+            GUI.enabled=enabled;
+            GUI.Label(new Rect(rect.x+60,rect.y,rect.width-120,rect.height),$"Zestawy {basketPage+1}/{pages}",small);
+            GUI.enabled=enabled&&basketPage<pages-1;
+            if(GUI.Button(new Rect(rect.x+rect.width-54,rect.y,54,rect.height),"›",compactButton))basketPage++;
+            GUI.enabled=enabled;
+        }
         private static bool SameRewardBaskets(IReadOnlyList<R4SalvageBasket> a,IReadOnlyList<R4SalvageBasket> b)
         {
             if(a==null||b==null||a.Count!=b.Count)return false;
@@ -105,12 +119,12 @@ namespace RoboRougelike.R1
             for(int attempt=1;attempt<=16;attempt++)
             {
                 int seed=unchecked((run.Seed^(stage*397))+((basketRerollCount*16+attempt)*7919));
-                var candidate=run.Salvage.CreateBasketOffers(seed,stage);
+                var candidate=run.Salvage.CreateBasketOffers(seed,stage,run.VehicleModel.RewardBasketOfferCount);
                 if(candidate.Count>0&&!SameRewardBaskets(rewardBaskets,candidate)){next=candidate;break;}
             }
             if(next==null){rewardClaimFeedback="Brak innego zestawu do wylosowania.";return false;}
             if(!run.VehicleModel.TrySpendScrap(price))return false;
-            basketRerollCount++;rewardBaskets=next;selectedBasket=-1;lootSelection.Clear();
+            basketRerollCount++;rewardBaskets=next;basketPage=0;selectedBasket=-1;lootSelection.Clear();
             rewardClaimFeedback=$"Nowe zestawy • koszt {price} Z. Wybierz zestaw.";return true;
         }
         private void DrawRerollRewardButton(R1RunController run,Rect rect)
@@ -189,7 +203,7 @@ namespace RoboRougelike.R1
                 SelectRewardBonus(index);
             }
             int basket=RewardShortcutIndex(keyboard.qKey.wasPressedThisFrame,keyboard.wKey.wasPressedThisFrame,keyboard.eKey.wasPressedThisFrame);
-            if(basket>=0&&basket<rewardBaskets.Count)ChooseRewardBasket(basket);
+            if(basket>=0&&basketPage*3+basket<rewardBaskets.Count)ChooseRewardBasket(basketPage*3+basket);
             if(keyboard.enterKey.wasPressedThisFrame&&RewardSelectionReady(selectedBonus,run.Progress.Offers.Count,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,SelectedRewardPartCount(run)))ConfirmSelectedRewards(run);
         }
 #endif
@@ -203,7 +217,8 @@ namespace RoboRougelike.R1
                 RewardIntro(rewardBaskets.Count,run.LastScrapReward)+
                 (string.IsNullOrEmpty(run.TechnologyMessage)?"":"\n"+run.TechnologyMessage),body);
             GUI.Label(new Rect(45,155,355,32),"BONUS • [1 / 2 / 3]",heading);
-            GUI.Label(new Rect(455,155,765,32),"ZESTAW • [Q / W / E]",heading);
+            GUI.Label(new Rect(455,155,420,32),"ZESTAW • [Q / W / E]",heading);
+            DrawBasketPager(new Rect(875,155,345,32));
 
             var offers=run.Progress.Offers.ToArray();
             for(int i=0;i<offers.Length;i++)
@@ -221,18 +236,19 @@ namespace RoboRougelike.R1
             if(offers.Length==0)
                 GUI.Label(new Rect(55,205,345,80),"Brak propozycji modułów bonusowych.",small);
 
-            for(int i=0;i<rewardBaskets.Count;i++)
+            for(int i=0;i<3&&basketPage*3+i<rewardBaskets.Count;i++)
             {
-                var basket=rewardBaskets[i];float x=455,y=197+i*116;
+                int basketIndex=basketPage*3+i;
+                var basket=rewardBaskets[basketIndex];float x=455,y=197+i*116;
                 Panel(new Rect(x,y,765,104));
                 GUI.contentColor=BasketColor(basket);
                 GUI.Label(new Rect(x+10,y+6,520,28),RewardBasketHeading(basket),body);
                 GUI.contentColor=Color.white;
                 GUI.Label(new Rect(x+10,y+39,535,54),RewardBasketContentsForModel(basket.Items,run.VehicleModel)+"\nWszystkie części sprawne (100% HP)",small);
-                bool chosen=selectedBasket==i;
+                bool chosen=selectedBasket==basketIndex;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
                 string key=i<3?"QWE"[i].ToString():null;
-                if(GUI.Button(new Rect(x+570,y+25,180,50),chosen?"Wybrano ✓":key!=null?$"Wybierz [{key}]":"Wybierz",compactButton))ChooseRewardBasket(i);
+                if(GUI.Button(new Rect(x+570,y+25,180,50),chosen?"Wybrano ✓":key!=null?$"Wybierz [{key}]":"Wybierz",compactButton))ChooseRewardBasket(basketIndex);
                 GUI.backgroundColor=Color.white;
             }
             if(rewardBaskets.Count==0)GUI.Label(new Rect(465,205,735,60),"Brak części do odzyskania.",small);

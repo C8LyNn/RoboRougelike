@@ -7,6 +7,33 @@ using RoboRougelike.R4;
 
 public sealed class BacklogRewardBasketTests
 {
+    [Test] public void OptimizersAddOffersWithoutChangingTheOneBasketLimit()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var count=typeof(R3VehicleModel).GetProperty("RewardBasketOfferCount");
+        Assert.That(count,Is.Not.Null);
+        Assert.That((int)count.GetValue(model),Is.EqualTo(3));
+        model.Parts.Add(new R3PartState(default,R3PartKind.SalvageOptimizer){Tier=2,Health=1});
+        Assert.That((int)count.GetValue(model),Is.EqualTo(5));
+        var ledger=new R4SalvageLedger(3);
+        var items=Enumerable.Range(0,8).Select(i=>new R4SalvageItem("drop"+i,"foe",R3PartKind.Wheel,R4WeaponKind.Basic,1)).ToArray();
+        Assert.That(ledger.Record("foe",items,R3EnemyArchetype.Scout),Is.True);
+        var method=typeof(R4SalvageLedger).GetMethod("CreateBasketOffers",new[]{typeof(int),typeof(int),typeof(int)});
+        Assert.That(method,Is.Not.Null);
+        var baskets=(IReadOnlyList<R4SalvageBasket>)method.Invoke(ledger,new object[]{7,0,5});
+        Assert.That(baskets.Count,Is.EqualTo(5));
+        Assert.That(baskets.All(b=>b.Items.Count<=ledger.Limit),Is.True);
+        Assert.That(ledger.Claim(model,baskets[4].Items.Select(p=>p.Id)),Is.True);
+        Assert.That(ledger.Claim(model,baskets[0].Items.Select(p=>p.Id)),Is.False);
+        model.Parts.Last().Health=0;Assert.That((int)count.GetValue(model),Is.EqualTo(3));
+    }
+    [Test] public void ScarceLootCannotCreateDuplicateExtraOffers()
+    {
+        var ledger=new R4SalvageLedger(3);
+        var item=new R4SalvageItem("only","foe",R3PartKind.Gun,R4WeaponKind.Basic,1);
+        Assert.That(ledger.Record("foe",new[]{item},R3EnemyArchetype.Scout),Is.True);
+        Assert.That(ledger.CreateBasketOffers(1,0,100).Count,Is.EqualTo(3));
+    }
     [Test]
     public void RecordsEnemyArchetypeAlongsideOriginalPhysicalParts()
     {

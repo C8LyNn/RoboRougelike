@@ -261,7 +261,7 @@ namespace RoboRougelike.R1
             else if(selected==R3PartKind.EnergyRegenerator)
                 GUI.Label(new Rect(30,355,280,100),$"Regenerator T1/T2/T3: +{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(1):0}/+{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(2):0}/+{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(3):0} energii/s.\nNa postoju regeneracja ×4.\nRezerwa: {VehicleEnergyState.PassiveReservation:0} energii na moduł.",small);
             else if(selected==R3PartKind.SalvageOptimizer)
-                GUI.Label(new Rect(30,355,280,100),$"Optymalizator odzysku: +{m.Economy.SalvageOptimizerBonus*100:0}% złomu za niewybrane części za T1.\nBonusy sumują się.\nRezerwa: {VehicleEnergyState.PassiveReservation:0} energii na moduł.",small);
+                GUI.Label(new Rect(30,355,280,100),$"Odzysk T1: +{m.Economy.SalvageOptimizerBonus*100:0}% złomu i do +{m.Economy.SalvageOptimizerExtraOffersPerUnit} ofert.\nBonusy sumują się.\nRezerwa: {VehicleEnergyState.PassiveReservation:0} energii na moduł.",small);
             else if(selected==R3PartKind.PointDefense)
                 GUI.Label(new Rect(30,355,280,100),"Obrona 1×1×1 • automat 24 m\n40 nabojów • T przeładuj (3 s)\nChroni przed pociskami i rakietami.\nWymaga wolnej linii strzału.",small);
             else if(selected==R3PartKind.DirectionalShield)

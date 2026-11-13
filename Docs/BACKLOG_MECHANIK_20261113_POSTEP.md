@@ -72,7 +72,9 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Dodano przycisk przelosowania dostępnych zestawów w obu układach nagród. Koszt jest konfigurowalny, początkowo 10 Z. Wybrany bonus pozostaje, a koszyk trzeba wybrać ponownie. Bez środków, dostępnego koszyka lub rzeczywiście innej oferty waluta nie jest pobierana; sama zmiana kolejności zestawów nie wystarcza.
 - Unity 6000.3.14f1: **67 PASS, 0 FAIL**, kod 0, `C:\Users\kubap\Desktop\Prototypy\reward-reroll-final2.xml` oraz `.log`. Test sterowany API wykonuje walkę, wybiera nagrodę, przelosowuje, sprawdza koszt i brak środków; osobno sprawdza sytuację z tylko jedną dostępną ofertą oraz geometrię obu przycisków. Ręczny Windows Player: **NOT RUN**.
-- Rozszerzenie liczby koszyków przez moduły i integracja z przyszłymi łupami ze świata pozostają do wykonania; cały punkt 31 nie jest jeszcze zamknięty.
+- Sprawny optymalizator odzysku zwiększa liczbę ofert: wstępnie do +1 za jednostkę tieru, konfigurowalne. Wybór nadal obejmuje jeden koszyk; dodatkowe oferty pochodzą z pokonanych przeciwników i muszą różnić się od poprzednich. Przy niewielkiej liczbie łupów może powstać mniej dodatkowych ofert. Oba układy nagród stronicują po trzy pozycje; Q/W/E wybierają widoczną stronę. Przelosowanie wraca na pierwszą stronę i nie zmienia wybranego bonusu.
+- Unity 6000.3.14f1: **60 PASS, 0 FAIL**, kod 0, `C:\Users\kubap\Desktop\Prototypy\basket-extra-final.xml` oraz `.log`. Testy sprawdzają m.in. liczbę ofert z T2, pojedynczy odbiór, brak pozornych dodatkowych ofert dla jednego łupu, wybór klawiszem na drugiej stronie, reroll oraz geometrię dotychczasowych kontrolek. Scenariusz drugiej strony jest sterowany API i wstrzykuje stan modułu w nagrodach; fizyczny zakup, montaż i zniszczenie tego samego typu modułu sprawdzono osobno w pkt 32. Ręczny Windows Player: **NOT RUN**.
+- Integracja z przyszłymi fizycznymi łupami ze świata pozostaje do wykonania; cały punkt 31 nie jest jeszcze zamknięty.
 
 ## 36. Pakiety części — zakup i istniejący odzysk
 
@@ -83,7 +85,7 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 ## 32. Optymalizator odzysku — prototyp
 
-- Nowy pasywny moduł jest w katalogu garażu, podlega istniejącym zasadom montażu i rezerwuje 25 energii. Początkowo dodaje 25% złomu za niewybrane części z istniejącego koszyka; wartość jest konfigurowalna, kopie i tiery sumują się, a uszkodzony, lecz sprawny moduł działa z pełną siłą. Bonus znika po jego zniszczeniu lub odłączeniu. Zwykły demontaż nie zmienia ceny. Wynik jest zaokrąglany w dół, a wypłata respektuje limit portfela.
+- Nowy pasywny moduł jest w katalogu garażu, podlega istniejącym zasadom montażu i rezerwuje 25 energii. Początkowo dodaje 25% złomu za niewybrane części z istniejącego koszyka oraz do jednej oferty na jednostkę tieru; obie wartości są konfigurowalne i jawne w garażu. Kopie i tiery sumują się, a uszkodzony, lecz sprawny moduł działa z pełną siłą. Bonus znika po jego zniszczeniu lub odłączeniu. Zwykły demontaż nie zmienia ceny. Wynik jest zaokrąglany w dół, a wypłata respektuje limit portfela.
 - Unity 6000.3.14f1: **34 PASS, 0 FAIL**, kod 0, `C:\Users\kubap\Desktop\Prototypy\salvage-optimizer-final2.xml` oraz `.log`. Testy obejmują podgląd i rzeczywistą wypłatę, kilka kopii, indywidualne uszkodzenie, konfigurowalny bonus, fuzję T2, zapis i odczyt oraz fizyczny montaż i zniszczenie w scenie, sterowane API. Pierwsza próba fizycznego testu wykazała, że pomocnicze `RestoreHealthRatio(0)` ustawia minimum 0,1% HP; ponowiono test, zadając rzeczywiste obrażenia.
 - To prototyp wymagający oceny balansu w ręcznej grze. Łupy w świecie i przyszłe rodzaje nagród nie są objęte tą wersją; ręczny Windows Player: **NOT RUN**.
 

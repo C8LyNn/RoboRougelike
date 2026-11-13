@@ -71,7 +71,8 @@ namespace RoboRougelike.R4
             if(archetype.HasValue)basketSources.Add((archetype.Value,batch));
             return true;
         }
-        public IReadOnlyList<R4SalvageBasket> CreateBasketOffers(int seed,int stage)
+        public IReadOnlyList<R4SalvageBasket> CreateBasketOffers(int seed,int stage)=>CreateBasketOffers(seed,stage,3);
+        public IReadOnlyList<R4SalvageBasket> CreateBasketOffers(int seed,int stage,int offerCount)
         {
             // Select among the most common archetypes that actually appeared.
             // Every offer draws from one real defeated robot; armor stays excluded.
@@ -80,17 +81,29 @@ namespace RoboRougelike.R4
             if(groups.Length==0||Limit==0)return Array.Empty<R4SalvageBasket>();
             var random=new System.Random(seed);
             var result=new List<R4SalvageBasket>();
-            for(int i=0;i<3;i++)
+            var seen=new HashSet<string>(StringComparer.Ordinal);
+            for(int i=0;i<Math.Max(0,offerCount);i++)
             {
-                var group=groups[i%groups.Length].ToArray();
-                var source=group[random.Next(group.Length)];
-                var pool=source.Parts.Where(p=>p.Selectable).OrderBy(p=>p.Id,StringComparer.Ordinal).ToArray();
-                int tier=Math.Max(0,Math.Min(5,stage));
-                int percent=random.Next(30+tier*5,61+tier*5);
-                int count=Math.Min(Limit,Math.Max(1,(int)Math.Ceiling(pool.Length*percent/100d)));
-                // Partial Fisher-Yates: no duplicated physical instance inside a basket.
-                for(int j=0;j<count;j++){int k=random.Next(j,pool.Length);var swap=pool[j];pool[j]=pool[k];pool[k]=swap;}
-                result.Add(new R4SalvageBasket(source.Type,pool.Length,pool.Take(count).ToArray()));
+                R4SalvageBasket chosen=null;
+                // Preserve the original three offers. Additional offers must
+                // differ and stop after bounded attempts if loot is scarce.
+                for(int attempt=0;attempt<(i<3?1:16);attempt++)
+                {
+                    var group=groups[(i+attempt)%groups.Length].ToArray();
+                    var source=group[random.Next(group.Length)];
+                    var pool=source.Parts.Where(p=>p.Selectable).OrderBy(p=>p.Id,StringComparer.Ordinal).ToArray();
+                    int tier=Math.Max(0,Math.Min(5,stage));
+                    int percent=random.Next(30+tier*5,61+tier*5);
+                    int count=Math.Min(Limit,Math.Max(1,(int)Math.Ceiling(pool.Length*percent/100d)));
+                    // Partial Fisher-Yates: no duplicated physical instance inside a basket.
+                    for(int j=0;j<count;j++){int k=random.Next(j,pool.Length);var swap=pool[j];pool[j]=pool[k];pool[k]=swap;}
+                    var selected=pool.Take(count).ToArray();
+                    string key=string.Join("\u001f",selected.Select(p=>p.Id).OrderBy(id=>id,StringComparer.Ordinal));
+                    if(i>=3&&seen.Contains(key))continue;
+                    seen.Add(key);chosen=new R4SalvageBasket(source.Type,pool.Length,selected);break;
+                }
+                if(chosen==null)break;
+                result.Add(chosen);
             }
             return result.AsReadOnly();
         }
