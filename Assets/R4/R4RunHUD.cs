@@ -196,6 +196,13 @@ namespace RoboRougelike.R1
         }
         private static Rect RewardInventoryDetailsRect(int index)=>new Rect(60,187+index*76,475,57);
         private static Rect RewardInventoryStatusRect(int index)=>new Rect(550,187+index*76,280,57);
+        private static Rect RewardDismantleChoiceRect(int index,bool portrait,bool cancel)
+        {
+            var area=portrait?PortraitRewardDismantleButton(index):new Rect(860,190+index*76,350,48);
+            float confirmWidth=portrait?130:212;float gap=portrait?5:8;
+            return cancel?new Rect(area.x+confirmWidth+gap,area.y,area.width-confirmWidth-gap,area.height):
+                new Rect(area.x,area.y,confirmWidth,area.height);
+        }
         private static string RewardInventoryItemText(R3PartState item) =>
             $"{R4WeaponDefinition.PartName(item)} • HP {item.Health*100:0}%\nŹródło: {item.Source}";
         private static string RewardInventoryRepairText(R3VehicleModel model,R3PartState item)
@@ -228,12 +235,14 @@ namespace RoboRougelike.R1
                 Panel(new Rect(45,y,1180,68));
                 GUI.Label(RewardInventoryDetailsRect(i),RewardInventoryItemText(item),small);
                 GUI.Label(RewardInventoryStatusRect(i),RewardInventoryStatusText(model,item),small);
-                if(GUI.Button(new Rect(860,y+10,350,48),rewardDismantleConfirmation==item.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.PreviewAward(model.DismantleValue(item))} Z",compactButton))
+                if(rewardDismantleConfirmation==item.Id)
                 {
-                    bool confirming=rewardDismantleConfirmation==item.Id;
-                    PortraitRewardDismantle(run,item.Id);
-                    if(confirming)return;
+                    if(GUI.Button(RewardDismantleChoiceRect(i,false,false),"Potwierdź",compactButton))
+                    {PortraitRewardDismantle(run,item.Id);return;}
+                    if(GUI.Button(RewardDismantleChoiceRect(i,false,true),"Anuluj",compactButton))CancelRewardDismantle();
                 }
+                else if(GUI.Button(new Rect(860,y+10,350,48),$"Rozmontuj → {model.PreviewAward(model.DismantleValue(item))} Z",compactButton))
+                    PortraitRewardDismantle(run,item.Id);
             }
             GUI.enabled=rewardInventoryPage>0;
             if(GUI.Button(new Rect(45,580,90,40),"←",compactButton)){rewardInventoryPage--;rewardDismantleConfirmation=null;}

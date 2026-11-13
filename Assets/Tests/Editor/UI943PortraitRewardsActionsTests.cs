@@ -94,6 +94,19 @@ public sealed class UI943PortraitRewardsActionsTests
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(funds));
         yield return null;
     }
+    [UnityTest] public IEnumerator CancelDismantleKeepsThePartWalletAndInventoryOpen()
+    {
+        Assert.That(run.VehicleModel.ReceiveSalvage(new[]{new R3PartState(Vector3Int.zero,R3PartKind.Wheel,.5f)}),Is.True);
+        var item=run.VehicleModel.Inventory.Last();int funds=run.VehicleModel.Scrap;
+        Field("rewardInventoryOpen",true);Field("rewardDismantleConfirmation",item.Id);
+        Call("CancelRewardDismantle");
+        Assert.That(Field("rewardDismantleConfirmation"),Is.Null);
+        Assert.That((bool)Field("rewardInventoryOpen"),Is.True);
+        Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(funds));
+        Assert.That((string)Field("rewardInventoryFeedback"),Does.Contain("Anulowano"));
+        yield return null;
+    }
 #if ENABLE_INPUT_SYSTEM
     [UnityTest] public IEnumerator CollectedFinalPickupDoesNotConsumeRewardConfirmationKey()
     {

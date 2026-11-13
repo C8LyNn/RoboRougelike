@@ -61,6 +61,19 @@ public sealed class UI943PortraitRewardsLayoutTests
         Assert.That(filter.Overlaps(new Rect(pager.x,pager.y,110,48)),Is.False);
         Assert.That(filter.Overlaps(new Rect(pager.x+310,pager.y,110,48)),Is.False);
     }
+    [TestCase(false)] [TestCase(true)]
+    public void DismantleConfirmationAndCancelFitInsideTheOriginalButton(bool portrait)
+    {
+        for(int i=0;i<5;i++)
+        {
+            var area=portrait?RectOf("PortraitRewardDismantleButton",i):new Rect(860,190+i*76,350,48);
+            var confirm=RectOf("RewardDismantleChoiceRect",i,portrait,false);
+            var cancel=RectOf("RewardDismantleChoiceRect",i,portrait,true);
+            In(area,confirm,"Potwierdzenie");In(area,cancel,"Anulowanie");
+            Assert.That(confirm.Overlaps(cancel),Is.False);
+            Assert.That(cancel.height,Is.GreaterThanOrEqualTo(44));
+        }
+    }
     static void In(Rect outer,Rect inner,string name)
     {Assert.That(outer.Contains(inner.min)&&outer.Contains(inner.max-Vector2.one),Is.True,name);}
     [Test] public void BasketSummaryGroupsIdenticalPartsButKeepsDifferentTiersVisible()

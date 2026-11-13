@@ -100,12 +100,14 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(detail.x,card.y+59,detail.width,20),$"HP {item.Health*100:0}%",small);
                 string ammo=SalvageAmmoLabel(item);
                 GUI.Label(new Rect(detail.x,card.y+80,detail.width,21),RewardInventoryRepairText(model,item)+(ammo==null?"":" • "+ammo),small);
-                if(GUI.Button(PortraitRewardDismantleButton(i),rewardDismantleConfirmation==item.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.PreviewAward(model.DismantleValue(item))} Z",compactButton))
+                if(rewardDismantleConfirmation==item.Id)
                 {
-                    bool confirming=rewardDismantleConfirmation==item.Id;
-                    PortraitRewardDismantle(run,item.Id);
-                    if(confirming)return;
+                    if(GUI.Button(RewardDismantleChoiceRect(i,true,false),"Potwierdź",compactButton))
+                    {PortraitRewardDismantle(run,item.Id);return;}
+                    if(GUI.Button(RewardDismantleChoiceRect(i,true,true),"Anuluj",compactButton))CancelRewardDismantle();
                 }
+                else if(GUI.Button(PortraitRewardDismantleButton(i),$"Rozmontuj → {model.PreviewAward(model.DismantleValue(item))} Z",compactButton))
+                    PortraitRewardDismantle(run,item.Id);
             }
             var pager=PortraitRewardInventoryPager();
             GUI.enabled=rewardInventoryPage>0;
@@ -130,6 +132,8 @@ namespace RoboRougelike.R1
             else if(item.Selectable&&lootSelection.Count<3)lootSelection.Add(item.Id);
         }
         private bool PortraitRewardConfirm(R1RunController run)=>ConfirmSelectedRewards(run);
+        private void CancelRewardDismantle()
+        {rewardDismantleConfirmation=null;rewardInventoryFeedback="Anulowano rozmontowanie.";}
         private bool PortraitRewardDismantle(R1RunController run,string id)
         {
             if(rewardDismantleConfirmation!=id){rewardDismantleConfirmation=id;rewardInventoryFeedback=null;return false;}
