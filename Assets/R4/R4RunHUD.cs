@@ -28,6 +28,8 @@ namespace RoboRougelike.R1
         private string rewardDismantleConfirmation;
         private string rewardInventoryFeedback;
         private string rewardClaimFeedback;
+        private int basketRerollCount;
+        private static Rect RewardRerollRect()=>new Rect(455,556,370,35);
         private static Rect SalvageAmmoRect(float x,float y)=>new Rect(x+268,y+77,97,23);
         private static string SalvageAmmoLabel(R3PartState part)
         {
@@ -47,7 +49,7 @@ namespace RoboRougelike.R1
         private void TrackRewardLedger(R4SalvageLedger ledger)
         {
             if(displayedLedger==ledger)return;
-            displayedLedger=ledger;lootSelection.Clear();selectedBonus=-1;lootPage=0;
+            displayedLedger=ledger;lootSelection.Clear();selectedBonus=-1;lootPage=0;basketRerollCount=0;
             var run=R1RunController.Instance;
             rewardBaskets=ledger?.CreateBasketOffers((run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397),run?.Progress?.EncounterIndex??0)
                 ??System.Array.Empty<R4SalvageBasket>();
@@ -76,6 +78,49 @@ namespace RoboRougelike.R1
             if(index<0||index>=rewardBaskets.Count)return;
             selectedBasket=index;rewardClaimFeedback=null;lootSelection.Clear();
             foreach(var item in rewardBaskets[index].Items)lootSelection.Add(item.Id);
+        }
+        private static bool SameRewardBaskets(IReadOnlyList<R4SalvageBasket> a,IReadOnlyList<R4SalvageBasket> b)
+        {
+            if(a==null||b==null||a.Count!=b.Count)return false;
+            var matched=new bool[b.Count];
+            for(int i=0;i<a.Count;i++)
+            {
+                int found=-1;var ids=a[i].Items.Select(p=>p.Id).OrderBy(id=>id,System.StringComparer.Ordinal).ToArray();
+                for(int j=0;j<b.Count;j++)
+                    if(!matched[j]&&a[i].Archetype==b[j].Archetype&&ids.SequenceEqual(
+                        b[j].Items.Select(p=>p.Id).OrderBy(id=>id,System.StringComparer.Ordinal)))
+                    {found=j;break;}
+                if(found<0)return false;matched[found]=true;
+            }
+            return true;
+        }
+        private bool RerollRewardBaskets(R1RunController run)
+        {
+            if(run==null||run.VehicleModel==null||run.Definition==null||run.Progress?.State!=R1RunState.Salvage||
+                run.Salvage==null||run.Salvage!=displayedLedger||run.Salvage.Closed||rewardBaskets.Count==0)return false;
+            int price=Mathf.Max(0,run.Definition.RewardBasketRerollCost);
+            if(run.VehicleModel.Scrap<price){rewardClaimFeedback=$"Brakuje {price-run.VehicleModel.Scrap} Z na losowanie.";return false;}
+            IReadOnlyList<R4SalvageBasket> next=null;
+            int stage=run.Progress.EncounterIndex;
+            for(int attempt=1;attempt<=16;attempt++)
+            {
+                int seed=unchecked((run.Seed^(stage*397))+((basketRerollCount*16+attempt)*7919));
+                var candidate=run.Salvage.CreateBasketOffers(seed,stage);
+                if(candidate.Count>0&&!SameRewardBaskets(rewardBaskets,candidate)){next=candidate;break;}
+            }
+            if(next==null){rewardClaimFeedback="Brak innego zestawu do wylosowania.";return false;}
+            if(!run.VehicleModel.TrySpendScrap(price))return false;
+            basketRerollCount++;rewardBaskets=next;selectedBasket=-1;lootSelection.Clear();
+            rewardClaimFeedback=$"Nowe zestawy • koszt {price} Z. Wybierz zestaw.";return true;
+        }
+        private void DrawRerollRewardButton(R1RunController run,Rect rect)
+        {
+            int price=Mathf.Max(0,run.Definition.RewardBasketRerollCost);
+            bool wasEnabled=GUI.enabled;
+            GUI.enabled=wasEnabled&&rewardBaskets.Count>0&&run.VehicleModel.Scrap>=price;
+            string caption=run.VehicleModel.Scrap<price?$"Brakuje {price-run.VehicleModel.Scrap} Z":$"Przelosuj zestawy • {price} Z";
+            if(GUI.Button(rect,caption,compactButton))RerollRewardBaskets(run);
+            GUI.enabled=wasEnabled;
         }
         private void SelectRewardBonus(int index){selectedBonus=index;rewardClaimFeedback=null;}
         private bool ConfirmSelectedRewards(R1RunController run)
@@ -192,6 +237,7 @@ namespace RoboRougelike.R1
             }
             if(rewardBaskets.Count==0)GUI.Label(new Rect(465,205,735,60),"Brak części do odzyskania.",small);
 
+            DrawRerollRewardButton(run,RewardRerollRect());
             if(GUI.Button(new Rect(850,556,375,35),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • zwolnij miejsce",compactButton))
                 rewardInventoryOpen=true;
             int rewardPartCount=SelectedRewardPartCount(run);

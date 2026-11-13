@@ -68,6 +68,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Unity 6000.3.14f1: **31 PASS, 0 FAIL, 0 SKIP**, kod 0, `C:\Users\kubap\Desktop\Prototypy\shop-pricing-final.xml` oraz `.log`; obejmuje ceny wszystkich podstawowych rodzin, specjalną broń, własny mnożnik i kopię konfiguracji, koszty naprawy i demontażu, budżet oraz fuzję w garażu. Po zmianie cen zwiększono walutę wyłącznie w testach, które potrzebują jej do zakupu części niezależnie od badanego zachowania.
 - Vendor z 35 pozostaje do wdrożenia; poniżej opisano częściową obsługę pakietów z 36. Cała ekonomia wymaga późniejszego playtestu. Ręczny Windows Player: **NOT RUN**.
 
+## 31. Koszyki nagród — przelosowanie
+
+- Dodano przycisk przelosowania dostępnych zestawów w obu układach nagród. Koszt jest konfigurowalny, początkowo 10 Z. Wybrany bonus pozostaje, a koszyk trzeba wybrać ponownie. Bez środków, dostępnego koszyka lub rzeczywiście innej oferty waluta nie jest pobierana; sama zmiana kolejności zestawów nie wystarcza.
+- Unity 6000.3.14f1: **67 PASS, 0 FAIL**, kod 0, `C:\Users\kubap\Desktop\Prototypy\reward-reroll-final2.xml` oraz `.log`. Test sterowany API wykonuje walkę, wybiera nagrodę, przelosowuje, sprawdza koszt i brak środków; osobno sprawdza sytuację z tylko jedną dostępną ofertą oraz geometrię obu przycisków. Ręczny Windows Player: **NOT RUN**.
+- Rozszerzenie liczby koszyków przez moduły i integracja z przyszłymi łupami ze świata pozostają do wykonania; cały punkt 31 nie jest jeszcze zamknięty.
+
 ## 36. Pakiety części — zakup i istniejący odzysk
 
 - Zwykły sklep przyznaje 5 podstawowych pełnych klocków lub 2 części napędowe za jedną cenę oferty; inne części, w tym kształtowe klocki, pozostają pojedyncze. Ilości są konfigurowalne. Kreatywny warsztat nadal dodaje pojedynczy wybrany element za darmo. W garażu widać liczebność pakietu i wymagane miejsce.

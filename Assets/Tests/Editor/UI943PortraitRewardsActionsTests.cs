@@ -80,6 +80,40 @@ public sealed class UI943PortraitRewardsActionsTests
         Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(198));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(funds));
         Assert.That(run.Salvage.Closed,Is.False);
     }
+    [UnityTest] public IEnumerator RerollChargesOnceKeepsBonusAndRequiresANewBasketSelection()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Call("TrackRewardLedger",run.Salvage);
+        Call("PortraitRewardSelectBonus",0);Call("ChooseRewardBasket",0);
+        var old=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(old.Count,Is.GreaterThan(0));
+        var reroll=typeof(R1RunHUD).GetMethod("RerollRewardBaskets",BindingFlags.Instance|BindingFlags.NonPublic);
+        Assert.That(reroll,Is.Not.Null,"The live reward interface must support rerolling.");
+        var price=typeof(R1RunDefinition).GetField("RewardBasketRerollCost");Assert.That(price,Is.Not.Null);
+        int cost=(int)price.GetValue(run.Definition),before=run.VehicleModel.Scrap;
+        Assert.That(before,Is.GreaterThanOrEqualTo(cost));
+        Assert.That((bool)reroll.Invoke(hud,new object[]{run}),Is.True);
+        var updated=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        string Signature(IReadOnlyList<R4SalvageBasket> offers)=>string.Join("|",offers.Select(b=>string.Join(",",b.Items.Select(p=>p.Id).OrderBy(id=>id))));
+        Assert.That(Signature(updated),Is.Not.EqualTo(Signature(old)));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-cost));Assert.That(run.Salvage.Closed,Is.False);
+        Assert.That((int)Field("selectedBonus"),Is.EqualTo(0));Assert.That((int)Field("selectedBasket"),Is.EqualTo(-1));
+        Assert.That((HashSet<string>)Field("lootSelection"),Is.Empty);
+        Assert.That(cost,Is.GreaterThan(0));Call("ChooseRewardBasket",0);
+        Assert.That(run.VehicleModel.TrySpendScrap(run.VehicleModel.Scrap),Is.True);
+        Assert.That((bool)reroll.Invoke(hud,new object[]{run}),Is.False);
+        Assert.That(run.VehicleModel.Scrap,Is.Zero);Assert.That((int)Field("selectedBasket"),Is.EqualTo(0));
+        Assert.That((string)Field("rewardClaimFeedback"),Does.Contain("Brakuje"));
+        run.VehicleModel.Award(100);
+        var single=new R4SalvageLedger(3);
+        Assert.That(single.Record("only-enemy",new[]{new R4SalvageItem("only-gun","fixture",R3PartKind.Gun,R4WeaponKind.Basic,1)},R3EnemyArchetype.Scout),Is.True);
+        typeof(R1RunController).GetProperty("Salvage").GetSetMethod(true).Invoke(run,new object[]{single});
+        Call("TrackRewardLedger",single);Call("ChooseRewardBasket",0);int funds=run.VehicleModel.Scrap;
+        Assert.That((bool)reroll.Invoke(hud,new object[]{run}),Is.False,"Identical offers must not incur a fee.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(funds));Assert.That((int)Field("selectedBasket"),Is.EqualTo(0));
+        Assert.That((string)Field("rewardClaimFeedback"),Does.Contain("Brak innego"));
+    }
     [UnityTest] public IEnumerator EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation()
     {
         foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);

@@ -23,6 +23,7 @@ namespace RoboRougelike.R1
         private static Rect PortraitRewardLootButton(int index)
         {var card=PortraitRewardLootCard(index);return new Rect(card.x+248,card.y+15,96,52);}
         private static Rect PortraitRewardPager()=>new Rect(24,792,720,44);
+        private static Rect PortraitRewardRerollRect()=>new Rect(24,792,350,44);
         private static Rect PortraitRewardSummary()=>new Rect(24,840,720,72);
         private static Rect PortraitRewardConfirm()=>new Rect(24,930,720,64);
         private static Rect PortraitRewardInventoryCard(int index)=>new Rect(24,170+index*120,720,108);
@@ -69,6 +70,7 @@ namespace RoboRougelike.R1
             }
             if(rewardBaskets.Count==0)GUI.Label(new Rect(36,495,680,50),"Brak części do odzyskania.",small);
             var pager=PortraitRewardPager();
+            DrawRerollRewardButton(run,PortraitRewardRerollRect());
             if(GUI.Button(new Rect(pager.x+370,pager.y,350,44),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity}",compactButton))rewardInventoryOpen=true;
             int rewardPartCount=SelectedRewardPartCount(run);
             int missing=RewardInventoryMissingSlots(run.VehicleModel.Inventory.Count,rewardPartCount);

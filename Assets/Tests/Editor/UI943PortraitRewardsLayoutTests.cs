@@ -43,6 +43,23 @@ public sealed class UI943PortraitRewardsLayoutTests
         var label=(string)Method("RewardBasketContentsForModel").Invoke(null,new object[]{new[]{wheel},model});
         Assert.That(label,Does.Contain("×3"));
     }
+    [Test] public void RerollButtonsFitAlongsideInventoryAndBasketCards()
+    {
+        var portrait=RectOf("PortraitRewardRerollRect");var pager=RectOf("PortraitRewardPager");
+        Assert.That(portrait.xMin,Is.GreaterThanOrEqualTo(pager.xMin));Assert.That(portrait.xMax,Is.LessThanOrEqualTo(pager.xMax));
+        Assert.That(portrait.Overlaps(new Rect(pager.x+370,pager.y,350,44)),Is.False);
+        for(int i=0;i<3;i++)Assert.That(portrait.Overlaps(RectOf("PortraitRewardBasketCard",i)),Is.False);
+        var landscape=RectOf("RewardRerollRect");Assert.That(landscape.Overlaps(new Rect(850,556,375,35)),Is.False);
+    }
+    [Test] public void ReorderingExistingRewardBasketsIsNotANewOffer()
+    {
+        var ledger=new R4SalvageLedger(3);
+        Assert.That(ledger.Record("a",new[]{new R4SalvageItem("gun","test",R3PartKind.Gun,R4WeaponKind.Basic,1)},R3EnemyArchetype.Scout),Is.True);
+        Assert.That(ledger.Record("b",new[]{new R4SalvageItem("wheel","test",R3PartKind.Wheel,R4WeaponKind.Basic,1)},R3EnemyArchetype.Bruiser),Is.True);
+        var offers=ledger.CreateBasketOffers(7,0);Assert.That(offers.Count,Is.EqualTo(3));
+        var reordered=offers.Skip(1).Concat(offers.Take(1)).ToArray();
+        Assert.That((bool)Method("SameRewardBaskets").Invoke(null,new object[]{offers,reordered}),Is.True);
+    }
     [Test] public void DamagedRewardInventoryShowsWorstPartsFirstWithoutChangingInventory()
     {
         var model=new R3VehicleModel(new R3VehicleDesign());
