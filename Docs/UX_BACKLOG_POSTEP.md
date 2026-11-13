@@ -25,8 +25,12 @@ Bazowy kod tej listy: `675fe0b80da184e4f8db8bf2c5f3e446ee8aeb63` (PR #1289).
 - [x] Pauza poligonu: osobne wybory resetu, powrotu do garażu, menu i wyjścia; przy unieruchomieniu domyślnie zaznaczony reset — 5/5 EditMode, `range-pause-final-v2.xml`. Przejście na scenie wykonano przez API; skrót R sprawdzono istniejącym testem wejścia.
 - [x] Pauza poligonu: wejście strzałka w dół → strzałka w dół → Enter przeprowadza do garażu przez wirtualną klawiaturę w realnej klatce Unity — 2/2 EditMode, `range-pause-virtual-input.xml`.
 - [x] Regresja powiązana z pauzą: test własnej mapy wraca do edytora z zachowaniem pojazdu i projektu — 2/2 EditMode, `map-pause-return-regression.xml`; test mety wykorzystuje kontrolowane przemieszczenie, a nie przejazd gracza.
+- [x] Zakupy w garażu: potwierdzenie podaje rzeczywistą zmianę salda także po pojawieniu się widma, zarówno przy zakupie jednej części, jak i pakietu — 9/9 celowanych testów EditMode, `quick-purchase-receipt-final.xml`; dodatkowo 2/2 kontroli obu potwierdzeń, `purchase-receipt-both.xml`.
 
 Wyniki dotyczą odpowiednich SHA poszczególnych zmian, a nie pełnej regresji końcowej.
+Wspólny celowany przebieg na SHA `5631f76a`: 8/8 EditMode PASS,
+`backlog-shared-sha-5631.xml` (garaż, aktywności, pauza z wirtualną
+klawiaturą, podsumowanie i import modeli). To nie jest pełna regresja.
 Oryginalne XML i logi znajdują się lokalnie w katalogu `RoboRougelike-LekkaStylizacja-QA`.
 
 ## Nadal otwarte

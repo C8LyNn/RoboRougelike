@@ -187,6 +187,28 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(added.Last().Id));
         Assert.That((bool)Field(hud,"catalogOpen"),Is.False);
         Assert.That(run.Garage.Message,Does.Contain("5").And.Contain((price*5)+" Z"));
+        run.Garage.Select(run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Core).Cell);
+        Assert.That((string)Invoke(hud,"SimpleGarageFeedback",run),Does.Contain((price*5)+" Z"),
+            "The group purchase receipt must remain visible with a placement target.");
+        yield return null;
+    }
+
+    [UnityTest] public IEnumerator QuickPurchaseShowsActualCostEvenWhenGhostMoves()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float timeout=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<timeout)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        var hud=run.GetComponent<R1RunHUD>();
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        int before=run.VehicleModel.Scrap,price=run.VehicleModel.Price(R3PartKind.Armor);
+        Invoke(hud,"BuyQuickPart",run);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-price));
+        Assert.That(run.Garage.SelectedInventoryId,Is.Not.Null.And.Not.Empty);
+        run.Garage.Select(run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Core).Cell);
+        Assert.That((string)Invoke(hud,"SimpleGarageFeedback",run),Does.Contain($"{price} Z"),
+            "A purchase must disclose the actual cost even after the ghost has a target.");
         yield return null;
     }
 
