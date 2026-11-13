@@ -42,3 +42,9 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Celowane Unity 6000.3.14f1: **7 PASS, 0 FAIL**, kod 0; test rzeczywistych kół sprawdza 50%, 1% i zniszczenie silnika oraz jego dezaktywację, a pozostałe testy sprawdzają tier i bilans energii: `C:\Users\kubap\Desktop\Prototypy\passive-motor-final.xml` oraz `.log`. Przed poprawką ten sam test wykazał rzeczywisty błąd: 0,5 zamiast 1 jednostki mocy przy 50% HP.
 - Obrona punktowa obsługuje fuzję T1→T2→T3, zapis tieru i wkład tieru w obrażenia pocisku przechwytującego oraz jego koszt energii. Celowane Unity: **7 PASS, 0 FAIL**, kod 0, `C:\Users\kubap\Desktop\Prototypy\point-defense-tier-final4.xml` oraz `.log`. Sprawdzono fuzję i zapis, a także faktyczny wystrzał i przechwycenie rakiety przez T1 oraz T2, zniszczenie, naprawę i zachowanie amunicji. Test używa kontrolowanego trafienia: wcześniejsze 10000 obrażeń niszczyło również podporę przez system przenoszenia obrażeń, co uniemożliwiało naprawę.
 - Nie oznacza to ukończenia wszystkich rodzin tierów ani pełnej reguły 15 dla wszystkich urządzeń; potrzebna jest dalsza integracja. Ręczny Windows Player: **NOT RUN**.
+
+## 12 i 14. Sumowanie premii — częściowo
+
+- Usunięto limit 8% HP/s z pasywnej naprawy polowej: każdy wkład dodaje 2,5% HP/s, więc T3 daje 10% HP/s. Opis w interfejsie pokazuje rzeczywistą wartość. Zniszczone części nadal nie są automatycznie wskrzeszane, a pojedyncza część nie może przekroczyć swojego maksymalnego HP.
+- Celowane Unity: **7 PASS, 0 FAIL**, kod 0, `C:\Users\kubap\Desktop\Prototypy\repair-stack-final2.xml` oraz `.log`. Sprawdzono rzeczywiste leczenie żyjącego rdzenia, pełną siłę T3, zanik leczenia po zniszczeniu modułu oraz opis.
+- Nadal pozostają ogólne grupy `increased/reduced` i `more/less`, zakresy i typy obrażeń oraz inne istniejące ograniczenia. Ta zmiana nie oznacza ukończenia punktów 12–14.

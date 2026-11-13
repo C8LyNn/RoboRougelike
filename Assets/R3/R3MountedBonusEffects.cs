@@ -76,7 +76,7 @@ namespace RoboRougelike.R3
             if(repairModules==0||elapsed<=0)return;
             var state=R1RunController.Instance?.Progress?.State;
             if(state!=R1RunState.Combat&&state!=R1RunState.TestDrive)return;
-            float increase=Mathf.Min(0.08f,repairModules*0.025f)*elapsed;
+            float increase=repairModules*0.025f*elapsed;
             foreach(var piece in player.GetComponentsInChildren<P12PipelineSafeDamageable>())
             {
                 if(piece==null||piece.IsDead||piece.MaxHp<=0)continue;

@@ -55,6 +55,15 @@ public class RRLW34EffectsTests
     static R3MountedBonusEffects Effects(R1VehicleState v)=>v.GetComponent<R3MountedBonusEffects>();
     static R3MountedPart Module(R1VehicleState v,R1UpgradeEffect effect)=>
         v.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeEffect==effect);
+    R3VehicleModel ModelWithOneMountedBonus(R1UpgradeEffect effect)
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        Assert.That(model.ReceiveBonuses(new[]{Upgrade(effect)}),Is.True);
+        var item=model.Inventory.Single();
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(item.Id,c,default)==null);
+        Assert.That(model.Mount(item.Id,cell),Is.True);return model;
+    }
     [UnityTest] public IEnumerator InventoryIsInactiveAndAllMountedEffectsReachLiveWeaponsHpAndOmni()
     {
         var m=Model(Upgrade(R1UpgradeEffect.Damage,.25f),Upgrade(R1UpgradeEffect.Damage,.2f),
@@ -115,15 +124,30 @@ public class RRLW34EffectsTests
     [UnityTest] public IEnumerator FieldRepairOnlyHealsLivingConnectedPartsDuringTestAndStopsOnLoss()
     {
         Assert.That(run.OpenSandboxGarage(),Is.True);Time.timeScale=1;
-        var model=Model(Upgrade(R1UpgradeEffect.Repair));var v=Build(model);v.Core.RestoreHealthRatio(.5f);
+        var model=ModelWithOneMountedBonus(R1UpgradeEffect.Repair);var v=Build(model);v.Core.RestoreHealthRatio(.5f);
         float end=Time.time+.4f;while(Time.time<end)yield return null;
         Assert.That(v.Core.CurrentHp/v.Core.MaxHp,Is.EqualTo(.5f).Within(.001),"Garage never grants passive repair.");
         Assert.That(run.Progress.BeginTest(),Is.True);end=Time.time+.6f;while(Time.time<end)yield return null;
         Assert.That(v.Core.CurrentHp/v.Core.MaxHp,Is.GreaterThan(.505f));
-        var module=Module(v,R1UpgradeEffect.Repair);module.Damageable.ApplyDamage(10000,module.transform.position,Vector3.right);
+        var module=Module(v,R1UpgradeEffect.Repair);
+        module.Damageable.ApplyDamageResolvedTyped(module.Damageable.CurrentHp/.9f+1f,module.transform.position,Vector3.right,
+            R3DamagePropagation.DamageKind.Piercing);
         yield return null;yield return null;float ratio=v.Core.CurrentHp/v.Core.MaxHp;
+        Assert.That(v.Core.IsDead,Is.False,"The recipient must remain alive when checking that regeneration stopped.");
         end=Time.time+.6f;while(Time.time<end)yield return null;
         Assert.That(v.Core.CurrentHp/v.Core.MaxHp,Is.EqualTo(ratio).Within(.001));
+    }
+    [UnityTest] public IEnumerator TierThreeFieldRepairAddsAllFourContributions()
+    {
+        Assert.That(run.OpenSandboxGarage(),Is.True);Assert.That(run.Progress.BeginTest(),Is.True);
+        var model=ModelWithOneMountedBonus(R1UpgradeEffect.Repair);
+        model.Parts.Single(p=>p.Kind==R3PartKind.BonusModule).Tier=3;
+        var vehicle=Build(model);vehicle.Core.RestoreHealthRatio(.5f);
+        var effects=Effects(vehicle);var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        typeof(R3MountedBonusEffects).GetField("lastRepairPulse",flags).SetValue(effects,Time.time-.5f);
+        typeof(R3MountedBonusEffects).GetMethod("ApplyRepairPulse",flags).Invoke(effects,null);
+        Assert.That(vehicle.Core.CurrentHp/vehicle.Core.MaxHp,Is.EqualTo(.55f).Within(.001f),"Four tier contributions must each add 2.5% per second.");
+        yield return null;
     }
     [UnityTest] public IEnumerator RangeResetAndReturnPreserveWorkshopModuleIdentityWithoutStacking()
     {

@@ -270,7 +270,7 @@ namespace RoboRougelike.R1
         {
             int units=R3VehicleModel.TierEffectUnits(item.Tier);
             if(item.UpgradeEffect==R1UpgradeEffect.Repair)
-                return $"Regeneracja do {Mathf.Min(.08f,units*.025f)*100:0.#}% HP/s";
+                return $"Regeneracja {units*.025f*100:0.#}% HP/s";
             var stats=new R1RunStats();for(int i=0;i<units;i++)stats.Apply(item.UpgradeEffect,item.UpgradeAmount);
             string name;float percent;bool reduction=false;
             switch(item.UpgradeEffect)
