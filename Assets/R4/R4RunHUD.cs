@@ -86,6 +86,8 @@ namespace RoboRougelike.R1
         }
         private static Color BasketColor(R4SalvageBasket basket)=>basket.Percent>=66?new Color(.48f,.9f,.55f):
             basket.Percent>=33?new Color(.45f,.82f,.95f):Color.white;
+        private static string RewardBasketHeading(R4SalvageBasket basket)=>
+            $"{R3EnemyProfiles.Name(basket.Archetype)} • Odzysk {basket.Percent}% ({basket.Items.Count}/{basket.AvailableParts})";
         private static string RewardBasketContents(IEnumerable<R4SalvageItem> items)=>string.Join(", ",
             items.Select(item=>item.ToPart()).GroupBy(part=>part.Kind==R3PartKind.BonusModule?
                 "bonus:"+CatalogBonusKey(part)+":"+R3VehicleModel.NormalizedTier(part.Tier):"part:"+R4WeaponDefinition.PartName(part))
@@ -97,6 +99,20 @@ namespace RoboRougelike.R1
         private static int RewardShortcutIndex(bool first,bool second,bool third)=>first?0:second?1:third?2:-1;
         private static string RewardConfirmCaption(int basketCount)=>basketCount==0?
             "Odbierz bonus [Enter]":"Zatwierdź oba wybory [Enter]";
+        private static string RewardActionCaption(int bonus,int bonusCount,int basket,int basketCount,int inventoryCount,int lootCount)
+        {
+            if(bonusCount<=0)return "Brak dostępnych bonusów";
+            if(bonus<0||bonus>=bonusCount)return "Wybierz bonus";
+            if(basketCount>0&&(basket<0||basket>=basketCount))return "Wybierz zestaw";
+            int missing=RewardInventoryMissingSlots(inventoryCount,lootCount);
+            if(missing>0)
+            {
+                int last=missing%10,lastTwo=missing%100;
+                string word=missing==1?"miejsce":last>=2&&last<=4&&(lastTwo<12||lastTwo>14)?"miejsca":"miejsc";
+                return $"Zwolnij {missing} {word} w magazynie";
+            }
+            return RewardConfirmCaption(basketCount);
+        }
         private static string RewardIntro(int basketCount,int scrap)=>basketCount==0?
             $"Wybierz moduł bonusowy. Brak części do odzyskania. +{scrap} Z za walkę.":
             $"Wybierz moduł i jeden zestaw z wraków. +{scrap} Z za walkę.";
@@ -153,7 +169,7 @@ namespace RoboRougelike.R1
                 var basket=rewardBaskets[i];float x=455,y=197+i*116;
                 Panel(new Rect(x,y,765,104));
                 GUI.contentColor=BasketColor(basket);
-                GUI.Label(new Rect(x+10,y+6,520,28),$"{R3EnemyProfiles.Name(basket.Archetype)} • {basket.Items.Count}/{basket.AvailableParts} części",body);
+                GUI.Label(new Rect(x+10,y+6,520,28),RewardBasketHeading(basket),body);
                 GUI.contentColor=Color.white;
                 GUI.Label(new Rect(x+10,y+39,535,54),RewardBasketContents(basket.Items)+"\nWszystkie części sprawne (100% HP)",small);
                 bool chosen=selectedBasket==i;
@@ -173,7 +189,7 @@ namespace RoboRougelike.R1
                 $"Niewybrane części → +{run.VehicleModel.PreviewAward(ledger.PreviewScrap(run.VehicleModel,lootSelection))} Z.\n" +
                 "Bonusy trafiają do magazynu i pozostają NIEAKTYWNE do montażu.",small);
             GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count);
-            if(GUI.Button(new Rect(805,610,420,68),RewardConfirmCaption(rewardBaskets.Count),button))
+            if(GUI.Button(new Rect(805,610,420,68),RewardActionCaption(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count),button))
                 ConfirmSelectedRewards(run);
             GUI.enabled=true;
             if(!room||!string.IsNullOrEmpty(rewardClaimFeedback))GUI.Label(new Rect(45,685,1180,30),!room?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. Otwórz magazyn, aby je zwolnić.":rewardClaimFeedback,small);

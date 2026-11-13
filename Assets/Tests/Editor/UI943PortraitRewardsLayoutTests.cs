@@ -12,6 +12,20 @@ public sealed class UI943PortraitRewardsLayoutTests
     static MethodInfo Method(string name)
     {var m=typeof(R1RunHUD).GetMethod(name,BindingFlags.Static|BindingFlags.NonPublic);Assert.That(m,Is.Not.Null,name);return m;}
     static Rect RectOf(string name,params object[] args)=>(Rect)Method(name).Invoke(null,args);
+    [TestCase(-1,3,-1,3,0,0,"Wybierz bonus")]
+    [TestCase(0,3,-1,3,0,0,"Wybierz zestaw")]
+    [TestCase(0,3,0,3,198,3,"Zwolnij 2 miejsca")]
+    [TestCase(0,3,0,3,200,0,"Zwolnij 1 miejsce")]
+    [TestCase(0,3,0,3,200,11,"Zwolnij 12 miejsc")]
+    [TestCase(0,3,0,3,200,21,"Zwolnij 22 miejsca")]
+    [TestCase(0,3,0,3,196,3,"Zatwierdź oba")]
+    [TestCase(0,3,-1,0,0,0,"Odbierz bonus")]
+    [TestCase(-1,0,-1,0,0,0,"Brak dostępnych bonusów")]
+    public void RewardButtonExplainsMissingSelectionOrSpace(int bonus,int bonusCount,int basket,int basketCount,int inventory,int loot,string expected)
+    {
+        var caption=(string)Method("RewardActionCaption").Invoke(null,new object[]{bonus,bonusCount,basket,basketCount,inventory,loot});
+        Assert.That(caption,Does.Contain(expected));
+    }
     [Test] public void NoLootRequiresOnlyTheBonusAndExplainsIt()
     {
         var caption=(string)Method("RewardConfirmCaption").Invoke(null,new object[]{0});
@@ -57,6 +71,17 @@ public sealed class UI943PortraitRewardsLayoutTests
         var text=(string)Method("RewardBasketContents").Invoke(null,new object[]{items});
         Assert.That(text,Does.Contain("Koło terenowe ×2"));
         Assert.That(text,Does.Contain("Koło terenowe T2"));
+    }
+    [Test] public void BasketHeadingShowsTheActualRecoveryPercentageAlongsideCounts()
+    {
+        var ledger=new R4SalvageLedger(3);
+        var parts=Enumerable.Range(0,8).Select(i=>new R4SalvageItem("part-"+i,"enemy",R3PartKind.Wheel,R4WeaponKind.Basic,1)).ToArray();
+        Assert.That(ledger.Record("enemy",parts,R3EnemyArchetype.Scout),Is.True);
+        var basket=ledger.CreateBasketOffers(17,3).First();
+        var heading=(string)Method("RewardBasketHeading").Invoke(null,new object[]{basket});
+        Assert.That(heading,Does.Contain($"{basket.Percent}%"));
+        Assert.That(heading,Does.Contain($"{basket.Items.Count}/{basket.AvailableParts}"));
+        Assert.That(heading,Does.Contain("Odzysk"));
     }
     [Test] public void BasketSummaryDoesNotMergeDifferentBonusEffectsWithTheSameTitle()
     {
