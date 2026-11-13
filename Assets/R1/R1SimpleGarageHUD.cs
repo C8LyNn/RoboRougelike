@@ -16,13 +16,32 @@ namespace RoboRougelike.R1
         const string QuickSearchControlName="GarageQuickSearch";
         bool quickSearchEditing,quickSearchReleasePending;
         string quickPartSearch=string.Empty;
-        GUIStyle quickCategoryButton,garageShortcutLabel;
+        GUIStyle quickCategoryButton,garageShortcutLabel,garagePrimaryButton;
         Vector2 quickPartsScroll;
         R3VehicleModel repairQuoteModel;
         float nextRepairQuoteTime;
         int repairQuote;
         static Rect QuickPartsArea(bool portrait)=>portrait?new Rect(24,658,414,178):new Rect(12,105,246,355);
         static Rect QuickRepairArea(bool portrait)=>portrait?new Rect(24,840,414,38):new Rect(12,465,245,38);
+        static Rect GarageNoticeRect(bool portrait)=>portrait?new Rect(24,878,720,74):new Rect(280,650,575,64);
+        void DrawGarageNotice(bool portrait,string message,bool blocked)
+        {
+            var rect=GarageNoticeRect(portrait);var before=GUI.color;
+            GUI.color=new Color(.075f,.12f,.15f,.97f);GUI.DrawTexture(rect,Texture2D.whiteTexture);
+            GUI.color=blocked?new Color(1f,.65f,.31f):new Color(.28f,.82f,.80f);
+            GUI.DrawTexture(new Rect(rect.x,rect.y,3,rect.height),Texture2D.whiteTexture);
+            GUI.color=before;
+            GUI.Label(new Rect(rect.x+10,rect.y+4,rect.width-16,rect.height-8),message,small);
+        }
+        GUIStyle GaragePrimaryButton()
+        {
+            if(garagePrimaryButton==null)
+            {
+                garagePrimaryButton=new GUIStyle(compactButton);
+                garagePrimaryButton.normal.background=buttonPressed;
+            }
+            return garagePrimaryButton;
+        }
         void OpenSimpleGarageOptions(int tab){garageOptionsTab=tab;garageOptionsFeedback=null;activitySaveFeedback=null;garageOptionsOpen=true;repairQuoteModel=null;}
         int SimpleGarageRepairQuote(R3VehicleModel model)
         {
@@ -558,6 +577,11 @@ namespace RoboRougelike.R1
             compactButton.normal.background=selected?buttonPressed:buttonNormal;GUI.backgroundColor=Color.white;
             if(GUI.Button(new Rect(0,row*38,width,34),CatalogGroupCaption(run,kind,weapon,bonus,name),compactButton))
                 SelectQuickPart(run,kind,weapon,bonus);
+            if(selected)
+            {
+                var color=GUI.color;GUI.color=new Color(.42f,.94f,.90f);
+                GUI.DrawTexture(new Rect(1,row*38+4,3,26),Texture2D.whiteTexture);GUI.color=color;
+            }
             compactButton.normal.background=buttonNormal;
         }
 
@@ -683,12 +707,12 @@ namespace RoboRougelike.R1
             if(garageShortcutLabel==null)garageShortcutLabel=new GUIStyle(small){fontSize=14,wordWrap=false};
             GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • ŚPM: wybierz typ\nPPM przeciągnij: widok • U: spód\nQ/E R/F Z/X: obrót • Shift: część\nCtrl+LPM: napraw • Home: widok",garageShortcutLabel);
             string garageFeedback=SimpleGarageFeedback(run);
-            GUI.Label(new Rect(286,655,570,58),garageFeedback,small);
+            DrawGarageNotice(false,garageFeedback,!run.MapEditorSession&&garageFeedback.Contains("Start zablokowany:"));
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);
             if(run.MapEditorSession){if(GUI.Button(new Rect(870,663,185,43),"Wróć do edytora",compactButton))run.ReturnToMapEditorFromGarage();}
-            else if(GUI.Button(new Rect(870,663,185,43),"Testuj pojazd",compactButton))run.EnterTestRange();
+            else if(GUI.Button(new Rect(870,663,185,43),"Testuj pojazd",run.SandboxWorkshop?GaragePrimaryButton():compactButton))run.EnterTestRange();
             GUI.enabled=!garageOptionsOpen&&(run.SandboxWorkshop||model.CanDeploy);
-            if(GUI.Button(new Rect(1066,663,195,43),run.ReactorPrepared?"Broń reaktora":run.SandboxWorkshop?(run.MapReturnPending?"Potwierdź powrót":"Menu główne"):"Następna trasa",compactButton))
+            if(GUI.Button(new Rect(1066,663,195,43),run.ReactorPrepared?"Broń reaktora":run.SandboxWorkshop?(run.MapReturnPending?"Potwierdź powrót":"Menu główne"):"Następna trasa",run.SandboxWorkshop?compactButton:GaragePrimaryButton()))
             {if(run.ReactorPrepared)run.ChooseReactorDefense();else if(run.SandboxWorkshop)run.RestartRun();else run.StartNextEncounter();}
             GUI.enabled=true;
             if(garageOptionsOpen)DrawSimpleGarageOptions(run);
@@ -748,14 +772,14 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(606,784,138,40),"Aktywności",compactButton))OpenSimpleGarageOptions(1);
             if(GUI.Button(new Rect(458,831,286,40),"Dopasuj widok",compactButton))garage.FrameVehicle();
             string garageFeedback=SimpleGarageFeedback(run);
-            GUI.Label(new Rect(24,878,720,74),garageFeedback+
+            DrawGarageNotice(true,garageFeedback+
                 "\nPPM: zdejmij • ŚPM: wybierz typ • przeciągnij PPM: obrót widoku"+
-                "\nQ/E R/F Z/X: obrót • Shift: część • Ctrl+LPM: napraw • Home: widok",small);
+                "\nQ/E R/F Z/X: obrót • Shift: część • Ctrl+LPM: napraw • Home: widok",!run.MapEditorSession&&garageFeedback.Contains("Start zablokowany:"));
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);
             if(run.MapEditorSession){if(GUI.Button(new Rect(24,960,350,44),"Wróć do edytora",compactButton))run.ReturnToMapEditorFromGarage();}
-            else if(GUI.Button(new Rect(24,960,350,44),"Testuj pojazd",compactButton))run.EnterTestRange();
+            else if(GUI.Button(new Rect(24,960,350,44),"Testuj pojazd",run.SandboxWorkshop?GaragePrimaryButton():compactButton))run.EnterTestRange();
             GUI.enabled=!garageOptionsOpen&&(run.SandboxWorkshop||model.CanDeploy);
-            if(GUI.Button(new Rect(394,960,350,44),run.ReactorPrepared?"Broń reaktora":run.SandboxWorkshop?(run.MapReturnPending?"Potwierdź powrót":"Menu główne"):"Następna trasa",compactButton))
+            if(GUI.Button(new Rect(394,960,350,44),run.ReactorPrepared?"Broń reaktora":run.SandboxWorkshop?(run.MapReturnPending?"Potwierdź powrót":"Menu główne"):"Następna trasa",run.SandboxWorkshop?compactButton:GaragePrimaryButton()))
             {if(run.ReactorPrepared)run.ChooseReactorDefense();else if(run.SandboxWorkshop)run.RestartRun();else run.StartNextEncounter();}
             GUI.enabled=true;
             if(garageOptionsOpen)DrawSimplePortraitOptions(run);
