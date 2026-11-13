@@ -138,6 +138,12 @@ namespace RoboRougelike.R1
         }
         private static Rect EnemyStatusLabelRect(int row)=>new Rect(940,80+row*24,305,18);
         private static Rect EnemyStatusBarRect(int row)=>new Rect(940,99+row*24,305,4);
+        private static Rect CombatEnemyPanelRect(int visibleRows,bool special,bool defeated)
+        {
+            int rows=Mathf.Clamp(visibleRows,0,4);
+            float height=special?160:rows>0?64+24*rows:defeated?112:62;
+            return new Rect(925,18,335,height);
+        }
         private static string EnemyCoreStatus(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret enemy)
         {
             if(enemy==null||enemy.IsDefeated||enemy.Core==null)return null;
@@ -159,6 +165,12 @@ namespace RoboRougelike.R1
         private void Panel(Rect rect)
         {
             var before = GUI.color; GUI.color = panel; GUI.DrawTexture(rect, Texture2D.whiteTexture); GUI.color = before;
+        }
+        private void CombatPanel(Rect rect,Color accent)
+        {
+            Panel(rect);
+            var before=GUI.color;GUI.color=accent;
+            GUI.DrawTexture(new Rect(rect.x,rect.y,3,rect.height),Texture2D.whiteTexture);GUI.color=before;
         }
         private void OnGUI()
         {
@@ -256,7 +268,8 @@ namespace RoboRougelike.R1
                     bool weaponsInactive=modules.ActiveWeaponCount==0&&modules.HasSurvivingWeapon;
                     resourceWarning=CombatEquipmentWarning(drive,modules.InitialWheelCount,surviving,weaponsInactive)??resourceWarning;
                 }
-                Panel(new Rect(20,18,660,(combatDetailsOpen?180:125)+(resourceWarning!=null?25:0)+(run.PickupGraceRemaining>0?25:0)));
+                CombatPanel(new Rect(20,18,660,(combatDetailsOpen?180:125)+(resourceWarning!=null?25:0)+(run.PickupGraceRemaining>0?25:0)),
+                    lowCore?new Color(1f,.42f,.32f):new Color(.28f,.76f,.75f));
                 GUI.Label(new Rect(36, 27, 630, 30), $"STARCIE {progress.EncounterIndex + 1}/{progress.TotalEncounters}   •   Wrogowie: {run.Encounter.AliveCount}   •   Złom: {run.VehicleModel.Scrap}", body);
                 if (player != null)
                 {
@@ -285,7 +298,8 @@ namespace RoboRougelike.R1
                     }
                     float noticeY=combatDetailsOpen?174:121;
                     if(resourceWarning!=null)
-                    {GUI.Label(new Rect(36,noticeY,630,22),resourceWarning,small);noticeY+=25;}
+                    {var before=GUI.contentColor;GUI.contentColor=lowCore?new Color(1f,.62f,.52f):new Color(1f,.8f,.48f);
+                     GUI.Label(new Rect(36,noticeY,630,22),resourceWarning,small);GUI.contentColor=before;noticeY+=25;}
                     if(run.PickupGraceRemaining>0)
                     {
                         GUI.Label(new Rect(36,noticeY,630,22),$"Zbierz energię: {run.PickupGraceRemaining:0.0} s • Enter — nagrody",small);
@@ -294,7 +308,12 @@ namespace RoboRougelike.R1
                 }
                 if (!run.Paused)
                 {
-                    Panel(new Rect(925,18,335,160));
+                    bool special=run.ReactorActive||run.CheckpointRace!=null||run.RoadChallenge!=null;
+                    int visibleEnemies=0;
+                    if(!special)foreach(var enemy in run.Encounter.Enemies)
+                        if(enemy!=null&&!enemy.IsDefeated&&enemy.Core!=null)visibleEnemies++;
+                    bool enemiesDefeated=visibleEnemies==0&&run.Encounter.Enemies.Count>0;
+                    CombatPanel(CombatEnemyPanelRect(visibleEnemies,special,enemiesDefeated),new Color(.28f,.76f,.75f));
                     if(!DrawReactorCombatStatus(run)&&!DrawFullActivityCombatStatus(run)){
                     GUI.Label(new Rect(940,28,305,48),run.CurrentEncounter.Title,heading);
                     int row=0;foreach(var enemy in run.Encounter.Enemies)
@@ -308,7 +327,9 @@ namespace RoboRougelike.R1
                     }
                     if(GUI.Button(new Rect(1130,670,125,35),"Pauza",compactButton))run.TogglePause();
                     DrawAimReticle(run);
-                    GUI.Label(new Rect(24, 676, 900, 26),run.VehicleModel.SelectedDrive>=R3DriveKind.Omni?
+                    GUI.Label(new Rect(24, 676, 900, 26),!combatDetailsOpen?
+                        "WASD — ruch • Mysz — celowanie • LPM/PPM — ogień • I — szczegóły":
+                        run.VehicleModel.SelectedDrive>=R3DriveKind.Omni?
                         "W/S — jazda • A/D — ruch boczny • Z/C — obrót • Mysz — celowanie • LPM/PPM — ogień":
                         "W/S — jazda • A/D — skręt • Mysz — celowanie • LPM/PPM — ogień • Kółko — przybliżenie",small);
                     DrawFeedback();

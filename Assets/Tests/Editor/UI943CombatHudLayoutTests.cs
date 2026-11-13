@@ -5,6 +5,41 @@ using UnityEngine;
 
 public sealed class UI943CombatHudLayoutTests
 {
+    [TestCase(0,false)] [TestCase(1,false)] [TestCase(2,false)] [TestCase(4,false)] [TestCase(0,true)]
+    public void EncounterPanelFitsVisibleRowsAndAvoidsCenter(int rows,bool defeated)
+    {
+        var flags=BindingFlags.NonPublic|BindingFlags.Static;
+        var panelMethod=typeof(R1RunHUD).GetMethod("CombatEnemyPanelRect",flags);
+        var labelMethod=typeof(R1RunHUD).GetMethod("EnemyStatusLabelRect",flags);
+        var barMethod=typeof(R1RunHUD).GetMethod("EnemyStatusBarRect",flags);
+        Assert.That(panelMethod,Is.Not.Null);
+        var panel=(Rect)panelMethod.Invoke(null,new object[]{rows,false,defeated});
+        for(int i=0;i<rows;i++)
+        {
+            var label=(Rect)labelMethod.Invoke(null,new object[]{i});
+            var bar=(Rect)barMethod.Invoke(null,new object[]{i});
+            Assert.That(panel.Contains(label.min)&&panel.Contains(label.max-Vector2.one),Is.True);
+            Assert.That(panel.Contains(bar.min)&&panel.Contains(bar.max-Vector2.one),Is.True);
+        }
+        if(defeated)Assert.That(panel.yMax,Is.GreaterThanOrEqualTo(130));
+        Assert.That(panel.xMin,Is.GreaterThan(656),"The aiming area must remain clear.");
+        Assert.That(panel.yMax,Is.LessThanOrEqualTo(190));
+        var special=(Rect)panelMethod.Invoke(null,new object[]{rows,true,false});
+        Assert.That(special.height,Is.EqualTo(160),"Reactor and racing modes need their existing space.");
+    }
+
+    [TestCase(0)] [TestCase(1)] [TestCase(2)] [TestCase(6)]
+    public void WeaponPanelUsesOnlySpaceNeededByVisibleWeapons(int count)
+    {
+        var method=typeof(R1RunHUD).GetMethod("CombatWeaponPanelRect",BindingFlags.NonPublic|BindingFlags.Static);
+        Assert.That(method,Is.Not.Null);
+        var panel=(Rect)method.Invoke(null,new object[]{count});
+        Assert.That(panel.yMax,Is.GreaterThanOrEqualTo(276));
+        if(count>0)Assert.That(panel.yMax,Is.GreaterThanOrEqualTo(304));
+        if(count>1)Assert.That(panel.yMax,Is.GreaterThanOrEqualTo(330));
+        Assert.That(panel.yMax,Is.LessThanOrEqualTo(348));
+        Assert.That(panel.xMin,Is.GreaterThan(656));
+    }
     [Test] public void SuspensionPauseIsRelevantForMountedAndDestroyedPlansOnly()
     {
         var method=typeof(R1RunHUD).GetMethod("ShowSuspensionPause",BindingFlags.NonPublic|BindingFlags.Static);
