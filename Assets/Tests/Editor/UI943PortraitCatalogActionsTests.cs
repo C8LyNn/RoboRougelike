@@ -505,6 +505,25 @@ public sealed class UI943PortraitCatalogActionsTests
         yield return new ExitPlayMode();
     }
 
+    [UnityTest] public IEnumerator CreativeCoreOnlyExplainsMissingDriveWithoutBlockingTest()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var model=run.VehicleModel;var hud=run.GetComponent<R1RunHUD>();
+        Assert.That(model.CanDeploy,Is.True,"Creative testing must remain unrestricted.");
+        string feedback=(string)Invoke(hud,"SimpleGarageFeedback",run);
+        Assert.That(feedback,Does.Contain("napędu").And.Contain("poligon").IgnoreCase);
+        Assert.That(feedback,Does.Not.Contain("Start zablokowany"));
+        Assert.That(feedback,Does.Not.Contain("broni"),"A gun is not required for driving tests.");
+        model.Parts.Add(new R3PartState(Vector3Int.left,R3PartKind.Wheel));
+        model.Parts.Add(new R3PartState(Vector3Int.right,R3PartKind.Wheel));
+        Assert.That(model.CanDeploy,Is.True);
+        feedback=(string)Invoke(hud,"SimpleGarageFeedback",run);
+        Assert.That(feedback,Does.Not.Contain("bez napędu"));
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator GarageExplainsDisconnectedConstructionBeforeMissingEquipment()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();

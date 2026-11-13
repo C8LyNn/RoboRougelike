@@ -440,6 +440,8 @@ namespace RoboRougelike.R1
                 if(!string.IsNullOrEmpty(detail)&&detail.StartsWith(reason.TrimEnd('.'),System.StringComparison.Ordinal))reason=detail;
                 message+="\nStart zablokowany: "+reason;
             }
+            else if(model.CreativeMode&&!R3VehicleModel.HasMobility(model.Parts,model.SelectedDrive))
+                message+="\nPoligon bez napędu: pojazd może nie jechać.";
             if(run.Technology?.Error!=null)message+="\nBłąd zapisu lub odczytu technologii.";
             return message.TrimStart('\n');
         }
