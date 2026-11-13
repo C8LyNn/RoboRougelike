@@ -81,6 +81,39 @@ public sealed class Exit273PauseTests
         Assert.That(run.Player.GetInstanceID(), Is.Not.EqualTo(previousPlayer));
         Assert.That(run.Progress.State, Is.EqualTo(R1RunState.TestDrive));
     }
+    [UnityTest] public IEnumerator RangePauseActionsSelectAndReturnToGarage()
+    {
+        Assert.That(run.EnterTestRange(),Is.True);
+        float deadline=Time.realtimeSinceStartup+15;
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Transitioning,Is.False);run.TogglePause();
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var move=typeof(R1RunController).GetMethod("MovePauseSelection",flags);
+        var confirm=typeof(R1RunController).GetMethod("ConfirmPauseSelection",flags);
+        Assert.That(move,Is.Not.Null);Assert.That(confirm,Is.Not.Null);
+        for(int i=0;i<3;i++)move.Invoke(run,new object[]{1});
+        Assert.That(run.PauseSelection,Is.EqualTo(3),"Range pause has separate reset, garage, menu and quit options.");
+        move.Invoke(run,new object[]{-1});Assert.That(run.PauseSelection,Is.EqualTo(2));
+        confirm.Invoke(run,null);
+        deadline=Time.realtimeSinceStartup+15;
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
+        Assert.That(run.Paused,Is.False);
+    }
+    [UnityTest] public IEnumerator DisabledTestVehicleSelectsResetInsteadOfUnavailableResume()
+    {
+        Assert.That(run.EnterTestRange(),Is.True);
+        float deadline=Time.realtimeSinceStartup+15;
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Transitioning,Is.False);
+        var core=run.Player.Core;Assert.That(core,Is.Not.Null);
+        core.ApplyDamage(100000,core.transform.position,Vector3.up);
+        typeof(R1RunController).GetMethod("UpdateRange",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(run,null);
+        Assert.That(run.RangeDisabled,Is.True);
+        Assert.That(run.Paused,Is.True);
+        Assert.That(run.PauseSelection,Is.EqualTo(1),"An unavailable resume action cannot be the selected option.");
+        yield return null;
+    }
     [UnityTearDown] public IEnumerator Cleanup()
     {
         if(probe!=null)Object.DestroyImmediate(probe.gameObject);
