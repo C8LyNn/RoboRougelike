@@ -260,6 +260,47 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(peak,Is.LessThan(8),"The pad must not multiply its impulse by the number of vehicle colliders");
         Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator BlastAndEmpTrapsTriggerOnRealEnemiesWithoutHurtingTheirOwner()
+    {
+        run.VehicleModel.Award(2500);FuseAndMount(R3PartKind.BlastTrapDeployer);FuseAndMount(R3PartKind.EmpTrapDeployer);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"trap-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();enemy.ConfigureMovement(0,12,0);var enemyBody=enemy.GetComponent<Rigidbody>();
+        enemyBody.position=new Vector3(140,2,140);enemyBody.useGravity=false;enemyBody.linearVelocity=Vector3.zero;
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.forward*3;
+        Assert.That(service.TryDeploy(R3PartKind.BlastTrapDeployer),Is.True);
+        var blast=GameObject.Find("Pułapka wybuchowa");Assert.That(blast,Is.Not.Null);
+        var blastSensor=blast.GetComponentInChildren<R3DeployableTrap>();Assert.That(blastSensor.Activated,Is.False);
+        float own=player.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        float enemyBefore=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        enemyBody.position=blast.transform.position+Vector3.up;enemyBody.linearVelocity=Vector3.zero;Physics.SyncTransforms();
+        float deadline=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<deadline&&blast!=null&&!blastSensor.Activated)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(blastSensor==null||blastSensor.Activated,Is.True,"A real enemy must trigger the trap");
+        Assert.That(enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.LessThan(enemyBefore));
+        Assert.That(player.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.EqualTo(own));
+        Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.BlastTrapPool),Is.EqualTo(2));
+        enemyBody.position=new Vector3(140,2,140);enemyBody.linearVelocity=Vector3.zero;
+        body.position=new Vector3(120,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.forward*3;
+        Assert.That(service.TryDeploy(R3PartKind.EmpTrapDeployer),Is.True);
+        var emp=GameObject.Find("Pułapka EMP");Assert.That(emp,Is.Not.Null);
+        var empSensor=emp.GetComponentInChildren<R3DeployableTrap>();
+        foreach(var r in enemy.GetComponentsInChildren<RoboRougelike.Mechanics.EMP.EmpReceiver>())r.ClearEmp();
+        float hp=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        enemyBody.position=emp.transform.position+Vector3.up;enemyBody.linearVelocity=Vector3.zero;Physics.SyncTransforms();deadline=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<deadline&&emp!=null&&!empSensor.Activated)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(empSensor==null||empSensor.Activated,Is.True);
+        Assert.That(enemy.GetComponentsInChildren<RoboRougelike.Mechanics.EMP.EmpReceiver>().Any(r=>r.IsDisrupted),Is.True);
+        Assert.That(enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.EqualTo(hp),"EMP trap never damages HP");
+        Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.EmpTrapPool),Is.EqualTo(2));
+        Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator EnergyAuraTogglesOnPressAndDamagesOnlyEnemiesWhileConsumingEnergy()
     {
         Assert.That(run.GaragePurchase(R3PartKind.Gun,RoboRougelike.R4.R4WeaponKind.EmpEmitter),Is.True);

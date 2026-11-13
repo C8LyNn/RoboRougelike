@@ -407,10 +407,14 @@ namespace RoboRougelike.R1
                     .Where(kind=>!weapons.Contains(kind)).Select(kind=>(R4WeaponKind?)kind).FirstOrDefault();
                 var extraActive=model.Parts.Where(p=>R3VehicleModel.IsActiveSlotPart(p.Kind)).Select(p=>p.Kind).Distinct()
                     .Where(kind=>!active.Contains(kind)).Select(kind=>(R3PartKind?)kind).FirstOrDefault();
+                var extraDeployable=model.Parts.Where(p=>R3VehicleModel.IsDeployableSlotPart(p.Kind)).Select(p=>p.Kind).Distinct()
+                    .Where(kind=>!deployables.Contains(kind)).Select(kind=>(R3PartKind?)kind).FirstOrDefault();
                 if(extraWeapon.HasValue&&GUI.Button(new Rect(x,y+245,col,44),"Slot E: "+WeaponGroupName(extraWeapon),compactButton))
                     model.AssignWeaponSlot(extraWeapon.Value,3);
                 if(extraActive.HasValue&&GUI.Button(new Rect(x+col+12,y+245,col,44),"Slot 4: "+R4WeaponDefinition.PartName(extraActive.Value),compactButton))
                     model.AssignActiveSlot(extraActive.Value,3);
+                if(showDeployables&&extraDeployable.HasValue&&GUI.Button(new Rect(x+2*(col+12),y+245,col,44),"Slot V: "+R4WeaponDefinition.PartName(extraDeployable.Value),compactButton))
+                    model.AssignDeployableSlot(extraDeployable.Value,3);
             }
             GUI.Label(new Rect(x,y+296,width,42),"Kliknij rodzaj, aby przenieść go do kolejnego slotu. Zajęte sloty zamienią się miejscami.",small);
         }
@@ -607,6 +611,8 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.RampDeployer?$"Wyrzutnik ramp: stawia rampę za jadącym pojazdem. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.RampEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii. Więcej kopii poszerza rampę.":
                 kind==R3PartKind.WallDeployer?$"Wyrzutnik murków: stawia osłonę za jadącym pojazdem. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.WallEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
                 kind==R3PartKind.JumpPadDeployer?$"Wyrzutnik jump padów: stawia wyrzutnię skoku za jadącym pojazdem. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.JumpPadEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.BlastTrapDeployer?$"Pułapka wybuchowa: zostaje za pojazdem i atakuje wrogów w pobliżu. 1 ładunek, {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii; slot Z/X/C/V.":
+                kind==R3PartKind.EmpTrapDeployer?$"Pułapka EMP: zostaje za pojazdem i zakłóca elektronikę pobliskich wrogów. Bez obrażeń HP; slot Z/X/C/V.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kliknij, aby zamontować.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kliknij, aby zamontować.":
                 kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
@@ -633,6 +639,8 @@ namespace RoboRougelike.R1
                     kind==R3PartKind.RampDeployer?$"Wyrzutnik ramp: stawia rampę za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.RampEnergyPerCopy:0} energii. Slot Z/X/C/V.":
                     kind==R3PartKind.WallDeployer?$"Wyrzutnik murków: stawia osłonę za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.WallEnergyPerCopy:0} energii. Slot Z/X/C/V.":
                     kind==R3PartKind.JumpPadDeployer?$"Wyrzutnik jump padów: stawia wyrzutnię skoku za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.JumpPadEnergyPerCopy:0} energii. Slot Z/X/C/V.":
+                    kind==R3PartKind.BlastTrapDeployer?$"Pułapka wybuchowa: zostaje za pojazdem; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot Z/X/C/V.":
+                    kind==R3PartKind.EmpTrapDeployer?$"Pułapka EMP: zakłóca wrogów bez obrażeń HP; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot Z/X/C/V.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kup część.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kup część.":
                     kind==R3PartKind.Armor&&CatalogArmorShape(bonus)==R3ArmorShape.Wedge?"Klin 1×1×1: mocowanie od spodu i z tyłu. Kup część.":

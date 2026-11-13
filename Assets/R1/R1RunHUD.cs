@@ -280,7 +280,9 @@ namespace RoboRougelike.R1
                 bool hasRamp=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.RampDeployer);
                 bool hasWall=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.WallDeployer);
                 bool hasJumpPad=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.JumpPadDeployer);
-                int extraStatusHeight=energy!=null?CombatAbilityExtraHeight((repairPulse!=null?1:0)+(hasOverdrive?1:0)+(hasRapidFire?1:0)+(hasDoubleBoost?1:0)+(hasTargetEmp?1:0)+(hasAreaEmp?1:0)+(recharge!=null?1:0)+(hasRamp?1:0)+(hasWall?1:0)+(hasJumpPad?1:0)):0;
+                bool hasBlastTrap=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.BlastTrapDeployer);
+                bool hasEmpTrap=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.EmpTrapDeployer);
+                int extraStatusHeight=energy!=null?CombatAbilityExtraHeight((repairPulse!=null?1:0)+(hasOverdrive?1:0)+(hasRapidFire?1:0)+(hasDoubleBoost?1:0)+(hasTargetEmp?1:0)+(hasAreaEmp?1:0)+(recharge!=null?1:0)+(hasRamp?1:0)+(hasWall?1:0)+(hasJumpPad?1:0)+(hasBlastTrap?1:0)+(hasEmpTrap?1:0)):0;
                 if(!lowCore&&modules!=null&&run.VehicleModel!=null)
                 {
                     var drive=run.VehicleModel.SelectedDrive;
@@ -316,7 +318,9 @@ namespace RoboRougelike.R1
                         if(recharge!=null)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RechargePulse)} ładunki: {recharge.Status}",small);
                         if(hasRamp)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.RampDeployer)} rampa: {deploy.StatusFor(R3PartKind.RampDeployer)}",small);
                         if(hasWall)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.WallDeployer)} murek: {deploy.StatusFor(R3PartKind.WallDeployer)}",small);
-                        if(hasJumpPad)GUI.Label(CombatAbilityStatusRect(statusRow),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.JumpPadDeployer)} jump pad: {deploy.StatusFor(R3PartKind.JumpPadDeployer)}",small);
+                        if(hasJumpPad)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.JumpPadDeployer)} jump pad: {deploy.StatusFor(R3PartKind.JumpPadDeployer)}",small);
+                        if(hasBlastTrap)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.BlastTrapDeployer)} pułapka: {deploy.StatusFor(R3PartKind.BlastTrapDeployer)}",small);
+                        if(hasEmpTrap)GUI.Label(CombatAbilityStatusRect(statusRow),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.EmpTrapDeployer)} pułapka EMP: {deploy.StatusFor(R3PartKind.EmpTrapDeployer)}",small);
                     }
                     if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?"Mniej [I]":"Szczegóły [I]",compactButton))combatDetailsOpen=!combatDetailsOpen;
                     if(combatDetailsOpen)

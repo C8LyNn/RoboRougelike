@@ -5,6 +5,26 @@ using RoboRougelike.R3;
 
 public sealed class BacklogDeployableSlotTests
 {
+    [Test] public void FifthDistinctDeployableIsRejectedButExtraCopiesUseTheExistingSlot()
+    {
+        Assert.That(Enum.TryParse("BlastTrapDeployer",out R3PartKind blast),Is.True);
+        Assert.That(Enum.TryParse("EmpTrapDeployer",out R3PartKind emp),Is.True);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(5000);
+        foreach(var kind in new[]{R3PartKind.RampDeployer,R3PartKind.WallDeployer,R3PartKind.JumpPadDeployer,blast})
+        {
+            Assert.That(model.PurchaseToInventory(kind),Is.True);var part=model.Inventory.Last(p=>p.Kind==kind);
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(part.Id,c,default)==null);
+            Assert.That(model.Mount(part.Id,cell),Is.True);
+        }
+        Assert.That(model.GetDeployableSlots().Count(p=>p.HasValue),Is.EqualTo(4));
+        Assert.That(model.PurchaseToInventory(emp),Is.True);var fifth=model.Inventory.Last(p=>p.Kind==emp);
+        Assert.That(model.PurchaseToInventory(blast),Is.True);var copy=model.Inventory.Last(p=>p.Kind==blast);
+        var valid=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(copy.Id,c,default)==null);
+        Assert.That(model.OwnedPlacementError(fifth.Id,valid,default),Does.Contain("4"));
+        Assert.That(model.Mount(copy.Id,valid),Is.True);Assert.That(model.GetDeployableSlots().Count(p=>p.HasValue),Is.EqualTo(4));
+    }
     [Test] public void RampWallAndJumpPadShareOneFourSlotPool()
     {
         Assert.That(Enum.TryParse("WallDeployer",out R3PartKind wall),Is.True);
