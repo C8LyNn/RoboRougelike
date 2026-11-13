@@ -149,6 +149,11 @@ namespace RoboRougelike.R1
             if(enemy==null||enemy.IsDefeated||enemy.Core==null)return null;
             return $"{enemy.name} • rdzeń {enemy.Core.CurrentHp:0}/{enemy.Core.MaxHp:0} HP";
         }
+        private static string RunEndOutcome(bool won,string reason)=>won?"Wyprawa ukończona.":
+            string.IsNullOrWhiteSpace(reason)?"Pojazd został zniszczony.":reason;
+        private static string RunEndRecovery(int recovered)=>$"Odzyskane części: {recovered}";
+        private static string RunEndNewRunNote()=>
+            "W menu wybierzesz jedną z nowych wylosowanych konstrukcji. Nowa wyprawa ma własny budżet startowy; łupy i złom z tej próby nie przechodzą.";
         private static string SeedInputWarning(string text,int lastValid)=>
             int.TryParse(text,out _)?null:$"Błędny seed\nUżyty: {lastValid}";
         private void DrawSeedWarning(Rect area,int lastValid)
@@ -391,8 +396,8 @@ namespace RoboRougelike.R1
             {
                 bool won = progress.State == R1RunState.Won;
                 GUI.Label(new Rect(160, 130, 1050, 80), won ? "ZWYCIĘSTWO" : "PORAŻKA", title);
-                GUI.Label(new Rect(160, 235, 960, 70), won ? "Oblężnik pokonany. Wyprawa ukończona." : progress.DefeatReason, heading);
-                GUI.Label(new Rect(160, 325, 960, 200), $"Walki: {progress.CompletedEncounters}/{progress.TotalEncounters}  •  Pojazd: {run.VehicleModel.Design.Name}\nPokonani: {run.DefeatedEnemies}  •  Zdobyty Złom: {run.EarnedScrap}  •  Saldo: {run.VehicleModel.Scrap}\nOdzyskane moduły: {run.RecoveredModules}  •  Części końcowe: {run.VehicleModel.Parts.FindAll(p=>p.Health>0).Count}\nZdobyte moduły bonusów: {progress.Acquired.Count}  •  Seed: {run.Seed}\nNowa próba przywróci wybrany pojazd, budżet startowy i brak bonusów.", body);
+                GUI.Label(new Rect(160, 235, 960, 70), RunEndOutcome(won,progress.DefeatReason), heading);
+                GUI.Label(new Rect(160, 325, 960, 200), $"Walki: {progress.CompletedEncounters}/{progress.TotalEncounters}  •  Pojazd: {run.VehicleModel.Design.Name}\nPokonani: {run.DefeatedEnemies}  •  Zdobyty Złom: {run.EarnedScrap}  •  Saldo: {run.VehicleModel.Scrap}\n{RunEndRecovery(run.RecoveredModules)}  •  Części końcowe: {run.VehicleModel.Parts.FindAll(p=>p.Health>0).Count}\nZdobyte moduły bonusów: {progress.Acquired.Count}  •  Seed: {run.Seed}\n{RunEndNewRunNote()}", body);
                 if (GUI.Button(new Rect(160, 535, 500, 70), "Wróć do menu  [Enter]", button)) run.RestartRun();
             }
         }

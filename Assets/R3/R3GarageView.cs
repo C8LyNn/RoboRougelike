@@ -118,7 +118,16 @@ namespace RoboRougelike.R3
         public R4WeaponKind SelectedWeapon;
         public string SelectedInventoryId;
         public bool UseInventory;
-        public string Message = "LPM — montaż; PPM — zdejmij; przeciągnij PPM — obrót widoku.";
+        string message = "LPM — montaż; PPM — zdejmij; przeciągnij PPM — obrót widoku.";
+        float actionMessageAt=float.NegativeInfinity;
+        public string Message
+        {
+            get=>message;
+            set { message=value;actionMessageAt=float.NegativeInfinity; }
+        }
+        void ActionMessage(string value){Message=value;actionMessageAt=Time.unscaledTime;}
+        public void ShowActionMessage(string value)=>ActionMessage(value);
+        public bool HasRecentActionMessage=>!string.IsNullOrEmpty(message)&&Time.unscaledTime-actionMessageAt<2.5f;
         public R41GarageTool Tool { get; private set; }
         public bool HasTarget { get; private set; }
         bool pointerSurfaceRejected;
@@ -269,7 +278,7 @@ namespace RoboRougelike.R3
             // Keep legal wheel ghosts upright. If an old inventory item has
             // an invalid legacy pose, allow intermediate turns to correct it.
             if(uprightWheel&&!R3VehicleModel.ValidWheelOrientation(next))
-            {Message="Koło musi stać pionowo, a jego oś musi być skierowana na bok.";return;}
+            {ActionMessage("Koło musi stać pionowo, a jego oś musi być skierowana na bok.");return;}
             SelectedRotation=next;
             Message="Obrót: X "+SelectedRotation.x*90+"° / Y "+SelectedRotation.y*90+
                 "° / Z "+SelectedRotation.z*90+"°. Dopasuj punkty styku.";
@@ -626,31 +635,31 @@ namespace RoboRougelike.R3
         public bool RepairPartAt(Vector3Int cell)
         {
             if(run.Transitioning||run.Progress?.State!=R1RunState.Garage||run.VehicleModel==null)
-            {Message="Garaż jest chwilowo niedostępny.";return false;}
+            {ActionMessage("Garaż jest chwilowo niedostępny.");return false;}
             var model=run.VehicleModel;var part=model.At(cell);
-            if(part==null){Message="Wskaż część do naprawy.";return false;}
-            if(part.Health>=1){Message="Ta część jest już sprawna.";return false;}
+            if(part==null){ActionMessage("Wskaż część do naprawy.");return false;}
+            if(part.Health>=1){ActionMessage("Ta część jest już sprawna.");return false;}
             int price=model.RepairCost(part);
             if(!R3VehicleModel.ValidEconomicPart(part)||(!model.CreativeMode&&price<=0))
-            {Message="Tej części nie można naprawić.";return false;}
-            if(price>model.Scrap){Message=$"Brakuje {price-model.Scrap} Z na naprawę.";return false;}
+            {ActionMessage("Tej części nie można naprawić.");return false;}
+            if(price>model.Scrap){ActionMessage($"Brakuje {price-model.Scrap} Z na naprawę.");return false;}
             if(!run.GarageRepair(cell))
-            {Message="Nie można naprawić. Sprawdź połączenie, wolne miejsce i typy broni.";return false;}
-            Message=model.CreativeMode?"Naprawiono część za darmo.":$"Naprawiono część • {price} Z.";
+            {ActionMessage("Nie można naprawić. Sprawdź połączenie, wolne miejsce i typy broni.");return false;}
+            ActionMessage(model.CreativeMode?"Naprawiono część za darmo.":$"Naprawiono część • {price} Z.");
             return true;
         }
         public bool RemovePartAt(Vector3Int cell)
         {
             if(run.Transitioning||run.Progress?.State!=R1RunState.Garage||run.VehicleModel==null)
-            {Message="Garaż jest chwilowo niedostępny.";return false;}
+            {ActionMessage("Garaż jest chwilowo niedostępny.");return false;}
             var model=run.VehicleModel;var part=model.At(cell);
-            if(part==null){Message="Wskaż część do zdjęcia.";return false;}
-            if(part.Kind==R3PartKind.Core){Message="Nie można zdjąć rdzenia.";return false;}
+            if(part==null){ActionMessage("Wskaż część do zdjęcia.");return false;}
+            if(part.Kind==R3PartKind.Core){ActionMessage("Nie można zdjąć rdzenia.");return false;}
             if(model.Inventory.Count>=model.AvailableInventoryCapacity)
-            {Message="Nie można zdjąć: magazyn jest pełny.";return false;}
+            {ActionMessage("Nie można zdjąć: magazyn jest pełny.");return false;}
             if(!run.GarageRemove(cell))
-            {Message="Nie można zdjąć: część podtrzymuje konstrukcję lub jest ona rozłączona.";return false;}
-            Message=$"Część wróciła do magazynu • HP {part.Health*100:0}%.";
+            {ActionMessage("Nie można zdjąć: część podtrzymuje konstrukcję lub jest ona rozłączona.");return false;}
+            ActionMessage($"Część wróciła do magazynu • HP {part.Health*100:0}%.");
             return true;
         }
         public static bool InBuildArea(Vector2 screen,int width,int height)
@@ -700,7 +709,7 @@ namespace RoboRougelike.R3
             try
             {
                 bool hit=Point(ray);
-                if(!hit){Message="Wskaż część do obrócenia.";return false;}
+                if(!hit){ActionMessage("Wskaż część do obrócenia.");return false;}
                 return RotatePartAt(Cell,turns);
             }
             finally {Tool=prior;RefreshMarker();}
@@ -708,22 +717,22 @@ namespace RoboRougelike.R3
         public bool RotatePartAt(Vector3Int cell,Vector3Int turns)
         {
             if(run.Transitioning||run.Progress?.State!=R1RunState.Garage||run.VehicleModel==null)
-            {Message="Garaż jest chwilowo niedostępny.";return false;}
+            {ActionMessage("Garaż jest chwilowo niedostępny.");return false;}
             var part=run.VehicleModel.At(cell);
-            if(part==null){Message="Wskaż część do obrócenia.";return false;}
-            if(part.Kind==R3PartKind.Core){Message="Nie można obrócić rdzenia.";return false;}
-            if(part.Health<=0){Message="Najpierw napraw zniszczoną część.";return false;}
+            if(part==null){ActionMessage("Wskaż część do obrócenia.");return false;}
+            if(part.Kind==R3PartKind.Core){ActionMessage("Nie można obrócić rdzenia.");return false;}
+            if(part.Health<=0){ActionMessage("Najpierw napraw zniszczoną część.");return false;}
             bool wheelYaw=part.Kind==R3PartKind.Wheel&&R3VehicleModel.ValidWheelOrientation(part.RotationQuarterTurns)&&
                 turns.x==0&&turns.z==0&&Mathf.Abs(turns.y)==1;
             if(wheelYaw)turns.y*=2;
             var next=R3MountingGrid.Normalize(part.RotationQuarterTurns+turns);
             if(next==R3MountingGrid.Normalize(part.RotationQuarterTurns))
-            {Message="Obrót nie zmienia ustawienia części.";return false;}
+            {ActionMessage("Obrót nie zmienia ustawienia części.");return false;}
             if(part.Kind==R3PartKind.Wheel&&!R3VehicleModel.ValidWheelOrientation(next))
-            {Message="Koło musi stać pionowo, a jego oś musi być skierowana na bok.";return false;}
+            {ActionMessage("Koło musi stać pionowo, a jego oś musi być skierowana na bok.");return false;}
             bool done=run.GarageRotate(cell,turns);
-            Message=done?(wheelYaw?"Obrócono koło o 180°.":"Obrócono wskazaną część."):
-                "Nie można obrócić: sprawdź połączenia, wolne miejsce i kolizje.";
+            ActionMessage(done?(wheelYaw?"Obrócono koło o 180°.":"Obrócono wskazaną część."):
+                "Nie można obrócić: sprawdź połączenia, wolne miejsce i kolizje.");
             return done;
         }
         public void HandleGuiPointer(Event current,Vector2 rawTopLeft)

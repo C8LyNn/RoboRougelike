@@ -22,6 +22,56 @@ public sealed class UI943PortraitCatalogActionsTests
     static void Field(R1RunHUD hud,string name,object value)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).SetValue(hud,value);
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
+    // Keep candidate search outside a coroutine: closures allocated before
+    // EnterPlayMode can be lost during the editor domain reload.
+    static Vector3Int AvailableOwnedMountCell(R3VehicleModel model,R3PartState item)
+    {
+        foreach(var mounted in model.Parts)
+            foreach(var direction in R3VehicleModel.Neighbours)
+            {
+                var cell=mounted.Cell+direction;
+                if(model.OwnedPlacementError(item.Id,cell,item.RotationQuarterTurns)==null)return cell;
+            }
+        Assert.Fail("The garage fixture needs a reachable valid mounting cell.");
+        return default;
+    }
+
+    [UnityTest] public IEnumerator GarageActionFeedbackRemainsVisibleBeforePlacementHintReturns()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);
+        var garage=run.Garage;var hud=run.GetComponent<R1RunHUD>();
+        garage.UseInventory=false;garage.SelectedInventoryId=null;garage.SelectedPart=R3PartKind.Armor;
+        garage.Cell=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Core).Cell;
+        typeof(R3GarageView).GetProperty("HasTarget").GetSetMethod(true).Invoke(garage,new object[]{true});
+        Assert.That(garage.RemovePartAt(garage.Cell),Is.False);
+        Assert.That(garage.Message,Does.Contain("rdzenia"));
+        Assert.That((string)Invoke(hud,"SimpleGarageFeedback",run),Does.Contain("rdzenia"),
+            "The reason for a rejected action must not immediately disappear behind the ghost hint.");
+        yield return new WaitForSecondsRealtime(3.2f);
+        Assert.That((string)Invoke(hud,"SimpleGarageFeedback",run),Does.Contain(garage.PlacementIssue),
+            "The current placement issue must return after the action feedback expires.");
+    }
+
+    [UnityTest] public IEnumerator RotationFailureIsVisibleWhileMountingAnotherPart()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);
+        var garage=run.Garage;var core=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Core);
+        garage.UseInventory=false;garage.SelectedInventoryId=null;garage.SelectedPart=R3PartKind.Armor;
+        garage.Cell=core.Cell;
+        typeof(R3GarageView).GetProperty("HasTarget").GetSetMethod(true).Invoke(garage,new object[]{true});
+        Assert.That(garage.RotatePartAt(core.Cell,Vector3Int.up),Is.False);
+        Assert.That((string)Invoke(run.GetComponent<R1RunHUD>(),"SimpleGarageFeedback",run),
+            Does.Contain("obrócić rdzenia"),"A failed Shift-rotation must explain the protected core.");
+        yield return null;
+    }
 
     [TestCase(false,5,2,false,"Brakuje 3 Z")]
     [TestCase(false,5,5,false,"5 Z")]
@@ -137,6 +187,28 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(added.Last().Id));
         Assert.That((bool)Field(hud,"catalogOpen"),Is.False);
         Assert.That(run.Garage.Message,Does.Contain("5").And.Contain((price*5)+" Z"));
+        run.Garage.Select(run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Core).Cell);
+        Assert.That((string)Invoke(hud,"SimpleGarageFeedback",run),Does.Contain((price*5)+" Z"),
+            "The group purchase receipt must remain visible with a placement target.");
+        yield return null;
+    }
+
+    [UnityTest] public IEnumerator QuickPurchaseShowsActualCostEvenWhenGhostMoves()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float timeout=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<timeout)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        var hud=run.GetComponent<R1RunHUD>();
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        int before=run.VehicleModel.Scrap,price=run.VehicleModel.Price(R3PartKind.Armor);
+        Invoke(hud,"BuyQuickPart",run);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-price));
+        Assert.That(run.Garage.SelectedInventoryId,Is.Not.Null.And.Not.Empty);
+        run.Garage.Select(run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Core).Cell);
+        Assert.That((string)Invoke(hud,"SimpleGarageFeedback",run),Does.Contain($"{price} Z"),
+            "A purchase must disclose the actual cost even after the ghost has a target.");
         yield return null;
     }
 
@@ -149,6 +221,28 @@ public sealed class UI943PortraitCatalogActionsTests
         var method=typeof(R1RunHUD).GetMethod("ActivityReadinessHint",BindingFlags.Static|BindingFlags.NonPublic);
         Assert.That(method,Is.Not.Null);
         Assert.That((string)method.Invoke(null,new object[]{ready,reason,drive}),Is.EqualTo(expected));
+    }
+
+    [UnityTest] public IEnumerator ActivityMenuExplainsUnavailableArenasAndFinalStage()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.PrepareUnifiedRun(),Is.True);
+        Assert.That(run.VehicleModel.CanDeploy,Is.True);
+        Assert.That(run.RouteOffers.Length,Is.GreaterThan(0));
+        var offer=run.RouteOffers[0];Assert.That(offer.IsBoss,Is.False);
+        offer.EnemyCount=3;
+        Assert.That(offer.SpawnCount,Is.EqualTo(4));
+        Assert.That(run.CanChooseGeneratedArena,Is.False);
+        Assert.That(run.CanChooseLD02Arena,Is.False);
+        var hud=run.GetComponent<R1RunHUD>();
+        Assert.That((string)Invoke(hud,"ActivityContextHint",run),Does.Contain("3").And.Contain("aren").IgnoreCase);
+        typeof(R1RunProgress).GetProperty("EncounterIndex").GetSetMethod(true).Invoke(run.Progress,new object[]{run.Progress.TotalEncounters-1});
+        Assert.That(run.CanChooseReactorDefense,Is.False);
+        Assert.That((string)Invoke(hud,"ActivityContextHint",run),Does.Contain("finał").IgnoreCase);
+        yield return null;
     }
 
     [TestCase(true,null,"Zapisano wyprawę w garażu.","Zapisano wyprawę w garażu.")]
@@ -505,6 +599,25 @@ public sealed class UI943PortraitCatalogActionsTests
         yield return new ExitPlayMode();
     }
 
+    [UnityTest] public IEnumerator CreativeCoreOnlyExplainsMissingDriveWithoutBlockingTest()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var model=run.VehicleModel;var hud=run.GetComponent<R1RunHUD>();
+        Assert.That(model.CanDeploy,Is.True,"Creative testing must remain unrestricted.");
+        string feedback=(string)Invoke(hud,"SimpleGarageFeedback",run);
+        Assert.That(feedback,Does.Contain("napędu").And.Contain("poligon").IgnoreCase);
+        Assert.That(feedback,Does.Not.Contain("Start zablokowany"));
+        Assert.That(feedback,Does.Not.Contain("broni"),"A gun is not required for driving tests.");
+        model.Parts.Add(new R3PartState(Vector3Int.left,R3PartKind.Wheel));
+        model.Parts.Add(new R3PartState(Vector3Int.right,R3PartKind.Wheel));
+        Assert.That(model.CanDeploy,Is.True);
+        feedback=(string)Invoke(hud,"SimpleGarageFeedback",run);
+        Assert.That(feedback,Does.Not.Contain("bez napędu"));
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator GarageExplainsDisconnectedConstructionBeforeMissingEquipment()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
@@ -597,6 +710,40 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id),"The player should be able to repair only this part from the quick panel.");
         Assert.That((bool)Field(hud,"catalogOpen"),Is.False);
         yield return new ExitPlayMode();
+    }
+    [UnityTest] public IEnumerator LastReadyPartMountsThenMatchingWreckIsRepairedAndMounted()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        var model=run.VehicleModel;model.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        Assert.That(model.Inventory.Count,Is.EqualTo(2));
+        var ready=model.Inventory[0];var wreck=model.Inventory[1];wreck.Health=0;
+        var hud=run.GetComponent<R1RunHUD>();
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(ready.Id));
+        int balance=model.Scrap;
+        run.Garage.Select(AvailableOwnedMountCell(model,ready));
+        Assert.That(run.Garage.ClickTarget(),Is.True,"The first owned part mounts through the actual garage.");
+        Assert.That(model.Scrap,Is.EqualTo(balance),"Mounting cannot buy another part.");
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(wreck.Id));
+        Assert.That(run.Garage.Message,Does.Contain("napraw"));
+        Assert.That(run.Garage.ClickTarget(),Is.False,"A selected wreck remains unavailable until explicitly repaired.");
+        Assert.That(model.Scrap,Is.EqualTo(balance));
+        int quote=model.RepairCost(wreck);
+        Assert.That((bool)Invoke(hud,"RepairQuickSelected",run),Is.True);
+        Assert.That(model.Scrap,Is.EqualTo(balance-quote));
+        Assert.That(wreck.Health,Is.EqualTo(1));
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(wreck.Id));
+        Assert.That((string)Invoke(hud,"SimpleGarageFeedback",run),Does.Contain($"koszt {quote} Z"),
+            "The quick repair must show the amount actually spent even while a ghost is visible.");
+        run.Garage.Select(AvailableOwnedMountCell(model,wreck));
+        Assert.That(run.Garage.ClickTarget(),Is.True,"The same repaired part is mountable without reselection.");
+        Assert.That(model.Inventory,Is.Empty);
+        Assert.That(model.Owns(wreck.Id),Is.True);
+        yield return null;
     }
 
 
@@ -1203,10 +1350,13 @@ public sealed class UI943PortraitCatalogActionsTests
         var hud=run.GetComponent<R1RunHUD>();Field(hud,"catalogOpen",false);
         Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
         Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id));
+        run.Garage.Select(run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Core).Cell);
         Invoke(hud,"RepairCatalogStack",run,new[]{item});
         Assert.That(item.Health,Is.EqualTo(1));Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id));
         Assert.That(run.Garage.Tool,Is.EqualTo(R41GarageTool.Mount));
         Assert.That(run.Garage.Message,Does.Contain("Naprawiono"));
+        Assert.That((string)Invoke(hud,"SimpleGarageFeedback",run),Does.Contain("Naprawiono"),
+            "Bulk repair feedback must remain visible while a placement ghost is present.");
 
         item.Health=0;run.Garage.SelectedInventoryId=null;run.Garage.SetTool(R41GarageTool.Inspect);
         Invoke(hud,"RepairCatalogStack",run,new[]{item});

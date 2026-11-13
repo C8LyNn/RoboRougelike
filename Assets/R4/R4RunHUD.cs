@@ -461,7 +461,7 @@ namespace RoboRougelike.R1
                     if(ready!=null)
                     {run.Garage.ChooseInventory(ready.Id);catalogFeedback+=" Wybierz miejsce montażu.";}
                 }
-                run.Garage.Message=catalogFeedback;
+                run.Garage.ShowActionMessage(catalogFeedback);
             }
         }
         private void CancelCatalogDismantle()

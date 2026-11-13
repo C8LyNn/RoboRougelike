@@ -43,6 +43,28 @@ namespace RoboRougelike.R1
             if(HandleNativeQuit())RequestQuit();
         }
 
+        bool RangePause=>!MapEditorTesting&&Progress?.State==R1RunState.TestDrive;
+        void MovePauseSelection(int direction)
+        {
+            int count=MapEditorTesting?4:RangePause?5:3;
+            PauseSelection=(PauseSelection+count+direction)%count;
+        }
+        void ConfirmPauseSelection()
+        {
+            if(RangePause)
+            {
+                if(PauseSelection==0)TogglePause();
+                else if(PauseSelection==1)ResetTestRange();
+                else if(PauseSelection==2)ReturnFromTestRange();
+                else if(PauseSelection==3)RestartRun();
+                else RequestQuitFromMenu();
+            }
+            else if(PauseSelection==0)TogglePause();
+            else if(PauseSelection==1&&MapEditorTesting)ReturnFromEditedMapTest();
+            else if(PauseSelection==1||(PauseSelection==2&&MapEditorTesting))RestartRun();
+            else RequestQuitFromMenu();
+        }
+
         // Run before state/transition guards: quitting must also work while loading.
         bool ReadSessionInput()
         {
@@ -61,23 +83,23 @@ namespace RoboRougelike.R1
                 (pad != null && pad.startButton.wasPressedThisFrame))
             { HandleEscape(); return true; }
             if (!Paused) return false;
+            bool rangePause=RangePause;
+            if(rangePause&&GetComponent<R1RunHUD>()?.CreativeEnemyMenuOpen==true)
+            {
+                if(pad!=null&&pad.buttonEast.wasPressedThisFrame)HandleEscape();
+                return true; // The visible enemy menu owns its pointer input.
+            }
             // Preserve the range reset shortcut while the session menu owns other input.
-            if (!MapEditorTesting && Progress?.State == R1RunState.TestDrive && keys != null && keys.rKey.wasPressedThisFrame)
+            if (rangePause && keys != null && keys.rKey.wasPressedThisFrame)
             { ResetTestRange(); return true; }
-            int pauseOptions=MapEditorTesting?4:3;
             if ((keys != null && keys.upArrowKey.wasPressedThisFrame) ||
-                (pad != null && pad.dpad.up.wasPressedThisFrame)) PauseSelection = (PauseSelection + pauseOptions-1) % pauseOptions;
+                (pad != null && pad.dpad.up.wasPressedThisFrame)) MovePauseSelection(-1);
             if ((keys != null && keys.downArrowKey.wasPressedThisFrame) ||
-                (pad != null && pad.dpad.down.wasPressedThisFrame)) PauseSelection = (PauseSelection + 1) % pauseOptions;
+                (pad != null && pad.dpad.down.wasPressedThisFrame)) MovePauseSelection(1);
             if (pad != null && pad.buttonEast.wasPressedThisFrame) { HandleEscape(); return true; }
             if ((keys != null && keys.enterKey.wasPressedThisFrame) ||
                 (pad != null && pad.buttonSouth.wasPressedThisFrame))
-            {
-                if (PauseSelection == 0) TogglePause();
-                else if (PauseSelection == 1 && MapEditorTesting) ReturnFromEditedMapTest();
-                else if (PauseSelection == 1 || (PauseSelection == 2 && MapEditorTesting)) RestartRun();
-                else RequestQuitFromMenu();
-            }
+                ConfirmPauseSelection();
             return true;
 #else
 #if UNITY_EDITOR || !UNITY_STANDALONE_WIN

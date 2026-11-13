@@ -236,7 +236,7 @@ namespace RoboRougelike.R1
             if(item==null||item.Health>=1)return false;
             int before=run.VehicleModel.Scrap;
             bool repaired=run.GarageRepairInventory(item.Id);
-            run.Garage.Message=repaired?$"Naprawiono wybraną część • koszt {before-run.VehicleModel.Scrap} Z.":"Nie udało się naprawić wybranej części.";
+            run.Garage.ShowActionMessage(repaired?$"Naprawiono wybraną część • koszt {before-run.VehicleModel.Scrap} Z.":"Nie udało się naprawić wybranej części.");
             return repaired;
         }
 
@@ -331,8 +331,8 @@ namespace RoboRougelike.R1
                 bought==5?$"Kupiono 5 części • koszt {before-model.Scrap} Z. Wybierz miejsce montażu.":
                 $"Kupiono {bought}/5 • {before-model.Scrap} Z. "+PurchaseFailure(run,kind,weapon);
             if(catalogWasOpen&&bought==5)DismissCatalog();
-            run.Garage.Message=message;
-            if(catalogOpen)catalogFeedback=message;
+            if(catalogOpen){run.Garage.Message=message;catalogFeedback=message;}
+            else run.Garage.ShowActionMessage(message);
         }
 
         static string GarageRepairCaption(R3PartState part,int price,int scrap)=>
@@ -425,7 +425,7 @@ namespace RoboRougelike.R1
             // The visible ghost can move onto a blocked cell after a previous
             // successful purchase. Explain that current placement before the
             // player clicks, rather than leaving the old purchase message.
-            if(run.Garage.Tool==R41GarageTool.Mount&&run.Garage.HasTarget&&run.Garage.HasMountSelection)
+            if(!run.Garage.HasRecentActionMessage&&run.Garage.Tool==R41GarageTool.Mount&&run.Garage.HasTarget&&run.Garage.HasMountSelection)
             {
                 string placement=run.Garage.PlacementIssue;
                 message=placement??"Można zamontować • LPM — zamontuj część.";
@@ -440,6 +440,8 @@ namespace RoboRougelike.R1
                 if(!string.IsNullOrEmpty(detail)&&detail.StartsWith(reason.TrimEnd('.'),System.StringComparison.Ordinal))reason=detail;
                 message+="\nStart zablokowany: "+reason;
             }
+            else if(model.CreativeMode&&!R3VehicleModel.HasMobility(model.Parts,model.SelectedDrive))
+                message+="\nPoligon bez napędu: pojazd może nie jechać.";
             if(run.Technology?.Error!=null)message+="\nBłąd zapisu lub odczytu technologii.";
             return message.TrimStart('\n');
         }
@@ -627,9 +629,14 @@ namespace RoboRougelike.R1
         void BuyQuickPart(R1RunController run)
         {
             if(!catalogGroup.HasValue)return;
+            int before=run.VehicleModel.Scrap;
             if(AddSelectedCatalogPart(run,catalogGroup.Value,catalogWeapon))
-            {var item=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(item.Id);run.Garage.Message=run.CreativeWorkshop?"Wybrano darmową część. Kliknij pojazd, aby ją zamontować.":"Kupiono część. Kliknij pojazd, aby ją zamontować.";}
-            else run.Garage.Message=PurchaseFailure(run,catalogGroup.Value,catalogWeapon);
+            {
+                var item=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(item.Id);
+                run.Garage.ShowActionMessage(run.CreativeWorkshop?"Dodano część za darmo. Kliknij pojazd, aby ją zamontować.":
+                    $"Kupiono część • koszt {before-run.VehicleModel.Scrap} Z. Kliknij pojazd, aby ją zamontować.");
+            }
+            else run.Garage.ShowActionMessage(PurchaseFailure(run,catalogGroup.Value,catalogWeapon));
         }
 
         bool AddSelectedCatalogPart(R1RunController run,R3PartKind kind,R4WeaponKind weapon)
