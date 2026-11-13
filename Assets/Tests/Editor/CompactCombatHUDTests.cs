@@ -6,6 +6,20 @@ using UnityEngine;
 
 public sealed class CompactCombatHUDTests
 {
+    [Test]
+    public void RunSummaryDoesNotPromiseOldVehicleOrAssumeFinalBoss()
+    {
+        var flags=BindingFlags.Static|BindingFlags.NonPublic;
+        var detail=typeof(R1RunHUD).GetMethod("RunEndOutcome",flags);
+        var note=typeof(R1RunHUD).GetMethod("RunEndNewRunNote",flags);
+        var recovered=typeof(R1RunHUD).GetMethod("RunEndRecovery",flags);
+        Assert.That(detail,Is.Not.Null);Assert.That(note,Is.Not.Null);Assert.That(recovered,Is.Not.Null);
+        var victory=(string)detail.Invoke(null,new object[]{true,""});
+        Assert.That(victory,Does.Contain("ukończona").And.Not.Contain("Oblężnik"));
+        Assert.That((string)detail.Invoke(null,new object[]{false,"Zniszczono rdzeń."}),Does.Contain("rdzeń"));
+        Assert.That((string)note.Invoke(null,null),Does.Contain("wybierzesz").And.Contain("wylosowanych"));
+        Assert.That((string)recovered.Invoke(null,new object[]{3}),Does.Contain("części: 3"));
+    }
     [Test] public void StarterSummaryShowsUsableEnergyAfterPassiveReservations()
     {
         var design=new R3VehicleDesign();
