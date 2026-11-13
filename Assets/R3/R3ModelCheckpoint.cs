@@ -52,7 +52,7 @@ namespace RoboRougelike.R3
         public int activeSlotsVersion;
         public int[] activeSlots;
         public R3ActiveSlotCheckpoint[] activePreferences;
-        public int constructionBudgetVersion,constructionBudgetLimit;
+        public int constructionBudgetVersion,constructionBudgetLimit,constructionBudgetMilestonesApplied;
         public int scrap;
         public bool suspensionEnabled,gyroEnabled,hasA,hasB,hasC,hasD;
         public int groupA,groupB,groupC,groupD;
@@ -135,7 +135,7 @@ namespace RoboRougelike.R3
                 weaponSlotsVersion=1,weaponSlots=weaponSlotPreference.Select(p=>new R3WeaponSlotCheckpoint{id=p.Key,slot=p.Value}).ToArray(),
                 activeSlotsVersion=1,activeSlots=activeSlots.Select(p=>p.HasValue?(int)p.Value:-1).ToArray(),
                 activePreferences=activeSlotPreference.Select(p=>new R3ActiveSlotCheckpoint{kind=(int)p.Key,slot=p.Value}).ToArray(),
-                constructionBudgetVersion=1,constructionBudgetLimit=ConstructionBudgetLimit,
+                constructionBudgetVersion=1,constructionBudgetLimit=ConstructionBudgetLimit,constructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied,
                 energyVersion=1,energy=Energy.Current,hasInitialEnergyPrepared=true,initialEnergyPrepared=InitialEnergyPrepared,
                 suspensionEnabled=SuspensionEnabled,suspensionMode=SuspensionMode,suspensionHeight=SuspensionHeightOffset,
                 gyroEnabled=GyroEnabled,drive=SelectedDrive,boosterThrust=BoosterThrustNewtons,boosterDuration=BoosterDurationSeconds,
@@ -165,7 +165,7 @@ namespace RoboRougelike.R3
             if(data==null||!Enum.IsDefined(typeof(R3VehicleKind),kind)||variant<0||variant>=4||data.mounted==null||data.inventory==null||
                 data.wheels==null||data.groups==null||data.mounted.Length>2000||data.inventory.Length>InventoryCapacity||
                 data.constructionBudgetVersion<0||data.constructionBudgetVersion>1||
-                (data.constructionBudgetVersion==1&&data.constructionBudgetLimit<0)||
+                (data.constructionBudgetVersion==1&&(data.constructionBudgetLimit<0||data.constructionBudgetMilestonesApplied<0))||
                 data.wheels.Length>2000||data.groups.Length>4000||data.scrap<0||data.scrap>100000||
                 !Enum.IsDefined(typeof(R3DriveKind),data.drive)||!Enum.IsDefined(typeof(ActiveSuspensionSupportMode),data.suspensionMode)||
                 !Finite(data.suspensionHeight)||data.suspensionHeight<-.35f||data.suspensionHeight>.35f||
@@ -318,7 +318,7 @@ namespace RoboRougelike.R3
                 foreach(var preference in data.activePreferences)restored.activeSlotPreference.Add((R3PartKind)preference.kind,preference.slot);
             }
             restored.Scrap=data.scrap;restored.SelectedDrive=data.drive;restored.SuspensionEnabled=data.suspensionEnabled;
-            if(data.constructionBudgetVersion==1)restored.ConstructionBudgetLimit=data.constructionBudgetLimit;
+            if(data.constructionBudgetVersion==1){restored.ConstructionBudgetLimit=data.constructionBudgetLimit;restored.ConstructionBudgetMilestonesApplied=data.constructionBudgetMilestonesApplied;}
             restored.SuspensionMode=data.suspensionMode;restored.SuspensionHeightOffset=data.suspensionHeight;restored.GyroEnabled=data.gyroEnabled;
             restored.BoosterThrustNewtons=data.boosterThrust;restored.BoosterDurationSeconds=data.boosterDuration;restored.HoverHeightMeters=data.hoverHeight;
             restored.GrappleReadyAt=data.grappleRemaining>0?now+data.grappleRemaining:0;

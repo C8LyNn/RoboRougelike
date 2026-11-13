@@ -73,4 +73,49 @@ public sealed class BacklogConstructionBudgetTests
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out restored,out error),Is.True,error);
         Assert.That(restored.ConstructionBudgetLimit,Is.EqualTo(150),"A legacy save uses its configured starting budget.");
     }
+    [Test] public void MilestonesIncreaseBudgetOnceAndSurviveCloneAndCheckpoint()
+    {
+        var method=typeof(R3VehicleModel).GetMethod("ApplyCompletedBudgetMilestones");
+        Assert.That(method,Is.Not.Null,"Budget must grow when major stages are completed.");
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        method.Invoke(model,new object[]{1});Assert.That(model.ConstructionBudgetLimit,Is.EqualTo(200));
+        method.Invoke(model,new object[]{2});Assert.That(model.ConstructionBudgetLimit,Is.EqualTo(220));
+        method.Invoke(model,new object[]{2});Assert.That(model.ConstructionBudgetLimit,Is.EqualTo(220));
+        var clone=model.DeepCopy();method.Invoke(clone,new object[]{2});Assert.That(clone.ConstructionBudgetLimit,Is.EqualTo(220));
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        method.Invoke(restored,new object[]{2});Assert.That(restored.ConstructionBudgetLimit,Is.EqualTo(220));
+        method.Invoke(restored,new object[]{4});Assert.That(restored.ConstructionBudgetLimit,Is.EqualTo(240));
+    }
+    [Test] public void SizeClassDependsOnPhysicalCountRatherThanPartTypeOrTier()
+    {
+        var count=typeof(R3VehicleModel).GetProperty("PhysicalPartCount");
+        var size=typeof(R3VehicleModel).GetProperty("ConstructionSizeClass");
+        Assert.That(count,Is.Not.Null);Assert.That(size,Is.Not.Null);
+        var design=new R3VehicleDesign{Name="Size"};design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(Vector3Int.right,R3PartKind.Armor));
+        var model=new R3VehicleModel(design);
+        var baseline=size.GetValue(model);Assert.That(count.GetValue(model),Is.EqualTo(2));
+        model.Parts[1].Kind=R3PartKind.Battery;model.Parts[1].Tier=3;
+        Assert.That(size.GetValue(model),Is.EqualTo(baseline));Assert.That(count.GetValue(model),Is.EqualTo(2));
+        model.Parts[1].Health=0;Assert.That(count.GetValue(model),Is.EqualTo(1));
+        model.Economy.Construction.SmallPhysicalParts=1;model.Economy.Construction.MediumPhysicalParts=2;
+        Assert.That(model.ConstructionSizeClass,Is.EqualTo(R3ConstructionSize.Small));
+        model.Parts[1].Health=1;Assert.That(model.ConstructionSizeClass,Is.EqualTo(R3ConstructionSize.Medium));
+        model.Parts.Add(new R3PartState(Vector3Int.up,R3PartKind.Armor));
+        Assert.That(model.ConstructionSizeClass,Is.EqualTo(R3ConstructionSize.Large));
+    }
+    [Test] public void MilestoneCadenceAndAmountAreConfigurableAndLegacyCanCatchUp()
+    {
+        var settings=new R3ConstructionSettings{StartingBudget=100,StageInterval=3,StageBudgetIncrease=17};
+        var design=new R3VehicleDesign{Name="Progress"};design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        var model=new R3VehicleModel(design,new R3GarageEconomy{Construction=settings});
+        Assert.That(model.ApplyCompletedBudgetMilestones(2),Is.EqualTo(0));
+        Assert.That(model.ApplyCompletedBudgetMilestones(6),Is.EqualTo(34));
+        Assert.That(model.ConstructionBudgetLimit,Is.EqualTo(134));
+        var old=model.MakeCheckpoint(0);old.constructionBudgetVersion=0;old.constructionBudgetMilestonesApplied=0;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(old,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.ApplyCompletedBudgetMilestones(6),Is.EqualTo(34));
+        Assert.That(restored.ApplyCompletedBudgetMilestones(6),Is.Zero);
+    }
 }

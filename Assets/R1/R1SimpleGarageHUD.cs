@@ -572,7 +572,7 @@ namespace RoboRougelike.R1
                 $"Moduł T{R3VehicleModel.NormalizedTier(part.Tier)}: {BonusInstanceText(part)}. Kliknij, aby zamontować.":kind==R3PartKind.Battery?
                 $"Bateria T{R3VehicleModel.NormalizedTier(part.Tier)}: +{VehicleEnergyState.BatteryCapacity*R3VehicleModel.TierEffectUnits(part.Tier):0} maks. energii. Kliknij, aby zamontować.":
                 kind==R3PartKind.RepairPulse?
-                $"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: V, {R3RepairPulse.EnergyCost*R3VehicleModel.TierActivationCost(part.Tier):0} energii, {R3RepairPulse.Duration:0} s. Kliknij, aby zamontować.":
+                $"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: slot aktywny 1–4, {R3RepairPulse.EnergyCost*R3VehicleModel.TierActivationCost(part.Tier):0} energii, {R3RepairPulse.Duration:0} s. Kliknij, aby zamontować.":
                 kind==R3PartKind.DrivePower?$"Silnik T{R3VehicleModel.NormalizedTier(part.Tier)} wspomaga koła; rezerwuje {VehicleEnergyState.PassiveReservation+R3VehicleModel.TierPassiveExtra(part.Tier):0} energii.":
                 kind==R3PartKind.EnergyRegenerator?$"Regenerator T{R3VehicleModel.NormalizedTier(part.Tier)}: +{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(part.Tier):0} energii/s, rezerwa {VehicleEnergyState.PassiveReservation+R3VehicleModel.TierPassiveExtra(part.Tier):0}.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kliknij, aby zamontować.":
@@ -585,7 +585,7 @@ namespace RoboRougelike.R1
                     run.VehicleModel.Inventory.Any(p=>InCatalogGroup(p,kind,weapon,bonus))?"Brak sprawnej części. Użyj naprawy poniżej.":
                     !run.CanBuyTechnology(kind,weapon)?"Zablokowane: pokonaj przeciwnika z tą bronią, aby odkryć technologię.":kind==R3PartKind.Battery?
                     $"Bateria T1: +{VehicleEnergyState.BatteryCapacity:0} maks. energii. Kup część lub otwórz szczegóły.":kind==R3PartKind.RepairPulse?
-                    $"Impuls naprawczy: V, {R3RepairPulse.EnergyCost:0} energii, {R3RepairPulse.Duration:0} s. Kup część lub otwórz szczegóły.":
+                    $"Impuls naprawczy: slot aktywny 1–4, {R3RepairPulse.EnergyCost:0} energii, {R3RepairPulse.Duration:0} s. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.DrivePower?$"Silnik wspomaga koła; zajmuje {VehicleEnergyState.PassiveReservation:0} maks. energii. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.EnergyRegenerator?$"Regenerator: +{VehicleEnergyState.RegenerationPerModule:0} energii/s, −{VehicleEnergyState.PassiveReservation:0} maks. energii. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kup część.":
@@ -699,7 +699,7 @@ namespace RoboRougelike.R1
             GUI.enabled=!garageOptionsOpen;
             Panel(new Rect(0,0,1280,76));Panel(new Rect(0,76,270,644));
             GUI.Label(new Rect(14,10,150,34),"GARAŻ",heading);
-            GUI.Label(new Rect(14,40,245,36),model.CreativeMode?$"Darmowe części • Energia: {model.Energy.Maximum:0}":$"Złom: {model.Scrap} • {model.ConstructionBudgetUsed}/{model.ConstructionBudgetLimit} pkt\nEnergia maks.: {model.Energy.Maximum:0}",small);
+            GUI.Label(new Rect(14,40,245,36),model.CreativeMode?$"Darmowe części • Energia: {model.Energy.Maximum:0}":$"Złom: {model.Scrap} • {model.ConstructionBudgetUsed}/{model.ConstructionBudgetLimit} pkt\n{model.ConstructionSizeLabel}: {model.PhysicalPartCount} części • Energia: {model.Energy.Maximum:0}",small);
             string[] labels={"1 Montuj","2 Zaznacz","3 Napraw","4 Zdejmij"};
             for(int i=0;i<labels.Length;i++)
             {

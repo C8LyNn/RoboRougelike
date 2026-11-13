@@ -14,6 +14,7 @@ namespace RoboRougelike.R3
     public enum R3ArmorShape { Cube, Wedge, HalfBlock, Pyramid, RoundEdge, HalfWedge, Dome }
     public enum R3DriveKind { Wheels, Tracks, Omni, Hover }
     public enum R3VehicleKind { Standard, Light, Heavy }
+    public enum R3ConstructionSize { Small, Medium, Large }
     [Serializable]
     public sealed class R3PartState
     {
@@ -65,11 +66,13 @@ namespace RoboRougelike.R3
         public int StartingBudget=200, StarterReserve=20, LightStarterExtraReserve=40, BlockCost=2, HalfBlockCost=1, WeaponCost=6, WeaponTierTwoCost=8, WeaponTierThreeCost=10;
         public int WheelCost=2, ActiveModuleCost=4, PassiveModuleCost=3, DriveModuleCost=3;
         public int TierTwoMultiplier=2, TierThreeMultiplier=3;
+        public int StageInterval=2, StageBudgetIncrease=20, SmallPhysicalParts=40, MediumPhysicalParts=80;
         public R3ConstructionSettings Copy()=>new R3ConstructionSettings {
             StartingBudget=StartingBudget,StarterReserve=StarterReserve,LightStarterExtraReserve=LightStarterExtraReserve,BlockCost=BlockCost,HalfBlockCost=HalfBlockCost,WeaponCost=WeaponCost,
             WeaponTierTwoCost=WeaponTierTwoCost,WeaponTierThreeCost=WeaponTierThreeCost,
             WheelCost=WheelCost,ActiveModuleCost=ActiveModuleCost,PassiveModuleCost=PassiveModuleCost,
-            DriveModuleCost=DriveModuleCost,TierTwoMultiplier=TierTwoMultiplier,TierThreeMultiplier=TierThreeMultiplier};
+            DriveModuleCost=DriveModuleCost,TierTwoMultiplier=TierTwoMultiplier,TierThreeMultiplier=TierThreeMultiplier,
+            StageInterval=StageInterval,StageBudgetIncrease=StageBudgetIncrease,SmallPhysicalParts=SmallPhysicalParts,MediumPhysicalParts=MediumPhysicalParts};
         public int Cost(R3PartState part)
         {
             if(part==null)return 0;
@@ -307,7 +310,24 @@ namespace RoboRougelike.R3
         readonly R3ConstructionSettings fallbackConstructionSettings=new R3ConstructionSettings();
         R3ConstructionSettings ConstructionSettings=>Economy.Construction??fallbackConstructionSettings;
         public int ConstructionBudgetLimit {get;private set;}
+        public int ConstructionBudgetMilestonesApplied {get;private set;}
         public long ConstructionBudgetUsed=>Parts.Sum(p=>(long)ConstructionPartCost(p));
+        public int PhysicalPartCount=>Parts.Count(p=>p.Health>0);
+        public R3ConstructionSize ConstructionSizeClass=>PhysicalPartCount<=Math.Max(0,ConstructionSettings.SmallPhysicalParts)?R3ConstructionSize.Small:
+            PhysicalPartCount<=Math.Max(ConstructionSettings.SmallPhysicalParts,ConstructionSettings.MediumPhysicalParts)?R3ConstructionSize.Medium:R3ConstructionSize.Large;
+        public string ConstructionSizeLabel=>ConstructionSizeClass==R3ConstructionSize.Small?"Mały":ConstructionSizeClass==R3ConstructionSize.Medium?"Średni":"Duży";
+        public int ApplyCompletedBudgetMilestones(int completedEncounters)
+        {
+            int interval=ConstructionSettings.StageInterval;
+            if(interval<=0)return 0;
+            int target=Math.Max(0,completedEncounters)/interval;
+            if(target<=ConstructionBudgetMilestonesApplied)return 0;
+            long increase=(long)(target-ConstructionBudgetMilestonesApplied)*Math.Max(0,ConstructionSettings.StageBudgetIncrease);
+            int previous=ConstructionBudgetLimit;
+            ConstructionBudgetLimit=(int)Math.Min(int.MaxValue,(long)previous+increase);
+            ConstructionBudgetMilestonesApplied=target;
+            return ConstructionBudgetLimit-previous;
+        }
         public int ConstructionPartCost(R3PartState part)=>ConstructionSettings.Cost(part);
         public R3VehicleModel(R3VehicleDesign design, R3GarageEconomy economy = null)
         { Design = design; Parts = design.Parts.Select(p => {var part=p.Copy();part.Id=Guid.NewGuid().ToString("N");return part;}).ToList(); Economy = economy ?? new R3GarageEconomy();
@@ -320,7 +340,7 @@ namespace RoboRougelike.R3
             var design=new R3VehicleDesign{Name=Design.Name,Description=Design.Description,Speed=Design.Speed,TurnSpeed=Design.TurnSpeed,CoreHp=Design.CoreHp};
             design.Parts.AddRange(Design.Parts.Select(p=>p.Copy()));
             var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost,Construction=ConstructionSettings.Copy()});
-            copy.CreativeMode=CreativeMode;copy.ConstructionBudgetLimit=ConstructionBudgetLimit;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
+            copy.CreativeMode=CreativeMode;copy.ConstructionBudgetLimit=ConstructionBudgetLimit;copy.ConstructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
             copy.factoryWheels.Clear();foreach(var item in factoryWheels)copy.factoryWheels.Add(item.Key,item.Value);
             copy.SuspensionEnabled=SuspensionEnabled;copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset;
             copy.RefreshEnergyLayout();copy.Energy.Restore(Energy.Current);copy.InitialEnergyPrepared=InitialEnergyPrepared;

@@ -114,6 +114,7 @@ namespace RoboRougelike.R1
                 var kind=(R3VehicleKind)data.vehicle;
                 if(!R3VehicleModel.TryRestoreCheckpoint(data.model,kind,Definition.GaragePrices,Time.time,out var restoredModel,out var error,data.variant))
                     throw new InvalidDataException(error);
+                restoredModel.ApplyCompletedBudgetMilestones(restoredProgress.CompletedEncounters);
                 var restoredPlan=new R5RunPlan(Definition.RouteStages,data.seed);
                 var player=R3VehicleAssembly.Build(restoredModel,restoredProgress.Stats,palette,new Vector3(0,.7f,-22),Quaternion.identity);
                 Progress=restoredProgress;VehicleModel=restoredModel;Plan=restoredPlan;SelectedVehicle=kind;SelectedVehicleVariant=data.variant;RequestedSeed=data.seed;runId=data.runId;

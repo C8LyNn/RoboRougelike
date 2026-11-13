@@ -54,7 +54,7 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(24,12,185,40),"GARAŻ",heading);
             var energy=run.Player!=null?run.Player.GetComponent<VehicleEnergyBank>():null;
             GUI.Label(new Rect(210,14,540,52),$"{model.Design.Name} • Złom: {model.Scrap} • Punkty: {model.ConstructionBudgetUsed}/{model.ConstructionBudgetLimit}"+
-                (energy!=null?$"\nEnergia: {energy.Current:0}/{energy.Maximum:0}":""),small);
+                $"\n{model.ConstructionSizeLabel}: {model.PhysicalPartCount} części"+(energy!=null?$" • Energia: {energy.Current:0}/{energy.Maximum:0}":""),small);
             string[] tools={"Montuj","Zaznacz","Napraw","Zdejmij"};
             for(int i=0;i<tools.Length;i++)
             {
