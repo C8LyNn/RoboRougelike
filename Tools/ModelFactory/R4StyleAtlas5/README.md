@@ -3,7 +3,14 @@
 Eksperymentalna biblioteka pięciu stylów A/B/C/D/E dla istniejących assetów RoboRougelike. Tylko art: nic w `Assets/`,
 bez kodu, bez integracji z Unity, bez scalania. Unity: **UNITY_NOT_RUN**. Windows player: **WINDOWS_PLAYER_NOT_RUN**.
 
-## Hero Benchmark Pass 2 — high-fidelity modelling (najnowsze)
+## Hero Benchmark Pass 4 — nowa iteracja modelowania wg ankiety 1 (najnowsze)
+
+Oceny OLD/NEW z ankiety 1 potraktowane jako kierunek, nie wybór: 23 nowe propozycje (17 modeli części + 6 zestawów modułowego pancerza
+kadłuba), każda zbudowana od nowa na bazie preferowanej wersji; remisy mają po dwie propozycje. Wszędzie LEWA = wzorzec z ankiety,
+PRAWA = nowy model. Plansze, lista zmian, granice kontraktu i rozdzielenie testów Blendera od nieprzeprowadzonych testów Unity —
+[`hero4/README.md`](hero4/README.md), lista propozycji — [`hero4/MODELS.md`](hero4/MODELS.md).
+
+## Hero Benchmark Pass 2 — high-fidelity modelling
 
 Nowy potok: model źródłowy high-poly → siatka gry → wypalanie → tekstury per model. Basic Gun, Wheel, Battery × 5 stylów (15 modeli) i pięć
 robotów, zestawione z pięcioma planszami referencyjnymi właściciela. Plansze, liczby, przeszkody kontraktu i uczciwy opis dystansu do referencji —

@@ -1,0 +1,1949 @@
+{
+ "style": "E",
+ "applied": [
+  "taa_render_samples",
+  "use_raytracing",
+  "!use_gtao",
+  "!gtao_distance",
+  "use_shadows",
+  "shadow_ray_count",
+  "shadow_step_count",
+  "fast_gi_distance",
+  "use_fast_gi",
+  "view_transform",
+  "look",
+  "exposure"
+ ],
+ "shots": {
+  "hero_L": {
+   "pieces": 32,
+   "triangles": 49592,
+   "hull_layer_triangles": 6094,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "0a0f4f713750decf0707e5effd002d59c99f361e3d91ea9e7bc04bedfd736584",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "9ee0a5df7ff74dc898ff5745835641f51b5ba681286557f5836dc1523ea85d53",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "4b804e17adb4496c3982591c1d7914d76d1dbe26253e798a030f5d32917d7262",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "new": {
+     "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
+    }
+   },
+   "render_s_1080": 3.4
+  },
+  "low_L": {
+   "pieces": 32,
+   "triangles": 49592,
+   "hull_layer_triangles": 6094,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "0a0f4f713750decf0707e5effd002d59c99f361e3d91ea9e7bc04bedfd736584",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "9ee0a5df7ff74dc898ff5745835641f51b5ba681286557f5836dc1523ea85d53",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "4b804e17adb4496c3982591c1d7914d76d1dbe26253e798a030f5d32917d7262",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "new": {
+     "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
+    }
+   },
+   "render_s_1080": 2.0
+  },
+  "side_L": {
+   "pieces": 32,
+   "triangles": 49592,
+   "hull_layer_triangles": 6094,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "0a0f4f713750decf0707e5effd002d59c99f361e3d91ea9e7bc04bedfd736584",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "9ee0a5df7ff74dc898ff5745835641f51b5ba681286557f5836dc1523ea85d53",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "4b804e17adb4496c3982591c1d7914d76d1dbe26253e798a030f5d32917d7262",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "new": {
+     "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
+    }
+   },
+   "render_s_1080": 1.9
+  },
+  "panels_L": {
+   "pieces": 32,
+   "triangles": 49592,
+   "hull_layer_triangles": 6094,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "0a0f4f713750decf0707e5effd002d59c99f361e3d91ea9e7bc04bedfd736584",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "9ee0a5df7ff74dc898ff5745835641f51b5ba681286557f5836dc1523ea85d53",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "4b804e17adb4496c3982591c1d7914d76d1dbe26253e798a030f5d32917d7262",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "new": {
+     "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
+    }
+   },
+   "render_s_1080": 2.0
+  },
+  "prow_L": {
+   "pieces": 32,
+   "triangles": 49592,
+   "hull_layer_triangles": 6094,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "0a0f4f713750decf0707e5effd002d59c99f361e3d91ea9e7bc04bedfd736584",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "9ee0a5df7ff74dc898ff5745835641f51b5ba681286557f5836dc1523ea85d53",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "4b804e17adb4496c3982591c1d7914d76d1dbe26253e798a030f5d32917d7262",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "new": {
+     "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
+    }
+   },
+   "render_s_1080": 2.0
+  },
+  "deck_L": {
+   "pieces": 32,
+   "triangles": 49592,
+   "hull_layer_triangles": 6094,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "0a0f4f713750decf0707e5effd002d59c99f361e3d91ea9e7bc04bedfd736584",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "9ee0a5df7ff74dc898ff5745835641f51b5ba681286557f5836dc1523ea85d53",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "4b804e17adb4496c3982591c1d7914d76d1dbe26253e798a030f5d32917d7262",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "new": {
+     "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
+    }
+   },
+   "render_s_1080": 1.9
+  },
+  "cube_L": {
+   "pieces": 2,
+   "triangles": 2020,
+   "hull_layer_triangles": 268,
+   "hull_fragments": 5,
+   "objects": 21,
+   "configs": [
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "4b804e17adb4496c3982591c1d7914d76d1dbe26253e798a030f5d32917d7262",
+     "scene_treatment": [
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "new": {
+     "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
+    }
+   },
+   "render_s_1080": 1.6
+  },
+  "dist_L": {
+   "pieces": 96,
+   "triangles": 148776,
+   "hull_layer_triangles": 18282,
+   "hull_fragments": 282,
+   "objects": 1122,
+   "configs": [
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    },
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    },
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "0a0f4f713750decf0707e5effd002d59c99f361e3d91ea9e7bc04bedfd736584",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "9ee0a5df7ff74dc898ff5745835641f51b5ba681286557f5836dc1523ea85d53",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "4b804e17adb4496c3982591c1d7914d76d1dbe26253e798a030f5d32917d7262",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "new": {
+     "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
+    }
+   },
+   "render_s_1080": 2.3
+  },
+  "clay_L": {
+   "pieces": 32,
+   "triangles": 49592,
+   "hull_layer_triangles": 6094,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "0a0f4f713750decf0707e5effd002d59c99f361e3d91ea9e7bc04bedfd736584",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "9ee0a5df7ff74dc898ff5745835641f51b5ba681286557f5836dc1523ea85d53",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "4b804e17adb4496c3982591c1d7914d76d1dbe26253e798a030f5d32917d7262",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "new": {
+     "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
+    }
+   },
+   "render_s_1080": 1.9
+  },
+  "clayprow_L": {
+   "pieces": 32,
+   "triangles": 49592,
+   "hull_layer_triangles": 6094,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "0a0f4f713750decf0707e5effd002d59c99f361e3d91ea9e7bc04bedfd736584",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "9ee0a5df7ff74dc898ff5745835641f51b5ba681286557f5836dc1523ea85d53",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "4b804e17adb4496c3982591c1d7914d76d1dbe26253e798a030f5d32917d7262",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "new": {
+     "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
+    }
+   },
+   "render_s_1080": 1.8
+  },
+  "gun_L": {
+   "pieces": 2,
+   "triangles": 3216,
+   "hull_layer_triangles": 0,
+   "hull_fragments": 0,
+   "objects": 20,
+   "configs": [
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "9ee0a5df7ff74dc898ff5745835641f51b5ba681286557f5836dc1523ea85d53",
+     "scene_treatment": [
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "new": {
+     "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
+    }
+   },
+   "render_s_1080": 1.6
+  },
+  "wheel_L": {
+   "pieces": 2,
+   "triangles": 5482,
+   "hull_layer_triangles": 0,
+   "hull_fragments": 0,
+   "objects": 16,
+   "configs": [
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "0a0f4f713750decf0707e5effd002d59c99f361e3d91ea9e7bc04bedfd736584",
+     "scene_treatment": [
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "new": {
+     "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
+    }
+   },
+   "render_s_1080": 1.7
+  },
+  "bat_L": {
+   "pieces": 2,
+   "triangles": 1752,
+   "hull_layer_triangles": 0,
+   "hull_fragments": 0,
+   "objects": 16,
+   "configs": [
+    {
+     "cfg": "L",
+     "mix": {
+      "chassis": "new",
+      "Gun": "new",
+      "Wheel": "new",
+      "Battery": "new"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_new",
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero2 (PR #1274)",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "4b804e17adb4496c3982591c1d7914d76d1dbe26253e798a030f5d32917d7262",
+     "scene_treatment": [
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "new": {
+     "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
+    }
+   },
+   "render_s_1080": 1.7
+  },
+  "hero_R": {
+   "pieces": 32,
+   "triangles": 53022,
+   "hull_layer_triangles": 15172,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "4955a9c6dca450fe70c7b60aef6a900c9c159df493fb1dc240b10a85f5229344",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "5f2158ea79fee59e3554e544158964c4a29f57ead88d755b5cb4d9d20bfb04b8",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "d9dac45513f12ba642c6d39892716b8c7f852e94c5bb40e812e4910354aa9bb1",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "p": {
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4H_HullKit.glb",
+     "sha256": "96f7382f80a315b85ef537a9e82763cbebb712e3c22c992efaf9d600c9f7313c",
+     "pieces": 24
+    }
+   },
+   "render_s_1080": 1.9
+  },
+  "low_R": {
+   "pieces": 32,
+   "triangles": 53022,
+   "hull_layer_triangles": 15172,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "4955a9c6dca450fe70c7b60aef6a900c9c159df493fb1dc240b10a85f5229344",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "5f2158ea79fee59e3554e544158964c4a29f57ead88d755b5cb4d9d20bfb04b8",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "d9dac45513f12ba642c6d39892716b8c7f852e94c5bb40e812e4910354aa9bb1",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "p": {
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4H_HullKit.glb",
+     "sha256": "96f7382f80a315b85ef537a9e82763cbebb712e3c22c992efaf9d600c9f7313c",
+     "pieces": 24
+    }
+   },
+   "render_s_1080": 1.9
+  },
+  "side_R": {
+   "pieces": 32,
+   "triangles": 53022,
+   "hull_layer_triangles": 15172,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "4955a9c6dca450fe70c7b60aef6a900c9c159df493fb1dc240b10a85f5229344",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "5f2158ea79fee59e3554e544158964c4a29f57ead88d755b5cb4d9d20bfb04b8",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "d9dac45513f12ba642c6d39892716b8c7f852e94c5bb40e812e4910354aa9bb1",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "p": {
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4H_HullKit.glb",
+     "sha256": "96f7382f80a315b85ef537a9e82763cbebb712e3c22c992efaf9d600c9f7313c",
+     "pieces": 24
+    }
+   },
+   "render_s_1080": 1.9
+  },
+  "panels_R": {
+   "pieces": 32,
+   "triangles": 53022,
+   "hull_layer_triangles": 15172,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "4955a9c6dca450fe70c7b60aef6a900c9c159df493fb1dc240b10a85f5229344",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "5f2158ea79fee59e3554e544158964c4a29f57ead88d755b5cb4d9d20bfb04b8",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "d9dac45513f12ba642c6d39892716b8c7f852e94c5bb40e812e4910354aa9bb1",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "p": {
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4H_HullKit.glb",
+     "sha256": "96f7382f80a315b85ef537a9e82763cbebb712e3c22c992efaf9d600c9f7313c",
+     "pieces": 24
+    }
+   },
+   "render_s_1080": 1.7
+  },
+  "prow_R": {
+   "pieces": 32,
+   "triangles": 53022,
+   "hull_layer_triangles": 15172,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "4955a9c6dca450fe70c7b60aef6a900c9c159df493fb1dc240b10a85f5229344",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "5f2158ea79fee59e3554e544158964c4a29f57ead88d755b5cb4d9d20bfb04b8",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "d9dac45513f12ba642c6d39892716b8c7f852e94c5bb40e812e4910354aa9bb1",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "p": {
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4H_HullKit.glb",
+     "sha256": "96f7382f80a315b85ef537a9e82763cbebb712e3c22c992efaf9d600c9f7313c",
+     "pieces": 24
+    }
+   },
+   "render_s_1080": 1.7
+  },
+  "deck_R": {
+   "pieces": 32,
+   "triangles": 53022,
+   "hull_layer_triangles": 15172,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "4955a9c6dca450fe70c7b60aef6a900c9c159df493fb1dc240b10a85f5229344",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "5f2158ea79fee59e3554e544158964c4a29f57ead88d755b5cb4d9d20bfb04b8",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "d9dac45513f12ba642c6d39892716b8c7f852e94c5bb40e812e4910354aa9bb1",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "p": {
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4H_HullKit.glb",
+     "sha256": "96f7382f80a315b85ef537a9e82763cbebb712e3c22c992efaf9d600c9f7313c",
+     "pieces": 24
+    }
+   },
+   "render_s_1080": 1.8
+  },
+  "cube_R": {
+   "pieces": 2,
+   "triangles": 3284,
+   "hull_layer_triangles": 1564,
+   "hull_fragments": 5,
+   "objects": 21,
+   "configs": [
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "d9dac45513f12ba642c6d39892716b8c7f852e94c5bb40e812e4910354aa9bb1",
+     "scene_treatment": [
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "p": {
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4H_HullKit.glb",
+     "sha256": "96f7382f80a315b85ef537a9e82763cbebb712e3c22c992efaf9d600c9f7313c",
+     "pieces": 24
+    }
+   },
+   "render_s_1080": 1.5
+  },
+  "dist_R": {
+   "pieces": 96,
+   "triangles": 159066,
+   "hull_layer_triangles": 45516,
+   "hull_fragments": 282,
+   "objects": 1122,
+   "configs": [
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    },
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    },
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "4955a9c6dca450fe70c7b60aef6a900c9c159df493fb1dc240b10a85f5229344",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "5f2158ea79fee59e3554e544158964c4a29f57ead88d755b5cb4d9d20bfb04b8",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "d9dac45513f12ba642c6d39892716b8c7f852e94c5bb40e812e4910354aa9bb1",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "p": {
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4H_HullKit.glb",
+     "sha256": "96f7382f80a315b85ef537a9e82763cbebb712e3c22c992efaf9d600c9f7313c",
+     "pieces": 24
+    }
+   },
+   "render_s_1080": 2.6
+  },
+  "clay_R": {
+   "pieces": 32,
+   "triangles": 53022,
+   "hull_layer_triangles": 15172,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "4955a9c6dca450fe70c7b60aef6a900c9c159df493fb1dc240b10a85f5229344",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "5f2158ea79fee59e3554e544158964c4a29f57ead88d755b5cb4d9d20bfb04b8",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "d9dac45513f12ba642c6d39892716b8c7f852e94c5bb40e812e4910354aa9bb1",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "p": {
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4H_HullKit.glb",
+     "sha256": "96f7382f80a315b85ef537a9e82763cbebb712e3c22c992efaf9d600c9f7313c",
+     "pieces": 24
+    }
+   },
+   "render_s_1080": 1.9
+  },
+  "clayprow_R": {
+   "pieces": 32,
+   "triangles": 53022,
+   "hull_layer_triangles": 15172,
+   "hull_fragments": 94,
+   "objects": 374,
+   "configs": [
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "4955a9c6dca450fe70c7b60aef6a900c9c159df493fb1dc240b10a85f5229344",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "5f2158ea79fee59e3554e544158964c4a29f57ead88d755b5cb4d9d20bfb04b8",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "d9dac45513f12ba642c6d39892716b8c7f852e94c5bb40e812e4910354aa9bb1",
+     "scene_treatment": [
+      "toon"
+     ]
+    },
+    "Deployer": {
+     "type": "Deployer",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+     "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "p": {
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4H_HullKit.glb",
+     "sha256": "96f7382f80a315b85ef537a9e82763cbebb712e3c22c992efaf9d600c9f7313c",
+     "pieces": 24
+    }
+   },
+   "render_s_1080": 1.7
+  },
+  "gun_R": {
+   "pieces": 2,
+   "triangles": 2764,
+   "hull_layer_triangles": 0,
+   "hull_fragments": 0,
+   "objects": 20,
+   "configs": [
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    },
+    "Gun": {
+     "type": "Gun",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4W_Basic/R4W_Basic.glb",
+     "sha256": "5f2158ea79fee59e3554e544158964c4a29f57ead88d755b5cb4d9d20bfb04b8",
+     "scene_treatment": [
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "p": {
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4H_HullKit.glb",
+     "sha256": "96f7382f80a315b85ef537a9e82763cbebb712e3c22c992efaf9d600c9f7313c",
+     "pieces": 24
+    }
+   },
+   "render_s_1080": 1.6
+  },
+  "wheel_R": {
+   "pieces": 2,
+   "triangles": 4312,
+   "hull_layer_triangles": 0,
+   "hull_fragments": 0,
+   "objects": 16,
+   "configs": [
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    },
+    "Wheel": {
+     "type": "Wheel",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+     "sha256": "4955a9c6dca450fe70c7b60aef6a900c9c159df493fb1dc240b10a85f5229344",
+     "scene_treatment": [
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "p": {
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4H_HullKit.glb",
+     "sha256": "96f7382f80a315b85ef537a9e82763cbebb712e3c22c992efaf9d600c9f7313c",
+     "pieces": 24
+    }
+   },
+   "render_s_1080": 1.8
+  },
+  "bat_R": {
+   "pieces": 2,
+   "triangles": 1720,
+   "hull_layer_triangles": 0,
+   "hull_fragments": 0,
+   "objects": 16,
+   "configs": [
+    {
+     "cfg": "R",
+     "mix": {
+      "chassis": "p",
+      "Gun": "p",
+      "Wheel": "p",
+      "Battery": "p"
+     },
+     "toon": true,
+     "vary": false,
+     "harm": {}
+    }
+   ],
+   "parts": {
+    "Cube": {
+     "type": "Cube",
+     "source": "hero1 (PR #1270)",
+     "file": "E_Toon/R4B_Cube/R4B_Cube.glb",
+     "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+     "scene_treatment": [
+      "repaint:palette_of_hull_p",
+      "toon"
+     ]
+    },
+    "Battery": {
+     "type": "Battery",
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4X_Battery/R4X_Battery.glb",
+     "sha256": "d9dac45513f12ba642c6d39892716b8c7f852e94c5bb40e812e4910354aa9bb1",
+     "scene_treatment": [
+      "toon"
+     ]
+    }
+   },
+   "hull": {
+    "p": {
+     "source": "hero4 proposal P",
+     "file": "E_Toon/R4H_HullKit.glb",
+     "sha256": "96f7382f80a315b85ef537a9e82763cbebb712e3c22c992efaf9d600c9f7313c",
+     "pieces": 24
+    }
+   },
+   "render_s_1080": 1.6
+  }
+ },
+ "crops": {
+  "dist_L": [
+   {
+    "tag": "hero_20m",
+    "robot": "hero",
+    "px_1080": [
+     571.0,
+     676.8,
+     927.3,
+     1005.7
+    ],
+    "distance_m": 20.3,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "hero_36m",
+    "robot": "hero",
+    "px_1080": [
+     1199.8,
+     421.3,
+     1408.5,
+     571.2
+    ],
+    "distance_m": 35.4,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "hero_60m",
+    "robot": "hero",
+    "px_1080": [
+     725.4,
+     278.8,
+     841.0,
+     355.6
+    ],
+    "distance_m": 58.5,
+    "fully_inside_frame": true
+   }
+  ],
+  "dist_R": [
+   {
+    "tag": "hero_20m",
+    "robot": "hero",
+    "px_1080": [
+     571.0,
+     676.8,
+     927.3,
+     1005.7
+    ],
+    "distance_m": 20.3,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "hero_36m",
+    "robot": "hero",
+    "px_1080": [
+     1199.8,
+     421.3,
+     1408.5,
+     571.2
+    ],
+    "distance_m": 35.4,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "hero_60m",
+    "robot": "hero",
+    "px_1080": [
+     725.4,
+     278.8,
+     841.0,
+     355.6
+    ],
+    "distance_m": 58.5,
+    "fully_inside_frame": true
+   }
+  ]
+ },
+ "sources": [
+  "E_Toon/R4B_Cube/R4B_Cube.glb 7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb hero1 (PR #1270)",
+  "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb 0a0f4f713750decf0707e5effd002d59c99f361e3d91ea9e7bc04bedfd736584 hero2 (PR #1274)",
+  "E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb 4955a9c6dca450fe70c7b60aef6a900c9c159df493fb1dc240b10a85f5229344 hero4 proposal P",
+  "E_Toon/R4W_Basic/R4W_Basic.glb 5f2158ea79fee59e3554e544158964c4a29f57ead88d755b5cb4d9d20bfb04b8 hero4 proposal P",
+  "E_Toon/R4W_Basic/R4W_Basic.glb 9ee0a5df7ff74dc898ff5745835641f51b5ba681286557f5836dc1523ea85d53 hero2 (PR #1274)",
+  "E_Toon/R4X_Battery/R4X_Battery.glb 4b804e17adb4496c3982591c1d7914d76d1dbe26253e798a030f5d32917d7262 hero2 (PR #1274)",
+  "E_Toon/R4X_Battery/R4X_Battery.glb d9dac45513f12ba642c6d39892716b8c7f852e94c5bb40e812e4910354aa9bb1 hero4 proposal P",
+  "E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb 4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56 hero1 (PR #1270)"
+ ],
+ "seconds": 121.3,
+ "blender": "5.3.0",
+ "engine": "BLENDER_EEVEE"
+}
