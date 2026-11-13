@@ -59,6 +59,21 @@ public sealed class BacklogConstructionBudgetTests
         Assert.That(model.ConstructionBudgetUsed,Is.EqualTo(8),"A wreck plan still occupies its budget.");
         Assert.That(model.DeepCopy().ConstructionBudgetLimit,Is.EqualTo(8));
     }
+    [Test] public void EighteenWheelsCanBeMountedWhenBudgetAndSpaceAllow()
+    {
+        var design=new R3VehicleDesign{Name="Many wheels"};
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        for(int x=-1;x<=1;x++)for(int z=-4;z<=4;z++)
+            if(x!=0||z!=0)design.Parts.Add(new R3PartState(new Vector3Int(x,0,z),R3PartKind.Armor));
+        var model=new R3VehicleModel(design,new R3GarageEconomy{Construction=new R3ConstructionSettings{StartingBudget=1000}});model.Award(2000);
+        foreach(int side in new[]{-1,1})for(int z=-4;z<=4;z++)
+        {
+            var cell=new Vector3Int(side*2,0,z);
+            Assert.That(model.Buy(cell,R3PartKind.Wheel),Is.True,$"{cell}: {model.PlacementError(cell,R3PartKind.Wheel)}");
+        }
+        Assert.That(model.Parts.Count(p=>p.Kind==R3PartKind.Wheel),Is.EqualTo(18));
+        Assert.That(model.ConstructionBudgetUsed,Is.LessThanOrEqualTo(model.ConstructionBudgetLimit));
+    }
     [Test] public void BudgetConfigurationAndCheckpointRemainCompatible()
     {
         var settings=new R3ConstructionSettings{StartingBudget=150,BlockCost=3,HalfBlockCost=1,WeaponCost=9,WeaponTierTwoCost=36,TierTwoMultiplier=4};

@@ -498,7 +498,6 @@ namespace RoboRougelike.R3
                     Math.Abs((long)p.Cell.x-cell.x)<=1&&Math.Abs((long)p.Cell.y-cell.y)<=1&&Math.Abs((long)p.Cell.z-cell.z)<=1))
                     return "Zachowaj co najmniej jedno wolne pole odstępu między broniami.";
             }
-            if (!CreativeMode&&kind == R3PartKind.Wheel && Parts.Count(p => p.Kind == kind) >= 16) return "Limit 16 kół.";
             if(!CreativeMode&&IsActiveSlotPart(kind)&&ExceedsModuleTypeLimit(candidate,true))return "Maksymalnie 4 różne rodzaje modułów aktywnych.";
             if(!CreativeMode&&IsPassiveSlotPart(kind)&&ExceedsModuleTypeLimit(candidate,false))return "Maksymalnie 8 różnych rodzajów modułów pasywnych.";
             if(kind==R3PartKind.CrawlerTrack&&cell.x==0)return "Gąsienicę zamontuj po lewej lub prawej stronie.";
