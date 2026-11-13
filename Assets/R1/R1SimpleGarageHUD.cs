@@ -493,9 +493,6 @@ namespace RoboRougelike.R1
 
         static string GarageWheelPowerAdvice(float units)
         {
-            float limit=RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(100);
-            if(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(units)>=limit-.001f)
-                return "Limit silników osiągnięty. Zmniejsz masę albo dodaj mocniejsze koła. Koła muszą dotykać podłoża.";
             float firstMotor=(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(1)-1)*100;
             return $"Podjazd: dołóż silnik lub koła albo zmniejsz masę. T1: +{firstMotor:0}% siły, −{VehicleEnergyState.PassiveReservation:0} maks. energii. Koła muszą dotykać podłoża.";
         }
@@ -515,9 +512,8 @@ namespace RoboRougelike.R1
             var drive=run.Player.GetComponent<RoboRougelike.R6.R6VehicleDrive>();
             if(drive==null)return "Dane napędu są niedostępne.";
             float bonus=(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(drive.ActivePowerUnits)-1)*100;
-            float maxBonus=(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(100)-1)*100;
             return $"Masa: {body.mass:0} kg • Sprawne koła: {drive.Wheels}\n"+
-                $"Siła silników kół: +{bonus:0}% (maks. +{maxBonus:0}%)\n"+
+                $"Siła silników kół: +{bonus:0}%\n"+
                 GarageWheelPowerAdvice(drive.ActivePowerUnits);
         }
 

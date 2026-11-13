@@ -145,14 +145,15 @@ public sealed class EnergyCombatRefinementTests
         Assert.That(VehicleEnergyCosts.BoosterActivation,Is.EqualTo(7.5f));
         Assert.That(VehicleEnergyState.PassiveReservation,Is.EqualTo(25f));
     }
-    [Test] public void PurchasingAddsIndividualPartsToInventoryBeforeMounting()
+    [Test] public void PurchasingDriveBundlesAddsIndividualPartsToInventoryBeforeMounting()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(100);
         int before=model.Scrap,price=model.Price(R3PartKind.Wheel);
         Assert.That(model.PurchaseToInventory(R3PartKind.Wheel),Is.True);
         Assert.That(model.PurchaseToInventory(R3PartKind.Wheel),Is.True);
         var items=model.Inventory.Where(p=>p.Kind==R3PartKind.Wheel).ToArray();
-        Assert.That(items.Length,Is.EqualTo(2));Assert.That(items[0].Id,Is.Not.EqualTo(items[1].Id));
+        Assert.That(items.Length,Is.EqualTo(2*model.Economy.DriveGrantQuantity));
+        Assert.That(items.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(items.Length),"Every item in each bundle keeps its own identity");
         Assert.That(items.All(p=>p.Health==1),Is.True);Assert.That(model.Scrap,Is.EqualTo(before-2*price));
         Assert.That(model.Parts.Count(p=>p.Kind==R3PartKind.Wheel),Is.EqualTo(4));
     }

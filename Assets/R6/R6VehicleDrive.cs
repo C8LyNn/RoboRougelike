@@ -29,9 +29,10 @@ namespace RoboRougelike.R6
             // R6's planar mode never loaded them with vehicle weight.
             material.staticFriction=material.dynamicFriction=Mathf.Clamp(contactFriction,0,R6Tuning.Current.ContactFriction);
         }
-        // Motor output rises with installed working devices; the cap represents
-        // finite tire traction rather than a limit on how many blocks can be fitted.
-        public static float MotorMultiplier(float units)=>Mathf.Min(2f,1f+.2f*Mathf.Max(0,units));
+        // Every working motor contributes; physical wheel contacts still govern
+        // whether the drive can apply force. Reject invalid numeric inputs.
+        public static float MotorMultiplier(float units)=>float.IsNaN(units)||float.IsInfinity(units)?1f:
+            (float)System.Math.Min(float.MaxValue,1d+.2d*System.Math.Max(0,units));
         float BaseTractionForce=>traction*R6Tuning.Current.WheelForce;
         public float AvailableForce => BaseTractionForce*MotorMultiplier(powerUnits);
         public float ActivePowerUnits=>powerUnits;
