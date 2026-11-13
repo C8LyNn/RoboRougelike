@@ -58,7 +58,7 @@ namespace RoboRougelike.R1
             {
                 var basket=rewardBaskets[i];var card=PortraitRewardBasketCard(i);var info=PortraitRewardBasketInfo(i);Panel(card);
                 GUI.contentColor=BasketColor(basket);
-                GUI.Label(new Rect(info.x,info.y,info.width,24),$"{R3EnemyProfiles.Name(basket.Archetype)} • {basket.Items.Count}/{basket.AvailableParts} części",small);
+                GUI.Label(new Rect(info.x,info.y,info.width,24),RewardBasketHeading(basket),small);
                 GUI.contentColor=Color.white;
                 GUI.Label(new Rect(info.x,card.y+31,info.width,58),RewardBasketContents(basket.Items)+"\nOdbiór: 100% HP",small);
                 bool chosen=selectedBasket==i;
@@ -77,7 +77,7 @@ namespace RoboRougelike.R1
                 $"Niewybrane części → +{run.VehicleModel.PreviewAward(ledger.PreviewScrap(run.VehicleModel,lootSelection))} Z. Bonus jest nieaktywny do montażu.\n"+
                 (!room?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. Otwórz magazyn, aby je zwolnić.":rewardClaimFeedback??""),small);
             GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count);
-            if(GUI.Button(PortraitRewardConfirm(),RewardConfirmCaption(rewardBaskets.Count),button))PortraitRewardConfirm(run);
+            if(GUI.Button(PortraitRewardConfirm(),RewardActionCaption(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count),button))PortraitRewardConfirm(run);
             GUI.enabled=true;
         }
 
