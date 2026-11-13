@@ -335,7 +335,7 @@ namespace RoboRougelike.R1
                     GUI.Label(new Rect(24, 676, 900, 26),!combatDetailsOpen?
                         "WASD — ruch • Mysz — celowanie • LPM/PPM/Q/E — broń • 1–4 — moduły • I — szczegóły":
                         run.VehicleModel.SelectedDrive>=R3DriveKind.Omni?
-                        "W/S — jazda • A/D — ruch boczny • Z/C — obrót • Mysz — celowanie • LPM/PPM/Q/E — broń":
+                        "W/S — jazda • A/D — ruch boczny • ,/. — obrót • Mysz — celowanie • LPM/PPM/Q/E — broń":
                         "W/S — jazda • A/D — skręt • Mysz — celowanie • LPM/PPM/Q/E — broń • Kółko — przybliżenie",small);
                     DrawFeedback();
                     return;

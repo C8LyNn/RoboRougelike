@@ -16,7 +16,8 @@ namespace RoboRougelike.MOVSeries
             var run=R1RunController.Instance;
             if(run==null||run.Player==null||run.Player.gameObject!=gameObject||!run.CanUseMovement)return;
             var keys=Keyboard.current;if(keys==null)return;
-            if(owner!=null)owner.IndependentYaw=(keys.cKey.isPressed?1:0)-(keys.zKey.isPressed?1:0);
+            // Z/X/C/V are reserved for the shared deployable slots.
+            if(owner!=null)owner.IndependentYaw=(keys.periodKey.isPressed?1:0)-(keys.commaKey.isPressed?1:0);
             var slots=run.VehicleModel.GetActiveSlots();
             var pressed=new[]{keys.digit1Key.wasPressedThisFrame,keys.digit2Key.wasPressedThisFrame,
                 keys.digit3Key.wasPressedThisFrame,keys.digit4Key.wasPressedThisFrame};

@@ -61,6 +61,27 @@ public class MOVSeriesGarageTests
     }
     void Corners(R3PartKind kind)
     {foreach(int x in new[]{-1,1})foreach(int z in new[]{-3,3})Buy(new Vector3Int(x,0,z),kind);}
+    void ReplaceAt(Vector3Int cell,R3PartKind kind)
+    {
+        if(run.VehicleModel.At(cell)!=null)Assert.That(run.GarageRemove(cell),Is.True,"Cannot prepare test cell "+cell);
+        Buy(cell,kind);
+    }
+    [UnityTest] public IEnumerator IndependentYawUsesCommaPeriodAndLeavesDeployableKeysFree()
+    {
+        var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>run.VehicleModel.PlacementError(c,R3PartKind.OmniDrive)==null);
+        Buy(cell,R3PartKind.OmniDrive);VirtualInput();
+        Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning&&run.CanUseMovement);
+        var adapter=run.Player.GetComponent<MOVSeriesVehicleAdapter>();Assert.That(adapter,Is.Not.Null);
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Period));yield return null;
+        Assert.That(adapter.IndependentYaw,Is.EqualTo(1));
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Comma));yield return null;
+        Assert.That(adapter.IndependentYaw,Is.EqualTo(-1));
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Z));yield return null;
+        Assert.That(adapter.IndependentYaw,Is.Zero);
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.C));yield return null;
+        Assert.That(adapter.IndependentYaw,Is.Zero);
+    }
     void FullConstruction(bool keepGunClear=false)
     {
         Corners(R3PartKind.HoverEngine);
@@ -218,22 +239,25 @@ public class MOVSeriesGarageTests
     }
     [UnityTest] public IEnumerator NoWheelOmniUsesWasdStrafeIndependentYawAndKeepsWeaponOnline()
     {
-        Corners(R3PartKind.OmniDrive);Buy(new Vector3Int(-1,1,0),R3PartKind.Gyroscope);
+        foreach(int x in new[]{-1,1})foreach(int z in new[]{-3,3})ReplaceAt(new Vector3Int(x,0,z),R3PartKind.OmniDrive);
+        ReplaceAt(new Vector3Int(-1,1,0),R3PartKind.Gyroscope);
         Assert.That(Invoke("ConfigureDrive",R3DriveKind.Omni),Is.True);
         foreach(var wheel in run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray())Assert.That(run.GarageRemove(wheel.Cell),Is.True);
         VirtualInput();Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning);yield return MOVSeriesDeviceTests.Seconds(.5f);
         Assert.That(run.Player.Modules.ActiveWheelCount,Is.Zero);Assert.That(run.Player.DefeatReason,Is.Null);
-        float x=run.Player.transform.position.x;InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.A));yield return MOVSeriesDeviceTests.Seconds(.6f);
-        Assert.That(run.Player.transform.position.x,Is.LessThan(x-.2f));
+        float startingX=run.Player.transform.position.x;InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.A));yield return MOVSeriesDeviceTests.Seconds(.6f);
+        Assert.That(run.Player.transform.position.x,Is.LessThan(startingX-.2f));
         Assert.That(Mathf.Abs(Mathf.DeltaAngle(0,run.Player.transform.eulerAngles.y)),Is.LessThan(5));
-        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.C));yield return MOVSeriesDeviceTests.Seconds(.5f);
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Period));yield return MOVSeriesDeviceTests.Seconds(.5f);
         Assert.That(run.Player.GetComponent<Rigidbody>().angularVelocity.y,Is.GreaterThan(.2f));
         InputSystem.QueueStateEvent(keyboard,new KeyboardState());Assert.That(run.Player.Modules.WeaponOnline,Is.True);Assert.That(run.RangeDisabled,Is.False);
     }
     [UnityTest] public IEnumerator HoverKeyboardMovesTurnsAndSuppressesRequestedSuspension()
     {
-        Corners(R3PartKind.HoverEngine);Buy(new Vector3Int(-1,1,0),R3PartKind.Gyroscope);
-        foreach(int x in new[]{-1,1})foreach(int z in new[]{-2,2})Buy(new Vector3Int(x,1,z),R3PartKind.Suspension);
+        run.VehicleModel.Award(2000); // Movement setup is independent of shop pricing.
+        foreach(int x in new[]{-1,1})foreach(int z in new[]{-3,3})ReplaceAt(new Vector3Int(x,0,z),R3PartKind.HoverEngine);
+        ReplaceAt(new Vector3Int(-1,1,0),R3PartKind.Gyroscope);
+        foreach(int x in new[]{-1,1})foreach(int z in new[]{-2,2})ReplaceAt(new Vector3Int(x,1,z),R3PartKind.Suspension);
         Assert.That(run.ConfigureSuspension(true,ActiveSuspensionSupportMode.FullSupport,.3f),Is.True);
         Assert.That(Invoke("ConfigureDrive",R3DriveKind.Hover),Is.True);VirtualInput();
         Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning);yield return MOVSeriesDeviceTests.Seconds(1.5f);
@@ -241,7 +265,7 @@ public class MOVSeriesGarageTests
         Assert.That(run.Player.GetComponent<Rigidbody>().position.y,Is.InRange(.85f,1.25f));
         Assert.That(run.Player.GetComponent<ActiveSuspensionController>().LastTotalLiftNewtons,Is.Zero);
         float x0=run.Player.transform.position.x;InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.A));yield return MOVSeriesDeviceTests.Seconds(.6f);
-        Assert.That(run.Player.transform.position.x,Is.LessThan(x0-.2f));InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.C));yield return MOVSeriesDeviceTests.Seconds(.5f);
+        Assert.That(run.Player.transform.position.x,Is.LessThan(x0-.2f));InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Period));yield return MOVSeriesDeviceTests.Seconds(.5f);
         Assert.That(run.Player.GetComponent<Rigidbody>().angularVelocity.y,Is.GreaterThan(.2f));InputSystem.QueueStateEvent(keyboard,new KeyboardState());
         run.TogglePause();Assert.That(Invoke("ConfigureDrive",R3DriveKind.Wheels),Is.True);run.TogglePause();yield return MOVSeriesDeviceTests.FixedStep();
         Assert.That(run.Player.GetComponent<ActiveSuspensionController>().SuspensionEnabled,Is.True);
