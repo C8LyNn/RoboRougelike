@@ -126,6 +126,7 @@ namespace RoboRougelike.R3
             set { message=value;actionMessageAt=float.NegativeInfinity; }
         }
         void ActionMessage(string value){Message=value;actionMessageAt=Time.unscaledTime;}
+        public void ShowActionMessage(string value)=>ActionMessage(value);
         public bool HasRecentActionMessage=>!string.IsNullOrEmpty(message)&&Time.unscaledTime-actionMessageAt<2.5f;
         public R41GarageTool Tool { get; private set; }
         public bool HasTarget { get; private set; }

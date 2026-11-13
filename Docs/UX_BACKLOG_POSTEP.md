@@ -20,6 +20,7 @@ Bazowy kod tej listy: `675fe0b80da184e4f8db8bf2c5f3e446ee8aeb63` (PR #1289).
 - [x] Celowana kontrola istniejącej energii i naprawy: regeneracja w ruchu i na postoju, pole ładowania, pasywna rezerwa, zapis energii oraz aktywny moduł naprawczy — 10/10 EditMode, `energy-repair-current.xml`.
 - [x] Menu aktywności: wyjaśnienie blokady aren przy czterech przeciwnikach i niedostępności dodatkowych aktywności w finale — 9/9 EditMode (w tym test sceny sterowany API), `activity-hint-final.xml`. Pierwszy test po zmianie sprawdzał wielkość litery i zakończył się FAIL: `activity-hint-green.xml`.
 - [x] Garaż: wynik obrotu zamontowanej części i odmowa niedozwolonego ustawienia koła pozostają widoczne także podczas montażu — 6/6 celowanych testów EditMode, `rotation-feedback-final.xml`.
+- [x] Szybka naprawa z magazynu: koszt i wynik pojedynczej lub grupowej naprawy nie są natychmiast zasłaniane wskazówką widma — 5/5 testów sceny sterowanych API, `quick-repair-feedback-final.xml`.
 
 Wyniki dotyczą odpowiednich SHA poszczególnych zmian, a nie pełnej regresji końcowej.
 Oryginalne XML i logi znajdują się lokalnie w katalogu `RoboRougelike-LekkaStylizacja-QA`.

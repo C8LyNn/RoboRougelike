@@ -236,7 +236,7 @@ namespace RoboRougelike.R1
             if(item==null||item.Health>=1)return false;
             int before=run.VehicleModel.Scrap;
             bool repaired=run.GarageRepairInventory(item.Id);
-            run.Garage.Message=repaired?$"Naprawiono wybraną część • koszt {before-run.VehicleModel.Scrap} Z.":"Nie udało się naprawić wybranej części.";
+            run.Garage.ShowActionMessage(repaired?$"Naprawiono wybraną część • koszt {before-run.VehicleModel.Scrap} Z.":"Nie udało się naprawić wybranej części.");
             return repaired;
         }
 
