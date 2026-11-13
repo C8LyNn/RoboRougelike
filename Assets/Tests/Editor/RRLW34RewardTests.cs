@@ -29,6 +29,34 @@ public sealed class RRLW34RewardTests
         return l;
     }
     static string Snapshot(R3VehicleModel m)=>m.Scrap+"|"+string.Join(";",m.Parts.Concat(m.Inventory).Select(p=>JsonUtility.ToJson(p)));
+    [Test] public void SalvageOptimizerStacksOnlyWhileMountedAndAliveAndPaysPreviewedAmount()
+    {
+        Assert.That(Enum.TryParse("SalvageOptimizer",out R3PartKind kind),Is.True);
+        var m=Model();var l=Ledger();
+        var a=new R3PartState(new Vector3Int(20,0,0),kind){Health=1};
+        var b=new R3PartState(new Vector3Int(21,0,0),kind){Health=.01f};
+        m.Parts.Add(a);m.Parts.Add(b);
+        Assert.That(R3VehicleModel.IsPassiveEnergyPart(kind),Is.True);
+        Assert.That(R3VehicleModel.IsPassiveSlotPart(kind),Is.True);
+        Assert.That(l.PreviewScrap(m,Array.Empty<string>()),Is.EqualTo(13));
+        a.Health=0;Assert.That(l.PreviewScrap(m,Array.Empty<string>()),Is.EqualTo(11));
+        b.Health=0;Assert.That(l.PreviewScrap(m,Array.Empty<string>()),Is.EqualTo(9));
+        a.Health=1;Assert.That(l.PreviewScrap(m,Array.Empty<string>()),Is.EqualTo(11));
+        Assert.That(l.Claim(m,Array.Empty<string>()),Is.True);
+        Assert.That(l.DismantledScrap,Is.EqualTo(11));Assert.That(m.Scrap,Is.EqualTo(11));
+    }
+    [Test] public void SalvageOptimizerUsesConfiguredBonusAndTierWithoutChangingDismantlePrice()
+    {
+        var m=Model();var l=Ledger();m.Economy.SalvageOptimizerBonus=.5f;
+        var part=new R3PartState(new Vector3Int(20,0,0),R3PartKind.SalvageOptimizer){Tier=2};
+        m.Parts.Add(part);
+        var reward=l.Items.First().ToPart();int basePrice=m.DismantleValue(reward);
+        Assert.That(l.PreviewScrap(m,Array.Empty<string>()),Is.EqualTo(18));
+        Assert.That(m.DismantleValue(reward),Is.EqualTo(basePrice));
+        Assert.That(m.DeepCopy().Economy.SalvageOptimizerBonus,Is.EqualTo(.5f));
+        m.Economy.SalvageOptimizerBonus=float.NaN;
+        Assert.That(l.PreviewScrap(m,Array.Empty<string>()),Is.EqualTo(9));
+    }
     [TestCase(0,9)][TestCase(99995,5)][TestCase(100000,0)]
     public void ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited(int initial,int expected)
     {

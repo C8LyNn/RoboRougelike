@@ -47,8 +47,8 @@ namespace RoboRougelike.R1
         GUIStyle garageTabStyle;
         static readonly R3PartKind[] shopKinds={R3PartKind.Armor,R3PartKind.Wheel,R3PartKind.Gun,R3PartKind.Suspension,
             R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Blink,R3PartKind.Gyroscope,
-            R3PartKind.OmniDrive,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack,R3PartKind.DirectionalShield,R3PartKind.PointDefense,R3PartKind.StructuralScanner,R3PartKind.ScannerPulse,R3PartKind.IndependentSteering,R3PartKind.Battery,R3PartKind.RepairPulse,R3PartKind.DrivePower,R3PartKind.EnergyRegenerator};
-        static readonly string[] shopNames={"Pancerz","Koło","Broń","Zawieszenie","Booster","Skok","Blink","Żyroskop","Omni","Zaczep","Hover","Gąsienica","Tarcza","Obrona pkt.","Skan struktury","Impuls skanera","Skręt osi","Bateria","Impuls naprawczy","Silnik kół","Regenerator energii"};
+            R3PartKind.OmniDrive,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack,R3PartKind.DirectionalShield,R3PartKind.PointDefense,R3PartKind.StructuralScanner,R3PartKind.ScannerPulse,R3PartKind.IndependentSteering,R3PartKind.Battery,R3PartKind.RepairPulse,R3PartKind.DrivePower,R3PartKind.EnergyRegenerator,R3PartKind.SalvageOptimizer};
+        static readonly string[] shopNames={"Pancerz","Koło","Broń","Zawieszenie","Booster","Skok","Blink","Żyroskop","Omni","Zaczep","Hover","Gąsienica","Tarcza","Obrona pkt.","Skan struktury","Impuls skanera","Skręt osi","Bateria","Impuls naprawczy","Silnik kół","Regenerator energii","Optymalizator odzysku"};
         static readonly string[] driveNames={"Koła","Gąsienice","Omni","Hover"};
         readonly struct CatalogEntry
         {
@@ -260,6 +260,8 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(30,355,280,100),$"Silnik kół wspomaga\nprzyspieszanie i skręcanie.\nRezerwa: {VehicleEnergyState.PassiveReservation:0} energii na moduł.\nPotrzebuje kół na podłożu.",small);
             else if(selected==R3PartKind.EnergyRegenerator)
                 GUI.Label(new Rect(30,355,280,100),$"Regenerator T1/T2/T3: +{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(1):0}/+{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(2):0}/+{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(3):0} energii/s.\nNa postoju regeneracja ×4.\nRezerwa: {VehicleEnergyState.PassiveReservation:0} energii na moduł.",small);
+            else if(selected==R3PartKind.SalvageOptimizer)
+                GUI.Label(new Rect(30,355,280,100),$"Optymalizator odzysku: +{m.Economy.SalvageOptimizerBonus*100:0}% złomu za niewybrane części za T1.\nBonusy sumują się.\nRezerwa: {VehicleEnergyState.PassiveReservation:0} energii na moduł.",small);
             else if(selected==R3PartKind.PointDefense)
                 GUI.Label(new Rect(30,355,280,100),"Obrona 1×1×1 • automat 24 m\n40 nabojów • T przeładuj (3 s)\nChroni przed pociskami i rakietami.\nWymaga wolnej linii strzału.",small);
             else if(selected==R3PartKind.DirectionalShield)

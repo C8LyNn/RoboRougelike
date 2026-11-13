@@ -98,7 +98,12 @@ namespace RoboRougelike.R4
         {
             if(model==null||items.Any(p=>p==null||!R3VehicleModel.ValidEconomicPart(p.ToPart())))return 0;
             var keep=new HashSet<string>(selected??Array.Empty<string>());
-            return items.Where(p=>!keep.Contains(p.Id)).Sum(p=>p.Recoverable?model.DismantleValue(p.ToPart()):1);
+            long baseScrap=items.Where(p=>!keep.Contains(p.Id)).Sum(p=>(long)(p.Recoverable?model.DismantleValue(p.ToPart()):1));
+            float bonus=model.Economy.SalvageOptimizerBonus;
+            if(float.IsNaN(bonus)||float.IsInfinity(bonus))bonus=0;
+            long units=model.Parts.Where(p=>p.Kind==R3PartKind.SalvageOptimizer&&p.Health>0)
+                .Sum(p=>(long)R3VehicleModel.TierEffectUnits(p.Tier));
+            return (int)Math.Min(int.MaxValue,Math.Floor(baseScrap*(1d+Math.Max(0,bonus)*units)));
         }
         public bool Claim(R3VehicleModel model,IEnumerable<string> selected) => ClaimPrepared(model,selected,null);
         public bool Claim(R3VehicleModel model,IEnumerable<string> selected,R3PartState bonus)

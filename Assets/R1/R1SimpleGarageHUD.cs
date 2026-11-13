@@ -588,6 +588,7 @@ namespace RoboRougelike.R1
                 $"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: slot aktywny 1–4, {R3RepairPulse.EnergyCost*R3VehicleModel.TierActivationCost(part.Tier):0} energii, {R3RepairPulse.Duration:0} s. Kliknij, aby zamontować.":
                 kind==R3PartKind.DrivePower?$"Silnik T{R3VehicleModel.NormalizedTier(part.Tier)} wspomaga koła; rezerwuje {VehicleEnergyState.PassiveReservation+R3VehicleModel.TierPassiveExtra(part.Tier):0} energii.":
                 kind==R3PartKind.EnergyRegenerator?$"Regenerator T{R3VehicleModel.NormalizedTier(part.Tier)}: +{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(part.Tier):0} energii/s, rezerwa {VehicleEnergyState.PassiveReservation+R3VehicleModel.TierPassiveExtra(part.Tier):0}.":
+                kind==R3PartKind.SalvageOptimizer?$"Odzysk T{R3VehicleModel.NormalizedTier(part.Tier)}: +{run.VehicleModel.Economy.SalvageOptimizerBonus*R3VehicleModel.TierEffectUnits(part.Tier)*100:0}% złomu za niewybrane części; rezerwa {VehicleEnergyState.PassiveReservation:0} energii.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kliknij, aby zamontować.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kliknij, aby zamontować.":
                 kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
@@ -601,6 +602,7 @@ namespace RoboRougelike.R1
                     $"Impuls naprawczy: slot aktywny 1–4, {R3RepairPulse.EnergyCost:0} energii, {R3RepairPulse.Duration:0} s. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.DrivePower?$"Silnik wspomaga koła; zajmuje {VehicleEnergyState.PassiveReservation:0} maks. energii. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.EnergyRegenerator?$"Regenerator: +{VehicleEnergyState.RegenerationPerModule:0} energii/s, −{VehicleEnergyState.PassiveReservation:0} maks. energii. Kup część lub otwórz szczegóły.":
+                    kind==R3PartKind.SalvageOptimizer?$"Odzysk: +{run.VehicleModel.Economy.SalvageOptimizerBonus*100:0}% złomu za niewybrane części; rezerwa {VehicleEnergyState.PassiveReservation:0} energii.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kup część.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kup część.":
                     kind==R3PartKind.Armor&&CatalogArmorShape(bonus)==R3ArmorShape.Wedge?"Klin 1×1×1: mocowanie od spodu i z tyłu. Kup część.":

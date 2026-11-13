@@ -31,6 +31,15 @@ public sealed class BacklogDeviceTierTests
         var model=Model();float baseline=model.Energy.Maximum;var part=FuseThree(model,R3PartKind.Battery);Mount(model,part);
         Assert.That(model.Energy.Maximum,Is.EqualTo(baseline+200));
     }
+    [Test] public void TierTwoSalvageOptimizerCanBeMountedAndRestored()
+    {
+        var model=Model();float baseline=model.Energy.Maximum;var part=FuseThree(model,R3PartKind.SalvageOptimizer);Mount(model,part);
+        Assert.That(model.Energy.Maximum,Is.EqualTo(baseline-25));
+        var checkpoint=model.MakeCheckpoint(0);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==part.Id).Tier,Is.EqualTo(2));
+        Assert.That(restored.Energy.Maximum,Is.EqualTo(baseline-25));
+    }
     [Test] public void PointDefenseCanBeFusedAndRestoredAsTierTwo()
     {
         var model=Model();var part=FuseThree(model,R3PartKind.PointDefense);Mount(model,part);
@@ -79,6 +88,22 @@ public sealed class BacklogDeviceTierGameplayTests
         var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
         var cell=cells.First(c=>run.VehicleModel.OwnedPlacementError(part.Id,c,default)==null);
         Assert.That(run.GarageMount(part.Id,cell),Is.True);return part;
+    }
+    [UnityTest] public IEnumerator SalvageOptimizerConsumesEnergyAndCaptureDropsDestroyedBonus()
+    {
+        var bank=run.Player.GetComponent<VehicleEnergyBank>();float before=bank.Maximum;
+        var part=FuseAndMount(R3PartKind.SalvageOptimizer);
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();bank=run.Player.GetComponent<VehicleEnergyBank>();
+        bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(before-25));
+        var mounted=assembly.Parts.Single(p=>p.Id==part.Id);
+        var ledger=new RoboRougelike.R4.R4SalvageLedger();
+        Assert.That(ledger.Record("foe",new[]{new RoboRougelike.R4.R4SalvageItem("drop","foe/drop",R3PartKind.Wheel,0,1)}),Is.True);
+        assembly.Capture();int boosted=ledger.PreviewScrap(run.VehicleModel,System.Array.Empty<string>());
+        mounted.Damageable.ApplyDamageResolvedTyped(mounted.Damageable.CurrentHp/.9f+1f,mounted.transform.position,Vector3.up,
+            R3DamagePropagation.DamageKind.Piercing);assembly.Capture();
+        Assert.That(run.VehicleModel.Parts.Single(p=>p.Id==part.Id).Health,Is.Zero);
+        Assert.That(ledger.PreviewScrap(run.VehicleModel,System.Array.Empty<string>()),Is.LessThan(boosted));
+        yield return null;
     }
     [UnityTest] public IEnumerator UpgradedMotorUsesTwoPowerUnitsAndTwentyFiveEnergyReservation()
     {
