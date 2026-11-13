@@ -31,6 +31,14 @@ public sealed class BacklogDeviceTierTests
         var model=Model();float baseline=model.Energy.Maximum;var part=FuseThree(model,R3PartKind.Battery);Mount(model,part);
         Assert.That(model.Energy.Maximum,Is.EqualTo(baseline+200));
     }
+    [Test] public void PointDefenseCanBeFusedAndRestoredAsTierTwo()
+    {
+        var model=Model();var part=FuseThree(model,R3PartKind.PointDefense);Mount(model,part);
+        Assert.That(part.Tier,Is.EqualTo(2));
+        var checkpoint=model.MakeCheckpoint(0);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==part.Id).Tier,Is.EqualTo(2));
+    }
     [Test] public void TierTwoRegeneratorImprovesRecoveryAndReservesTwentyFive()
     {
         var model=Model();float baseline=model.Energy.Maximum;var part=FuseThree(model,R3PartKind.EnergyRegenerator);Mount(model,part);

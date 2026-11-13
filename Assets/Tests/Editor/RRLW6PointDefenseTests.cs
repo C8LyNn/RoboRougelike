@@ -21,17 +21,23 @@ public class RRLW6PointDefenseTests
         while(run.Transitioning)yield return null;run.Encounter.SetCombatActive(false);
     }
     [UnityTest] public IEnumerator MountedPointDefenseInterceptsActualRocketUsingItsOriginalHp()
+    {yield return InterceptActualRocket(1);}
+    [UnityTest] public IEnumerator TierTwoPointDefenseInterceptsActualRocket()
+    {yield return InterceptActualRocket(2);}
+    IEnumerator InterceptActualRocket(int tier)
     {
         Assert.That(Enum.TryParse("PointDefense",out R3PartKind kind),Is.True,"DEF002 missing physical mount");
         var run=R1RunController.Instance;var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.Award(1000);
         var physicalBase=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);Physics.SyncTransforms();
         Vector3Int? mount=null;
-        for(int z=-6;z<=-2&&!mount.HasValue;z++)for(int x=-5;x<=4&&!mount.HasValue;x++)for(int y=0;y<4&&!mount.HasValue;y++)
+        // Prefer a supported upper mounting point: the rebuilt starter is smaller,
+        // and a lower edge can scrape the raised test platform before interception.
+        for(int y=3;y>=0&&!mount.HasValue;y--)for(int z=-6;z<=-2&&!mount.HasValue;z++)for(int x=-5;x<=4&&!mount.HasValue;x++)
         {var c=new Vector3Int(x,y,z);if(model.PlacementError(c,kind)==null)mount=c;}
-        Assert.That(mount.HasValue,Is.True);Assert.That(model.Buy(mount.Value,kind),Is.True);
+        Assert.That(mount.HasValue,Is.True);Assert.That(model.Buy(mount.Value,kind),Is.True);model.At(mount.Value).Tier=tier;
         physicalBase.gameObject.SetActive(false);UnityEngine.Object.Destroy(physicalBase.gameObject);
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
-        // Keep this interception fixture physically supported, rather than assuming the old frozen-Y body.
+        // Keep the interception fixture physically supported on a test stand.
         var platform=GameObject.CreatePrimitive(PrimitiveType.Cube);platform.transform.position=new Vector3(100,2.85f,100);platform.transform.localScale=new Vector3(12,1,12);
         Physics.SyncTransforms();yield return MOV009IntegrationTests.Seconds(.7f);
         var assembly=vehicle.GetComponent<R3VehicleAssembly>();var part=assembly.Parts.Single(p=>p.Kind==kind);
@@ -45,6 +51,15 @@ public class RRLW6PointDefenseTests
         bank.Module.Bind(enemy.GetComponent<Rigidbody>(),enemy.transform,muzzle);
         Assert.That(bank.Fire(),Is.True);
         var rocket=UnityEngine.Object.FindObjectsByType<RoboRougelike.Mechanics.Rockets.RocketProjectile>(FindObjectsSortMode.None).Single(p=>p.IsInitialized);
+        PointDefenseInterceptor interceptor=null;float untilShot=Time.time+1;
+        while(Time.time<untilShot&&interceptor==null)
+        {
+            interceptor=UnityEngine.Object.FindObjectsByType<PointDefenseInterceptor>(FindObjectsSortMode.None).FirstOrDefault(p=>p.IsInitialized);
+            if(interceptor==null)yield return null;
+        }
+        Assert.That(interceptor,Is.Not.Null,"A real interceptor must be launched.");
+        var damage=typeof(PointDefenseInterceptor).GetField("damage",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That((float)damage.GetValue(interceptor),Is.EqualTo(6*R3VehicleModel.TierEffectUnits(tier)).Within(.001));
         float hp=part.Damageable.CurrentHp;Physics.SyncTransforms();
         float end=Time.time+1;while(Time.time<end&&rocket!=null&&!rocket.IsResolved)yield return null;
         Assert.That(rocket==null||rocket.IsResolved,Is.True,"Real interceptors must resolve the source rocket HP");
@@ -52,8 +67,13 @@ public class RRLW6PointDefenseTests
         Assert.That(part.Damageable.CurrentHp,Is.EqualTo(hp));
         Assert.That(controller.Ammunition,Is.LessThan(40).And.GreaterThanOrEqualTo(35));
         var state=model.Parts.Single(p=>p.Id==part.Id);assembly.Capture();Assert.That(state.Ammo,Is.EqualTo(controller.Ammunition));
-        part.Damageable.ApplyDamage(10000,part.transform.position,Vector3.up);
-        Assert.That(controller.IsOperational,Is.False);assembly.Capture();Assert.That(model.Repair(part.Cell),Is.True);
+        // A huge overkill now propagates through connection graph and destroys
+        // the support, making repair correctly impossible. Use a lethal piercing
+        // hit with a small margin so the attached support stays repairable.
+        part.Damageable.ApplyDamageResolvedTyped(part.Damageable.CurrentHp/.9f+1f,part.transform.position,Vector3.up,
+            R3DamagePropagation.DamageKind.Piercing);
+        Assert.That(controller.IsOperational,Is.False,"Destroyed defense must immediately stop.");
+        assembly.Capture();Assert.That(model.Repair(part.Cell),Is.True,$"Repair failed at {part.Cell}; scrap={model.Scrap}; health={state.Health}");
         var rebuilt=R3VehicleAssembly.Build(model.DeepCopy(),new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(150,4,100),Quaternion.identity);
         Assert.That(rebuilt.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==part.Id).GetComponent<PointDefenseController>().Ammunition,Is.EqualTo(state.Ammo));
     }
