@@ -22,6 +22,22 @@ public sealed class UI943PortraitCatalogActionsTests
     static void Field(R1RunHUD hud,string name,object value)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).SetValue(hud,value);
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
+    [UnityTest] public IEnumerator GarageCatalogShowsAndBuysFiveBlockBundle()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        var hud=run.GetComponent<R1RunHUD>();int price=run.VehicleModel.Price(R3PartKind.Armor),before=run.VehicleModel.Scrap;
+        var caption=(string)Invoke(hud,"CatalogPurchaseCaption",run.VehicleModel,R3PartKind.Armor,true,price);
+        Assert.That(caption,Does.Contain("×5"));
+        Invoke(hud,"PortraitCatalogPurchase",run,R3PartKind.Armor,R4WeaponKind.Basic);
+        Assert.That(run.VehicleModel.Inventory.Count(p=>p.Kind==R3PartKind.Armor),Is.EqualTo(5));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-price));
+        Assert.That(run.VehicleModel.Inventory.Select(p=>p.Id).Contains(run.Garage.SelectedInventoryId),Is.True);
+        yield return new ExitPlayMode();
+    }
     // Keep candidate search outside a coroutine: closures allocated before
     // EnterPlayMode can be lost during the editor domain reload.
     static Vector3Int AvailableOwnedMountCell(R3VehicleModel model,R3PartState item)

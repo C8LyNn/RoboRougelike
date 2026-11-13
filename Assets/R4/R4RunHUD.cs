@@ -96,6 +96,18 @@ namespace RoboRougelike.R1
                     if(part.Kind==R3PartKind.BonusModule)name+=" • "+BonusInstanceText(part);
                     return group.Count()>1?$"{name} ×{group.Count()}":name;
                 }));
+        private static string RewardBasketContentsForModel(IEnumerable<R4SalvageItem> items,R3VehicleModel model)=>string.Join(", ",
+            items.Select(item=>item.ToPart()).GroupBy(part=>part.Kind==R3PartKind.BonusModule?
+                "bonus:"+CatalogBonusKey(part)+":"+R3VehicleModel.NormalizedTier(part.Tier):"part:"+R4WeaponDefinition.PartName(part))
+                .Select(group=>{
+                    var part=group.First();string name=R4WeaponDefinition.PartName(part);
+                    if(part.Kind==R3PartKind.BonusModule)name+=" • "+BonusInstanceText(part);
+                    long quantity=group.Sum(p=>(long)model.GrantQuantity(p.Kind,p.ArmorShape));
+                    return quantity>1?$"{name} ×{quantity}":name;
+                }));
+        private int SelectedRewardPartCount(R1RunController run)=>run?.Salvage==null||run.VehicleModel==null?0:
+            (int)System.Math.Min(int.MaxValue,run.Salvage.Items.Where(p=>lootSelection.Contains(p.Id))
+                .Sum(p=>(long)run.VehicleModel.GrantQuantity(p.Kind,p.ToPart().ArmorShape)));
         private static int RewardShortcutIndex(bool first,bool second,bool third)=>first?0:second?1:third?2:-1;
         private static string RewardConfirmCaption(int basketCount)=>basketCount==0?
             "Odbierz bonus [Enter]":"Zatwierdź oba wybory [Enter]";
@@ -118,7 +130,7 @@ namespace RoboRougelike.R1
             $"Wybierz moduł i jeden zestaw z wraków. +{scrap} Z za walkę.";
         private static bool RewardSelectionReady(int bonus,int bonusCount,int basket,int basketCount,int inventoryCount,int lootCount)
             =>bonus>=0&&bonus<bonusCount&&(basketCount==0||(basket>=0&&basket<basketCount))&&
-              inventoryCount+lootCount+1<=R3VehicleModel.InventoryCapacity;
+              (long)inventoryCount+lootCount+1<=R3VehicleModel.InventoryCapacity;
 #if ENABLE_INPUT_SYSTEM
         public void ReadRewardInput(Keyboard keyboard)
         {
@@ -133,7 +145,7 @@ namespace RoboRougelike.R1
             }
             int basket=RewardShortcutIndex(keyboard.qKey.wasPressedThisFrame,keyboard.wKey.wasPressedThisFrame,keyboard.eKey.wasPressedThisFrame);
             if(basket>=0&&basket<rewardBaskets.Count)ChooseRewardBasket(basket);
-            if(keyboard.enterKey.wasPressedThisFrame&&RewardSelectionReady(selectedBonus,run.Progress.Offers.Count,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count))ConfirmSelectedRewards(run);
+            if(keyboard.enterKey.wasPressedThisFrame&&RewardSelectionReady(selectedBonus,run.Progress.Offers.Count,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,SelectedRewardPartCount(run)))ConfirmSelectedRewards(run);
         }
 #endif
         private void DrawSalvage(R1RunController run)
@@ -171,7 +183,7 @@ namespace RoboRougelike.R1
                 GUI.contentColor=BasketColor(basket);
                 GUI.Label(new Rect(x+10,y+6,520,28),RewardBasketHeading(basket),body);
                 GUI.contentColor=Color.white;
-                GUI.Label(new Rect(x+10,y+39,535,54),RewardBasketContents(basket.Items)+"\nWszystkie części sprawne (100% HP)",small);
+                GUI.Label(new Rect(x+10,y+39,535,54),RewardBasketContentsForModel(basket.Items,run.VehicleModel)+"\nWszystkie części sprawne (100% HP)",small);
                 bool chosen=selectedBasket==i;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
                 string key=i<3?"QWE"[i].ToString():null;
@@ -182,14 +194,15 @@ namespace RoboRougelike.R1
 
             if(GUI.Button(new Rect(850,556,375,35),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • zwolnij miejsce",compactButton))
                 rewardInventoryOpen=true;
-            int missing=RewardInventoryMissingSlots(run.VehicleModel.Inventory.Count,lootSelection.Count);
+            int rewardPartCount=SelectedRewardPartCount(run);
+            int missing=RewardInventoryMissingSlots(run.VehicleModel.Inventory.Count,rewardPartCount);
             bool room=missing==0;
             GUI.Label(new Rect(45,603,685,87),
-                $"Moduł: {(selectedBonus>=0?"wybrany":"wymagany")}  •  Zestaw: {(selectedBasket>=0?lootSelection.Count+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n" +
+                $"Moduł: {(selectedBonus>=0?"wybrany":"wymagany")}  •  Zestaw: {(selectedBasket>=0?rewardPartCount+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n" +
                 $"Niewybrane części → +{run.VehicleModel.PreviewAward(ledger.PreviewScrap(run.VehicleModel,lootSelection))} Z.\n" +
                 "Bonusy trafiają do magazynu i pozostają NIEAKTYWNE do montażu.",small);
-            GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count);
-            if(GUI.Button(new Rect(805,610,420,68),RewardActionCaption(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count),button))
+            GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount);
+            if(GUI.Button(new Rect(805,610,420,68),RewardActionCaption(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount),button))
                 ConfirmSelectedRewards(run);
             GUI.enabled=true;
             if(!room||!string.IsNullOrEmpty(rewardClaimFeedback))GUI.Label(new Rect(45,685,1180,30),!room?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. Otwórz magazyn, aby je zwolnić.":rewardClaimFeedback,small);
@@ -220,8 +233,9 @@ namespace RoboRougelike.R1
         {
             var model=run.VehicleModel;
             GUI.Label(new Rect(45,30,1190,60),"MAGAZYN • MIEJSCE NA NAGRODY",title);
-            int missing=RewardInventoryMissingSlots(model.Inventory.Count,lootSelection.Count);
-            GUI.Label(new Rect(45,99,790,62),$"Zajęte: {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • Nagrody: {lootSelection.Count+1} miejsc.\n"+
+            int rewardPartCount=SelectedRewardPartCount(run);
+            int missing=RewardInventoryMissingSlots(model.Inventory.Count,rewardPartCount);
+            GUI.Label(new Rect(45,99,790,62),$"Zajęte: {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • Nagrody: {(long)rewardPartCount+1} miejsc.\n"+
                 (missing>0?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. ":"Obecny wybór się mieści. ")+"Rozmontowanie wymaga potwierdzenia.",body);
             DrawRewardInventoryFilter(model,new Rect(860,110,350,48));
             var items=RewardInventoryItems(model,rewardInventoryDamagedOnly);
@@ -316,12 +330,12 @@ namespace RoboRougelike.R1
             DrawCatalogBulkRepair(run,items,new Rect(970,295,280,36));
             int price=model.Price(kind,weapon);
             bool unlocked=run.CanBuyTechnology(kind,weapon);
-            GUI.enabled=unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&model.Inventory.Count<model.AvailableInventoryCapacity;
-            if(GUI.Button(new Rect(970,340,136,40),model.CreativeMode?"Dodaj za darmo":GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))
+            GUI.enabled=unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&(long)model.Inventory.Count+CatalogPurchaseQuantity(model,kind)<=model.AvailableInventoryCapacity;
+            if(GUI.Button(new Rect(970,340,136,40),CatalogPurchaseCaption(model,kind,unlocked,price),compactButton))
             {
                 dismantleConfirmation=null;
                 if(AddSelectedCatalogPart(run,kind,weapon))
-                {var purchased=model.Inventory.Last();garage.ChooseInventory(purchased.Id);DismissCatalog();garage.Message=run.CreativeWorkshop?"Dodano część za darmo. Kliknij pojazd, aby ją zamontować.":"Kupiono część. Kliknij pojazd, aby ją zamontować.";}
+                {var purchased=model.Inventory.Last();garage.ChooseInventory(purchased.Id);DismissCatalog();garage.Message=run.CreativeWorkshop?"Dodano część za darmo. Kliknij pojazd, aby ją zamontować.":$"Kupiono {CatalogPurchaseQuantity(model,kind)} szt. Kliknij pojazd, aby zamontować część.";}
                 else catalogFeedback=garage.Message=PurchaseFailure(run,kind,weapon);
             }
             DrawBuyFive(run,kind,weapon,new Rect(1112,340,138,40));

@@ -55,9 +55,10 @@ public sealed class RRLW34RewardTests
     {
         var p=Rewards();var l=Ledger();var m=Model();var ids=new[]{"p0","p1","p2"}.Take(count).ToArray();
         Assert.That(R4RewardSettlement.TryClaim(p,l,m,ids,new[]{0}),Is.True,"One bonus must not consume any of the three salvage slots.");
-        Assert.That(m.Inventory.Count,Is.EqualTo(count+1));Assert.That(m.Inventory.Count(x=>x.Kind.ToString()=="BonusModule"),Is.EqualTo(1));
-        Assert.That(m.Inventory.Where(x=>x.Kind.ToString()!="BonusModule").Select(x=>x.Id),Is.EquivalentTo(ids));
-        Assert.That(m.Inventory.Select(x=>x.Id).Distinct().Count(),Is.EqualTo(count+1));
+        int extras=(count>=1?1:0)+(count>=3?1:0);
+        Assert.That(m.Inventory.Count,Is.EqualTo(count+extras+1));Assert.That(m.Inventory.Count(x=>x.Kind.ToString()=="BonusModule"),Is.EqualTo(1));
+        foreach(string id in ids)Assert.That(m.Inventory.Any(x=>x.Id==id),Is.True,"Recovered originals retain identity.");
+        Assert.That(m.Inventory.Select(x=>x.Id).Distinct().Count(),Is.EqualTo(count+extras+1));
         Assert.That(m.Scrap,Is.EqualTo(scrap));Assert.That(l.DismantledScrap,Is.EqualTo(scrap));Assert.That(l.Closed,Is.True);
         Assert.That(p.Stats.Damage,Is.EqualTo(1));Assert.That(p.Stats.Hull,Is.EqualTo(1));Assert.That(p.Stats.Mobility,Is.EqualTo(1));
         Assert.That(p.Acquired.Count,Is.EqualTo(1));Assert.That(p.State,Is.EqualTo(R1RunState.Garage));
@@ -82,7 +83,7 @@ public sealed class RRLW34RewardTests
         Assert.That(Snapshot(m),Is.EqualTo(before));Assert.That(l.Closed,Is.False);Assert.That(l.DismantledScrap,Is.Zero);
         Assert.That(p.State,Is.EqualTo(R1RunState.Salvage));Assert.That(p.Acquired,Is.Empty);
     }
-    [TestCase(196,true)][TestCase(197,false)]
+    [TestCase(194,true)][TestCase(195,false)]
     public void InventoryCapacityPreflightIncludesBonusAndAllThreeParts(int occupied,bool allowed)
     {
         var p=Rewards();var l=Ledger();var m=Model();
@@ -102,7 +103,7 @@ public sealed class RRLW34RewardTests
             Assert.That(R4RewardSettlement.TryClaim(p,l,m,ids,new[]{0}),Is.True);
             if(i<2)Assert.That(p.LeaveGarage(),Is.True);
         }
-        Assert.That(p.State,Is.EqualTo(R1RunState.Won));Assert.That(m.Inventory.Count,Is.EqualTo(6));
+        Assert.That(p.State,Is.EqualTo(R1RunState.Won));Assert.That(m.Inventory.Count,Is.EqualTo(8));
         Assert.That(m.Inventory.Count(x=>x.Kind.ToString()=="BonusModule"),Is.EqualTo(3));Assert.That(p.Stats.Damage,Is.EqualTo(1));
     }
 }

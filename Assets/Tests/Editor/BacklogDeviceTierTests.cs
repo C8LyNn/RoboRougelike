@@ -18,7 +18,7 @@ public sealed class BacklogDeviceTierTests
         for(int i=0;i<3;i++)Assert.That(model.PurchaseToInventory(kind),Is.True);
         var ids=model.Inventory.Where(p=>p.Kind==kind).Take(3).Select(p=>p.Id).ToArray();
         Assert.That(model.FuseInventory(ids),Is.True);
-        return model.Inventory.Single(p=>p.Kind==kind);
+        return model.Inventory.Single(p=>p.Kind==kind&&p.Tier==2);
     }
     void Mount(R3VehicleModel model,R3PartState part)
     {
@@ -75,7 +75,7 @@ public sealed class BacklogDeviceTierGameplayTests
         for(int i=0;i<3;i++)Assert.That(run.GaragePurchase(kind),Is.True);
         var ids=run.VehicleModel.Inventory.Where(p=>p.Kind==kind).Take(3).Select(p=>p.Id).ToArray();
         Assert.That(run.GarageFuse(ids),Is.True);
-        var part=run.VehicleModel.Inventory.Single(p=>p.Kind==kind);
+        var part=run.VehicleModel.Inventory.Single(p=>p.Kind==kind&&p.Tier==2);
         var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
         var cell=cells.First(c=>run.VehicleModel.OwnedPlacementError(part.Id,c,default)==null);
         Assert.That(run.GarageMount(part.Id,cell),Is.True);return part;

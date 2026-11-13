@@ -116,7 +116,15 @@ namespace RoboRougelike.R4
             var recovered=items.Where(p=>keep.Contains(p.Id)).Select(p=>{var copy=p.ToPart();copy.Health=1;return copy;}).ToArray();
             int scrap=PreviewScrap(model,keep);
             // Validate and store all incoming items together before closing or paying the ledger.
-            var incoming=bonus==null?recovered:recovered.Concat(new[]{bonus}).ToArray();
+            var expanded=new List<R3PartState>();
+            foreach(var part in recovered)
+            {
+                int count=model.GrantQuantity(part.Kind,part.ArmorShape);
+                if((long)expanded.Count+count+(bonus==null?0:1)+model.Inventory.Count>model.AvailableInventoryCapacity)return false;
+                expanded.Add(part);
+                for(int i=1;i<count;i++){var copy=part.Copy();copy.Id=Guid.NewGuid().ToString("N");expanded.Add(copy);}
+            }
+            var incoming=bonus==null?expanded.ToArray():expanded.Concat(new[]{bonus}).ToArray();
             if(!model.ReceiveSalvage(incoming))return false;
             int before=model.Scrap;Closed=true;model.Award(scrap);DismantledScrap=model.Scrap-before;return true;
         }

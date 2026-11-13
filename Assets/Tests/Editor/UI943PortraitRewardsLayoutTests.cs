@@ -36,6 +36,13 @@ public sealed class UI943PortraitRewardsLayoutTests
         Assert.That((bool)Method("RewardSelectionReady").Invoke(null,new object[]{0,3,-1,1,0,0}),Is.False);
         Assert.That((string)Method("RewardConfirmCaption").Invoke(null,new object[]{1}),Does.Contain("oba"));
     }
+    [Test] public void RewardContentsShowActualConfiguredBundleQuantity()
+    {
+        var model=new R3VehicleModel(new R3VehicleDesign());model.Economy.DriveGrantQuantity=3;
+        var wheel=new R4SalvageItem(new R3PartState(Vector3Int.zero,R3PartKind.Wheel),1);
+        var label=(string)Method("RewardBasketContentsForModel").Invoke(null,new object[]{new[]{wheel},model});
+        Assert.That(label,Does.Contain("×3"));
+    }
     [Test] public void DamagedRewardInventoryShowsWorstPartsFirstWithoutChangingInventory()
     {
         var model=new R3VehicleModel(new R3VehicleDesign());

@@ -65,6 +65,21 @@ public sealed class UI943PortraitRewardsActionsTests
         Assert.That(ContainsId(run.VehicleModel,choices[7].Id),Is.False);
         Assert.That((bool)Call("PortraitRewardConfirm",run),Is.False,"Nie wolno wypłacić nagród dwukrotnie.");
     }
+    [UnityTest] public IEnumerator SelectingRecoveredWheelReportsAllRequiredBundleSlots()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Call("TrackRewardLedger",run.Salvage);
+        var wheel=Choices(run).First(p=>p.Kind==R3PartKind.Wheel);
+        Call("PortraitRewardToggleLoot",wheel);
+        Assert.That((int)Call("SelectedRewardPartCount",run),Is.EqualTo(2),"The UI must reserve both wheels in the reward package.");
+        Call("PortraitRewardSelectBonus",0);
+        Assert.That(run.VehicleModel.ReceiveSalvage(Enumerable.Range(0,198).Select(_=>new R3PartState(default,R3PartKind.Gun))),Is.True);
+        int funds=run.VehicleModel.Scrap;
+        Assert.That((bool)Call("PortraitRewardConfirm",run),Is.False,"Two wheels and the bonus cannot fit in two slots.");
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(198));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(funds));
+        Assert.That(run.Salvage.Closed,Is.False);
+    }
     [UnityTest] public IEnumerator EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation()
     {
         foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);

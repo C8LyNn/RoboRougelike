@@ -17,12 +17,12 @@ public sealed class BacklogPartFusionTests
     public void WreckCanBeFusedAndResultHasAveragePercentageHealth()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
-        for(int i=0;i<3;i++)Assert.That(model.PurchaseToInventory(R3PartKind.Armor),Is.True);
+        Assert.That(model.PurchaseToInventory(R3PartKind.Armor),Is.True);
         model.Inventory[0].Health=.5f;model.Inventory[1].Health=0;model.Inventory[2].Health=1;
-        var ids=model.Inventory.Select(p=>p.Id).ToArray();
+        var ids=model.Inventory.Take(3).Select(p=>p.Id).ToArray();
         Assert.That(model.FuseInventory(ids),Is.True);
-        Assert.That(model.Inventory.Single().Health,Is.EqualTo(.5f).Within(.001));
-        Assert.That(model.Inventory.Single().Tier,Is.EqualTo(2));
+        Assert.That(model.Inventory.Single(p=>p.Tier==2).Health,Is.EqualTo(.5f).Within(.001));
+        Assert.That(model.Inventory.Count(p=>p.Tier==1),Is.EqualTo(2));
     }
     [Test]
     public void FusionPreviewShowsResultHealthIncludingWrecks()
@@ -43,7 +43,7 @@ public sealed class BacklogPartFusionTests
     public void NineArmorPiecesBecomeOneTierThreeWithoutFreeRepairOrDuplicatedIds()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
-        for(int i=0;i<9;i++)Assert.That(model.PurchaseToInventory(R3PartKind.Armor),Is.True);
+        for(int i=0;i<2;i++)Assert.That(model.PurchaseToInventory(R3PartKind.Armor),Is.True);
         var originals=model.Inventory.Select(p=>p.Id).ToArray();
         model.Inventory[0].Health=.1f;model.Inventory[1].Health=.4f;model.Inventory[2].Health=1f;
         var first=model.Inventory.Take(3).Select(p=>p.Id).ToArray();
@@ -52,9 +52,9 @@ public sealed class BacklogPartFusionTests
         Assert.That(firstTier2.Health,Is.EqualTo(.5f).Within(.001));
         Assert.That(originals.Contains(firstTier2.Id),Is.False);
         for(int i=0;i<2;i++)Assert.That(model.FuseInventory(model.Inventory.Where(p=>p.Tier==1).Take(3).Select(p=>p.Id).ToArray()),Is.True);
-        var tier2=model.Inventory.Select(p=>p.Id).ToArray();Assert.That(tier2.Length,Is.EqualTo(3));
+        var tier2=model.Inventory.Where(p=>p.Tier==2).Select(p=>p.Id).ToArray();Assert.That(tier2.Length,Is.EqualTo(3));
         Assert.That(model.FuseInventory(tier2),Is.True);
-        var tier3=model.Inventory.Single();Assert.That(tier3.Tier,Is.EqualTo(3));
+        var tier3=model.Inventory.Single(p=>p.Tier==3);Assert.That(model.Inventory.Count(p=>p.Tier==1),Is.EqualTo(1));
         Assert.That(tier3.Health,Is.EqualTo(5f/6f).Within(.001));
         Assert.That(originals.Concat(tier2).Contains(tier3.Id),Is.False);
     }
@@ -66,7 +66,7 @@ public sealed class BacklogPartFusionTests
         Assert.That(model.PurchaseToInventory(R3PartKind.Armor),Is.True);
         var before=model.Inventory.Select(p=>p.Id).ToArray();
         Assert.That(model.FuseInventory(new[]{before[0],before[0],before[1]}),Is.False);
-        Assert.That(model.FuseInventory(new[]{before[0],before[1],before[3]}),Is.False);
+        Assert.That(model.FuseInventory(new[]{before[0],before[1],model.Inventory.First(p=>p.Kind==R3PartKind.Armor).Id}),Is.False);
         Assert.That(model.FuseInventory(new[]{before[0],before[1],"missing"}),Is.False);
         model.Inventory[0].Tier=2;
         Assert.That(model.FuseInventory(new[]{before[0],before[1],before[2]}),Is.False,"Different tiers cannot be mixed.");
@@ -76,11 +76,11 @@ public sealed class BacklogPartFusionTests
     public void LegacyTierZeroLoadsAsTierOneAndNewTierSurvivesCheckpoint()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
-        for(int i=0;i<3;i++)Assert.That(model.PurchaseToInventory(R3PartKind.Wheel),Is.True);
-        Assert.That(model.FuseInventory(model.Inventory.Select(p=>p.Id).ToArray()),Is.True);
+        for(int i=0;i<2;i++)Assert.That(model.PurchaseToInventory(R3PartKind.Wheel),Is.True);
+        Assert.That(model.FuseInventory(model.Inventory.Take(3).Select(p=>p.Id).ToArray()),Is.True);
         var data=model.MakeCheckpoint(0);data.mounted[0].Tier=0;
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Light,model.Economy,0,out var loaded,out var error),Is.True,error);
-        Assert.That(loaded.Parts[0].Tier,Is.EqualTo(1));Assert.That(loaded.Inventory.Single().Tier,Is.EqualTo(2));
+        Assert.That(loaded.Parts[0].Tier,Is.EqualTo(1));Assert.That(loaded.Inventory.Count(p=>p.Tier==2),Is.EqualTo(1));
         string path=Path.Combine(Path.GetTempPath(),"rrl-tier-"+Guid.NewGuid().ToString("N")+".json");
         try{R1RunCheckpointStorage.Write(path,new R1RunCheckpoint{version=2,model=data});Assert.That(R1RunCheckpointStorage.Read(path).version,Is.EqualTo(2));}
         finally{if(File.Exists(path))File.Delete(path);}
@@ -125,10 +125,10 @@ public sealed class BacklogPartFusionGarageTests
     }
     [UnityTest] public IEnumerator GarageFusionProducesOwnedTierTwoWheelThatCanBeMounted()
     {
-        for(int i=0;i<3;i++)Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);
-        var ids=run.VehicleModel.Inventory.Select(p=>p.Id).ToArray();
+        for(int i=0;i<2;i++)Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);
+        var ids=run.VehicleModel.Inventory.Take(3).Select(p=>p.Id).ToArray();
         Assert.That(run.GarageFuse(ids),Is.True);
-        var result=run.VehicleModel.Inventory.Single();Assert.That(result.Tier,Is.EqualTo(2));
+        var result=run.VehicleModel.Inventory.Single(p=>p.Tier==2);
         Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(result.Id));
         var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
         var cell=cells.First(c=>run.VehicleModel.OwnedPlacementError(result.Id,c,default)==null);

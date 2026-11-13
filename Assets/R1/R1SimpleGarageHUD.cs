@@ -254,6 +254,15 @@ namespace RoboRougelike.R1
                 return GaragePurchaseCaption(kind,unlocked,price,scrap,full);
             return $"Kup i wybierz\n{price} Z";
         }
+        int CatalogPurchaseQuantity(R3VehicleModel model,R3PartKind kind)=>model.PurchaseQuantity(kind,
+            kind==R3PartKind.Armor?CatalogArmorShape(catalogBonusId):R3ArmorShape.Cube);
+        string CatalogPurchaseCaption(R3VehicleModel model,R3PartKind kind,bool unlocked,int price)
+        {
+            int quantity=CatalogPurchaseQuantity(model,kind);
+            bool full=(long)model.Inventory.Count+quantity>model.AvailableInventoryCapacity;
+            if(quantity>1&&unlocked&&!full&&price>0&&model.Scrap>=price)return $"Kup ×{quantity}\n{price} Z";
+            return QuickPurchaseCaption(model.CreativeMode,kind,unlocked,price,model.Scrap,full);
+        }
 
         static bool CanBuyFive(R3PartKind kind,bool unlocked,int price,int scrap,int inventoryCount)=>
             kind!=R3PartKind.BonusModule&&unlocked&&price>0&&scrap>=0&&inventoryCount>=0&&
@@ -286,6 +295,8 @@ namespace RoboRougelike.R1
             string basic=model.CreativeMode?null:BasicPurchaseFailure(!run.Transitioning&&run.Progress?.State==R1RunState.Garage,
                 kind,run.CanBuyTechnology(kind,weapon),model.Price(kind,weapon),model.Scrap,model.Inventory.Count);
             if(basic!=null)return basic;
+            int quantity=CatalogPurchaseQuantity(model,kind);
+            if((long)model.Inventory.Count+quantity>model.AvailableInventoryCapacity)return $"Brak miejsca na pakiet {quantity} części.";
             if(kind==R3PartKind.Wheel)
             {
                 var style=CatalogWheelStyle(catalogBonusId);
@@ -305,6 +316,8 @@ namespace RoboRougelike.R1
         void DrawBuyFive(R1RunController run,R3PartKind kind,R4WeaponKind weapon,Rect rect)
         {
             var model=run.VehicleModel;int price=model.Price(kind,weapon);bool unlocked=run.CanBuyTechnology(kind,weapon);
+            int quantity=CatalogPurchaseQuantity(model,kind);
+            if(quantity>1){GUI.Label(rect,$"Pakiet: {quantity} szt.",small);return;}
             bool previouslyEnabled=GUI.enabled;
             GUI.enabled=previouslyEnabled&&((model.CreativeMode&&unlocked)||CanBuyFive(kind,unlocked,price,model.Scrap,model.Inventory.Count));
             if(GUI.Button(rect,model.CreativeMode?"Dodaj 5 za darmo":BuyFiveCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count),compactButton))
@@ -666,7 +679,7 @@ namespace RoboRougelike.R1
             {
                 var item=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(item.Id);
                 run.Garage.ShowActionMessage(run.CreativeWorkshop?"Dodano część za darmo. Kliknij pojazd, aby ją zamontować.":
-                    $"Kupiono część • koszt {before-run.VehicleModel.Scrap} Z. Kliknij pojazd, aby ją zamontować.");
+                    $"Kupiono {CatalogPurchaseQuantity(run.VehicleModel,catalogGroup.Value)} szt. • koszt {before-run.VehicleModel.Scrap} Z. Kliknij pojazd, aby zamontować część.");
             }
             else run.Garage.ShowActionMessage(PurchaseFailure(run,catalogGroup.Value,catalogWeapon));
         }
@@ -736,8 +749,8 @@ namespace RoboRougelike.R1
             {
                 var kind=catalogGroup.Value;int price=model.Price(kind,catalogWeapon);
                 bool unlocked=run.CanBuyTechnology(kind,catalogWeapon);
-                GUI.enabled=!garageOptionsOpen&&unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&model.Inventory.Count<model.AvailableInventoryCapacity;
-                if(GUI.Button(new Rect(12,560,120,42),QuickPurchaseCaption(model.CreativeMode,kind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))BuyQuickPart(run);
+                GUI.enabled=!garageOptionsOpen&&unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&(long)model.Inventory.Count+CatalogPurchaseQuantity(model,kind)<=model.AvailableInventoryCapacity;
+                if(GUI.Button(new Rect(12,560,120,42),CatalogPurchaseCaption(model,kind,unlocked,price),compactButton))BuyQuickPart(run);
                 DrawBuyFive(run,kind,catalogWeapon,new Rect(137,560,120,42));
                 GUI.enabled=!garageOptionsOpen;
             }
@@ -800,8 +813,8 @@ namespace RoboRougelike.R1
             {
                 var kind=catalogGroup.Value;int price=model.Price(kind,catalogWeapon);
                 bool unlocked=run.CanBuyTechnology(kind,catalogWeapon);
-                GUI.enabled=!garageOptionsOpen&&unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&model.Inventory.Count<model.AvailableInventoryCapacity;
-                if(GUI.Button(new Rect(458,690,140,40),QuickPurchaseCaption(model.CreativeMode,kind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))BuyQuickPart(run);
+                GUI.enabled=!garageOptionsOpen&&unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&(long)model.Inventory.Count+CatalogPurchaseQuantity(model,kind)<=model.AvailableInventoryCapacity;
+                if(GUI.Button(new Rect(458,690,140,40),CatalogPurchaseCaption(model,kind,unlocked,price),compactButton))BuyQuickPart(run);
                 DrawBuyFive(run,kind,catalogWeapon,new Rect(604,690,140,40));
                 GUI.enabled=!garageOptionsOpen;
             }

@@ -60,7 +60,7 @@ namespace RoboRougelike.R1
                 GUI.contentColor=BasketColor(basket);
                 GUI.Label(new Rect(info.x,info.y,info.width,24),RewardBasketHeading(basket),small);
                 GUI.contentColor=Color.white;
-                GUI.Label(new Rect(info.x,card.y+31,info.width,58),RewardBasketContents(basket.Items)+"\nOdbiór: 100% HP",small);
+                GUI.Label(new Rect(info.x,card.y+31,info.width,58),RewardBasketContentsForModel(basket.Items,run.VehicleModel)+"\nOdbiór: 100% HP",small);
                 bool chosen=selectedBasket==i;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
                 string key=i<3?"QWE"[i].ToString():null;
@@ -70,14 +70,15 @@ namespace RoboRougelike.R1
             if(rewardBaskets.Count==0)GUI.Label(new Rect(36,495,680,50),"Brak części do odzyskania.",small);
             var pager=PortraitRewardPager();
             if(GUI.Button(new Rect(pager.x+370,pager.y,350,44),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity}",compactButton))rewardInventoryOpen=true;
-            int missing=RewardInventoryMissingSlots(run.VehicleModel.Inventory.Count,lootSelection.Count);
+            int rewardPartCount=SelectedRewardPartCount(run);
+            int missing=RewardInventoryMissingSlots(run.VehicleModel.Inventory.Count,rewardPartCount);
             bool room=missing==0;
             GUI.Label(PortraitRewardSummary(),
-                $"Bonus: {(selectedBonus>=0?"wybrany":"wymagany")} • Zestaw: {(selectedBasket>=0?lootSelection.Count+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n"+
+                $"Bonus: {(selectedBonus>=0?"wybrany":"wymagany")} • Zestaw: {(selectedBasket>=0?rewardPartCount+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n"+
                 $"Niewybrane części → +{run.VehicleModel.PreviewAward(ledger.PreviewScrap(run.VehicleModel,lootSelection))} Z. Bonus jest nieaktywny do montażu.\n"+
                 (!room?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. Otwórz magazyn, aby je zwolnić.":rewardClaimFeedback??""),small);
-            GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count);
-            if(GUI.Button(PortraitRewardConfirm(),RewardActionCaption(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count),button))PortraitRewardConfirm(run);
+            GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount);
+            if(GUI.Button(PortraitRewardConfirm(),RewardActionCaption(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount),button))PortraitRewardConfirm(run);
             GUI.enabled=true;
         }
 
@@ -85,8 +86,9 @@ namespace RoboRougelike.R1
         {
             var model=run.VehicleModel;
             GUI.Label(new Rect(24,20,720,42),"MAGAZYN NAGRÓD",title);
-            int missing=RewardInventoryMissingSlots(model.Inventory.Count,lootSelection.Count);
-            GUI.Label(new Rect(24,70,720,84),$"Zajęte: {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • Nagrody: {lootSelection.Count+1} miejsc.\n"+
+            int rewardPartCount=SelectedRewardPartCount(run);
+            int missing=RewardInventoryMissingSlots(model.Inventory.Count,rewardPartCount);
+            GUI.Label(new Rect(24,70,720,84),$"Zajęte: {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • Nagrody: {(long)rewardPartCount+1} miejsc.\n"+
                 (missing>0?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. ":"Obecny wybór się mieści. ")+"Rozmontowanie wymaga potwierdzenia.",body);
             var items=RewardInventoryItems(model,rewardInventoryDamagedOnly);int pages=Mathf.Max(1,Mathf.CeilToInt(items.Length/5f));
             rewardInventoryPage=Mathf.Clamp(rewardInventoryPage,0,pages-1);

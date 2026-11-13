@@ -27,6 +27,68 @@ public sealed class OwnedRebuildPricingTests
         Assert.That(model.DeepCopy().Price(R3PartKind.Wheel),Is.EqualTo(30));
         Assert.That(model.RepairCost(wheel),Is.EqualTo(repair));Assert.That(model.DismantleValue(wheel),Is.EqualTo(sale));
     }
+    [Test] public void StorePurchasesAwardConfiguredBundlesForOneListedPrice()
+    {
+        var model=Model();model.Award(1000);
+        int price=model.Price(R3PartKind.Armor),before=model.Scrap;
+        Assert.That(model.PurchaseToInventory(R3PartKind.Armor),Is.True);
+        Assert.That(model.Inventory.Count(p=>p.Kind==R3PartKind.Armor),Is.EqualTo(5));
+        Assert.That(model.Scrap,Is.EqualTo(before-price));
+        price=model.Price(R3PartKind.Wheel);before=model.Scrap;
+        Assert.That(model.PurchaseToInventory(R3PartKind.Wheel),Is.True);
+        Assert.That(model.Inventory.Count(p=>p.Kind==R3PartKind.Wheel),Is.EqualTo(2));
+        Assert.That(model.Scrap,Is.EqualTo(before-price));
+        Assert.That(model.Inventory.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(7));
+        Assert.That(model.PurchaseToInventory(R3PartKind.Gun),Is.True);
+        Assert.That(model.Inventory.Count(p=>p.Kind==R3PartKind.Gun),Is.EqualTo(1));
+    }
+    [Test] public void BundleCapacityFailureIsAtomic()
+    {
+        var model=Model();model.Award(1000);
+        Assert.That(model.ReceiveSalvage(Enumerable.Range(0,199).Select(_=>new R3PartState(default,R3PartKind.Gun))),Is.True);
+        int scrap=model.Scrap;Assert.That(model.PurchaseToInventory(R3PartKind.Wheel),Is.False);
+        Assert.That(model.Scrap,Is.EqualTo(scrap));Assert.That(model.Inventory.Count,Is.EqualTo(199));
+    }
+    [Test] public void BundleTransferDoesNotMultiplyPartsAgain()
+    {
+        var model=Model();model.Award(1000);Assert.That(model.PurchaseToInventory(R3PartKind.Wheel),Is.True);
+        var wheel=model.Inventory.First();string id=wheel.Id;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(id,c,default)==null);
+        Assert.That(model.Mount(id,cell),Is.True);Assert.That(model.Inventory.Count,Is.EqualTo(1));
+        Assert.That(model.Remove(cell),Is.True);Assert.That(model.Inventory.Count,Is.EqualTo(2));
+        Assert.That(model.Inventory.Count(p=>p.Id==id),Is.EqualTo(1));
+    }
+    [Test] public void DirectConstructionPlacesOneAndStoresTheOtherFour()
+    {
+        var model=Model();model.Award(1000);
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.Armor)==null);
+        int price=model.Price(R3PartKind.Armor),before=model.Scrap;
+        Assert.That(model.Buy(cell,R3PartKind.Armor),Is.True);
+        Assert.That(model.At(cell),Is.Not.Null);Assert.That(model.Inventory.Count(p=>p.Kind==R3PartKind.Armor),Is.EqualTo(4));
+        Assert.That(model.Scrap,Is.EqualTo(before-price));
+        Assert.That(model.Inventory.Select(p=>p.Id).Append(model.At(cell).Id).Distinct().Count(),Is.EqualTo(5));
+    }
+    [Test] public void BundleQuantitiesAreConfigurableAndDoNotMultiplyWedges()
+    {
+        var model=Model();model.Award(1000);model.Economy.DriveGrantQuantity=3;model.Economy.BlockGrantQuantity=7;
+        Assert.That(model.GrantQuantity(R3PartKind.Armor,R3ArmorShape.Wedge),Is.EqualTo(1));
+        Assert.That(model.PurchaseToInventory(R3PartKind.Wheel),Is.True);
+        Assert.That(model.Inventory.Count,Is.EqualTo(3));
+        Assert.That(model.DeepCopy().GrantQuantity(R3PartKind.Armor),Is.EqualTo(7));
+    }
+    [Test] public void RecoveredWheelAwardsTwoUniquePartsOnlyOnce()
+    {
+        var model=Model();var wheel=new R3PartState(default,R3PartKind.Wheel){Id="physical-wheel-1"};
+        var ledger=new R4SalvageLedger(3);
+        Assert.That(ledger.Record("enemy",new[]{new R4SalvageItem(wheel,1)}),Is.True);
+        Assert.That(ledger.Claim(model,new[]{wheel.Id}),Is.True);
+        Assert.That(model.Inventory.Count,Is.EqualTo(2));
+        Assert.That(model.Inventory.Any(p=>p.Id==wheel.Id),Is.True);
+        Assert.That(model.Inventory.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(2));
+        Assert.That(ledger.Claim(model,new[]{wheel.Id}),Is.False);Assert.That(model.Inventory.Count,Is.EqualTo(2));
+    }
     [TestCase(R3PartKind.Wheel)][TestCase(R3PartKind.Gun)]
     public void OwnedRebuildChargesOnceAndKeepsPhysicalGuid(R3PartKind kind)
     {

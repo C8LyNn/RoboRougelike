@@ -92,6 +92,7 @@ namespace RoboRougelike.R3
     {
         public int ArmorCost = 5, WheelCost = 15, GunCost = 30, MaxRepairCost = 3;
         public float StandardPurchaseMultiplier=3f;
+        public int BlockGrantQuantity=5,DriveGrantQuantity=2;
         public R3ConstructionSettings Construction = new R3ConstructionSettings();
         public int Price(R3PartKind kind) => kind switch {
             R3PartKind.Suspension=>25, R3PartKind.Wheel=>WheelCost, R3PartKind.Gun=>GunCost,
@@ -342,7 +343,7 @@ namespace RoboRougelike.R3
         {
             var design=new R3VehicleDesign{Name=Design.Name,Description=Design.Description,Speed=Design.Speed,TurnSpeed=Design.TurnSpeed,CoreHp=Design.CoreHp};
             design.Parts.AddRange(Design.Parts.Select(p=>p.Copy()));
-            var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost,StandardPurchaseMultiplier=Economy.StandardPurchaseMultiplier,Construction=ConstructionSettings.Copy()});
+            var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost,StandardPurchaseMultiplier=Economy.StandardPurchaseMultiplier,BlockGrantQuantity=Economy.BlockGrantQuantity,DriveGrantQuantity=Economy.DriveGrantQuantity,Construction=ConstructionSettings.Copy()});
             copy.CreativeMode=CreativeMode;copy.ConstructionBudgetLimit=ConstructionBudgetLimit;copy.ConstructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied;copy.RepairPulseReadyAt=RepairPulseReadyAt;copy.BoosterReadyAt=BoosterReadyAt;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
             copy.factoryWheels.Clear();foreach(var item in factoryWheels)copy.factoryWheels.Add(item.Key,item.Value);
             copy.SuspensionEnabled=SuspensionEnabled;copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset;
@@ -437,6 +438,15 @@ namespace RoboRougelike.R3
             if(float.IsNaN(multiplier)||float.IsInfinity(multiplier))multiplier=3f;
             return (int)Math.Min(int.MaxValue,Math.Max(1d,Math.Ceiling(BasePrice(kind,weapon)*(double)Math.Max(0,multiplier))));
         }
+        public int GrantQuantity(R3PartKind kind,R3ArmorShape shape=R3ArmorShape.Cube)
+        {
+            if(kind==R3PartKind.Armor&&shape==R3ArmorShape.Cube)return Math.Max(1,Economy.BlockGrantQuantity);
+            if(kind==R3PartKind.Wheel||kind==R3PartKind.OmniDrive||kind==R3PartKind.HoverEngine||
+                kind==R3PartKind.CrawlerTrack||kind==R3PartKind.Booster||kind==R3PartKind.JumpDrive||kind==R3PartKind.DrivePower)
+                return Math.Max(1,Economy.DriveGrantQuantity);
+            return 1;
+        }
+        public int PurchaseQuantity(R3PartKind kind,R3ArmorShape shape=R3ArmorShape.Cube)=>CreativeMode?1:GrantQuantity(kind,shape);
         public bool Owns(string id) => Parts.Concat(inventory).Any(p=>p.Id==id);
         // Mounted wreck plans reserve their type too: rebuilding them must not
         // turn a legal four-type design into a five-type vehicle. Inventory
@@ -504,6 +514,7 @@ namespace RoboRougelike.R3
             if (!HasAliveExternalNeighbour(cell,kind,rotation,contactMask,candidate))
                 return "Brak zgodnych punktów mocowania ze sprawną konstrukcją.";
             if (!owned && Scrap < Price(kind,weapon)) return "Za mało Złomu.";
+            if(!owned&&(long)inventory.Count+PurchaseQuantity(kind)-1>AvailableInventoryCapacity)return "Za mało miejsca w magazynie na pozostałe części pakietu.";
             if(installationGate==null)return null;
             return installationGate(candidate);
         }
@@ -517,22 +528,31 @@ namespace RoboRougelike.R3
                 FootprintRevision=NewPurchaseFootprint(kind,weapon,R3WheelStyle.Offroad)};
             if(kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle))part.ContactMask=SideWheelContactAt(part);
             Parts.Add(part);
+            for(int i=1;i<PurchaseQuantity(kind);i++)
+            {
+                var copy=part.Copy();copy.Id=Guid.NewGuid().ToString("N");copy.Cell=default;copy.ContactMask=StoredWheelContacts(copy);
+                inventory.Add(copy);
+            }
             return true;
         }
         public bool PurchaseToInventory(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,R3WheelStyle wheelStyle=R3WheelStyle.Offroad,R3ArmorShape armorShape=R3ArmorShape.Cube)
         {
-            if(kind==R3PartKind.Core||kind==R3PartKind.BonusModule||!ValidEconomicKind(kind,weapon)||inventory.Count>=AvailableInventoryCapacity||
+            if(kind==R3PartKind.Core||kind==R3PartKind.BonusModule||!ValidEconomicKind(kind,weapon)||
+                (long)inventory.Count+PurchaseQuantity(kind,armorShape)>AvailableInventoryCapacity||
                 !Enum.IsDefined(typeof(R3WheelStyle),wheelStyle)||(kind!=R3PartKind.Wheel&&wheelStyle!=R3WheelStyle.Offroad)||
                 (HasSizedSideWheel(wheelStyle)&&!R4_1.R4WheelArt.SizedWheelAvailable(wheelStyle))||
                 (HasForkMount(wheelStyle)&&!R4_1.R4WheelArt.ForkWheelAvailable(wheelStyle))||
                 !Enum.IsDefined(typeof(R3ArmorShape),armorShape)||(kind!=R3PartKind.Armor&&armorShape!=R3ArmorShape.Cube)||
                 (armorShape!=R3ArmorShape.Cube&&!R4_1.R41PartGeometry.ArmorShapeAvailable(armorShape)))return false;
             int price=Price(kind,weapon);if((price<=0&&!CreativeMode)||Scrap<price)return false;
-            Scrap-=price;inventory.Add(new R3PartState(default,kind){Weapon=weapon,WheelStyle=wheelStyle,ArmorShape=armorShape,
+            Scrap-=price;var purchased=new R3PartState(default,kind){Weapon=weapon,WheelStyle=wheelStyle,ArmorShape=armorShape,
                 FootprintRevision=NewPurchaseFootprint(kind,weapon,wheelStyle),
                 ContactMask=kind==R3PartKind.Wheel?(HasForkMount(wheelStyle)?R3MountingGrid.FaceBit(Vector3Int.up):
                     R3MountingGrid.FaceBit(Vector3Int.right)|R3MountingGrid.FaceBit(Vector3Int.left)):
-                    armorShape==R3ArmorShape.Cube?R3MountingGrid.AllFaces:R4_1.R41PartGeometry.FullArmorContacts(armorShape)});return true;
+                    armorShape==R3ArmorShape.Cube?R3MountingGrid.AllFaces:R4_1.R41PartGeometry.FullArmorContacts(armorShape)};
+            inventory.Add(purchased);
+            for(int i=1;i<PurchaseQuantity(kind,armorShape);i++){var copy=purchased.Copy();copy.Id=Guid.NewGuid().ToString("N");inventory.Add(copy);}
+            return true;
         }        public int RepairCost(R3PartState part)
         {
             if (!ValidEconomicPart(part) || part.Health >= 1f || CreativeMode) return 0;
