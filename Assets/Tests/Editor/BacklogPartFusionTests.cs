@@ -14,6 +14,26 @@ using UnityEngine.TestTools;
 public sealed class BacklogPartFusionTests
 {
     [Test]
+    public void WreckCanBeFusedAndResultHasAveragePercentageHealth()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
+        for(int i=0;i<3;i++)Assert.That(model.PurchaseToInventory(R3PartKind.Armor),Is.True);
+        model.Inventory[0].Health=.5f;model.Inventory[1].Health=0;model.Inventory[2].Health=1;
+        var ids=model.Inventory.Select(p=>p.Id).ToArray();
+        Assert.That(model.FuseInventory(ids),Is.True);
+        Assert.That(model.Inventory.Single().Health,Is.EqualTo(.5f).Within(.001));
+        Assert.That(model.Inventory.Single().Tier,Is.EqualTo(2));
+    }
+    [Test]
+    public void FusionPreviewShowsResultHealthIncludingWrecks()
+    {
+        var method=typeof(R1RunHUD).GetMethod("FusionPreviewLabel",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null,"The garage must preview the resulting tier and condition before consuming items.");
+        var items=new[]{new R3PartState(default,R3PartKind.Armor,.5f),new R3PartState(default,R3PartKind.Armor,0),new R3PartState(default,R3PartKind.Armor,1)};
+        var text=(string)method.Invoke(null,new object[]{1,items});
+        Assert.That(text,Does.Contain("T2"));Assert.That(text,Does.Contain("50%"));
+    }
+    [Test]
     public void ThreeIdenticalOwnedPartsCanBecomeOneHigherTier()
     {
         var method=typeof(R3VehicleModel).GetMethod("FuseInventory",new[]{typeof(IEnumerable<string>)});

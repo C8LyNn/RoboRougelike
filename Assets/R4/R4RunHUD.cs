@@ -381,11 +381,16 @@ namespace RoboRougelike.R1
             var group=new[]{selected}.Concat(others).ToArray();
             bool available=tier<3&&group.Length==3;
             string label=tier>=3?"Maksymalny poziom T3":!available?$"Połącz T{tier} — potrzeba 3":
-                $"3×T{tier} → T{tier+1} • HP "+string.Join("/",group.Select(p=>(p.Health*100).ToString("0")))+"%";
+                FusionPreviewLabel(tier,group);
             GUI.enabled=available;
             if(GUI.Button(rect,label,compactButton))
             {dismantleConfirmation=null;catalogFeedback=run.GarageFuse(group.Select(p=>p.Id))?run.Garage.Message:"Nie udało się połączyć części.";}
             GUI.enabled=true;
+        }
+        private static string FusionPreviewLabel(int tier,R3PartState[] group)
+        {
+            var inputs=string.Join(" / ",group.Select(p=>(p.Health*100).ToString("0")+"%"));
+            return $"3×T{tier} → T{tier+1} • HP {group.Average(p=>p.Health)*100:0}%\nSkładniki: {inputs}";
         }
         private void RepairCatalogItem(R1RunController run,string id)
         {
