@@ -1,0 +1,72 @@
+00:00.031  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+13:37:03 | INFO: Data are loaded, start creating Blender stuff
+13:37:03 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Mount
+13:37:03 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Rotor
+13:37:03 | INFO: glTF import finished in 0.08s
+<WORKDIR>\R4_Atlas5_hero4\scr\pbuild.py:42: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(zone); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tx = src["textures"]; m["paint_zone"] = zone
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_hero4\\m1_q\\variants\\B_Brutal\\R4M_WheelM_Side_Offroad\\R4M_WheelM_Side_Offroad.fbx'
+export finished in 0.0434 sec.
+INFO Draco is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_meshopt_bridge.dll
+13:37:03 | INFO: Starting glTF 2.0 export
+13:37:03 | INFO: Extracting primitive: R4M_WheelM_Side_Offroad_Caliper
+13:37:04 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+13:37:04 | INFO: Primitives created: 1
+13:37:04 | INFO: Extracting primitive: R4M_WheelM_Side_Offroad_Mount
+13:37:04 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+13:37:04 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+13:37:04 | INFO: Primitives created: 3
+13:37:04 | INFO: Extracting primitive: R4M_WheelM_Side_Offroad_Rotor
+13:37:04 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+13:37:04 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+13:37:04 | INFO: Primitives created: 4
+13:37:04 | INFO: Extracting primitive: R4M_WheelM_Side_Offroad_Shock
+13:37:04 | INFO: Primitives created: 3
+13:37:04 | INFO: Finished glTF 2.0 export in 0.34274935722351074 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_hero4\\m1_q\\variants\\B_Brutal\\R4M_WheelM_Side_Offroad\\R4M_WheelM_Side_Offroad_LOD1.fbx'
+export finished in 0.0223 sec.
+13:37:04 | INFO: Starting glTF 2.0 export
+13:37:04 | INFO: Extracting primitive: R4M_WheelM_Side_Offroad_LOD1
+13:37:04 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+13:37:05 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+13:37:05 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+13:37:05 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+13:37:06 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+13:37:06 | INFO: Primitives created: 5
+13:37:06 | INFO: Finished glTF 2.0 export in 2.1777055263519287 s
+<WORKDIR>\R4_Atlas5_hero4\scr\pbuild.py:181: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w = bpy.data.worlds.new("W"); scn.world = w; w.use_nodes = True; bg = w.node_tree.nodes.get("Background"); bg.inputs[0].default_value = (0.20, 0.21, 0.23, 1); bg.inputs[1].default_value = 0.9
+00:05.969  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1_q\variants\B_Brutal\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_front.jpg'
+00:06.406  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1_q\variants\B_Brutal\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_side.jpg'
+00:06.578  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1_q\variants\B_Brutal\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_top.jpg'
+00:06.735  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1_q\variants\B_Brutal\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_34.jpg'
+00:06.938  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1_q\variants\B_Brutal\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_anim1.jpg'
+00:07.219  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1_q\variants\B_Brutal\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_anim2.jpg'
+00:07.453  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1_q\variants\B_Brutal\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_anim3.jpg'
+00:07.703  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1_q\variants\B_Brutal\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_anim4.jpg'
+<WORKDIR>\R4_Atlas5_hero4\scr\pbuild.py:478: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  lod.hide_render = True; clay = bpy.data.materials.new("Clay"); clay.use_nodes = True; cb = clay.node_tree.nodes.get("Principled BSDF"); cb.inputs["Base Color"].default_value = (0.5, 0.5, 0.5, 1); cb.inputs["Roughness"].default_value = 0.7
+00:08.313  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1_q\variants\B_Brutal\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_clay_front.png'
+00:08.485  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1_q\variants\B_Brutal\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_clay_side.png'
+00:08.703  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1_q\variants\B_Brutal\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_clay_34.png'
+<WORKDIR>\R4_Atlas5_hero4\scr\pbuild.py:483: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  lod.hide_render = True; wm = bpy.data.materials.new("Wire"); wm.use_nodes = True; wb = wm.node_tree.nodes.get("Principled BSDF"); wb.inputs["Base Color"].default_value = (0.01, 0.01, 0.012, 1); wb.inputs["Roughness"].default_value = 1.0
+00:09.000  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1_q\variants\B_Brutal\R4M_WheelM_Side_Offroad\renders\R4M_WheelM_Side_Offroad_wire.jpg'
+
+Info: Saved as "R4M_WheelM_Side_Offroad.blend"
+FBX version: 7400
+13:37:11 | INFO: Data are loaded, start creating Blender stuff
+13:37:11 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Caliper
+13:37:11 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Mount
+13:37:11 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Rotor
+13:37:11 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Shock
+13:37:11 | INFO: glTF import finished in 0.06s
+[PILOT2] VARIANT B_Brutal R4M_WheelM_Side_Offroad BLENDER_PASS [] 5392 tris LOD1 4070
+[PILOT2] BUILD_DONE 1 / 1
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

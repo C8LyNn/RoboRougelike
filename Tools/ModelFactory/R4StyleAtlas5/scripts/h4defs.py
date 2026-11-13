@@ -80,9 +80,9 @@ def wheel_B_new(B):
     instead of the soft round tyre; the flange becomes a thick bolted wheel-weight ring with eight cast lugs; eight-lobe cast hub with a locking
     nut; double brake disc; the shock is a twin-tube unit and the mount a forged trailing fork"""
     carcass(B, 0.354, sh=0.022, crown=0.003, soft=False)
-    bar = B.prism(R, "rubber", [(-0.146, -0.078), (-0.146, -0.030), (0.018, 0.034), (0.018, -0.014)], 0.340, 0.377, ("x", "y", "z"), name="bar"); B.bevel(bar, 0.006, (2, 1), 40); B.radial([bar], 13, "x")
-    bar2 = B.prism(R, "rubber", [(0.192, -0.078), (0.192, -0.030), (0.028, 0.034), (0.028, -0.014)], 0.340, 0.377, ("x", "y", "z"), name="bar"); B.bevel(bar2, 0.006, (2, 1), 40); B.radial([bar2], 13, "x", phase=TAU/26)
-    lugs(B, 13, 0.286, 0.376, w=0.024, t=(-0.040, 0.040), bev=0.004)
+    bar = B.prism(R, "rubber", [(-0.146, -0.078), (-0.146, -0.030), (0.018, 0.034), (0.018, -0.014)], 0.340, 0.380, ("x", "y", "z"), name="bar"); B.bevel(bar, 0.006, (2, 1), 40); B.radial([bar], 13, "x")
+    bar2 = B.prism(R, "rubber", [(0.192, -0.078), (0.192, -0.030), (0.028, 0.034), (0.028, -0.014)], 0.340, 0.380, ("x", "y", "z"), name="bar"); B.bevel(bar2, 0.006, (2, 1), 40); B.radial([bar2], 13, "x", phase=TAU/26)
+    lugs(B, 13, 0.286, 0.378, w=0.024, t=(-0.040, 0.040), bev=0.004)
     rim(B, [(0.0, 0.090, 'c'), (0.100, 0.090, 'c'), (0.112, 0.070, 'c'), (0.170, 0.070, 'c'), (0.186, 0.146, 'c'), (0.226, 0.146, 'c'), (0.226, 0.126, 'c'), (0.214, 0.110, 'c'), (0.214, -0.112, 'c'), (0.226, -0.122, 'c'),
             (0.214, -0.130, 'c'), (0.198, -0.110, 'c'), (0.198, 0.040, 'c'), (0.0, 0.040, 'c')], "dark", (72, 24))
     w = ring(B, R, "sec", 0.176, 0.230, 0.140, 0.168, (16, 16), name="weight", phase=TAU/32); B.bevel(w, 0.005, (2, 1), 30)

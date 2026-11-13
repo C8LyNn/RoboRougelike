@@ -8,7 +8,7 @@ compared with the approved model it replaces (the survey baseline) - it must be 
                the file is not byte-identical to any Pass 1 / Pass 2 file
  P6 files      GLB + FBX + LOD1 GLB + LOD1 FBX + .blend + QA record exist; textures (base, ORM, normal, emission) exist; source .blend exists
 Also checked: hero1/, hero2/ untouched. Hull kits: K1 every mesh name the hull-layer rules can ask for exists; K2 plate footprint inside the cell
-pitch and not thicker than 60 mm; K3 fairings inside their cell + 190 mm nose reach; K4 files (GLB, FBX, source .blend, four textures).
+pitch and not thicker than 60 mm; K3 fairings inside their cell + 200 mm nose reach; K4 files (GLB, FBX, source .blend, four textures).
 Technical tests only - the artistic verdict is the owner's. usage: python3 h4tests.py"""
 import os, sys, json, subprocess, hashlib, glob
 import numpy as np

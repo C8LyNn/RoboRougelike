@@ -1,0 +1,36 @@
+00:00.109  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+<WORKDIR>\R4_Atlas5_hero4\scr\h4model.py:59: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new("SKIN"); m.use_nodes = True; nt = m.node_tree; b = nt.nodes["Principled BSDF"]
+<WORKDIR>\R4_Atlas5_hero4\scr\h4model.py:63: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  clay = bpy.data.materials.new("CLAY"); clay.use_nodes = True; cb = clay.node_tree.nodes["Principled BSDF"]; cb.inputs["Base Color"].default_value = (0.55, 0.55, 0.55, 1); cb.inputs["Roughness"].default_value = 0.6
+<WORKDIR>\R4_Atlas5_hero4\scr\h4model.py:85: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w = bpy.data.worlds.new("w"); sc.world = w; w.use_nodes = True; w.node_tree.nodes["Background"].inputs[0].default_value = (0.42, 0.44, 0.48, 1); w.node_tree.nodes["Background"].inputs[1].default_value = 1.0
+05:32.750  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1\preview\E_Toon\R4M_WheelM_Side_Offroad_lo.jpg'
+05:33.281  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1\preview\E_Toon\R4M_WheelM_Side_Offroad_lo_back.jpg'
+05:33.562  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1\preview\E_Toon\R4M_WheelM_Side_Offroad_hi_clay.jpg'
+05:34.031  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1\preview\E_Toon\R4M_WheelM_Side_Offroad_lo_clay.jpg'
+05:34.390  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1\preview\E_Toon\R4M_WheelM_Side_Offroad_lo_wire.jpg'
+05:35.015  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\m1\preview\E_Toon\R4M_WheelM_Side_Offroad_lod1.jpg'
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Saved as "R4M_WheelM_Side_Offroad_SOURCE.blend"
+[HERO4] MODEL_DONE Wheel E {'type': 'Wheel', 'style': 'E', 'set': 'p', 'baseline': 'new', 'skin': 'E', 's_build_hi': 0.3, 's_build_lo': 0.1, 'tris_hi': {'Rotor': 25524, 'Coil': 1216, 'Body': 1768}, 'tris_lo': {'Rotor': 3492, 'Coil': 288, 'Body': 344}, 'tris_hi_total': 28508, 'tris_lo_total': 4124, 'violations': [], 'template_nodes_not_modelled': [], 's_unwrap': 4.5, 's_bake': 215.2, 's_skin': 106.0, 'tris_lod1': 2598, 'lod1': {'method': 'planar dissolve', 'angle_deg': 14.0, 'triangles': 2598, 'of_lod0': 0.63}, 's_export_render': 7.8}
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

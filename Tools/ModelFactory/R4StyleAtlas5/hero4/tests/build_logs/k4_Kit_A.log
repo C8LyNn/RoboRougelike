@@ -1,0 +1,77 @@
+00:00.031  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+<WORKDIR>\R4_Atlas5_hero4\scr\h4kit.py:206: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new("R4H_HullKit_" + LABEL); m.use_nodes = True; nt = m.node_tree; b = nt.nodes["Principled BSDF"]
+<WORKDIR>\R4_Atlas5_hero4\scr\h4kit.py:210: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  clay = bpy.data.materials.new("CLAY"); clay.use_nodes = True; clay.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.55, 0.55, 0.55, 1)
+<WORKDIR>\R4_Atlas5_hero4\scr\h4kit.py:218: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w.use_nodes = True; w.node_tree.nodes["Background"].inputs[0].default_value = (0.42, 0.44, 0.48, 1)
+50:07.985  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\k4\A_Sleek\hullkit_sheet.jpg'
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Saved as "R4H_HullKit_SOURCE.blend"
+INFO Draco is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_meshopt_bridge.dll
+14:32:52 | INFO: Starting glTF 2.0 export
+14:32:52 | INFO: Extracting primitive: cheek
+14:32:53 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: gasket.001
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: lip.020
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: nose_0
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: nose_1
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: nose_2
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: nose_3
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_00
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_01
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_02
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_03
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_04
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_05
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_06
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_07
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_08
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_09
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_10
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_11
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_12
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_13
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_14
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: plate_15
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Extracting primitive: ramp
+14:32:53 | INFO: Primitives created: 1
+14:32:53 | INFO: Finished glTF 2.0 export in 0.5042016506195068 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_hero4\\k4\\A_Sleek\\R4H_HullKit.fbx'
+export finished in 0.0297 sec.
+[HERO4] KIT_DONE A {'key': 'A', 'style': 'A', 'size': 4096, 's_build': 3.3, 'tris_hi_total': 15112, 'pieces': 24, 'ao_bake_px': 2048, 's_bake': 2801.8, 's_skin': 86.0, 'triangles_total': 3884, 'variants': 1, 'margin': 0.022, 's_export': 3.0}
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

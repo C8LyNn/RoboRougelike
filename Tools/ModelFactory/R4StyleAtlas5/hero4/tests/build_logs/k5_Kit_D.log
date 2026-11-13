@@ -1,0 +1,140 @@
+00:00.031  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+<WORKDIR>\R4_Atlas5_hero4\scr\h4kit.py:206: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new("R4H_HullKit_" + LABEL); m.use_nodes = True; nt = m.node_tree; b = nt.nodes["Principled BSDF"]
+<WORKDIR>\R4_Atlas5_hero4\scr\h4kit.py:210: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  clay = bpy.data.materials.new("CLAY"); clay.use_nodes = True; clay.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.55, 0.55, 0.55, 1)
+<WORKDIR>\R4_Atlas5_hero4\scr\h4kit.py:218: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w.use_nodes = True; w.node_tree.nodes["Background"].inputs[0].default_value = (0.42, 0.44, 0.48, 1)
+15:01.578  render           | Saved: '<WORKDIR>\R4_Atlas5_hero4\k5\D_Scrap\hullkit_sheet.jpg'
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Saved as "R4H_HullKit_SOURCE.blend"
+INFO Draco is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_meshopt_bridge.dll
+16:35:16 | INFO: Starting glTF 2.0 export
+16:35:16 | INFO: Extracting primitive: cheek
+16:35:16 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+16:35:16 | INFO: Primitives created: 1
+16:35:16 | INFO: Extracting primitive: gasket.001
+16:35:16 | INFO: Primitives created: 1
+16:35:16 | INFO: Extracting primitive: lip
+16:35:16 | INFO: Primitives created: 1
+16:35:16 | INFO: Extracting primitive: nose_0
+16:35:16 | INFO: Primitives created: 1
+16:35:16 | INFO: Extracting primitive: nose_1
+16:35:16 | INFO: Primitives created: 1
+16:35:16 | INFO: Extracting primitive: nose_2
+16:35:16 | INFO: Primitives created: 1
+16:35:16 | INFO: Extracting primitive: nose_3
+16:35:16 | INFO: Primitives created: 1
+16:35:16 | INFO: Extracting primitive: plate_00_0
+16:35:16 | INFO: Primitives created: 1
+16:35:16 | INFO: Extracting primitive: plate_00_1
+16:35:16 | INFO: Primitives created: 1
+16:35:16 | INFO: Extracting primitive: plate_00_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_01_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_01_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_01_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_02_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_02_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_02_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_03_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_03_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_03_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_04_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_04_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_04_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_05_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_05_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_05_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_06_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_06_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_06_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_07_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_07_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_07_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_08_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_08_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_08_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_09_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_09_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_09_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_10_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_10_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_10_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_11_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_11_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_11_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_12_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_12_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_12_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_13_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_13_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_13_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_14_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_14_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_14_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_15_0
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_15_1
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: plate_15_2
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Extracting primitive: ramp
+16:35:17 | INFO: Primitives created: 1
+16:35:17 | INFO: Finished glTF 2.0 export in 0.2043595314025879 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_hero4\\k5\\D_Scrap\\R4H_HullKit.fbx'
+export finished in 0.0489 sec.
+[HERO4] KIT_DONE D {'key': 'D', 'style': 'D', 'size': 2048, 's_build': 13.1, 'tris_hi_total': 62348, 'pieces': 56, 's_bake': 853.9, 's_skin': 16.3, 'triangles_total': 5404, 'variants': 3, 'margin': 0.02, 's_export': 1.8}
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

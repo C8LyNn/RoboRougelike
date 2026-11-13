@@ -1,8 +1,6 @@
 # #1239 R4 Style Atlas 5 — HERO BENCHMARK PASS 4 (nowa iteracja modelowania)
 
-> **W TOKU (commit roboczy):** w repozytorium jest komplet 17 modeli części (17/17 `BLENDER_PASS`, testy GLB 17/17). Zestawy pancerza kadłuba, rendery Brutal / Scrap, plansze i `MODELS.md` zostaną dodane w następnym commicie — ich wypalanie trwa na stacji roboczej.
-
-Status: **propozycja do odbioru właściciela**. Blender: @@PASS@@ `BLENDER_PASS`. Testy GLB (numpy): @@TESTS@@. Unity: **UNITY_NOT_RUN**. Windows player: **WINDOWS_PLAYER_NOT_RUN**.
+Status: **propozycja do odbioru właściciela**. Blender: 17/17 `BLENDER_PASS`. Testy GLB (numpy): modele 17/17, zestawy pancerza 6/6. Unity: **UNITY_NOT_RUN**. Windows player: **WINDOWS_PLAYER_NOT_RUN**.
 Zakres: tylko `Tools/ModelFactory/R4StyleAtlas5/` (`hero4/` + skrypty `scripts/h4*.py`). Bez zmian w `Assets/`, kodzie gry, fizyce, montażu, Save/Load,
 identyfikatorach i parametrach broni. Wcześniejsze dostawy (`hero1/` = PR #1270, `hero2/` = PR #1274 i starsze) są nietknięte — sprawdza to test.
 Gałąź `art/1239-atlas5-hero4` wychodzi z `art/1239-atlas5-hero2`; nie zawiera PR #1278.
@@ -56,7 +54,7 @@ jedyna realna poprawa to wymodelowanie pancerza od nowa — i to zostało zrobio
 - Kostka `R4B_Cube` pozostaje **zatwierdzonym rdzeniem konstrukcyjnym 44 trójkąty** (port, kolizja, siatka) — nie została dotknięta.
   Pancerz jest odwracalną warstwą wizualną: bez kolizji, bez wpływu na montaż; po jego wyłączeniu zostaje dotychczasowy wygląd.
 - Każdy zestaw ma model źródłowy high-poly, siatkę gry, wypalone mapy (normal, AO, krawędzie) i tekstury base / ORM / normal / emisja
-  (jeden atlas 2048² na zestaw), plik `.blend`, FBX i GLB.
+  (jeden atlas na zestaw: 4096² dla Sleek, Arcade i Toon, 2048² dla Brutal P/Q i Scrap), plik `.blend`, FBX i GLB.
 - Brutal P/Q i Scrap mają po 2–3 **warianty zużycia** każdej płyty (`plate_MM_V`), żeby sąsiednie płyty się nie powtarzały. Wybór wariantu
   z pozycji kostki to jedyny dodatek do reguły — czysto kosmetyczny; wymaga akceptacji przed ewentualnym wdrożeniem w Unity.
 
@@ -64,7 +62,7 @@ jedyna realna poprawa to wymodelowanie pancerza od nowa — i to zostało zrobio
 
 `h4defs.py` (17 przepisów części) i `h4kit.py` (pancerz) → model źródłowy high-poly i siatka gry (`hf.py`) → wypalanie w Cycles (`hbake.py`)
 → skóra modelu z wypalonych map (`hskin.py`, palety `h4pal.py`) → eksport, przeniesienie zatwierdzonej animacji i QA (`pbuild.py`, bez zmian)
-→ sceny porównawcze (`h4scene.py`) → testy (`h4tests.py`) i plansze (`h4boards.py`).
+→ sceny porównawcze (`h4scene.py`) → testy (`h4tests.py`, `h4verify.py`) i plansze (`h4boards.py`).
 
 Na każdą propozycję części: `source[_q]/<Styl>/<ID>_SOURCE.blend` (high-poly + siatka gry + LOD1), `variants[_q]/<Styl>/<ID>/` (FBX, GLB,
 LOD1, `.blend` z rigiem i klipami, `_QA.json`, rendery kontrolne), `textures[_q]/<Styl>/` (base, ORM, normal, emisja, maska malowania 2048²).
@@ -93,7 +91,7 @@ To nie są wady modeli, tylko granice, których nie przekroczyłem bez zgody. Ka
 4. **Bateria: port tylny** — prostokąt 130 × 130 mm na tylnej ścianie musi być płaski i zlicowany w ≥ 65 %. Każda bateria ma więc z tyłu
    gładki blok gniazda; kapsuły, butle i klatki nie mogą tam mieć formy. Poza tym pompująca nakrętka (Arcade) musi kończyć się 16 mm poniżej
    stropu komórki, bo zatwierdzony klip podnosi ją o 26 mm.
-5. **Pancerz kadłuba nie ma kolizji i nie zmienia obrysu kostki** — płyty mają do 38 mm grubości, a jedyne formy wychodzące dalej to
+5. **Pancerz kadłuba nie ma kolizji i nie zmienia obrysu kostki** — płyty mają do 57 mm grubości, a jedyne formy wychodzące dalej to
    istniejące sloty `nose` / `lip` / `ramp`. Prawdziwie obłe lub skośne bryły kadłuba (kliny, nadkola zintegrowane z burtą, zwężany dziób)
    wymagają nowych typów bloków konstrukcyjnych, czyli zmiany zasad gry.
 6. **Mechanizmy poruszają się po zatwierdzonych ścieżkach** — mogłem zmienić to, *co* się rusza, ale nie *jak*. Mocniejszy charakter
@@ -104,11 +102,14 @@ Jeżeli któraś z tych granic ma zostać przesunięta, potrzebna jest decyzja w
 ## Testy: co jest sprawdzone, a co nie
 
 **Sprawdzone w Blenderze** (`pbuild.py`, wynik w `variants*/…/_QA.json`): obwiednia, obrysy węzłów względem zatwierdzonych, powierzchnie
-styku portów (LOD0 i LOD1), interfejs, przeniesienie animacji i jej zasięg, szwy pętli, eksport i ponowny import FBX/GLB. Wynik: @@PASS@@.
+styku portów (LOD0 i LOD1), interfejs, przeniesienie animacji i jej zasięg, szwy pętli, eksport i ponowny import FBX/GLB. Wynik: 17/17.
 
 **Sprawdzone niezależnie na plikach GLB** (`h4tests.py`, numpy, bez Blendera): P1 węzły i hierarchia, P2 pivoty i port montażowy, P3 obrys
 funkcjonalny, P4 animacja identyczna ze wzorcem, P5 geometria faktycznie nowa, P6 komplet plików; dla pancerza K1–K4 (nazwy, grubość, zasięg,
-pliki). Wynik: @@TESTS@@ — `tests/HERO4_TEST_SUMMARY.md`.
+pliki). Wynik: modele 17/17, zestawy pancerza 6/6 — `tests/HERO4_TEST_SUMMARY.md`.
+
+**Odtwarzalność** (`h4verify.py`, Blender): każdy z 17 przepisów zbudowany ponownie daje dokładnie dostarczony model (liczba trójkątów modelu
+źródłowego i siatki gry w każdym węźle, obrysy węzłów) — `tests/verify_recipes.json`.
 
 **NIE sprawdzone:** import do Unity, materiały URP, prefaby, kolizje i montaż w grze, wydajność, Windows player. Nic z tej dostawy nie
 zostało wstawione do `Assets/`.
@@ -120,7 +121,8 @@ zostało wstawione do `Assets/`.
 - W robotach remisowych druga para (`Lq` / `Rq`) zestawia propozycje Q ze sobą (Brutal: pancerz Q + koło Q; Arcade: bateria Q). To
   zestawienie jest umowne — każdą kategorię należy oceniać osobno na planszach `02`–`05`.
 - Kontur „toon” w stylu E to efekt sceny (look-dev), nie cecha modelu.
-- Tekstury pancerza: jeden atlas 2048² na zestaw 24–56 siatek; w największych zbliżeniach widać mniejszą gęstość tekseli niż na częściach.
+- Tekstury pancerza: jeden atlas na zestaw 24–56 siatek. Brutal P/Q i Scrap (40–56 siatek z wariantami zużycia) mają atlas 2048² — w największych
+  zbliżeniach widać tam mniejszą gęstość tekseli niż na częściach; Sleek, Arcade i Toon mają 4096² (okluzja wypalona w 2048²).
 - To pięć zestawów benchmarkowych. **Biblioteka nie została rozszerzona** na pozostałe części.
 
 ## Pytania do właściciela (bramka)

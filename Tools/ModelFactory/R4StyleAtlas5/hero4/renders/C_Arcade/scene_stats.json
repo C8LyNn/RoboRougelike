@@ -81,7 +81,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 4.2
+   "render_s_1080": 1.8
   },
   "low_L": {
    "pieces": 32,
@@ -149,7 +149,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.2
+   "render_s_1080": 1.0
   },
   "side_L": {
    "pieces": 32,
@@ -217,7 +217,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.6
+   "render_s_1080": 0.8
   },
   "panels_L": {
    "pieces": 32,
@@ -285,7 +285,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.3
+   "render_s_1080": 1.1
   },
   "prow_L": {
    "pieces": 32,
@@ -353,7 +353,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.6
+   "render_s_1080": 1.0
   },
   "deck_L": {
    "pieces": 32,
@@ -421,7 +421,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.4
+   "render_s_1080": 1.2
   },
   "cube_L": {
    "pieces": 2,
@@ -466,7 +466,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.4
+   "render_s_1080": 1.0
   },
   "dist_L": {
    "pieces": 96,
@@ -558,7 +558,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.2
+   "render_s_1080": 0.9
   },
   "clay_L": {
    "pieces": 32,
@@ -626,7 +626,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.0
+   "render_s_1080": 0.8
   },
   "clayprow_L": {
    "pieces": 32,
@@ -694,7 +694,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.0
+   "render_s_1080": 0.8
   },
   "gun_L": {
    "pieces": 2,
@@ -739,7 +739,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.2
+   "render_s_1080": 0.8
   },
   "wheel_L": {
    "pieces": 2,
@@ -784,7 +784,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.1
+   "render_s_1080": 1.0
   },
   "bat_L": {
    "pieces": 2,
@@ -829,7 +829,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.1
+   "render_s_1080": 1.0
   },
   "hero_R": {
    "pieces": 32,
@@ -896,11 +896,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.5
+   "render_s_1080": 1.4
   },
   "low_R": {
    "pieces": 32,
@@ -967,11 +967,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.2
+   "render_s_1080": 0.8
   },
   "side_R": {
    "pieces": 32,
@@ -1038,11 +1038,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.2
+   "render_s_1080": 0.7
   },
   "panels_R": {
    "pieces": 32,
@@ -1109,11 +1109,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.1
+   "render_s_1080": 0.7
   },
   "prow_R": {
    "pieces": 32,
@@ -1180,11 +1180,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.1
+   "render_s_1080": 0.7
   },
   "deck_R": {
    "pieces": 32,
@@ -1251,11 +1251,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.3
+   "render_s_1080": 0.7
   },
   "cube_R": {
    "pieces": 2,
@@ -1299,11 +1299,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.1
+   "render_s_1080": 0.8
   },
   "dist_R": {
    "pieces": 96,
@@ -1394,11 +1394,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.2
+   "render_s_1080": 0.8
   },
   "clay_R": {
    "pieces": 32,
@@ -1465,11 +1465,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.0
+   "render_s_1080": 0.8
   },
   "clayprow_R": {
    "pieces": 32,
@@ -1536,11 +1536,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.0
+   "render_s_1080": 0.7
   },
   "gun_R": {
    "pieces": 2,
@@ -1584,11 +1584,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.1
+   "render_s_1080": 0.7
   },
   "wheel_R": {
    "pieces": 2,
@@ -1632,11 +1632,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 1.9
+   "render_s_1080": 0.7
   },
   "bat_R": {
    "pieces": 2,
@@ -1680,11 +1680,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.0
+   "render_s_1080": 0.7
   },
   "hero_Lq": {
    "pieces": 32,
@@ -1752,7 +1752,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.1
+   "render_s_1080": 0.7
   },
   "low_Lq": {
    "pieces": 32,
@@ -1820,7 +1820,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 1.9
+   "render_s_1080": 0.7
   },
   "dist_Lq": {
    "pieces": 96,
@@ -1912,7 +1912,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.3
+   "render_s_1080": 0.7
   },
   "bat_Lq": {
    "pieces": 2,
@@ -1957,7 +1957,7 @@
      "source": "hero1 hull kit (PR #1270), palette of hero2 (PR #1274)"
     }
    },
-   "render_s_1080": 2.0
+   "render_s_1080": 0.7
   },
   "hero_Rq": {
    "pieces": 32,
@@ -2024,11 +2024,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.1
+   "render_s_1080": 0.7
   },
   "low_Rq": {
    "pieces": 32,
@@ -2095,11 +2095,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.2
+   "render_s_1080": 0.7
   },
   "dist_Rq": {
    "pieces": 96,
@@ -2190,11 +2190,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.2
+   "render_s_1080": 0.7
   },
   "bat_Rq": {
    "pieces": 2,
@@ -2238,11 +2238,11 @@
     "p": {
      "source": "hero4 proposal P",
      "file": "C_Arcade/R4H_HullKit.glb",
-     "sha256": "b1780512406ee142e45e32c2cc2b38c5243cea5c30bcabff057c6531ebf00c47",
+     "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
      "pieces": 24
     }
    },
-   "render_s_1080": 2.0
+   "render_s_1080": 0.8
   }
  },
  "crops": {
@@ -2411,7 +2411,7 @@
   "C_Arcade/R4X_Battery/R4X_Battery.glb ea5ad7e4d99cef49c81cb26722ab2309854a0b735b860b99bab48a7c9c4444cb hero4 proposal P",
   "C_Arcade/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb 71844f2af11522ed59157dc565d5822265a6836e9e9e279e54b27bb4432ee602 hero1 (PR #1270)"
  ],
- "seconds": 181.4,
+ "seconds": 63.6,
  "blender": "5.3.0",
  "engine": "BLENDER_EEVEE"
 }

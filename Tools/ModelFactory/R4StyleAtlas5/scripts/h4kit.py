@@ -69,9 +69,9 @@ def armour(B, nd, r, cl, z0, var=0, seed=0):
         lo_, hi_ = poly(r, CH, cl), poly(inset(r, 0.032, cl), CH, cl); sl = B.loft(nd, "base", [[(x, y, z0) for (x, y) in lo_], [(x, y, z0 + 0.008) for (x, y) in lo_], [(x, y, z0 + 0.034) for (x, y) in hi_]], True, name="slab"); B.bevel(sl, 0.004, (3, 1), 25)
         rf = inset(r, 0.090, cl); B.cut(sl, B.prism(nd, "base", poly(rf, 0.030, cl), z0 + 0.029, z0 + 0.05, ("x", "y", "z"), kind="cutter"), lo=False)
         for (x, y) in corners(r, cl, 0.060): B.cyl(nd, "bare", (x, y, z0 + 0.034), (x, y, z0 + 0.046), 0.016, (6, 6), name="bolt"); B.cyl(nd, "dark", (x, y, z0 + 0.034), (x, y, z0 + 0.037), 0.024, (12, 6), "detail", "washer")
-        if cs: gd = B.prism(nd, "sec", [(v0 - 0.002, z0 + 0.004), (v0 + 0.040, z0 + 0.036), (v0 + 0.070, z0 + 0.036), (v0 + 0.070, z0 + 0.042), (v0 + 0.034, z0 + 0.042), (v0 - 0.006, z0 + 0.010)], ua - 0.010, ub + 0.010, ("y", "z", "x"), name="guard"); B.bevel(gd, 0.002, (2, 0))
+        if cs: gd = B.prism(nd, "sec", [(v0 - 0.002, z0 + 0.004), (v0 + 0.040, z0 + 0.036), (v0 + 0.070, z0 + 0.036), (v0 + 0.070, z0 + 0.042), (v0 + 0.034, z0 + 0.042), (v0 - 0.006, z0 + 0.010)], max(ua - 0.010, u0), min(ub + 0.010, u1), ("y", "z", "x"), name="guard"); B.bevel(gd, 0.002, (2, 0))
         if cn and cw and ce:
-            for x in (-0.080, 0.080): B.pipe(nd, "metal", [(x - 0.030, v1 - 0.050, z0 + 0.030, 'c'), (x - 0.026, v1 - 0.050, z0 + 0.060), (x + 0.026, v1 - 0.050, z0 + 0.060), (x + 0.030, v1 - 0.050, z0 + 0.030, 'c')], 0.008, (8, 6), (4, 2), name="tiedown")
+            for x in (-0.080, 0.080): B.pipe(nd, "metal", [(x - 0.030, v1 - 0.050, z0 + 0.030, 'c'), (x - 0.026, v1 - 0.050, z0 + 0.046), (x + 0.026, v1 - 0.050, z0 + 0.046), (x + 0.030, v1 - 0.050, z0 + 0.030, 'c')], 0.008, (8, 6), (4, 2), name="tiedown")
     elif KEY == "C":                                                                         # navy frame, one fat white pillow, one orange band
         pr("dark", r, 0.060, z0, z0 + 0.010, "frame", 0.004, (2, 1)); r1 = inset(r, 0.018, cl); pr("base", r1, 0.066, z0 + 0.008, z0 + 0.028, "pillow", 0.012)
         if cs: rb = (r1[0] + 0.050*cw, r1[1] - 0.050*ce, v0 + 0.064, v0 + 0.124); B.bevel(B.prism(nd, "sec", poly(rb, 0.020, (cw, ce, True, True)), z0 + 0.026, z0 + 0.034, ("x", "y", "z"), name="band"), 0.006, (3, 1), 30)
@@ -142,7 +142,7 @@ def nose(B, nd, mask):
     elif KEY == "D":                                                                         # welded ram: two unequal pipes on cut brackets, three teeth of different length, a patch
         B.cyl(nd, "rust", (u0, -0.200, H + 0.075), (u1, -0.200, H + 0.075), 0.022, (7, 7), name="ram_pipe"); B.cyl(nd, "metal", (u0 + 0.03*(not w), -0.075, H + 0.050), (u1, -0.075, H + 0.050), 0.016, (6, 6), name="ram_pipe2")
         for a_ in (-0.160, 0.140): B.cyl(nd, "metal", (a_, -0.200, H - 0.002), (a_, -0.200, H + 0.075), 0.014, (6, 6), name="stay"); B.weld(nd, [(a_ - 0.02, -0.200, H + 0.004), (a_ + 0.02, -0.200, H + 0.004)], 0.005)
-        for (a_, L) in ((-0.150, 0.125), (0.020, 0.160), (0.170, 0.100)): B.prism(nd, "metal", [(a_ - 0.055, H + 0.060), (a_ + 0.055, H + 0.060), (a_ + 0.012, H + 0.060 + L)], -0.215, -0.199, ("x", "z", "y"), name="tooth")
+        for (a_, L) in ((-0.150, 0.110), (0.020, 0.132), (0.170, 0.090)): B.prism(nd, "metal", [(a_ - 0.055, H + 0.060), (a_ + 0.055, H + 0.060), (a_ + 0.012, H + 0.060 + L)], -0.215, -0.199, ("x", "z", "y"), name="tooth")
         B.prism(nd, "alt", [(-0.210, -0.020), (0.090, -0.006), (0.080, 0.170), (-0.200, 0.160)], H + 0.008, H + 0.018, ("x", "y", "z"), name="patch"); B.weld(nd, [(-0.210, -0.020, H + 0.010), (0.090, -0.006, H + 0.010)], 0.004)
     else:                                                                                    # E: fat rounded bumper, orange lip, one big lamp
         B.hull(nd, "dark", [(u0, -0.135, H + 0.050, 0.110, 0.058, 3.0), ((u0 + u1)/2, -0.135, H + 0.056, 0.116, 0.064, 3.0), (u1, -0.135, H + 0.050, 0.110, 0.058, 3.0)], (20, 10), (3, 1), "x", name="bumper")

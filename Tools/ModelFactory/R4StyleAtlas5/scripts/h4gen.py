@@ -29,8 +29,9 @@ def p4pal():
         out[s] = {}
         for k, key in KITPAL[s].items():
             P = h4pal.PAL[key]; m = lambda z: dict(rgb=list(P[z][0]), metallic=P[z][1], roughness=P[z][2])
-            out[s][k] = dict(materials={"R4P_Base": m("base"), "R4P_Secondary": m("dark"), "R4P_Trim": m("dark"), "R4P_Metal": m("metal"), "R4P_Wear": m("rust" if "rust" in P else "dark")}, glow=list(P["glow"][0]), glow_k=GLOWK[s], palette=key,
-                             note="the cube is a structural core under the armour: its faces take the dark frame colour of the hull, as in Hero Pass 2")
+            core = dict(rgb=[0.070, 0.028, 0.020], metallic=0.3, roughness=0.86) if key == "D" else m("dark")      # Scrap: a dark oxide core, so the uncovered cube faces stay in the one colour family
+            out[s][k] = dict(materials={"R4P_Base": m("base"), "R4P_Secondary": core, "R4P_Trim": core, "R4P_Metal": m("metal"), "R4P_Wear": m("rust" if "rust" in P else "dark")}, glow=list(P["glow"][0]), glow_k=GLOWK[s], palette=key,
+                             note="the cube is a structural core under the armour: its faces take the dark frame colour of the hull, as in Hero Pass 2 (Scrap: dark oxide)")
     return out
 
 

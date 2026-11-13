@@ -1,0 +1,142 @@
+{
+ "what": "recipes rebuilt without baking and compared with the build report of the delivered model",
+ "all_same": true,
+ "models": {
+  "A_Sleek Battery P": {
+   "same": true,
+   "tris_lo": 2856,
+   "tris_lo_delivered": 2856,
+   "tris_hi": 9848,
+   "tris_hi_delivered": 9848,
+   "bounds_dev_mm": 0.0
+  },
+  "B_Brutal Battery P": {
+   "same": true,
+   "tris_lo": 1960,
+   "tris_lo_delivered": 1960,
+   "tris_hi": 5756,
+   "tris_hi_delivered": 5756,
+   "bounds_dev_mm": 0.0
+  },
+  "C_Arcade Battery P": {
+   "same": true,
+   "tris_lo": 1512,
+   "tris_lo_delivered": 1512,
+   "tris_hi": 4760,
+   "tris_hi_delivered": 4760,
+   "bounds_dev_mm": 0.0
+  },
+  "C_Arcade Battery Q": {
+   "same": true,
+   "tris_lo": 808,
+   "tris_lo_delivered": 808,
+   "tris_hi": 2976,
+   "tris_hi_delivered": 2976,
+   "bounds_dev_mm": 0.0
+  },
+  "D_Scrap Battery P": {
+   "same": true,
+   "tris_lo": 1180,
+   "tris_lo_delivered": 1180,
+   "tris_hi": 4272,
+   "tris_hi_delivered": 4272,
+   "bounds_dev_mm": 0.0
+  },
+  "E_Toon Battery P": {
+   "same": true,
+   "tris_lo": 1532,
+   "tris_lo_delivered": 1532,
+   "tris_hi": 6052,
+   "tris_hi_delivered": 6052,
+   "bounds_dev_mm": 0.0
+  },
+  "A_Sleek Gun P": {
+   "same": true,
+   "tris_lo": 2956,
+   "tris_lo_delivered": 2956,
+   "tris_hi": 8464,
+   "tris_hi_delivered": 8464,
+   "bounds_dev_mm": 0.0
+  },
+  "B_Brutal Gun P": {
+   "same": true,
+   "tris_lo": 2944,
+   "tris_lo_delivered": 2944,
+   "tris_hi": 5928,
+   "tris_hi_delivered": 5928,
+   "bounds_dev_mm": 0.0
+  },
+  "C_Arcade Gun P": {
+   "same": true,
+   "tris_lo": 2000,
+   "tris_lo_delivered": 2000,
+   "tris_hi": 7648,
+   "tris_hi_delivered": 7648,
+   "bounds_dev_mm": 0.0
+  },
+  "D_Scrap Gun P": {
+   "same": true,
+   "tris_lo": 1358,
+   "tris_lo_delivered": 1358,
+   "tris_hi": 6396,
+   "tris_hi_delivered": 6396,
+   "bounds_dev_mm": 0.0
+  },
+  "E_Toon Gun P": {
+   "same": true,
+   "tris_lo": 2544,
+   "tris_lo_delivered": 2544,
+   "tris_hi": 11224,
+   "tris_hi_delivered": 11224,
+   "bounds_dev_mm": 0.0
+  },
+  "A_Sleek Wheel P": {
+   "same": true,
+   "tris_lo": 7048,
+   "tris_lo_delivered": 7048,
+   "tris_hi": 35316,
+   "tris_hi_delivered": 35316,
+   "bounds_dev_mm": 0.0
+  },
+  "B_Brutal Wheel P": {
+   "same": true,
+   "tris_lo": 5826,
+   "tris_lo_delivered": 5826,
+   "tris_hi": 29066,
+   "tris_hi_delivered": 29066,
+   "bounds_dev_mm": 0.0
+  },
+  "B_Brutal Wheel Q": {
+   "same": true,
+   "tris_lo": 5392,
+   "tris_lo_delivered": 5392,
+   "tris_hi": 27952,
+   "tris_hi_delivered": 27952,
+   "bounds_dev_mm": 0.0
+  },
+  "C_Arcade Wheel P": {
+   "same": true,
+   "tris_lo": 3568,
+   "tris_lo_delivered": 3568,
+   "tris_hi": 23300,
+   "tris_hi_delivered": 23300,
+   "bounds_dev_mm": 0.0
+  },
+  "D_Scrap Wheel P": {
+   "same": true,
+   "tris_lo": 5116,
+   "tris_lo_delivered": 5116,
+   "tris_hi": 27664,
+   "tris_hi_delivered": 27664,
+   "bounds_dev_mm": 0.0
+  },
+  "E_Toon Wheel P": {
+   "same": true,
+   "tris_lo": 4124,
+   "tris_lo_delivered": 4124,
+   "tris_hi": 28508,
+   "tris_hi_delivered": 28508,
+   "bounds_dev_mm": 0.0
+  }
+ }
+}

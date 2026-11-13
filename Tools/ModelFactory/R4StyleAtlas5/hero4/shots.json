@@ -3575,7 +3575,7 @@
     ],
     "glow_k": 3.0,
     "palette": "A",
-    "note": "the cube is a structural core under the armour: its faces take the dark frame colour of the hull, as in Hero Pass 2"
+    "note": "the cube is a structural core under the armour: its faces take the dark frame colour of the hull, as in Hero Pass 2 (Scrap: dark oxide)"
    }
   },
   "B": {
@@ -3634,7 +3634,7 @@
     ],
     "glow_k": 2.5,
     "palette": "Bo",
-    "note": "the cube is a structural core under the armour: its faces take the dark frame colour of the hull, as in Hero Pass 2"
+    "note": "the cube is a structural core under the armour: its faces take the dark frame colour of the hull, as in Hero Pass 2 (Scrap: dark oxide)"
    },
    "q": {
     "materials": {
@@ -3691,7 +3691,7 @@
     ],
     "glow_k": 2.5,
     "palette": "B",
-    "note": "the cube is a structural core under the armour: its faces take the dark frame colour of the hull, as in Hero Pass 2"
+    "note": "the cube is a structural core under the armour: its faces take the dark frame colour of the hull, as in Hero Pass 2 (Scrap: dark oxide)"
    }
   },
   "C": {
@@ -3750,7 +3750,7 @@
     ],
     "glow_k": 2.0,
     "palette": "C",
-    "note": "the cube is a structural core under the armour: its faces take the dark frame colour of the hull, as in Hero Pass 2"
+    "note": "the cube is a structural core under the armour: its faces take the dark frame colour of the hull, as in Hero Pass 2 (Scrap: dark oxide)"
    }
   },
   "D": {
@@ -3767,21 +3767,21 @@
      },
      "R4P_Secondary": {
       "rgb": [
-       0.016,
-       0.014,
-       0.012
+       0.07,
+       0.028,
+       0.02
       ],
-      "metallic": 0.6,
-      "roughness": 0.82
+      "metallic": 0.3,
+      "roughness": 0.86
      },
      "R4P_Trim": {
       "rgb": [
-       0.016,
-       0.014,
-       0.012
+       0.07,
+       0.028,
+       0.02
       ],
-      "metallic": 0.6,
-      "roughness": 0.82
+      "metallic": 0.3,
+      "roughness": 0.86
      },
      "R4P_Metal": {
       "rgb": [
@@ -3809,7 +3809,7 @@
     ],
     "glow_k": 2.5,
     "palette": "D",
-    "note": "the cube is a structural core under the armour: its faces take the dark frame colour of the hull, as in Hero Pass 2"
+    "note": "the cube is a structural core under the armour: its faces take the dark frame colour of the hull, as in Hero Pass 2 (Scrap: dark oxide)"
    }
   },
   "E": {
@@ -3868,7 +3868,7 @@
     ],
     "glow_k": 2.5,
     "palette": "E",
-    "note": "the cube is a structural core under the armour: its faces take the dark frame colour of the hull, as in Hero Pass 2"
+    "note": "the cube is a structural core under the armour: its faces take the dark frame colour of the hull, as in Hero Pass 2 (Scrap: dark oxide)"
    }
   }
  },

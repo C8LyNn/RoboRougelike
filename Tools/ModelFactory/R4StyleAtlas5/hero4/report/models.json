@@ -1,0 +1,857 @@
+{
+ "proposals": [
+  {
+   "category": "chassis",
+   "style": "A",
+   "proposal": "",
+   "tie": false,
+   "baseline": "new",
+   "kept": "biała ceramika, cyjanowe światło, pomarańczowy akcent",
+   "new": "pancerz WARSTWOWY: ciemna podrama, osobna skorupa dolna („podbródek”), świecąca szczelina, skorupa główna i podniesiona warga wzdłuż górnej krawędzi; pomarańcz tylko jako mała zakładka na wardze; dziób z dwóch skorup ze świecącą szczeliną i splitterem; błotnik z trzech skorup na ciemnym łuku",
+   "dir": "hero4/hull_kit/A_Sleek",
+   "pieces": 24,
+   "variants": 1,
+   "triangles_game": 3884,
+   "triangles_source": 15112,
+   "texture_px": 4096,
+   "palette": "A",
+   "sha256": "60147a603633673511c9d00484c667c0811d2f8f95854f92f74054e07e6747a0",
+   "files": [
+    "R4H_HullKit.glb",
+    "R4H_HullKit.fbx",
+    "R4H_HullKit_SOURCE.blend",
+    "hullkit_base.jpg",
+    "hullkit_orm.jpg",
+    "hullkit_normal.jpg",
+    "hullkit_emission.jpg"
+   ],
+   "baseline_dir": "hero1/hull_kit/A_Sleek (geometry of Pass 1 in the palette of Pass 2 (#1274))"
+  },
+  {
+   "category": "chassis",
+   "style": "B",
+   "proposal": "P",
+   "tie": true,
+   "baseline": "old",
+   "kept": "malowana oliwkowoszara płyta w ramie, śruby, żółte pole",
+   "new": "druga warstwa: przykręcana płyta aplikacyjna na płycie bazowej; rama z kątownika; rzędy nitów i spoina; ucho transportowe na górnej krawędzi; dziób — dwie rury taranu na żebrowanych wspornikach z tablicą ostrzegawczą; po dwa warianty zużycia każdej płyty",
+   "dir": "hero4/hull_kit/B_Brutal_P",
+   "pieces": 40,
+   "variants": 2,
+   "triangles_game": 6788,
+   "triangles_source": 66124,
+   "texture_px": 2048,
+   "palette": "Bo",
+   "sha256": "47513ff88a4e8155b8f766db776d16acbdd0d1d13247e097f6b67c9a6b651883",
+   "files": [
+    "R4H_HullKit.glb",
+    "R4H_HullKit.fbx",
+    "R4H_HullKit_SOURCE.blend",
+    "hullkit_base.jpg",
+    "hullkit_orm.jpg",
+    "hullkit_normal.jpg",
+    "hullkit_emission.jpg"
+   ],
+   "baseline_dir": "hero1/hull_kit/B_Brutal (geometry of Pass 1 in the palette of Pass 1 (#1270))"
+  },
+  {
+   "category": "chassis",
+   "style": "B",
+   "proposal": "Q",
+   "tie": true,
+   "baseline": "new",
+   "kept": "czarna stal i żółć",
+   "new": "jedna odlewana płyta ze skośnymi krawędziami i zagłębionym polem zamiast płaskiej blachy; duże śruby z podkładkami; żółta listwa ochronna na dolnej krawędzi; ucha mocujące; dziób — odlewany taran ze ściętą twarzą i dwoma hakami holowniczymi; odlewany błotnik z żebrami",
+   "dir": "hero4/hull_kit/B_Brutal_Q",
+   "pieces": 40,
+   "variants": 2,
+   "triangles_game": 5680,
+   "triangles_source": 24972,
+   "texture_px": 2048,
+   "palette": "B",
+   "sha256": "9f2290c58cc3b71600388d28b58eb5701b1501fbcabf971729ea63c488a52d2b",
+   "files": [
+    "R4H_HullKit.glb",
+    "R4H_HullKit.fbx",
+    "R4H_HullKit_SOURCE.blend",
+    "hullkit_base.jpg",
+    "hullkit_orm.jpg",
+    "hullkit_normal.jpg",
+    "hullkit_emission.jpg"
+   ],
+   "baseline_dir": "hero1/hull_kit/B_Brutal (geometry of Pass 1 in the palette of Pass 2 (#1274))"
+  },
+  {
+   "category": "chassis",
+   "style": "C",
+   "proposal": "",
+   "tie": false,
+   "baseline": "new",
+   "kept": "granat, biel, pomarańczowy pas",
+   "new": "granatowa rama, gruba biała poduszka z dużą fazą i podniesionym plateau, pomarańczowy pas jako wypukła listwa ze ściętymi końcami, dwa granatowe ćwieki u góry; zderzak z poduszką i białymi końcówkami; gładki gruby błotnik z pasem",
+   "dir": "hero4/hull_kit/C_Arcade",
+   "pieces": 24,
+   "variants": 1,
+   "triangles_game": 4244,
+   "triangles_source": 20892,
+   "texture_px": 4096,
+   "palette": "C",
+   "sha256": "bd7407a715c347699ba71d700a836a21230168cba28a56e68f6b4eb5390b007d",
+   "files": [
+    "R4H_HullKit.glb",
+    "R4H_HullKit.fbx",
+    "R4H_HullKit_SOURCE.blend",
+    "hullkit_base.jpg",
+    "hullkit_orm.jpg",
+    "hullkit_normal.jpg",
+    "hullkit_emission.jpg"
+   ],
+   "baseline_dir": "hero1/hull_kit/C_Arcade (geometry of Pass 1 in the palette of Pass 2 (#1274))"
+  },
+  {
+   "category": "chassis",
+   "style": "D",
+   "proposal": "",
+   "tie": false,
+   "baseline": "old",
+   "kept": "jedna rodzina barw: tlenek, brąz, rdza",
+   "new": "każda płyta z dwóch odzyskanych arkuszy na zakładkę — górny arkusz ma wycięcie i ucięty narożnik, więc obrys nie jest prostokątem — ze spoiną, taśmą stalową i śrubami; odgięta zakładka w narożniku; trzy warianty układu, żeby sąsiednie płyty się nie powtarzały; jedna łata w kolorze podkładu; narożne wzmocnienia; taran z dwóch różnych rur i trzech zębów różnej długości",
+   "dir": "hero4/hull_kit/D_Scrap",
+   "pieces": 56,
+   "variants": 3,
+   "triangles_game": 5404,
+   "triangles_source": 62348,
+   "texture_px": 2048,
+   "palette": "D",
+   "sha256": "7dd5b7e6f555bd542976cfeb2b9556ddfdd607466e49860c153bdad51e66fbfb",
+   "files": [
+    "R4H_HullKit.glb",
+    "R4H_HullKit.fbx",
+    "R4H_HullKit_SOURCE.blend",
+    "hullkit_base.jpg",
+    "hullkit_orm.jpg",
+    "hullkit_normal.jpg",
+    "hullkit_emission.jpg"
+   ],
+   "baseline_dir": "hero1/hull_kit/D_Scrap (geometry of Pass 1 in the palette of Pass 1 (#1270))"
+  },
+  {
+   "category": "chassis",
+   "style": "E",
+   "proposal": "",
+   "tie": false,
+   "baseline": "new",
+   "kept": "pomarańcz i granat, gruby kontur",
+   "new": "gruba granatowa płyta-kontur, pękata pomarańczowa poduszka z przeszyciem, duży biały szewron, kopułkowe nity na narożnikach; gruby obły zderzak z jedną dużą lampą; pękaty błotnik",
+   "dir": "hero4/hull_kit/E_Toon",
+   "pieces": 24,
+   "variants": 1,
+   "triangles_game": 4628,
+   "triangles_source": 23764,
+   "texture_px": 4096,
+   "palette": "E",
+   "sha256": "d1d85e2f0096998ec64b6d32f3fe138e6c8fbe4c5d7b79974c89aae0a3e2e7cf",
+   "files": [
+    "R4H_HullKit.glb",
+    "R4H_HullKit.fbx",
+    "R4H_HullKit_SOURCE.blend",
+    "hullkit_base.jpg",
+    "hullkit_orm.jpg",
+    "hullkit_normal.jpg",
+    "hullkit_emission.jpg"
+   ],
+   "baseline_dir": "hero1/hull_kit/E_Toon (geometry of Pass 1 in the palette of Pass 2 (#1274))"
+  },
+  {
+   "category": "Gun",
+   "style": "A",
+   "proposal": "",
+   "tie": false,
+   "baseline": "old",
+   "kept": "stożkowy cokół z wąską szyją, kanciasty klin korpusu, ciemny płaszcz niosący linię lufy, ciągłe światło",
+   "new": "pancerz WARSTWOWY: ceramiczne skorupy odsunięte od ciemnej ramy na cokole, jarzmie, policzkach i wzdłuż płaszcza; lufa to dwuszynowy emiter ze świecącą szczeliną — broń czyta się jako jedna linia 0,5 m; fasetowane jarzmo ze świecącymi czopami; szewrony na górnej szynie; pierścień fazowy jedzie po płaszczu przy odrzucie",
+   "dir": "hero4/variants/A_Sleek/R4W_Basic",
+   "id": "R4W_Basic",
+   "triangles_source": 8464,
+   "triangles_game": 2988,
+   "triangles_lod1": 2844,
+   "triangles_baseline": 17364,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Barrel",
+    "Body",
+    "Pitch",
+    "Ring",
+    "VentL",
+    "VentR",
+    "Yaw"
+   ],
+   "skin": "A",
+   "sha256": "a7891b9edacd9f0005a3ffc94639d9ff86698a032106115ddbef98a556ba096d",
+   "source": "hero4/source/A_Sleek/R4W_Basic_SOURCE.blend",
+   "textures": "hero4/textures/A_Sleek/R4W_Basic_{base,orm,normal,emission}",
+   "baseline_dir": "hero1/variants/A_Sleek/R4W_Basic",
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "mechanisms": [
+    "Ring",
+    "VentL",
+    "VentR"
+   ]
+  },
+  {
+   "category": "Gun",
+   "style": "B",
+   "proposal": "",
+   "tie": false,
+   "baseline": "new",
+   "kept": "ośmiokątny odlewany cokół, wieniec zębaty, płyty czopów, żółty pancerz, hamulec wylotowy",
+   "new": "masa przeniesiona z cokołu na broń: gruby żebrowany płaszcz lufy z dwoma oporopowrotnikami na całej długości kołyski, skrzynkowa maska z pochyłą żółtą płytą, dłuższy dwukomorowy hamulec, grubsze płyty czopów z sześciokątnymi pokrywami łożysk, skrzynka amunicyjna; większe i widoczne: zderzak odrzutu, rączka zamka, koło zębate podniesienia",
+   "dir": "hero4/variants/B_Brutal/R4W_Basic",
+   "id": "R4W_Basic",
+   "triangles_source": 5928,
+   "triangles_game": 2976,
+   "triangles_lod1": 2912,
+   "triangles_baseline": 2416,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Barrel",
+    "Body",
+    "Bolt",
+    "Buffer",
+    "Gear",
+    "Pitch",
+    "Yaw"
+   ],
+   "skin": "B",
+   "sha256": "217b5628c4993e6c1988ad97e1155808d0495a12712c5d1d723eefdcf8812993",
+   "source": "hero4/source/B_Brutal/R4W_Basic_SOURCE.blend",
+   "textures": "hero4/textures/B_Brutal/R4W_Basic_{base,orm,normal,emission}",
+   "baseline_dir": "hero2/variants/B_Brutal/R4W_Basic",
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "mechanisms": [
+    "Bolt",
+    "Buffer",
+    "Gear"
+   ]
+  },
+  {
+   "category": "Gun",
+   "style": "C",
+   "proposal": "",
+   "tie": false,
+   "baseline": "new",
+   "kept": "granatowy ośmiokątny cokół z pomarańczowym kołnierzem, niebieski korpus między białymi „uszami”, pomarańczowy wylot",
+   "new": "mniej, większych brył: jeden gruby biały rękaw lufy (czytelny blaster), wyższy fazowany cokół z jednym pasem, korpus jako zaokrąglona skrzynka, okrągłe uszy ze świecącym środkiem, pomarańczowy suwak na górze cofający się przy strzale, wylot-oponka",
+   "dir": "hero4/variants/C_Arcade/R4W_Basic",
+   "id": "R4W_Basic",
+   "triangles_source": 7648,
+   "triangles_game": 2032,
+   "triangles_lod1": 1612,
+   "triangles_baseline": 2228,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Barrel",
+    "Body",
+    "Pitch",
+    "Slide",
+    "Yaw"
+   ],
+   "skin": "C",
+   "sha256": "02bae16a437bc5f3894a2a799edf5c52ecd8e14b9c8780d1fa56af3a19b88fb0",
+   "source": "hero4/source/C_Arcade/R4W_Basic_SOURCE.blend",
+   "textures": "hero4/textures/C_Arcade/R4W_Basic_{base,orm,normal,emission}",
+   "baseline_dir": "hero2/variants/C_Arcade/R4W_Basic",
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "mechanisms": [
+    "Slide"
+   ]
+  },
+  {
+   "category": "Gun",
+   "style": "D",
+   "proposal": "",
+   "tie": false,
+   "baseline": "old",
+   "kept": "jedna rodzina barw (tlenek, brąz, rdza), bębnowy cokół z zastrzałami, otwarta rama, lufa z rury",
+   "new": "kontrolowana asymetria i widoczna naprawa: trzy różne zastrzały, nakładka przyspawana na pęknięcie, lewy wspornik — wysoka wiercona płyta, prawy — krótki kątownik z łatą, pokrętło obracające się przy celowaniu, osłona pancerna tylko z jednej strony, połówkowa osłona termiczna z otworami, lufa z dwóch rur różnej średnicy łączonych tuleją, spawany kosz wylotowy",
+   "dir": "hero4/variants/D_Scrap/R4W_Basic",
+   "id": "R4W_Basic",
+   "triangles_source": 6396,
+   "triangles_game": 1390,
+   "triangles_lod1": 1340,
+   "triangles_baseline": 4134,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Barrel",
+    "Body",
+    "Crank",
+    "Pitch",
+    "Rattle",
+    "Yaw"
+   ],
+   "skin": "D",
+   "sha256": "6aed496b094d3daf33d3929f7f7242d283e6abee08da3593ad83f2b54a4ab0ce",
+   "source": "hero4/source/D_Scrap/R4W_Basic_SOURCE.blend",
+   "textures": "hero4/textures/D_Scrap/R4W_Basic_{base,orm,normal,emission}",
+   "baseline_dir": "hero1/variants/D_Scrap/R4W_Basic",
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "mechanisms": [
+    "Crank",
+    "Rattle"
+   ]
+  },
+  {
+   "category": "Gun",
+   "style": "E",
+   "proposal": "",
+   "tie": false,
+   "baseline": "new",
+   "kept": "granatowa kopuła z pomarańczowymi akcentami, pomarańczowa głowa między białymi uszami, antenka, granatowa lufa z pomarańczową końcówką",
+   "new": "mocniejsze proporcje: przysadzista szeroka podstawa z płetwami i dużo większa głowa; lufa-garłacz — gruby płaszcz i rozchylony dzwon, który puchnie przy strzale; jedna duża świecąca przyłbica; grubsza antenka z kulką",
+   "dir": "hero4/variants/E_Toon/R4W_Basic",
+   "id": "R4W_Basic",
+   "triangles_source": 11224,
+   "triangles_game": 2576,
+   "triangles_lod1": 1834,
+   "triangles_baseline": 3028,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Antenna",
+    "Barrel",
+    "Bell",
+    "Body",
+    "Pitch",
+    "Yaw"
+   ],
+   "skin": "E",
+   "sha256": "5f2158ea79fee59e3554e544158964c4a29f57ead88d755b5cb4d9d20bfb04b8",
+   "source": "hero4/source/E_Toon/R4W_Basic_SOURCE.blend",
+   "textures": "hero4/textures/E_Toon/R4W_Basic_{base,orm,normal,emission}",
+   "baseline_dir": "hero2/variants/E_Toon/R4W_Basic",
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "mechanisms": [
+    "Antenna",
+    "Bell"
+   ]
+  },
+  {
+   "category": "Wheel",
+   "style": "A",
+   "proposal": "",
+   "tie": false,
+   "baseline": "new",
+   "kept": "gruba opona, warstwowa piasta, światło",
+   "new": "jeden rząd kierunkowych klocków-szewronów z lamelami na barku zamiast dwóch rzędów kwadratów; pięć skośnych łopatek turbiny za pływającym ceramicznym pierścieniem; światło jako jeden ciągły pierścień 16 mm zamiast czterech cienkich łuków; jednostronna fasetowana owiewka z widocznym amortyzatorem; płaskie łopatki hamulca",
+   "dir": "hero4/variants/A_Sleek/R4M_WheelM_Side_Offroad",
+   "id": "R4M_WheelM_Side_Offroad",
+   "triangles_source": 35316,
+   "triangles_game": 7048,
+   "triangles_lod1": 5196,
+   "triangles_baseline": 8170,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Body",
+    "Halo",
+    "Rotor",
+    "VaneL",
+    "VaneU"
+   ],
+   "skin": "A",
+   "sha256": "f00fef9117f9eef3734d35e7890835775241f18519ccf8a015d7963c4deeac65",
+   "source": "hero4/source/A_Sleek/R4M_WheelM_Side_Offroad_SOURCE.blend",
+   "textures": "hero4/textures/A_Sleek/R4M_WheelM_Side_Offroad_{base,orm,normal,emission}",
+   "baseline_dir": "hero2/variants/A_Sleek/R4M_WheelM_Side_Offroad",
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "mechanisms": [
+    "Halo",
+    "VaneL",
+    "VaneU"
+   ]
+  },
+  {
+   "category": "Wheel",
+   "style": "B",
+   "proposal": "P",
+   "tie": true,
+   "baseline": "old",
+   "kept": "klockowe łapy, sześcioramienna felga, przykręcana piasta",
+   "new": "łopatowe klocki w dwóch przesuniętych rzędach zachodzące na bark; odlewane sześć ramion z przykręcanym pierścieniem beadlock; obudowa zwolnicy planetarnej z sześcioma nakrętkami; wentylowana tarcza z zaciskiem, który się zaciska; ciężki amortyzator ze sprężyną; płyta nośna z żebrami",
+   "dir": "hero4/variants/B_Brutal/R4M_WheelM_Side_Offroad",
+   "id": "R4M_WheelM_Side_Offroad",
+   "triangles_source": 29066,
+   "triangles_game": 5826,
+   "triangles_lod1": 4526,
+   "triangles_baseline": 7148,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Body",
+    "Caliper",
+    "Rotor",
+    "Shock"
+   ],
+   "skin": "B",
+   "sha256": "f8f0a4920d259dc91703f79185d992497d148f0cae0155c945886cb6a9706d2c",
+   "source": "hero4/source/B_Brutal/R4M_WheelM_Side_Offroad_SOURCE.blend",
+   "textures": "hero4/textures/B_Brutal/R4M_WheelM_Side_Offroad_{base,orm,normal,emission}",
+   "baseline_dir": "hero1/variants/B_Brutal/R4M_WheelM_Side_Offroad",
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "mechanisms": [
+    "Caliper",
+    "Shock"
+   ]
+  },
+  {
+   "category": "Wheel",
+   "style": "B",
+   "proposal": "Q",
+   "tie": true,
+   "baseline": "new",
+   "kept": "opona błotna, żółty kołnierz, piasta z zębami",
+   "new": "kanciasty bark z ukośnymi belkami ciągnikowymi zamiast miękkiej opony; kołnierz jako gruby przykręcany pierścień-obciążnik z ośmioma łapami; ośmioramienna odlewana piasta z nakrętką centralną; podwójna tarcza; dwururowy amortyzator; kuty widelec",
+   "dir": "hero4/variants_q/B_Brutal/R4M_WheelM_Side_Offroad",
+   "id": "R4M_WheelM_Side_Offroad",
+   "triangles_source": 27952,
+   "triangles_game": 5392,
+   "triangles_lod1": 4070,
+   "triangles_baseline": 6168,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Body",
+    "Caliper",
+    "Rotor",
+    "Shock"
+   ],
+   "skin": "B",
+   "sha256": "c39738ed4d95f1ca9cbe6ff1d7ce841e6961851167b23b53baf6c3e9a90127b9",
+   "source": "hero4/source_q/B_Brutal/R4M_WheelM_Side_Offroad_SOURCE.blend",
+   "textures": "hero4/textures_q/B_Brutal/R4M_WheelM_Side_Offroad_{base,orm,normal,emission}",
+   "baseline_dir": "hero2/variants/B_Brutal/R4M_WheelM_Side_Offroad",
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "mechanisms": [
+    "Caliper",
+    "Shock"
+   ]
+  },
+  {
+   "category": "Wheel",
+   "style": "C",
+   "proposal": "",
+   "tie": false,
+   "baseline": "new",
+   "kept": "granatowa balonowa opona, pomarańczowa tarcza, łuki światła",
+   "new": "dziewięć dużych zaokrąglonych klocków zamiast wielu małych; dwustopniowa piasta — głęboka pomarańczowa misa z grubym białym pierścieniem; dwa grube łuki światła; sześciokątna nakładka; jeden masywny wahacz z okrągłym sworzniem",
+   "dir": "hero4/variants/C_Arcade/R4M_WheelM_Side_Offroad",
+   "id": "R4M_WheelM_Side_Offroad",
+   "triangles_source": 23300,
+   "triangles_game": 3568,
+   "triangles_lod1": 2218,
+   "triangles_baseline": 4512,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Arm",
+    "Body",
+    "Rotor"
+   ],
+   "skin": "C",
+   "sha256": "8d00aab5c93937dc24cbe7a2494f94e884d3e5beca7e158b72a4774c50eb0d62",
+   "source": "hero4/source/C_Arcade/R4M_WheelM_Side_Offroad_SOURCE.blend",
+   "textures": "hero4/textures/C_Arcade/R4M_WheelM_Side_Offroad_{base,orm,normal,emission}",
+   "baseline_dir": "hero2/variants/C_Arcade/R4M_WheelM_Side_Offroad",
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "mechanisms": [
+    "Arm"
+   ]
+  },
+  {
+   "category": "Wheel",
+   "style": "D",
+   "proposal": "",
+   "tie": false,
+   "baseline": "new",
+   "kept": "zużyta opona błotna, tłoczona stalowa felga, jedna pasiasta blacha",
+   "new": "kontrolowana asymetria: trzy stalowe ostrogi przykręcone w poprzek bieżnika pod nierównymi kątami; felga z pięcioma otworami, z których jeden zaspawano łatą; pięć szpilek, jednej brak; bęben hamulcowy z innego pojazdu; pakiet resorów piórowych; wiszący pasiasty chlapacz",
+   "dir": "hero4/variants/D_Scrap/R4M_WheelM_Side_Offroad",
+   "id": "R4M_WheelM_Side_Offroad",
+   "triangles_source": 27664,
+   "triangles_game": 5116,
+   "triangles_lod1": 3518,
+   "triangles_baseline": 4960,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Body",
+    "Flap",
+    "Rotor",
+    "Spring"
+   ],
+   "skin": "Dw",
+   "sha256": "7522e720a3b7ef2b7a833fb0e13679b53679f2d76e9370b127f9fc41efebed33",
+   "source": "hero4/source/D_Scrap/R4M_WheelM_Side_Offroad_SOURCE.blend",
+   "textures": "hero4/textures/D_Scrap/R4M_WheelM_Side_Offroad_{base,orm,normal,emission}",
+   "baseline_dir": "hero2/variants/D_Scrap/R4M_WheelM_Side_Offroad",
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "mechanisms": [
+    "Flap",
+    "Spring"
+   ]
+  },
+  {
+   "category": "Wheel",
+   "style": "E",
+   "proposal": "",
+   "tie": false,
+   "baseline": "new",
+   "kept": "ciemna balonowa opona, pomarańczowa piasta z białymi segmentami",
+   "new": "większy balon z siedmioma grubymi strzałkowymi łapami (ząbkowana sylwetka); piasta jako jedna głęboka misa z trzema grubymi białymi klinami, granatowym środkiem i wypukłą gwiazdą; przerysowana sprężyna; zaokrąglone mocowanie",
+   "dir": "hero4/variants/E_Toon/R4M_WheelM_Side_Offroad",
+   "id": "R4M_WheelM_Side_Offroad",
+   "triangles_source": 28508,
+   "triangles_game": 4124,
+   "triangles_lod1": 2598,
+   "triangles_baseline": 5294,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Body",
+    "Coil",
+    "Rotor"
+   ],
+   "skin": "E",
+   "sha256": "4955a9c6dca450fe70c7b60aef6a900c9c159df493fb1dc240b10a85f5229344",
+   "source": "hero4/source/E_Toon/R4M_WheelM_Side_Offroad_SOURCE.blend",
+   "textures": "hero4/textures/E_Toon/R4M_WheelM_Side_Offroad_{base,orm,normal,emission}",
+   "baseline_dir": "hero2/variants/E_Toon/R4M_WheelM_Side_Offroad",
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "mechanisms": [
+    "Coil"
+   ]
+  },
+  {
+   "category": "Battery",
+   "style": "A",
+   "proposal": "",
+   "tie": false,
+   "baseline": "old",
+   "kept": "pozioma szklana kapsuła ze świecącym rdzeniem w jasnej kołysce",
+   "new": "kapsuła pokazuje pięć ogniw — świecące pasy szkła między ciemnymi pierścieniami — zamiast gładkiej rury; warstwowe zaślepki (ciemna gródź, ceramiczny pierścień, świecący styk, dwa zaciski); dwa fasetowane siodła na schodkowym pokładzie; obracający się ażurowy kosz; grzbiet do przenoszenia",
+   "dir": "hero4/variants/A_Sleek/R4X_Battery",
+   "id": "R4X_Battery",
+   "triangles_source": 9848,
+   "triangles_game": 2856,
+   "triangles_lod1": 2832,
+   "triangles_baseline": 11224,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Body",
+    "Core",
+    "Sleeve"
+   ],
+   "skin": "A",
+   "sha256": "ecfbb64b6f2aaaa045b8ed36d7fb361e4ececb9fae24e21425b257c9111e35e3",
+   "source": "hero4/source/A_Sleek/R4X_Battery_SOURCE.blend",
+   "textures": "hero4/textures/A_Sleek/R4X_Battery_{base,orm,normal,emission}",
+   "baseline_dir": "hero1/variants/A_Sleek/R4X_Battery",
+   "clips": [
+    "Idle",
+    "Activate",
+    "Hit"
+   ],
+   "mechanisms": [
+    "Core",
+    "Sleeve"
+   ]
+  },
+  {
+   "category": "Battery",
+   "style": "B",
+   "proposal": "",
+   "tie": false,
+   "baseline": "old",
+   "kept": "transformator: ciemna kadź, panel wentylatora, żebra, porcelanowe izolatory z szyną",
+   "new": "nitowana kadź ze ściętą górą; żebra po OBU stronach; wentylator w opancerzonym ośmiokątnym kołnierzu z prętami — obraca się; trzy żebrowane izolatory z miedzianą szyną i stycznikiem, który się podnosi; dwa świecące okna ogniw; ucha transportowe; kabel do gniazda",
+   "dir": "hero4/variants/B_Brutal/R4X_Battery",
+   "id": "R4X_Battery",
+   "triangles_source": 5756,
+   "triangles_game": 1960,
+   "triangles_lod1": 1884,
+   "triangles_baseline": 3480,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Body",
+    "Fan",
+    "Relay"
+   ],
+   "skin": "B",
+   "sha256": "808aa02b01ea082d67c72a40f8dc94251276f2a98de236280c7acd8737d33bd7",
+   "source": "hero4/source/B_Brutal/R4X_Battery_SOURCE.blend",
+   "textures": "hero4/textures/B_Brutal/R4X_Battery_{base,orm,normal,emission}",
+   "baseline_dir": "hero1/variants/B_Brutal/R4X_Battery",
+   "clips": [
+    "Idle",
+    "Activate",
+    "Hit"
+   ],
+   "mechanisms": [
+    "Fan",
+    "Relay"
+   ]
+  },
+  {
+   "category": "Battery",
+   "style": "C",
+   "proposal": "P",
+   "tie": true,
+   "baseline": "old",
+   "kept": "okrągła pomarańczowa puszka na schodkowej podstawie z nakrętką",
+   "new": "dużo większa, niższa puszka wypełniająca komórkę; szeroki świecący pas — ładunek widać z każdej strony; masywna nakrętka z uchwytem, która pompuje; dwa duże białe zaciski i granatowy kołnierz zamiast trzech małych wypustek",
+   "dir": "hero4/variants/C_Arcade/R4X_Battery",
+   "id": "R4X_Battery",
+   "triangles_source": 4760,
+   "triangles_game": 1512,
+   "triangles_lod1": 1260,
+   "triangles_baseline": 2652,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Body",
+    "Cap"
+   ],
+   "skin": "C",
+   "sha256": "ea5ad7e4d99cef49c81cb26722ab2309854a0b735b860b99bab48a7c9c4444cb",
+   "source": "hero4/source/C_Arcade/R4X_Battery_SOURCE.blend",
+   "textures": "hero4/textures/C_Arcade/R4X_Battery_{base,orm,normal,emission}",
+   "baseline_dir": "hero1/variants/C_Arcade/R4X_Battery",
+   "clips": [
+    "Idle",
+    "Activate",
+    "Hit"
+   ],
+   "mechanisms": [
+    "Cap"
+   ]
+  },
+  {
+   "category": "Battery",
+   "style": "C",
+   "proposal": "Q",
+   "tie": true,
+   "baseline": "new",
+   "kept": "granatowy sześcian z oknami i pomarańczowymi narożnikami",
+   "new": "ośmioboczny fazowany korpus zamiast ostrego sześcianu, niższy o 15 % (działko zostaje najwyższe na dachu); CZTERY pełnowysokie fazowane słupki zamiast ośmiu kostek; jedno duże świecące okno na bok; biała pokrywa z jednym dużym uchwytem, która pompuje",
+   "dir": "hero4/variants_q/C_Arcade/R4X_Battery",
+   "id": "R4X_Battery",
+   "triangles_source": 2976,
+   "triangles_game": 808,
+   "triangles_lod1": 808,
+   "triangles_baseline": 980,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Body",
+    "Cap"
+   ],
+   "skin": "C",
+   "sha256": "619a3975e77305a5bbbaf6014437aab8d9bcf7e57170c85385df51c5d59d66be",
+   "source": "hero4/source_q/C_Arcade/R4X_Battery_SOURCE.blend",
+   "textures": "hero4/textures_q/C_Arcade/R4X_Battery_{base,orm,normal,emission}",
+   "baseline_dir": "hero2/variants/C_Arcade/R4X_Battery",
+   "clips": [
+    "Idle",
+    "Activate",
+    "Hit"
+   ],
+   "mechanisms": [
+    "Cap"
+   ]
+  },
+  {
+   "category": "Battery",
+   "style": "D",
+   "proposal": "",
+   "tie": false,
+   "baseline": "old",
+   "kept": "odzyskane ogniwa w klatce z rur, jedna rodzina barw",
+   "new": "trzy niepasujące ogniwa (wysokie w obudowie, żebrowany kanister, beczka na boku) spięte taśmami; klatka z jednym zgiętym słupkiem i naprawą tuleją; przewody rozruchowe z drgającym zaciskiem; manometr z żywą wskazówką; spoiny na każdym złączu",
+   "dir": "hero4/variants/D_Scrap/R4X_Battery",
+   "id": "R4X_Battery",
+   "triangles_source": 4272,
+   "triangles_game": 1180,
+   "triangles_lod1": 1052,
+   "triangles_baseline": 3532,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Body",
+    "Clamp",
+    "Needle"
+   ],
+   "skin": "D",
+   "sha256": "e91f38bf2212b5fa4ad48df34f736f65eb50dc12b760933e83b85628236b4473",
+   "source": "hero4/source/D_Scrap/R4X_Battery_SOURCE.blend",
+   "textures": "hero4/textures/D_Scrap/R4X_Battery_{base,orm,normal,emission}",
+   "baseline_dir": "hero1/variants/D_Scrap/R4X_Battery",
+   "clips": [
+    "Idle",
+    "Activate",
+    "Hit"
+   ],
+   "mechanisms": [
+    "Clamp",
+    "Needle"
+   ]
+  },
+  {
+   "category": "Battery",
+   "style": "E",
+   "proposal": "",
+   "tie": false,
+   "baseline": "new",
+   "kept": "świecąca kapsuła z białą kopułą między pomarańczowymi płetwami",
+   "new": "kapsuła jako pękata butla z dwoma mocnymi pasami i dużym pierścieniem szyjki; trzy grube płetwy-nogi; okrągła odznaka z wypukłą błyskawicą, która pulsuje (błyskawica z baterii Pass 1); niska, szeroka postawa",
+   "dir": "hero4/variants/E_Toon/R4X_Battery",
+   "id": "R4X_Battery",
+   "triangles_source": 6052,
+   "triangles_game": 1532,
+   "triangles_lod1": 1302,
+   "triangles_baseline": 1564,
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "nodes": [
+    "Body",
+    "Emblem",
+    "Jug"
+   ],
+   "skin": "E",
+   "sha256": "d9dac45513f12ba642c6d39892716b8c7f852e94c5bb40e812e4910354aa9bb1",
+   "source": "hero4/source/E_Toon/R4X_Battery_SOURCE.blend",
+   "textures": "hero4/textures/E_Toon/R4X_Battery_{base,orm,normal,emission}",
+   "baseline_dir": "hero2/variants/E_Toon/R4X_Battery",
+   "clips": [
+    "Idle",
+    "Activate",
+    "Hit"
+   ],
+   "mechanisms": [
+    "Emblem",
+    "Jug"
+   ]
+  }
+ ],
+ "survey": {
+  "A": {
+   "chassis": "new",
+   "Gun": "old",
+   "Wheel": "new",
+   "Battery": "old"
+  },
+  "B": {
+   "chassis": [
+    "old",
+    "new"
+   ],
+   "Gun": "new",
+   "Wheel": [
+    "old",
+    "new"
+   ],
+   "Battery": "old"
+  },
+  "C": {
+   "chassis": "new",
+   "Gun": "new",
+   "Wheel": "new",
+   "Battery": [
+    "old",
+    "new"
+   ]
+  },
+  "D": {
+   "chassis": "old",
+   "Gun": "old",
+   "Wheel": "new",
+   "Battery": "old"
+  },
+  "E": {
+   "chassis": "new",
+   "Gun": "new",
+   "Wheel": "new",
+   "Battery": "new"
+  }
+ }
+}

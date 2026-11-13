@@ -1,0 +1,561 @@
+{
+ "result": "PASS",
+ "previous_passes_untouched": true,
+ "unity": "UNITY_NOT_RUN",
+ "models": {
+  "A_Sleek Battery P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 4,
+   "clips": [
+    "Idle",
+    "Activate",
+    "Hit"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "3/3",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 11224,
+    "pass4": 2856,
+    "lod1": 2832
+   },
+   "PASS": true,
+   "baseline": "old"
+  },
+  "A_Sleek Gun P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 9,
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "7/7",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 17364,
+    "pass4": 2988,
+    "lod1": 2844
+   },
+   "PASS": true,
+   "baseline": "old"
+  },
+  "A_Sleek Wheel P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 4,
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "5/5",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 8170,
+    "pass4": 7048,
+    "lod1": 5196
+   },
+   "PASS": true,
+   "baseline": "new"
+  },
+  "B_Brutal Battery P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 4,
+   "clips": [
+    "Idle",
+    "Activate",
+    "Hit"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "3/3",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 3480,
+    "pass4": 1960,
+    "lod1": 1884
+   },
+   "PASS": true,
+   "baseline": "old"
+  },
+  "B_Brutal Gun P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 8,
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "7/7",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 2416,
+    "pass4": 2976,
+    "lod1": 2912
+   },
+   "PASS": true,
+   "baseline": "new"
+  },
+  "B_Brutal Wheel P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 3,
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "4/4",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 7148,
+    "pass4": 5826,
+    "lod1": 4526
+   },
+   "PASS": true,
+   "baseline": "old"
+  },
+  "B_Brutal Wheel Q": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 3,
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "4/4",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 6168,
+    "pass4": 5392,
+    "lod1": 4070
+   },
+   "PASS": true,
+   "baseline": "new"
+  },
+  "C_Arcade Battery P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 3,
+   "clips": [
+    "Idle",
+    "Activate",
+    "Hit"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "2/2",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 2652,
+    "pass4": 1512,
+    "lod1": 1260
+   },
+   "PASS": true,
+   "baseline": "old"
+  },
+  "C_Arcade Battery Q": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 3,
+   "clips": [
+    "Idle",
+    "Activate",
+    "Hit"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "2/2",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 980,
+    "pass4": 808,
+    "lod1": 808
+   },
+   "PASS": true,
+   "baseline": "new"
+  },
+  "C_Arcade Gun P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 6,
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "5/5",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 2228,
+    "pass4": 2032,
+    "lod1": 1612
+   },
+   "PASS": true,
+   "baseline": "new"
+  },
+  "C_Arcade Wheel P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 2,
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "3/3",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 4512,
+    "pass4": 3568,
+    "lod1": 2218
+   },
+   "PASS": true,
+   "baseline": "new"
+  },
+  "D_Scrap Battery P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 4,
+   "clips": [
+    "Idle",
+    "Activate",
+    "Hit"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "3/3",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 3532,
+    "pass4": 1180,
+    "lod1": 1052
+   },
+   "PASS": true,
+   "baseline": "old"
+  },
+  "D_Scrap Gun P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 7,
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "6/6",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 4134,
+    "pass4": 1390,
+    "lod1": 1340
+   },
+   "PASS": true,
+   "baseline": "old"
+  },
+  "D_Scrap Wheel P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 3,
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "4/4",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 4960,
+    "pass4": 5116,
+    "lod1": 3518
+   },
+   "PASS": true,
+   "baseline": "new"
+  },
+  "E_Toon Battery P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 5,
+   "clips": [
+    "Idle",
+    "Activate",
+    "Hit"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "3/3",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 1564,
+    "pass4": 1532,
+    "lod1": 1302
+   },
+   "PASS": true,
+   "baseline": "new"
+  },
+  "E_Toon Gun P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 7,
+   "clips": [
+    "Idle",
+    "AimYaw",
+    "AimPitch",
+    "Fire",
+    "Recoil",
+    "Return"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "6/6",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 3028,
+    "pass4": 2576,
+    "lod1": 1834
+   },
+   "PASS": true,
+   "baseline": "new"
+  },
+  "E_Toon Wheel P": {
+   "P1": true,
+   "P2": true,
+   "node_dev_mm": 0.0,
+   "P3": true,
+   "outside_mm": 0,
+   "status": "BLENDER_PASS",
+   "P4": true,
+   "anim_key_dev": 0.0,
+   "anim_channels": 2,
+   "clips": [
+    "Idle",
+    "Roll",
+    "Reverse",
+    "Brake"
+   ],
+   "P5": true,
+   "nodes_with_new_geometry": "3/3",
+   "P6": true,
+   "missing": [],
+   "triangles": {
+    "baseline": 5294,
+    "pass4": 4124,
+    "lod1": 2598
+   },
+   "PASS": true,
+   "baseline": "new"
+  }
+ },
+ "hull_kits": {
+  "A:p": {
+   "K1": true,
+   "pieces": 24,
+   "K2": true,
+   "plate_thickness_mm": 34.5,
+   "K3": true,
+   "nose_reach_mm": 162.0,
+   "K4": true,
+   "triangles_kit": 3884,
+   "triangles_plate_00": 292,
+   "PASS": true
+  },
+  "B:p": {
+   "K1": true,
+   "pieces": 40,
+   "K2": true,
+   "plate_thickness_mm": 57.0,
+   "K3": true,
+   "nose_reach_mm": 126.0,
+   "K4": true,
+   "triangles_kit": 6788,
+   "triangles_plate_00": 364,
+   "PASS": true
+  },
+  "B:q": {
+   "K1": true,
+   "pieces": 40,
+   "K2": true,
+   "plate_thickness_mm": 53.0,
+   "K3": true,
+   "nose_reach_mm": 172.0,
+   "K4": true,
+   "triangles_kit": 5680,
+   "triangles_plate_00": 384,
+   "PASS": true
+  },
+  "C:p": {
+   "K1": true,
+   "pieces": 24,
+   "K2": true,
+   "plate_thickness_mm": 35.0,
+   "K3": true,
+   "nose_reach_mm": 110.0,
+   "K4": true,
+   "triangles_kit": 4244,
+   "triangles_plate_00": 368,
+   "PASS": true
+  },
+  "D:p": {
+   "K1": true,
+   "pieces": 56,
+   "K2": true,
+   "plate_thickness_mm": 28.0,
+   "K3": true,
+   "nose_reach_mm": 192.0,
+   "K4": true,
+   "triangles_kit": 5404,
+   "triangles_plate_00": 148,
+   "PASS": true
+  },
+  "E:p": {
+   "K1": true,
+   "pieces": 24,
+   "K2": true,
+   "plate_thickness_mm": 43.0,
+   "K3": true,
+   "nose_reach_mm": 122.0,
+   "K4": true,
+   "triangles_kit": 4628,
+   "triangles_plate_00": 388,
+   "PASS": true
+  }
+ }
+}
