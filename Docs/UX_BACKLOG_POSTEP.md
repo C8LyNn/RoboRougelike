@@ -28,6 +28,9 @@ Bazowy kod tej listy: `675fe0b80da184e4f8db8bf2c5f3e446ee8aeb63` (PR #1289).
 - [x] Zakupy w garażu: potwierdzenie podaje rzeczywistą zmianę salda także po pojawieniu się widma, zarówno przy zakupie jednej części, jak i pakietu — 9/9 celowanych testów EditMode, `quick-purchase-receipt-final.xml`; dodatkowo 2/2 kontroli obu potwierdzeń, `purchase-receipt-both.xml`.
 
 Wyniki dotyczą odpowiednich SHA poszczególnych zmian, a nie pełnej regresji końcowej.
+Wspólny celowany przebieg na SHA `5631f76a`: 8/8 EditMode PASS,
+`backlog-shared-sha-5631.xml` (garaż, aktywności, pauza z wirtualną
+klawiaturą, podsumowanie i import modeli). To nie jest pełna regresja.
 Oryginalne XML i logi znajdują się lokalnie w katalogu `RoboRougelike-LekkaStylizacja-QA`.
 
 ## Nadal otwarte
