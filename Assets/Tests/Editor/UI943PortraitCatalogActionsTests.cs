@@ -23,6 +23,29 @@ public sealed class UI943PortraitCatalogActionsTests
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
 
+    [TestCase(false,5,2,false,"Brakuje 3 Z")]
+    [TestCase(false,5,5,false,"5 Z")]
+    [TestCase(true,0,0,false,"0 Z")]
+    [TestCase(false,5,2,true,"Brakuje 3 Z")]
+    [TestCase(true,0,0,true,"0 Z")]
+    public void WreckMountCaptionExplainsAffordability(bool creative,int cost,int scrap,bool portrait,string expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("CatalogMountCaption",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        var wreck=new R3PartState(default,R3PartKind.Armor){Health=0};
+        Assert.That((string)method.Invoke(null,new object[]{wreck,creative,cost,scrap,portrait}),Does.Contain(expected));
+    }
+
+    [Test] public void QuickStackRepairDistinguishesEmptyHealthyAndUnrepairable()
+    {
+        var method=typeof(R1RunHUD).GetMethod("QuickStackRepairCaption",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        string Label(R3PartState[] parts)=>(string)method.Invoke(null,new object[]{parts,0,0,0});
+        Assert.That(Label(Array.Empty<R3PartState>()),Does.Contain("pusty"));
+        Assert.That(Label(new[]{new R3PartState(default,R3PartKind.Armor){Health=1}}),Does.Contain("sprawny"));
+        Assert.That(Label(new[]{new R3PartState(default,R3PartKind.Armor){Health=0}}),Does.Contain("niedostępny"));
+    }
+
     [TestCase(false,R3PartKind.Armor,true,5,20,false,"Kup i wybierz")]
     [TestCase(false,R3PartKind.Armor,true,5,3,false,"Brakuje 2 Z")]
     [TestCase(false,R3PartKind.Armor,true,5,20,true,"Magazyn pełny")]

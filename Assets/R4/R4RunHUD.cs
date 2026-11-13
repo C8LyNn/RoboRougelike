@@ -277,7 +277,7 @@ namespace RoboRougelike.R1
                 bool wreck=item.Health<=0;
                 GUI.backgroundColor=garage.SelectedInventoryId==item.Id?new Color(.3f,.9f,.9f):Color.white;
                 GUI.enabled=!wreck||R3VehicleModel.ValidEconomicPart(item)&&(model.CreativeMode||itemRepair>0&&model.Scrap>=itemRepair);
-                if(GUI.Button(new Rect(0,i*40,100,36),wreck?(model.CreativeMode?"Napraw +\nmontuj: 0 Z":$"Napraw +\nmontuj: {itemRepair} Z"):CatalogItemCaption(item,true),compactButton))
+                if(GUI.Button(new Rect(0,i*40,100,36),CatalogMountCaption(item,model.CreativeMode,itemRepair,model.Scrap,false),compactButton))
                 {if(wreck)RepairAndSelectCatalogItem(run,item.Id);else SelectCatalogItem(run,item.Id);}
                 GUI.enabled=true;
                 GUI.backgroundColor=Color.white;
@@ -393,12 +393,26 @@ namespace RoboRougelike.R1
             if(model.CreativeMode)return $"Napraw {planned} • za darmo";
             return $"Napraw {planned}/{eligible} • {total} Z"+(planned<eligible?" • najtaniej":"");
         }
+        private static string CatalogMountCaption(R3PartState item,bool creative,int repair,int scrap,bool portrait)
+        {
+            if(item==null)return "Brak części";
+            if(item.Health>0)return portrait?"Wybierz\ndo montażu":CatalogItemCaption(item,true);
+            if(!R3VehicleModel.ValidEconomicPart(item)||(!creative&&repair<=0))return "Naprawa niedostępna";
+            if(!creative&&scrap<repair)return $"Brakuje {repair-scrap} Z";
+            return $"Napraw +\nmontuj: {(creative?0:repair)} Z";
+        }
+        private static string QuickStackRepairCaption(R3PartState[] items,int planned,int eligible,int total)
+        {
+            if(!items.Any(item=>item!=null))return "Stos: pusty";
+            if(eligible==0)return items.Any(item=>item!=null&&item.Health<1)?"Stos: niedostępny":"Stos: sprawny";
+            return planned==0?"Stos: brak środków":$"Stos {planned}/{eligible} • {total} Z";
+        }
         private void DrawCatalogBulkRepair(R1RunController run,R3PartState[] items,Rect rect,bool garageQuick=false,bool compact=false)
         {
             var plan=CatalogRepairPlan(run.VehicleModel,items,out int eligible,out int total);
             bool previouslyEnabled=GUI.enabled;GUI.enabled=previouslyEnabled&&plan.Length>0;
             string label=CatalogRepairLabel(run.VehicleModel,items,plan.Length,eligible,total);
-            if(compact)label=eligible==0?"Stos: sprawny":plan.Length==0?"Stos: brak środków":$"Stos {plan.Length}/{eligible} • {total} Z";
+            if(compact)label=QuickStackRepairCaption(items,plan.Length,eligible,total);
             else if(garageQuick)label="Magazyn: "+label;
             if(GUI.Button(rect,label,compactButton))RepairCatalogStack(run,items);
             GUI.enabled=previouslyEnabled;

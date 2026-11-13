@@ -57,7 +57,7 @@ namespace RoboRougelike.R1
                 GUI.backgroundColor=run.Garage.SelectedInventoryId==item.Id?new Color(.3f,.9f,.9f):Color.white;
                 int repair=model.RepairCost(item);bool wreck=item.Health<=0;
                 GUI.enabled=!wreck||R3VehicleModel.ValidEconomicPart(item)&&(model.CreativeMode||repair>0&&model.Scrap>=repair);
-                if(GUI.Button(new Rect(rect.x,rect.y+31,102,60),wreck?(model.CreativeMode?"Napraw i montuj\nza darmo":$"Napraw i montuj\n{repair} Z"):"Wybierz\ndo montażu",compactButton))
+                if(GUI.Button(new Rect(rect.x,rect.y+31,102,60),CatalogMountCaption(item,model.CreativeMode,repair,model.Scrap,true),compactButton))
                 {if(wreck)RepairAndSelectCatalogItem(run,item.Id);else PortraitCatalogSelectItem(run,item.Id);}
                 GUI.enabled=true;
                 GUI.backgroundColor=Color.white;
