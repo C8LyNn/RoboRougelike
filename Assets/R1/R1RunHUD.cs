@@ -457,7 +457,7 @@ namespace RoboRougelike.R1
             var garage=run.Garage;var model=run.VehicleModel;var selected=model.At(garage.Cell);
             Panel(new Rect(10,10,320,700));Panel(new Rect(950,10,320,700));
             GUI.Label(new Rect(30,25,290,40),"GARAŻ",heading);
-            GUI.Label(new Rect(30,67,290,35),$"Złom: {model.Scrap}  •  Pola: {System.Linq.Enumerable.Sum(model.Parts,p=>System.Linq.Enumerable.Count(R3VehicleModel.OccupiedCells(p)))}/180",body);
+            GUI.Label(new Rect(30,67,290,35),$"Złom: {model.Scrap} • Punkty: {model.ConstructionBudgetUsed}/{model.ConstructionBudgetLimit}",body);
             var garageEnergy=run.Player!=null?run.Player.GetComponent<VehicleEnergyBank>():null;
             if(garageEnergy!=null)GUI.Label(new Rect(30,91,290,20),$"Energia: {garageEnergy.Current:0}/{garageEnergy.Maximum:0}",small);
             DrawMovementCatalog(run);

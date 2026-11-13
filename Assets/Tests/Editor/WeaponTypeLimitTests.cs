@@ -24,7 +24,7 @@ public sealed class WeaponTypeLimitTests
         design.Parts.Add(new R3PartState(new Vector3Int(-4,0,1),R3PartKind.Wheel));
         design.Parts.Add(new R3PartState(new Vector3Int(4,0,1),R3PartKind.Wheel));
         design.Parts.Add(new R3PartState(new Vector3Int(0,2,-4),R3PartKind.Gun));
-        var model=new R3VehicleModel(design);
+        var model=new R3VehicleModel(design,new R3GarageEconomy{Construction=new R3ConstructionSettings{StartingBudget=1000}});
         model.Award(10000);
         return model;
     }

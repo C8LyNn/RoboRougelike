@@ -60,9 +60,35 @@ namespace RoboRougelike.R3
         public readonly List<R3PartState> Parts = new List<R3PartState>();
     }
     [Serializable]
+    public sealed class R3ConstructionSettings
+    {
+        public int StartingBudget=200, StarterReserve=20, LightStarterExtraReserve=40, BlockCost=2, HalfBlockCost=1, WeaponCost=6, WeaponTierTwoCost=8, WeaponTierThreeCost=10;
+        public int WheelCost=2, ActiveModuleCost=4, PassiveModuleCost=3, DriveModuleCost=3;
+        public int TierTwoMultiplier=2, TierThreeMultiplier=3;
+        public R3ConstructionSettings Copy()=>new R3ConstructionSettings {
+            StartingBudget=StartingBudget,StarterReserve=StarterReserve,LightStarterExtraReserve=LightStarterExtraReserve,BlockCost=BlockCost,HalfBlockCost=HalfBlockCost,WeaponCost=WeaponCost,
+            WeaponTierTwoCost=WeaponTierTwoCost,WeaponTierThreeCost=WeaponTierThreeCost,
+            WheelCost=WheelCost,ActiveModuleCost=ActiveModuleCost,PassiveModuleCost=PassiveModuleCost,
+            DriveModuleCost=DriveModuleCost,TierTwoMultiplier=TierTwoMultiplier,TierThreeMultiplier=TierThreeMultiplier};
+        public int Cost(R3PartState part)
+        {
+            if(part==null)return 0;
+            int tier=R3VehicleModel.NormalizedTier(part.Tier);
+            if(part.Kind==R3PartKind.Gun)return Math.Max(0,tier==3?WeaponTierThreeCost:tier==2?WeaponTierTwoCost:WeaponCost);
+            int baseCost=part.Kind==R3PartKind.Armor?
+                (part.ArmorShape==R3ArmorShape.HalfBlock||part.ArmorShape==R3ArmorShape.HalfWedge?HalfBlockCost:BlockCost):
+                part.Kind==R3PartKind.Core?BlockCost:
+                part.Kind==R3PartKind.Wheel?WheelCost:R3VehicleModel.IsActiveSlotPart(part.Kind)?ActiveModuleCost:
+                R3VehicleModel.IsPassiveSlotPart(part.Kind)?PassiveModuleCost:DriveModuleCost;
+            int multiplier=tier==3?TierThreeMultiplier:tier==2?TierTwoMultiplier:1;
+            return (int)Math.Min(int.MaxValue,(long)Math.Max(0,baseCost)*Math.Max(0,multiplier));
+        }
+    }
+    [Serializable]
     public sealed class R3GarageEconomy
     {
         public int ArmorCost = 5, WheelCost = 15, GunCost = 30, MaxRepairCost = 3;
+        public R3ConstructionSettings Construction = new R3ConstructionSettings();
         public int Price(R3PartKind kind) => kind switch {
             R3PartKind.Suspension=>25, R3PartKind.Wheel=>WheelCost, R3PartKind.Gun=>GunCost,
             R3PartKind.Booster=>35, R3PartKind.JumpDrive=>45, R3PartKind.Blink=>60,
@@ -278,8 +304,14 @@ namespace RoboRougelike.R3
         public void SwapWeaponGroups()
         { SyncWeaponGroups(); var old=weaponGroupA; weaponGroupA=weaponGroupB; weaponGroupB=old; RememberWeaponGroups(); }
         public R3GarageEconomy Economy { get; }
+        readonly R3ConstructionSettings fallbackConstructionSettings=new R3ConstructionSettings();
+        R3ConstructionSettings ConstructionSettings=>Economy.Construction??fallbackConstructionSettings;
+        public int ConstructionBudgetLimit {get;private set;}
+        public long ConstructionBudgetUsed=>Parts.Sum(p=>(long)ConstructionPartCost(p));
+        public int ConstructionPartCost(R3PartState part)=>ConstructionSettings.Cost(part);
         public R3VehicleModel(R3VehicleDesign design, R3GarageEconomy economy = null)
         { Design = design; Parts = design.Parts.Select(p => {var part=p.Copy();part.Id=Guid.NewGuid().ToString("N");return part;}).ToList(); Economy = economy ?? new R3GarageEconomy();
+            ConstructionBudgetLimit=Math.Max(0,ConstructionSettings.StartingBudget);
             foreach(var part in Parts.Where(p=>p.Kind==R3PartKind.Wheel))factoryWheels.Add(part.Id,new FactoryWheelPose(part)); RefreshEnergyLayout(); Energy.Fill(); }
         public static readonly Vector3Int[] Neighbours = { Vector3Int.left, Vector3Int.right, Vector3Int.up,
             Vector3Int.down, Vector3Int.forward, Vector3Int.back };
@@ -287,8 +319,8 @@ namespace RoboRougelike.R3
         {
             var design=new R3VehicleDesign{Name=Design.Name,Description=Design.Description,Speed=Design.Speed,TurnSpeed=Design.TurnSpeed,CoreHp=Design.CoreHp};
             design.Parts.AddRange(Design.Parts.Select(p=>p.Copy()));
-            var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost});
-            copy.CreativeMode=CreativeMode;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
+            var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost,Construction=ConstructionSettings.Copy()});
+            copy.CreativeMode=CreativeMode;copy.ConstructionBudgetLimit=ConstructionBudgetLimit;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
             copy.factoryWheels.Clear();foreach(var item in factoryWheels)copy.factoryWheels.Add(item.Key,item.Value);
             copy.SuspensionEnabled=SuspensionEnabled;copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset;
             copy.RefreshEnergyLayout();copy.Energy.Restore(Energy.Current);copy.InitialEnergyPrepared=InitialEnergyPrepared;
@@ -422,7 +454,8 @@ namespace RoboRougelike.R3
             var footprint=OccupiedCells(candidate).ToArray();
             if(!CreativeMode&&footprint.Any(c=>Math.Abs(c.x)>6||Math.Abs(c.z)>7||c.y<0||c.y>5))return "Moduł wykracza poza siatkę montażową.";
             if(footprint.Any(c=>At(c)!=null))return "Zajęte pole części. Utraconą część odtwórz lub usuń jej plan.";
-            if(!CreativeMode&&Parts.Sum(p=>OccupiedCells(p).Count())+footprint.Length>180)return "Limit 180 pól części.";
+            if(!CreativeMode&&ConstructionBudgetUsed+ConstructionPartCost(candidate)>ConstructionBudgetLimit)
+                return $"Budżet konstrukcji: {ConstructionBudgetUsed}/{ConstructionBudgetLimit} pkt; część kosztuje {ConstructionPartCost(candidate)} pkt.";
             if(kind==R3PartKind.BonusModule&&!owned)return "Moduły bonusów zdobywa się wyłącznie jako nagrody.";
             if(kind==R3PartKind.Gun)
             {

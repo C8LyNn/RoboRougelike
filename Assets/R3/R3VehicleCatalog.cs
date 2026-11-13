@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Linq;
 
 namespace RoboRougelike.R3
 {
@@ -14,7 +15,7 @@ namespace RoboRougelike.R3
             return new[]{pool[0],pool[1],pool[2]};
         }
         public static R3VehicleDesign Create(R3VehicleKind kind)=>Create(kind,0);
-        public static R3VehicleDesign Create(R3VehicleKind kind,int variant)
+        public static R3VehicleDesign Create(R3VehicleKind kind,int variant,R3GarageEconomy economy=null)
         {
             variant=Mathf.Clamp(variant,0,3);
             bool light=kind==R3VehicleKind.Light,heavy=kind==R3VehicleKind.Heavy;
@@ -47,7 +48,7 @@ namespace RoboRougelike.R3
             }
             // Capacity comes from real, replaceable modules. Four-wheel light
             // builds need more help on slopes than six-wheel variants.
-            int motors=light?(variant%2==0?5:3):heavy?(variant==3?3:4):5;
+            int motors=light?(variant%2==0?5:3):heavy?3:5;
             foreach(int z in new[]{1,-1})foreach(int x in new[]{0,-1,1,-2,2})
             {
                 if(motors<=0)break;
@@ -102,7 +103,30 @@ namespace RoboRougelike.R3
                         R3VehicleModel.PlacementContacts(part.Kind,part);
                     if(part.Kind==R3PartKind.Gun)part.FootprintRevision=R3VehicleModel.NewPurchaseFootprint(part.Kind,part.Weapon,part.WheelStyle);
                 }
+            FitStartingBudget(design,economy?.Construction??new R3ConstructionSettings(),light);
             return design;
+        }
+        static void FitStartingBudget(R3VehicleDesign design,R3ConstructionSettings settings,bool light)
+        {
+            long used=design.Parts.Sum(part=>(long)settings.Cost(part));
+            // Starter designs leave room for the player's first modification;
+            // this is not an extra restriction on later garage construction.
+            long reserve=(long)System.Math.Max(0,settings.StarterReserve)+(light?System.Math.Max(0,settings.LightStarterExtraReserve):0L);
+            int limit=(int)System.Math.Max(0L,(long)settings.StartingBudget-reserve);
+            if(used<=limit)return;
+            // Remove peripheral armor only when every physical part retains a
+            // path to the core; do not silently alter existing saved vehicles.
+            var candidates=design.Parts.Where(p=>p.Kind==R3PartKind.Armor)
+                .OrderByDescending(p=>System.Math.Abs(p.Cell.x)+System.Math.Abs(p.Cell.z)+p.Cell.y)
+                .ThenByDescending(p=>p.Cell.y).ToArray();
+            foreach(var part in candidates)
+            {
+                if(used<=limit)break;
+                int index=design.Parts.IndexOf(part);if(index<0)continue;
+                design.Parts.RemoveAt(index);
+                if(R3VehicleModel.Connected(design.Parts))used-=settings.Cost(part);
+                else design.Parts.Insert(index,part);
+            }
         }
     }
 }

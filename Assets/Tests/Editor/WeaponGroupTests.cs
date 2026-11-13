@@ -153,7 +153,8 @@ public sealed class WeaponGroupTests
     [UnityTest] public IEnumerator TwelveGunsFireOncePerAssignedGroup()
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();
-        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Heavy));
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Heavy),
+            new R3GarageEconomy{Construction=new R3ConstructionSettings{StartingBudget=1000}});
         // Build twelve supported guns with the current one-cell separation.
         model.Parts.RemoveAll(p=>p.Kind==R3PartKind.Gun);
         model.Award(1000);

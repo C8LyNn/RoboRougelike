@@ -19,7 +19,7 @@ public sealed class EnergyCombatRefinementTests
             var design=R3VehicleCatalog.Create(kind,variant);
             var model=new R3VehicleModel(design);
             int motors=design.Parts.Count(p=>p.Kind==R3PartKind.DrivePower);
-            int expected=kind==R3VehicleKind.Light?(variant%2==0?5:3):kind==R3VehicleKind.Heavy?(variant==3?3:4):5;
+            int expected=kind==R3VehicleKind.Light?(variant%2==0?5:3):kind==R3VehicleKind.Heavy?3:5;
             Assert.That(motors,Is.EqualTo(expected),$"{kind}/{variant}: actual modules supply the motor power.");
             Assert.That(R3VehicleModel.Connected(design.Parts),Is.True,$"{kind}/{variant}: every module must remain attached.");
             Assert.That(model.DeployError,Is.Null,$"{kind}/{variant}: the starter must be deployable.");
