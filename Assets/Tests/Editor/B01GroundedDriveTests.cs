@@ -32,7 +32,9 @@ public class B01GroundedDriveTests
     }
     void Pose(Vector3 p,Quaternion q)
     {
-        body.useGravity=false;body.constraints=RigidbodyConstraints.None;body.position=p;body.rotation=q;
+        body.useGravity=false;body.constraints=RigidbodyConstraints.None;
+        // Keep the interpolated transform and the Rigidbody at the same fixture pose.
+        vehicle.transform.SetPositionAndRotation(p,q);body.position=p;body.rotation=q;
         body.linearVelocity=body.angularVelocity=Vector3.zero;Physics.SyncTransforms();drive.RefreshMass();
         // Recovery must not contaminate a test isolating the Wheel force boundary.
         foreach(var b in vehicle.GetComponents<MonoBehaviour>())if(b.GetType().Name=="R6CoreRecovery")b.enabled=false;
@@ -114,7 +116,7 @@ public class B01GroundedDriveTests
     [UnityTest] public IEnumerator PHY_GROUND_RealSlopeSuppliesItsNormalWithoutFictionalLevelGround()
     {
         floor.transform.rotation=Quaternion.Euler(20,0,0);
-        var p=floor.transform.TransformPoint(new Vector3(0,.5f,0))+floor.transform.up*.65f;
+        var p=floor.transform.TransformPoint(new Vector3(0,.5f,0))+floor.transform.up*R3VehicleModel.WheelRadius(R3WheelStyle.Offroad);
         Pose(p,floor.transform.rotation);drive.Step(0,0,10,5,90);
         Assert.That(Contacts,Is.EqualTo(4));Assert.That(Vector3.Angle(drive.GroundNormal,floor.transform.up),Is.LessThan(1));
         Pose(p+floor.transform.up*.3f,floor.transform.rotation);drive.Step(0,0,10,5,90);Assert.That(Contacts,Is.Zero);yield return null;

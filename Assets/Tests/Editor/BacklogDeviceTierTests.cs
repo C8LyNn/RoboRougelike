@@ -188,6 +188,46 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(emp.TryArea(),Is.False);Assert.That(charges.Current(R3EmpDevices.AreaPool),Is.EqualTo(1));
         Assert.That(emp.Status(R3PartKind.AreaEmp),Does.Contain("brak energii"));
     }
+    [UnityTest] public IEnumerator RampGeneratorPlacesOneDamageableDrivableSurfaceBehindMovingVehicle()
+    {
+        run.VehicleModel.Award(2000);FuseAndMount(R3PartKind.RampDeployer);FuseAndMount(R3PartKind.RechargePulse);
+        Assert.That(run.EnterTestRange(),Is.True);
+        for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(80,1,80);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return new WaitForFixedUpdate();body.linearVelocity=Vector3.forward*3;
+        var charges=run.VehicleModel.Charges;var bank=player.GetComponent<VehicleEnergyBank>();
+        Assert.That(service,Is.Not.Null);Assert.That(charges.Current(R3DeployableService.RampPool),Is.EqualTo(3));
+        var blocker=GameObject.CreatePrimitive(PrimitiveType.Cube);blocker.transform.position=body.position+Vector3.back*4;blocker.transform.localScale=new Vector3(20,10,20);Physics.SyncTransforms();
+        float before=bank.Current;Assert.That(service.TryDeployRamp(),Is.False,"An obstructed placement must fail safely");
+        Assert.That(bank.Current,Is.EqualTo(before));Assert.That(charges.Current(R3DeployableService.RampPool),Is.EqualTo(3));
+        blocker.SetActive(false);Object.Destroy(blocker);Physics.SyncTransforms();
+        Assert.That(service.TryDeployRamp(),Is.True);Assert.That(charges.Current(R3DeployableService.RampPool),Is.EqualTo(2));
+        Assert.That(bank.Current,Is.EqualTo(before-12).Within(.1));Assert.That(service.TryDeployRamp(),Is.False,"Copies share a cooldown");
+        Assert.That(player.GetComponent<R3RechargePulse>().TryActivate(),Is.True);
+        Assert.That(charges.Current(R3DeployableService.RampPool),Is.EqualTo(3),"The shared recharge pulse also supports deployables without EMP installed");
+        var ramp=GameObject.Find("Rozstawiona rampa");Assert.That(ramp,Is.Not.Null);
+        var collider=ramp.GetComponent<Collider>();Assert.That(collider,Is.Not.Null);
+        Assert.That(RoboRougelike.R6.R6WheelContacts.Terrain(collider),Is.True,"The existing wheel solver must accept the real ramp surface");
+        Assert.That(ramp.GetComponent<R3DeployableSurface>().TeamId,Is.EqualTo(1));
+        var otherModel=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var other=R3VehicleAssembly.Build(otherModel,new R1RunStats(),run.GetComponent<R3VisualPalette>(),ramp.transform.position+Vector3.up*1.5f,ramp.transform.rotation);
+        var drive=other.GetComponent<RoboRougelike.R6.R6VehicleDrive>();bool wheelsOnRamp=false;
+        float deadline=Time.realtimeSinceStartup+6;
+        while(Time.realtimeSinceStartup<deadline&&!wheelsOnRamp)
+        {
+            yield return new WaitForFixedUpdate();drive.RefreshMass();
+            wheelsOnRamp=drive.GroundedWheels>0&&Vector3.Dot(drive.GroundNormal,ramp.transform.up)>.98f;
+        }
+        Assert.That(wheelsOnRamp,Is.True,"An actual R6 vehicle must acquire wheel contact with the deployed ramp");
+        Object.Destroy(other.gameObject);
+        Assert.That(RoboRougelike.WeaponIntegration.RRLHitRouter.CanHit(collider,player.transform),Is.False,"Friendly damage must be filtered");
+        var enemy=new GameObject("enemy source");enemy.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret>().enabled=false;
+        Assert.That(RoboRougelike.WeaponIntegration.RRLHitRouter.Apply(collider,1000,ramp.transform.position,Vector3.forward,enemy.transform),Is.True);
+        Assert.That(ramp.GetComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().IsDead,Is.True);
+        Object.Destroy(enemy);Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator EnergyAuraTogglesOnPressAndDamagesOnlyEnemiesWhileConsumingEnergy()
     {
         Assert.That(run.GaragePurchase(R3PartKind.Gun,RoboRougelike.R4.R4WeaponKind.EmpEmitter),Is.True);

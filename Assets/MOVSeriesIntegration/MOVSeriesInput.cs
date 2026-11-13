@@ -22,6 +22,9 @@ namespace RoboRougelike.MOVSeries
             var pressed=new[]{keys.digit1Key.wasPressedThisFrame,keys.digit2Key.wasPressedThisFrame,
                 keys.digit3Key.wasPressedThisFrame,keys.digit4Key.wasPressedThisFrame};
             for(int i=0;i<4;i++)if(pressed[i]&&slots[i].HasValue)Activate(run,slots[i].Value);
+            var deployables=run.VehicleModel.GetDeployableSlots();
+            var deployPressed=new[]{keys.zKey.wasPressedThisFrame,keys.xKey.wasPressedThisFrame,keys.cKey.wasPressedThisFrame,keys.vKey.wasPressedThisFrame};
+            for(int i=0;i<4;i++)if(deployPressed[i]&&deployables[i]==R3PartKind.RampDeployer)GetComponent<R3DeployableService>()?.TryDeployRamp();
             if(keys.gKey.wasPressedThisFrame)run.ToggleGyro();
         }
         void Activate(R1RunController run,R3PartKind kind)

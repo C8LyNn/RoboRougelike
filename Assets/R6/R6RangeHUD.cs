@@ -87,6 +87,11 @@ namespace RoboRougelike.R1
                     if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.TargetedEmp))charges+=$" • EMP cel. {bank.Current(R3EmpDevices.TargetPool)}/{bank.Maximum(R3EmpDevices.TargetPool)}";
                     if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.AreaEmp))charges+=$" • EMP obsz. {bank.Current(R3EmpDevices.AreaPool)}/{bank.Maximum(R3EmpDevices.AreaPool)}";
                 }
+                if(run.Player.GetComponent<R3DeployableService>()!=null)
+                {
+                    var bank=run.VehicleModel.Charges;
+                    charges+=$" • Rampa {bank.Current(R3DeployableService.RampPool)}/{bank.Maximum(R3DeployableService.RampPool)}";
+                }
                 GUI.Label(new Rect(34,151,580,22),$"Energia: {energy.Current:0}/{energy.Maximum:0}{charges}",small);
             }
             var range=run.GetComponent<R6TestRange>();
@@ -99,7 +104,7 @@ namespace RoboRougelike.R1
             DrawAimReticle(run);
             Panel(new Rect(18,625,1244,78));
             DrawFeedback();
-            GUI.Label(new Rect(34,635,1200,60),"WASD — napęd • Omni/Hover: A/D — bok, Z/C — obrót • LPM/PPM/Q/E — broń • 1–4 — moduły • R — reset • Esc — pauza"+
+            GUI.Label(new Rect(34,635,1200,60),"WASD — napęd • ,/. — osie • LPM/PPM/Q/E — broń • 1–4 — moduły • Z/X/C/V — urządzenia • R — reset • Esc — pauza"+
                 (run.CreativeWorkshop?" i przeciwnicy":"")+
                 "\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Zawieszenie: porównaj OFF/Assist/Full na torze x≈12 • Cele na północy",small);
         }

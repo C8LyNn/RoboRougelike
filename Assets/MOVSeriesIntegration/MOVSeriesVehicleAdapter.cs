@@ -34,7 +34,8 @@ namespace RoboRougelike.MOVSeries
             if(assembly==null)return false;structure.EvaluateStructure();drive.RefreshMass();SyncDevices();return CanControl;
         }
         public static bool IsTerrain(Collider c)=>c!=null&&c.attachedRigidbody==null&&
-            c.GetComponentInParent<P12PipelineSafeDamageable>()==null&&c.GetComponentInParent<R3Debris>()==null;
+            (c.GetComponentInParent<P12PipelineSafeDamageable>()==null||c.GetComponentInParent<R3DeployableSurface>()!=null)&&
+            c.GetComponentInParent<R3Debris>()==null;
         void FixedUpdate()
         {
             if(assembly==null)return;

@@ -8,7 +8,7 @@ using RoboRougelike.R1;
 namespace RoboRougelike.R3
 {
     // Append new values: checkpoints store these numeric IDs.
-    public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery, RepairPulse, DrivePower, EnergyRegenerator, SalvageOptimizer, Overdrive, RapidFire, DoubleShot, DoubleShotOverdrive, TargetedEmp, AreaEmp, ChargeCapacity, ChargeRegenerator, RechargePulse }
+    public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery, RepairPulse, DrivePower, EnergyRegenerator, SalvageOptimizer, Overdrive, RapidFire, DoubleShot, DoubleShotOverdrive, TargetedEmp, AreaEmp, ChargeCapacity, ChargeRegenerator, RechargePulse, RampDeployer }
     public enum R3WheelStyle { Offroad, Slick, LargeOffroad, Monster, SmallFork, BalloonFork, SpikedFork, TwinRoad, SteerRoad, SteerOffroad, CasterSlick, SwingOffroad }
     // Zero preserves the shape of every pre-existing checkpoint.
     public enum R3ArmorShape { Cube, Wedge, HalfBlock, Pyramid, RoundEdge, HalfWedge, Dome }
@@ -81,7 +81,7 @@ namespace RoboRougelike.R3
             int baseCost=part.Kind==R3PartKind.Armor?
                 (part.ArmorShape==R3ArmorShape.HalfBlock||part.ArmorShape==R3ArmorShape.HalfWedge?HalfBlockCost:BlockCost):
                 part.Kind==R3PartKind.Core?BlockCost:
-                part.Kind==R3PartKind.Wheel?WheelCost:R3VehicleModel.IsActiveSlotPart(part.Kind)?ActiveModuleCost:
+                part.Kind==R3PartKind.Wheel?WheelCost:(R3VehicleModel.IsActiveSlotPart(part.Kind)||R3VehicleModel.IsDeployableSlotPart(part.Kind))?ActiveModuleCost:
                 R3VehicleModel.IsPassiveSlotPart(part.Kind)?PassiveModuleCost:DriveModuleCost;
             int multiplier=tier==3?TierThreeMultiplier:tier==2?TierTwoMultiplier:1;
             return (int)Math.Min(int.MaxValue,(long)Math.Max(0,baseCost)*Math.Max(0,multiplier));
@@ -101,6 +101,7 @@ namespace RoboRougelike.R3
         public int DoubleShotOverdriveExtraPerUnit=1;
         public int DeviceBaseCharges=3,CapacityChargesPerUnit=1,RechargePulseChargesPerUnit=1;
         public float ChargesPerSecondPerRegenerator=.05f,RechargePulseEnergyPerCopy=15f,RechargePulseCooldown=12f;
+        public float RampEnergyPerCopy=10f,RampCooldown=8f,RampLifetime=30f;
         public int BlockGrantQuantity=5,DriveGrantQuantity=2;
         public R3ConstructionSettings Construction = new R3ConstructionSettings();
         public int Price(R3PartKind kind) => kind switch {
@@ -108,7 +109,7 @@ namespace RoboRougelike.R3
             R3PartKind.Booster=>35, R3PartKind.JumpDrive=>45, R3PartKind.Blink=>60,
             R3PartKind.Gyroscope=>30, R3PartKind.OmniDrive=>40, R3PartKind.MagneticGrapple=>45,
             R3PartKind.HoverEngine=>35, R3PartKind.CrawlerTrack=>45,
-            R3PartKind.BonusModule=>60,R3PartKind.DirectionalShield=>60,R3PartKind.PointDefense=>70,R3PartKind.StructuralScanner=>40,R3PartKind.ScannerPulse=>30,R3PartKind.IndependentSteering=>45,R3PartKind.Battery=>25,R3PartKind.RepairPulse=>50,R3PartKind.DrivePower=>45,R3PartKind.EnergyRegenerator=>40,R3PartKind.SalvageOptimizer=>40,R3PartKind.Overdrive=>40,R3PartKind.RapidFire=>40,R3PartKind.DoubleShot=>40,R3PartKind.DoubleShotOverdrive=>40,R3PartKind.TargetedEmp=>50,R3PartKind.AreaEmp=>50,R3PartKind.ChargeCapacity=>40,R3PartKind.ChargeRegenerator=>40,R3PartKind.RechargePulse=>40, _=>ArmorCost };
+            R3PartKind.BonusModule=>60,R3PartKind.DirectionalShield=>60,R3PartKind.PointDefense=>70,R3PartKind.StructuralScanner=>40,R3PartKind.ScannerPulse=>30,R3PartKind.IndependentSteering=>45,R3PartKind.Battery=>25,R3PartKind.RepairPulse=>50,R3PartKind.DrivePower=>45,R3PartKind.EnergyRegenerator=>40,R3PartKind.SalvageOptimizer=>40,R3PartKind.Overdrive=>40,R3PartKind.RapidFire=>40,R3PartKind.DoubleShot=>40,R3PartKind.DoubleShotOverdrive=>40,R3PartKind.TargetedEmp=>50,R3PartKind.AreaEmp=>50,R3PartKind.ChargeCapacity=>40,R3PartKind.ChargeRegenerator=>40,R3PartKind.RechargePulse=>40,R3PartKind.RampDeployer=>50, _=>ArmorCost };
     }
     public sealed partial class R3VehicleModel
     {
@@ -186,7 +187,7 @@ namespace RoboRougelike.R3
         public static float TierPassiveExtra(int tier)=>0f;
         public static float TierActivationCost(int tier)=>NormalizedTier(tier)==3?1.4f:NormalizedTier(tier)==2?1.2f:1f;
         public static bool SupportsFusion(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||
-            kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.SalvageOptimizer||kind==R3PartKind.Overdrive||kind==R3PartKind.RapidFire||kind==R3PartKind.DoubleShot||kind==R3PartKind.DoubleShotOverdrive||kind==R3PartKind.TargetedEmp||kind==R3PartKind.AreaEmp||kind==R3PartKind.ChargeCapacity||kind==R3PartKind.ChargeRegenerator||kind==R3PartKind.RechargePulse||kind==R3PartKind.BonusModule||kind==R3PartKind.PointDefense||
+            kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.SalvageOptimizer||kind==R3PartKind.Overdrive||kind==R3PartKind.RapidFire||kind==R3PartKind.DoubleShot||kind==R3PartKind.DoubleShotOverdrive||kind==R3PartKind.TargetedEmp||kind==R3PartKind.AreaEmp||kind==R3PartKind.ChargeCapacity||kind==R3PartKind.ChargeRegenerator||kind==R3PartKind.RechargePulse||kind==R3PartKind.RampDeployer||kind==R3PartKind.BonusModule||kind==R3PartKind.PointDefense||
             (kind==R3PartKind.Gun&&weapon>=R4WeaponKind.Basic&&weapon<=R4WeaponKind.EmpEmitter);
         public R3VehicleDesign Design { get; }
         // A disposable workshop model; never serialized into an expedition.
@@ -226,6 +227,9 @@ namespace RoboRougelike.R3
         readonly Dictionary<string,int> weaponSlotPreference=new Dictionary<string,int>(StringComparer.Ordinal);
         readonly R3PartKind?[] activeSlots=new R3PartKind?[4];
         readonly Dictionary<R3PartKind,int> activeSlotPreference=new Dictionary<R3PartKind,int>();
+        readonly R3PartKind?[] deployableSlots=new R3PartKind?[4];
+        readonly Dictionary<R3PartKind,int> deployableSlotPreference=new Dictionary<R3PartKind,int>();
+        public static bool IsDeployableSlotPart(R3PartKind kind)=>kind==R3PartKind.RampDeployer;
         public static bool IsActiveSlotPart(R3PartKind kind)=>
             kind==R3PartKind.Booster||kind==R3PartKind.JumpDrive||kind==R3PartKind.Blink||
             kind==R3PartKind.MagneticGrapple||kind==R3PartKind.StructuralScanner||
@@ -268,6 +272,33 @@ namespace RoboRougelike.R3
         {
             int slot=Array.FindIndex(GetActiveSlots(),p=>p==kind);
             return slot<0?"—":(slot+1).ToString();
+        }
+        public R3PartKind?[] GetDeployableSlots()
+        {
+            var types=Parts.Where(p=>IsDeployableSlotPart(p.Kind)).Select(p=>p.Kind).Distinct().ToArray();
+            for(int i=0;i<deployableSlots.Length;i++)if(deployableSlots[i].HasValue&&!types.Contains(deployableSlots[i].Value))deployableSlots[i]=null;
+            foreach(var kind in types)
+            {
+                if(deployableSlots.Contains(kind))continue;
+                int available=deployableSlotPreference.TryGetValue(kind,out var old)&&old>=0&&old<4&&!deployableSlots[old].HasValue?
+                    old:Array.FindIndex(deployableSlots,p=>!p.HasValue);
+                if(available>=0){deployableSlots[available]=kind;deployableSlotPreference[kind]=available;}
+            }
+            return (R3PartKind?[])deployableSlots.Clone();
+        }
+        public bool AssignDeployableSlot(R3PartKind kind,int slot)
+        {
+            if(slot<0||slot>=4)return false;
+            GetDeployableSlots();int old=Array.FindIndex(deployableSlots,p=>p==kind);
+            if(old<0&&(!CreativeMode||!Parts.Any(p=>p.Kind==kind&&IsDeployableSlotPart(p.Kind))))return false;
+            var displaced=deployableSlots[slot];deployableSlots[slot]=kind;if(old>=0)deployableSlots[old]=displaced;
+            for(int i=0;i<4;i++)if(deployableSlots[i].HasValue)deployableSlotPreference[deployableSlots[i].Value]=i;
+            return true;
+        }
+        public string DeployableSlotLabel(R3PartKind kind)
+        {
+            int slot=Array.FindIndex(GetDeployableSlots(),p=>p==kind);
+            return slot<0?"—":new[]{"Z","X","C","V"}[slot];
         }
         public R4WeaponKind? WeaponGroupA { get { SyncWeaponGroups(); return weaponGroupA; } }
         public R4WeaponKind? WeaponGroupB { get { SyncWeaponGroups(); return weaponGroupB; } }
@@ -330,6 +361,7 @@ namespace RoboRougelike.R3
         public float TargetedEmpReadyAt {get;internal set;}
         public float AreaEmpReadyAt {get;internal set;}
         public float RechargePulseReadyAt {get;internal set;}
+        public float RampDeployerReadyAt {get;internal set;}
         public float BoosterReadyAt {get;internal set;}
         public long ConstructionBudgetUsed=>Parts.Sum(p=>(long)ConstructionPartCost(p));
         public int PhysicalPartCount=>Parts.Count(p=>p.Health>0);
@@ -359,8 +391,8 @@ namespace RoboRougelike.R3
         {
             var design=new R3VehicleDesign{Name=Design.Name,Description=Design.Description,Speed=Design.Speed,TurnSpeed=Design.TurnSpeed,CoreHp=Design.CoreHp};
             design.Parts.AddRange(Design.Parts.Select(p=>p.Copy()));
-            var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost,StandardPurchaseMultiplier=Economy.StandardPurchaseMultiplier,SalvageOptimizerBonus=Economy.SalvageOptimizerBonus,SalvageOptimizerExtraOffersPerUnit=Economy.SalvageOptimizerExtraOffersPerUnit,OverdriveBonusPerUnit=Economy.OverdriveBonusPerUnit,OverdriveEnergyPerCopy=Economy.OverdriveEnergyPerCopy,OverdriveDuration=Economy.OverdriveDuration,OverdriveCooldown=Economy.OverdriveCooldown,RapidFireReductionPerUnit=Economy.RapidFireReductionPerUnit,RapidFireEnergyPerCopy=Economy.RapidFireEnergyPerCopy,RapidFireDuration=Economy.RapidFireDuration,RapidFireCooldown=Economy.RapidFireCooldown,DoubleShotChancePerUnit=Economy.DoubleShotChancePerUnit,DoubleShotOverdriveEnergyPerCopy=Economy.DoubleShotOverdriveEnergyPerCopy,DoubleShotOverdriveDuration=Economy.DoubleShotOverdriveDuration,DoubleShotOverdriveCooldown=Economy.DoubleShotOverdriveCooldown,DoubleShotOverdriveExtraPerUnit=Economy.DoubleShotOverdriveExtraPerUnit,DeviceBaseCharges=Economy.DeviceBaseCharges,CapacityChargesPerUnit=Economy.CapacityChargesPerUnit,RechargePulseChargesPerUnit=Economy.RechargePulseChargesPerUnit,ChargesPerSecondPerRegenerator=Economy.ChargesPerSecondPerRegenerator,RechargePulseEnergyPerCopy=Economy.RechargePulseEnergyPerCopy,RechargePulseCooldown=Economy.RechargePulseCooldown,BlockGrantQuantity=Economy.BlockGrantQuantity,DriveGrantQuantity=Economy.DriveGrantQuantity,Construction=ConstructionSettings.Copy()});
-            copy.CreativeMode=CreativeMode;copy.ConstructionBudgetLimit=ConstructionBudgetLimit;copy.ConstructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied;copy.RepairPulseReadyAt=RepairPulseReadyAt;copy.OverdriveReadyAt=OverdriveReadyAt;copy.RapidFireReadyAt=RapidFireReadyAt;copy.DoubleShotOverdriveReadyAt=DoubleShotOverdriveReadyAt;copy.TargetedEmpReadyAt=TargetedEmpReadyAt;copy.AreaEmpReadyAt=AreaEmpReadyAt;copy.RechargePulseReadyAt=RechargePulseReadyAt;copy.BoosterReadyAt=BoosterReadyAt;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
+            var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost,StandardPurchaseMultiplier=Economy.StandardPurchaseMultiplier,SalvageOptimizerBonus=Economy.SalvageOptimizerBonus,SalvageOptimizerExtraOffersPerUnit=Economy.SalvageOptimizerExtraOffersPerUnit,OverdriveBonusPerUnit=Economy.OverdriveBonusPerUnit,OverdriveEnergyPerCopy=Economy.OverdriveEnergyPerCopy,OverdriveDuration=Economy.OverdriveDuration,OverdriveCooldown=Economy.OverdriveCooldown,RapidFireReductionPerUnit=Economy.RapidFireReductionPerUnit,RapidFireEnergyPerCopy=Economy.RapidFireEnergyPerCopy,RapidFireDuration=Economy.RapidFireDuration,RapidFireCooldown=Economy.RapidFireCooldown,DoubleShotChancePerUnit=Economy.DoubleShotChancePerUnit,DoubleShotOverdriveEnergyPerCopy=Economy.DoubleShotOverdriveEnergyPerCopy,DoubleShotOverdriveDuration=Economy.DoubleShotOverdriveDuration,DoubleShotOverdriveCooldown=Economy.DoubleShotOverdriveCooldown,DoubleShotOverdriveExtraPerUnit=Economy.DoubleShotOverdriveExtraPerUnit,DeviceBaseCharges=Economy.DeviceBaseCharges,CapacityChargesPerUnit=Economy.CapacityChargesPerUnit,RechargePulseChargesPerUnit=Economy.RechargePulseChargesPerUnit,ChargesPerSecondPerRegenerator=Economy.ChargesPerSecondPerRegenerator,RechargePulseEnergyPerCopy=Economy.RechargePulseEnergyPerCopy,RechargePulseCooldown=Economy.RechargePulseCooldown,RampEnergyPerCopy=Economy.RampEnergyPerCopy,RampCooldown=Economy.RampCooldown,RampLifetime=Economy.RampLifetime,BlockGrantQuantity=Economy.BlockGrantQuantity,DriveGrantQuantity=Economy.DriveGrantQuantity,Construction=ConstructionSettings.Copy()});
+            copy.CreativeMode=CreativeMode;copy.ConstructionBudgetLimit=ConstructionBudgetLimit;copy.ConstructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied;copy.RepairPulseReadyAt=RepairPulseReadyAt;copy.OverdriveReadyAt=OverdriveReadyAt;copy.RapidFireReadyAt=RapidFireReadyAt;copy.DoubleShotOverdriveReadyAt=DoubleShotOverdriveReadyAt;copy.TargetedEmpReadyAt=TargetedEmpReadyAt;copy.AreaEmpReadyAt=AreaEmpReadyAt;copy.RechargePulseReadyAt=RechargePulseReadyAt;copy.RampDeployerReadyAt=RampDeployerReadyAt;copy.BoosterReadyAt=BoosterReadyAt;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
             copy.factoryWheels.Clear();foreach(var item in factoryWheels)copy.factoryWheels.Add(item.Key,item.Value);
             copy.SuspensionEnabled=SuspensionEnabled;copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset;
             copy.RefreshEnergyLayout();copy.Energy.Restore(Energy.Current);copy.Charges.Restore(Charges.Snapshot());copy.InitialEnergyPrepared=InitialEnergyPrepared;
@@ -372,6 +404,8 @@ namespace RoboRougelike.R3
             foreach(var preference in weaponSlotPreference)copy.weaponSlotPreference[preference.Key]=preference.Value;
             GetActiveSlots();Array.Copy(activeSlots,copy.activeSlots,4);
             foreach(var preference in activeSlotPreference)copy.activeSlotPreference[preference.Key]=preference.Value;
+            GetDeployableSlots();Array.Copy(deployableSlots,copy.deployableSlots,4);
+            foreach(var preference in deployableSlotPreference)copy.deployableSlotPreference[preference.Key]=preference.Value;
             return copy;
         }
         public const int MaxScrap=100000;
@@ -538,6 +572,8 @@ namespace RoboRougelike.R3
             }
             if(!CreativeMode&&IsActiveSlotPart(kind)&&ExceedsModuleTypeLimit(candidate,true))return "Maksymalnie 4 różne rodzaje modułów aktywnych.";
             if(!CreativeMode&&IsPassiveSlotPart(kind)&&ExceedsModuleTypeLimit(candidate,false))return "Maksymalnie 8 różnych rodzajów modułów pasywnych.";
+            if(!CreativeMode&&IsDeployableSlotPart(kind)&&Parts.Where(p=>IsDeployableSlotPart(p.Kind)).Select(p=>p.Kind).Distinct().Count()>=4&&
+                !Parts.Any(p=>p.Kind==kind))return "Maksymalnie 4 różne rodzaje urządzeń rozstawianych.";
             if(kind==R3PartKind.CrawlerTrack&&cell.x==0)return "Gąsienicę zamontuj po lewej lub prawej stronie.";
             if (!HasAliveExternalNeighbour(cell,kind,rotation,contactMask,candidate))
                 return "Brak zgodnych punktów mocowania ze sprawną konstrukcją.";

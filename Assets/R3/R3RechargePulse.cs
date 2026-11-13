@@ -23,7 +23,8 @@ namespace RoboRougelike.R3
                 foreach(var part in assembly.Parts)if(Ready(part))
                 {copies++;cost+=assembly.Model.Economy.RechargePulseEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier);}
                 if(copies==0)return "niedostępny";
-                var emp=GetComponent<R3EmpDevices>();if(emp==null||!emp.CanRecharge())return "brak urządzeń do naładowania";
+                var emp=GetComponent<R3EmpDevices>();var deploy=GetComponent<R3DeployableService>();
+                if((emp==null||!emp.CanRecharge())&&(deploy==null||!deploy.CanRecharge()))return "brak urządzeń do naładowania";
                 return energy!=null&&energy.CanSpend(cost)?"gotowy":"brak energii";
             }
         }
@@ -32,14 +33,14 @@ namespace RoboRougelike.R3
             var run=R1RunController.Instance;
             if(assembly==null||energy==null||run==null||run.Player==null||run.Player.gameObject!=gameObject||
                !run.CanUseMovement||Time.time<assembly.Model.RechargePulseReadyAt)return false;
-            var emp=GetComponent<R3EmpDevices>();if(emp==null)return false;
+            var emp=GetComponent<R3EmpDevices>();var deploy=GetComponent<R3DeployableService>();
             var economy=assembly.Model.Economy;int units=0;float cost=0;
             foreach(var part in assembly.Parts)if(Ready(part))
             {units+=R3VehicleModel.TierEffectUnits(part.Tier);cost+=economy.RechargePulseEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier);}
             if(units==0||float.IsNaN(cost)||float.IsInfinity(cost)||cost<0)return false;
             int amount=(int)System.Math.Min(int.MaxValue,(long)units*System.Math.Max(0,economy.RechargePulseChargesPerUnit));
-            if(amount==0||!emp.CanRecharge()||!energy.TrySpend(cost))return false;
-            emp.Recharge(amount);
+            if(amount==0||((emp==null||!emp.CanRecharge())&&(deploy==null||!deploy.CanRecharge()))||!energy.TrySpend(cost))return false;
+            emp?.Recharge(amount);deploy?.Recharge(amount);
             float cooldown=economy.RechargePulseCooldown;
             assembly.Model.RechargePulseReadyAt=Time.time+(float.IsNaN(cooldown)||float.IsInfinity(cooldown)?0:Mathf.Max(0,cooldown));
             return true;
