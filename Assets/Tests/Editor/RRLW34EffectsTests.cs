@@ -140,6 +140,24 @@ public class RRLW34EffectsTests
         Assert.That(vehicle.Core.MaxHp,Is.EqualTo(1200f).Within(.01));
         Assert.That(vehicle.Core.CurrentHp/vehicle.Core.MaxHp,Is.EqualTo(.4f).Within(.001),"Changing bonuses preserves HP percentage.");
     }
+    [UnityTest] public IEnumerator ReloadReductionsAddAndCanReachZeroWithoutNegativeInterval()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        Assert.That(model.ReceiveBonuses(new[]{Upgrade(R1UpgradeEffect.Reload,.2f),Upgrade(R1UpgradeEffect.Reload,.2f)}),Is.True);
+        foreach(var item in model.Inventory.ToArray())
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(item.Id,c,default)==null);
+            Assert.That(model.Mount(item.Id,cell),Is.True);
+        }
+        var vehicle=Build(model);var controller=vehicle.Controller;
+        Assert.That(Effects(vehicle).EffectiveStats.FireInterval,Is.EqualTo(.6f).Within(.001));
+        Assert.That(controller.WeaponInterval(R4WeaponKind.Basic),Is.EqualTo(R4WeaponDefinition.Get(R4WeaponKind.Basic).Interval*.6f).Within(.001));
+        foreach(var part in vehicle.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.BonusModule))part.UpgradeAmount=.75f;
+        yield return null;
+        Assert.That(Effects(vehicle).EffectiveStats.FireInterval,Is.Zero);
+        Assert.That(controller.WeaponInterval(R4WeaponKind.Basic),Is.Zero,"An interval cannot become negative or retain a hidden balance cap.");
+    }
     [UnityTest] public IEnumerator InventoryIsInactiveAndAllMountedEffectsReachLiveWeaponsHpAndOmni()
     {
         var m=Model(Upgrade(R1UpgradeEffect.Damage,.25f),Upgrade(R1UpgradeEffect.Damage,.2f),

@@ -271,13 +271,12 @@ namespace RoboRougelike.R1
             int units=R3VehicleModel.TierEffectUnits(item.Tier);
             if(item.UpgradeEffect==R1UpgradeEffect.Repair)
                 return $"Regeneracja {units*.025f*100:0.#}% HP/s";
-            var stats=new R1RunStats();for(int i=0;i<units;i++)stats.Apply(item.UpgradeEffect,item.UpgradeAmount);
             string name;float percent;bool reduction=false;
             switch(item.UpgradeEffect)
             {
                 case R1UpgradeEffect.Hull:name="Wytrzymałość";percent=item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.Damage:name="Obrażenia";percent=item.UpgradeAmount*units*100;break;
-                case R1UpgradeEffect.Reload:name="Czas przeładowania";percent=(1-stats.FireInterval)*100;reduction=true;break;
+                case R1UpgradeEffect.Reload:name="Czas przeładowania";percent=Mathf.Min(100,item.UpgradeAmount*units*100);reduction=true;break;
                 case R1UpgradeEffect.Mobility:name="Mobilność";percent=item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.Core:name="Rdzeń";percent=item.UpgradeAmount*units*100;break;
                 default:return "Nieznany bonus";

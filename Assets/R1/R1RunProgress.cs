@@ -40,6 +40,11 @@ namespace RoboRougelike.R1
             if(!float.IsNaN(coreIncrease)&&!float.IsInfinity(coreIncrease)&&coreIncrease>=0)
                 Core=(float)Math.Min(float.MaxValue,(double)Core*(1d+coreIncrease));
         }
+        public void ApplyAdditiveReloadReduction(float reduction)
+        {
+            if(float.IsNaN(reduction)||float.IsInfinity(reduction)||reduction<0)return;
+            FireInterval*=Mathf.Max(0,1-reduction);
+        }
         internal static bool TryRestore(R1ProgressCheckpoint c,out R1RunStats stats)
         {
             stats=null;

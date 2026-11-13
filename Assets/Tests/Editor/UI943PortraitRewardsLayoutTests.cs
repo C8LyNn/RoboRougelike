@@ -111,7 +111,7 @@ public sealed class UI943PortraitRewardsLayoutTests
         Assert.That(Text(),Does.Contain("40%"));
         item.UpgradeEffect=R1UpgradeEffect.Mobility;Assert.That(Text(),Does.Contain("40%"));
         item.UpgradeEffect=R1UpgradeEffect.Hull;Assert.That(Text(),Does.Contain("40%"));
-        item.UpgradeEffect=R1UpgradeEffect.Reload;Assert.That(Text(),Does.Contain("36%"));
+        item.UpgradeEffect=R1UpgradeEffect.Reload;Assert.That(Text(),Does.Contain("40%"));
         item.UpgradeEffect=R1UpgradeEffect.Repair;Assert.That(Text(),Does.Contain("5%"));
         item.Tier=3;Assert.That(Text(),Does.Contain("10%"),"Four repair contributions each provide 2.5% per second.");
     }
