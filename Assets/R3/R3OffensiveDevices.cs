@@ -18,23 +18,35 @@ namespace RoboRougelike.R3
         }
         readonly ActiveDevice overdrive=new ActiveDevice(R3PartKind.Overdrive);
         readonly ActiveDevice rapidFire=new ActiveDevice(R3PartKind.RapidFire);
+        readonly ActiveDevice projectileBoost=new ActiveDevice(R3PartKind.DoubleShotOverdrive);
         R3VehicleAssembly assembly;
         VehicleEnergyBank energy;
         R3MountedBonusEffects effects;
         public string OverdriveStatus=>Status(overdrive);
         public string RapidFireStatus=>Status(rapidFire);
+        public string DoubleShotOverdriveStatus=>Status(projectileBoost);
+        public int AdditionalProjectileUnits
+        {
+            get
+            {
+                if(assembly==null||projectileBoost.Copies.Count==0||Time.time>=projectileBoost.EndsAt)return 0;
+                long units=0;foreach(var part in projectileBoost.Copies)if(Ready(part,projectileBoost.Kind))units+=R3VehicleModel.TierEffectUnits(part.Tier);
+                return (int)System.Math.Min(int.MaxValue,units*System.Math.Max(0,assembly.Model.Economy.DoubleShotOverdriveExtraPerUnit));
+            }
+        }
 
         public void Configure(R3VehicleAssembly owner)
         {assembly=owner;energy=GetComponent<VehicleEnergyBank>();effects=GetComponent<R3MountedBonusEffects>();}
         static float NonNegative(float value)=>float.IsNaN(value)||float.IsInfinity(value)?0:Mathf.Max(0,value);
         bool Ready(R3MountedPart part,R3PartKind kind)=>part!=null&&part.Kind==kind&&part.Operational&&
             part.gameObject.activeInHierarchy&&part.transform.IsChildOf(transform)&&!RRLEmpPartState.IsBlocked(part.gameObject);
-        float ReadyAt(ActiveDevice device)=>device.Kind==R3PartKind.Overdrive?assembly.Model.OverdriveReadyAt:assembly.Model.RapidFireReadyAt;
+        float ReadyAt(ActiveDevice device)=>device.Kind==R3PartKind.Overdrive?assembly.Model.OverdriveReadyAt:
+            device.Kind==R3PartKind.RapidFire?assembly.Model.RapidFireReadyAt:assembly.Model.DoubleShotOverdriveReadyAt;
         void SetReadyAt(ActiveDevice device,float at)
-        {if(device.Kind==R3PartKind.Overdrive)assembly.Model.OverdriveReadyAt=at;else assembly.Model.RapidFireReadyAt=at;}
-        float Cost(ActiveDevice device)=>NonNegative(device.Kind==R3PartKind.Overdrive?assembly.Model.Economy.OverdriveEnergyPerCopy:assembly.Model.Economy.RapidFireEnergyPerCopy);
-        float Duration(ActiveDevice device)=>NonNegative(device.Kind==R3PartKind.Overdrive?assembly.Model.Economy.OverdriveDuration:assembly.Model.Economy.RapidFireDuration);
-        float Cooldown(ActiveDevice device)=>NonNegative(device.Kind==R3PartKind.Overdrive?assembly.Model.Economy.OverdriveCooldown:assembly.Model.Economy.RapidFireCooldown);
+        {if(device.Kind==R3PartKind.Overdrive)assembly.Model.OverdriveReadyAt=at;else if(device.Kind==R3PartKind.RapidFire)assembly.Model.RapidFireReadyAt=at;else assembly.Model.DoubleShotOverdriveReadyAt=at;}
+        float Cost(ActiveDevice device)=>NonNegative(device.Kind==R3PartKind.Overdrive?assembly.Model.Economy.OverdriveEnergyPerCopy:device.Kind==R3PartKind.RapidFire?assembly.Model.Economy.RapidFireEnergyPerCopy:assembly.Model.Economy.DoubleShotOverdriveEnergyPerCopy);
+        float Duration(ActiveDevice device)=>NonNegative(device.Kind==R3PartKind.Overdrive?assembly.Model.Economy.OverdriveDuration:device.Kind==R3PartKind.RapidFire?assembly.Model.Economy.RapidFireDuration:assembly.Model.Economy.DoubleShotOverdriveDuration);
+        float Cooldown(ActiveDevice device)=>NonNegative(device.Kind==R3PartKind.Overdrive?assembly.Model.Economy.OverdriveCooldown:device.Kind==R3PartKind.RapidFire?assembly.Model.Economy.RapidFireCooldown:assembly.Model.Economy.DoubleShotOverdriveCooldown);
         float Bonus(ActiveDevice device)=>NonNegative(device.Kind==R3PartKind.Overdrive?assembly.Model.Economy.OverdriveBonusPerUnit:assembly.Model.Economy.RapidFireReductionPerUnit);
         void SetContribution(ActiveDevice device,float value)
         {if(device.Kind==R3PartKind.Overdrive)effects.SetOverdriveIncrease(value);else effects.SetRapidFireReduction(value);}
@@ -53,6 +65,7 @@ namespace RoboRougelike.R3
 
         public int TryActivate()=>Activate(overdrive);
         public int TryActivateRapidFire()=>Activate(rapidFire);
+        public int TryActivateDoubleShotOverdrive()=>Activate(projectileBoost);
         int Activate(ActiveDevice device)
         {
             var run=R1RunController.Instance;
@@ -68,7 +81,7 @@ namespace RoboRougelike.R3
             device.EndsAt=Time.time+duration;SetReadyAt(device,Time.time+Cooldown(device));
             ApplyContribution(device);return device.Copies.Count;
         }
-        void Update(){Tick(overdrive);Tick(rapidFire);}
+        void Update(){Tick(overdrive);Tick(rapidFire);Tick(projectileBoost);}
         void Tick(ActiveDevice device)
         {
             if(device.Copies.Count==0)return;
@@ -80,10 +93,12 @@ namespace RoboRougelike.R3
             int units=0;
             foreach(var part in device.Copies)if(Ready(part,device.Kind))units+=R3VehicleModel.TierEffectUnits(part.Tier);
             if(units==0){Clear(device);return;}
+            if(device.Kind==R3PartKind.DoubleShotOverdrive)
+                return;
             SetContribution(device,Bonus(device)*units);
         }
         void Clear(ActiveDevice device)
-        {device.Copies.Clear();device.EndsAt=0;if(effects!=null)SetContribution(device,0);}
-        void OnDisable(){Clear(overdrive);Clear(rapidFire);}
+        {device.Copies.Clear();device.EndsAt=0;if(device.Kind!=R3PartKind.DoubleShotOverdrive&&effects!=null)SetContribution(device,0);}
+        void OnDisable(){Clear(overdrive);Clear(rapidFire);Clear(projectileBoost);}
     }
 }

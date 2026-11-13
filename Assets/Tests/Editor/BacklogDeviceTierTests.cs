@@ -40,6 +40,14 @@ public sealed class BacklogDeviceTierTests
         Assert.That(restored.Parts.Single(p=>p.Id==part.Id).Tier,Is.EqualTo(2));
         Assert.That(restored.Energy.Maximum,Is.EqualTo(baseline-25));
     }
+    [TestCase(R3PartKind.DoubleShot,25)][TestCase(R3PartKind.DoubleShotOverdrive,0)]
+    public void TierTwoProjectileModulesFuseAndSurviveCheckpoint(R3PartKind kind,float reservation)
+    {
+        var model=Model();float baseline=model.Energy.Maximum;var part=FuseThree(model,kind);Mount(model,part);
+        Assert.That(model.Energy.Maximum,Is.EqualTo(baseline-reservation));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(model.MakeCheckpoint(0),R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==part.Id).Tier,Is.EqualTo(2));
+    }
     [Test] public void PointDefenseCanBeFusedAndRestoredAsTierTwo()
     {
         var model=Model();var part=FuseThree(model,R3PartKind.PointDefense);Mount(model,part);
@@ -219,6 +227,39 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(run.VehicleModel.OverdriveReadyAt,Is.GreaterThan(Time.time));
         Assert.That(run.VehicleModel.RapidFireReadyAt,Is.GreaterThan(Time.time));
         yield return null;
+    }
+    [UnityTest] public IEnumerator DoubleShotOverdriveAddsOneProjectileToPassiveShotWithoutRecursion()
+    {
+        Assert.That(System.Enum.TryParse("DoubleShotOverdrive",out R3PartKind boostKind),Is.True);
+        foreach(var kind in new[]{R3PartKind.DoubleShot,boostKind})
+        {
+            Assert.That(run.GaragePurchase(kind),Is.True);
+            var part=run.VehicleModel.Inventory.Last(p=>p.Kind==kind);
+            var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            Assert.That(run.GarageMount(part.Id,cells.First(c=>run.VehicleModel.OwnedPlacementError(part.Id,c,default)==null)),Is.True);
+        }
+        run.VehicleModel.Economy.DoubleShotChancePerUnit=1;
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);
+        var devices=run.Player.GetComponent<R3OffensiveDevices>();
+        var activate=typeof(R3OffensiveDevices).GetMethod("TryActivateDoubleShotOverdrive");Assert.That(activate,Is.Not.Null);
+        var bank=run.Player.GetComponent<VehicleEnergyBank>();float before=bank.Current;
+        Assert.That((int)activate.Invoke(devices,null),Is.EqualTo(1));Assert.That(bank.Current,Is.EqualTo(before-15).Within(.001f));
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        run.Player.GetComponent<Rigidbody>().isKinematic=true;
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=gun.Muzzle.position+gun.Muzzle.forward*4;
+        var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(1000,false);
+        Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(gun),Is.True);assembly.FireGroup(false);
+        Assert.That(bank.Current,Is.EqualTo(before-15).Within(.01f),"Extra projectiles do not spend additional energy.");
+        float deadline=Time.realtimeSinceStartup+5;
+        while(hp.CurrentHp>880.01f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(880).Within(.1f),"One original plus one passive and one active extra, without recursion.");
+        var copy=run.VehicleModel.DeepCopy();copy.Parts.RemoveAll(p=>p.Kind==boostKind);float now=Time.time;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(copy.MakeCheckpoint(now),R3VehicleKind.Light,copy.Economy,now,out var restored,out var error),Is.True,error);
+        Assert.That(restored.DoubleShotOverdriveReadyAt,Is.GreaterThan(now),"Cooldown survives removing every active copy.");
+        var booster=assembly.Parts.Single(p=>p.Kind==boostKind);booster.gameObject.SetActive(false);
+        Assert.That(assembly.RollDoubleShotExtras(8),Is.EqualTo(1),"Losing the active device immediately removes only its contribution.");
+        Object.Destroy(target);
     }
     [UnityTest] public IEnumerator SalvageOptimizerConsumesEnergyAndCaptureDropsDestroyedBonus()
     {

@@ -99,10 +99,20 @@ namespace RoboRougelike.WeaponIntegration
                     var range=Mathf.Min(pellet.MaxDistance,velocity.magnitude*pellet.Lifetime);
                     if(!assembly.ClearProjectilePath(part,velocity,range,.05f))return false;
                 }
-            var created=new List<GameObject>(pellets.Count);
+            var planned=new List<ShotgunPelletSpawn>(pellets);
+            int extraSlots=P17PhysicalShell.AvailableSlots-pellets.Count;
+            if(assembly!=null)
+                foreach(var pellet in pellets)
+                {
+                    int extras=assembly.RollDoubleShotExtras(extraSlots);
+                    for(int i=0;i<extras;i++)planned.Add(pellet);
+                    extraSlots-=extras;
+                    if(extraSlots<=0)break;
+                }
+            var created=new List<GameObject>(planned.Count);
             try
             {
-                foreach(var pellet in pellets)
+                foreach(var pellet in planned)
                 {
                     if(pellet.OwnerRoot!=Owner.gameObject||pellet.OwnerBody!=body)throw new System.InvalidOperationException("Wrong projectile owner");
                     var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);created.Add(shell);

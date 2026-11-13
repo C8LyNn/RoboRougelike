@@ -5,7 +5,7 @@ using UnityEngine;
 
 public sealed class UI943CombatHudLayoutTests
 {
-    [TestCase(1)][TestCase(2)][TestCase(3)]
+    [TestCase(1)][TestCase(2)][TestCase(3)][TestCase(4)]
     public void MultipleActiveAbilityRowsDoNotOverlapDetailsOrButton(int count)
     {
         var flags=BindingFlags.NonPublic|BindingFlags.Static;

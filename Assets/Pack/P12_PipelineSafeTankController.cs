@@ -573,21 +573,33 @@ public float CurrentForwardSpeed =>
             RoboRougelike.R4.R4WeaponKind.Basic,null); }
 
         public void FireFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId)
+        { FireFrom(barrel,kind,partId,0); }
+        public void FireFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,int extraShots)
         {
             var profile=RoboRougelike.R4.R4WeaponDefinition.Get(kind);
             var mounted=barrel!=null?barrel.GetComponentInParent<RoboRougelike.R3.R3MountedPart>():null;
             float tier=mounted!=null&&mounted.Kind==RoboRougelike.R3.R3PartKind.Gun&&mounted.Id==partId?
                 RoboRougelike.R3.R3VehicleModel.TierEffectUnits(mounted.Tier):1f;
-            SpawnPhysicalShell(barrel,profile.Damage*damageModifier*tier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
+            var first=SpawnPhysicalShell(barrel,profile.Damage*damageModifier*tier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
+            if(first==null||extraShots<=0)return;
+            var siblings=new System.Collections.Generic.List<Collider>{first};
+            int allowed=Mathf.Min(extraShots,P17PhysicalShell.AvailableSlots);
+            for(int i=0;i<allowed;i++)
+            {
+                var extra=SpawnPhysicalShell(barrel,profile.Damage*damageModifier*tier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
+                if(extra==null)break;
+                foreach(var sibling in siblings)if(sibling!=null)Physics.IgnoreCollision(extra,sibling,true);
+                siblings.Add(extra);
+            }
         }
         public float WeaponInterval(RoboRougelike.R4.R4WeaponKind kind) => RoboRougelike.R4.R4WeaponDefinition.Get(kind).Interval*intervalModifier;
         public float PackageDamageScale => damageModifier;
         public float PackageIntervalScale => intervalModifier;
-        private void SpawnPhysicalShell(Transform barrel,float hitDamage,float projectileSpeed,float projectileDiameter,
+        private Collider SpawnPhysicalShell(Transform barrel,float hitDamage,float projectileSpeed,float projectileDiameter,
             float projectileMass,RoboRougelike.R4.R4WeaponKind kind,string partId)
         {
             if (barrel == null)
-                return;
+                return null;
 
             Vector3 direction =
                 barrel.forward.normalized;
@@ -677,6 +689,7 @@ public float CurrentForwardSpeed =>
             IgnoreOwnerColliders(
                 sphere
             );
+            return sphere;
         }
 
         private void IgnoreOwnerColliders(

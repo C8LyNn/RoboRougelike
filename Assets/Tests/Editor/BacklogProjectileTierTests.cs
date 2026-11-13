@@ -46,10 +46,17 @@ public sealed class BacklogProjectileTierPhysicsTests
         run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
         while(run.Transitioning)yield return null;run.Encounter.SetCombatActive(false);
     }
-    R3MountedPart Build(R4WeaponKind weapon,out VehicleEnergyBank bank)
+    R3MountedPart Build(R4WeaponKind weapon,out VehicleEnergyBank bank,bool doubleShot=false)
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
         var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=weapon;state.Tier=2;
+        if(doubleShot)
+        {
+            model.Economy.DoubleShotChancePerUnit=1;model.Award(1000);
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.PlacementError(c,R3PartKind.DoubleShot)==null);
+            Assert.That(model.Buy(cell,R3PartKind.DoubleShot),Is.True);
+        }
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
         vehicle.GetComponent<Rigidbody>().isKinematic=true;bank=vehicle.GetComponent<VehicleEnergyBank>();
         return vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
@@ -68,6 +75,14 @@ public sealed class BacklogProjectileTierPhysicsTests
         float end=Time.time+.35f;while(Time.time<end)yield return null;
         Assert.That(hp.CurrentHp,Is.EqualTo(356).Within(.2),"Eight real pellets each deal 18 damage.");
     }
+    [UnityTest] public IEnumerator DoubleShotDuplicatesShotgunPelletsWithoutExtraAmmoOrEnergy()
+    {
+        var gun=Build(R4WeaponKind.Shotgun,out var energy,true);var hp=Target(gun,6);float before=energy.Current;
+        var binding=gun.GetComponent<RRLShotgunBinding>();Assert.That(binding.Fire(),Is.True);
+        Assert.That(energy.Current,Is.EqualTo(before-6).Within(.001));Assert.That(binding.State.Ammo,Is.EqualTo(11));
+        float end=Time.time+.4f;while(Time.time<end)yield return null;
+        Assert.That(hp.CurrentHp,Is.EqualTo(212).Within(.2),"Sixteen pellets deal 18 damage each, without recursive procs.");
+    }
     [UnityTest] public IEnumerator RailgunTierTwoConsumesEnergyAndPenetratesRealTarget()
     {
         var gun=Build(R4WeaponKind.Railgun,out var energy);var hp=Target(gun,6);float before=energy.Current;
@@ -75,6 +90,14 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(energy.Current,Is.EqualTo(before-10.8f).Within(.001));Assert.That(binding.State.Ammo,Is.EqualTo(11));
         float end=Time.time+.35f;while(Time.time<end)yield return null;
         Assert.That(500-hp.CurrentHp,Is.InRange(100f,130f));
+    }
+    [UnityTest] public IEnumerator DoubleShotDuplicatesRailgunWithoutExtraAmmoOrEnergy()
+    {
+        var gun=Build(R4WeaponKind.Railgun,out var energy,true);var hp=Target(gun,6);float before=energy.Current;
+        var binding=gun.GetComponent<RRLRailgunBinding>();Assert.That(binding.Fire(),Is.True);
+        Assert.That(energy.Current,Is.EqualTo(before-10.8f).Within(.001));Assert.That(binding.State.Ammo,Is.EqualTo(11));
+        float end=Time.time+.4f;while(Time.time<end)yield return null;
+        Assert.That(500-hp.CurrentHp,Is.InRange(200f,260f),"Two real rail projectiles must hit without recursive procs.");
     }
     [UnityTest] public IEnumerator RailgunDoesNotVanishAmongManyIgnoredFriendlyColliders()
     {
@@ -140,6 +163,14 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(energy.Current,Is.EqualTo(before-9f).Within(.001));Assert.That(binding.State.Ammo,Is.EqualTo(9));
         float end=Time.time+.8f;while(Time.time<end)yield return null;
         Assert.That(500-hp.CurrentHp,Is.InRange(100f,120f));
+    }
+    [UnityTest] public IEnumerator DoubleShotDuplicatesRocketWithoutExtraAmmoOrEnergy()
+    {
+        var gun=Build(R4WeaponKind.RocketLauncher,out var energy,true);var hp=Target(gun,6,2);float before=energy.Current;
+        var binding=gun.GetComponent<RRLRocketBinding>();Assert.That(binding.Fire(),Is.True);
+        Assert.That(energy.Current,Is.EqualTo(before-9f).Within(.001));Assert.That(binding.State.Ammo,Is.EqualTo(9));
+        float end=Time.time+1f;while(Time.time<end)yield return null;
+        Assert.That(500-hp.CurrentHp,Is.InRange(200f,240f),"Two real rockets must explode without recursive procs.");
     }
     [UnityTest] public IEnumerator RocketBlastDamagesTargetAmongHundredsOfUnrelatedColliders()
     {

@@ -271,7 +271,8 @@ namespace RoboRougelike.R1
                 var offensive=player!=null?player.GetComponent<R3OffensiveDevices>():null;
                 bool hasOverdrive=offensive!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.Overdrive);
                 bool hasRapidFire=offensive!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.RapidFire);
-                int extraStatusHeight=energy!=null?CombatAbilityExtraHeight((repairPulse!=null?1:0)+(hasOverdrive?1:0)+(hasRapidFire?1:0)):0;
+                bool hasDoubleBoost=offensive!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.DoubleShotOverdrive);
+                int extraStatusHeight=energy!=null?CombatAbilityExtraHeight((repairPulse!=null?1:0)+(hasOverdrive?1:0)+(hasRapidFire?1:0)+(hasDoubleBoost?1:0)):0;
                 if(!lowCore&&modules!=null&&run.VehicleModel!=null)
                 {
                     var drive=run.VehicleModel.SelectedDrive;
@@ -300,7 +301,8 @@ namespace RoboRougelike.R1
                         int statusRow=0;
                         if(repairPulse!=null)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RepairPulse)} naprawa: {repairPulse.Status}",small);
                         if(hasOverdrive)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.Overdrive)} Overdrive: {offensive.OverdriveStatus}",small);
-                        if(hasRapidFire)GUI.Label(CombatAbilityStatusRect(statusRow),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RapidFire)} Rapid: {offensive.RapidFireStatus}",small);
+                        if(hasRapidFire)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RapidFire)} Rapid: {offensive.RapidFireStatus}",small);
+                        if(hasDoubleBoost)GUI.Label(CombatAbilityStatusRect(statusRow),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.DoubleShotOverdrive)} Double: {offensive.DoubleShotOverdriveStatus}",small);
                     }
                     if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?"Mniej [I]":"Szczegóły [I]",compactButton))combatDetailsOpen=!combatDetailsOpen;
                     if(combatDetailsOpen)

@@ -196,6 +196,25 @@ namespace RoboRougelike.R3
         }
         public void FireGroup(bool secondary)
             =>FireSlot(secondary?1:0);
+        public int RollDoubleShotExtras(int available)
+        {
+            if(available<=0||Model==null)return 0;
+            int active=Mathf.Min(available,GetComponent<R3OffensiveDevices>()?.AdditionalProjectileUnits??0);
+            available-=active;if(available<=0)return active;
+            float configured=Model.Economy.DoubleShotChancePerUnit;
+            if(float.IsNaN(configured)||float.IsInfinity(configured)||configured<=0)return active;
+            int units=0;
+            foreach(var part in Parts)
+                if(part!=null&&part.Kind==R3PartKind.DoubleShot&&part.Operational&&part.gameObject.activeInHierarchy&&
+                   part.transform.IsChildOf(transform)&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
+                    units+=R3VehicleModel.TierEffectUnits(part.Tier);
+            if(units==0)return active;
+            double chance=(double)configured*units;
+            int guaranteed=(int)System.Math.Min(available,System.Math.Floor(chance));
+            double fractional=chance-System.Math.Floor(chance);
+            if(guaranteed<available&&fractional>0&&UnityEngine.Random.value<fractional)guaranteed++;
+            return active+guaranteed;
+        }
         public void FireSlot(int slot)
         {
             var slots=Model.GetWeaponSlots();if(slot<0||slot>=4||!slots[slot].HasValue)return;
@@ -233,7 +252,8 @@ namespace RoboRougelike.R3
                     var energy=GetComponent<VehicleEnergyBank>();
                     if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(part.Weapon)*R3VehicleModel.TierActivationCost(part.Tier)))continue;
                     part.NextFireTime=Time.time+controller.WeaponInterval(part.Weapon);
-                    controller.FireFrom(part.Muzzle,part.Weapon,part.Id);
+                    int extras=RollDoubleShotExtras(Mathf.Max(0,P17PhysicalShell.AvailableSlots-1));
+                    controller.FireFrom(part.Muzzle,part.Weapon,part.Id,extras);
                     var art=part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>();
                     if(art!=null){art.AdvanceMuzzle();part.Muzzle=art.Muzzle;}
                 }
@@ -353,7 +373,7 @@ namespace RoboRougelike.R3
             root.AddComponent<R3MountedBonusEffects>().Configure(assembly,vehicle,stats);
             if(assembly.Parts.Any(p=>p.Kind==R3PartKind.RepairPulse))
                 root.AddComponent<R3RepairPulse>().Configure(assembly);
-            if(assembly.Parts.Any(p=>p.Kind==R3PartKind.Overdrive||p.Kind==R3PartKind.RapidFire))
+            if(assembly.Parts.Any(p=>p.Kind==R3PartKind.Overdrive||p.Kind==R3PartKind.RapidFire||p.Kind==R3PartKind.DoubleShotOverdrive))
                 root.AddComponent<R3OffensiveDevices>().Configure(assembly);
             foreach(var part in assembly.Parts)
                 if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.Shotgun)
