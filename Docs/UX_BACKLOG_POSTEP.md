@@ -15,6 +15,7 @@ Bazowy kod tej listy: `675fe0b80da184e4f8db8bf2c5f3e446ee8aeb63` (PR #1289).
 - [x] Magazyn nagród: anulowanie rozmontowania bez zmiany części i portfela — [#1289](https://github.com/C8LyNn/RoboRougelike/pull/1289), 7/7 (w tym test sceny sterowany API).
 - [x] Podsumowanie wyprawy: zgodny z restartem opis nowego losowania pojazdu, poprawna nazwa licznika części i neutralny opis zwycięstwa — celowany EditMode 4/4, `run-summary-final.xml`.
 - [x] Poligon kreatywny: informacja o braku napędu nie blokuje uruchomienia testu — celowany EditMode 5/5, `creative-drive-final.xml`.
+- [x] Sekwencja garażu: montaż ostatniej sprawnej części → wskazanie wraku → odmowa montażu → jawna naprawa → montaż tego samego ID — 1/1 test sceny sterowany API, `mount-repair-no-closure.xml`.
 
 Wyniki dotyczą odpowiednich SHA poszczególnych zmian, a nie pełnej regresji końcowej.
 Oryginalne XML i logi znajdują się lokalnie w katalogu `RoboRougelike-LekkaStylizacja-QA`.
@@ -22,7 +23,7 @@ Oryginalne XML i logi znajdują się lokalnie w katalogu `RoboRougelike-LekkaSty
 ## Nadal otwarte
 
 - [ ] Sprawdzić wszystkie powyższe zmiany wizualnie i interaktywnie w Windows Playerze, w tym przy 1920×1080, 1366×768, 1024×768, 768×1024 i 4K.
-- [ ] Powtórzyć scenariusz montaż → naprawa wraku: wcześniejszy test zakończył się `NullReferenceException` przed wejściem do garażu (`mount-repair-diagnostic.xml`); przyczyna niepotwierdzona.
+- [ ] Sprawdzić sekwencję montaż → naprawa wraku ręcznym wejściem w Playerze. Wcześniejsza wersja testu (`mount-repair-diagnostic.xml`) zakończyła się `NullReferenceException`; wersja bez przechwytywania lokalnych zmiennych przez lambdę przed przejściem do Play przeszła. Przyczyna wcześniejszego wyjątku pozostaje hipotezą.
 - [ ] Sprawdzić pełny przepływ walka → nagrody → trasa → garaż jako gracz; celowane testy i sterowanie API nie zastępują tego przebiegu.
 - [ ] Przeprowadzić odpowiednią regresję końcową na wspólnym SHA, po zebraniu zmian.
 - [ ] Poddać zależne Draft PR-y przeglądowi i ustalić ich integrację; nie scalać do `main`/`develop` bez zgody.

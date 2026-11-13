@@ -22,6 +22,19 @@ public sealed class UI943PortraitCatalogActionsTests
     static void Field(R1RunHUD hud,string name,object value)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).SetValue(hud,value);
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
+    // Keep candidate search outside a coroutine: closures allocated before
+    // EnterPlayMode can be lost during the editor domain reload.
+    static Vector3Int AvailableOwnedMountCell(R3VehicleModel model,R3PartState item)
+    {
+        foreach(var mounted in model.Parts)
+            foreach(var direction in R3VehicleModel.Neighbours)
+            {
+                var cell=mounted.Cell+direction;
+                if(model.OwnedPlacementError(item.Id,cell,item.RotationQuarterTurns)==null)return cell;
+            }
+        Assert.Fail("The garage fixture needs a reachable valid mounting cell.");
+        return default;
+    }
 
     [TestCase(false,5,2,false,"Brakuje 3 Z")]
     [TestCase(false,5,5,false,"5 Z")]
@@ -616,6 +629,38 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id),"The player should be able to repair only this part from the quick panel.");
         Assert.That((bool)Field(hud,"catalogOpen"),Is.False);
         yield return new ExitPlayMode();
+    }
+    [UnityTest] public IEnumerator LastReadyPartMountsThenMatchingWreckIsRepairedAndMounted()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        var model=run.VehicleModel;model.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        Assert.That(model.Inventory.Count,Is.EqualTo(2));
+        var ready=model.Inventory[0];var wreck=model.Inventory[1];wreck.Health=0;
+        var hud=run.GetComponent<R1RunHUD>();
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(ready.Id));
+        int balance=model.Scrap;
+        run.Garage.Select(AvailableOwnedMountCell(model,ready));
+        Assert.That(run.Garage.ClickTarget(),Is.True,"The first owned part mounts through the actual garage.");
+        Assert.That(model.Scrap,Is.EqualTo(balance),"Mounting cannot buy another part.");
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(wreck.Id));
+        Assert.That(run.Garage.Message,Does.Contain("napraw"));
+        Assert.That(run.Garage.ClickTarget(),Is.False,"A selected wreck remains unavailable until explicitly repaired.");
+        Assert.That(model.Scrap,Is.EqualTo(balance));
+        int quote=model.RepairCost(wreck);
+        Assert.That((bool)Invoke(hud,"RepairQuickSelected",run),Is.True);
+        Assert.That(model.Scrap,Is.EqualTo(balance-quote));
+        Assert.That(wreck.Health,Is.EqualTo(1));
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(wreck.Id));
+        run.Garage.Select(AvailableOwnedMountCell(model,wreck));
+        Assert.That(run.Garage.ClickTarget(),Is.True,"The same repaired part is mountable without reselection.");
+        Assert.That(model.Inventory,Is.Empty);
+        Assert.That(model.Owns(wreck.Id),Is.True);
+        yield return null;
     }
 
 
