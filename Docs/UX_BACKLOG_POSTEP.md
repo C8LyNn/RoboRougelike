@@ -13,6 +13,7 @@ Bazowy kod tej listy: `675fe0b80da184e4f8db8bf2c5f3e446ee8aeb63` (PR #1289).
 - [x] Nagrody: wymagane wybory, miejsce w magazynie i liczbowy procent odzysku — [#1287](https://github.com/C8LyNn/RoboRougelike/pull/1287), 20/20.
 - [x] Trasa: aktualny limit portfela w podglądzie nagrody i tekstowy status ostatniego etapu — [#1288](https://github.com/C8LyNn/RoboRougelike/pull/1288), 22/22 (w tym wybrane regresje nagród).
 - [x] Magazyn nagród: anulowanie rozmontowania bez zmiany części i portfela — [#1289](https://github.com/C8LyNn/RoboRougelike/pull/1289), 7/7 (w tym test sceny sterowany API).
+- [x] Podsumowanie wyprawy: zgodny z restartem opis nowego losowania pojazdu, poprawna nazwa licznika części i neutralny opis zwycięstwa — celowany EditMode 4/4, `run-summary-final.xml`.
 
 Wyniki dotyczą odpowiednich SHA poszczególnych zmian, a nie pełnej regresji końcowej.
 Oryginalne XML i logi znajdują się lokalnie w katalogu `RoboRougelike-LekkaStylizacja-QA`.
