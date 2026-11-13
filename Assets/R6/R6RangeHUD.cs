@@ -93,6 +93,14 @@ namespace RoboRougelike.R1
                 (run.Player!=null&&run.Player.GetComponent<R3RepairPulse>()!=null?" • V — impuls naprawczy":"")+
                 "\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Zawieszenie: porównaj OFF/Assist/Full na torze x≈12 • Cele na północy",small);
         }
+        private static Rect AimStatusPanelRect(float textHeight)
+        {
+            if(float.IsNaN(textHeight)||float.IsInfinity(textHeight))textHeight=0;
+            return new Rect(690,18,225,Mathf.Clamp(textHeight+14,42,65));
+        }
+        private static bool AimStatusNeedsAttention(int guns,bool hasSurface,int clear)=>
+            guns<=0||(hasSurface&&clear<guns);
+
         void DrawAimReticle(R1RunController run)
         {
             var feedback=run.Player.Controller.AimFeedback;
@@ -101,8 +109,12 @@ namespace RoboRougelike.R1
             if(aimCaptionStyle==null)aimCaptionStyle=new GUIStyle(small){alignment=TextAnchor.UpperLeft};
             aimCrossStyle.normal.textColor=feedback.Clear>0?new Color(.2f,.85f,.85f):new Color(1,.72f,.3f);
             GUI.Label(new Rect(624,344,32,32),"+",aimCrossStyle);
-            Panel(new Rect(690,18,225,65));
-            GUI.Label(new Rect(702,25,201,51),feedback.Caption,aimCaptionStyle);
+            bool warning=AimStatusNeedsAttention(feedback.Guns,feedback.HasSurface,feedback.Clear);
+            string caption=feedback.Caption;
+            var area=AimStatusPanelRect(aimCaptionStyle.CalcHeight(new GUIContent(caption),201));
+            CombatPanel(area,warning?new Color(1f,.68f,.28f):new Color(.28f,.76f,.75f));
+            aimCaptionStyle.normal.textColor=warning?new Color(1f,.82f,.55f):new Color(.91f,.94f,.97f);
+            GUI.Label(new Rect(area.x+12,area.y+7,201,area.height-14),caption,aimCaptionStyle);
         }
         void DrawWeaponReticles(RogueMachine.P12PipelineSafe.P12PipelineSafeTankController controller)
         {
