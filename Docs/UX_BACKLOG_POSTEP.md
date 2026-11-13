@@ -23,6 +23,7 @@ Bazowy kod tej listy: `675fe0b80da184e4f8db8bf2c5f3e446ee8aeb63` (PR #1289).
 - [x] Szybka naprawa z magazynu: koszt i wynik pojedynczej lub grupowej naprawy nie są natychmiast zasłaniane wskazówką widma — 5/5 testów sceny sterowanych API, `quick-repair-feedback-final.xml`.
 - [x] Regresja importu modeli: test sprawdza komplet 49 oryginalnych modeli i ustawienia importu wszystkich 62 bieżących modeli, dopuszczając dalsze dodatki — 2/2 EditMode, `model-manifest-final.xml`. Poprzednie sztywne oczekiwanie 49 odtworzono jako FAIL w `model-manifest-red.xml`.
 - [x] Pauza poligonu: osobne wybory resetu, powrotu do garażu, menu i wyjścia; przy unieruchomieniu domyślnie zaznaczony reset — 5/5 EditMode, `range-pause-final-v2.xml`. Przejście na scenie wykonano przez API; skrót R sprawdzono istniejącym testem wejścia.
+- [x] Pauza poligonu: wejście strzałka w dół → strzałka w dół → Enter przeprowadza do garażu przez wirtualną klawiaturę w realnej klatce Unity — 2/2 EditMode, `range-pause-virtual-input.xml`.
 
 Wyniki dotyczą odpowiednich SHA poszczególnych zmian, a nie pełnej regresji końcowej.
 Oryginalne XML i logi znajdują się lokalnie w katalogu `RoboRougelike-LekkaStylizacja-QA`.
@@ -32,7 +33,7 @@ Oryginalne XML i logi znajdują się lokalnie w katalogu `RoboRougelike-LekkaSty
 - [ ] Sprawdzić wszystkie powyższe zmiany wizualnie i interaktywnie w Windows Playerze, w tym przy 1920×1080, 1366×768, 1024×768, 768×1024 i 4K.
 - [ ] Sprawdzić sekwencję montaż → naprawa wraku ręcznym wejściem w Playerze. Wcześniejsza wersja testu (`mount-repair-diagnostic.xml`) zakończyła się `NullReferenceException`; wersja bez przechwytywania lokalnych zmiennych przez lambdę przed przejściem do Play przeszła. Przyczyna wcześniejszego wyjątku pozostaje hipotezą.
 - [ ] Sprawdzić pełny przepływ walka → nagrody → trasa → garaż jako gracz; celowane testy i sterowanie API nie zastępują tego przebiegu.
-- [ ] Sprawdzić strzałki/Enter i pada w menu pauzy poligonu w Windows Playerze. Test wirtualnej klawiatury w bezokienkowym Unity nie zaobserwował `wasPressedThisFrame` mimo wciśniętego klawisza (`range-pause-diagnostic2.xml`); logika wyboru przeszła test sterowany API, co nie potwierdza fizycznego wejścia. Podmenu przeciwników nadal obsługuje mysz.
+- [ ] Sprawdzić fizyczną klawiaturę i pada w menu pauzy poligonu w Windows Playerze. Pierwszy sposób podawania wejścia w bezokienkowym Unity nie zaobserwował `wasPressedThisFrame` (`range-pause-diagnostic2.xml`); późniejsza próba wirtualną klawiaturą w klatce gry przeszła (`range-pause-virtual-input.xml`). Podmenu przeciwników nadal obsługuje mysz.
 - [ ] Przeprowadzić odpowiednią regresję końcową na wspólnym SHA, po zebraniu zmian.
 - [ ] Poddać zależne Draft PR-y przeglądowi i ustalić ich integrację; nie scalać do `main`/`develop` bez zgody.
 

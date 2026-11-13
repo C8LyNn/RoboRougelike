@@ -4,6 +4,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
 using RoboRougelike.R1;
+using UnityEngine.InputSystem;
 
 public sealed class Exit273PauseTests
 {
@@ -113,6 +114,32 @@ public sealed class Exit273PauseTests
         Assert.That(run.Paused,Is.True);
         Assert.That(run.PauseSelection,Is.EqualTo(1),"An unavailable resume action cannot be the selected option.");
         yield return null;
+    }
+    IEnumerator PressRangeKey(Key key)
+    {
+        probe=new GameObject("range pause test input").AddComponent<RC2EditorInputProbe>();
+        probe.InjectKey=key;
+        float deadline=Time.realtimeSinceStartup+5;
+        while(!probe.Sent&&Time.realtimeSinceStartup<deadline)
+        {if(UnityEditor.EditorApplication.isPaused)UnityEditor.EditorApplication.Step();yield return null;}
+        Assert.That(probe.Sent&&probe.PressObserved,Is.True,$"The virtual {key} press must reach the real input update.");
+        Object.DestroyImmediate(probe.gameObject);probe=null;yield return null;
+    }
+    [UnityTest] public IEnumerator RangePauseKeyboardNavigatesBackToGarage()
+    {
+        Assert.That(run.EnterTestRange(),Is.True);
+        float deadline=Time.realtimeSinceStartup+15;
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Transitioning,Is.False);run.TogglePause();
+        yield return PressRangeKey(Key.DownArrow);
+        Assert.That(run.PauseSelection,Is.EqualTo(1));
+        yield return PressRangeKey(Key.DownArrow);
+        Assert.That(run.PauseSelection,Is.EqualTo(2));
+        yield return PressRangeKey(Key.Enter);
+        deadline=Time.realtimeSinceStartup+15;
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
+        Assert.That(run.Paused,Is.False);
     }
     [UnityTearDown] public IEnumerator Cleanup()
     {
