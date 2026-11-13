@@ -331,8 +331,8 @@ namespace RoboRougelike.R1
                 bought==5?$"Kupiono 5 części • koszt {before-model.Scrap} Z. Wybierz miejsce montażu.":
                 $"Kupiono {bought}/5 • {before-model.Scrap} Z. "+PurchaseFailure(run,kind,weapon);
             if(catalogWasOpen&&bought==5)DismissCatalog();
-            run.Garage.Message=message;
-            if(catalogOpen)catalogFeedback=message;
+            if(catalogOpen){run.Garage.Message=message;catalogFeedback=message;}
+            else run.Garage.ShowActionMessage(message);
         }
 
         static string GarageRepairCaption(R3PartState part,int price,int scrap)=>
@@ -629,9 +629,14 @@ namespace RoboRougelike.R1
         void BuyQuickPart(R1RunController run)
         {
             if(!catalogGroup.HasValue)return;
+            int before=run.VehicleModel.Scrap;
             if(AddSelectedCatalogPart(run,catalogGroup.Value,catalogWeapon))
-            {var item=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(item.Id);run.Garage.Message=run.CreativeWorkshop?"Wybrano darmową część. Kliknij pojazd, aby ją zamontować.":"Kupiono część. Kliknij pojazd, aby ją zamontować.";}
-            else run.Garage.Message=PurchaseFailure(run,catalogGroup.Value,catalogWeapon);
+            {
+                var item=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(item.Id);
+                run.Garage.ShowActionMessage(run.CreativeWorkshop?"Dodano część za darmo. Kliknij pojazd, aby ją zamontować.":
+                    $"Kupiono część • koszt {before-run.VehicleModel.Scrap} Z. Kliknij pojazd, aby ją zamontować.");
+            }
+            else run.Garage.ShowActionMessage(PurchaseFailure(run,catalogGroup.Value,catalogWeapon));
         }
 
         bool AddSelectedCatalogPart(R1RunController run,R3PartKind kind,R4WeaponKind weapon)
