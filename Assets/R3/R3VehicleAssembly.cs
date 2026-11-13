@@ -46,7 +46,7 @@ namespace RoboRougelike.R3
                 if(part.Kind==R3PartKind.Wheel)wheels++;
                 if(part.Kind==R3PartKind.DrivePower&&Model.SelectedDrive==R3DriveKind.Wheels&&
                    !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
-                    power+=Mathf.Clamp01(part.Damageable.CurrentHp/Mathf.Max(1,part.Damageable.MaxHp))*R3VehicleModel.TierEffectUnits(part.Tier);
+                    power+=R3VehicleModel.TierEffectUnits(part.Tier);
             }
             controller.ConfigureChassis(SpeedFor(mass,wheels),Mathf.Min(130f,TurnFor(mass)*Mathf.Min(1.6f,1f+.12f*power)),mass);
         }

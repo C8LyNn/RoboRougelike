@@ -35,3 +35,9 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Klasa mała/średnia/duża jest obliczana wyłącznie na podstawie liczby zamontowanych części z HP powyżej zera. Domyślne progi 40 i 80 są tymczasowe i konfigurowalne; tier, rodzaj i koszt części nie wpływają na klasę. Główne widoki garażu pokazują klasę i liczbę części oddzielnie od punktów konstrukcyjnych.
 - Unity 6000.3.14f1: **19 PASS, 0 FAIL, 0 SKIP**, kod 0, `C:\Users\kubap\Desktop\Prototypy\budget-progress-checkpoint.xml` oraz `.log`. Obejmuje symulowaną rozgrywkę w Play Mode przez dwa starcia, zapis, restart i wczytanie, bez ponownego przyznania progu; osobno testy starego formatu, konfiguracji i zmiany klasy. To test sterowany API; ręczna gra Windows i niezależna pełna regresja PlayMode: **NOT RUN**.
 - Poprawiono także stare wskazanie klawisza V dla impulsu naprawczego w katalogu: aktywacja należy obecnie do przypisanego slotu 1–4.
+
+## 09 i 15. Tiery i uszkodzenia modułów — częściowo
+
+- Zweryfikowano istniejące trzy tiery baterii, regeneracji energii i silnika oraz ich fizyczną integrację. Silnik pasywny miał wcześniej moc proporcjonalną do aktualnego HP, co było niezgodne z nową regułą; obecnie daje pełny wkład swojego tieru przy dowolnym dodatnim HP, a po zniszczeniu, odłączeniu lub wyłączeniu znika jego wkład. Uwzględniono zarówno siłę napędu R6, jak i sterowność podwozia.
+- Celowane Unity 6000.3.14f1: **7 PASS, 0 FAIL**, kod 0; test rzeczywistych kół sprawdza 50%, 1% i zniszczenie silnika oraz jego dezaktywację, a pozostałe testy sprawdzają tier i bilans energii: `C:\Users\kubap\Desktop\Prototypy\passive-motor-final.xml` oraz `.log`. Przed poprawką ten sam test wykazał rzeczywisty błąd: 0,5 zamiast 1 jednostki mocy przy 50% HP.
+- Nie oznacza to ukończenia wszystkich rodzin tierów ani pełnej reguły 15 dla wszystkich urządzeń; potrzebna jest dalsza integracja. Ręczny Windows Player: **NOT RUN**.

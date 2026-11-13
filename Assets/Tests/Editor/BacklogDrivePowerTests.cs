@@ -31,11 +31,11 @@ public sealed class BacklogDrivePowerIntegrationTests
     [UnitySetUp] public IEnumerator Setup()
     {EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();}
 
-    [UnityTest] public IEnumerator RealWheelsUseWorkingMotorPowerAndLoseItOnDamage()
+    [UnityTest] public IEnumerator RealWheelsKeepPassiveMotorPowerUntilDestruction()
     {
         var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=Vector3.down*.5f;floor.transform.localScale=new Vector3(100,1,100);
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
-        // Isolate one motor below the power cap so damage changes measured force.
+        // Isolate one motor below the power cap so its contribution is measurable.
         model.Parts.RemoveAll(p=>p.Kind==R3PartKind.DrivePower);model.RefreshEnergyLayout();
         var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
             .First(c=>model.PlacementError(c,R3PartKind.DrivePower,false)==null);
@@ -67,9 +67,11 @@ public sealed class BacklogDrivePowerIntegrationTests
         wheel.gameObject.SetActive(true);drive.RefreshMass();
         Assert.That(drive.Wheels,Is.EqualTo(wheels));Assert.That(body.mass,Is.EqualTo(fullMass).Within(.01f));
         motor.Damageable.RestoreHealthRatio(.5f);drive.RefreshMass();
-        Assert.That(drive.ActivePowerUnits,Is.EqualTo(.5f).Within(.001f));
-        Assert.That(drive.AvailableForce,Is.LessThan(fullForce));
-        Assert.That(vehicle.Controller.EffectiveTurnSpeed,Is.LessThan(fullTurn));
+        Assert.That(drive.ActivePowerUnits,Is.EqualTo(1f).Within(.001f),"A passive module retains its full effect until destroyed.");
+        Assert.That(drive.AvailableForce,Is.EqualTo(fullForce).Within(.001f));
+        Assert.That(vehicle.Controller.EffectiveTurnSpeed,Is.EqualTo(fullTurn).Within(.001f));
+        motor.Damageable.RestoreHealthRatio(.01f);drive.RefreshMass();
+        Assert.That(drive.ActivePowerUnits,Is.EqualTo(1f).Within(.001f));
         motor.Damageable.ApplyDamage(100000,motor.transform.position,Vector3.up);drive.RefreshMass();
         Assert.That(drive.ActivePowerUnits,Is.Zero);
         UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(floor);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);
