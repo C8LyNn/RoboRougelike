@@ -141,6 +141,53 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,run.VehicleModel.Economy,Time.time,out var restored,out var error),Is.True,error);
         Assert.That(restored.TargetedEmpReadyAt,Is.GreaterThan(Time.time));Assert.That(restored.AreaEmpReadyAt,Is.GreaterThan(Time.time));
     }
+    [UnityTest] public IEnumerator ChargeCapacityAndRechargePulseWorkOnMountedEmpWithoutDeletingOverflow()
+    {
+        run.VehicleModel.Award(2000); // Three independent 3:1 fusions at standard shop prices.
+        Assert.That(System.Enum.TryParse("ChargeCapacity",out R3PartKind capacityKind),Is.True);
+        Assert.That(System.Enum.TryParse("RechargePulse",out R3PartKind pulseKind),Is.True);
+        Assert.That(System.Enum.TryParse("ChargeRegenerator",out R3PartKind regeneratorKind),Is.True);
+        FuseAndMount(R3PartKind.AreaEmp);FuseAndMount(capacityKind);FuseAndMount(pulseKind);FuseAndMount(regeneratorKind);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var model=run.VehicleModel;var emp=player.GetComponent<R3EmpDevices>();
+        var charges=model.Charges;const string pool="emp-area";
+        Assert.That(charges.Maximum(pool),Is.EqualTo(5));Assert.That(charges.Current(pool),Is.EqualTo(5));
+        var pulseType=System.Type.GetType("RoboRougelike.R3.R3RechargePulse, Assembly-CSharp");Assert.That(pulseType,Is.Not.Null);
+        var pulse=player.GetComponent(pulseType);Assert.That(pulse,Is.Not.Null);
+        var activate=pulseType.GetMethod("TryActivate");var battery=player.GetComponent<VehicleEnergyBank>();float before=battery.Current;
+        Assert.That(activate.Invoke(pulse,null),Is.EqualTo(false),"Full charges cannot consume energy or a cooldown");
+        Assert.That(battery.Current,Is.EqualTo(before));
+        Assert.That(emp.TryArea(),Is.True);Assert.That(charges.Current(pool),Is.EqualTo(4));
+        Assert.That(activate.Invoke(pulse,null),Is.EqualTo(true));
+        Assert.That(charges.Current(pool),Is.EqualTo(5));Assert.That(activate.Invoke(pulse,null),Is.EqualTo(false));
+        var capacity=player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==capacityKind);
+        capacity.Damageable.Configure(1,true);capacity.Damageable.ApplyDamage(2,capacity.transform.position,Vector3.up);
+        Assert.That(capacity.Damageable.IsDead,Is.True,"Losing an actual capacity module must lower the limit");
+        player.GetComponent<VehicleEnergyBank>().Refresh();
+        Assert.That(charges.Maximum(pool),Is.EqualTo(3));Assert.That(charges.Current(pool),Is.EqualTo(5));
+        charges.Advance(100,1);Assert.That(charges.Current(pool),Is.EqualTo(5));
+        Assert.That(charges.TrySpend(pool,3),Is.True);
+        var bank=player.GetComponent<VehicleEnergyBank>();
+        var tick=typeof(VehicleEnergyBank).GetMethod("FixedUpdate",BindingFlags.Instance|BindingFlags.NonPublic);
+        for(int i=0;i<501;i++)tick.Invoke(bank,null); // 10.02 simulated seconds at T2's .1 charge/s.
+        Assert.That(charges.Current(pool),Is.EqualTo(3),"A mounted T2 regenerator must restore a charge");
+        var saved=model.MakeCheckpoint(Time.time);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Charges.Current(pool),Is.EqualTo(3));Assert.That(restored.RechargePulseReadyAt,Is.GreaterThan(Time.time));
+    }
+    [UnityTest] public IEnumerator EmpWithoutChargeOrEnergyCannotConsumeEitherResource()
+    {
+        FuseAndMount(R3PartKind.AreaEmp);Assert.That(run.EnterTestRange(),Is.True);
+        for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var emp=run.Player.GetComponent<R3EmpDevices>();var charges=run.VehicleModel.Charges;
+        var battery=run.Player.GetComponent<VehicleEnergyBank>();
+        Assert.That(charges.TrySpend(R3EmpDevices.AreaPool,charges.Current(R3EmpDevices.AreaPool)),Is.True);
+        float energy=battery.Current;Assert.That(emp.TryArea(),Is.False);Assert.That(battery.Current,Is.EqualTo(energy));
+        Assert.That(emp.Status(R3PartKind.AreaEmp),Does.Contain("brak ładunków"));
+        Assert.That(charges.Recharge(R3EmpDevices.AreaPool,1),Is.EqualTo(1));Assert.That(battery.TrySpend(battery.Current),Is.True);
+        Assert.That(emp.TryArea(),Is.False);Assert.That(charges.Current(R3EmpDevices.AreaPool),Is.EqualTo(1));
+        Assert.That(emp.Status(R3PartKind.AreaEmp),Does.Contain("brak energii"));
+    }
     [UnityTest] public IEnumerator EnergyAuraTogglesOnPressAndDamagesOnlyEnemiesWhileConsumingEnergy()
     {
         Assert.That(run.GaragePurchase(R3PartKind.Gun,RoboRougelike.R4.R4WeaponKind.EmpEmitter),Is.True);

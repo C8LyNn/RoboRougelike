@@ -377,6 +377,8 @@ namespace RoboRougelike.R3
                 root.AddComponent<R3OffensiveDevices>().Configure(assembly);
             if(assembly.Parts.Any(p=>p.Kind==R3PartKind.TargetedEmp||p.Kind==R3PartKind.AreaEmp))
                 root.AddComponent<R3EmpDevices>().Configure(assembly);
+            if(assembly.Parts.Any(p=>p.Kind==R3PartKind.RechargePulse))
+                root.AddComponent<R3RechargePulse>().Configure(assembly);
             foreach(var part in assembly.Parts)
                 if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.Shotgun)
                     part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>()

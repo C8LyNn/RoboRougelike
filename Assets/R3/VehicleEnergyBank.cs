@@ -34,6 +34,7 @@ namespace RoboRougelike.R3
         readonly List<VehicleEnergyBattery> enemyBatteries=new List<VehicleEnergyBattery>();
         readonly List<RoboRougelike.WeaponIntegration.RRLShieldBinding> enemyShields=new List<RoboRougelike.WeaponIntegration.RRLShieldBinding>();
         VehicleEnergyState state = new VehicleEnergyState();
+        float chargeRegeneration;
         public float Current { get { Refresh(); return state.Current; } }
         public float Maximum { get { Refresh(); return state.Maximum; } }
 
@@ -57,7 +58,7 @@ namespace RoboRougelike.R3
                 // A temporarily disabled entire actor keeps its stored charge;
                 // individual disabled parts do not provide or reserve capacity.
                 if(!assembly.gameObject.activeInHierarchy)return;
-                int batteries=0,passive=0,regenerators=0;float extra=0;bool coreAlive=false;
+                int batteries=0,passive=0,regenerators=0;long chargeCapacity=0,chargeRegenerators=0;float extra=0;bool coreAlive=false;
                 foreach(var part in assembly.Parts)
                 {
                     if(part==null||!part.gameObject.activeInHierarchy||!part.Operational||!part.transform.IsChildOf(transform))continue;
@@ -68,10 +69,19 @@ namespace RoboRougelike.R3
                     if(part.Kind==R3PartKind.EnergyRegenerator&&
                        !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
                         regenerators+=R3VehicleModel.TierEffectUnits(part.Tier);
+                    if(!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
+                    {
+                        if(part.Kind==R3PartKind.ChargeCapacity)chargeCapacity+=R3VehicleModel.TierEffectUnits(part.Tier);
+                        if(part.Kind==R3PartKind.ChargeRegenerator)chargeRegenerators+=R3VehicleModel.TierEffectUnits(part.Tier);
+                    }
                 }
                 state.SetAdditionalPassiveReservation(extra);
                 state.Refresh(batteries,passive,coreAlive);
                 state.SetRegeneratorCount(regenerators);
+                var config=assembly.Model.Economy;
+                assembly.Model.Charges.SetCapacityBonus((int)System.Math.Min(int.MaxValue,chargeCapacity*System.Math.Max(0,(long)config.CapacityChargesPerUnit)));
+                float rate=config.ChargesPerSecondPerRegenerator;
+                chargeRegeneration=float.IsNaN(rate)||float.IsInfinity(rate)||rate<0?0:(float)System.Math.Min(float.MaxValue,chargeRegenerators*(double)rate);
             }
             else if(enemyCore!=null)
             {
@@ -90,7 +100,7 @@ namespace RoboRougelike.R3
             }
         }
 
-        void FixedUpdate(){Refresh();var body=GetComponent<Rigidbody>();bool stopped=assembly!=null&&body!=null&&body.linearVelocity.sqrMagnitude<.0025f&&body.angularVelocity.sqrMagnitude<.01f;state.AdvanceWithMotion(Time.fixedDeltaTime,stopped);}
+        void FixedUpdate(){Refresh();var body=GetComponent<Rigidbody>();bool stopped=assembly!=null&&body!=null&&body.linearVelocity.sqrMagnitude<.0025f&&body.angularVelocity.sqrMagnitude<.01f;state.AdvanceWithMotion(Time.fixedDeltaTime,stopped);if(assembly!=null)assembly.Model.Charges.Advance(Time.fixedDeltaTime,chargeRegeneration);}
         public bool CanSpend(float amount){Refresh();return !float.IsNaN(amount)&&!float.IsInfinity(amount)&&amount>=0&&amount<=state.Current;}
         public bool TrySpend(float amount){Refresh();return state.TrySpend(amount);}
         public bool TryConsume(float amount)=>TrySpend(amount);

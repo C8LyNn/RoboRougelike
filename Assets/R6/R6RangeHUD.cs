@@ -78,7 +78,17 @@ namespace RoboRougelike.R1
             var drive=run.Player.GetComponent<R6VehicleDrive>();var bodyRb=run.Player.GetComponent<Rigidbody>();
             GUI.Label(new Rect(34,65,580,90),$"Prędkość: {bodyRb.linearVelocity.magnitude:0.0} m/s • Masa: {bodyRb.mass:0} kg\nKoła: {drive?.Wheels??0}/{run.Player.Modules.InitialWheelCount} • Broń: {run.Player.Modules.ActiveWeaponCount}\nRdzeń: {run.Player.Core?.CurrentHp??0:0} HP • HP ocalałych części: {run.Player.HealthFraction*100:0}%",small);
             var energy=run.Player.GetComponent<VehicleEnergyBank>();
-            if(energy!=null)GUI.Label(new Rect(34,151,580,22),$"Energia: {energy.Current:0}/{energy.Maximum:0}",small);
+            if(energy!=null)
+            {
+                string charges="";var devices=run.Player.GetComponent<R3EmpDevices>();
+                if(devices!=null)
+                {
+                    var bank=run.VehicleModel.Charges;
+                    if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.TargetedEmp))charges+=$" • EMP cel. {bank.Current(R3EmpDevices.TargetPool)}/{bank.Maximum(R3EmpDevices.TargetPool)}";
+                    if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.AreaEmp))charges+=$" • EMP obsz. {bank.Current(R3EmpDevices.AreaPool)}/{bank.Maximum(R3EmpDevices.AreaPool)}";
+                }
+                GUI.Label(new Rect(34,151,580,22),$"Energia: {energy.Current:0}/{energy.Maximum:0}{charges}",small);
+            }
             var range=run.GetComponent<R6TestRange>();
             if(range?.TrainingTarget!=null)
             {

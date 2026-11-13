@@ -275,7 +275,8 @@ namespace RoboRougelike.R1
                 var emp=player!=null?player.GetComponent<R3EmpDevices>():null;
                 bool hasTargetEmp=emp!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.TargetedEmp);
                 bool hasAreaEmp=emp!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.AreaEmp);
-                int extraStatusHeight=energy!=null?CombatAbilityExtraHeight((repairPulse!=null?1:0)+(hasOverdrive?1:0)+(hasRapidFire?1:0)+(hasDoubleBoost?1:0)+(hasTargetEmp?1:0)+(hasAreaEmp?1:0)):0;
+                var recharge=player!=null?player.GetComponent<R3RechargePulse>():null;
+                int extraStatusHeight=energy!=null?CombatAbilityExtraHeight((repairPulse!=null?1:0)+(hasOverdrive?1:0)+(hasRapidFire?1:0)+(hasDoubleBoost?1:0)+(hasTargetEmp?1:0)+(hasAreaEmp?1:0)+(recharge!=null?1:0)):0;
                 if(!lowCore&&modules!=null&&run.VehicleModel!=null)
                 {
                     var drive=run.VehicleModel.SelectedDrive;
@@ -307,7 +308,8 @@ namespace RoboRougelike.R1
                         if(hasRapidFire)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RapidFire)} Rapid: {offensive.RapidFireStatus}",small);
                         if(hasDoubleBoost)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.DoubleShotOverdrive)} Double: {offensive.DoubleShotOverdriveStatus}",small);
                         if(hasTargetEmp)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.TargetedEmp)} EMP cel.: {emp.Status(R3PartKind.TargetedEmp)}",small);
-                        if(hasAreaEmp)GUI.Label(CombatAbilityStatusRect(statusRow),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.AreaEmp)} EMP obsz.: {emp.Status(R3PartKind.AreaEmp)}",small);
+                        if(hasAreaEmp)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.AreaEmp)} EMP obsz.: {emp.Status(R3PartKind.AreaEmp)}",small);
+                        if(recharge!=null)GUI.Label(CombatAbilityStatusRect(statusRow),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RechargePulse)} ładunki: {recharge.Status}",small);
                     }
                     if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?"Mniej [I]":"Szczegóły [I]",compactButton))combatDetailsOpen=!combatDetailsOpen;
                     if(combatDetailsOpen)
