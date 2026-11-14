@@ -773,6 +773,50 @@ public sealed class BacklogDeviceTierGameplayTests
     }
     [UnityTest] public IEnumerator DroneConfiguredLongRangeHitsDistantEnemy()=>LongRangeDeployable(false);
     [UnityTest] public IEnumerator TurretConfiguredLongRangeHitsDistantEnemy()=>LongRangeDeployable(true);
+    [UnityTest] public IEnumerator OffensiveTurretSelectsVisibleEnemyWhenCloserEnemyIsObstructed()
+    {
+        Assert.That(run.EnterTestRange(),Is.True);
+        for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);
+        var player=run.Player;var playerBody=player.GetComponent<Rigidbody>();
+        playerBody.isKinematic=true;playerBody.position=new Vector3(100,2,100);
+        player.transform.position=playerBody.position;
+        var range=run.GetComponent<R6TestRange>();if(range?.TrainingTarget!=null)range.TrainingTarget.gameObject.SetActive(false);
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,player.transform,new R1EncounterDefinition{EnemyCount=2,Roster=new[]{R3EnemyArchetype.Gunner,R3EnemyArchetype.Gunner}},run.Salvage,"visible-target-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var allEnemies=run.Encounter.Enemies.ToArray();Assert.That(allEnemies.Length,Is.GreaterThanOrEqualTo(2));
+        foreach(var extra in allEnemies.Skip(2))extra.gameObject.SetActive(false);
+        var enemies=allEnemies.Take(2).ToArray();
+        var origin=new Vector3(100,10,100);
+        for(int i=0;i<2;i++)
+        {
+            var enemyBody=enemies[i].GetComponent<Rigidbody>();enemyBody.isKinematic=true;
+            enemyBody.position=origin+(i==0?new Vector3(12,0,0):new Vector3(0,0,18));
+            enemies[i].transform.position=enemyBody.position;
+        }
+        var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=origin+new Vector3(6,0,0);wall.transform.localScale=new Vector3(1,12,12);
+        var obj=GameObject.CreatePrimitive(PrimitiveType.Sphere);obj.transform.position=origin;obj.transform.localScale=Vector3.one*.4f;
+        var body=obj.AddComponent<Rigidbody>();body.isKinematic=true;body.useGravity=false;
+        var turret=obj.AddComponent<R3FlyingDrone>();turret.ConfigureTurret(player.transform,.2f,10,40);
+        Physics.SyncTransforms();
+        var select=typeof(R3FlyingDrone).GetMethod("FindTarget",BindingFlags.Instance|BindingFlags.NonPublic);
+        var target=typeof(R3FlyingDrone).GetField("target",BindingFlags.Instance|BindingFlags.NonPublic);
+        select.Invoke(turret,null);
+        Assert.That(target.GetValue(turret),Is.EqualTo(enemies[1]),"A closer enemy behind a wall must not prevent attacking a visible enemy.");
+        float hp=enemies[1].GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        float blockedHp=enemies[0].GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        float deadline=Time.realtimeSinceStartup+10;
+        while(Time.realtimeSinceStartup<deadline&&enemies[1].GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp)>=hp)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(enemies[1].GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.LessThan(hp),"The selected enemy must receive an actual projectile hit.");
+        Assert.That(enemies[0].GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.EqualTo(blockedHp),"A wall must continue to protect the obstructed enemy.");
+        var secondWall=GameObject.CreatePrimitive(PrimitiveType.Cube);secondWall.transform.position=origin+new Vector3(0,0,9);secondWall.transform.localScale=new Vector3(12,12,1);
+        Physics.SyncTransforms();select.Invoke(turret,null);
+        Assert.That(target.GetValue(turret),Is.Null,"Neither obstructed enemy should be selected.");
+        Object.Destroy(wall);yield return null;Physics.SyncTransforms();select.Invoke(turret,null);
+        Assert.That(target.GetValue(turret),Is.EqualTo(enemies[0]),"Removing the obstruction should allow the closer enemy to be selected again.");
+        Object.Destroy(secondWall);Object.Destroy(obj);
+    }
     [UnityTest] public IEnumerator DroneUsesConfiguredFollowRadiusAndHoverHeight()
     {
         var radius=typeof(R3GarageEconomy).GetField("DroneFollowRadius");var height=typeof(R3GarageEconomy).GetField("DroneHoverHeight");

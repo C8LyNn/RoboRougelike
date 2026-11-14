@@ -120,7 +120,7 @@ namespace RoboRougelike.R3
             if(Time.time>=nextScan){nextScan=Time.time+.25f;FindTarget();}
             if(target==null||target.IsDefeated||aimCollider==null||Time.time<nextShot)return;
             Vector3 deltaAim=aimCollider.bounds.center-body.position;float distance=deltaAim.magnitude;
-            if(distance<.1f||distance>attackRange||!ClearShot(deltaAim/distance,distance))return;
+            if(distance<.1f||distance>attackRange||!ClearShot(deltaAim/distance,distance,target))return;
             if(P17PhysicalShell.AvailableSlots<=0)return;
             Fire(deltaAim/distance);nextShot=Time.time+interval;
         }
@@ -137,18 +137,21 @@ namespace RoboRougelike.R3
                     if(collider==null||!collider.enabled||collider.isTrigger)continue;
                     var delta=collider.bounds.center-body.position;
                     double distance=(double)delta.x*delta.x+(double)delta.y*delta.y+(double)delta.z*delta.z;
-                    if(distance<nearest){nearest=distance;target=enemy;aimCollider=collider;}
+                    if(distance>=nearest||distance<.01d)continue;
+                    float linearDistance=(float)Math.Sqrt(distance);
+                    if(!ClearShot(delta/linearDistance,linearDistance,enemy))continue;
+                    nearest=distance;target=enemy;aimCollider=collider;
                 }
             }
         }
-        bool ClearShot(Vector3 direction,float distance)
+        bool ClearShot(Vector3 direction,float distance,P12PipelineSafeEnemyTurret candidate)
         {
             var hits=Physics.RaycastAll(body.position,direction,distance,~0,QueryTriggerInteraction.Ignore);
             Array.Sort(hits,(a,b)=>a.distance.CompareTo(b.distance));
             foreach(var hit in hits)
             {
                 if(hit.collider==null||hit.collider==ownCollider||hit.transform.IsChildOf(transform))continue;
-                if(target!=null&&hit.transform.IsChildOf(target.transform))
+                if(candidate!=null&&hit.transform.IsChildOf(candidate.transform))
                 {if(hit.collider.GetComponentInParent<P12PipelineSafeDamageable>()!=null)return true;continue;}
                 return false;
             }
