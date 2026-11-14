@@ -65,12 +65,13 @@ namespace RoboRougelike.R1
                     GUI.enabled=true;
                 }
                 if(!run.RangeDisabled&&GUI.Button(new Rect(230,325,820,60),PauseCaption(run,0,"Wznów  [Esc]"),button))run.TogglePause();
-                if(GUI.Button(new Rect(230,400,395,60),PauseCaption(run,1,"Reset próby  [R]"),button))run.ResetTestRange();
+                if(GUI.Button(new Rect(230,400,395,60),PauseCaption(run,1,$"Reset próby  [{R1ControlProfile.Display(R1ControlProfile.Current.Binding("ResetRange"))}]"),button))run.ResetTestRange();
                 if(GUI.Button(new Rect(650,400,400,60),PauseCaption(run,2,"Powrót do garażu"),button))run.ReturnFromTestRange();
                 DrawSuspensionPause(run);
                 DrawMovementPause(run);
                 if(GUI.Button(new Rect(230,660,395,42),PauseCaption(run,3,"Powrót do menu głównego"),compactButton))run.RestartRun();
                 if(GUI.Button(new Rect(650,660,400,42),PauseCaption(run,4,"Wyjdź z gry"),compactButton))run.RequestQuitFromMenu();
+                TryRangeMouseReset(run);
                 return;
             }
             creativeEnemyMenu=false;
@@ -124,9 +125,15 @@ namespace RoboRougelike.R1
             GUI.enabled=true;
             if(run.EmergencyRescueNotice!=null||run.EmergencyRescueActive)GUI.Label(new Rect(665,602,570,25),
                 run.EmergencyRescueNotice??"Ratunek: niewrażliwość; atak wstrzymany.",small);
-            GUI.Label(new Rect(34,635,1200,60),"WASD — napęd • ,/. — osie • LPM/PPM/Q/E — broń • 1–4 — moduły • Z/X/C/V — urządzenia • R — reset • Esc — pauza"+
+            GUI.Label(new Rect(34,635,1200,60),$"WASD — napęd • ,/. — osie • LPM/PPM/Q/E — broń • 1–4 — moduły • Z/X/C/V — urządzenia • {R1ControlProfile.Display(R1ControlProfile.Current.Binding("ResetRange"))} — reset • Esc — pauza"+
                 (run.CreativeWorkshop?" i przeciwnicy":"")+
                 "\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Zawieszenie: porównaj OFF/Assist/Full na torze x≈12 • Cele na północy",small);
+            TryRangeMouseReset(run);
+        }
+        static void TryRangeMouseReset(R1RunController run)
+        {
+            var input=Event.current;
+            if(input!=null&&input.type==EventType.MouseDown&&R1ControlProfile.Current.MatchesEvent("ResetRange",input)&&run.ResetTestRange())input.Use();
         }
         private static Rect AimStatusPanelRect(float textHeight)
         {

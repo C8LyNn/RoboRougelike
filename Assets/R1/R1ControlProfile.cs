@@ -14,9 +14,9 @@ namespace RoboRougelike.R1
     {
         public static readonly string[] Actions={"MoveForward","MoveBackward","TurnLeft","TurnRight",
             "Weapon1","Weapon2","Weapon3","Weapon4","Active1","Active2","Active3","Active4",
-            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails"};
+            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails","ResetRange"};
         static readonly string[] Defaults={"W","S","A","D","MouseLeft","MouseRight","Q","E",
-            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I"};
+            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I","R"};
         const int OriginalActionCount=20;
         readonly Dictionary<string,string> bindings=new Dictionary<string,string>();
         readonly string path;
@@ -74,7 +74,7 @@ namespace RoboRougelike.R1
                 Enum.IsDefined(typeof(Key),key)&&key!=Key.LeftAlt&&key!=Key.RightAlt&&key!=Key.LeftMeta&&key!=Key.RightMeta;
         }
         // Fixed session/UI shortcuts remain reserved until they too are configurable.
-        public static bool Reserved(string binding)=>new[]{"Escape","Enter","NumpadEnter","R",
+        public static bool Reserved(string binding)=>new[]{"Escape","Enter","NumpadEnter",
             "UpArrow","DownArrow","LeftArrow","RightArrow","F4","F8","F10"}.Contains(binding);
         public static string Display(string binding)=>binding=="MouseLeft"?"LPM":binding=="MouseRight"?"PPM":
             binding=="MouseMiddle"?"ŚPM":binding=="MouseForward"?"Mysz 4":binding=="MouseBack"?"Mysz 5":
@@ -110,7 +110,7 @@ namespace RoboRougelike.R1
             switch(action){case "MoveForward":return "Jazda do przodu";case "MoveBackward":return "Jazda do tyłu";
                 case "TurnLeft":return "Skręt w lewo";case "TurnRight":return "Skręt w prawo";
                 case "Gyro":return "Żyroskop";case "Reload":return "Przeładowanie";
-                case "SteeringLeft":return "Obrót w lewo";case "SteeringRight":return "Obrót w prawo";case "SteeringMode":return "Tryb skrętu";case "CombatDetails":return "Szczegóły w walce";}
+                case "SteeringLeft":return "Obrót w lewo";case "SteeringRight":return "Obrót w prawo";case "SteeringMode":return "Tryb skrętu";case "CombatDetails":return "Szczegóły w walce";case "ResetRange":return "Reset poligonu";}
             if(action.StartsWith("Weapon"))return "Broń "+action.Substring(6);
             if(action.StartsWith("Active"))return "Moduł "+action.Substring(6);
             if(action.StartsWith("Deploy"))return "Urządzenie "+action.Substring(6);

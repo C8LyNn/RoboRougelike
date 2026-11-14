@@ -96,7 +96,8 @@ namespace RoboRougelike.R1
                 return true; // The visible enemy menu owns its pointer input.
             }
             // Preserve the range reset shortcut while the session menu owns other input.
-            if (rangePause && keys != null && keys.rKey.wasPressedThisFrame)
+            if (rangePause && !R1ControlProfile.Current.Binding("ResetRange").StartsWith("Mouse",System.StringComparison.Ordinal)&&
+                R1ControlProfile.Current.Pressed("ResetRange",true))
             { ResetTestRange(); return true; }
             if ((keys != null && keys.upArrowKey.wasPressedThisFrame) ||
                 (pad != null && pad.dpad.up.wasPressedThisFrame)) MovePauseSelection(-1);

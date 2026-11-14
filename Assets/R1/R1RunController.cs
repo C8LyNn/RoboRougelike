@@ -405,6 +405,9 @@ namespace RoboRougelike.R1
         {
 #if ENABLE_INPUT_SYSTEM
             var keyboard = Keyboard.current;
+            if(!MapEditorTesting&&Progress.State==R1RunState.TestDrive&&
+                !R1ControlProfile.Current.Binding("ResetRange").StartsWith("Mouse",System.StringComparison.Ordinal)&&
+                R1ControlProfile.Current.Pressed("ResetRange",true)){ResetTestRange();return;}
             if (keyboard == null) return;
             if(PickupGraceRemaining>0&&keyboard.enterKey.wasPressedThisFrame){pickupGraceDeadline=Time.time;return;}
             if (Progress.State == R1RunState.Ready && keyboard.enterKey.wasPressedThisFrame) PrepareUnifiedRun();
@@ -415,7 +418,6 @@ namespace RoboRougelike.R1
                 else if (keyboard.digit2Key.wasPressedThisFrame) ChooseUpgrade(1);
                 else if (keyboard.digit3Key.wasPressedThisFrame) ChooseUpgrade(2);
             }
-            else if(!MapEditorTesting&&Progress.State==R1RunState.TestDrive&&keyboard.rKey.wasPressedThisFrame)ResetTestRange();
             else if ((Progress.State == R1RunState.Won || Progress.State == R1RunState.Lost) &&
                 keyboard.enterKey.wasPressedThisFrame) RestartRun();
 #endif

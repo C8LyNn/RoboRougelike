@@ -96,6 +96,24 @@ public sealed class Exit273PauseTests
         Assert.That(run.Player.GetInstanceID(), Is.Not.EqualTo(previousPlayer));
         Assert.That(run.Progress.State, Is.EqualTo(R1RunState.TestDrive));
     }
+    [UnityTest] public IEnumerator RangeResetUsesReboundKeyWhileDrivingAndPaused()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("ResetRange","P"),Is.True);
+            Assert.That(run.EnterTestRange(),Is.True);float deadline=Time.realtimeSinceStartup+20;
+            while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+            int previous=run.Player.GetInstanceID();yield return PressRangeKey(Key.R);
+            Assert.That(run.Player.GetInstanceID(),Is.EqualTo(previous));Assert.That(run.Transitioning,Is.False);
+            yield return PressRangeKey(Key.P);while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(run.Player.GetInstanceID(),Is.Not.EqualTo(previous));
+            previous=run.Player.GetInstanceID();run.TogglePause();Assert.That(run.Paused,Is.True);
+            yield return PressRangeKey(Key.P);while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(run.Paused,Is.False);Assert.That(run.Player.GetInstanceID(),Is.Not.EqualTo(previous));
+        }
+        finally{profile.ResetDefaults();}
+    }
     [UnityTest] public IEnumerator ControlsPanelDoesNotResetPausedRangeOnR()
     {
         Assert.That(run.EnterTestRange(),Is.True);float deadline=Time.realtimeSinceStartup+15;
