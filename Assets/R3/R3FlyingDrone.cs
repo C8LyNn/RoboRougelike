@@ -6,6 +6,29 @@ using UnityEngine;
 
 namespace RoboRougelike.R3
 {
+    // Uses the same physical HP as Repair Pulse; never revives destroyed parts.
+    public sealed class R3HealingTurret : MonoBehaviour,IRRLTeamMember
+    {
+        R3VehicleAssembly owner;Rigidbody ownerBody;float radius,rate;
+        public int TeamId=>owner!=null?RRLHitRouter.Team(owner.transform):0;
+        public void Configure(R3VehicleAssembly assembly,float range,float ratioPerSecond)
+        {owner=assembly;ownerBody=assembly!=null?assembly.GetComponent<Rigidbody>():null;radius=range;rate=ratioPerSecond;}
+        void FixedUpdate()
+        {
+            if(owner==null||ownerBody==null){Destroy(gameObject);return;}
+            R3MountedPart selected=null;float weakest=1;
+            foreach(var part in owner.Parts)
+            {
+                if(part==null||!part.Operational||!part.transform.IsChildOf(owner.transform)||part.Damageable==null||part.Damageable.MaxHp<=0)continue;
+                Vector3 local=owner.transform.InverseTransformPoint(part.transform.position);
+                Vector3 point=ownerBody.position+ownerBody.rotation*local;
+                if((point-transform.position).sqrMagnitude>radius*radius)continue;
+                float ratio=part.Damageable.CurrentHp/part.Damageable.MaxHp;
+                if(ratio<weakest-.00001f){weakest=ratio;selected=part;}
+            }
+            if(selected!=null)selected.Damageable.RestoreHealthRatio(Mathf.Min(1,weakest+rate*Time.fixedDeltaTime));
+        }
+    }
     // A physical, temporary ally. It follows a loose radius rather than a fixed offset.
     public sealed class R3FlyingDrone : MonoBehaviour,IRRLTeamMember
     {

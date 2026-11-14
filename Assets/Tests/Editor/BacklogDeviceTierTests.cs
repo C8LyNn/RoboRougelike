@@ -260,6 +260,35 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(peak,Is.LessThan(8),"The pad must not multiply its impulse by the number of vehicle colliders");
         Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator HealingTurretRepairsNearbyOwnedPartsWithoutAttacking()
+    {
+        Assert.That(System.Enum.TryParse("HealingTurretGenerator",out R3PartKind kind),Is.True,"Missing healing turret generator");
+        run.VehicleModel.Award(2500);FuseAndMount(kind);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.forward*3;
+        Assert.That(service.TryDeploy(kind),Is.True);var turret=GameObject.Find("Wieżyczka lecznicza");Assert.That(turret,Is.Not.Null);
+        Assert.That(turret.GetComponent<R3FlyingDrone>(),Is.Null,"Healing turret must not fire the offensive weapon");
+        var assembly=player.GetComponent<R3VehicleAssembly>();var part=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational);
+        part.Damageable.RestoreHealthRatio(.5f);float before=part.Damageable.CurrentHp;
+        body.isKinematic=true;body.position=turret.transform.position+new Vector3(0,2,2);Physics.SyncTransforms();
+        float deadline=Time.realtimeSinceStartup+8;
+        while(Time.realtimeSinceStartup<deadline&&part.Damageable.CurrentHp<=before+.01f)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(part.Damageable.CurrentHp,Is.GreaterThan(before),"Nearby physical armor must actually recover HP");
+        Assert.That(part.Damageable.CurrentHp,Is.LessThanOrEqualTo(part.Damageable.MaxHp));
+        body.position=new Vector3(140,2,140);Physics.SyncTransforms();yield return MOVSeriesDeviceTests.FixedStep();
+        float outside=part.Damageable.CurrentHp;for(int i=0;i<15;i++)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(part.Damageable.CurrentHp,Is.EqualTo(outside).Within(.001),"Leaving the radius must stop healing");
+        body.position=turret.transform.position+new Vector3(0,2,2);Physics.SyncTransforms();
+        var turretHp=turret.GetComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();
+        turretHp.ApplyDamage(10000,turret.transform.position,Vector3.up);yield return null;
+        float afterDestruction=part.Damageable.CurrentHp;for(int i=0;i<15;i++)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(turret==null||!turret.activeInHierarchy,Is.True);
+        Assert.That(part.Damageable.CurrentHp,Is.EqualTo(afterDestruction).Within(.001),"Destroyed turrets must stop healing");
+        Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator OffensiveTurretDeploysBehindMovingVehicleAndFiresRealProjectiles()
     {
         Assert.That(System.Enum.TryParse("OffensiveTurretGenerator",out R3PartKind kind),Is.True,"Missing offensive turret generator");

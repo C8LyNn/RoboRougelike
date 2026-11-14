@@ -620,6 +620,7 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.FlyingDroneGenerator?$"Generator drona: wypuszcza latającego sojusznika. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
                 kind==R3PartKind.GroundDroneGenerator?$"Generator drona naziemnego: wypuszcza kołowego sojusznika. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
                 kind==R3PartKind.OffensiveTurretGenerator?$"Wieżyczka ofensywna: rozstawia się za jadącym robotem i strzela do wrogów. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.HealingTurretGenerator?$"Wieżyczka lecznicza: naprawia pobliskie części twojego pojazdu. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kliknij, aby zamontować.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kliknij, aby zamontować.":
                 kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
@@ -655,6 +656,7 @@ namespace RoboRougelike.R1
                     kind==R3PartKind.FlyingDroneGenerator?$"Generator drona: wypuszcza latającego sojusznika; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy:0} energii. Slot Z/X/C/V.":
                     kind==R3PartKind.GroundDroneGenerator?$"Generator drona naziemnego: wypuszcza kołowego sojusznika; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy:0} energii. Slot Z/X/C/V.":
                     kind==R3PartKind.OffensiveTurretGenerator?$"Wieżyczka ofensywna: rozstawia się za jadącym robotem; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot Z/X/C/V.":
+                    kind==R3PartKind.HealingTurretGenerator?$"Wieżyczka lecznicza: naprawia pobliskie części pojazdu; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot Z/X/C/V.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kup część.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kup część.":
                     kind==R3PartKind.Armor&&CatalogArmorShape(bonus)==R3ArmorShape.Wedge?"Klin 1×1×1: mocowanie od spodu i z tyłu. Kup część.":
