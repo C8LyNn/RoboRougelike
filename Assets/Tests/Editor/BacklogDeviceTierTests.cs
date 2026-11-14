@@ -293,8 +293,10 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(activate.Invoke(pulse,null),Is.EqualTo(false),"Full charges cannot consume energy or a cooldown");
         Assert.That(battery.Current,Is.EqualTo(before));
         Assert.That(emp.TryArea(),Is.True);Assert.That(charges.Current(pool),Is.EqualTo(4));
+        charges.Advance(.75f,1);Assert.That(charges.Snapshot().Single(p=>p.id==pool).progress,Is.EqualTo(.75f).Within(.01));
         Assert.That(activate.Invoke(pulse,null),Is.EqualTo(true));
-        Assert.That(charges.Current(pool),Is.EqualTo(5));Assert.That(activate.Invoke(pulse,null),Is.EqualTo(false));
+        Assert.That(charges.Current(pool),Is.EqualTo(5));Assert.That(charges.Snapshot().Single(p=>p.id==pool).progress,Is.Zero);
+        Assert.That(activate.Invoke(pulse,null),Is.EqualTo(false));
         var capacity=player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==capacityKind);
         capacity.Damageable.Configure(1,true);capacity.Damageable.ApplyDamage(2,capacity.transform.position,Vector3.up);
         Assert.That(capacity.Damageable.IsDead,Is.True,"Losing an actual capacity module must lower the limit");

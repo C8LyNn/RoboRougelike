@@ -43,6 +43,26 @@ public sealed class BacklogChargeStateTests
         Call("EnsurePool","two",2);Call("TrySpend","two",2);Call("RefillAll");
         Assert.That(Call("Current","one"),Is.EqualTo(4));Assert.That(Call("Current","two"),Is.EqualTo(2));
     }
+    [Test] public void RechargePulseClearsPartialProgressOnlyWhenPoolBecomesFull()
+    {
+        var charges=(VehicleChargeState)state;charges.EnsurePool("emp",3);charges.TrySpend("emp",2);
+        charges.Advance(.75f,1);Assert.That(charges.Snapshot()[0].progress,Is.EqualTo(.75f));
+        Assert.That(charges.Recharge("emp",1),Is.EqualTo(1));
+        Assert.That(charges.Snapshot()[0].progress,Is.EqualTo(.75f),"Incomplete instant recharge keeps accumulated progress.");
+        Assert.That(charges.Recharge("emp",1),Is.EqualTo(1));
+        Assert.That(charges.Snapshot()[0].progress,Is.Zero,"A full pool cannot retain progress towards an extra charge.");
+        Assert.That(charges.TrySpend("emp",1),Is.True);charges.Advance(.25f,1);
+        Assert.That(charges.Current("emp"),Is.EqualTo(2));
+    }
+    [Test] public void FractionJustBelowOneRemainsValidWhenCheckpointIsRestored()
+    {
+        var charges=(VehicleChargeState)state;charges.EnsurePool("emp",1);charges.TrySpend("emp",1);
+        charges.Advance(.99999994f,1);charges.Advance(.00000004f,1);
+        var snapshot=charges.Snapshot();Assert.That(snapshot[0].progress,Is.LessThan(1f));
+        var restored=new VehicleChargeState();Assert.That(restored.Restore(snapshot),Is.True);
+        Assert.That(restored.Current("emp"),Is.Zero);restored.Advance(.000001f,1);
+        Assert.That(restored.Current("emp"),Is.EqualTo(1));
+    }
     [Test] public void VehicleCheckpointRoundTripKeepsChargesAndFractionalProgress()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));

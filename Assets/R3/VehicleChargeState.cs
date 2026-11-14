@@ -37,7 +37,11 @@ namespace RoboRougelike.R3
         {
             if(amount<=0||id==null||!pools.TryGetValue(id,out var pool))return 0;
             int added=(int)Math.Min((long)amount,Math.Max(0L,(long)Capacity(pool)-pool.Current));
-            pool.Current+=added;return added;
+            pool.Current+=added;
+            // Like timed regeneration, an instant refill cannot bank progress
+            // towards a charge beyond a full pool.
+            if(added>0&&pool.Current>=Capacity(pool))pool.Progress=0f;
+            return added;
         }
         public void Advance(float seconds,float chargesPerSecond)
         {
@@ -49,7 +53,9 @@ namespace RoboRougelike.R3
                 double progress=pool.Progress+(double)seconds*chargesPerSecond;
                 int added=(int)Math.Min((double)(capacity-pool.Current),Math.Floor(progress));
                 pool.Current+=added;
-                pool.Progress=pool.Current>=capacity?0f:(float)(progress-added);
+                // A double just below one can round to 1f on conversion,
+                // which is not a valid fractional checkpoint value.
+                pool.Progress=pool.Current>=capacity?0f:Math.Min(.99999994f,(float)(progress-added));
             }
         }
         public void RefillAll()

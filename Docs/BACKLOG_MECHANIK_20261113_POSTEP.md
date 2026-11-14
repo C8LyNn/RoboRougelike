@@ -820,3 +820,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Dodatkowe oferty nadal powstają przez losowanie rzeczywistych części z napotkanych przeciwników. Jeśli 16 prób powtórzy już istniejące zestawy, system sprawdza dostępne kombinacje przed zakończeniem listy. Zachowane są zakres liczby części, wykluczenie łupów fizycznych i odebranych oraz dotychczasowe pierwsze trzy losowania; nie tworzy się fikcyjnych części ani kolejnych ofert, gdy wszystkie możliwe zestawy są już wykorzystane.
 - Unity 6000.3.14f1: **52 PASS, 0 FAIL** (`basket_complete_final.xml`, `.log`) dla nagród, odzysku i układu, w tym 12 ziaren losowania z 15 rzeczywiście różnymi częściami, kombinacji jednego i dwóch elementów, pominiętego łupu oraz powtarzalności tego samego ziarna. Przed zmianą `basket_complete_red.xml`: dla ziarna 0 powstało tylko 13 różnych ofert mimo 15 dostępnych. Wydajność dla skrajnie dużych list i ręczna obsługa w Windows Playerze: **NOT RUN**.
+
+#### 18. Ułamkowy postęp regeneracji ładunków
+
+- Impuls uzupełniający pulę do pełna usuwa postęp kolejnego ładunku, tak jak dotychczasowe automatyczne dojście do pełnej puli; częściowe doładowanie zachowuje postęp. Bardzo mały ułamek poniżej pełnego ładunku nie zaokrągla się już do nieprawidłowej wartości w zapisie. Utrata pojemności nadal nie usuwa posiadanych nadmiarowych ładunków.
+- Unity 6000.3.14f1: **17 PASS, 0 FAIL** (`charge_fraction_final.xml`, `.log`) dla zapisu i odczytu, pełnego oraz częściowego impulsu, zamontowanego EMP, generatora ramp, braku zasobów i odnowienia w bezpiecznej strefie. Przed zmianą `charge_fraction_red.xml`: **2 FAIL** dla zachowanego ułamka po pełnym impulsie i ułamka zaokrąglonego do 1. Ręczna gra oraz balans czasu regeneracji: **NOT RUN**.
