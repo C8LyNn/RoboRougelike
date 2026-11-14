@@ -250,7 +250,7 @@ public float CurrentForwardSpeed =>
             if (rb.isKinematic) return;
             if(drive==null)drive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();
             RefreshCollisionEnvelope(false);
-            drive.Step(gameplayInputEnabled?moveInput:0,gameplayInputEnabled?turnInput:0,forwardSpeed*mobilityModifier,reverseSpeed*mobilityModifier,EffectiveTurnSpeed);
+            drive.Step(gameplayInputEnabled?moveInput:0,gameplayInputEnabled?turnInput:0,EffectiveForwardSpeed,EffectiveReverseSpeed,EffectiveTurnSpeed);
             currentSpeed=drive.ForwardSpeed;
         }
 

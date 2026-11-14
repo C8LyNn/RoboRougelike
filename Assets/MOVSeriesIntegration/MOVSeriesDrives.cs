@@ -95,10 +95,10 @@ namespace RoboRougelike.MOVSeries
             SetMotorLimits(forward,reverse,turn,throttle<0);
             SetDriveInput(new Vector2(steering,throttle),IndependentYaw);return true;
         }
-        static float PositiveLimit(float value,float maximum)=>float.IsNaN(value)||float.IsInfinity(value)?0:Mathf.Clamp(value,0,maximum);
+        static float PositiveLimit(float value)=>float.IsNaN(value)||float.IsInfinity(value)?0:Mathf.Max(value,0);
         void SetMotorLimits(float forward,float reverse,float turn,bool backwards)
         {
-            forward=PositiveLimit(forward,30);reverse=PositiveLimit(reverse,30);turn=PositiveLimit(turn,260);
+            forward=PositiveLimit(forward);reverse=PositiveLimit(reverse);turn=PositiveLimit(turn);
             float speed=backwards?reverse:forward;
             foreach(var part in assembly.Parts)
                 if(part!=null&&part.TryGetComponent<OmniDriveModule>(out var module))

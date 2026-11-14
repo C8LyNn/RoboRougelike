@@ -80,9 +80,9 @@ namespace RoboRougelike.Mechanics.MOV008
 
         public void SetDriveLimits(float forwardSpeed, float reverseSpeed, float yawDegrees)
         {
-            maxForwardSpeed=Mathf.Clamp(CrawlerTrackMath.Finite(forwardSpeed),0f,30f);
-            maxReverseSpeed=Mathf.Clamp(CrawlerTrackMath.Finite(reverseSpeed),0f,30f);
-            commandedYawDegrees=Mathf.Clamp(CrawlerTrackMath.Finite(yawDegrees),0f,260f);
+            maxForwardSpeed=Mathf.Max(CrawlerTrackMath.Finite(forwardSpeed),0f);
+            maxReverseSpeed=Mathf.Max(CrawlerTrackMath.Finite(reverseSpeed),0f);
+            commandedYawDegrees=Mathf.Max(CrawlerTrackMath.Finite(yawDegrees),0f);
         }
 
         public void SetDriveEnabled(bool active)
@@ -189,8 +189,9 @@ namespace RoboRougelike.Mechanics.MOV008
                     // Convert the host's linear/yaw targets to each physical track contact speed.
                     // All force, contact, mass and traction budgets below remain unchanged.
                     float lever=Vector3.Dot(track.transform.position-chassis.worldCenterOfMass,sideVector);
-                    float target=forward*(forward>=0f?maxForwardSpeed:maxReverseSpeed)-
-                        steering*commandedYawDegrees*Mathf.Deg2Rad*lever;
+                    double targetValue=(double)forward*(forward>=0f?maxForwardSpeed:maxReverseSpeed)-
+                        (double)steering*commandedYawDegrees*Mathf.Deg2Rad*lever;
+                    float target=(float)System.Math.Max(-float.MaxValue,System.Math.Min(float.MaxValue,targetValue));
                     demand=Mathf.Abs(target)>.0001f?Mathf.Sign(target):0f;
                     forwardLimit=reverseLimit=Mathf.Abs(target);
                     // Differential yaw must overcome contact stiction at low target speeds.

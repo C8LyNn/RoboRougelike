@@ -11,6 +11,38 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogDrivePowerTests
 {
+    [Test] public void ExtremeOmniTargetProducesFiniteBoundedAcceleration()
+    {
+        var acceleration=RoboRougelike.Mechanics.MOV005OmniDrive.OmniDriveMath.LinearAcceleration(
+            Vector3.zero,Quaternion.identity,Vector2.up,float.MaxValue,5,0,.02f);
+        Assert.That(float.IsNaN(acceleration.z)||float.IsInfinity(acceleration.z),Is.False);
+        Assert.That(acceleration.z,Is.EqualTo(5).Within(.001f));
+    }
+    [Test] public void ExtremeHoverTargetProducesFiniteBoundedForce()
+    {
+        var force=RoboRougelike.Mechanics.MOV007.HoverPhysicsMath.PlanarMotorForce(
+            Vector3.zero,new Vector3(0,0,float.MaxValue),100,.5f,1000,false);
+        Assert.That(float.IsNaN(force.z)||float.IsInfinity(force.z),Is.False);
+        Assert.That(force.z,Is.EqualTo(1000).Within(.001f));
+    }
+    [Test] public void ExtremeYawAndTrackTargetsRemainBoundedByMotorForce()
+    {
+        float omni=RoboRougelike.Mechanics.MOV005OmniDrive.OmniDriveMath.YawAcceleration(0,1,float.MaxValue,5,0,.02f);
+        float hover=RoboRougelike.Mechanics.MOV007.HoverPhysicsMath.YawMotorTorque(0,float.MaxValue,100,.5f,1000);
+        float track=RoboRougelike.Mechanics.MOV008.CrawlerTrackMath.LongitudinalForce(0,1,100,float.MaxValue,10,.5f,1,.2f,1000,1000,1000,false);
+        Assert.That(omni,Is.EqualTo(5).Within(.001f));Assert.That(hover,Is.EqualTo(1000).Within(.001f));
+        Assert.That(track,Is.EqualTo(1000).Within(.001f));
+    }
+    [Test] public void TracksRetainLongerConfiguredSpeedAndTurnTargets()
+    {
+        var root=new GameObject("track targets");root.AddComponent<Rigidbody>();
+        var tracks=root.AddComponent<RoboRougelike.Mechanics.MOV008.CrawlerTrackController>();tracks.SetDriveLimits(48,36,310);
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        Assert.That((float)tracks.GetType().GetField("maxForwardSpeed",flags).GetValue(tracks),Is.EqualTo(48));
+        Assert.That((float)tracks.GetType().GetField("maxReverseSpeed",flags).GetValue(tracks),Is.EqualTo(36));
+        Assert.That((float)tracks.GetType().GetField("commandedYawDegrees",flags).GetValue(tracks),Is.EqualTo(310));
+        UnityEngine.Object.DestroyImmediate(root);
+    }
     [Test] public void VehicleMassContinuesToAffectSpeedAndSteeringBeyondOldThresholds()
     {
         Assert.That(R3VehicleAssembly.SpeedFor(2000,4),Is.LessThan(R3VehicleAssembly.SpeedFor(1000,4)));
@@ -45,6 +77,32 @@ public sealed class BacklogDrivePowerIntegrationTests
 {
     [UnitySetUp] public IEnumerator Setup()
     {EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();}
+
+    [UnityTest] public IEnumerator AlternateDriveControllersReceiveHigherCommandedTargets()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        model.Award(10000);
+        foreach(var kind in new[]{R3PartKind.OmniDrive,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack})
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.PlacementError(c,kind,false)==null);
+            Assert.That(model.Buy(cell,kind),Is.True);
+        }
+        model.SelectedDrive=R3DriveKind.Omni;
+        var paletteObject=new GameObject("drive target QA palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
+        for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,5,0),Quaternion.identity);
+        var adapter=vehicle.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>();
+        Assert.That(adapter.TryDrive(1,0,48,36,310),Is.True);
+        var omni=vehicle.GetComponentInChildren<RoboRougelike.Mechanics.MOV005OmniDrive.OmniDriveModule>();
+        var hover=vehicle.GetComponent<RoboRougelike.Mechanics.MOV007.HoverVehicleController>();
+        Assert.That(omni,Is.Not.Null);Assert.That(hover,Is.Not.Null);
+        Assert.That(omni.MaximumSpeed,Is.EqualTo(48));Assert.That(omni.YawSpeedDegrees,Is.EqualTo(310));
+        Assert.That(hover.forwardSpeedMetersPerSec,Is.EqualTo(48));Assert.That(hover.yawDegreesPerSecond,Is.EqualTo(310));
+        UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);yield return null;
+    }
 
     [UnityTest] public IEnumerator SixthMountedMotorIncreasesTheRealWheelForce()
     {
