@@ -125,22 +125,23 @@ namespace RoboRougelike.R3
                     if(!distance.ContainsKey(next)){distance.Add(next,depth+1);queue.Enqueue(next);}
             }
 
-            var pending=new Dictionary<int,float>{{target,amount}};
+            var pending=new Dictionary<int,double>{{target,amount}};
+            double unused=0;
             foreach(var entry in distance.OrderBy(p=>p.Value).ThenBy(p=>p.Key))
             {
-                if(!pending.TryGetValue(entry.Key,out float received)||received<=0)continue;
+                if(!pending.TryGetValue(entry.Key,out double received)||received<=0)continue;
                 var node=nodes[entry.Key];
                 var children=Neighbours(node).Where(id=>distance.TryGetValue(id,out int depth)&&depth==entry.Value+1).ToArray();
-                float retained=children.Length==0?received:received*(1-fraction);
-                float applied=Math.Min(node.Health,retained);
-                if(applied>0)result.Damage.Add(node.Id,applied);
-                float remaining=Math.Max(0,received-applied);
-                if(children.Length==0)result.Unused+=remaining;
+                double retained=children.Length==0?received:received*(1d-fraction);
+                double applied=Math.Min(node.Health,retained);
+                if(applied>0)result.Damage.Add(node.Id,(float)applied);
+                double remaining=Math.Max(0,received-applied);
+                if(children.Length==0)unused+=remaining;
                 else
                 {
-                    float share=remaining/children.Length;
+                    double share=remaining/children.Length;
                     foreach(int child in children)
-                        pending[child]=pending.TryGetValue(child,out float old)?old+share:share;
+                        pending[child]=pending.TryGetValue(child,out double old)?old+share:share;
                 }
             }
 
@@ -150,23 +151,24 @@ namespace RoboRougelike.R3
             // This is the same atomic impact, not another graph traversal.
             foreach(int depth in distance.Values.Distinct().OrderByDescending(value=>value))
             {
-                if(result.Unused<=0)break;
+                if(unused<=0)break;
                 var remaining=distance.Where(p=>p.Value==depth).Select(p=>p.Key).OrderBy(id=>id).ToList();
-                while(result.Unused>0&&remaining.Count>0)
+                while(unused>0&&remaining.Count>0)
                 {
-                    float share=result.Unused/remaining.Count,spent=0;
+                    double share=unused/remaining.Count,spent=0;
                     for(int i=remaining.Count-1;i>=0;i--)
                     {
                         int id=remaining[i];result.Damage.TryGetValue(id,out float previous);
-                        float capacity=Math.Max(0,nodes[id].Health-previous);
-                        float applied=Math.Min(share,capacity);
-                        if(applied>0){result.Damage[id]=previous+applied;spent+=applied;}
+                        double capacity=Math.Max(0,(double)nodes[id].Health-previous);
+                        double applied=Math.Min(share,capacity);
+                        if(applied>0){result.Damage[id]=(float)(previous+applied);spent+=applied;}
                         if(capacity<=share)remaining.RemoveAt(i);
                     }
                     if(spent<=0)break;
-                    result.Unused=Math.Max(0,result.Unused-spent);
+                    unused=Math.Max(0,unused-spent);
                 }
             }
+            result.Unused=(float)Math.Min(float.MaxValue,unused);
             return result;
         }
     }

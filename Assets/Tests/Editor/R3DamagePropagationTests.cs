@@ -14,6 +14,21 @@ public sealed class R3DamagePropagationTests
     {if(Application.isPlaying)yield return new ExitPlayMode();}
     static R3DamagePropagation.Node Part(int id,float hp,params int[] neighbours) =>
         new R3DamagePropagation.Node(id,hp,neighbours);
+    [Test] public void ExtremeFiniteHitAcrossEighteenLeavesKeepsUnusedDamageFinite()
+    {
+        var neighbours=Enumerable.Range(0,25).Select(_=>new List<int>()).ToArray();
+        for(int child=1;child<=6;child++)
+        {
+            neighbours[0].Add(child);neighbours[child].Add(0);
+            for(int j=0;j<3;j++){int leaf=7+(child-1)*3+j;neighbours[child].Add(leaf);neighbours[leaf].Add(child);}
+        }
+        var graph=Enumerable.Range(0,25).Select(i=>Part(i,1,neighbours[i].ToArray())).ToArray();
+        var result=R3DamagePropagation.Resolve(graph,0,float.MaxValue,1,2);
+        Assert.That(float.IsNaN(result.Unused)||float.IsInfinity(result.Unused),Is.False);
+        Assert.That(result.Unused,Is.EqualTo(float.MaxValue));
+        Assert.That(result.Damage.Count,Is.EqualTo(25));
+        Assert.That(result.Damage.Values.All(value=>value>=0&&value<=1&&!float.IsNaN(value)&&!float.IsInfinity(value)),Is.True);
+    }
     static (Vector3Int cell,string id,Vector3Int rotation) WheelDescriptor(R1RunController run)
     {
         var wheel=run.VehicleModel.Parts.First(p=>p!=null&&p.Kind==R3PartKind.Wheel);
