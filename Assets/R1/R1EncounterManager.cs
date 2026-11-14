@@ -103,6 +103,8 @@ namespace RoboRougelike.R1
             foreach (var item in debris) { item.SetActive(false); Object.Destroy(item); }
             foreach(var pickup in Object.FindObjectsByType<RoboRougelike.R3.EnergyPickup>(FindObjectsSortMode.None))
             {pickup.gameObject.SetActive(false);Object.Destroy(pickup.gameObject);}
+            foreach(var pickup in Object.FindObjectsByType<RoboRougelike.R3.R3PhysicalLoot>(FindObjectsSortMode.None))
+            {pickup.gameObject.SetActive(false);Object.Destroy(pickup.gameObject);}
             foreach(var item in Object.FindObjectsByType<RoboRougelike.R3.R3Debris>(FindObjectsSortMode.None))
             {item.gameObject.SetActive(false);Object.Destroy(item.gameObject);}
         }

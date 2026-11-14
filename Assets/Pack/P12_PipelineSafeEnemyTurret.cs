@@ -587,7 +587,17 @@ namespace RogueMachine.P12PipelineSafe
                 items.Add(new R4SalvageItem(packagePointDefenseState,condition));
             }
             if(salvage.Record(salvageId,items,Archetype))
-                RoboRougelike.R1.R1RunController.Instance?.DiscoverEnemyTechnology(items);
+            {
+                var run=RoboRougelike.R1.R1RunController.Instance;
+                run?.DiscoverEnemyTechnology(items);
+                if(combatActive&&run!=null&&run.Salvage==salvage&&run.VehicleModel!=null)
+                {
+                    float chance=run.VehicleModel.Economy.PhysicalLootDropChance;
+                    if(!float.IsNaN(chance)&&!float.IsInfinity(chance))
+                        foreach(var item in items)if(item.Selectable&&(chance>=1f||chance>0f&&UnityEngine.Random.value<chance))
+                            RoboRougelike.R3.R3PhysicalLoot.Spawn(core!=null?core.transform.position:transform.position,salvage,item.Id);
+                }
+            }
         }
 
         private void RepairReferences()

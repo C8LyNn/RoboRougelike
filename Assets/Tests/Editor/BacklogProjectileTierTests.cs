@@ -67,6 +67,34 @@ public sealed class BacklogProjectileTierPhysicsTests
         item.transform.localScale=new Vector3(width,4,1);
         var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);Physics.SyncTransforms();return hp;
     }
+    [UnityTest] public IEnumerator DefeatedEnemyDropsPhysicalPartThatPlayerActuallyCollects()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        var enemy=run.Encounter.Enemies.First();var body=enemy.GetComponent<Rigidbody>();body.isKinematic=true;
+        body.position=new Vector3(100,5,100);run.Encounter.SetCombatActive(true);Physics.SyncTransforms();
+        enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        var drops=Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None);
+        Assert.That(drops.Length,Is.GreaterThan(0),"Defeating the real enemy must spawn an owned ledger drop");
+        Assert.That(drops.Length,Is.EqualTo(run.Salvage.Items.Count(p=>p.Selectable)),"100% must create one pickup per eligible physical item");
+        string id=drops[0].ItemId;Assert.That(run.Salvage.Items.Any(p=>p.Id==id),Is.True);
+        for(int i=1;i<drops.Length;i++)drops[i].transform.position+=Vector3.right*(20+i*2);
+        var player=run.Player.GetComponent<Rigidbody>();player.isKinematic=true;player.position=drops[0].transform.position;
+        Physics.SyncTransforms();float deadline=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<deadline&&!run.VehicleModel.Owns(id))yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(run.VehicleModel.Owns(id),Is.True,"Touching the physical pickup must grant its actual part");
+        Assert.That(run.Salvage.Items.Any(p=>p.Id==id),Is.False,"Collected identity must no longer be offered in rewards");
+        Assert.That(run.VehicleModel.Inventory.Count(p=>p.Id==id),Is.EqualTo(1));
+        R1EncounterManager.ClearTransientObjects();yield return null;
+        Assert.That(Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None),Is.Empty,"Uncollected world objects must be removed on encounter cleanup");
+    }
+    [UnityTest] public IEnumerator ZeroDropChanceKeepsExistingRewardLedgerWithoutWorldLoot()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=0;
+        var enemy=run.Encounter.Enemies.First();run.Encounter.SetCombatActive(true);
+        enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);yield return null;
+        Assert.That(Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None),Is.Empty);
+        Assert.That(run.Salvage.Items.Count,Is.GreaterThan(0),"Zero world-drop chance must preserve ordinary rewards");
+    }
     [UnityTest] public IEnumerator ShotgunTierTwoConsumesSixEnergyAndDamagesWithRealPellets()
     {
         var gun=Build(R4WeaponKind.Shotgun,out var energy);var hp=Target(gun,6);float before=energy.Current;

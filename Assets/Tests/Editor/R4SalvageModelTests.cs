@@ -8,6 +8,53 @@ public class R4SalvageModelTests
 {
     private R3VehicleModel Model()=>new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
     private R4SalvageItem Item(string id,float hp=1)=>new R4SalvageItem(id,"run/1/scout/gun",R3PartKind.Gun,R4WeaponKind.Automatic,hp);
+    [Test] public void PhysicalPickupPreservesIdentityAndCannotAlsoBeClaimedOrDismantledAsReward()
+    {
+        var model=Model();var ledger=new R4SalvageLedger(2);
+        Assert.That(ledger.Record("enemy",new[]{Item("pickup",.4f),Item("reward",.7f)},R3EnemyArchetype.Scout),Is.True);
+        var collect=typeof(R4SalvageLedger).GetMethod("TryCollectPhysical");
+        Assert.That(collect,Is.Not.Null,"The physical pickup must settle against the canonical ledger");
+        Assert.That((bool)collect.Invoke(ledger,new object[]{model,"pickup"}),Is.True);
+        Assert.That(model.Inventory.Single(p=>p.Id=="pickup").Health,Is.EqualTo(.4f));
+        Assert.That((bool)collect.Invoke(ledger,new object[]{model,"pickup"}),Is.False);
+        Assert.That(ledger.Items.Any(p=>p.Id=="pickup"),Is.False);
+        Assert.That(ledger.CreateBasketOffers(1,0).SelectMany(b=>b.Items).Any(p=>p.Id=="pickup"),Is.False);
+        Assert.That(ledger.Claim(model,new[]{"pickup"}),Is.False);
+        Assert.That(ledger.Claim(model,new[]{"reward"}),Is.True);
+        Assert.That(model.Inventory.Count(p=>p.Id=="pickup"),Is.EqualTo(1));
+        Assert.That(model.Scrap,Is.Zero,"A collected item must not also become scrap");
+    }
+    [Test] public void PhysicalPickupRemainsConsumedEvenAfterPlayerDismantlesIt()
+    {
+        var model=Model();var ledger=new R4SalvageLedger(1);
+        Assert.That(ledger.Record("enemy",new[]{Item("world-drop")},R3EnemyArchetype.Scout),Is.True);
+        Assert.That(ledger.TryCollectPhysical(model,"world-drop"),Is.True);
+        Assert.That(model.Dismantle("world-drop"),Is.True);
+        int before=model.Scrap;
+        Assert.That(ledger.TryCollectPhysical(model,"world-drop"),Is.False);
+        Assert.That(ledger.Claim(model,new[]{"world-drop"}),Is.False);
+        Assert.That(ledger.Claim(model,System.Array.Empty<string>()),Is.True);
+        Assert.That(model.Scrap,Is.EqualTo(before));
+    }
+    [Test] public void WheelPickupWaitsForSpaceForWholePackageWithoutConsumingDrop()
+    {
+        var model=Model();model.Award(10000);
+        while(model.Inventory.Count+model.GrantQuantity(R3PartKind.Armor)<=model.AvailableInventoryCapacity)
+            Assert.That(model.PurchaseToInventory(R3PartKind.Armor),Is.True);
+        Assert.That(model.Inventory.Count,Is.EqualTo(model.AvailableInventoryCapacity));
+        var ledger=new R4SalvageLedger();
+        var wheel=new R4SalvageItem("wheel-drop","enemy/wheel",R3PartKind.Wheel,R4WeaponKind.Basic,.6f);
+        Assert.That(ledger.Record("enemy",new[]{wheel}),Is.True);
+        Assert.That(ledger.TryCollectPhysical(model,wheel.Id),Is.False);
+        Assert.That(ledger.Items.Any(p=>p.Id==wheel.Id),Is.True);
+        Assert.That(model.Dismantle(model.Inventory[0].Id),Is.True);
+        Assert.That(ledger.TryCollectPhysical(model,wheel.Id),Is.False,"One free slot is insufficient for two wheels");
+        Assert.That(model.Dismantle(model.Inventory[0].Id),Is.True);
+        Assert.That(ledger.TryCollectPhysical(model,wheel.Id),Is.True);
+        Assert.That(model.Inventory.Count(p=>p.Kind==R3PartKind.Wheel),Is.EqualTo(2));
+        Assert.That(model.Inventory.Single(p=>p.Id==wheel.Id).Health,Is.EqualTo(.6f));
+        Assert.That(ledger.Items.Any(p=>p.Id==wheel.Id),Is.False);
+    }
     [Test] public void ClaimedEnemyPartsArriveHealthyWithoutChangingSnapshotsAmmoScrapOrOwnDamage()
     {
         var model=Model();var own=model.Parts.First(p=>p.Kind==R3PartKind.Armor);own.Health=.4f;
@@ -61,8 +108,8 @@ public class R4SalvageModelTests
         Assert.That(model.Dismantle("gun"),Is.False);Assert.That(model.Mount("gun",cell),Is.False);
         foreach(var kind in new[]{R4WeaponKind.Basic,R4WeaponKind.Automatic,R4WeaponKind.Heavy})
         {
-            model.Award(100);int before=model.Scrap;
-            Assert.That(model.Buy(cell,R3PartKind.Gun,kind),Is.True);string id=model.At(cell).Id;
+            model.Award(model.Price(R3PartKind.Gun,kind));int before=model.Scrap;
+            Assert.That(model.Buy(cell,R3PartKind.Gun,kind),Is.True,$"Purchase {kind}: {model.PlacementError(cell,R3PartKind.Gun,weapon:kind)}");string id=model.At(cell).Id;
             Assert.That(model.Remove(cell),Is.True);Assert.That(model.Dismantle(id),Is.True);
             Assert.That(model.Scrap,Is.LessThan(before));
         }

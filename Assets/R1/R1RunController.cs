@@ -350,7 +350,7 @@ namespace RoboRougelike.R1
             {
                 if(Encounter.Cleared&&CheckpointRace?.Won!=true&&RoadChallenge?.Status!=RoboRougelike.MapSystemR4.MapR4Status.Completed)
                 {
-                    bool drops=FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None).Length>0;
+                    bool drops=FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None).Length>0||FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Length>0;
                     if(drops&&pickupGraceDeadline<0)pickupGraceDeadline=Time.time+8f;
                     if(drops&&Time.time<pickupGraceDeadline)return;
                 }

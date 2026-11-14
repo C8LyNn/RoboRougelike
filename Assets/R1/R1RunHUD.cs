@@ -356,7 +356,7 @@ namespace RoboRougelike.R1
                      GUI.Label(new Rect(36,noticeY,630,22),resourceWarning,small);GUI.contentColor=before;noticeY+=25;}
                     if(run.PickupGraceRemaining>0)
                     {
-                        GUI.Label(new Rect(36,noticeY,630,22),$"Zbierz energię: {run.PickupGraceRemaining:0.0} s • Enter — nagrody",small);
+                        GUI.Label(new Rect(36,noticeY,630,22),$"Zbierz łupy i energię: {run.PickupGraceRemaining:0.0} s • Enter — nagrody",small);
                         GUI.Label(new Rect(640,210,285,55),"ZWYCIĘSTWO",title);
                     }
                 }

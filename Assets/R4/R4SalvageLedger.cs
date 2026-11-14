@@ -51,6 +51,7 @@ namespace RoboRougelike.R4
         private readonly List<R4SalvageItem> items=new List<R4SalvageItem>();
         private readonly HashSet<string> enemies=new HashSet<string>();
         private readonly HashSet<string> ids=new HashSet<string>();
+        private readonly HashSet<string> collected=new HashSet<string>(StringComparer.Ordinal);
         private readonly List<(R3EnemyArchetype Type,R4SalvageItem[] Parts)> basketSources=new List<(R3EnemyArchetype,R4SalvageItem[])>();
         public IReadOnlyList<R4SalvageItem> Items => items.AsReadOnly();
         public int Limit { get; }
@@ -60,6 +61,20 @@ namespace RoboRougelike.R4
         public bool Record(string enemyId,IEnumerable<R4SalvageItem> equipment) => RecordCore(enemyId,equipment,null);
         public bool Record(string enemyId,IEnumerable<R4SalvageItem> equipment,R3EnemyArchetype archetype)
             => RecordCore(enemyId,equipment,archetype);
+        // Collecting a world drop and reward settlement share the same identity
+        // ledger. Only mark it collected after the whole inventory batch succeeds.
+        public bool TryCollectPhysical(R3VehicleModel model,string id)
+        {
+            if(Closed||model==null||string.IsNullOrWhiteSpace(id)||collected.Contains(id))return false;
+            var item=items.FirstOrDefault(p=>p.Id==id);
+            if(item==null||!item.Selectable||model.Owns(id)||!R3VehicleModel.ValidEconomicPart(item.ToPart()))return false;
+            var part=item.ToPart();int count=model.GrantQuantity(part.Kind,part.ArmorShape);
+            if(count<=0||(long)model.Inventory.Count+count>model.AvailableInventoryCapacity)return false;
+            var batch=new List<R3PartState>{part};
+            for(int i=1;i<count;i++){var copy=part.Copy();copy.Id=Guid.NewGuid().ToString("N");batch.Add(copy);}
+            if(!model.ReceiveSalvage(batch))return false;
+            collected.Add(id);items.Remove(item);return true;
+        }
         private bool RecordCore(string enemyId,IEnumerable<R4SalvageItem> equipment,R3EnemyArchetype? archetype)
         {
             if(Closed||string.IsNullOrWhiteSpace(enemyId)||enemies.Contains(enemyId)||equipment==null)return false;
@@ -76,7 +91,7 @@ namespace RoboRougelike.R4
         {
             // Select among the most common archetypes that actually appeared.
             // Every offer draws from one real defeated robot; armor stays excluded.
-            var groups=basketSources.Where(s=>s.Parts.Any(p=>p.Selectable)).GroupBy(s=>s.Type)
+            var groups=basketSources.Where(s=>s.Parts.Any(p=>p.Selectable&&!collected.Contains(p.Id))).GroupBy(s=>s.Type)
                 .OrderByDescending(g=>g.Count()).ThenBy(g=>g.Key).Take(3).ToArray();
             if(groups.Length==0||Limit==0)return Array.Empty<R4SalvageBasket>();
             var random=new System.Random(seed);
@@ -91,7 +106,7 @@ namespace RoboRougelike.R4
                 {
                     var group=groups[(i+attempt)%groups.Length].ToArray();
                     var source=group[random.Next(group.Length)];
-                    var pool=source.Parts.Where(p=>p.Selectable).OrderBy(p=>p.Id,StringComparer.Ordinal).ToArray();
+                    var pool=source.Parts.Where(p=>p.Selectable&&!collected.Contains(p.Id)).OrderBy(p=>p.Id,StringComparer.Ordinal).ToArray();
                     int tier=Math.Max(0,Math.Min(5,stage));
                     int percent=random.Next(30+tier*5,61+tier*5);
                     int count=Math.Min(Limit,Math.Max(1,(int)Math.Ceiling(pool.Length*percent/100d)));
@@ -111,7 +126,7 @@ namespace RoboRougelike.R4
         {
             if(model==null||items.Any(p=>p==null||!R3VehicleModel.ValidEconomicPart(p.ToPart())))return 0;
             var keep=new HashSet<string>(selected??Array.Empty<string>());
-            long baseScrap=items.Where(p=>!keep.Contains(p.Id)).Sum(p=>(long)(p.Recoverable?model.DismantleValue(p.ToPart()):1));
+            long baseScrap=items.Where(p=>!collected.Contains(p.Id)&&!keep.Contains(p.Id)).Sum(p=>(long)(p.Recoverable?model.DismantleValue(p.ToPart()):1));
             float bonus=model.Economy.SalvageOptimizerBonus;
             if(float.IsNaN(bonus)||float.IsInfinity(bonus))bonus=0;
             long units=model.Parts.Where(p=>p.Kind==R3PartKind.SalvageOptimizer&&p.Health>0)
@@ -128,7 +143,7 @@ namespace RoboRougelike.R4
         {
             if(Closed||model==null||selected==null||items.Any(p=>p==null||!R3VehicleModel.ValidEconomicPart(p.ToPart())))return false;
             var chosen=selected.ToArray();var keep=new HashSet<string>(chosen);
-            if(chosen.Length!=keep.Count||keep.Count>Limit||keep.Any(id=>!items.Any(p=>p.Id==id&&p.Selectable)||model.Owns(id)))return false;
+            if(chosen.Length!=keep.Count||keep.Count>Limit||keep.Any(id=>collected.Contains(id)||!items.Any(p=>p.Id==id&&p.Selectable)||model.Owns(id)))return false;
             // Repair only the copies selected as rewards. The immutable wreck
             // snapshots remain intact for condition-based scrap calculation.
             var recovered=items.Where(p=>keep.Contains(p.Id)).Select(p=>{var copy=p.ToPart();copy.Health=1;return copy;}).ToArray();
