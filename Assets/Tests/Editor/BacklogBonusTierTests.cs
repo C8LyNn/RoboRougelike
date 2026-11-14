@@ -9,6 +9,21 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogBonusTierTests
 {
+    [Test] public void ShotgunAndRailgunPreserveVeryShortAndLongFiniteCooldowns()
+    {
+        var shotgun=new RoboRougelike.WPN001Shotgun.ShotgunConfig{cooldownSeconds=.005f}.Snapshot();
+        var rail=new RoboRougelike.WPN002Railgun.RailgunConfig{cooldownSeconds=.005f}.Snapshot();
+        Assert.That(shotgun.CooldownSeconds,Is.EqualTo(.005f));Assert.That(rail.Cooldown,Is.EqualTo(.005f));
+        Assert.That(new RoboRougelike.WPN001Shotgun.ShotgunConfig{cooldownSeconds=240}.Snapshot().CooldownSeconds,Is.EqualTo(240));
+        Assert.That(new RoboRougelike.WPN002Railgun.RailgunConfig{cooldownSeconds=240}.Snapshot().Cooldown,Is.EqualTo(240));
+        var sg=new RoboRougelike.WPN001Shotgun.ShotgunFireGate();var rg=new RoboRougelike.WPN002Railgun.RailgunFireGate();
+        Assert.That(sg.RegisterSuccessfulVolley(1,.005f),Is.True);Assert.That(rg.Commit(1,.005f),Is.True);
+        Assert.That(sg.CanFire(1.006f),Is.True);Assert.That(rg.CanFire(1.006f),Is.True);
+        sg.Reset();rg.Reset();Assert.That(sg.RegisterSuccessfulVolley(1,240),Is.True);Assert.That(rg.Commit(1,240),Is.True);
+        Assert.That(sg.CanFire(130),Is.False);Assert.That(rg.CanFire(130),Is.False);
+        sg.Reset();rg.Reset();Assert.That(sg.RegisterSuccessfulVolley(3600,.00001f),Is.True);Assert.That(rg.Commit(3600,.00001f),Is.True);
+        Assert.That(sg.CanFire(3600),Is.False);Assert.That(rg.CanFire(3600),Is.False);
+    }
     [Test] public void RepairEfficiencyRewardIsAvailableAndDescribesItsEffect()
     {
         Assert.That(System.Enum.TryParse("RepairEfficiency",out R1UpgradeEffect effect),Is.True);
@@ -204,6 +219,25 @@ public sealed class BacklogBonusTierTests
 
 public sealed class BacklogBonusTierGameplayTests
 {
+    [UnityTest] public IEnumerator FastCooldownReachesActualShotgunAndRailgunBindings()
+    {
+        R1EncounterManager.ClearTransientObjects();
+        var owner=new GameObject("Fast weapon owner");owner.transform.position=new Vector3(1400,1400,1400);
+        owner.AddComponent<Rigidbody>().isKinematic=true;
+        GameObject Weapon(out Transform muzzle)
+        {
+            var part=GameObject.CreatePrimitive(PrimitiveType.Cube);part.transform.SetParent(owner.transform,false);
+            part.GetComponent<Collider>().enabled=false;part.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Configure(100,false);
+            muzzle=new GameObject("muzzle").transform;muzzle.SetParent(part.transform,false);muzzle.localPosition=Vector3.forward;return part;
+        }
+        var sg=Weapon(out var sm).AddComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
+        sg.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.Shotgun},owner.transform,sm,1,.001f);
+        Assert.That(sg.Fire(),Is.True);Assert.That(sg.Module.CurrentSpec.CooldownSeconds,Is.EqualTo(.00085f).Within(.0000001f));
+        var rg=Weapon(out var rm).AddComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
+        rg.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.Railgun},owner.transform,rm,1,.001f);
+        Assert.That(rg.Fire(),Is.True);Assert.That(rg.Module.CurrentSpec.Cooldown,Is.EqualTo(.0024f).Within(.0000001f));
+        R1EncounterManager.ClearTransientObjects();Object.Destroy(owner);yield return null;
+    }
     [UnityTest] public IEnumerator ExtremeFiniteWeaponDamageDoesNotOverflowIntoZeroOrInvalidHits()
     {
         R1EncounterManager.ClearTransientObjects();

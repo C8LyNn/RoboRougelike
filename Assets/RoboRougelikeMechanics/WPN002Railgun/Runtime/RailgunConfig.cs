@@ -15,7 +15,7 @@ namespace RoboRougelike.WPN002Railgun
         [Min(1f)] public float maximumDamagePerPart = 75f;
         [Range(1, 24)] public int maximumDistinctParts = 6;
         [Min(0f)] public float minimumEnergyToContinue = 2f;
-        [Min(0.01f)] public float cooldownSeconds = 2.4f;
+        [Min(0f)] public float cooldownSeconds = 2.4f;
         [Min(0f)] public float recoilImpulse = 48f;
         public bool recoilAtMuzzle = true;
         [Range(0f, 2f)] public float inheritedVelocityFactor = 1f;
@@ -30,7 +30,7 @@ namespace RoboRougelike.WPN002Railgun
             RailgunRules.ClampFinite(maximumDamagePerPart, 0.01f, 5000f, 75f),
             Mathf.Clamp(maximumDistinctParts, 1, 24),
             RailgunRules.ClampFinite(minimumEnergyToContinue, 0f, 9999f, 2f),
-            RailgunRules.ClampFinite(cooldownSeconds, 0.01f, 120f, 2.4f),
+            RailgunRules.PositiveCooldown(cooldownSeconds, 2.4f),
             RailgunRules.ClampFinite(recoilImpulse, 0f, 50000f, 48f),
             recoilAtMuzzle,
             RailgunRules.ClampFinite(inheritedVelocityFactor, 0f, 2f, 1f));

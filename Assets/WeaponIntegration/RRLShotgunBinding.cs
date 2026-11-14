@@ -34,7 +34,8 @@ namespace RoboRougelike.WeaponIntegration
             tank=owner.GetComponent<P12PipelineSafeTankController>();enemy=owner.GetComponent<P12PipelineSafeEnemyTurret>();
             device=GetComponent<RRLDeviceBinding>();if(device==null)device=gameObject.AddComponent<RRLDeviceBinding>();
             device.Bind(state,owner);
-            damageScale=Mathf.Max(0,damageMultiplier);intervalScale=Mathf.Max(.01f,intervalMultiplier);
+            damageScale=Mathf.Max(0,damageMultiplier);
+            intervalScale=float.IsNaN(intervalMultiplier)||float.IsInfinity(intervalMultiplier)?1f:Mathf.Max(0,intervalMultiplier);
             if(State.Ammo<0)State.Ammo=MagazineSalvos;
             Module=GetComponent<ShotgunModule>();if(Module==null)Module=gameObject.AddComponent<ShotgunModule>();
             Module.Bind(body,muzzle,owner.gameObject);Module.BindSink(this);Module.BindResourceBank(this);

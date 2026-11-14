@@ -6,6 +6,7 @@ namespace RoboRougelike.WPN001Shotgun
     public sealed class ShotgunFireGate
     {
         public float NextReadyTime { get; private set; } = float.NegativeInfinity;
+        double nextReadyExact=double.NegativeInfinity;
         public uint SuccessfulVolleys { get; private set; }
         public bool Operational { get; private set; } = true;
 
@@ -13,14 +14,15 @@ namespace RoboRougelike.WPN001Shotgun
             !float.IsNaN(seconds) && !float.IsInfinity(seconds);
 
         public bool CanFire(float seconds) => Operational && IsFiniteTime(seconds)
-            && seconds >= NextReadyTime;
+            && seconds >= nextReadyExact;
 
         public bool RegisterSuccessfulVolley(float seconds, float cooldownSeconds)
         {
             if (!CanFire(seconds)) return false;
-            float cd = float.IsNaN(cooldownSeconds) || float.IsInfinity(cooldownSeconds)
-                ? 0.01f : Mathf.Clamp(cooldownSeconds, 0.01f, 30f);
-            NextReadyTime = seconds + cd;
+            float cd = ShotgunSpec.PositiveCooldown(cooldownSeconds,.01f);
+            // Preserve a positive interval even when float time cannot represent it.
+            nextReadyExact=(double)seconds+System.Math.Max((double)cd,System.Math.Abs((double)seconds)*2.2204460492503131e-16);
+            NextReadyTime=(float)System.Math.Min(float.MaxValue,nextReadyExact);
             SuccessfulVolleys++;
             return true;
         }
@@ -30,6 +32,7 @@ namespace RoboRougelike.WPN001Shotgun
         public void Reset()
         {
             NextReadyTime = float.NegativeInfinity;
+            nextReadyExact=double.NegativeInfinity;
             SuccessfulVolleys = 0;
             Operational = true;
         }
