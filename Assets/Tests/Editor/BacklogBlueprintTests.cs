@@ -13,6 +13,14 @@ using UnityEngine.TestTools;
 public sealed class BacklogBlueprintTests
 {
     static Type Library=>Type.GetType("RoboRougelike.R3.R3BlueprintLibrary, Assembly-CSharp");
+    [Test] public void BlueprintWithLegacyGlobalBindingsRemainsValid()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var blueprint=R3BlueprintLibrary.Capture(model,"Stary projekt");
+        blueprint.globalBindings=blueprint.globalBindings.Take(blueprint.globalBindings.Length-1).ToArray();
+        Assert.That(R3BlueprintLibrary.Valid(blueprint),Is.True);
+        Assert.That(R3BlueprintLibrary.Preview(blueprint,model).MissingCount,Is.Zero);
+    }
     [Test] public void BlueprintKeepsLayoutButDoesNotSerializeItemIdsHealthOrCurrency()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(321);

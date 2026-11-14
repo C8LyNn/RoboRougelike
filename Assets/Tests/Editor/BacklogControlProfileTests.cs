@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using RoboRougelike.R1;
@@ -10,6 +11,27 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [Serializable] sealed class LegacyControlData { public int version=1; public string[] actions,bindings; }
+    [Test] public void LegacyProfilesAndBlueprintBindingsGainConfigurableSteeringMode()
+    {
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-legacy-"+Guid.NewGuid()+".json");
+        try
+        {
+            var profile=new R1ControlProfile(path);var actions=R1ControlProfile.Actions.Where(a=>a!="SteeringMode").ToArray();
+            var bindings=actions.Select(profile.Binding).ToArray();bindings[0]="K";
+            var data=new LegacyControlData{actions=actions,bindings=bindings};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            var loaded=new R1ControlProfile(path);Assert.That(loaded.Error,Is.Null);
+            Assert.That(loaded.Binding("MoveForward"),Is.EqualTo("K"));Assert.That(loaded.Binding("SteeringMode"),Is.EqualTo("M"));
+            Assert.That(R1ControlProfile.ValidSnapshot(bindings),Is.True,"Existing blueprints keep valid bindings.");
+            Assert.That(loaded.TryBind("SteeringMode","P"),Is.True);loaded.Save();
+            Assert.That(new R1ControlProfile(path).Binding("SteeringMode"),Is.EqualTo("P"));
+            Assert.That(loaded.TryRestoreSnapshot(bindings,out _),Is.True);
+            Assert.That(loaded.Binding("SteeringMode"),Is.EqualTo("M"));
+            Assert.That(loaded.TryBind("Weapon1","M"),Is.False,"Mode binding participates in conflict detection.");
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [Test] public void ControlProfilePersistsBindingsAndRejectsConflicts()
     {
         var type=Type.GetType("RoboRougelike.R1.R1ControlProfile, Assembly-CSharp");

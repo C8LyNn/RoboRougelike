@@ -14,9 +14,9 @@ namespace RoboRougelike.R1
     {
         public static readonly string[] Actions={"MoveForward","MoveBackward","TurnLeft","TurnRight",
             "Weapon1","Weapon2","Weapon3","Weapon4","Active1","Active2","Active3","Active4",
-            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight"};
+            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode"};
         static readonly string[] Defaults={"W","S","A","D","MouseLeft","MouseRight","Q","E",
-            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period"};
+            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M"};
         readonly Dictionary<string,string> bindings=new Dictionary<string,string>();
         readonly string path;
         bool unreadable;
@@ -33,21 +33,30 @@ namespace RoboRougelike.R1
             try
             {
                 var data=JsonUtility.FromJson<R1ControlData>(R1RunCheckpointStorage.ReadPayload(path));
-                if(data==null||data.version!=1||data.actions==null||data.bindings==null||data.actions.Length!=Actions.Length||
-                    data.bindings.Length!=Actions.Length||data.actions.Distinct().Count()!=Actions.Length||
-                    data.actions.Any(a=>!Actions.Contains(a))||data.bindings.Any(b=>!ValidBinding(b)||Reserved(b))||
-                    data.bindings.Distinct(StringComparer.OrdinalIgnoreCase).Count()!=Actions.Length)
+                if(data==null||data.version!=1||data.actions==null||data.bindings==null||
+                    (data.actions.Length!=Actions.Length&&data.actions.Length!=Actions.Length-1)||
+                    data.bindings.Length!=data.actions.Length||data.actions.Distinct().Count()!=data.actions.Length||
+                    data.actions.Any(a=>!Actions.Contains(a))||
+                    (data.actions.Length==Actions.Length-1&&data.actions.Contains("SteeringMode")))
                     throw new InvalidDataException("Niepoprawne przypisania sterowania.");
+                var merged=Actions.Select((a,i)=>{int at=Array.IndexOf(data.actions,a);return at<0?Defaults[i]:data.bindings[at];}).ToArray();
+                if(!ValidSnapshot(merged))throw new InvalidDataException("Niepoprawne przypisania sterowania.");
                 for(int i=0;i<data.actions.Length;i++)bindings[data.actions[i]]=data.bindings[i];
             }
             catch(Exception e){unreadable=true;Error="Nie odczytano ustawień; plik pozostawiono bez zmian: "+e.Message;}
         }
         public void ResetDefaults(){for(int i=0;i<Actions.Length;i++)bindings[Actions[i]]=Defaults[i];}
-        internal void RestoreValues(string[] values){for(int i=0;i<Actions.Length;i++)bindings[Actions[i]]=values[i];}
+        internal void RestoreValues(string[] values){var full=NormalizeSnapshot(values);for(int i=0;i<Actions.Length;i++)bindings[Actions[i]]=full[i];}
         public string Binding(string action)=>bindings.TryGetValue(action,out var binding)?binding:null;
         public string[] Snapshot()=>Actions.Select(Binding).ToArray();
-        public static bool ValidSnapshot(string[] values)=>values!=null&&values.Length==Actions.Length&&
-            values.All(x=>ValidBinding(x)&&!Reserved(x))&&values.Distinct(StringComparer.OrdinalIgnoreCase).Count()==Actions.Length;
+        static string[] NormalizeSnapshot(string[] values)=>values!=null&&values.Length==Actions.Length-1?
+            values.Concat(new[]{Defaults[Defaults.Length-1]}).ToArray():values;
+        public static bool ValidSnapshot(string[] values)
+        {
+            var full=NormalizeSnapshot(values);
+            return full!=null&&full.Length==Actions.Length&&full.All(x=>ValidBinding(x)&&!Reserved(x))&&
+                full.Distinct(StringComparer.OrdinalIgnoreCase).Count()==Actions.Length;
+        }
         public bool TryRestoreSnapshot(string[] values,out string message)
         {
             if(!ValidSnapshot(values)){message="Zapisane przypisania są niepoprawne.";return false;}
@@ -64,7 +73,7 @@ namespace RoboRougelike.R1
                 Enum.IsDefined(typeof(Key),key)&&key!=Key.LeftAlt&&key!=Key.RightAlt&&key!=Key.LeftMeta&&key!=Key.RightMeta;
         }
         // Fixed session/UI shortcuts remain reserved until they too are configurable.
-        public static bool Reserved(string binding)=>new[]{"Escape","Enter","NumpadEnter","R","I","M",
+        public static bool Reserved(string binding)=>new[]{"Escape","Enter","NumpadEnter","R","I",
             "UpArrow","DownArrow","LeftArrow","RightArrow","F4","F8","F10"}.Contains(binding);
         public static string Display(string binding)=>binding=="MouseLeft"?"LPM":binding=="MouseRight"?"PPM":
             binding=="MouseMiddle"?"ŚPM":binding=="MouseForward"?"Mysz 4":binding=="MouseBack"?"Mysz 5":
@@ -100,7 +109,7 @@ namespace RoboRougelike.R1
             switch(action){case "MoveForward":return "Jazda do przodu";case "MoveBackward":return "Jazda do tyłu";
                 case "TurnLeft":return "Skręt w lewo";case "TurnRight":return "Skręt w prawo";
                 case "Gyro":return "Żyroskop";case "Reload":return "Przeładowanie";
-                case "SteeringLeft":return "Obrót w lewo";case "SteeringRight":return "Obrót w prawo";}
+                case "SteeringLeft":return "Obrót w lewo";case "SteeringRight":return "Obrót w prawo";case "SteeringMode":return "Tryb skrętu";}
             if(action.StartsWith("Weapon"))return "Broń "+action.Substring(6);
             if(action.StartsWith("Active"))return "Moduł "+action.Substring(6);
             if(action.StartsWith("Deploy"))return "Urządzenie "+action.Substring(6);

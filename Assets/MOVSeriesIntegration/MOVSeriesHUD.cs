@@ -269,7 +269,7 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(30,355,280,100),"Tarcza 1×1×1 • ładuje się sama\n100 osłony • 120° • zasięg 9 m\nRegeneracja 12/s po 3 s.\nKierunek zmienisz obrotem XYZ.",small);
             }
             else if(selected==R3PartKind.IndependentSteering)
-                GUI.Label(new Rect(30,355,280,100),"M — zmień tryb podczas jazdy\nPrzód / tył / przeciwnie / krab.\nWymaga 4 prostych kół narożnych.\nInny układ: standardowy skręt R6.",small);
+                GUI.Label(new Rect(30,355,280,100),$"{R1ControlProfile.Display(R1ControlProfile.Current.Binding("SteeringMode"))} — zmień tryb podczas jazdy\nPrzód / tył / przeciwnie / krab.\nWymaga 4 prostych kół narożnych.\nInny układ: standardowy skręt R6.",small);
             else if(selected==R3PartKind.Gyroscope)
             {
                 GUI.Label(new Rect(30,355,280,55),"Żyroskop prostuje przechył.\nG przełącza go podczas jazdy.",small);
