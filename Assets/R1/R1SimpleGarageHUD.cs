@@ -983,7 +983,8 @@ namespace RoboRougelike.R1
                 var offer=offers[i];int quantity=model.GrantQuantity(offer.Kind);
                 bool unlocked=run.CanBuyTechnology(offer.Kind,offer.Weapon);
                 bool room=(long)model.Inventory.Count+quantity<=model.AvailableInventoryCapacity;
-                GUI.Label(new Rect(area.x,area.y+45+i*65,area.width-220,54),$"{R4WeaponDefinition.PartName(offer.Kind,offer.Weapon)} • {quantity} szt. • {offer.Price} Z",body);
+                string note=offer.Kind==R3PartKind.Armor?"\nŁączny odzysk złomu ograniczony do ceny pakietu.":string.Empty;
+                GUI.Label(new Rect(area.x,area.y+45+i*65,area.width-220,54),$"{R4WeaponDefinition.PartName(offer.Kind,offer.Weapon)} • {quantity} szt. • {offer.Price} Z"+note,small);
                 GUI.enabled=run.SafeVendorAvailable&&!offer.Sold&&unlocked&&room&&model.Scrap>=offer.Price;
                 string action=offer.Sold?"Kupione":!unlocked?"Zablokowane":!room?"Brak miejsca":model.Scrap<offer.Price?"Za mało złomu":"Kup";
                 if(GUI.Button(new Rect(area.x+area.width-205,area.y+45+i*65,205,45),action,compactButton))

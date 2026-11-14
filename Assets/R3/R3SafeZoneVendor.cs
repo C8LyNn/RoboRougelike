@@ -20,10 +20,11 @@ namespace RoboRougelike.R3
         public int SafeVendorStage {get;private set;}
         public int SafeVendorSeed {get;private set;}
         public int SafeVendorSoldMask {get;private set;}
+        public int SafeVendorRevision {get;private set;}
         public void PrepareSafeZoneVendor(int seed)
         {
             if(CreativeMode||SafeZoneLastCompleted<=0||SafeVendorStage==SafeZoneLastCompleted)return;
-            SafeVendorStage=SafeZoneLastCompleted;SafeVendorSeed=seed;SafeVendorSoldMask=0;
+            SafeVendorStage=SafeZoneLastCompleted;SafeVendorSeed=seed;SafeVendorSoldMask=0;SafeVendorRevision=1;
         }
         public IReadOnlyList<R3SafeZoneOffer> SafeZoneVendorOffers()
         {
@@ -35,6 +36,8 @@ namespace RoboRougelike.R3
             var weapons=new[]{R4WeaponKind.Basic,R4WeaponKind.Automatic,R4WeaponKind.Heavy};
             var kinds=new[]{drive[random.Next(drive.Length)],R3PartKind.Gun,passive[random.Next(passive.Length)],active[random.Next(active.Length)]};
             var selectedWeapon=weapons[random.Next(weapons.Length)];
+            // Revision 0 preserves offers already present in existing saves.
+            if(SafeVendorRevision>=1&&random.Next(2)==0)kinds[2]=R3PartKind.Armor;
             var result=new List<R3SafeZoneOffer>();
             int count=Mathf.Clamp(Economy.SafeVendorOfferCount,0,kinds.Length);
             float factor=Economy.SafeVendorPriceMultiplier;
@@ -50,7 +53,20 @@ namespace RoboRougelike.R3
         public bool TryPurchaseSafeZoneOffer(int index)
         {
             var offers=SafeZoneVendorOffers();if(index<0||index>=offers.Count)return false;
-            var offer=offers[index];if(offer.Sold||!PurchaseToInventoryAtPrice(offer.Kind,offer.Weapon,R3WheelStyle.Offroad,R3ArmorShape.Cube,offer.Price))return false;
+            var offer=offers[index];int firstNewItem=inventory.Count;
+            if(offer.Sold||!PurchaseToInventoryAtPrice(offer.Kind,offer.Weapon,R3WheelStyle.Offroad,R3ArmorShape.Cube,offer.Price))return false;
+            if(offer.Kind==R3PartKind.Armor)
+            {
+                // Allocate at most the pack price across its actual physical
+                // blocks; standard purchases and all other parts are untouched.
+                int remaining=offer.Price;
+                for(int i=firstNewItem;i<inventory.Count;i++)
+                {
+                    var part=inventory[i];int cap=Math.Min(remaining,DismantleFullValue(part));
+                    part.HasDismantleCap=true;part.DismantleCap=cap;remaining-=cap;
+                    part.Source="Pakiet sprzedawcy — ograniczony odzysk";
+                }
+            }
             SafeVendorSoldMask|=1<<index;return true;
         }
     }

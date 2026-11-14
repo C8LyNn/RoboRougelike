@@ -25,6 +25,11 @@ namespace RoboRougelike.R3
         public float Health = 1;
         public string Id = Guid.NewGuid().ToString("N");
         public string Source = "Zakup / pojazd startowy";
+        // A discounted vendor pack can have a lower total scrap value than
+        // its individual blocks would otherwise yield. Old saves default to
+        // false, retaining their original dismantling value.
+        public bool HasDismantleCap;
+        public int DismantleCap;
         public R4WeaponKind Weapon;
         public R3WheelStyle WheelStyle;
         // Zero is the one-cell footprint written by all existing saves.
@@ -49,7 +54,7 @@ namespace RoboRougelike.R3
         public bool ThermalLocked;
         public float DefenseCharge=-1,DefenseRechargeAge=float.PositiveInfinity;
         public R3PartState(Vector3Int cell, R3PartKind kind, float health = 1) { Cell = cell; Kind = kind; Health = health; }
-        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,Weapon=Weapon,WheelStyle=WheelStyle,FootprintRevision=FootprintRevision,ArmorShape=ArmorShape,Tier=Tier,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
+        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,HasDismantleCap=HasDismantleCap,DismantleCap=DismantleCap,Weapon=Weapon,WheelStyle=WheelStyle,FootprintRevision=FootprintRevision,ArmorShape=ArmorShape,Tier=Tier,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
             UpgradeId=UpgradeId,UpgradeTitle=UpgradeTitle,UpgradeDescription=UpgradeDescription,
             UpgradeEffect=UpgradeEffect,UpgradeAmount=UpgradeAmount,
             RotationQuarterTurns=RotationQuarterTurns,ContactMask=ContactMask};
@@ -445,7 +450,7 @@ namespace RoboRougelike.R3
             var design=new R3VehicleDesign{Name=Design.Name,Description=Design.Description,Speed=Design.Speed,TurnSpeed=Design.TurnSpeed,CoreHp=Design.CoreHp};
             design.Parts.AddRange(Design.Parts.Select(p=>p.Copy()));
             var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost,StandardPurchaseMultiplier=Economy.StandardPurchaseMultiplier,SalvageOptimizerBonus=Economy.SalvageOptimizerBonus,PhysicalLootDropChance=Economy.PhysicalLootDropChance,MissedLootRecoveryCost=Economy.MissedLootRecoveryCost,SafeZoneInterval=Economy.SafeZoneInterval,SafeZoneRepairFraction=Economy.SafeZoneRepairFraction,SafeVendorOfferCount=Economy.SafeVendorOfferCount,SafeVendorPriceMultiplier=Economy.SafeVendorPriceMultiplier,SalvageOptimizerExtraOffersPerUnit=Economy.SalvageOptimizerExtraOffersPerUnit,OverdriveBonusPerUnit=Economy.OverdriveBonusPerUnit,OverdriveEnergyPerCopy=Economy.OverdriveEnergyPerCopy,OverdriveDuration=Economy.OverdriveDuration,OverdriveCooldown=Economy.OverdriveCooldown,RapidFireReductionPerUnit=Economy.RapidFireReductionPerUnit,RapidFireEnergyPerCopy=Economy.RapidFireEnergyPerCopy,RapidFireDuration=Economy.RapidFireDuration,RapidFireCooldown=Economy.RapidFireCooldown,DoubleShotChancePerUnit=Economy.DoubleShotChancePerUnit,DoubleShotOverdriveEnergyPerCopy=Economy.DoubleShotOverdriveEnergyPerCopy,DoubleShotOverdriveDuration=Economy.DoubleShotOverdriveDuration,DoubleShotOverdriveCooldown=Economy.DoubleShotOverdriveCooldown,DoubleShotOverdriveExtraPerUnit=Economy.DoubleShotOverdriveExtraPerUnit,DeviceBaseCharges=Economy.DeviceBaseCharges,CapacityChargesPerUnit=Economy.CapacityChargesPerUnit,RechargePulseChargesPerUnit=Economy.RechargePulseChargesPerUnit,ChargesPerSecondPerRegenerator=Economy.ChargesPerSecondPerRegenerator,RechargePulseEnergyPerCopy=Economy.RechargePulseEnergyPerCopy,RechargePulseCooldown=Economy.RechargePulseCooldown,RampEnergyPerCopy=Economy.RampEnergyPerCopy,RampCooldown=Economy.RampCooldown,RampLifetime=Economy.RampLifetime,WallEnergyPerCopy=Economy.WallEnergyPerCopy,WallCooldown=Economy.WallCooldown,WallLifetime=Economy.WallLifetime,JumpPadEnergyPerCopy=Economy.JumpPadEnergyPerCopy,JumpPadCooldown=Economy.JumpPadCooldown,JumpPadLifetime=Economy.JumpPadLifetime,JumpPadLaunchSpeed=Economy.JumpPadLaunchSpeed,TrapEnergyPerCopy=Economy.TrapEnergyPerCopy,TrapCooldown=Economy.TrapCooldown,TrapLifetime=Economy.TrapLifetime,TrapTriggerRadius=Economy.TrapTriggerRadius,TrapBlastDamage=Economy.TrapBlastDamage,TrapEmpDuration=Economy.TrapEmpDuration,TrapRepelSpeed=Economy.TrapRepelSpeed,TrapDamagePerSecond=Economy.TrapDamagePerSecond,TrapDamageDuration=Economy.TrapDamageDuration,TrapSlowMultiplier=Economy.TrapSlowMultiplier,TrapSlowDuration=Economy.TrapSlowDuration,TrapImmobilizeDuration=Economy.TrapImmobilizeDuration,DroneEnergyPerCopy=Economy.DroneEnergyPerCopy,DroneCooldown=Economy.DroneCooldown,DroneLifetime=Economy.DroneLifetime,DroneSpeed=Economy.DroneSpeed,DroneFireInterval=Economy.DroneFireInterval,DroneDamage=Economy.DroneDamage,DroneActivePerUnit=Economy.DroneActivePerUnit,TurretEnergyPerCopy=Economy.TurretEnergyPerCopy,TurretCooldown=Economy.TurretCooldown,TurretLifetime=Economy.TurretLifetime,TurretFireInterval=Economy.TurretFireInterval,TurretDamage=Economy.TurretDamage,HealingTurretRadius=Economy.HealingTurretRadius,HealingTurretRate=Economy.HealingTurretRate,SupportTurretRadius=Economy.SupportTurretRadius,SupportTurretEnergyPerSecond=Economy.SupportTurretEnergyPerSecond,ShieldTurretRadius=Economy.ShieldTurretRadius,ShieldTurretHp=Economy.ShieldTurretHp,BlockGrantQuantity=Economy.BlockGrantQuantity,DriveGrantQuantity=Economy.DriveGrantQuantity,Construction=ConstructionSettings.Copy()});
-            copy.CreativeMode=CreativeMode;copy.ConstructionBudgetLimit=ConstructionBudgetLimit;copy.ConstructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied;copy.SafeZoneLastCompleted=SafeZoneLastCompleted;copy.SafeVendorStage=SafeVendorStage;copy.SafeVendorSeed=SafeVendorSeed;copy.SafeVendorSoldMask=SafeVendorSoldMask;copy.RepairPulseReadyAt=RepairPulseReadyAt;copy.OverdriveReadyAt=OverdriveReadyAt;copy.RapidFireReadyAt=RapidFireReadyAt;copy.DoubleShotOverdriveReadyAt=DoubleShotOverdriveReadyAt;copy.TargetedEmpReadyAt=TargetedEmpReadyAt;copy.AreaEmpReadyAt=AreaEmpReadyAt;copy.RechargePulseReadyAt=RechargePulseReadyAt;copy.RampDeployerReadyAt=RampDeployerReadyAt;copy.WallDeployerReadyAt=WallDeployerReadyAt;copy.JumpPadDeployerReadyAt=JumpPadDeployerReadyAt;copy.BlastTrapDeployerReadyAt=BlastTrapDeployerReadyAt;copy.EmpTrapDeployerReadyAt=EmpTrapDeployerReadyAt;copy.RepelTrapDeployerReadyAt=RepelTrapDeployerReadyAt;copy.DamageTrapDeployerReadyAt=DamageTrapDeployerReadyAt;copy.SlowTrapDeployerReadyAt=SlowTrapDeployerReadyAt;copy.ImmobilizeTrapDeployerReadyAt=ImmobilizeTrapDeployerReadyAt;copy.FlyingDroneReadyAt=FlyingDroneReadyAt;copy.GroundDroneReadyAt=GroundDroneReadyAt;copy.OffensiveTurretReadyAt=OffensiveTurretReadyAt;copy.HealingTurretReadyAt=HealingTurretReadyAt;copy.SupportTurretReadyAt=SupportTurretReadyAt;copy.ShieldTurretReadyAt=ShieldTurretReadyAt;copy.BoosterReadyAt=BoosterReadyAt;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
+            copy.CreativeMode=CreativeMode;copy.ConstructionBudgetLimit=ConstructionBudgetLimit;copy.ConstructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied;copy.SafeZoneLastCompleted=SafeZoneLastCompleted;copy.SafeVendorStage=SafeVendorStage;copy.SafeVendorSeed=SafeVendorSeed;copy.SafeVendorSoldMask=SafeVendorSoldMask;copy.SafeVendorRevision=SafeVendorRevision;copy.RepairPulseReadyAt=RepairPulseReadyAt;copy.OverdriveReadyAt=OverdriveReadyAt;copy.RapidFireReadyAt=RapidFireReadyAt;copy.DoubleShotOverdriveReadyAt=DoubleShotOverdriveReadyAt;copy.TargetedEmpReadyAt=TargetedEmpReadyAt;copy.AreaEmpReadyAt=AreaEmpReadyAt;copy.RechargePulseReadyAt=RechargePulseReadyAt;copy.RampDeployerReadyAt=RampDeployerReadyAt;copy.WallDeployerReadyAt=WallDeployerReadyAt;copy.JumpPadDeployerReadyAt=JumpPadDeployerReadyAt;copy.BlastTrapDeployerReadyAt=BlastTrapDeployerReadyAt;copy.EmpTrapDeployerReadyAt=EmpTrapDeployerReadyAt;copy.RepelTrapDeployerReadyAt=RepelTrapDeployerReadyAt;copy.DamageTrapDeployerReadyAt=DamageTrapDeployerReadyAt;copy.SlowTrapDeployerReadyAt=SlowTrapDeployerReadyAt;copy.ImmobilizeTrapDeployerReadyAt=ImmobilizeTrapDeployerReadyAt;copy.FlyingDroneReadyAt=FlyingDroneReadyAt;copy.GroundDroneReadyAt=GroundDroneReadyAt;copy.OffensiveTurretReadyAt=OffensiveTurretReadyAt;copy.HealingTurretReadyAt=HealingTurretReadyAt;copy.SupportTurretReadyAt=SupportTurretReadyAt;copy.ShieldTurretReadyAt=ShieldTurretReadyAt;copy.BoosterReadyAt=BoosterReadyAt;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
             copy.factoryWheels.Clear();foreach(var item in factoryWheels)copy.factoryWheels.Add(item.Key,item.Value);
             copy.SuspensionEnabled=SuspensionEnabled;copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset;
             copy.RefreshEnergyLayout();copy.Energy.Restore(Energy.Current);copy.Charges.Restore(Charges.Snapshot());copy.InitialEnergyPrepared=InitialEnergyPrepared;
@@ -542,7 +547,7 @@ namespace RoboRougelike.R3
             (part.FootprintRevision==1&&part.Kind==R3PartKind.Wheel&&HasSizedSideWheel(part.WheelStyle))||
             (part.FootprintRevision==2&&part.Kind==R3PartKind.Gun&&SupportsGunScale2(part.Weapon)));
         public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && ValidWheelStyle(part) && ValidArmorShape(part) && ValidFootprint(part) && part.Tier>=0&&part.Tier<=3&&
-            (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&
+            (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&part.DismantleCap>=0&&
             !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
         int BasePrice(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>!ValidEconomicKind(kind,weapon)?0:Math.Max(1,
             kind==R3PartKind.Gun&&weapon!=R4WeaponKind.Basic?R4WeaponDefinition.Get(weapon).Price:Economy.Price(kind));
@@ -812,7 +817,17 @@ namespace RoboRougelike.R3
             Scrap-=cost;part.Health=1;return true;
         }
         int OwnedPartValue(R3PartState part)=>(int)Math.Min(int.MaxValue,(long)BasePrice(part.Kind,part.Weapon)*(NormalizedTier(part.Tier)==3?9:NormalizedTier(part.Tier)==2?3:1));
-        public int DismantleValue(R3PartState part) => !ValidEconomicPart(part)?0:Mathf.FloorToInt(OwnedPartValue(part)*0.25f*Mathf.Clamp01(part.Health));
+        int DismantleFullValue(R3PartState part)
+        {
+            int normal=Mathf.FloorToInt(OwnedPartValue(part)*0.25f);
+            return part.HasDismantleCap?Math.Min(normal,part.DismantleCap):normal;
+        }
+        public int DismantleValue(R3PartState part)
+        {
+            if(!ValidEconomicPart(part))return 0;
+            int normal=Mathf.FloorToInt(OwnedPartValue(part)*0.25f*Mathf.Clamp01(part.Health));
+            return part.HasDismantleCap?Math.Min(normal,part.DismantleCap):normal;
+        }
         public static bool SameBonusType(R3PartState a,R3PartState b)=>a!=null&&b!=null&&
             a.Kind==R3PartKind.BonusModule&&b.Kind==R3PartKind.BonusModule&&
             !string.IsNullOrWhiteSpace(a.UpgradeId)&&a.UpgradeId==b.UpgradeId&&
@@ -843,6 +858,13 @@ namespace RoboRougelike.R3
             // condition so fusion never repairs damaged items for free.
             var result=parts[0].Copy();result.Id=Guid.NewGuid().ToString("N");result.Tier=tier+1;
             result.Health=parts.Average(p=>p.Health);result.Source="Fuzja trzech części T"+tier;
+            if(parts.Any(p=>p.HasDismantleCap))
+            {
+                // The output cannot recover more scrap than its inputs could
+                // individually recover at full health, including mixed packs.
+                result.HasDismantleCap=true;
+                result.DismantleCap=(int)Math.Min(int.MaxValue,parts.Sum(p=>(long)DismantleFullValue(p)));
+            }
             result.DeviceReadyAt=parts.Max(p=>p.DeviceReadyAt);result.ReloadReadyAt=parts.Max(p=>p.ReloadReadyAt);
             result.DisruptionRemaining=parts.Max(p=>p.DisruptionRemaining);
             result.ThermalHeat=parts.Max(p=>p.ThermalHeat);result.ThermalLocked=parts.Any(p=>p.ThermalLocked);

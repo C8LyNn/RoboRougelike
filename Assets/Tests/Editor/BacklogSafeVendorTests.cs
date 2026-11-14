@@ -6,6 +6,57 @@ using UnityEngine;
 
 public sealed class BacklogSafeVendorTests
 {
+    static R3VehicleModel ModelWithArmorOffer()
+    {
+        for(int seed=0;seed<100;seed++)
+        {
+            var candidate=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+            candidate.TryEnterSafeZone(2);candidate.PrepareSafeZoneVendor(seed);
+            if(candidate.SafeZoneVendorOffers().Any(o=>o.Kind==R3PartKind.Armor))return candidate;
+        }
+        Assert.Fail("The vendor must offer armor in some visits.");return null;
+    }
+
+    [Test] public void DiscountedArmorPackCannotProfitAndCapSurvivesSaveAndMixedFusion()
+    {
+        var model=ModelWithArmorOffer();model.Award(1000);
+        var offer=model.SafeZoneVendorOffers().Single(o=>o.Kind==R3PartKind.Armor);
+        int start=model.Inventory.Count;Assert.That(model.TryPurchaseSafeZoneOffer(offer.Index),Is.True);
+        var discounted=model.Inventory.Skip(start).ToArray();
+        Assert.That(discounted.Length,Is.EqualTo(5));
+        Assert.That(discounted.Sum(p=>model.DismantleValue(p)),Is.LessThanOrEqualTo(offer.Price));
+        var mounting=discounted[2];int mountValue=model.DismantleValue(mounting);
+        var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(n=>p.Cell+n)).Distinct().ToArray();
+        var available=cells.Where(c=>model.OwnedPlacementError(mounting.Id,c,default)==null).ToArray();
+        Assert.That(available,Is.Not.Empty);Assert.That(model.Mount(mounting.Id,available[0]),Is.True);
+        Assert.That(model.Remove(available[0]),Is.True);
+        Assert.That(model.DismantleValue(model.Inventory.Single(p=>p.Id==mounting.Id)),Is.EqualTo(mountValue));
+        Assert.That(model.PurchaseToInventory(R3PartKind.Armor),Is.True);
+        var ordinary=model.Inventory.Skip(start+5).First();
+        Assert.That(model.DismantleValue(ordinary),Is.EqualTo(1),"Ordinary purchases retain the original dismantle value");
+        int ceiling=model.DismantleValue(discounted[0])+model.DismantleValue(discounted[1])+model.DismantleValue(ordinary);
+        Assert.That(model.FuseInventory(new[]{discounted[0].Id,discounted[1].Id,ordinary.Id}),Is.True);
+        var fused=model.Inventory.Single(p=>p.Kind==R3PartKind.Armor&&p.Tier==2);
+        Assert.That(model.DismantleValue(fused),Is.LessThanOrEqualTo(ceiling));
+        string id=fused.Id;
+        var saved=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(100)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,200,out var restored,out var error),Is.True,error);
+        var restoredFused=restored.Inventory.Single(p=>p.Id==id);
+        Assert.That(restored.DismantleValue(restoredFused),Is.LessThanOrEqualTo(ceiling));
+        Assert.That(restored.Inventory.Where(p=>discounted.Skip(2).Any(d=>d.Id==p.Id)).Sum(p=>restored.DismantleValue(p))+
+            restored.DismantleValue(restoredFused),Is.LessThanOrEqualTo(offer.Price+model.DismantleValue(ordinary)));
+    }
+
+    [Test] public void ExistingVendorRevisionKeepsItsOriginalOffers()
+    {
+        var model=ModelWithArmorOffer();var saved=model.MakeCheckpoint(100);saved.safeVendorRevision=0;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,200,out var legacy,out var error),Is.True,error);
+        Assert.That(legacy.SafeZoneVendorOffers().Any(o=>o.Kind==R3PartKind.Armor),Is.False);
+        var copy=legacy.DeepCopy();Assert.That(copy.SafeZoneVendorOffers().Select(o=>o.Kind),Is.EqualTo(legacy.SafeZoneVendorOffers().Select(o=>o.Kind)));
+        var again=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(copy.MakeCheckpoint(200)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(again,R3VehicleKind.Light,copy.Economy,300,out var reloaded,out error),Is.True,error);
+        Assert.That(reloaded.SafeZoneVendorOffers().Select(o=>o.Kind),Is.EqualTo(legacy.SafeZoneVendorOffers().Select(o=>o.Kind)));
+    }
     [Test] public void OffersUseBasePricesAndPreserveSalesAcrossCheckpoints()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
