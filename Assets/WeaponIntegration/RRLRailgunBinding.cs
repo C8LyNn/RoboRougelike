@@ -69,7 +69,7 @@ namespace RoboRougelike.WeaponIntegration
                     var rb=shell.AddComponent<Rigidbody>();rb.useGravity=false;rb.isKinematic=true;rb.interpolation=RigidbodyInterpolation.Interpolate;
                     var origin=shell.AddComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.Railgun;origin.PartId=State.Id;
                     var projectile=shell.AddComponent<P17PhysicalShell>();projectile.Configure(Device.Owner,0,30,shot.Direction,null,shot.Spec.Range);
-                    projectile.ConfigureRailgun(shot,(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier));
+                    projectile.ConfigureRailgun(shot,(tank!=null?tank.PackagePiercingDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier));
                 }
                 State.DeviceReadyAt=Time.time+shot.Spec.Cooldown;debitPending=false;
                 RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.Railgun);return true;

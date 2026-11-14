@@ -44,6 +44,7 @@ namespace RoboRougelike.R3
         public float TrapDamageMultiplier {get;private set;}=1;
         public float BlastDamageMultiplier {get;private set;}=1;
         public float BlastTrapDamageMultiplier {get;private set;}=1;
+        public float PiercingDamageMultiplier {get;private set;}=1;
 
         // Resolve global and matching category bonuses for owned deployables;
         // weapon-specific bonuses remain on the weapon path.
@@ -98,7 +99,7 @@ namespace RoboRougelike.R3
             var stats=baseStats.Copy();
             var damage=new R1ModifierGroup();var basicDamage=new R1ModifierGroup();var droneDamage=new R1ModifierGroup();
             var turretDamage=new R1ModifierGroup();var trapDamage=new R1ModifierGroup();var blastDamage=new R1ModifierGroup();
-            var blastTrapDamage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
+            var blastTrapDamage=new R1ModifierGroup();var piercingDamage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
             var core=new R1ModifierGroup();var reload=new R1ModifierGroup();
             damage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             basicDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
@@ -107,6 +108,7 @@ namespace RoboRougelike.R3
             trapDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             blastDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             blastTrapDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            piercingDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             reload.Add(R1ModifierOperation.Increased,rapidFireReduction,1,true);
             foreach(var module in active)
                 if(module.UpgradeEffect==R1UpgradeEffect.Damage)
@@ -125,6 +127,8 @@ namespace RoboRougelike.R3
                         blastDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                     if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Traps||module.UpgradeScope==R1BonusScope.BlastDamage)
                         blastTrapDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.PiercingDamage)
+                        piercingDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 }
                 else if(module.UpgradeEffect==R1UpgradeEffect.Mobility)
                     mobility.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
@@ -141,6 +145,7 @@ namespace RoboRougelike.R3
             TrapDamageMultiplier=trapDamage.Apply(baseStats.Damage);
             BlastDamageMultiplier=blastDamage.Apply(baseStats.Damage);
             BlastTrapDamageMultiplier=blastTrapDamage.Apply(baseStats.Damage);
+            PiercingDamageMultiplier=piercingDamage.Apply(baseStats.Damage);
             player.Apply(stats);
             player.Controller.SetBasicDamageModifier(basicDamage.Apply(baseStats.Damage));
         }

@@ -93,6 +93,7 @@ public sealed class BacklogBonusTierTests
     [TestCase("damage_turrets","Turrets","wieżyczek")]
     [TestCase("damage_traps","Traps","pułapek")]
     [TestCase("damage_blast","BlastDamage","wybuchowe")]
+    [TestCase("damage_piercing","PiercingDamage","przebijające")]
     public void DeployableCategoryRewardsSurviveSaveAndShowScope(string id,string scope,string label)
     {
         var run=Resources.Load<R1RunDefinition>("R1/Run");var reward=run.Upgrades.SingleOrDefault(p=>p!=null&&p.Id==id);

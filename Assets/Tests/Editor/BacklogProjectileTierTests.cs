@@ -402,6 +402,21 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(baseline,Is.GreaterThan(0));Assert.That(boosted,Is.EqualTo(baseline*1.4f).Within(.2f),"Only the explosion receives the blast bonus.");
         Object.Destroy(bonus);Object.Destroy(target1.gameObject);Object.Destroy(target2.gameObject);
     }
+    [UnityTest] public IEnumerator PiercingScopedBonusReachesActualRailgunWithoutBuffingBasicCannon()
+    {
+        Assert.That(System.Enum.GetNames(typeof(R1BonusScope)),Does.Contain("PiercingDamage"));
+        var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="rail-piercing";bonus.Effect=R1UpgradeEffect.Damage;
+        bonus.Scope=(R1BonusScope)System.Enum.Parse(typeof(R1BonusScope),"PiercingDamage");bonus.Amount=.4f;
+        var ordinary=Build(R4WeaponKind.Railgun,out _);var stronger=Build(R4WeaponKind.Railgun,out _,bonus:bonus);
+        var strongRoot=stronger.GetComponentInParent<R3VehicleAssembly>();strongRoot.transform.position+=Vector3.right*20;Physics.SyncTransforms();
+        Assert.That(strongRoot.GetComponent<P12PipelineSafeTankController>().EffectiveDamage,Is.EqualTo(40).Within(.01),"Basic kinetic shots must not gain piercing damage.");
+        var target1=Target(ordinary,6);var target2=Target(stronger,6);
+        Assert.That(ordinary.GetComponent<RRLRailgunBinding>().Fire(),Is.True);Assert.That(stronger.GetComponent<RRLRailgunBinding>().Fire(),Is.True);
+        float deadline=Time.time+.8f;while(Time.time<deadline)yield return null;
+        float baseline=500-target1.CurrentHp,boosted=500-target2.CurrentHp;
+        Assert.That(baseline,Is.GreaterThan(0));Assert.That(boosted,Is.EqualTo(baseline*1.4f).Within(.2f),"The real rail shot must receive its piercing bonus.");
+        Object.Destroy(bonus);Object.Destroy(target1.gameObject);Object.Destroy(target2.gameObject);
+    }
     [UnityTest] public IEnumerator DoubleShotDuplicatesRocketWithoutExtraAmmoOrEnergy()
     {
         var gun=Build(R4WeaponKind.RocketLauncher,out var energy,true);var hp=Target(gun,6,2);float before=energy.Current;

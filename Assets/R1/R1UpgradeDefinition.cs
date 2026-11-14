@@ -6,7 +6,7 @@ namespace RoboRougelike.R1
     // Zero is the historical additive bonus in existing assets and saves.
     public enum R1ModifierOperation { Increased, Reduced, More, Less }
     // Older rewards and checkpoints have no scope and remain global.
-    public enum R1BonusScope { Global, BasicCannon, Drones, Turrets, Traps, BlastDamage }
+    public enum R1BonusScope { Global, BasicCannon, Drones, Turrets, Traps, BlastDamage, PiercingDamage }
 
     [CreateAssetMenu(menuName = "RoboRougelike/Ulepszenie")]
     public sealed class R1UpgradeDefinition : ScriptableObject
