@@ -417,6 +417,20 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(baseline,Is.GreaterThan(0));Assert.That(boosted,Is.EqualTo(baseline*1.4f).Within(.2f),"The real rail shot must receive its piercing bonus.");
         Object.Destroy(bonus);Object.Destroy(target1.gameObject);Object.Destroy(target2.gameObject);
     }
+    [UnityTest] public IEnumerator KineticScopedBonusReachesActualShotgunPellets()
+    {
+        Assert.That(System.Enum.GetNames(typeof(R1BonusScope)),Does.Contain("KineticDamage"));
+        var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="shotgun-kinetic";bonus.Effect=R1UpgradeEffect.Damage;
+        bonus.Scope=(R1BonusScope)System.Enum.Parse(typeof(R1BonusScope),"KineticDamage");bonus.Amount=.4f;
+        var ordinary=Build(R4WeaponKind.Shotgun,out _);var stronger=Build(R4WeaponKind.Shotgun,out _,bonus:bonus);
+        stronger.GetComponentInParent<R3VehicleAssembly>().transform.position+=Vector3.right*20;Physics.SyncTransforms();
+        var target1=Target(ordinary,6);var target2=Target(stronger,6);
+        Assert.That(ordinary.GetComponent<RRLShotgunBinding>().Fire(),Is.True);Assert.That(stronger.GetComponent<RRLShotgunBinding>().Fire(),Is.True);
+        float deadline=Time.time+.8f;while(Time.time<deadline)yield return null;
+        float baseline=500-target1.CurrentHp,boosted=500-target2.CurrentHp;
+        Assert.That(baseline,Is.GreaterThan(0));Assert.That(boosted,Is.EqualTo(baseline*1.4f).Within(.2f),"Every real pellet must receive the kinetic bonus.");
+        Object.Destroy(bonus);Object.Destroy(target1.gameObject);Object.Destroy(target2.gameObject);
+    }
     [UnityTest] public IEnumerator DoubleShotDuplicatesRocketWithoutExtraAmmoOrEnergy()
     {
         var gun=Build(R4WeaponKind.RocketLauncher,out var energy,true);var hp=Target(gun,6,2);float before=energy.Current;

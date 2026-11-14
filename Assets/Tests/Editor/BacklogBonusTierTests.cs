@@ -94,6 +94,7 @@ public sealed class BacklogBonusTierTests
     [TestCase("damage_traps","Traps","pułapek")]
     [TestCase("damage_blast","BlastDamage","wybuchowe")]
     [TestCase("damage_piercing","PiercingDamage","przebijające")]
+    [TestCase("damage_kinetic","KineticDamage","kinetyczne")]
     public void DeployableCategoryRewardsSurviveSaveAndShowScope(string id,string scope,string label)
     {
         var run=Resources.Load<R1RunDefinition>("R1/Run");var reward=run.Upgrades.SingleOrDefault(p=>p!=null&&p.Id==id);
@@ -418,6 +419,38 @@ public sealed class BacklogBonusTierGameplayTests
         Physics.SyncTransforms();float end=Time.time+2;while(Time.time<end&&shield.CurrentHp>=500)yield return new WaitForFixedUpdate();
         Assert.That(shield.CurrentHp,Is.EqualTo(441.5f).Within(.02),"20 × (1 + global .25 + trap .3 + blast .4) × 1.5");
         if(root!=null)Object.Destroy(root);Object.Destroy(dome);Object.Destroy(global);Object.Destroy(more);Object.Destroy(blast);Object.Destroy(trapBonus);
+    }
+    [UnityTest] public IEnumerator KineticBonusStacksWithWeaponAndDroneButNotBlastOrPiercing()
+    {
+        Assert.That(System.Enum.GetNames(typeof(R1BonusScope)),Does.Contain("KineticDamage"));
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var global=BacklogBonusTierTests.OperationBonus("kinetic-global",.25f,"Increased");
+        var more=BacklogBonusTierTests.OperationBonus("kinetic-more",.5f,"More");
+        var kinetic=BacklogBonusTierTests.OperationBonus("kinetic-only",.4f,"Increased");kinetic.Scope=(R1BonusScope)System.Enum.Parse(typeof(R1BonusScope),"KineticDamage");
+        var basic=BacklogBonusTierTests.OperationBonus("kinetic-basic",.3f,"Increased");basic.Scope=R1BonusScope.BasicCannon;
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{global,more,kinetic,basic}),Is.True);
+        foreach(var id in model.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            var cell=cells.First(c=>model.OwnedPlacementError(id,c,default)==null);Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        Assert.That(run.Player.Controller.EffectiveDamage,Is.EqualTo(40*2.925f).Within(.01),"Basic: (1 + .25 + .3 + .4) × 1.5");
+        Assert.That(run.Player.Controller.PackageBlastDamageScale,Is.EqualTo(1.875f).Within(.001));
+        Assert.That(run.Player.Controller.PackagePiercingDamageScale,Is.EqualTo(1.875f).Within(.001));
+        var muzzle=new GameObject("Kinetic bonus muzzle").transform;muzzle.position=new Vector3(1000,1000,1000);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=muzzle.position+Vector3.forward*4;
+        var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(1000,false);Physics.SyncTransforms();
+        run.Player.Controller.FireFrom(muzzle,RoboRougelike.R4.R4WeaponKind.Automatic,"kinetic-auto");
+        float deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(1000-12*2.475f).Within(.02),"Automatic: (1 + .25 + .4) × 1.5");
+        var device=GameObject.CreatePrimitive(PrimitiveType.Cube);device.transform.position=new Vector3(1020,1000,1000);
+        device.AddComponent<Rigidbody>().isKinematic=true;var drone=device.AddComponent<R3FlyingDrone>();drone.Configure(run.Player.transform,0,.5f,10);drone.enabled=false;
+        target.transform.position=device.transform.position+Vector3.forward*4;hp.RestoreHealthRatio(1);Physics.SyncTransforms();
+        typeof(R3FlyingDrone).GetMethod("Fire",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).Invoke(drone,new object[]{Vector3.forward});
+        deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(1000-10*2.475f).Within(.02),"Drone kinetic damage receives the same global and kinetic groups.");
+        Object.Destroy(device);Object.Destroy(muzzle.gameObject);Object.Destroy(target);Object.Destroy(global);Object.Destroy(more);Object.Destroy(kinetic);Object.Destroy(basic);
     }
     [UnityTest] public IEnumerator OperationsReachHullCoreMobilityAndReload()
     {

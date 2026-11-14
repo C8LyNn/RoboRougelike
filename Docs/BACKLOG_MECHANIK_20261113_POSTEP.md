@@ -89,6 +89,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Dodano premię obrażeń przebijających do rzeczywistych strzałów railguna, w tym jego uderzeń w kopułę. Sumuje się z globalnymi premiami przed osobnymi mnożnikami i nie zwiększa obrażeń działa podstawowego ani rakiet. Nowy fizyczny bonus, z tymczasowym +40%, jest opisany w nagrodach i zachowuje zakres w zapisie oraz blueprintach; balans oraz wpływ na losowanie wymagają playtestu.
 - Unity 6000.3.14f1: **19 PASS, 0 FAIL**, exit 0 (`C:\Users\kubap\Desktop\Prototypy\bonus-piercing-scope-final.xml`, `.log`). Obejmuje porównanie rzeczywistych trafień railguna, brak wpływu na działo, rakietę, uderzenie w kopułę i ścianę, amunicję, Double Shot oraz zapisy. Przed zmianą `bonus-piercing-scope-red.xml`: **1 FAIL** — brak rodzaju. Mieszane rodzaje w jednym trafieniu oraz pozostałe źródła i ręczny playtest nadal wymagają pracy.
 
+#### 13. Obrażenia kinetyczne
+
+- Dodano premię kinetyczną do zwykłych pocisków działa, automatu i ciężkiej armaty, śrucin shotguna, piły, strzałów dronów i wieżyczek oraz niewybuchowego pola obrażeń. Działa razem z właściwymi premiami ogólnymi i kategoriami, bez wzmacniania rakiet ani railguna. Nowy fizyczny bonus ma tymczasowe +40%; jego wartość i wpływ na losowanie wymagają playtestu. Wiązka i aura nie korzystają z tej premii; pozostałe źródła i mieszane trafienia wymagają osobnej integracji.
+- Unity 6000.3.14f1: **22 PASS, 0 FAIL**, exit 0 (`C:\Users\kubap\Desktop\Prototypy\bonus-kinetic-scope-final.xml`, `.log`). Sprawdzono m.in. rzeczywiste pociski automatu, drona i shotguna, oddzielne mnożniki rakiety i railguna, wcześniejsze zakresy, zapisy i osłonę. Test przed zmianą `bonus-kinetic-scope-red.xml`: **1 FAIL** — brak rodzaju. Piły i niewybuchowego pola z nowym bonusem nie sprawdzono osobnym trafieniem; ręczna gra i balans: **NOT RUN**.
+
 ## 16–19. Wspólny aktywny impuls naprawczy — częściowo
 
 - Sprawne kopie Repair Pulse wyzwalają jeden wspólny impuls; ich wkłady tierów sumują tempo naprawy wybranego celu. Utrata lub zakłócenie kopii w trakcie działania zmniejsza jego siłę. Aktywacja pobiera łączny koszt atomowo: przy braku energii na całą grupę nie uruchamia się żadna część.

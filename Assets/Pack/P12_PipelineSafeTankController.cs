@@ -594,7 +594,7 @@ public float CurrentForwardSpeed =>
             var mounted=barrel!=null?barrel.GetComponentInParent<RoboRougelike.R3.R3MountedPart>():null;
             float tier=mounted!=null&&mounted.Kind==RoboRougelike.R3.R3PartKind.Gun&&mounted.Id==partId?
                 RoboRougelike.R3.R3VehicleModel.TierEffectUnits(mounted.Tier):1f;
-            float weaponDamage=kind==RoboRougelike.R4.R4WeaponKind.Basic?basicDamageModifier:damageModifier;
+            float weaponDamage=kind==RoboRougelike.R4.R4WeaponKind.Basic?basicDamageModifier:PackageKineticDamageScale;
             var first=SpawnPhysicalShell(barrel,profile.Damage*weaponDamage*tier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
             if(first==null||extraShots<=0)return;
             var siblings=new System.Collections.Generic.List<Collider>{first};
@@ -611,6 +611,7 @@ public float CurrentForwardSpeed =>
         public float PackageDamageScale => damageModifier;
         public float PackageBlastDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.BlastDamageMultiplier??damageModifier;
         public float PackagePiercingDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.PiercingDamageMultiplier??damageModifier;
+        public float PackageKineticDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.KineticDamageMultiplier??damageModifier;
         public float PackageIntervalScale => intervalModifier;
         private Collider SpawnPhysicalShell(Transform barrel,float hitDamage,float projectileSpeed,float projectileDiameter,
             float projectileMass,RoboRougelike.R4.R4WeaponKind kind,string partId)
