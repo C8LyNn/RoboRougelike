@@ -59,12 +59,16 @@ public class RRLW8PulseScannerTests
         // Position this isolated test above the range so its walls cannot
         // obscure a target beyond the standard 40 m perimeter.
         var target=run.GetComponent<R6TestRange>().TrainingTarget;
+        foreach(var other in run.Encounter.Enemies.Where(e=>e!=null&&e!=target))other.gameObject.SetActive(false);
         var body=run.Player.GetComponent<Rigidbody>();body.isKinematic=true;var elevated=body.position+Vector3.up*150;body.position=elevated;body.transform.position=elevated;
         target.transform.position+=Vector3.up*150;Physics.SyncTransforms();
         parts[0].transform.rotation=Quaternion.LookRotation(Vector3.forward,Vector3.up);
         var coreOffset=target.Core.transform.position-target.transform.position;
         target.transform.position=parts[0].transform.position+parts[0].transform.forward*85-coreOffset;Physics.SyncTransforms();
         run.VehicleModel.Energy.Restore(100);float before=run.VehicleModel.Energy.Current;
+        run.VehicleModel.Economy.StructuralScanRange=30;
+        Assert.That(controls.Activate(RRLScanKind.Structural),Is.False,"Two configured 30 m copies must not reach a target 85 m away.");
+        Assert.That(run.VehicleModel.Energy.Current,Is.EqualTo(before).Within(.01));run.VehicleModel.Economy.StructuralScanRange=50;
         var delta=target.Core.transform.position-parts[0].transform.position;
         var hits=Physics.RaycastAll(parts[0].transform.position,delta.normalized,delta.magnitude+1).OrderBy(h=>h.distance).Select(h=>h.collider.name+":"+h.distance.ToString("0.0"));
         Assert.That(controls.Activate(RRLScanKind.Structural),Is.True,$"Target distance {delta.magnitude:0.0}; angle {Vector3.Angle(parts[0].transform.forward,delta):0.0}; hits {string.Join(", ",hits)}");Assert.That(before-run.VehicleModel.Energy.Current,Is.EqualTo(10).Within(.01));
@@ -102,6 +106,20 @@ public class RRLW8PulseScannerTests
         Assert.That(before-run.VehicleModel.Energy.Current,Is.EqualTo(7).Within(.01));
         Assert.That(part.GetComponent<StructuralScanController>().Contacts.Any(c=>c.OwnerKey==target.GetInstanceID()),Is.True);
         yield return null;
+    }
+    [UnityTest] public IEnumerator StructuralScannerUsesConfiguredCostAndSharedCooldown()
+    {
+        Assert.That(run.OpenSandboxGarage(),Is.True);MountScanner(R3PartKind.StructuralScanner);MountScanner(R3PartKind.StructuralScanner);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;yield return new WaitForFixedUpdate();
+        var parts=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.StructuralScanner).ToArray();
+        var controls=run.Player.GetComponent<RRLScannerControls>();var config=run.VehicleModel.Economy;
+        config.StructuralScanRange=100;config.StructuralScanEnergy=float.NaN;config.StructuralScanCooldown=12;
+        run.VehicleModel.Energy.Restore(100);float before=run.VehicleModel.Energy.Current;
+        Assert.That(controls.Activate(RRLScanKind.Structural),Is.False);Assert.That(run.VehicleModel.Energy.Current,Is.EqualTo(before).Within(.01));
+        config.StructuralScanEnergy=3;
+        Assert.That(controls.Activate(RRLScanKind.Structural),Is.True);Assert.That(before-run.VehicleModel.Energy.Current,Is.EqualTo(6).Within(.01));
+        Assert.That(parts.All(p=>p.GetComponent<StructuralScanController>().CooldownLeft>11.9f&&p.GetComponent<StructuralScanController>().CooldownLeft<=12.01f),Is.True);
+        Assert.That(run.VehicleModel.StructuralScannerReadyAt-Time.time,Is.InRange(11.9f,12.01f));
     }
     [UnityTest] public IEnumerator PulseCopiesUseOneRangeCostAndCooldown()
     {

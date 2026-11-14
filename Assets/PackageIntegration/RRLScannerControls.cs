@@ -34,10 +34,16 @@ namespace RoboRougelike.PackageIntegration
                group.Any(s=>!s.Scanner.IsReady))return false;
             int units=group.Sum(s=>RoboRougelike.R3.R3VehicleModel.TierEffectUnits(s.Device.State.Tier));
             float cost=group.Sum(s=>RoboRougelike.R3.R3VehicleModel.TierActivationCost(s.Device.State.Tier));
-            var source=group.FirstOrDefault(s=>s.ActivateCombined(units,cost));if(source==null)return false;
-            model.StructuralScannerReadyAt=Time.time+RRLStructuralScannerBinding.CooldownSeconds;
+            var config=model.Economy;
+            if(float.IsNaN(config.StructuralScanRange)||float.IsInfinity(config.StructuralScanRange)||config.StructuralScanRange<=0||
+               float.IsNaN(config.StructuralScanEnergy)||float.IsInfinity(config.StructuralScanEnergy)||config.StructuralScanEnergy<0||
+               float.IsNaN(config.StructuralScanCooldown)||float.IsInfinity(config.StructuralScanCooldown)||config.StructuralScanCooldown<0)return false;
+            float totalEnergy=config.StructuralScanEnergy*cost;
+            if(units<=0||float.IsNaN(totalEnergy)||float.IsInfinity(totalEnergy)||totalEnergy>1000000f)return false;
+            var source=group.FirstOrDefault(s=>s.ActivateCombined(units,cost,config));if(source==null)return false;
+            model.StructuralScannerReadyAt=Time.time+source.Scanner.CooldownLeft;
             foreach(var state in model.Parts.Where(p=>p.Kind==RoboRougelike.R3.R3PartKind.StructuralScanner))state.DeviceReadyAt=model.StructuralScannerReadyAt;
-            foreach(var scanner in group.Where(s=>s!=source))scanner.Scanner.RestoreCooldown(RRLStructuralScannerBinding.CooldownSeconds);
+            foreach(var scanner in group.Where(s=>s!=source))scanner.RestoreCombinedCooldown(source.Scanner.CooldownLeft);
             return true;
         }
         bool ActivatePulseGroup()
@@ -89,7 +95,7 @@ namespace RoboRougelike.PackageIntegration
                     float cooldown=Mathf.Max(scanner.CooldownLeft,R1RunController.Instance.VehicleModel.StructuralScannerReadyAt-Time.time);
                     string readiness=active==0?"Moduły niesprawne":
                         cooldown>0?$"Odnowienie {cooldown:0.0} s":"Gotowy • wymaga widocznego celu";
-                    GUI.Label(new Rect(30,top+5,390,46),$"{R1RunController.Instance.VehicleModel.ActiveSlotLabel(RoboRougelike.R3.R3PartKind.StructuralScanner)} • Skan struktury • {Mathf.Min(1000f,RRLStructuralScannerBinding.BaseRange*units):0} m / 85° • {source.Contacts.Count} części\n{readiness}",label);
+                    GUI.Label(new Rect(30,top+5,390,46),$"{R1RunController.Instance.VehicleModel.ActiveSlotLabel(RoboRougelike.R3.R3PartKind.StructuralScanner)} • Skan struktury • {Mathf.Min(1000f,R1RunController.Instance.VehicleModel.Economy.StructuralScanRange*units):0} m / 85° • {source.Contacts.Count} części\n{readiness}",label);
                     int row=0;foreach(var contact in source.Contacts.Take(3))
                         GUI.Label(new Rect(30,top+52+22*row++,390,22),$"{PartLabel(contact.Type)} • HP {contact.HealthFraction*100:0}% • {(contact.Functional?"sprawny":"niesprawny")} • odczyt {source.DisplayLeft:0.0}s",label);
                     top+=66+rows*22;

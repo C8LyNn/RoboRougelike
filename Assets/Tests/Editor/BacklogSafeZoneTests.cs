@@ -57,6 +57,19 @@ public sealed class BacklogSafeZoneTests
         checkpoint.structuralScannerRemaining=float.NaN;
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,200,out _,out _),Is.False);
     }
+    [Test] public void StructuralScannerBalanceIsConfigurableAndCopied()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        foreach(var pair in new[]{("StructuralScanRange",85f),("StructuralScanEnergy",3f),("StructuralScanCooldown",4f)})
+        {
+            var field=typeof(R3GarageEconomy).GetField(pair.Item1);Assert.That(field,Is.Not.Null,pair.Item1+" must be configurable.");
+            field.SetValue(model.Economy,pair.Item2);
+        }
+        var copy=model.DeepCopy();
+        Assert.That(typeof(R3GarageEconomy).GetField("StructuralScanRange").GetValue(copy.Economy),Is.EqualTo(85f));
+        Assert.That(typeof(R3GarageEconomy).GetField("StructuralScanEnergy").GetValue(copy.Economy),Is.EqualTo(3f));
+        Assert.That(typeof(R3GarageEconomy).GetField("StructuralScanCooldown").GetValue(copy.Economy),Is.EqualTo(4f));
+    }
     [Test] public void SafeZoneRestoresResourcesAndPartiallyRepairsOnlyOnceAcrossCheckpoint()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
