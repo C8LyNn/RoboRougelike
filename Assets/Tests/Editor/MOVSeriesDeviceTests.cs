@@ -127,6 +127,24 @@ public class MOVSeriesDeviceTests
         Assert.That(v.GetComponent<Rigidbody>().linearVelocity.z,Is.GreaterThan(speed+.2f),"Real boosters must accelerate the vehicle.");
         Assert.That(Action(v,"TryBoost"),Is.False,"Copies share their activation cycle.");
     }
+    [UnityTest] public IEnumerator TwoJumpDrivesRequireCombinedEnergyAndProvideStrongerSharedJump()
+    {
+        var one=Build(R3VehicleKind.Light,-20,R3PartKind.JumpDrive,R3PartKind.JumpDrive);
+        var two=Build(R3VehicleKind.Light,20,R3PartKind.JumpDrive,R3PartKind.JumpDrive);
+        one.GetComponentsInChildren<JumpDrive>()[1].SetOperational(false);yield return Seconds(.6f);
+        var rings=two.GetComponentsInChildren<Transform>(true).Where(t=>t.name=="Jump_BlastRing").ToArray();
+        Assert.That(rings.Length,Is.EqualTo(2),"Both physical jump modules need their visual effects.");
+        var a=one.GetComponent<Rigidbody>();var b=two.GetComponent<Rigidbody>();a.linearVelocity=Vector3.zero;b.linearVelocity=Vector3.zero;
+        var bank=two.GetComponent<VehicleEnergyBank>();float cost=VehicleEnergyCosts.Jump;
+        Assert.That(bank.TrySpend(bank.Current-cost*1.5f),Is.True);float before=bank.Current;
+        Assert.That(Action(two,"TryJump"),Is.False,"Two modules must not partially activate with energy for only one.");
+        Assert.That(bank.Current,Is.EqualTo(before).Within(.001));Assert.That(b.linearVelocity.y,Is.EqualTo(0).Within(.001));
+        bank.Recharge(100);before=bank.Current;Assert.That(Action(one,"TryJump"),Is.True);Assert.That(Action(two,"TryJump"),Is.True);
+        Assert.That(bank.Current,Is.EqualTo(before-2*cost).Within(.001));
+        Assert.That(rings.All(r=>r.gameObject.activeSelf),Is.True,"Every active copy must show the shared jump effect.");
+        Assert.That(b.linearVelocity.y,Is.GreaterThan(a.linearVelocity.y+.1f),"An extra drive must improve the shared physical jump.");
+        Assert.That(Action(two,"TryJump"),Is.False,"The copies must share one cooldown.");
+    }
     [UnityTest] public IEnumerator TwoBoostersAccelerateMoreThanOneOnComparablePhysicalVehicles()
     {
         var one=Build(R3VehicleKind.Light,-20,R3PartKind.Booster,R3PartKind.Booster);

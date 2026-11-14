@@ -82,11 +82,20 @@ namespace RoboRougelike.MOVSeries
             if(!PrepareAction()||jumps.Count==0)return false;
             // One common gate prevents sequential airborne jumps through different mounts.
             if(Model.Parts.Any(p=>p.Kind==R3PartKind.JumpDrive&&p.DeviceReadyAt>Time.time))return false;
+            var eligible=jumps.Where(j=>j!=null&&j.isActiveAndEnabled&&j.IsOperational).ToArray();
+            var energy=GetComponent<VehicleEnergyBank>();float cost=eligible.Length*VehicleEnergyCosts.Jump;
+            if(eligible.Length==0||energy==null||!energy.CanSpend(cost)){Feedback="Skok niedostępny / brak energii";return false;}
             float bottom=float.PositiveInfinity;
             foreach(var c in GetComponentsInChildren<Collider>())if(c.enabled&&!c.isTrigger&&c.attachedRigidbody==body)bottom=Mathf.Min(bottom,c.bounds.min.y);
+            if(float.IsInfinity(bottom))return false;
             jumpProbe.position=new Vector3(body.worldCenterOfMass.x,bottom+.05f,body.worldCenterOfMass.z);
-            bool success=false;
-            foreach(var jump in jumps)if(jump!=null&&jump.TryActivate()==JumpDriveResult.Activated)success=true;
+            // One physical impulse and one atomic payment for the working group.
+            // Height grows linearly per copy; upward speed follows its square root.
+            var primary=eligible[0];float units=eligible.Length;
+            primary.Configure(new JumpDriveSettings{TargetJumpHeightMeters=1.2f*units,SupportedMassKg=500,
+                MaxUpwardSpeedMps=5.2f*Mathf.Sqrt(units),CooldownSeconds=6,GroundProbeDistanceMeters=.3f,EnergyCost=cost});
+            bool success=primary.TryActivate()==JumpDriveResult.Activated;
+            if(success)foreach(var jump in eligible.Skip(1))jump.GetComponent<RoboRougelike.R4_1.R4JumpArt>()?.NotifySharedActivation();
             if(success)foreach(var p in Model.Parts.Where(p=>p.Kind==R3PartKind.JumpDrive))p.DeviceReadyAt=Time.time+6;
             Feedback=success?"Skok":"Skok wymaga podłoża i sprawnego modułu";return success;
         }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RoboRougelike.R4_1
 {
-    // Triggered exclusively by the existing JumpDrive.Activated event.
+    // Triggered by the existing activation event or the shared drive group.
     [DisallowMultipleComponent]
     public sealed class R4JumpArt : MonoBehaviour
     {
@@ -47,6 +47,7 @@ namespace RoboRougelike.R4_1
             visibleUntil=Time.time+.2f;
             if(ring!=null)ring.gameObject.SetActive(true);
         }
+        public void NotifySharedActivation()=>OnJump(null);
         void LateUpdate()
         {
             if(jump==null)Bind();
