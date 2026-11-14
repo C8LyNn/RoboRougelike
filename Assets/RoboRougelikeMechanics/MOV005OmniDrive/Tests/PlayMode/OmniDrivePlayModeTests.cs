@@ -67,6 +67,24 @@ namespace RoboRougelike.Mechanics.MOV005OmniDrive.Tests
             yield return PhysicsSteps(14);
             Assert.Greater(body.linearVelocity.z, 0.1f);
         }
+        [UnityTest] public IEnumerator LargeFiniteTargetDoesNotCancelRealOmniThrust()
+        {
+            module.Configure(float.MaxValue,15f,105f,10f);
+            controller.SetLimits(float.MaxValue,float.MaxValue);controller.SetInput(Vector2.up,0);
+            yield return PhysicsSteps(2);
+            Assert.That(controller.LastLinearAcceleration.z,Is.EqualTo(15f).Within(.01f));
+            Assert.That(body.linearVelocity.z,Is.GreaterThan(0));
+        }
+        [UnityTest] public IEnumerator AdditionalModulesIncreaseAccelerationWhenGameRemovesCombinedCap()
+        {
+            var secondObject=new GameObject("MOV005_extra_module");secondObject.transform.SetParent(root.transform,false);
+            secondObject.transform.localPosition=new Vector3(0,-.53f,0);
+            var second=secondObject.AddComponent<OmniDriveModule>();second.Configure(1000,15,105,10);second.GroundProbe.Configure(false);
+            module.Configure(1000,15,105,10);controller.SetLimits(float.MaxValue,float.MaxValue);controller.RebuildModules();
+            controller.SetInput(Vector2.up,0);yield return PhysicsSteps(2);
+            Assert.That(controller.LastLinearAcceleration.z,Is.EqualTo(30f).Within(.01f));
+            Object.DestroyImmediate(secondObject);
+        }
         [UnityTest] public IEnumerator DiagonalInputDoesNotExceedLinearCap()
         {
             controller.SetInput(new Vector2(1, 1), 0);

@@ -25,7 +25,7 @@ namespace RoboRougelike.MOVSeries
         void ConfigureDrives()
         {
             if(Model.Parts.Any(p=>p.Kind==R3PartKind.OmniDrive))
-            {omni=gameObject.AddComponent<OmniDriveController>();omni.SetLimits(12,5);omni.SetCoasting(true);omni.SetEnergySource(GetComponent<VehicleEnergyBank>());}
+            {omni=gameObject.AddComponent<OmniDriveController>();omni.SetLimits(float.MaxValue,float.MaxValue);omni.SetCoasting(true);omni.SetEnergySource(GetComponent<VehicleEnergyBank>());}
             if(Model.Parts.Any(p=>p.Kind==R3PartKind.CrawlerTrack))
             {tracks=gameObject.AddComponent<CrawlerTrackController>();tracks.SetEnergySource(GetComponent<VehicleEnergyBank>());tracks.SetEnergyCost(3f);}
             if(Model.Parts.Any(p=>p.Kind==R3PartKind.HoverEngine))

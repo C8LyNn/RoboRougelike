@@ -101,6 +101,10 @@ public sealed class BacklogDrivePowerIntegrationTests
         Assert.That(omni,Is.Not.Null);Assert.That(hover,Is.Not.Null);
         Assert.That(omni.MaximumSpeed,Is.EqualTo(48));Assert.That(omni.YawSpeedDegrees,Is.EqualTo(310));
         Assert.That(hover.forwardSpeedMetersPerSec,Is.EqualTo(48));Assert.That(hover.yawDegreesPerSecond,Is.EqualTo(310));
+        var controller=vehicle.GetComponent<RoboRougelike.Mechanics.MOV005OmniDrive.OmniDriveController>();
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        Assert.That((float)controller.GetType().GetField("maxCombinedLinearAcceleration",flags).GetValue(controller),Is.EqualTo(float.MaxValue));
+        Assert.That((float)controller.GetType().GetField("maxCombinedAngularAcceleration",flags).GetValue(controller),Is.EqualTo(float.MaxValue));
         UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);yield return null;
     }
 
