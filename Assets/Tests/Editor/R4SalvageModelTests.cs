@@ -6,6 +6,31 @@ using RoboRougelike.R4;
 
 public class R4SalvageModelTests
 {
+    [Test] public void AdditionalBasketsDoNotStopWhileDifferentEligibleRewardsRemain()
+    {
+        var ledger=new R4SalvageLedger(1);
+        for(int i=0;i<15;i++)
+            Assert.That(ledger.Record("enemy-"+i,new[]{Item("gun-"+i)},R3EnemyArchetype.Scout),Is.True);
+        for(int seed=0;seed<12;seed++)
+        {
+            var offers=ledger.CreateBasketOffers(seed,0,20);
+            var unique=offers.SelectMany(b=>b.Items).Select(p=>p.Id).Distinct().ToArray();
+            Assert.That(unique.Length,Is.EqualTo(15),"Seed "+seed+" stopped while a real, different reward remained.");
+            Assert.That(offers.Skip(3).SelectMany(b=>b.Items).Select(p=>p.Id).Distinct().Count(),Is.EqualTo(offers.Count-3));
+        }
+    }
+    [Test] public void AdditionalBasketsUseOnlyRealEligibleCombinationsAndRemainDeterministic()
+    {
+        var ledger=new R4SalvageLedger(2);
+        Assert.That(ledger.Record("enemy",Enumerable.Range(0,4).Select(i=>Item("gun-"+i)),R3EnemyArchetype.Scout),Is.True);
+        Assert.That(ledger.MarkPhysicalDrop("gun-0"),Is.True);
+        var first=ledger.CreateBasketOffers(42,0,20);var again=ledger.CreateBasketOffers(42,0,20);
+        string[] Keys(System.Collections.Generic.IReadOnlyList<R4SalvageBasket> baskets)=>baskets.Select(b=>string.Join(",",b.Items.Select(p=>p.Id).OrderBy(id=>id))).ToArray();
+        Assert.That(Keys(first),Is.EqualTo(Keys(again)),"The same seed must preserve the same offers.");
+        Assert.That(Keys(first).Distinct().Count(),Is.EqualTo(6),"Three eligible parts allow three singles and three pairs.");
+        Assert.That(first.SelectMany(b=>b.Items).Any(p=>p.Id=="gun-0"),Is.False,"A missed physical drop cannot also appear in a basket.");
+        Assert.That(first.All(b=>b.Items.Count>=1&&b.Items.Count<=2&&b.AvailableParts==3),Is.True);
+    }
     [Test] public void PhysicalArmorPickupGivesFiveUniquePartsWithoutAddingArmorToBaskets()
     {
         var model=Model();var ledger=new R4SalvageLedger(2);

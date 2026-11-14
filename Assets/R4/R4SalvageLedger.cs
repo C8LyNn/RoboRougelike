@@ -150,10 +150,45 @@ namespace RoboRougelike.R4
                     if(i>=3&&seen.Contains(key))continue;
                     seen.Add(key);chosen=new R4SalvageBasket(source.Type,pool.Length,selected);break;
                 }
+                // Random attempts are a fast path, not proof that all distinct
+                // real baskets have been exhausted. Search remaining combinations
+                // deterministically before ending the extra offers.
+                if(chosen==null&&i>=3)
+                    for(int offset=0;offset<groups.Length&&chosen==null;offset++)
+                        foreach(var source in groups[(i+offset)%groups.Length])
+                        {
+                            chosen=FindUnseenBasket(source.Type,source.Parts,stage,seen);
+                            if(chosen!=null)break;
+                        }
                 if(chosen==null)break;
                 result.Add(chosen);
             }
             return result.AsReadOnly();
+        }
+        private R4SalvageBasket FindUnseenBasket(R3EnemyArchetype archetype,R4SalvageItem[] source,int stage,HashSet<string> seen)
+        {
+            var pool=source.Where(p=>p.Selectable&&!collected.Contains(p.Id)&&!physicalDrops.Contains(p.Id))
+                .OrderBy(p=>p.Id,StringComparer.Ordinal).ToArray();
+            if(pool.Length==0)return null;
+            int tier=Math.Max(0,Math.Min(5,stage));
+            var counts=Enumerable.Range(30+tier*5,31)
+                .Select(percent=>Math.Min(Limit,Math.Max(1,(int)(((long)pool.Length*percent+99)/100)))).Distinct();
+            foreach(int count in counts)
+            {
+                var indices=Enumerable.Range(0,count).ToArray();
+                while(true)
+                {
+                    var selected=indices.Select(index=>pool[index]).ToArray();
+                    string key=string.Join("\u001f",selected.Select(p=>p.Id));
+                    if(seen.Add(key))return new R4SalvageBasket(archetype,pool.Length,selected);
+                    int position=count-1;
+                    while(position>=0&&indices[position]==pool.Length-count+position)position--;
+                    if(position<0)break;
+                    indices[position]++;
+                    for(int j=position+1;j<count;j++)indices[j]=indices[j-1]+1;
+                }
+            }
+            return null;
         }
         public int PreviewScrap(R3VehicleModel model,IEnumerable<string> selected)
         {
