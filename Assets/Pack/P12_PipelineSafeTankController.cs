@@ -71,7 +71,7 @@ namespace RogueMachine.P12PipelineSafe
 
         public void ConfigureChassis(float speed, float turning, float mass)
         {
-            forwardSpeed = Mathf.Clamp(speed, 2, 14); reverseSpeed = forwardSpeed * 0.6f;
+            forwardSpeed = float.IsNaN(speed)||float.IsInfinity(speed)?0f:Mathf.Max(0,speed); reverseSpeed = forwardSpeed * 0.6f;
             turnSpeed = float.IsNaN(turning)||float.IsInfinity(turning)?35f:Mathf.Max(0,turning);
             GetComponent<Rigidbody>().mass = Mathf.Max(50, mass);
         }
@@ -87,8 +87,8 @@ namespace RogueMachine.P12PipelineSafe
 
         public float EffectiveDamage => (float)System.Math.Min(float.MaxValue,(double)shotDamage*((1d-basicBlastFraction)*basicDamageModifier+basicBlastFraction*basicBlastDamageModifier));
         public float EffectiveFireInterval => fireInterval * intervalModifier;
-        public float EffectiveForwardSpeed => forwardSpeed * mobilityModifier;
-        public float EffectiveReverseSpeed => reverseSpeed * mobilityModifier;
+        public float EffectiveForwardSpeed => (float)System.Math.Min(float.MaxValue,(double)forwardSpeed * mobilityModifier);
+        public float EffectiveReverseSpeed => (float)System.Math.Min(float.MaxValue,(double)reverseSpeed * mobilityModifier);
         public float EffectiveTurnSpeed => (float)System.Math.Min(float.MaxValue,(double)turnSpeed*mobilityModifier);
         public bool GameplayInputEnabled => gameplayInputEnabled;
 

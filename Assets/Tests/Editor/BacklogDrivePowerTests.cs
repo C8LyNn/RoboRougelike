@@ -11,6 +11,13 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogDrivePowerTests
 {
+    [Test] public void VehicleMassContinuesToAffectSpeedAndSteeringBeyondOldThresholds()
+    {
+        Assert.That(R3VehicleAssembly.SpeedFor(2000,4),Is.LessThan(R3VehicleAssembly.SpeedFor(1000,4)));
+        Assert.That(R3VehicleAssembly.TurnFor(2000),Is.LessThan(R3VehicleAssembly.TurnFor(1000)));
+        Assert.That(R3VehicleAssembly.SpeedFor(50,4),Is.GreaterThan(14));
+        Assert.That(R3VehicleAssembly.TurnFor(50),Is.GreaterThan(130));
+    }
     [Test] public void MotorCopiesContinueAddingPowerWithoutAnArbitraryFiveUnitCap()
     {
         Assert.That(R6VehicleDrive.MotorMultiplier(5),Is.EqualTo(2).Within(.001));
@@ -73,6 +80,11 @@ public sealed class BacklogDrivePowerIntegrationTests
             "The rigidbody must allow the steering target instead of silently enforcing 3 radians per second.");
         vehicle.Controller.SetRunModifiers(1,1,float.MaxValue);
         Assert.That(float.IsInfinity(vehicle.Controller.EffectiveTurnSpeed),Is.False,"Large finite bonuses must not create an infinite target.");
+        Assert.That(float.IsInfinity(vehicle.Controller.EffectiveForwardSpeed),Is.False);
+        vehicle.Controller.SetRunModifiers(1,1,1);vehicle.Controller.ConfigureChassis(20,400,upgradedMass);
+        Assert.That(vehicle.Controller.EffectiveForwardSpeed,Is.EqualTo(20));
+        vehicle.Controller.ConfigureChassis(.5f,400,upgradedMass);
+        Assert.That(vehicle.Controller.EffectiveForwardSpeed,Is.EqualTo(.5f));
         vehicle.Controller.SetRunModifiers(1,1,1);
         upgraded.Tier=1;assembly.TuneChassis();
         assembly.Parts.First(p=>p.Kind==R3PartKind.DrivePower).gameObject.SetActive(false);drive.RefreshMass();
