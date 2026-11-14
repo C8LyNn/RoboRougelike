@@ -58,6 +58,16 @@ namespace RoboRougelike.R3
             return (float)System.Math.Min(float.MaxValue,(double)amount*multiplier);
         }
 
+        // Keep finite, non-negative cooldowns representable without a gameplay cap.
+        // Preserve invalid inputs for each device's existing validation policy.
+        public static float SafeIntervalProduct(float seconds,float multiplier)
+        {
+            if(float.IsNaN(seconds)||float.IsInfinity(seconds)||float.IsNaN(multiplier)||float.IsInfinity(multiplier))
+                return seconds*multiplier;
+            double product=(double)seconds*multiplier;
+            return product>float.MaxValue?float.MaxValue:(float)product;
+        }
+
         // Resolve global and matching category bonuses for owned deployables;
         // weapon-specific bonuses remain on the weapon path.
         public static float ScaleOwnedDamage(Transform owner,float amount,R1BonusScope category=R1BonusScope.Global,bool blast=false)

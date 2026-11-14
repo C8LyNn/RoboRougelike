@@ -276,6 +276,56 @@ public sealed class BacklogBonusTierTests
 
 public sealed class BacklogBonusTierGameplayTests
 {
+    [UnityTest] public IEnumerator ExtremeRailgunCooldownRemainsFiniteAndLong()
+    { yield return ExtremeCooldownForPackageWeapon(false); }
+    [UnityTest] public IEnumerator ExtremeRocketCooldownRemainsFiniteAndLong()
+    { yield return ExtremeCooldownForPackageWeapon(true); }
+    static IEnumerator ExtremeCooldownForPackageWeapon(bool rocketWeapon)
+    {
+        R1EncounterManager.ClearTransientObjects();
+        var owner=new GameObject("Extreme cooldown owner");owner.transform.position=new Vector3(1400,1400,1400);
+        owner.AddComponent<Rigidbody>().isKinematic=true;
+        var part=GameObject.CreatePrimitive(PrimitiveType.Cube);part.transform.SetParent(owner.transform,false);
+        part.GetComponent<Collider>().enabled=false;part.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Configure(100,false);
+        var muzzle=new GameObject("muzzle").transform;muzzle.SetParent(part.transform,false);muzzle.localPosition=Vector3.forward;
+        if(rocketWeapon)
+        {
+            var binding=part.AddComponent<RoboRougelike.WeaponIntegration.RRLRocketBinding>();
+            binding.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.RocketLauncher},owner.transform,muzzle,1,float.MaxValue);
+            Assert.That(binding.Fire(),Is.True);
+            Assert.That(binding.Module.CurrentSpec.Cooldown,Is.EqualTo(float.MaxValue));
+            Assert.That(binding.Fire(),Is.False);
+        }
+        else
+        {
+            var binding=part.AddComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
+            binding.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.Railgun},owner.transform,muzzle,1,float.MaxValue);
+            Assert.That(binding.Fire(),Is.True);
+            Assert.That(binding.Module.CurrentSpec.Cooldown,Is.EqualTo(float.MaxValue));
+            Assert.That(binding.Fire(),Is.False);
+        }
+        R1EncounterManager.ClearTransientObjects();Object.Destroy(owner);yield return null;
+    }
+    [UnityTest] public IEnumerator ExtremeConventionalWeaponIntervalStaysFinite()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var tank=run.Player.Controller;tank.SetRunModifiers(1,float.MaxValue,1);
+        Assert.That(tank.WeaponInterval(RoboRougelike.R4.R4WeaponKind.Heavy),Is.EqualTo(float.MaxValue));
+    }
+    [UnityTest] public IEnumerator ExtremeEmpCooldownStillAllowsFirstPulse()
+    {
+        var owner=new GameObject("Extreme EMP cooldown owner");owner.transform.position=new Vector3(1400,1400,1400);
+        owner.AddComponent<Rigidbody>().isKinematic=true;
+        var part=GameObject.CreatePrimitive(PrimitiveType.Cube);part.transform.SetParent(owner.transform,false);
+        part.GetComponent<Collider>().enabled=false;part.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Configure(100,false);
+        var binding=part.AddComponent<RoboRougelike.WeaponIntegration.RRLEmpBinding>();
+        binding.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.EmpEmitter},owner.transform,float.MaxValue);
+        Assert.That(binding.Fire(),Is.True);
+        Assert.That(binding.Module.CooldownRemaining,Is.EqualTo(float.MaxValue));
+        Assert.That(binding.Fire(),Is.False);
+        Object.Destroy(owner);yield return null;
+    }
     [UnityTest] public IEnumerator ConventionalZeroIntervalFiresOnlyOncePerClockValue()
     {
         var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);

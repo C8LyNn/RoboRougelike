@@ -86,7 +86,7 @@ namespace RogueMachine.P12PipelineSafe
         private float mobilityModifier = 1f;
 
         public float EffectiveDamage => (float)System.Math.Min(float.MaxValue,(double)shotDamage*((1d-basicBlastFraction)*basicDamageModifier+basicBlastFraction*basicBlastDamageModifier));
-        public float EffectiveFireInterval => fireInterval * intervalModifier;
+        public float EffectiveFireInterval => RoboRougelike.R3.R3MountedBonusEffects.SafeIntervalProduct(fireInterval,intervalModifier);
         public float EffectiveForwardSpeed => (float)System.Math.Min(float.MaxValue,(double)forwardSpeed * mobilityModifier);
         public float EffectiveReverseSpeed => (float)System.Math.Min(float.MaxValue,(double)reverseSpeed * mobilityModifier);
         public float EffectiveTurnSpeed => (float)System.Math.Min(float.MaxValue,(double)turnSpeed*mobilityModifier);
@@ -626,7 +626,7 @@ public float CurrentForwardSpeed =>
                 siblings.Add(extra);
             }
         }
-        public float WeaponInterval(RoboRougelike.R4.R4WeaponKind kind) => RoboRougelike.R4.R4WeaponDefinition.Get(kind).Interval*intervalModifier;
+        public float WeaponInterval(RoboRougelike.R4.R4WeaponKind kind) => RoboRougelike.R3.R3MountedBonusEffects.SafeIntervalProduct(RoboRougelike.R4.R4WeaponDefinition.Get(kind).Interval,intervalModifier);
         public float PackageDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.WeaponDamageMultiplier??damageModifier;
         public float PackageBlastDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.BlastDamageMultiplier??damageModifier;
         public float PackagePiercingDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.PiercingDamageMultiplier??damageModifier;

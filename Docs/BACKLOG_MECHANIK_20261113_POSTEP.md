@@ -754,3 +754,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Zwykłe działa przy zerowym lub nierozróżnialnie krótkim interwale nie wystrzeliwują drugi raz przy tym samym wskazaniu zegara; następna klatka z późniejszym czasem nadal może oddać strzał. Normalne dodatnie czasy, osobne egzemplarze i sprawdzenie dostępnego miejsca na pocisk pozostają zachowane.
 - Unity 6000.3.14f1: **14 PASS, 0 FAIL** (`conventional-zero-cooldown-final.xml`, `.log`): rzeczywiste działo, kolejna klatka, inne rodziny broni, grupy, pełna pula i ratunek. Przed poprawką `conventional-zero-cooldown-red.xml`: dwa wywołania w tej samej chwili tworzyły dwa pociski. Pomiar szybkostrzelności w Windows Playerze i zastąpienie globalnego limitu pocisków: **NOT RUN / otwarte**.
+
+#### 14. Skrajnie długie interwały broni i EMP
+
+- Przy mnożeniu bardzo dużego, skończonego modyfikatora czasu używany jest szerszy zakres pośredni, a wynik pozostaje ograniczony jedynie reprezentacją liczby. Dotyczy dział, railguna, rakiet i dotychczasowej integracji EMP. Normalne i zerowe interwały oraz istniejąca walidacja błędnych danych pozostają zachowane.
+- Unity 6000.3.14f1: **27 PASS, 0 FAIL** (`cooldown_extreme_final.xml`, `.log`): fizyczne wyzwolenie railguna, rakiety i EMP, interwał ciężkiej armaty, dotychczasowe krótkie i zerowe interwały oraz testy premii. Przed zmianą `cooldown_extreme_red.xml` wykazał nieskończony interwał działa i powrót railguna do 2,4 s; `emp_extreme_red.xml` wykazał odmowę pierwszego impulsu. Tak skrajnych wartości nie uzyskano naturalną rozgrywką; ręczny balans i Windows Player: **NOT RUN**.

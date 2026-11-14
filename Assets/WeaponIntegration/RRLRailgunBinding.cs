@@ -32,7 +32,7 @@ namespace RoboRougelike.WeaponIntegration
         {
             if(State.ReloadReadyAt>0&&Time.time>=State.ReloadReadyAt){State.Ammo=Magazine;State.ReloadReadyAt=0;}
             Module.SetOperational(Device.Available&&State.ReloadReadyAt<=Time.time);
-            Module.Configure(new RailgunConfig{cooldownSeconds=2.4f*(tank!=null?tank.PackageIntervalScale:intervalScale)});
+            Module.Configure(new RailgunConfig{cooldownSeconds=R3MountedBonusEffects.SafeIntervalProduct(2.4f,tank!=null?tank.PackageIntervalScale:intervalScale)});
         }
         public bool Fire(){Refresh();if(!Device.Available||Time.time<State.DeviceReadyAt)return false;
             var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
