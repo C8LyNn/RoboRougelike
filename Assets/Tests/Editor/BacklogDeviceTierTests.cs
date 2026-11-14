@@ -11,6 +11,17 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogDeviceTierTests
 {
+    [Test] public void ShieldDurabilityRewardExistsAndKeepsItsIdentity()
+    {
+        Assert.That(System.Enum.TryParse("ShieldDurability",out R1UpgradeEffect effect),Is.True);
+        var reward=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.SingleOrDefault(u=>u!=null&&u.Id=="shield_durability");
+        Assert.That(reward,Is.Not.Null);Assert.That(reward.Effect,Is.EqualTo(effect));
+        var model=Model();Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        var item=model.Inventory.Single();var blueprint=R3BlueprintPart.FromPart(item,Vector3Int.zero);
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(blueprint.Matches(restored.Inventory.Single()),Is.True);
+    }
     R3VehicleModel Model()=>new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
     [TestCase("TargetedEmp")][TestCase("AreaEmp")]
     public void EmpDevicesAreActiveSlotsAndSupportFusionAndCheckpoint(string name)
@@ -87,6 +98,41 @@ public sealed class BacklogDeviceTierTests
 
 public sealed class BacklogDeviceTierGameplayTests
 {
+    [UnityTest] public IEnumerator ShieldDurabilityBonusFollowsItsPhysicalModule()
+    {
+        Assert.That(System.Enum.TryParse("ShieldDurability",out R1UpgradeEffect effect),Is.True);
+        run.VehicleModel.Award(2500);FuseAndMount(R3PartKind.ShieldTurretGenerator);
+        var reward=ScriptableObject.CreateInstance<R1UpgradeDefinition>();reward.Id="shield-qa";reward.Effect=effect;reward.Amount=.5f;
+        var more=BacklogBonusTierTests.OperationBonus("shield-more",.2f,"More",effect);
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{reward,more}),Is.True);
+        var id=model.Inventory.Single(p=>p.UpgradeId=="shield-qa").Id;
+        var moreId=model.Inventory.Single(p=>p.UpgradeId=="shield-more").Id;
+        foreach(var itemId in new[]{id,moreId})
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(itemId,c,default)==null);
+            Assert.That(run.GarageMount(itemId,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.forward*3;
+        Assert.That(service.TryDeploy(R3PartKind.ShieldTurretGenerator),Is.True);
+        var dome=GameObject.Find("Kopuła osłonowa");var hp=dome.GetComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();
+        float original=model.Economy.ShieldTurretHp*2;
+        Assert.That(hp.MaxHp,Is.EqualTo(original*1.5f*1.2f).Within(.01));
+        hp.ApplyDamage(original*.9f,dome.transform.position,Vector3.up);
+        var parts=player.GetComponent<R3VehicleAssembly>().Parts;
+        var bonus=parts.Single(p=>p.Id==id);var moreBonus=parts.Single(p=>p.Id==moreId);bonus.gameObject.SetActive(false);
+        yield return null;yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(hp.MaxHp,Is.EqualTo(original*1.2f).Within(.01));Assert.That(hp.CurrentHp,Is.EqualTo(original*.6f).Within(.01));
+        moreBonus.gameObject.SetActive(false);yield return null;yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(hp.MaxHp,Is.EqualTo(original).Within(.01));Assert.That(hp.CurrentHp,Is.EqualTo(original*.5f).Within(.01));
+        bonus.gameObject.SetActive(true);moreBonus.gameObject.SetActive(true);yield return null;yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(hp.MaxHp,Is.EqualTo(original*1.5f*1.2f).Within(.01));Assert.That(hp.CurrentHp,Is.EqualTo(original*.9f).Within(.01));
+        Object.Destroy(floor);Object.Destroy(reward);Object.Destroy(more);
+    }
     R1RunController run;
     [UnitySetUp] public IEnumerator Setup()
     {

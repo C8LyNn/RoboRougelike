@@ -13,12 +13,15 @@ namespace RoboRougelike.R3
         static readonly List<R3ShieldDome> active = new List<R3ShieldDome>();
         P12PipelineSafeDamageable hp;
         SphereCollider boundary;
+        R3MountedBonusEffects bonuses;
+        float appliedDurability=1f;
         int team;
         public int TeamId => team;
-        public void Configure(int ownerTeam, float radius)
+        public void Configure(int ownerTeam, float radius,R3MountedBonusEffects ownerBonuses=null)
         {
             team = ownerTeam;
             hp = GetComponent<P12PipelineSafeDamageable>();
+            bonuses=ownerBonuses;RefreshDurability();
             boundary = GetComponent<SphereCollider>();
             boundary.isTrigger = true;
             boundary.radius = radius;
@@ -40,6 +43,13 @@ namespace RoboRougelike.R3
         }
         void OnEnable() { if(!active.Contains(this)) active.Add(this); }
         void OnDisable() { active.Remove(this); }
+        void Update()=>RefreshDurability();
+        void RefreshDurability()
+        {
+            float multiplier=bonuses!=null?bonuses.ShieldDurabilityMultiplier:1f;
+            if(hp==null||multiplier==appliedDurability)return;
+            hp.SetDurabilityMultiplier(multiplier);appliedDurability=multiplier;
+        }
         bool Live => isActiveAndEnabled && boundary != null && boundary.enabled && hp != null && !hp.IsDead;
         bool Enemy(Transform source)
         {

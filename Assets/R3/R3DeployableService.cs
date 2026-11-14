@@ -239,7 +239,7 @@ namespace RoboRougelike.R3
             var hp=turret.AddComponent<P12PipelineSafeDamageable>();hp.Configure(kind==R3PartKind.ShieldTurretGenerator?e.ShieldTurretHp*units:100,false);
             if(kind==R3PartKind.OffensiveTurretGenerator)turret.AddComponent<R3FlyingDrone>().ConfigureTurret(transform,e.TurretFireInterval,e.TurretDamage*units);
             else if(kind==R3PartKind.HealingTurretGenerator)turret.AddComponent<R3HealingTurret>().Configure(assembly,e.HealingTurretRadius,e.HealingTurretRate*units);
-            else if(kind==R3PartKind.SupportTurretGenerator)turret.AddComponent<R3SupportTurret>().Configure(assembly,e.SupportTurretRadius,e.SupportTurretEnergyPerSecond*units); else {var boundary=turret.AddComponent<SphereCollider>();boundary.isTrigger=true;turret.AddComponent<R3ShieldDome>().Configure(RRLHitRouter.Team(transform),e.ShieldTurretRadius);}
+            else if(kind==R3PartKind.SupportTurretGenerator)turret.AddComponent<R3SupportTurret>().Configure(assembly,e.SupportTurretRadius,e.SupportTurretEnergyPerSecond*units); else {var boundary=turret.AddComponent<SphereCollider>();boundary.isTrigger=true;turret.AddComponent<R3ShieldDome>().Configure(RRLHitRouter.Team(transform),e.ShieldTurretRadius,GetComponent<R3MountedBonusEffects>());}
             hp.Died+=()=>{if(turret!=null)Destroy(turret);};spawned.Add(turret);Destroy(turret,e.TurretLifetime);return true;
         }
         bool TryLaunchDrone(R3PartKind kind)

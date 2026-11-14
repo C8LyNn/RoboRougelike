@@ -60,4 +60,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aadb343dbbc64641897750c22d9d22dd, type: 2}
   - {fileID: 11400000, guid: 357023cc484149548d24c5770db3356f, type: 2}
   - {fileID: 11400000, guid: d628345295b44490868c9933631cbad4, type: 2}
+  - {fileID: 11400000, guid: fc3bd3aa82ba44b5981a749aa0402b07, type: 2}
   SalvageLimit: 2
