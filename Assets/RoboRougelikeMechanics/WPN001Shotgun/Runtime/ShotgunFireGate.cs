@@ -19,9 +19,10 @@ namespace RoboRougelike.WPN001Shotgun
         public bool RegisterSuccessfulVolley(float seconds, float cooldownSeconds)
         {
             if (!CanFire(seconds)) return false;
-            float cd = ShotgunSpec.PositiveCooldown(cooldownSeconds,.01f);
-            // Preserve a positive interval even when float time cannot represent it.
-            nextReadyExact=(double)seconds+System.Math.Max((double)cd,System.Math.Abs((double)seconds)*2.2204460492503131e-16);
+            float cd = ShotgunSpec.NonNegativeCooldown(cooldownSeconds,.01f);
+            // Even zero cooldown may fire only once for one clock value.
+            double tick=System.Math.Max(double.Epsilon,System.Math.Abs((double)seconds)*2.2204460492503131e-16);
+            nextReadyExact=(double)seconds+System.Math.Max((double)cd,tick);
             NextReadyTime=(float)System.Math.Min(float.MaxValue,nextReadyExact);
             SuccessfulVolleys++;
             return true;

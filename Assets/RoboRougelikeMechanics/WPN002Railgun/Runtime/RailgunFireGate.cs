@@ -13,8 +13,9 @@ namespace RoboRougelike.WPN002Railgun
         public bool Commit(float now, float cooldownSeconds)
         {
             if (!CanFire(now)) return false;
-            float cd=RailgunRules.PositiveCooldown(cooldownSeconds,1f);
-            nextReadyExact=(double)now+System.Math.Max((double)cd,System.Math.Abs((double)now)*2.2204460492503131e-16);
+            float cd=RailgunRules.NonNegativeCooldown(cooldownSeconds,1f);
+            double tick=System.Math.Max(double.Epsilon,System.Math.Abs((double)now)*2.2204460492503131e-16);
+            nextReadyExact=(double)now+System.Math.Max((double)cd,tick);
             NextReadyTime=(float)System.Math.Min(float.MaxValue,nextReadyExact);
             SuccessfulShots++;
             return true;

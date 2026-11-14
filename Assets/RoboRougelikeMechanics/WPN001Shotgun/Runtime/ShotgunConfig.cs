@@ -49,7 +49,7 @@ namespace RoboRougelike.WPN001Shotgun
             DamagePerPellet = ClampFinite(damagePerPellet, 0f, 1000f, 9f);
             MaxTravelDistance = ClampFinite(maxTravelDistance, 0.1f, 500f, 40f);
             ProjectileLifetime = ClampFinite(projectileLifetime, 0.01f, 15f, 2f);
-            CooldownSeconds = PositiveCooldown(cooldownSeconds, 0.85f);
+            CooldownSeconds = NonNegativeCooldown(cooldownSeconds, 0.85f);
             InheritedVelocityFactor = ClampFinite(inheritedVelocityFactor, 0f, 1f, 1f);
             RecoilImpulse = ClampFinite(recoilImpulse, 0f, 10f, 0f);
             RecoilAtMuzzle = recoilAtMuzzle;
@@ -60,10 +60,10 @@ namespace RoboRougelike.WPN001Shotgun
             return float.IsNaN(value) || float.IsInfinity(value)
                 ? fallback : Mathf.Clamp(value, min, max);
         }
-        internal static float PositiveCooldown(float value,float fallback)
+        internal static float NonNegativeCooldown(float value,float fallback)
         {
             if(float.IsNaN(value)||float.IsInfinity(value))return fallback;
-            return value>0?value:.01f;
+            return Mathf.Max(0,value);
         }
     }
 }

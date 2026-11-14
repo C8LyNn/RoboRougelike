@@ -9,6 +9,18 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogBonusTierTests
 {
+    [Test] public void ZeroFireIntervalDoesNotTurnIntoTenMillisecondPenaltyOrRepeatAtSameTime()
+    {
+        Assert.That(new RoboRougelike.WPN001Shotgun.ShotgunConfig{cooldownSeconds=0}.Snapshot().CooldownSeconds,Is.Zero);
+        Assert.That(new RoboRougelike.WPN002Railgun.RailgunConfig{cooldownSeconds=0}.Snapshot().Cooldown,Is.Zero);
+        var shotgun=new RoboRougelike.WPN001Shotgun.ShotgunFireGate();var rail=new RoboRougelike.WPN002Railgun.RailgunFireGate();
+        Assert.That(shotgun.RegisterSuccessfulVolley(0,0),Is.True);Assert.That(rail.Commit(0,0),Is.True);
+        Assert.That(shotgun.CanFire(0),Is.False);Assert.That(rail.CanFire(0),Is.False);
+        Assert.That(shotgun.CanFire(.001f),Is.True);Assert.That(rail.CanFire(.001f),Is.True);
+        shotgun.Reset();rail.Reset();Assert.That(shotgun.RegisterSuccessfulVolley(3600,0),Is.True);Assert.That(rail.Commit(3600,0),Is.True);
+        Assert.That(shotgun.CanFire(3600),Is.False);Assert.That(rail.CanFire(3600),Is.False);
+        Assert.That(shotgun.CanFire(3600.001f),Is.True);Assert.That(rail.CanFire(3600.001f),Is.True);
+    }
     [Test] public void ShotgunAndRailgunPreserveVeryShortAndLongFiniteCooldowns()
     {
         var shotgun=new RoboRougelike.WPN001Shotgun.ShotgunConfig{cooldownSeconds=.005f}.Snapshot();
@@ -219,6 +231,26 @@ public sealed class BacklogBonusTierTests
 
 public sealed class BacklogBonusTierGameplayTests
 {
+    [UnityTest] public IEnumerator ZeroCooldownDoesNotAllowSecondShotAtTheSameClockValue()
+    {
+        R1EncounterManager.ClearTransientObjects();var owner=new GameObject("Zero cooldown owner");
+        owner.transform.position=new Vector3(1300,1300,1300);owner.AddComponent<Rigidbody>().isKinematic=true;
+        GameObject Weapon(out Transform muzzle)
+        {
+            var part=GameObject.CreatePrimitive(PrimitiveType.Cube);part.transform.SetParent(owner.transform,false);part.GetComponent<Collider>().enabled=false;
+            part.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Configure(100,false);
+            muzzle=new GameObject("muzzle").transform;muzzle.SetParent(part.transform,false);muzzle.localPosition=Vector3.forward;return part;
+        }
+        var sg=Weapon(out var sm).AddComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
+        sg.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.Shotgun},owner.transform,sm,1,0);
+        Assert.That(sg.Fire(),Is.True);Assert.That(sg.Module.CurrentSpec.CooldownSeconds,Is.Zero);
+        int shotgunAmmo=sg.State.Ammo;Assert.That(sg.Fire(),Is.False);Assert.That(sg.State.Ammo,Is.EqualTo(shotgunAmmo));
+        var rg=Weapon(out var rm).AddComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
+        rg.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.Railgun},owner.transform,rm,1,0);
+        Assert.That(rg.Fire(),Is.True);Assert.That(rg.Module.CurrentSpec.Cooldown,Is.Zero);
+        int railAmmo=rg.State.Ammo;Assert.That(rg.Fire(),Is.False);Assert.That(rg.State.Ammo,Is.EqualTo(railAmmo));
+        R1EncounterManager.ClearTransientObjects();Object.Destroy(owner);yield return null;
+    }
     [UnityTest] public IEnumerator FastCooldownReachesActualShotgunAndRailgunBindings()
     {
         R1EncounterManager.ClearTransientObjects();
