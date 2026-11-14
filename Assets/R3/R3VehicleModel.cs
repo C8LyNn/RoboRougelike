@@ -289,7 +289,7 @@ namespace RoboRougelike.R3
         public string ActiveSlotLabel(R3PartKind kind)
         {
             int slot=Array.FindIndex(GetActiveSlots(),p=>p==kind);
-            return slot<0?"—":(slot+1).ToString();
+            return slot<0?"—":RoboRougelike.R1.R1ControlProfile.Display(RoboRougelike.R1.R1ControlProfile.Current.Binding("Active"+(slot+1)));
         }
         public R3PartKind?[] GetDeployableSlots()
         {
@@ -316,7 +316,7 @@ namespace RoboRougelike.R3
         public string DeployableSlotLabel(R3PartKind kind)
         {
             int slot=Array.FindIndex(GetDeployableSlots(),p=>p==kind);
-            return slot<0?"—":new[]{"Z","X","C","V"}[slot];
+            return slot<0?"—":RoboRougelike.R1.R1ControlProfile.Display(RoboRougelike.R1.R1ControlProfile.Current.Binding("Deploy"+(slot+1)));
         }
         public R4WeaponKind? WeaponGroupA { get { SyncWeaponGroups(); return weaponGroupA; } }
         public R4WeaponKind? WeaponGroupB { get { SyncWeaponGroups(); return weaponGroupB; } }

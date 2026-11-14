@@ -371,16 +371,16 @@ namespace RoboRougelike.R1
         {
             var slots=model.GetWeaponSlots();
             bool extra=model.CreativeMode&&model.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>4;
-            return "LPM: "+WeaponGroupName(slots[0])+"  •  PPM: "+WeaponGroupName(slots[1])+
-                "\nQ: "+WeaponGroupName(slots[2])+"  •  E: "+WeaponGroupName(slots[3])+(extra?" + pozostałe":"");
+            var control=R1ControlProfile.Current;
+            return R1ControlProfile.Display(control.Binding("Weapon1"))+": "+WeaponGroupName(slots[0])+"  •  "+R1ControlProfile.Display(control.Binding("Weapon2"))+": "+WeaponGroupName(slots[1])+
+                "\n"+R1ControlProfile.Display(control.Binding("Weapon3"))+": "+WeaponGroupName(slots[2])+"  •  "+R1ControlProfile.Display(control.Binding("Weapon4"))+": "+WeaponGroupName(slots[3])+(extra?" + pozostałe":"");
         }
         void DrawSlotAssignments(R3VehicleModel model,float x,float y,float width)
         {
             var weapons=model.GetWeaponSlots();var active=model.GetActiveSlots();var deployables=model.GetDeployableSlots();
             bool showDeployables=deployables.Any(p=>p.HasValue);
             float col=(width-(showDeployables?24:12))/(showDeployables?3:2);
-            var keys=new[]{"LPM","PPM","Q","E"};
-            var deployKeys=new[]{"Z","X","C","V"};
+            var controls=R1ControlProfile.Current;
             GUI.Label(new Rect(x,y,col,30),"BROŃ",heading);
             GUI.Label(new Rect(x+col+12,y,col,30),"MODUŁY AKTYWNE",heading);
             if(showDeployables)GUI.Label(new Rect(x+2*(col+12),y,col,30),"URZĄDZENIA",heading);
@@ -388,15 +388,15 @@ namespace RoboRougelike.R1
             {
                 float row=y+40+i*50;
                 GUI.enabled=weapons[i].HasValue;
-                if(GUI.Button(new Rect(x,row,col,44),keys[i]+": "+WeaponGroupName(weapons[i]),compactButton))
+                if(GUI.Button(new Rect(x,row,col,44),R1ControlProfile.Display(controls.Binding("Weapon"+(i+1)))+": "+WeaponGroupName(weapons[i]),compactButton))
                     model.AssignWeaponSlot(weapons[i].Value,(i+1)%4);
                 GUI.enabled=active[i].HasValue;
-                if(GUI.Button(new Rect(x+col+12,row,col,44),(i+1)+": "+(active[i].HasValue?R4WeaponDefinition.PartName(active[i].Value):"—"),compactButton))
+                if(GUI.Button(new Rect(x+col+12,row,col,44),R1ControlProfile.Display(controls.Binding("Active"+(i+1)))+": "+(active[i].HasValue?R4WeaponDefinition.PartName(active[i].Value):"—"),compactButton))
                     model.AssignActiveSlot(active[i].Value,(i+1)%4);
                 if(showDeployables)
                 {
                     GUI.enabled=deployables[i].HasValue;
-                    if(GUI.Button(new Rect(x+2*(col+12),row,col,44),deployKeys[i]+": "+(deployables[i].HasValue?R4WeaponDefinition.PartName(deployables[i].Value):"—"),compactButton))
+                    if(GUI.Button(new Rect(x+2*(col+12),row,col,44),R1ControlProfile.Display(controls.Binding("Deploy"+(i+1)))+": "+(deployables[i].HasValue?R4WeaponDefinition.PartName(deployables[i].Value):"—"),compactButton))
                         model.AssignDeployableSlot(deployables[i].Value,(i+1)%4);
                 }
             }
@@ -608,21 +608,21 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.ChargeCapacity?$"Pojemność: +{run.VehicleModel.Economy.CapacityChargesPerUnit*R3VehicleModel.TierEffectUnits(part.Tier)} ładunków dla każdego urządzenia. Rezerwa {VehicleEnergyState.PassiveReservation:0} energii.":
                 kind==R3PartKind.ChargeRegenerator?$"Regenerator: +{run.VehicleModel.Economy.ChargesPerSecondPerRegenerator*R3VehicleModel.TierEffectUnits(part.Tier):0.##} ładunku/s na urządzenie. Rezerwa {VehicleEnergyState.PassiveReservation:0} energii.":
                 kind==R3PartKind.RechargePulse?$"Impuls: +{run.VehicleModel.Economy.RechargePulseChargesPerUnit*R3VehicleModel.TierEffectUnits(part.Tier)} ładunków każdemu sprawnemu urządzeniu. Slot 1–4.":
-                kind==R3PartKind.RampDeployer?$"Wyrzutnik ramp: stawia rampę za jadącym pojazdem. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.RampEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii. Więcej kopii poszerza rampę.":
-                kind==R3PartKind.WallDeployer?$"Wyrzutnik murków: stawia osłonę za jadącym pojazdem. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.WallEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
-                kind==R3PartKind.JumpPadDeployer?$"Wyrzutnik jump padów: stawia wyrzutnię skoku za jadącym pojazdem. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.JumpPadEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
-                kind==R3PartKind.BlastTrapDeployer?$"Pułapka wybuchowa: zostaje za pojazdem i atakuje wrogów w pobliżu. 1 ładunek, {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii; slot Z/X/C/V.":
-                kind==R3PartKind.EmpTrapDeployer?$"Pułapka EMP: zostaje za pojazdem i zakłóca elektronikę pobliskich wrogów. Bez obrażeń HP; slot Z/X/C/V.":
-                kind==R3PartKind.RepelTrapDeployer?$"Pułapka odrzucająca: odpycha pobliskich wrogów bez obrażeń. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
-                kind==R3PartKind.DamageTrapDeployer?$"Pułapka obrażeń: tworzy pole raniące wrogów przez krótki czas. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
-                kind==R3PartKind.SlowTrapDeployer?$"Pułapka spowalniająca: czasowo osłabia napęd wrogów. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
-                kind==R3PartKind.ImmobilizeTrapDeployer?$"Pułapka unieruchamiająca: czasowo wyłącza napęd wrogów. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
-                kind==R3PartKind.FlyingDroneGenerator?$"Generator drona: wypuszcza latającego sojusznika. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
-                kind==R3PartKind.GroundDroneGenerator?$"Generator drona naziemnego: wypuszcza kołowego sojusznika. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
-                kind==R3PartKind.OffensiveTurretGenerator?$"Wieżyczka ofensywna: rozstawia się za jadącym robotem i strzela do wrogów. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
-                kind==R3PartKind.HealingTurretGenerator?$"Wieżyczka lecznicza: naprawia twój pojazd i pobliskie sojusznicze urządzenia. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
-                kind==R3PartKind.SupportTurretGenerator?$"Wieżyczka wspierająca: odnawia energię pojazdu w zasięgu. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
-                kind==R3PartKind.ShieldTurretGenerator?$"Kopuła osłonowa: zatrzymuje wrogie strzały, a przyjazne mogą wydostać się ze środka. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.RampDeployer?$"Wyrzutnik ramp: stawia rampę za jadącym pojazdem. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.RampEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii. Więcej kopii poszerza rampę.":
+                kind==R3PartKind.WallDeployer?$"Wyrzutnik murków: stawia osłonę za jadącym pojazdem. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.WallEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.JumpPadDeployer?$"Wyrzutnik jump padów: stawia wyrzutnię skoku za jadącym pojazdem. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.JumpPadEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.BlastTrapDeployer?$"Pułapka wybuchowa: zostaje za pojazdem i atakuje wrogów w pobliżu. 1 ładunek, {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii; slot urządzenia.":
+                kind==R3PartKind.EmpTrapDeployer?$"Pułapka EMP: zostaje za pojazdem i zakłóca elektronikę pobliskich wrogów. Bez obrażeń HP; slot urządzenia.":
+                kind==R3PartKind.RepelTrapDeployer?$"Pułapka odrzucająca: odpycha pobliskich wrogów bez obrażeń. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.DamageTrapDeployer?$"Pułapka obrażeń: tworzy pole raniące wrogów przez krótki czas. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.SlowTrapDeployer?$"Pułapka spowalniająca: czasowo osłabia napęd wrogów. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.ImmobilizeTrapDeployer?$"Pułapka unieruchamiająca: czasowo wyłącza napęd wrogów. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.FlyingDroneGenerator?$"Generator drona: wypuszcza latającego sojusznika. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.GroundDroneGenerator?$"Generator drona naziemnego: wypuszcza kołowego sojusznika. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.OffensiveTurretGenerator?$"Wieżyczka ofensywna: rozstawia się za jadącym robotem i strzela do wrogów. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.HealingTurretGenerator?$"Wieżyczka lecznicza: naprawia twój pojazd i pobliskie sojusznicze urządzenia. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.SupportTurretGenerator?$"Wieżyczka wspierająca: odnawia energię pojazdu w zasięgu. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.ShieldTurretGenerator?$"Kopuła osłonowa: zatrzymuje wrogie strzały, a przyjazne mogą wydostać się ze środka. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kliknij, aby zamontować.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kliknij, aby zamontować.":
                 kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
@@ -646,21 +646,21 @@ namespace RoboRougelike.R1
                     kind==R3PartKind.ChargeCapacity?$"Pojemność: +{run.VehicleModel.Economy.CapacityChargesPerUnit} ładunek na urządzenie. Rezerwa {VehicleEnergyState.PassiveReservation:0} energii.":
                     kind==R3PartKind.ChargeRegenerator?$"Regenerator: +{run.VehicleModel.Economy.ChargesPerSecondPerRegenerator:0.##} ładunku/s na urządzenie. Rezerwa {VehicleEnergyState.PassiveReservation:0} energii.":
                     kind==R3PartKind.RechargePulse?$"Impuls: +{run.VehicleModel.Economy.RechargePulseChargesPerUnit} ładunek każdemu sprawnemu urządzeniu za {run.VehicleModel.Economy.RechargePulseEnergyPerCopy:0} energii. Slot 1–4.":
-                    kind==R3PartKind.RampDeployer?$"Wyrzutnik ramp: stawia rampę za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.RampEnergyPerCopy:0} energii. Slot Z/X/C/V.":
-                    kind==R3PartKind.WallDeployer?$"Wyrzutnik murków: stawia osłonę za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.WallEnergyPerCopy:0} energii. Slot Z/X/C/V.":
-                    kind==R3PartKind.JumpPadDeployer?$"Wyrzutnik jump padów: stawia wyrzutnię skoku za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.JumpPadEnergyPerCopy:0} energii. Slot Z/X/C/V.":
-                    kind==R3PartKind.BlastTrapDeployer?$"Pułapka wybuchowa: zostaje za pojazdem; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot Z/X/C/V.":
-                    kind==R3PartKind.EmpTrapDeployer?$"Pułapka EMP: zakłóca wrogów bez obrażeń HP; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot Z/X/C/V.":
-                    kind==R3PartKind.RepelTrapDeployer?$"Pułapka odrzucająca: odpycha wrogów bez obrażeń HP; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot Z/X/C/V.":
-                    kind==R3PartKind.DamageTrapDeployer?$"Pułapka obrażeń: tworzy pole raniące wrogów przez krótki czas; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot Z/X/C/V.":
-                    kind==R3PartKind.SlowTrapDeployer?$"Pułapka spowalniająca: czasowo osłabia napęd wrogów; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot Z/X/C/V.":
-                    kind==R3PartKind.ImmobilizeTrapDeployer?$"Pułapka unieruchamiająca: czasowo wyłącza napęd wrogów; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot Z/X/C/V.":
-                    kind==R3PartKind.FlyingDroneGenerator?$"Generator drona: wypuszcza latającego sojusznika; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy:0} energii. Slot Z/X/C/V.":
-                    kind==R3PartKind.GroundDroneGenerator?$"Generator drona naziemnego: wypuszcza kołowego sojusznika; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy:0} energii. Slot Z/X/C/V.":
-                    kind==R3PartKind.OffensiveTurretGenerator?$"Wieżyczka ofensywna: rozstawia się za jadącym robotem; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot Z/X/C/V.":
-                    kind==R3PartKind.HealingTurretGenerator?$"Wieżyczka lecznicza: naprawia pojazd i pobliskie urządzenia sojusznicze; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot Z/X/C/V.":
-                    kind==R3PartKind.SupportTurretGenerator?$"Wieżyczka wspierająca: odnawia energię pojazdu w zasięgu; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot Z/X/C/V.":
-                    kind==R3PartKind.ShieldTurretGenerator?$"Kopuła osłonowa: zatrzymuje nadlatujące wrogie pociski; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot Z/X/C/V.":
+                    kind==R3PartKind.RampDeployer?$"Wyrzutnik ramp: stawia rampę za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.RampEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.WallDeployer?$"Wyrzutnik murków: stawia osłonę za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.WallEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.JumpPadDeployer?$"Wyrzutnik jump padów: stawia wyrzutnię skoku za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.JumpPadEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.BlastTrapDeployer?$"Pułapka wybuchowa: zostaje za pojazdem; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.EmpTrapDeployer?$"Pułapka EMP: zakłóca wrogów bez obrażeń HP; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.RepelTrapDeployer?$"Pułapka odrzucająca: odpycha wrogów bez obrażeń HP; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.DamageTrapDeployer?$"Pułapka obrażeń: tworzy pole raniące wrogów przez krótki czas; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.SlowTrapDeployer?$"Pułapka spowalniająca: czasowo osłabia napęd wrogów; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.ImmobilizeTrapDeployer?$"Pułapka unieruchamiająca: czasowo wyłącza napęd wrogów; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.FlyingDroneGenerator?$"Generator drona: wypuszcza latającego sojusznika; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.GroundDroneGenerator?$"Generator drona naziemnego: wypuszcza kołowego sojusznika; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.OffensiveTurretGenerator?$"Wieżyczka ofensywna: rozstawia się za jadącym robotem; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.HealingTurretGenerator?$"Wieżyczka lecznicza: naprawia pojazd i pobliskie urządzenia sojusznicze; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.SupportTurretGenerator?$"Wieżyczka wspierająca: odnawia energię pojazdu w zasięgu; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.ShieldTurretGenerator?$"Kopuła osłonowa: zatrzymuje nadlatujące wrogie pociski; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot urządzenia.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kup część.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kup część.":
                     kind==R3PartKind.Armor&&CatalogArmorShape(bonus)==R3ArmorShape.Wedge?"Klin 1×1×1: mocowanie od spodu i z tyłu. Kup część.":
@@ -905,7 +905,7 @@ namespace RoboRougelike.R1
         void DrawSimplePortraitOptions(R1RunController run)
         {
             Panel(new Rect(12,90,744,800));
-            GUI.Label(new Rect(24,105,540,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":garageOptionsTab==3?"SPRZEDAWCA":garageOptionsTab==4?"PROJEKTY":"WYBÓR AKTYWNOŚCI",heading);
+            GUI.Label(new Rect(24,105,540,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":garageOptionsTab==3?"SPRZEDAWCA":garageOptionsTab==4?"PROJEKTY":garageOptionsTab==5?"STEROWANIE":"WYBÓR AKTYWNOŚCI",heading);
             if(GUI.Button(new Rect(606,105,138,40),"Zamknij",compactButton)){garageOptionsOpen=false;return;}
             if(garageOptionsTab==0)
             {
@@ -925,6 +925,7 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(350,425,380,135),GarageDriveSummary(run),small);
                 if(!string.IsNullOrEmpty(garageOptionsFeedback))GUI.Label(new Rect(350,575,380,60),garageOptionsFeedback,small);
                 if(GUI.Button(new Rect(350,650,380,44),"Biblioteka projektów",compactButton))OpenBlueprintLibrary();
+                if(GUI.Button(new Rect(350,705,380,44),"Sterowanie",compactButton))OpenControls();
             }
             else if(garageOptionsTab==2)
             {
@@ -933,6 +934,7 @@ namespace RoboRougelike.R1
             }
             else if(garageOptionsTab==3)DrawSafeVendor(run,new Rect(24,165,720,540));
             else if(garageOptionsTab==4)DrawBlueprintLibrary(run,new Rect(24,165,720,650));
+            else if(garageOptionsTab==5)DrawControls(new Rect(24,165,720,650));
             else
             {
                 var matrix=GUI.matrix;
@@ -944,7 +946,7 @@ namespace RoboRougelike.R1
         void DrawSimpleGarageOptions(R1RunController run)
         {
             Panel(new Rect(280,90,800,545));
-            GUI.Label(new Rect(300,105,570,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":garageOptionsTab==3?"SPRZEDAWCA":garageOptionsTab==4?"PROJEKTY":"WYBÓR AKTYWNOŚCI",heading);
+            GUI.Label(new Rect(300,105,570,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":garageOptionsTab==3?"SPRZEDAWCA":garageOptionsTab==4?"PROJEKTY":garageOptionsTab==5?"STEROWANIE":"WYBÓR AKTYWNOŚCI",heading);
             if(GUI.Button(new Rect(925,105,135,40),"Zamknij",compactButton)){garageOptionsOpen=false;return;}
             if(garageOptionsTab==0)
             {
@@ -964,6 +966,7 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(680,435,350,145),GarageDriveSummary(run),small);
                 if(!string.IsNullOrEmpty(garageOptionsFeedback))GUI.Label(new Rect(680,585,350,40),garageOptionsFeedback,small);
                 if(GUI.Button(new Rect(300,585,250,38),"Biblioteka projektów",compactButton))OpenBlueprintLibrary();
+                if(GUI.Button(new Rect(300,535,250,38),"Sterowanie",compactButton))OpenControls();
             }
             else if(garageOptionsTab==2)
             {
@@ -972,6 +975,7 @@ namespace RoboRougelike.R1
             }
             else if(garageOptionsTab==3)DrawSafeVendor(run,new Rect(300,165,740,420));
             else if(garageOptionsTab==4)DrawBlueprintLibrary(run,new Rect(300,165,740,420));
+            else if(garageOptionsTab==5)DrawControls(new Rect(300,165,740,420));
             else
             {
                 var matrix=GUI.matrix;

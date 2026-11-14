@@ -175,6 +175,22 @@ public sealed class BacklogBlueprintGarageTests
         float deadline=Time.realtimeSinceStartup+30;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
         Assert.That(run.Transitioning,Is.False);Assert.That(run.VehicleModel.GetWeaponSlots()[3],Is.EqualTo(weapon));
     }
+    [UnityTest] public IEnumerator BlueprintRestoresGlobalControlsOnlyWhenExplicitlyRequested()
+    {
+        var profile=R1ControlProfile.Current;var original=profile.Snapshot();
+        try
+        {
+            profile.ResetDefaults();var blueprint=R3BlueprintLibrary.Capture(run.VehicleModel,"Klawisze");
+            Assert.That(profile.TryBind("MoveForward","K"),Is.True);
+            Assert.That(run.StartApplyBlueprint(blueprint),Is.True);
+            float deadline=Time.realtimeSinceStartup+30;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(run.BlueprintApplyMessage,Does.Contain("Odtworzono"));Assert.That(profile.Binding("MoveForward"),Is.EqualTo("K"));
+            Assert.That(run.StartApplyBlueprintWithControls(blueprint),Is.True);
+            deadline=Time.realtimeSinceStartup+30;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(run.BlueprintApplyMessage,Does.Contain("Odtworzono"));Assert.That(profile.Binding("MoveForward"),Is.EqualTo("W"));
+        }
+        finally{profile.TryRestoreSnapshot(original,out _);}
+    }
     [UnityTest] public IEnumerator MovingBatteryDuringRestorationDoesNotSpendStoredEnergyOrCharges()
     {
         var model=run.VehicleModel;var blueprint=R3BlueprintLibrary.Capture(model,"Energia");

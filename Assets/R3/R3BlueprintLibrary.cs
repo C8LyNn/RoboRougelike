@@ -36,6 +36,7 @@ namespace RoboRougelike.R3
         public string title;
         public R3BlueprintPart[] parts;
         public int[] weapons,active,deployables;
+        public string[] globalBindings;
     }
     public sealed class R3BlueprintPreview
     {
@@ -79,13 +80,15 @@ namespace RoboRougelike.R3
             var core=model.Parts.SingleOrDefault(p=>p.Kind==R3PartKind.Core);
             if(core==null||model.Parts.Count>MaximumParts+1||model.Parts.Any(p=>!R3VehicleModel.ValidEconomicPart(p)))throw new ArgumentException("Niepoprawna konstrukcja.");
             return new R3Blueprint{title=title.Trim(),parts=model.Parts.Where(p=>p.Kind!=R3PartKind.Core).Select(p=>R3BlueprintPart.FromPart(p,core.Cell)).ToArray(),
-                weapons=WeaponSlots(model.GetWeaponSlots()),active=PartSlots(model.GetActiveSlots()),deployables=PartSlots(model.GetDeployableSlots())};
+                weapons=WeaponSlots(model.GetWeaponSlots()),active=PartSlots(model.GetActiveSlots()),deployables=PartSlots(model.GetDeployableSlots()),
+                globalBindings=R1ControlProfile.Current.Snapshot()};
         }
         static bool SlotsValid(int[] slots,Func<int,bool> valid)=>slots!=null&&slots.Length==4&&
             slots.All(i=>i==-1||valid(i))&&slots.Where(i=>i>=0).Distinct().Count()==slots.Count(i=>i>=0);
         public static bool Valid(R3Blueprint document)
         {
             if(document==null||document.version!=1||string.IsNullOrWhiteSpace(document.title)||document.title.Length>80||document.parts==null||document.parts.Length>MaximumParts||
+               (document.globalBindings!=null&&!R1ControlProfile.ValidSnapshot(document.globalBindings))||
                !SlotsValid(document.weapons,i=>Enum.IsDefined(typeof(R4WeaponKind),i))||
                !SlotsValid(document.active,i=>Enum.IsDefined(typeof(R3PartKind),i)&&R3VehicleModel.IsActiveSlotPart((R3PartKind)i))||
                !SlotsValid(document.deployables,i=>Enum.IsDefined(typeof(R3PartKind),i)&&R3VehicleModel.IsDeployableSlotPart((R3PartKind)i)))return false;

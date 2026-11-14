@@ -5,6 +5,8 @@ using NUnit.Framework;
 using RoboRougelike.R1;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine;
+using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
@@ -56,5 +58,46 @@ public sealed class BacklogControlProfileTests
             Assert.That(profile.Pressed("MoveBackward"),Is.False);
         }
         finally{InputSystem.RemoveDevice(keyboard);InputSystem.RemoveDevice(mouse);if(File.Exists(path))File.Delete(path);}
+    }
+
+    [Test] public void ActualPlayerControllerUsesReassignedMovementAndWeapon()
+    {
+        var keyboard=InputSystem.AddDevice<Keyboard>();var mouse=InputSystem.AddDevice<Mouse>();
+        var vehicle=new GameObject("Input profile test");var profile=R1ControlProfile.Current;
+        try
+        {
+            profile.ResetDefaults();Assert.That(profile.TryBind("MoveForward","K"),Is.True);
+            Assert.That(profile.TryBind("Weapon1","MouseMiddle"),Is.True);
+            var controller=vehicle.AddComponent<P12PipelineSafeTankController>();
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.K));
+            InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Middle));InputSystem.Update();
+            var flags=BindingFlags.NonPublic|BindingFlags.Instance;
+            typeof(P12PipelineSafeTankController).GetMethod("Update",flags).Invoke(controller,null);
+            Assert.That((float)typeof(P12PipelineSafeTankController).GetField("moveInput",flags).GetValue(controller),Is.EqualTo(1));
+            Assert.That((bool)typeof(P12PipelineSafeTankController).GetField("fireHeld",flags).GetValue(controller),Is.True);
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.W));
+            InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Left));InputSystem.Update();
+            typeof(P12PipelineSafeTankController).GetMethod("Update",flags).Invoke(controller,null);
+            Assert.That((float)typeof(P12PipelineSafeTankController).GetField("moveInput",flags).GetValue(controller),Is.Zero);
+            Assert.That((bool)typeof(P12PipelineSafeTankController).GetField("fireHeld",flags).GetValue(controller),Is.False);
+        }
+        finally{profile.ResetDefaults();UnityEngine.Object.DestroyImmediate(vehicle);InputSystem.RemoveDevice(keyboard);InputSystem.RemoveDevice(mouse);}
+    }
+
+    [Test] public void SnapshotRestoreRejectsConflictsAndPersistsValidValues()
+    {
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-snapshot-"+Guid.NewGuid()+".json");
+        try
+        {
+            var profile=new R1ControlProfile(path);var snapshot=profile.Snapshot();
+            Assert.That(profile.TryBind("MoveForward","K"),Is.True);
+            var bad=(string[])snapshot.Clone();bad[1]=bad[0];
+            Assert.That(profile.TryRestoreSnapshot(bad,out _),Is.False);
+            Assert.That(profile.Binding("MoveForward"),Is.EqualTo("K"));
+            Assert.That(profile.TryRestoreSnapshot(snapshot,out _),Is.True);
+            Assert.That(new R1ControlProfile(path).Binding("MoveForward"),Is.EqualTo("W"));
+            Assert.That(profile.TryBind("MoveForward","R"),Is.False,"Range reset is reserved until remapped.");
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
     }
 }

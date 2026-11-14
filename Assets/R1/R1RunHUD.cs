@@ -13,6 +13,13 @@ namespace RoboRougelike.R1
         private static Rect CombatAbilityStatusRect(int row)=>new Rect(340,90+22*row,190,22);
         private Texture2D buttonNormal,buttonHover,buttonPressed;
         private bool combatDetailsOpen;
+        static string GameplayControlsHint()
+        {
+            var profile=R1ControlProfile.Current;
+            string Names(params string[] actions)=>string.Join("/",actions.Select(a=>R1ControlProfile.Display(profile.Binding(a))));
+            return Names("MoveForward","MoveBackward","TurnLeft","TurnRight")+" — ruch • Mysz — celowanie • "+
+                Names("Weapon1","Weapon2","Weapon3","Weapon4")+" — broń • "+Names("Active1","Active2","Active3","Active4")+" — moduły • Esc — pauza";
+        }
         private int[] starterOffers;
         private R3VehicleDesign[] starterDesigns;
         private string[] starterDescriptions,starterSummaries;
@@ -386,11 +393,7 @@ namespace RoboRougelike.R1
                     if(run.EmergencyRescueNotice!=null||run.EmergencyRescueActive)GUI.Label(new Rect(660,637,450,30),
                         run.EmergencyRescueNotice??"Ratunek: 50% otrzymywanych obrażeń; atak wstrzymany.",small);
                     DrawAimReticle(run);
-                    GUI.Label(new Rect(24, 676, 900, 26),!combatDetailsOpen?
-                        "WASD — ruch • Mysz — celowanie • LPM/PPM/Q/E — broń • 1–4 — moduły • I — szczegóły":
-                        run.VehicleModel.SelectedDrive>=R3DriveKind.Omni?
-                        "W/S — jazda • A/D — ruch boczny • ,/. — obrót • Mysz — celowanie • LPM/PPM/Q/E — broń":
-                        "W/S — jazda • A/D — skręt • Mysz — celowanie • LPM/PPM/Q/E — broń • Kółko — przybliżenie",small);
+                    GUI.Label(new Rect(24, 676, 900, 26),GameplayControlsHint(),small);
                     DrawFeedback();
                     return;
                 }
@@ -426,7 +429,7 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(640,600,550,65),"Poligon kreatywny — buduj od rdzenia",button))run.OpenCreativeGarage();
                 if(GUI.Button(new Rect(640,548,300,38),"Edytor map",compactButton))run.OpenMapEditor();
                 if(GUI.Button(new Rect(960,552,230,38),"Wyjdź z gry",button))run.RequestQuit();
-                GUI.Label(new Rect(90,675,1100,30),"WASD — jazda / hamowanie • Mysz — celowanie • LPM/PPM/Q/E — broń • 1–4 — moduły • Esc — pauza",small);
+                GUI.Label(new Rect(90,675,1100,30),GameplayControlsHint(),small);
             }
             else if (progress.State == R1RunState.UpgradeChoice)
             {
@@ -481,7 +484,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(PortraitActionRect(2),"Edytor map",compactButton))run.OpenMapEditor();
             if(GUI.Button(PortraitActionRect(3),"Wyjdź z gry",compactButton))run.RequestQuit();
             GUI.Label(new Rect(24,920,720,43),"6 starć • nagrody • garaż\nPo walce wybierz moduł i części z wraków.",small);
-            GUI.Label(new Rect(24,975,720,40),"WASD — jazda • Mysz — celowanie • LPM/PPM/Q/E — broń • 1–4 — moduły • Esc — pauza",small);
+            GUI.Label(new Rect(24,975,720,40),GameplayControlsHint(),small);
         }
 
         private void DrawSessionPause(R1RunController run)

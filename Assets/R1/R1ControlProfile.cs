@@ -21,7 +21,11 @@ namespace RoboRougelike.R1
         readonly string path;
         bool unreadable;
         public string Error { get; private set; }
-        public static string DefaultPath=>Path.Combine(Application.persistentDataPath,"Settings","controls.json");
+        static R1ControlProfile current;
+        public static R1ControlProfile Current=>current??=new R1ControlProfile(DefaultPath);
+        public static string DefaultPath=>Application.isBatchMode?
+            Path.Combine(Path.GetTempPath(),"RRL-controls-QA-"+System.Diagnostics.Process.GetCurrentProcess().Id,"controls.json"):
+            Path.Combine(Application.persistentDataPath,"Settings","controls.json");
         public R1ControlProfile(string storagePath)
         {
             if(string.IsNullOrWhiteSpace(storagePath))throw new ArgumentException("Brak ścieżki ustawień.");
@@ -31,7 +35,7 @@ namespace RoboRougelike.R1
                 var data=JsonUtility.FromJson<R1ControlData>(R1RunCheckpointStorage.ReadPayload(path));
                 if(data==null||data.version!=1||data.actions==null||data.bindings==null||data.actions.Length!=Actions.Length||
                     data.bindings.Length!=Actions.Length||data.actions.Distinct().Count()!=Actions.Length||
-                    data.actions.Any(a=>!Actions.Contains(a))||data.bindings.Any(b=>!ValidBinding(b))||
+                    data.actions.Any(a=>!Actions.Contains(a))||data.bindings.Any(b=>!ValidBinding(b)||Reserved(b))||
                     data.bindings.Distinct(StringComparer.OrdinalIgnoreCase).Count()!=Actions.Length)
                     throw new InvalidDataException("Niepoprawne przypisania sterowania.");
                 for(int i=0;i<data.actions.Length;i++)bindings[data.actions[i]]=data.bindings[i];
@@ -39,7 +43,18 @@ namespace RoboRougelike.R1
             catch(Exception e){unreadable=true;Error="Nie odczytano ustawień; plik pozostawiono bez zmian: "+e.Message;}
         }
         public void ResetDefaults(){for(int i=0;i<Actions.Length;i++)bindings[Actions[i]]=Defaults[i];}
+        internal void RestoreValues(string[] values){for(int i=0;i<Actions.Length;i++)bindings[Actions[i]]=values[i];}
         public string Binding(string action)=>bindings.TryGetValue(action,out var binding)?binding:null;
+        public string[] Snapshot()=>Actions.Select(Binding).ToArray();
+        public static bool ValidSnapshot(string[] values)=>values!=null&&values.Length==Actions.Length&&
+            values.All(x=>ValidBinding(x)&&!Reserved(x))&&values.Distinct(StringComparer.OrdinalIgnoreCase).Count()==Actions.Length;
+        public bool TryRestoreSnapshot(string[] values,out string message)
+        {
+            if(!ValidSnapshot(values)){message="Zapisane przypisania są niepoprawne.";return false;}
+            var previous=Snapshot();RestoreValues(values);
+            try{Save();message="Przywrócono przypisania klawiszy.";return true;}
+            catch(Exception error){RestoreValues(previous);message="Nie przywrócono klawiszy: "+error.Message;return false;}
+        }
         public string Conflict(string action,string binding)=>bindings.FirstOrDefault(x=>x.Key!=action&&
             string.Equals(x.Value,binding,StringComparison.OrdinalIgnoreCase)).Key;
         public static bool ValidBinding(string binding)
@@ -48,10 +63,48 @@ namespace RoboRougelike.R1
             return Enum.TryParse(binding,false,out Key key)&&key!=Key.None&&key!=Key.Escape&&
                 Enum.IsDefined(typeof(Key),key)&&key!=Key.LeftAlt&&key!=Key.RightAlt&&key!=Key.LeftMeta&&key!=Key.RightMeta;
         }
+        // Fixed session/UI shortcuts remain reserved until they too are configurable.
+        public static bool Reserved(string binding)=>new[]{"Escape","Enter","NumpadEnter","R","I","M",
+            "UpArrow","DownArrow","LeftArrow","RightArrow","F4","F8","F10"}.Contains(binding);
+        public static string Display(string binding)=>binding=="MouseLeft"?"LPM":binding=="MouseRight"?"PPM":
+            binding=="MouseMiddle"?"ŚPM":binding=="MouseForward"?"Mysz 4":binding=="MouseBack"?"Mysz 5":
+            binding!=null&&binding.StartsWith("Digit",StringComparison.Ordinal)?binding.Substring(5):binding??"—";
+        public static string FromEvent(Event e)
+        {
+            if(e==null)return null;
+            if(e.type==EventType.MouseDown)return e.button==0?"MouseLeft":e.button==1?"MouseRight":
+                e.button==2?"MouseMiddle":e.button==3?"MouseBack":e.button==4?"MouseForward":null;
+            if(e.type!=EventType.KeyDown||e.alt||e.control||e.command)return null;
+            string name=e.keyCode.ToString();
+            if(name.StartsWith("Alpha",StringComparison.Ordinal))return "Digit"+name.Substring(5);
+            if(name=="Return")return "Enter";
+            return name;
+        }
+        public bool MatchesEvent(string action,Event e)=>string.Equals(Binding(action),FromEvent(e),StringComparison.Ordinal);
         public bool TryBind(string action,string binding)
         {
-            if(!bindings.ContainsKey(action)||!ValidBinding(binding)||Conflict(action,binding)!=null)return false;
+            if(!bindings.ContainsKey(action)||!ValidBinding(binding)||Reserved(binding)||Conflict(action,binding)!=null)return false;
             bindings[action]=binding;return true;
+        }
+        public bool TrySaveBinding(string action,string binding,out string message)
+        {
+            var old=Binding(action);string conflict=Conflict(action,binding);
+            if(Reserved(binding)){message="Ten klawisz jest używany przez inne sterowanie.";return false;}
+            if(conflict!=null){message="Ten przycisk jest już używany: "+ActionName(conflict)+".";return false;}
+            if(!TryBind(action,binding)){message="Nie można przypisać tego przycisku.";return false;}
+            try{Save();message="Zapisano przypisanie.";return true;}
+            catch(Exception e){bindings[action]=old;message="Nie zapisano ustawień: "+e.Message;return false;}
+        }
+        public static string ActionName(string action)
+        {
+            switch(action){case "MoveForward":return "Jazda do przodu";case "MoveBackward":return "Jazda do tyłu";
+                case "TurnLeft":return "Skręt w lewo";case "TurnRight":return "Skręt w prawo";
+                case "Gyro":return "Żyroskop";case "Reload":return "Przeładowanie";
+                case "SteeringLeft":return "Obrót w lewo";case "SteeringRight":return "Obrót w prawo";}
+            if(action.StartsWith("Weapon"))return "Broń "+action.Substring(6);
+            if(action.StartsWith("Active"))return "Moduł "+action.Substring(6);
+            if(action.StartsWith("Deploy"))return "Urządzenie "+action.Substring(6);
+            return action;
         }
         public void Save()
         {

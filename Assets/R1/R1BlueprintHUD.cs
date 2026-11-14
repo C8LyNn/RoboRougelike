@@ -14,6 +14,7 @@ namespace RoboRougelike.R1
         bool[] blueprintExists;
         string blueprintFeedback;
         bool blueprintApplyPending;
+        bool blueprintRestoreControls;
         Vector2 blueprintMissingScroll;
 
         void OpenBlueprintLibrary()
@@ -23,7 +24,7 @@ namespace RoboRougelike.R1
             {
                 blueprintLibrary??=new R3BlueprintLibrary(R3BlueprintLibrary.DefaultDirectory);
                 blueprintExists=Enumerable.Range(0,blueprintLibrary.SlotCount).Select(blueprintLibrary.Exists).ToArray();
-                blueprintPreview=null;blueprintSelected=null;blueprintOverwriteSlot=-1;blueprintFeedback=null;blueprintApplyPending=false;blueprintMissingScroll=Vector2.zero;
+                blueprintPreview=null;blueprintSelected=null;blueprintOverwriteSlot=-1;blueprintFeedback=null;blueprintApplyPending=false;blueprintRestoreControls=false;blueprintMissingScroll=Vector2.zero;
             }
             catch(Exception error){blueprintFeedback="Nie można otworzyć biblioteki: "+error.Message;}
         }
@@ -47,7 +48,7 @@ namespace RoboRougelike.R1
             try
             {
                 var document=blueprintLibrary.Load(slot);var preview=R3BlueprintLibrary.Preview(document,run.VehicleModel);
-                blueprintSelected=document;blueprintPreview=preview;blueprintOverwriteSlot=-1;blueprintFeedback=null;blueprintMissingScroll=Vector2.zero;
+                blueprintSelected=document;blueprintPreview=preview;blueprintOverwriteSlot=-1;blueprintFeedback=null;blueprintRestoreControls=false;blueprintMissingScroll=Vector2.zero;
             }
             catch(Exception error){blueprintFeedback="Nie odczytano projektu: "+error.Message;}
         }
@@ -83,11 +84,13 @@ namespace RoboRougelike.R1
             GUI.enabled=blueprintSelected!=null&&blueprintPreview!=null&&blueprintPreview.MissingCount==0&&!run.Transitioning;
             if(GUI.Button(new Rect(area.x,area.y+345,270,42),"Odtwórz z posiadanych",compactButton))
             {
-                blueprintApplyPending=run.StartApplyBlueprint(blueprintSelected);
+                blueprintApplyPending=blueprintRestoreControls?run.StartApplyBlueprintWithControls(blueprintSelected):run.StartApplyBlueprint(blueprintSelected);
                 blueprintFeedback=run.BlueprintApplyMessage;
             }
             GUI.enabled=true;
-            GUI.Label(new Rect(area.x+280,area.y+345,area.width-280,45),"Globalne klawisze pozostają bez zmian.",small);
+            GUI.enabled=blueprintSelected?.globalBindings!=null&&!run.Transitioning;
+            blueprintRestoreControls=GUI.Toggle(new Rect(area.x+280,area.y+345,area.width-280,45),blueprintRestoreControls,"Przywróć również przypisania klawiszy");
+            GUI.enabled=true;
         }
     }
 }

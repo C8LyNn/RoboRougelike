@@ -15,17 +15,17 @@ namespace RoboRougelike.MOVSeries
             if(owner!=null)owner.IndependentYaw=0;
             var run=R1RunController.Instance;
             if(run==null||run.Player==null||run.Player.gameObject!=gameObject||!run.CanUseMovement)return;
-            var keys=Keyboard.current;if(keys==null)return;
+            var controls=R1ControlProfile.Current;
             // Z/X/C/V are reserved for the shared deployable slots.
-            if(owner!=null)owner.IndependentYaw=(keys.periodKey.isPressed?1:0)-(keys.commaKey.isPressed?1:0);
+            if(owner!=null)owner.IndependentYaw=(controls.Pressed("SteeringRight")?1:0)-(controls.Pressed("SteeringLeft")?1:0);
             var slots=run.VehicleModel.GetActiveSlots();
-            var pressed=new[]{keys.digit1Key.wasPressedThisFrame,keys.digit2Key.wasPressedThisFrame,
-                keys.digit3Key.wasPressedThisFrame,keys.digit4Key.wasPressedThisFrame};
+            var pressed=new[]{controls.Pressed("Active1",true),controls.Pressed("Active2",true),
+                controls.Pressed("Active3",true),controls.Pressed("Active4",true)};
             for(int i=0;i<4;i++)if(pressed[i]&&slots[i].HasValue)Activate(run,slots[i].Value);
             var deployables=run.VehicleModel.GetDeployableSlots();
-            var deployPressed=new[]{keys.zKey.wasPressedThisFrame,keys.xKey.wasPressedThisFrame,keys.cKey.wasPressedThisFrame,keys.vKey.wasPressedThisFrame};
+            var deployPressed=new[]{controls.Pressed("Deploy1",true),controls.Pressed("Deploy2",true),controls.Pressed("Deploy3",true),controls.Pressed("Deploy4",true)};
             for(int i=0;i<4;i++)if(deployPressed[i]&&deployables[i].HasValue)GetComponent<R3DeployableService>()?.TryDeploy(deployables[i].Value);
-            if(keys.gKey.wasPressedThisFrame)run.ToggleGyro();
+            if(controls.Pressed("Gyro",true))run.ToggleGyro();
         }
         void Activate(R1RunController run,R3PartKind kind)
         {

@@ -17,7 +17,7 @@ namespace RoboRougelike.WeaponIntegration
         void Update()
         {
 #if ENABLE_INPUT_SYSTEM
-            if(Keyboard.current?.tKey.wasPressedThisFrame==true)Reload();
+            if(R1ControlProfile.Current.Pressed("Reload",true))Reload();
 #endif
         }
         void OnGUI()
@@ -26,8 +26,7 @@ namespace RoboRougelike.WeaponIntegration
         }
         public bool HandleGuiInput(Event evt)
         {
-            if(evt==null||evt.type!=EventType.KeyDown||evt.alt||evt.control||evt.command)return false;
-            if(evt.keyCode!=KeyCode.T&&evt.character!='t'&&evt.character!='T')return false;
+            if(!R1ControlProfile.Current.MatchesEvent("Reload",evt))return false;
             return Reload();
         }
         public bool Reload()

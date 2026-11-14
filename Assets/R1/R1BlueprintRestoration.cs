@@ -11,18 +11,21 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunController
     {
         public string BlueprintApplyMessage {get;private set;}
-        public bool StartApplyBlueprint(R3Blueprint document)
+        public bool StartApplyBlueprint(R3Blueprint document)=>StartApplyBlueprintCore(document,false);
+        public bool StartApplyBlueprintWithControls(R3Blueprint document)=>StartApplyBlueprintCore(document,true);
+        bool StartApplyBlueprintCore(R3Blueprint document,bool restoreControls)
         {
             if(Transitioning||Paused||QuitRequested||Progress?.State!=R1RunState.Garage||Player==null||VehicleModel==null)return false;
             try
             {
                 // Copy the description so no UI caller can change it mid-transaction.
                 var snapshot=JsonUtility.FromJson<R3Blueprint>(JsonUtility.ToJson(document));
+                if(restoreControls&&snapshot?.globalBindings==null){BlueprintApplyMessage="Ten projekt nie zawiera przypisań klawiszy.";return false;}
                 var plan=R3BlueprintLibrary.Plan(snapshot,VehicleModel);
                 if(plan.Preview.MissingCount>0)
                 {BlueprintApplyMessage=$"Brakuje {plan.Preview.MissingCount} części. Napraw lub zdobądź je przed montażem.";return false;}
                 Transitioning=true;BlueprintApplyMessage="Sprawdzanie projektu i montażu…";
-                StartCoroutine(ApplyBlueprintTransaction(snapshot,plan));return true;
+                StartCoroutine(ApplyBlueprintTransaction(snapshot,plan,restoreControls));return true;
             }
             catch(Exception error){BlueprintApplyMessage="Nie można odtworzyć projektu: "+error.Message;return false;}
         }
@@ -41,7 +44,7 @@ namespace RoboRougelike.R1
                 model.GetActiveSlots().Select(x=>x.HasValue?(int)x.Value:-1).SequenceEqual(document.active)&&
                 model.GetDeployableSlots().Select(x=>x.HasValue?(int)x.Value:-1).SequenceEqual(document.deployables);
         }
-        IEnumerator ApplyBlueprintTransaction(R3Blueprint document,R3BlueprintPlan plan)
+        IEnumerator ApplyBlueprintTransaction(R3Blueprint document,R3BlueprintPlan plan,bool restoreControls)
         {
             var original=Player;var oldModel=VehicleModel;R3VehicleModel working=null;
             var position=original.transform.position;var rotation=original.transform.rotation;
@@ -91,6 +94,8 @@ namespace RoboRougelike.R1
                     VehicleModel=working;Player=replacement;
                     followCamera.Configure(Player.transform,Player.CameraPivot);
                     R3BuildValidation.SetGarageSockets(Player.GetComponent<R3VehicleAssembly>(),true);Garage.RefreshPreview();
+                    if(restoreControls&&!R1ControlProfile.Current.TryRestoreSnapshot(document.globalBindings,out var message))
+                    {BlueprintApplyMessage=message;yield break;}
                     committed=true;BlueprintApplyMessage="Odtworzono projekt z posiadanych części.";Destroy(original.gameObject);
                 }
                 finally

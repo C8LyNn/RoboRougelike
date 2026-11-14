@@ -175,30 +175,30 @@ public float CurrentForwardSpeed =>
 
 #if ENABLE_INPUT_SYSTEM
             Keyboard keyboard = Keyboard.current;
+            var controls=RoboRougelike.R1.R1ControlProfile.Current;
 
-            if (keyboard != null)
             {
-                if (keyboard.wKey.isPressed ||
-                    keyboard.upArrowKey.isPressed)
+                if (controls.Pressed("MoveForward") ||
+                    (keyboard!=null&&keyboard.upArrowKey.isPressed))
                     moveInput += 1f;
 
-                if (keyboard.sKey.isPressed ||
-                    keyboard.downArrowKey.isPressed)
+                if (controls.Pressed("MoveBackward") ||
+                    (keyboard!=null&&keyboard.downArrowKey.isPressed))
                     moveInput -= 1f;
 
-                if (keyboard.dKey.isPressed ||
-                    keyboard.rightArrowKey.isPressed)
+                if (controls.Pressed("TurnRight") ||
+                    (keyboard!=null&&keyboard.rightArrowKey.isPressed))
                     turnInput += 1f;
 
-                if (keyboard.aKey.isPressed ||
-                    keyboard.leftArrowKey.isPressed)
+                if (controls.Pressed("TurnLeft") ||
+                    (keyboard!=null&&keyboard.leftArrowKey.isPressed))
                     turnInput -= 1f;
             }
 
-            bool primaryPressed=Mouse.current != null && Mouse.current.leftButton.isPressed;
-            bool secondaryPressed=Mouse.current != null && Mouse.current.rightButton.isPressed;
-            bool thirdPressed=keyboard!=null&&keyboard.qKey.isPressed;
-            bool fourthPressed=keyboard!=null&&keyboard.eKey.isPressed;
+            bool primaryPressed=controls.Pressed("Weapon1");
+            bool secondaryPressed=controls.Pressed("Weapon2");
+            bool thirdPressed=controls.Pressed("Weapon3");
+            bool fourthPressed=controls.Pressed("Weapon4");
 #else
             if (Input.GetKey(KeyCode.W) ||
                 Input.GetKey(KeyCode.UpArrow))
