@@ -79,10 +79,11 @@ namespace RogueMachine.P12PipelineSafe
         private Material projectileMaterial;
         private bool gameplayInputEnabled = true;
         private float damageModifier = 1f;
+        private float basicDamageModifier = 1f;
         private float intervalModifier = 1f;
         private float mobilityModifier = 1f;
 
-        public float EffectiveDamage => shotDamage * damageModifier;
+        public float EffectiveDamage => shotDamage * basicDamageModifier;
         public float EffectiveFireInterval => fireInterval * intervalModifier;
         public float EffectiveForwardSpeed => forwardSpeed * mobilityModifier;
         public float EffectiveReverseSpeed => reverseSpeed * mobilityModifier;
@@ -92,9 +93,12 @@ namespace RogueMachine.P12PipelineSafe
         public void SetRunModifiers(float damage, float interval, float mobility)
         {
             damageModifier = float.IsNaN(damage)||float.IsInfinity(damage)?1f:Mathf.Max(0,damage);
+            basicDamageModifier=damageModifier;
             intervalModifier = float.IsNaN(interval)||float.IsInfinity(interval)?1f:Mathf.Max(0,interval);
             mobilityModifier = float.IsNaN(mobility)||float.IsInfinity(mobility)?1f:Mathf.Max(0,mobility);
         }
+        public void SetBasicDamageModifier(float damage)
+        {basicDamageModifier=float.IsNaN(damage)||float.IsInfinity(damage)?damageModifier:Mathf.Max(0,damage);}
 
         public void SetGameplayInputEnabled(bool active)
         {
@@ -590,13 +594,14 @@ public float CurrentForwardSpeed =>
             var mounted=barrel!=null?barrel.GetComponentInParent<RoboRougelike.R3.R3MountedPart>():null;
             float tier=mounted!=null&&mounted.Kind==RoboRougelike.R3.R3PartKind.Gun&&mounted.Id==partId?
                 RoboRougelike.R3.R3VehicleModel.TierEffectUnits(mounted.Tier):1f;
-            var first=SpawnPhysicalShell(barrel,profile.Damage*damageModifier*tier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
+            float weaponDamage=kind==RoboRougelike.R4.R4WeaponKind.Basic?basicDamageModifier:damageModifier;
+            var first=SpawnPhysicalShell(barrel,profile.Damage*weaponDamage*tier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
             if(first==null||extraShots<=0)return;
             var siblings=new System.Collections.Generic.List<Collider>{first};
             int allowed=Mathf.Min(extraShots,P17PhysicalShell.AvailableSlots);
             for(int i=0;i<allowed;i++)
             {
-                var extra=SpawnPhysicalShell(barrel,profile.Damage*damageModifier*tier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
+                var extra=SpawnPhysicalShell(barrel,profile.Damage*weaponDamage*tier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
                 if(extra==null)break;
                 foreach(var sibling in siblings)if(sibling!=null)Physics.IgnoreCollision(extra,sibling,true);
                 siblings.Add(extra);

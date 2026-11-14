@@ -307,7 +307,7 @@ namespace RoboRougelike.R3
                 if(state.Kind==R3PartKind.Core)core=block;
                 var part=item.AddComponent<R3MountedPart>(); part.Cell=state.Cell;part.Kind=state.Kind;part.Tier=R3VehicleModel.NormalizedTier(state.Tier);part.Damageable=hp;part.Block=block;
                 part.Id=state.Id;part.Weapon=state.Weapon;part.WheelStyle=state.WheelStyle;
-                part.UpgradeEffect=state.UpgradeEffect;part.UpgradeOperation=state.UpgradeOperation;part.UpgradeAmount=state.UpgradeAmount;
+                part.UpgradeEffect=state.UpgradeEffect;part.UpgradeOperation=state.UpgradeOperation;part.UpgradeScope=state.UpgradeScope;part.UpgradeAmount=state.UpgradeAmount;
                 assembly.Parts.Add(part);
                 if(state.Kind==R3PartKind.Armor&&!wide)R41PartGeometry.TryAttachArmor(item.transform,state.ArmorShape);
                 Transform payload=null;Transform partMuzzle=null;

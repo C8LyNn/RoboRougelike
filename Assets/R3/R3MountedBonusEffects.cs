@@ -28,11 +28,12 @@ namespace RoboRougelike.R3
             readonly int tier;
             readonly R1UpgradeEffect effect;
             readonly R1ModifierOperation operation;
+            readonly R1BonusScope scope;
             readonly float amount;
             public BonusSnapshot(R3MountedPart p)
-            {part=p;id=p.Id;tier=p.Tier;effect=p.UpgradeEffect;operation=p.UpgradeOperation;amount=p.UpgradeAmount;}
+            {part=p;id=p.Id;tier=p.Tier;effect=p.UpgradeEffect;operation=p.UpgradeOperation;scope=p.UpgradeScope;amount=p.UpgradeAmount;}
             public bool Matches(R3MountedPart p)=>ReferenceEquals(part,p)&&id==p.Id&&tier==p.Tier&&
-                effect==p.UpgradeEffect&&operation==p.UpgradeOperation&&amount.Equals(p.UpgradeAmount);
+                effect==p.UpgradeEffect&&operation==p.UpgradeOperation&&scope==p.UpgradeScope&&amount.Equals(p.UpgradeAmount);
         }
         private float lastRepairPulse;
         private float overdriveIncrease;
@@ -77,13 +78,19 @@ namespace RoboRougelike.R3
             snapshot.Clear();active.Clear();
             foreach(var part in nextActive){active.Add(part);snapshot.Add(new BonusSnapshot(part));}
             var stats=baseStats.Copy();
-            var damage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
+            var damage=new R1ModifierGroup();var basicDamage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
             var core=new R1ModifierGroup();var reload=new R1ModifierGroup();
             damage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            basicDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             reload.Add(R1ModifierOperation.Increased,rapidFireReduction,1,true);
             foreach(var module in active)
                 if(module.UpgradeEffect==R1UpgradeEffect.Damage)
-                    damage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                {
+                    if(module.UpgradeScope==R1BonusScope.Global)
+                        damage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.BasicCannon)
+                        basicDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                }
                 else if(module.UpgradeEffect==R1UpgradeEffect.Mobility)
                     mobility.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 else if(module.UpgradeEffect==R1UpgradeEffect.Hull)
@@ -95,6 +102,7 @@ namespace RoboRougelike.R3
             stats.ApplyBonusGroups(hull,damage,reload,mobility,core);
             EffectiveStats=stats;
             player.Apply(stats);
+            player.Controller.SetBasicDamageModifier(basicDamage.Apply(baseStats.Damage));
         }
         private void ApplyRepairPulse()
         {

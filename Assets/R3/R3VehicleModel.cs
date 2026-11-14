@@ -40,6 +40,7 @@ namespace RoboRougelike.R3
         public string UpgradeId, UpgradeTitle, UpgradeDescription;
         public R1UpgradeEffect UpgradeEffect;
         public R1ModifierOperation UpgradeOperation;
+        public R1BonusScope UpgradeScope;
         public float UpgradeAmount;
         // Rotation in 90-degree steps around local X/Y/Z; mask encodes six
         // optional face-centre mounting contacts in local orientation.
@@ -57,7 +58,7 @@ namespace RoboRougelike.R3
         public R3PartState(Vector3Int cell, R3PartKind kind, float health = 1) { Cell = cell; Kind = kind; Health = health; }
         public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,HasDismantleCap=HasDismantleCap,DismantleCap=DismantleCap,Weapon=Weapon,WheelStyle=WheelStyle,FootprintRevision=FootprintRevision,ArmorShape=ArmorShape,Tier=Tier,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
             UpgradeId=UpgradeId,UpgradeTitle=UpgradeTitle,UpgradeDescription=UpgradeDescription,
-            UpgradeEffect=UpgradeEffect,UpgradeOperation=UpgradeOperation,UpgradeAmount=UpgradeAmount,
+            UpgradeEffect=UpgradeEffect,UpgradeOperation=UpgradeOperation,UpgradeScope=UpgradeScope,UpgradeAmount=UpgradeAmount,
             RotationQuarterTurns=RotationQuarterTurns,ContactMask=ContactMask};
     }
     public sealed class R3VehicleDesign
@@ -208,6 +209,8 @@ namespace RoboRougelike.R3
         public static float TierActivationCost(int tier)=>NormalizedTier(tier)==3?1.4f:NormalizedTier(tier)==2?1.2f:1f;
         public static bool ValidBonusOperation(R1UpgradeEffect effect,R1ModifierOperation operation)=>
             Enum.IsDefined(typeof(R1ModifierOperation),operation)&&(effect!=R1UpgradeEffect.Repair||operation==R1ModifierOperation.Increased);
+        public static bool ValidBonusScope(R1UpgradeEffect effect,R1BonusScope scope)=>
+            Enum.IsDefined(typeof(R1BonusScope),scope)&&(scope==R1BonusScope.Global||effect==R1UpgradeEffect.Damage);
         public static bool SupportsFusion(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||kind==R3PartKind.Booster||kind==R3PartKind.MagneticGrapple||kind==R3PartKind.JumpDrive||kind==R3PartKind.Blink||kind==R3PartKind.Gyroscope||kind==R3PartKind.ScannerPulse||kind==R3PartKind.StructuralScanner||
             kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.SalvageOptimizer||kind==R3PartKind.Overdrive||kind==R3PartKind.RapidFire||kind==R3PartKind.DoubleShot||kind==R3PartKind.DoubleShotOverdrive||kind==R3PartKind.TargetedEmp||kind==R3PartKind.AreaEmp||kind==R3PartKind.ChargeCapacity||kind==R3PartKind.ChargeRegenerator||kind==R3PartKind.RechargePulse||kind==R3PartKind.RampDeployer||kind==R3PartKind.WallDeployer||kind==R3PartKind.JumpPadDeployer||kind==R3PartKind.BlastTrapDeployer||kind==R3PartKind.EmpTrapDeployer||kind==R3PartKind.RepelTrapDeployer||kind==R3PartKind.DamageTrapDeployer||kind==R3PartKind.SlowTrapDeployer||kind==R3PartKind.ImmobilizeTrapDeployer||kind==R3PartKind.FlyingDroneGenerator||kind==R3PartKind.GroundDroneGenerator||kind==R3PartKind.OffensiveTurretGenerator||kind==R3PartKind.HealingTurretGenerator||kind==R3PartKind.SupportTurretGenerator||kind==R3PartKind.ShieldTurretGenerator||kind==R3PartKind.BonusModule||kind==R3PartKind.PointDefense||
             (kind==R3PartKind.Gun&&weapon>=R4WeaponKind.Basic&&weapon<=R4WeaponKind.EmpEmitter);
@@ -785,7 +788,7 @@ namespace RoboRougelike.R3
             if((long)inventory.Count+batch.Length>AvailableInventoryCapacity)return false;
             if(batch.Any(p=>!ValidEconomicPart(p)||(!allowArmor&&p.Kind==R3PartKind.Armor)||p.Kind==R3PartKind.Core||
                 (p.Kind==R3PartKind.BonusModule&&(string.IsNullOrWhiteSpace(p.UpgradeId)||
-                    !Enum.IsDefined(typeof(R1UpgradeEffect),p.UpgradeEffect)||!ValidBonusOperation(p.UpgradeEffect,p.UpgradeOperation)||float.IsNaN(p.UpgradeAmount)||
+                    !Enum.IsDefined(typeof(R1UpgradeEffect),p.UpgradeEffect)||!ValidBonusOperation(p.UpgradeEffect,p.UpgradeOperation)||!ValidBonusScope(p.UpgradeEffect,p.UpgradeScope)||float.IsNaN(p.UpgradeAmount)||
                     float.IsInfinity(p.UpgradeAmount)||p.UpgradeAmount<0||p.UpgradeAmount>1))||
                 string.IsNullOrWhiteSpace(p.Id)||Owns(p.Id))||
                 batch.Select(p=>p.Id).Distinct().Count()!=batch.Length)return false;
@@ -794,12 +797,12 @@ namespace RoboRougelike.R3
         public static R3PartState CreateBonusReward(R1UpgradeDefinition bonus)
         {
             if(bonus==null||string.IsNullOrWhiteSpace(bonus.Id)||
-                !Enum.IsDefined(typeof(R1UpgradeEffect),bonus.Effect)||!ValidBonusOperation(bonus.Effect,bonus.Operation)||
+                !Enum.IsDefined(typeof(R1UpgradeEffect),bonus.Effect)||!ValidBonusOperation(bonus.Effect,bonus.Operation)||!ValidBonusScope(bonus.Effect,bonus.Scope)||
                 float.IsNaN(bonus.Amount)||float.IsInfinity(bonus.Amount))return null;
             return new R3PartState(default,R3PartKind.BonusModule){
                 Id=Guid.NewGuid().ToString("N"),Source="Bonus za zwycięstwo",
                 UpgradeId=bonus.Id,UpgradeTitle=string.IsNullOrWhiteSpace(bonus.Title)?bonus.Id:bonus.Title,
-                UpgradeDescription=bonus.Description,UpgradeEffect=bonus.Effect,UpgradeOperation=bonus.Operation,
+                UpgradeDescription=bonus.Description,UpgradeEffect=bonus.Effect,UpgradeOperation=bonus.Operation,UpgradeScope=bonus.Scope,
                 UpgradeAmount=Mathf.Clamp01(bonus.Amount)};
         }
         public bool ReceiveBonuses(IEnumerable<R1UpgradeDefinition> rewards)
@@ -846,6 +849,7 @@ namespace RoboRougelike.R3
             !string.IsNullOrWhiteSpace(a.UpgradeId)&&a.UpgradeId==b.UpgradeId&&
             Enum.IsDefined(typeof(R1UpgradeEffect),a.UpgradeEffect)&&a.UpgradeEffect==b.UpgradeEffect&&
             ValidBonusOperation(a.UpgradeEffect,a.UpgradeOperation)&&a.UpgradeOperation==b.UpgradeOperation&&
+            ValidBonusScope(a.UpgradeEffect,a.UpgradeScope)&&a.UpgradeScope==b.UpgradeScope&&
             !float.IsNaN(a.UpgradeAmount)&&!float.IsInfinity(a.UpgradeAmount)&&a.UpgradeAmount>=0&&a.UpgradeAmount<=1&&a.UpgradeAmount==b.UpgradeAmount;
         public static bool SameFusionType(R3PartState a,R3PartState b) => a!=null&&b!=null&&a.Kind==b.Kind&&
             NormalizedTier(a.Tier)==NormalizedTier(b.Tier)&&

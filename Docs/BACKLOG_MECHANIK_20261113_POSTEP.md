@@ -59,6 +59,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Redukcje czasu między strzałami sumują się addytywnie, bez starego limitu 35% czasu. Czas nie może spaść poniżej zera; HUD pokazuje najwyżej 100% redukcji. Unity: **7 PASS, 0 FAIL**, kod 0, `C:\Users\kubap\Desktop\Prototypy\reload-additive-final.xml` oraz `.log`, w tym dwa bonusy 20% i granica zerowego czasu. To nie potwierdza rzeczywistej szybkostrzelności wszystkich rodzin broni: część starszych paczek może mieć własne ograniczenia, a obsługa wejścia i fizyki zachodzi w klatkach.
 - Nadal pozostają zakresy i typy obrażeń, operacje dla naprawy i inne istniejące ograniczenia. Ta zmiana nie oznacza ukończenia punktów 12–14.
 
+### 13. Pierwszy zakres premii: działo podstawowe
+
+- Dodano fizyczny moduł zwiększający obrażenia wyłącznie działa podstawowego; jego tymczasowa wartość +30% i wpływ na pulę nagród wymagają playtestu. Premie globalne i dotyczące działa sumują się w tej samej grupie `increased/reduced`, a `more/less` działają osobno. Zakres jest widoczny w opisie i zachowywany przez fuzję, zapis oraz blueprint; stare dane pozostają globalne.
+- Unity 6000.3.14f1: **14 PASS, 0 FAIL**, exit 0 (`C:\Users\kubap\Desktop\Prototypy\bonus-scope-final.xml`, `.log`), w tym prawdziwe strzały działa i automatu, wyłączenie modułu, fuzja, checkpoint, blueprint i stare zapisy. Test przed zmianą **1 FAIL** (`bonus-scope-red.xml`): brak zakresu premii. Ręczna gra i balans: **NOT RUN**. Inne kategorie, podkategorie, typy obrażeń i obrażenia hybrydowe nie są jeszcze objęte tym zakresem — punkt 13 pozostaje otwarty.
+
 ## 16–19. Wspólny aktywny impuls naprawczy — częściowo
 
 - Sprawne kopie Repair Pulse wyzwalają jeden wspólny impuls; ich wkłady tierów sumują tempo naprawy wybranego celu. Utrata lub zakłócenie kopii w trakcie działania zmniejsza jego siłę. Aktywacja pobiera łączny koszt atomowo: przy braku energii na całą grupę nie uruchamia się żadna część.
