@@ -11,6 +11,7 @@ namespace RoboRougelike.R1
         R3BlueprintPreview blueprintPreview;
         R3Blueprint blueprintSelected;
         int blueprintOverwriteSlot=-1;
+        int blueprintPage;
         bool[] blueprintExists;
         string blueprintFeedback;
         bool blueprintApplyPending;
@@ -22,11 +23,20 @@ namespace RoboRougelike.R1
             OpenSimpleGarageOptions(4);
             try
             {
-                blueprintLibrary??=new R3BlueprintLibrary(R3BlueprintLibrary.DefaultDirectory);
+                int slots=Mathf.Clamp(R1RunController.Instance?.VehicleModel?.Economy?.BlueprintSlotCount??R3BlueprintLibrary.DefaultSlots,1,R3BlueprintLibrary.MaximumSlots);
+                if(blueprintLibrary==null||blueprintLibrary.SlotCount!=slots)
+                    blueprintLibrary=new R3BlueprintLibrary(blueprintLibrary?.RootDirectory??R3BlueprintLibrary.DefaultDirectory,slots);
                 blueprintExists=Enumerable.Range(0,blueprintLibrary.SlotCount).Select(blueprintLibrary.Exists).ToArray();
-                blueprintPreview=null;blueprintSelected=null;blueprintOverwriteSlot=-1;blueprintFeedback=null;blueprintApplyPending=false;blueprintRestoreControls=false;blueprintMissingScroll=Vector2.zero;
+                blueprintPage=0;blueprintPreview=null;blueprintSelected=null;blueprintOverwriteSlot=-1;blueprintFeedback=null;blueprintApplyPending=false;blueprintRestoreControls=false;blueprintMissingScroll=Vector2.zero;
             }
             catch(Exception error){blueprintFeedback="Nie można otworzyć biblioteki: "+error.Message;}
+        }
+        void ChangeBlueprintPage(int delta)
+        {
+            if(blueprintExists==null||blueprintExists.Length==0)return;
+            int last=(blueprintExists.Length-1)/4;
+            blueprintPage=(int)Math.Min(last,Math.Max(0L,(long)blueprintPage+delta));
+            blueprintOverwriteSlot=-1;
         }
         void SaveBlueprintSlot(R1RunController run,int slot)
         {
@@ -59,12 +69,24 @@ namespace RoboRougelike.R1
                 blueprintApplyPending=false;blueprintFeedback=run.BlueprintApplyMessage;
                 if(blueprintSelected!=null)blueprintPreview=R3BlueprintLibrary.Preview(blueprintSelected,run.VehicleModel);
             }
-            GUI.Label(new Rect(area.x,area.y,area.width,35),"Projekty zapisują układ i sloty, bez przenoszenia części ani złomu.",small);
             if(blueprintExists==null){GUI.Label(new Rect(area.x,area.y+42,area.width,60),blueprintFeedback??"Biblioteka jest niedostępna.",small);return;}
-            float gap=area.width/4;
-            for(int i=0;i<blueprintExists.Length;i++)
+            bool pages=blueprintExists.Length>4;
+            GUI.Label(new Rect(area.x,area.y,pages?area.width-185:area.width,35),"Projekty zapisują układ i sloty, bez przenoszenia części ani złomu.",small);
+            if(pages)
             {
-                float x=area.x+i*gap,w=gap-8;
+                int pageCount=(blueprintExists.Length+3)/4;bool enabled=GUI.enabled;
+                GUI.enabled=enabled&&blueprintPage>0;
+                if(GUI.Button(new Rect(area.x+area.width-180,area.y,42,32),"‹",compactButton))ChangeBlueprintPage(-1);
+                GUI.enabled=enabled;GUI.Label(new Rect(area.x+area.width-130,area.y+3,75,28),$"{blueprintPage+1}/{pageCount}",small);
+                GUI.enabled=enabled&&blueprintPage+1<pageCount;
+                if(GUI.Button(new Rect(area.x+area.width-48,area.y,42,32),"›",compactButton))ChangeBlueprintPage(1);
+                GUI.enabled=enabled;
+            }
+            float gap=area.width/4;
+            int first=blueprintPage*4;
+            for(int i=first;i<Math.Min(first+4,blueprintExists.Length);i++)
+            {
+                float x=area.x+(i-first)*gap,w=gap-8;
                 GUI.Label(new Rect(x,area.y+42,w,27),"Projekt "+(i+1)+(blueprintExists[i]?" • zapisany":" • pusty"),small);
                 if(GUI.Button(new Rect(x,area.y+70,w,38),blueprintOverwriteSlot==i?"Potwierdź zapis":"Zapisz obecny",compactButton))SaveBlueprintSlot(run,i);
                 GUI.enabled=blueprintExists[i];

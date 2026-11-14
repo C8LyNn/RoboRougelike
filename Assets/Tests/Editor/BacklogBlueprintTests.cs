@@ -13,6 +13,11 @@ using UnityEngine.TestTools;
 public sealed class BacklogBlueprintTests
 {
     static Type Library=>Type.GetType("RoboRougelike.R3.R3BlueprintLibrary, Assembly-CSharp");
+    [Test] public void ExistingRunConfigurationDefaultsToFourBlueprintSlots()
+    {
+        var definition=Resources.Load<R1RunDefinition>("R1/Run");Assert.That(definition,Is.Not.Null);
+        Assert.That(definition.GaragePrices.BlueprintSlotCount,Is.EqualTo(4));
+    }
     [Test] public void BlueprintWithLegacyGlobalBindingsRemainsValid()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
@@ -102,6 +107,23 @@ public sealed class BacklogBlueprintGarageTests
         Invoke("OpenBlueprintLibrary");
     }
     object Invoke(string name,params object[] args)=>typeof(R1RunHUD).GetMethod(name,BindingFlags.Instance|BindingFlags.NonPublic).Invoke(hud,args);
+    [UnityTest] public IEnumerator ExtraConfiguredBlueprintSlotsRemainAccessibleAcrossPages()
+    {
+        var config=typeof(R3GarageEconomy).GetField("BlueprintSlotCount");Assert.That(config,Is.Not.Null);
+        config.SetValue(run.VehicleModel.Economy,9);Assert.That(config.GetValue(run.VehicleModel.DeepCopy().Economy),Is.EqualTo(9));
+        Invoke("OpenBlueprintLibrary");
+        var library=(R3BlueprintLibrary)typeof(R1RunHUD).GetField("blueprintLibrary",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
+        Assert.That(library.SlotCount,Is.EqualTo(9));
+        Assert.That(typeof(R1RunHUD).GetMethod("ChangeBlueprintPage",BindingFlags.Instance|BindingFlags.NonPublic),Is.Not.Null);
+        Invoke("ChangeBlueprintPage",2);
+        Assert.That(typeof(R1RunHUD).GetField("blueprintPage",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud),Is.EqualTo(2));
+        Invoke("SaveBlueprintSlot",run,8);Assert.That(library.Exists(8),Is.True);
+        Invoke("PreviewBlueprintSlot",run,8);
+        Assert.That(typeof(R1RunHUD).GetField("blueprintPreview",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud),Is.Not.Null);
+        Invoke("ChangeBlueprintPage",99);
+        Assert.That(typeof(R1RunHUD).GetField("blueprintPage",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud),Is.EqualTo(2));
+        yield return null;
+    }
     [UnityTest] public IEnumerator GarageSavesPreviewsAndConfirmsOverwriteWithoutChangingOwnedParts()
     {
         var model=run.VehicleModel;int money=model.Scrap;var ids=model.Parts.Concat(model.Inventory).Select(p=>p.Id).OrderBy(x=>x).ToArray();
@@ -241,6 +263,7 @@ public sealed class BacklogBlueprintGarageTests
         if(!string.IsNullOrEmpty(directory))
         {
             string file=System.IO.Path.Combine(directory,"slot-1.json");if(System.IO.File.Exists(file))System.IO.File.Delete(file);
+            string extra=System.IO.Path.Combine(directory,"slot-9.json");if(System.IO.File.Exists(extra))System.IO.File.Delete(extra);
             if(System.IO.Directory.Exists(directory))System.IO.Directory.Delete(directory);
         }
     }

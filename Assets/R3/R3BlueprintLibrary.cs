@@ -62,13 +62,14 @@ namespace RoboRougelike.R3
     }
     public sealed class R3BlueprintLibrary
     {
-        public const int DefaultSlots=4,MaximumParts=1000;
+        public const int DefaultSlots=4,MaximumSlots=20,MaximumParts=1000;
         readonly string root;
         public int SlotCount {get;}
+        public string RootDirectory=>root;
         public static string DefaultDirectory=>Path.Combine(Application.persistentDataPath,"Blueprints");
         public R3BlueprintLibrary(string directory,int slots=DefaultSlots)
         {
-            if(string.IsNullOrWhiteSpace(directory)||slots<1||slots>20)throw new ArgumentException("Niepoprawna biblioteka projektów.");
+            if(string.IsNullOrWhiteSpace(directory)||slots<1||slots>MaximumSlots)throw new ArgumentException("Niepoprawna biblioteka projektów.");
             root=directory;SlotCount=slots;
         }
         string SlotPath(int slot)
