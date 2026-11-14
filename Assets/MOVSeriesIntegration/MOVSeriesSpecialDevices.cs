@@ -114,8 +114,9 @@ namespace RoboRougelike.MOVSeries
             {Feedback="Blink zablokowany: aktywna lina";return false;}
             if(Model.BlinkReadyAt>Time.time||Model.Parts.Any(p=>p.Kind==R3PartKind.Blink&&p.DeviceReadyAt>Time.time))return false;
             var eligible=blinks.Where(b=>b!=null&&b.Operational).ToArray();if(eligible.Length==0)return false;
-            var primary=eligible[0];primary.Configure(new BlinkSettings{DistanceMeters=8*eligible.Length,CooldownSeconds=6,
-                EnergyCost=VehicleEnergyCosts.Blink*eligible.Length});
+            int units=eligible.Sum(b=>R3VehicleModel.TierEffectUnits(b.GetComponent<R3MountedPart>().Tier));
+            float cost=eligible.Sum(b=>VehicleEnergyCosts.Blink*R3VehicleModel.TierActivationCost(b.GetComponent<R3MountedPart>().Tier));
+            var primary=eligible[0];primary.Configure(new BlinkSettings{DistanceMeters=8*units,CooldownSeconds=6,EnergyCost=cost});
             var result=primary.TryActivate(direction);Feedback="Blink: "+result;if(result!=BlinkResult.Activated)return false;
             Model.BlinkReadyAt=Time.time+6;foreach(var state in Model.Parts.Where(p=>p.Kind==R3PartKind.Blink))state.DeviceReadyAt=Model.BlinkReadyAt;
             foreach(var blink in eligible)blink.GetComponent<RoboRougelike.R4_1.R4BlinkArt>()?.PlayActivation();

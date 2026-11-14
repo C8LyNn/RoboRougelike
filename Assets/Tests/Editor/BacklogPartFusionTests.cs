@@ -38,6 +38,18 @@ public sealed class BacklogPartFusionTests
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(model.MakeCheckpoint(0),R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
         Assert.That(restored.Inventory.Single(p=>p.Id==item.Id).Tier,Is.EqualTo(3));
     }
+    [TestCase(R3PartKind.Blink)]
+    [TestCase(R3PartKind.JumpDrive)]
+    public void MovementDeviceFusesToTierThreeAndSurvivesSave(R3PartKind kind)
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(10000);
+        while(model.Inventory.Count(p=>p.Kind==kind)<9)Assert.That(model.PurchaseToInventory(kind),Is.True);
+        for(int i=0;i<3;i++)Assert.That(model.FuseInventory(model.Inventory.Where(p=>p.Kind==kind&&p.Tier<=1).Take(3).Select(p=>p.Id)),Is.True);
+        Assert.That(model.FuseInventory(model.Inventory.Where(p=>p.Kind==kind&&p.Tier==2).Select(p=>p.Id)),Is.True);
+        var item=model.Inventory.Single(p=>p.Kind==kind&&p.Tier==3);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(model.MakeCheckpoint(0),R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Inventory.Single(p=>p.Id==item.Id).Tier,Is.EqualTo(3));
+    }
     [Test]
     public void WreckCanBeFusedAndResultHasAveragePercentageHealth()
     {

@@ -68,6 +68,36 @@ public class MOVSeriesDeviceTests
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
         vehicle.transform.SetParent(fixtures.transform,true);vehicle.Controller.SetGameplayInputEnabled(true);return vehicle;
     }
+    R1VehicleState BuildTieredMovement(R3PartKind kind,int tier,float x)
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var cell=FindFixtureCell(model,kind,new Vector3Int(1,1,0));model.Parts.Add(new R3PartState(cell,kind){Tier=tier});
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
+        vehicle.transform.SetParent(fixtures.transform,true);vehicle.Controller.SetGameplayInputEnabled(true);return vehicle;
+    }
+    [UnityTest] public IEnumerator TieredJumpDevicesUseTierEnergyAndProduceStrongerImpulse()
+    {
+        var one=BuildTieredMovement(R3PartKind.JumpDrive,1,-25);var two=BuildTieredMovement(R3PartKind.JumpDrive,2,0);
+        var three=BuildTieredMovement(R3PartKind.JumpDrive,3,25);yield return Seconds(.6f);
+        var a=one.GetComponent<Rigidbody>();var b=two.GetComponent<Rigidbody>();var c=three.GetComponent<Rigidbody>();
+        a.linearVelocity=Vector3.zero;b.linearVelocity=Vector3.zero;c.linearVelocity=Vector3.zero;
+        var e2=two.GetComponent<VehicleEnergyBank>();var e3=three.GetComponent<VehicleEnergyBank>();float before2=e2.Current,before3=e3.Current;
+        Assert.That(Action(one,"TryJump"),Is.True);Assert.That(Action(two,"TryJump"),Is.True);Assert.That(Action(three,"TryJump"),Is.True);
+        Assert.That(e2.Current,Is.EqualTo(before2-VehicleEnergyCosts.Jump*R3VehicleModel.TierActivationCost(2)).Within(.001));
+        Assert.That(e3.Current,Is.EqualTo(before3-VehicleEnergyCosts.Jump*R3VehicleModel.TierActivationCost(3)).Within(.001));
+        Assert.That(b.linearVelocity.y,Is.GreaterThan(a.linearVelocity.y+.1f));Assert.That(c.linearVelocity.y,Is.GreaterThan(b.linearVelocity.y+.1f));
+    }
+    [UnityTest] public IEnumerator TieredBlinkUsesTierEnergyAndExtendsTheCheckedTravelDistance()
+    {
+        var two=BuildTieredMovement(R3PartKind.Blink,2,-25);var three=BuildTieredMovement(R3PartKind.Blink,3,25);yield return Seconds(.6f);
+        var b=two.GetComponent<Rigidbody>();var c=three.GetComponent<Rigidbody>();float z2=b.position.z,z3=c.position.z;
+        var e2=two.GetComponent<VehicleEnergyBank>();var e3=three.GetComponent<VehicleEnergyBank>();float before2=e2.Current,before3=e3.Current;
+        bool Blink(R1VehicleState v){var adapter=Adapter(v);return (bool)adapter.GetType().GetMethod("TryBlink").Invoke(adapter,new object[]{Vector3.forward});}
+        Assert.That(Blink(two),Is.True);Assert.That(Blink(three),Is.True);
+        Assert.That(b.position.z-z2,Is.EqualTo(16).Within(.01));Assert.That(c.position.z-z3,Is.EqualTo(32).Within(.01));
+        Assert.That(e2.Current,Is.EqualTo(before2-VehicleEnergyCosts.Blink*R3VehicleModel.TierActivationCost(2)).Within(.001));
+        Assert.That(e3.Current,Is.EqualTo(before3-VehicleEnergyCosts.Blink*R3VehicleModel.TierActivationCost(3)).Within(.001));
+    }
     R1VehicleState BuildMixedTierBoosters()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
