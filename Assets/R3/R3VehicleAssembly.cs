@@ -254,6 +254,9 @@ namespace RoboRougelike.R3
                         if(rail!=null&&rail.Fire())part.NextFireTime=rail.State.DeviceReadyAt;
                         continue;
                     }
+                    // Until the shared physical-projectile budget is replaced,
+                    // do not charge a conventional shot that cannot be spawned.
+                    if(P17PhysicalShell.AvailableSlots<1)continue;
                     var energy=GetComponent<VehicleEnergyBank>();
                     if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(part.Weapon)*R3VehicleModel.TierActivationCost(part.Tier)))continue;
                     part.NextFireTime=Time.time+controller.WeaponInterval(part.Weapon);

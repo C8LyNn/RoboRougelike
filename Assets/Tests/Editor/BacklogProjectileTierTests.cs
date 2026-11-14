@@ -46,6 +46,34 @@ public sealed class BacklogProjectileTierPhysicsTests
         run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
         while(run.Transitioning)yield return null;run.Encounter.SetCombatActive(false);
     }
+    [UnityTest] public IEnumerator FullProjectilePoolDoesNotSpendEnergyOrStartCooldown()
+    {
+        var gun=Build(R4WeaponKind.Automatic,out var bank);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var muzzle=new GameObject("Unblocked QA muzzle").transform;muzzle.SetParent(gun.transform,false);muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;gun.Muzzle=muzzle;
+        Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(gun),Is.True);
+        var dummies=new System.Collections.Generic.List<GameObject>();
+        try
+        {
+            while(P17PhysicalShell.AvailableSlots>0)
+            {
+                var dummy=new GameObject("Projectile pool fixture");dummies.Add(dummy);dummy.AddComponent<P17PhysicalShell>();
+                Assert.That(dummies.Count,Is.LessThan(200));
+            }
+            float before=bank.Current;float ready=gun.NextFireTime;
+            int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),w=>w==R4WeaponKind.Automatic);
+            Assert.That(slot,Is.GreaterThanOrEqualTo(0));assembly.FireSlot(slot);
+            Assert.That(bank.Current,Is.EqualTo(before).Within(.001),"A shot that cannot exist must not cost energy.");
+            Assert.That(gun.NextFireTime,Is.EqualTo(ready),"The weapon must remain ready when no projectile is created.");
+            dummies[0].SetActive(false);assembly.FireSlot(slot);
+            Assert.That(bank.Current,Is.LessThan(before));Assert.That(gun.NextFireTime,Is.GreaterThan(ready));
+        }
+        finally
+        {
+            foreach(var item in dummies)if(item!=null){item.SetActive(false);Object.Destroy(item);}
+            if(assembly!=null)Object.Destroy(assembly.gameObject);
+        }
+        yield return null;
+    }
     R3MountedPart Build(R4WeaponKind weapon,out VehicleEnergyBank bank,bool doubleShot=false,R1UpgradeDefinition bonus=null)
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));

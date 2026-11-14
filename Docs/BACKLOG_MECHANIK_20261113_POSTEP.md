@@ -185,6 +185,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Wyjaśnienie poprzednich dwóch niepowodzeń: test masy używał 10000 obrażeń, które zgodnie z aktualnym systemem propagacji niszczyły także inne klocki; celowany test z kontrolowanym trafieniem i dotychczasową asercją masy przeszedł. Test naprawy starego emitera odnosił się do usuwanej funkcji impulsu i także niszczył podporę nadmiarem obrażeń; zastąpiono go testem rzeczywistego zniszczenia i odbudowy aury, bez automatycznego ponownego jej włączenia. Oryginalny komponent impulsu nadal ma osobny test fizyczny, a nowe EMP — odrębny test rzeczywistej integracji.
 - Starsze narzędzia diagnostyczne `RRLW6RuntimeQA` i `R4EnemyWheelPlayerQA` odwołują się do historycznej broni EMP i wymagają aktualizacji przed ich ponownym użyciem. Nie wykonano ręcznego testu działania ani balansu.
 
+## 14. Pełna pula pocisków — zabezpieczenie kosztu
+
+- W istniejącym systemie nadal obowiązuje wspólny limit 96 fizycznych pocisków. Naprawiono błąd zwykłych broni: kiedy pula jest pełna, próba strzału nie pobiera energii i nie rozpoczyna cooldownu. Po zwolnieniu miejsca broń może oddać strzał. Istniejące osobne ścieżki strzelby, railguna i rakiet zachowują swoje zasady transakcyjne.
+- Unity 6000.3.14f1: **4 PASS, 0 FAIL**, exit 0 (`C:\Users\kubap\Desktop\Prototypy\projectile-pool-refund-final.xml`, `.log`): rzeczywisty automat przy 96 zajętych miejscach i po zwolnieniu jednego, Double Shot, śruciny oraz premia broni i dronów. Przed zmianą `projectile-pool-refund-red.xml`: **1 FAIL**, bo niepowstały pocisk kosztował 3 energii. To nie usuwa limitu ani jego wpływu na dodatkowe pociski; punkt 14 pozostaje otwarty. Ręczny Windows Player: **NOT RUN**.
+
 ## 14. Moc silników kół — usunięcie limitu
 
 - Usunięto ograniczenie mnożnika siły kół do ×2, które zatrzymywało wzrost mocy po pięciu jednostkach sprawnych silników. Każda kolejna kopia lub poziom dokłada moc; siła nadal wymaga faktycznego kontaktu kół z podłożem. Garaż nie sugeruje już nieistniejącego maksimum. To tylko część punktu 14: globalne limity liczby pocisków i inne ograniczenia nadal wymagają osobnej pracy.
