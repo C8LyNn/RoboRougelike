@@ -78,6 +78,8 @@ public sealed class UI943PortraitCatalogTests
         Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.Gun),Is.EqualTo(R4WeaponDefinition.Count));
         var healer=entries.Single(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.HealingDroneGenerator);
         Assert.That(Field(healer,"Name"),Is.EqualTo("Generator drona naprawczego"));
+        var support=entries.Single(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.SupportDroneGenerator);
+        Assert.That(Field(support,"Name"),Is.EqualTo("Generator drona energetycznego"));
         Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.ShieldTurretGenerator),Is.EqualTo(1));
         Assert.That(entries.Select(e=>(Field(e,"Kind"),Field(e,"Weapon"),Field(e,"Group"))).Distinct().Count(),Is.EqualTo(entries.Length));
     }

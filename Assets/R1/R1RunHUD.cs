@@ -297,11 +297,12 @@ namespace RoboRougelike.R1
                 bool hasFlyingDrone=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.FlyingDroneGenerator);
                 bool hasGroundDrone=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.GroundDroneGenerator);
                 bool hasHealingDrone=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.HealingDroneGenerator);
+                bool hasSupportDrone=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.SupportDroneGenerator);
                 bool hasOffensiveTurret=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.OffensiveTurretGenerator);
                 bool hasHealingTurret=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.HealingTurretGenerator);
                 bool hasSupportTurret=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.SupportTurretGenerator);
                 bool hasShieldTurret=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.ShieldTurretGenerator);
-                int extraStatusHeight=energy!=null?CombatAbilityExtraHeight((repairPulse!=null?1:0)+(hasOverdrive?1:0)+(hasRapidFire?1:0)+(hasDoubleBoost?1:0)+(hasTargetEmp?1:0)+(hasAreaEmp?1:0)+(recharge!=null?1:0)+(hasRamp?1:0)+(hasWall?1:0)+(hasJumpPad?1:0)+(hasBlastTrap?1:0)+(hasEmpTrap?1:0)+(hasRepelTrap?1:0)+(hasDamageTrap?1:0)+(hasSlowTrap?1:0)+(hasImmobilizeTrap?1:0)+(hasFlyingDrone?1:0)+(hasGroundDrone?1:0)+(hasHealingDrone?1:0)+(hasOffensiveTurret?1:0)+(hasHealingTurret?1:0)+(hasSupportTurret?1:0)+(hasShieldTurret?1:0)):0;
+                int extraStatusHeight=energy!=null?CombatAbilityExtraHeight((repairPulse!=null?1:0)+(hasOverdrive?1:0)+(hasRapidFire?1:0)+(hasDoubleBoost?1:0)+(hasTargetEmp?1:0)+(hasAreaEmp?1:0)+(recharge!=null?1:0)+(hasRamp?1:0)+(hasWall?1:0)+(hasJumpPad?1:0)+(hasBlastTrap?1:0)+(hasEmpTrap?1:0)+(hasRepelTrap?1:0)+(hasDamageTrap?1:0)+(hasSlowTrap?1:0)+(hasImmobilizeTrap?1:0)+(hasFlyingDrone?1:0)+(hasGroundDrone?1:0)+(hasHealingDrone?1:0)+(hasSupportDrone?1:0)+(hasOffensiveTurret?1:0)+(hasHealingTurret?1:0)+(hasSupportTurret?1:0)+(hasShieldTurret?1:0)):0;
                 if(!lowCore&&modules!=null&&run.VehicleModel!=null)
                 {
                     var drive=run.VehicleModel.SelectedDrive;
@@ -354,6 +355,7 @@ namespace RoboRougelike.R1
                         if(hasFlyingDrone)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.FlyingDroneGenerator)} dron: {deploy.StatusFor(R3PartKind.FlyingDroneGenerator)}",small);
                         if(hasGroundDrone)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.GroundDroneGenerator)} dron naziemny: {deploy.StatusFor(R3PartKind.GroundDroneGenerator)}",small);
                         if(hasHealingDrone)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.HealingDroneGenerator)} dron naprawczy: {deploy.StatusFor(R3PartKind.HealingDroneGenerator)}",small);
+                        if(hasSupportDrone)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.SupportDroneGenerator)} dron energetyczny: {deploy.StatusFor(R3PartKind.SupportDroneGenerator)}",small);
                         if(hasOffensiveTurret)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.OffensiveTurretGenerator)} wieżyczka: {deploy.StatusFor(R3PartKind.OffensiveTurretGenerator)}",small);
                         if(hasHealingTurret)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.HealingTurretGenerator)} naprawa: {deploy.StatusFor(R3PartKind.HealingTurretGenerator)}",small);
                         if(hasSupportTurret)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.SupportTurretGenerator)} wsparcie: {deploy.StatusFor(R3PartKind.SupportTurretGenerator)}",small);

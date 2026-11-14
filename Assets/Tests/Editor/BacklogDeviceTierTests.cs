@@ -25,6 +25,20 @@ public sealed class BacklogDeviceTierTests
         checkpoint.healingDroneRemaining=float.NaN;
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out _,out _),Is.False);
     }
+    [Test] public void SupportDroneSettingsCopyAndOldCheckpointDefaultsAreValid()
+    {
+        var defaults=Resources.Load<R1RunDefinition>("R1/Run").GaragePrices;
+        Assert.That(defaults.SupportDroneRadius,Is.GreaterThan(0));Assert.That(defaults.SupportDroneEnergyPerSecond,Is.GreaterThan(0));
+        Assert.That(defaults.SupportDroneDamage,Is.GreaterThan(0));
+        var model=Model();model.Economy.SupportDroneRadius=11;model.Economy.SupportDroneEnergyPerSecond=4;model.Economy.SupportDroneDamage=7;
+        var copy=model.DeepCopy();Assert.That(copy.Economy.SupportDroneRadius,Is.EqualTo(11));
+        Assert.That(copy.Economy.SupportDroneEnergyPerSecond,Is.EqualTo(4));Assert.That(copy.Economy.SupportDroneDamage,Is.EqualTo(7));
+        var checkpoint=model.MakeCheckpoint(0);checkpoint.supportDroneRemaining=0;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.SupportDroneReadyAt,Is.Zero);
+        checkpoint.supportDroneRemaining=float.NaN;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out _,out _),Is.False);
+    }
     [Test] public void ShieldDurabilityRewardExistsAndKeepsItsIdentity()
     {
         Assert.That(System.Enum.TryParse("ShieldDurability",out R1UpgradeEffect effect),Is.True);
@@ -741,6 +755,47 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(Vector3.Distance(turret.transform.position,origin),Is.LessThan(.01),"Turret must remain stationary");
         durability.ApplyDamage(10000,turret.transform.position,Vector3.up);yield return null;
         Assert.That(turret==null||!turret.activeInHierarchy,Is.True);Object.Destroy(floor);
+    }
+    [UnityTest] public IEnumerator SupportDroneRechargesOwnerAndAttacksWithIndependentResources()
+    {
+        Assert.That(System.Enum.TryParse("SupportDroneGenerator",out R3PartKind kind),Is.True,"Missing support drone generator");
+        Assert.That(R3VehicleModel.IsDeployableSlotPart(kind),Is.True);
+        run.VehicleModel.Award(2500);FuseAndMount(kind);FuseAndMount(R3PartKind.HealingDroneGenerator);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.zero;body.isKinematic=true;Physics.SyncTransforms();
+        run.VehicleModel.Economy.DroneCooldown=30;
+        var bank=player.GetComponent<VehicleEnergyBank>();bank.enabled=false;Assert.That(bank.TrySpend(80),Is.True);
+        float beforeInvalid=bank.Current;run.VehicleModel.Economy.SupportDroneRadius=float.NaN;
+        Assert.That(service.TryDeploy(kind),Is.False);Assert.That(bank.Current,Is.EqualTo(beforeInvalid));
+        Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.SupportDronePool),Is.EqualTo(run.VehicleModel.Economy.DeviceBaseCharges));
+        run.VehicleModel.Economy.SupportDroneRadius=8;
+        Assert.That(service.TryDeploy(kind),Is.True);var drone=GameObject.Find("Dron energetyczny");Assert.That(drone,Is.Not.Null);
+        Assert.That(drone.GetComponent<R3SupportTurret>(),Is.Not.Null);
+        float energy=bank.Current;Physics.SyncTransforms();for(int i=0;i<15;i++)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(bank.Current,Is.GreaterThan(energy),"The drone must recharge the owner's real energy bank.");
+        int remaining=run.VehicleModel.Charges.Current(R3DeployableService.SupportDronePool);
+        Assert.That(service.TryDeploy(R3PartKind.HealingDroneGenerator),Is.True,"Other drone roles have independent limits and cooldowns.");
+        Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.SupportDronePool),Is.EqualTo(remaining));
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"support-drone-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();enemy.ConfigureMovement(0,12,0);var enemyBody=enemy.GetComponent<Rigidbody>();
+        GameObject.Find("Dron naprawczy").GetComponent<R3FlyingDrone>().enabled=false;
+        enemyBody.position=drone.GetComponent<Rigidbody>().position+new Vector3(12,0,0);enemyBody.isKinematic=true;Physics.SyncTransforms();
+        float enemyHp=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        float deadline=Time.realtimeSinceStartup+12;
+        while(Time.realtimeSinceStartup<deadline&&enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp)>=enemyHp)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.LessThan(enemyHp));
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(run.VehicleModel.MakeCheckpoint(Time.time)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,run.VehicleModel.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.GetDeployableSlots(),Does.Contain(kind));
+        var ready=typeof(R3VehicleModel).GetProperty("SupportDroneReadyAt");Assert.That(ready,Is.Not.Null);
+        Assert.That((float)ready.GetValue(restored),Is.GreaterThan(Time.time));
+        Assert.That(restored.Charges.Current(R3DeployableService.SupportDronePool),Is.EqualTo(remaining));
+        Assert.That(restored.TryEnterSafeZone(2),Is.True);Assert.That((float)ready.GetValue(restored),Is.Zero);
+        bank.enabled=true;
     }
     [UnityTest] public IEnumerator HealingDroneHasIndependentSlotRepairsAndFires()
     {
