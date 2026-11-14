@@ -603,7 +603,8 @@ namespace RoboRougelike.R3
         {
             if(kind==R3PartKind.Armor&&shape==R3ArmorShape.Cube)return Math.Max(1,Economy.BlockGrantQuantity);
             if(kind==R3PartKind.Wheel||kind==R3PartKind.OmniDrive||kind==R3PartKind.HoverEngine||
-                kind==R3PartKind.CrawlerTrack||kind==R3PartKind.Booster||kind==R3PartKind.JumpDrive||kind==R3PartKind.DrivePower)
+                kind==R3PartKind.CrawlerTrack||kind==R3PartKind.Booster||kind==R3PartKind.JumpDrive||
+                kind==R3PartKind.Blink||kind==R3PartKind.MagneticGrapple||kind==R3PartKind.DrivePower)
                 return Math.Max(1,Economy.DriveGrantQuantity);
             return 1;
         }

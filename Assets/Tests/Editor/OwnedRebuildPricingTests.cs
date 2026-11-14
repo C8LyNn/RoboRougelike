@@ -8,7 +8,7 @@ public sealed class OwnedRebuildPricingTests
 {
     [TestCase(R3PartKind.Wheel)][TestCase(R3PartKind.OmniDrive)][TestCase(R3PartKind.HoverEngine)]
     [TestCase(R3PartKind.CrawlerTrack)][TestCase(R3PartKind.Booster)][TestCase(R3PartKind.JumpDrive)]
-    [TestCase(R3PartKind.DrivePower)]
+    [TestCase(R3PartKind.DrivePower)][TestCase(R3PartKind.Blink)][TestCase(R3PartKind.MagneticGrapple)]
     public void DrivePacksAreGrantedOnceByShopAndRewardsButNotByFusion(R3PartKind kind)
     {
         var model=Model();model.Award(1000);Assert.That(model.PurchaseToInventory(kind),Is.True);
@@ -24,6 +24,21 @@ public sealed class OwnedRebuildPricingTests
         var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
         Assert.That(restored.Inventory.Count(p=>p.Kind==kind&&p.Tier==2),Is.EqualTo(1));
+    }
+    [TestCase(R3PartKind.Blink)][TestCase(R3PartKind.MagneticGrapple)]
+    public void ActiveMovementPickupGivesOneConfiguredPackWithOneOriginalId(R3PartKind kind)
+    {
+        var model=Model();model.Economy.DriveGrantQuantity=3;
+        var part=new R3PartState(default,kind,.6f){Id="active-movement-drop"};
+        var ledger=new R4SalvageLedger(3);
+        Assert.That(ledger.Record("enemy",new[]{new R4SalvageItem(part,.6f)}),Is.True);
+        Assert.That(ledger.MarkPhysicalDrop(part.Id),Is.True);
+        Assert.That(ledger.TryCollectPhysical(model,part.Id),Is.True);
+        Assert.That(model.Inventory.Count,Is.EqualTo(3));
+        Assert.That(model.Inventory.Count(p=>p.Id==part.Id),Is.EqualTo(1));
+        Assert.That(model.Inventory.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(3));
+        Assert.That(model.Inventory.All(p=>p.Kind==kind&&p.Health==.6f),Is.True);
+        Assert.That(ledger.TryCollectPhysical(model,part.Id),Is.False);
     }
     static R3VehicleModel Model(R3GarageEconomy economy=null)=>new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light),economy);
     [TestCase(R3PartKind.Armor,5)][TestCase(R3PartKind.Wheel,15)][TestCase(R3PartKind.Gun,30)]
