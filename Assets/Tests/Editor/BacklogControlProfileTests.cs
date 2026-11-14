@@ -11,6 +11,48 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [TestCase(KeyCode.Keypad0,"Numpad0")]
+    [TestCase(KeyCode.Keypad9,"Numpad9")]
+    [TestCase(KeyCode.KeypadDivide,"NumpadDivide")]
+    [TestCase(KeyCode.KeypadMultiply,"NumpadMultiply")]
+    [TestCase(KeyCode.KeypadPlus,"NumpadPlus")]
+    [TestCase(KeyCode.KeypadMinus,"NumpadMinus")]
+    [TestCase(KeyCode.KeypadPeriod,"NumpadPeriod")]
+    [TestCase(KeyCode.KeypadEnter,"NumpadEnter")]
+    public void NumericKeypadEventsUseInputSystemNames(KeyCode key,string expected)
+    {
+        var input=new Event{type=EventType.KeyDown,keyCode=key};
+        Assert.That(R1ControlProfile.FromEvent(input),Is.EqualTo(expected));
+        Assert.That(R1ControlProfile.ValidBinding(expected),Is.True);
+    }
+
+    [Test] public void KeypadBindingIsCapturedSavedAndReadByInputSystem()
+    {
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-numpad-"+Guid.NewGuid()+".json");
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            var input=new Event{type=EventType.KeyDown,keyCode=KeyCode.Keypad9};
+            var profile=new R1ControlProfile(path);
+            Assert.That(profile.TrySaveBinding("MoveForward",R1ControlProfile.FromEvent(input),out _),Is.True);
+            var loaded=new R1ControlProfile(path);Assert.That(loaded.MatchesEvent("MoveForward",input),Is.True);
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Numpad9));InputSystem.Update();
+            Assert.That(loaded.Pressed("MoveForward"),Is.True);
+        }
+        finally{InputSystem.RemoveDevice(keyboard);if(File.Exists(path))File.Delete(path);}
+    }
+    [Test] public void GarageViewBindingsExplainConflictsWithFixedGarageShortcuts()
+    {
+        var profile=new R1ControlProfile(Path.Combine(Path.GetTempPath(),"RRL-controls-garage-keys-"+Guid.NewGuid()+".json"));
+        Assert.That(profile.TryBind("Weapon3","K"),Is.True);
+        foreach(string key in new[]{"Q","Numpad1","Numpad5","Slash","NumpadDivide"})
+        {
+            Assert.That(profile.TrySaveBinding("GarageFrame",key,out var message),Is.False,key);
+            Assert.That(message,Does.Contain("garażu"),key);
+        }
+        Assert.That(profile.TryBind("MoveForward","Numpad1"),Is.True,"Garage-only shortcuts must not prevent combat bindings.");
+        Assert.That(profile.TryBind("GarageFrame","Numpad9"),Is.True);
+    }
     [Test] public void GarageFrameBindingMigratesOldProfilesWithoutTakingTheirHomeKey()
     {
         string path=Path.Combine(Path.GetTempPath(),"RRL-controls-frame-"+Guid.NewGuid()+".json");

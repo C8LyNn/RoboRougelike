@@ -17,6 +17,9 @@ namespace RoboRougelike.R1
             "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails","ResetRange","WeaponStatusPage","DefenseStatusPage","GarageUnderside","GarageFrame"};
         static readonly string[] Defaults={"W","S","A","D","MouseLeft","MouseRight","Q","E",
             "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I","R","Tab","P","U","Home"};
+        static readonly HashSet<string> FixedGarageKeys=new HashSet<string>{"Q","E","R","F","Z","X","Slash","NumpadDivide",
+            "Digit1","Digit2","Digit3","Digit4","Digit5","Digit6","Digit7","Digit8",
+            "Numpad1","Numpad2","Numpad3","Numpad4","Numpad5","Numpad6","Numpad7","Numpad8"};
         const int OriginalActionCount=20;
         readonly Dictionary<string,string> bindings=new Dictionary<string,string>();
         readonly string path;
@@ -65,7 +68,7 @@ namespace RoboRougelike.R1
             {
                 if(!missing[i])continue;
                 var candidates=new[]{Defaults[i],"F5","F6","F7","F9","F11","F12"}.Concat(Enum.GetNames(typeof(Key)));
-                string chosen=candidates.FirstOrDefault(key=>ValidBinding(key)&&!Reserved(key)&&!used.Contains(key));
+                string chosen=candidates.FirstOrDefault(key=>ValidBinding(key)&&!Reserved(key)&&!GarageKeyReserved(Actions[i],key)&&!used.Contains(key));
                 values[i]=chosen;if(chosen!=null)used.Add(chosen);
             }
         }
@@ -96,9 +99,14 @@ namespace RoboRougelike.R1
         // These buttons already place, remove/orbit and pick parts in the garage.
         static bool GarageMouseReserved(string action,string binding)=>(action=="GarageUnderside"||action=="GarageFrame")&&
             (binding=="MouseLeft"||binding=="MouseRight"||binding=="MouseMiddle");
+        // These controls still have fixed garage actions. Existing profiles
+        // remain readable; new conflicting assignments are rejected clearly.
+        static bool GarageKeyReserved(string action,string binding)=>(action=="GarageUnderside"||action=="GarageFrame")&&
+            FixedGarageKeys.Contains(binding);
         public static string Display(string binding)=>binding=="MouseLeft"?"LPM":binding=="MouseRight"?"PPM":
             binding=="MouseMiddle"?"ŚPM":binding=="MouseForward"?"Mysz 4":binding=="MouseBack"?"Mysz 5":
             binding=="Comma"?",":binding=="Period"?".":
+            binding!=null&&binding.StartsWith("Numpad",StringComparison.Ordinal)?"Num "+binding.Substring(6):
             binding!=null&&binding.StartsWith("Digit",StringComparison.Ordinal)?binding.Substring(5):binding??"—";
         public static string FromEvent(Event e)
         {
@@ -108,19 +116,21 @@ namespace RoboRougelike.R1
             if(e.type!=EventType.KeyDown||e.alt||e.control||e.command)return null;
             string name=e.keyCode.ToString();
             if(name.StartsWith("Alpha",StringComparison.Ordinal))return "Digit"+name.Substring(5);
+            if(name.StartsWith("Keypad",StringComparison.Ordinal))return "Numpad"+name.Substring(6);
             if(name=="Return")return "Enter";
             return name;
         }
         public bool MatchesEvent(string action,Event e)=>string.Equals(Binding(action),FromEvent(e),StringComparison.Ordinal);
         public bool TryBind(string action,string binding)
         {
-            if(!bindings.ContainsKey(action)||!ValidBinding(binding)||Reserved(binding)||GarageMouseReserved(action,binding)||Conflict(action,binding)!=null)return false;
+            if(!bindings.ContainsKey(action)||!ValidBinding(binding)||Reserved(binding)||GarageMouseReserved(action,binding)||GarageKeyReserved(action,binding)||Conflict(action,binding)!=null)return false;
             bindings[action]=binding;return true;
         }
         public bool TrySaveBinding(string action,string binding,out string message)
         {
             var old=Binding(action);string conflict=Conflict(action,binding);
             if(GarageMouseReserved(action,binding)){message="Ten przycisk wykonuje już podstawową akcję w garażu.";return false;}
+            if(GarageKeyReserved(action,binding)){message="Ten klawisz wykonuje już inną akcję w garażu.";return false;}
             if(Reserved(binding)){message="Ten klawisz jest używany przez inne sterowanie.";return false;}
             if(conflict!=null){message="Ten przycisk jest już używany: "+ActionName(conflict)+".";return false;}
             if(!TryBind(action,binding)){message="Nie można przypisać tego przycisku.";return false;}
