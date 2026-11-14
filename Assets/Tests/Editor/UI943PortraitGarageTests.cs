@@ -7,6 +7,19 @@ using UnityEngine;
 
 public sealed class UI943PortraitGarageTests
 {
+    [Test] public void GarageToolShortcutUsesProfileAndRespectsAssignedKeypadKeys()
+    {
+        var method=typeof(R3GarageView).GetMethod("ToolShortcutForProfile",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        var profile=new R1ControlProfile(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"RRL-garage-tools-"+System.Guid.NewGuid()+".json"));
+        object Match(KeyCode key)=>method.Invoke(null,new object[]{new Event{type=EventType.KeyDown,keyCode=key},profile});
+        Assert.That(Match(KeyCode.Alpha3),Is.EqualTo(R41GarageTool.Repair));Assert.That(Match(KeyCode.Keypad3),Is.EqualTo(R41GarageTool.Repair));
+        Assert.That(profile.TryBind("GarageFrame","Numpad3"),Is.True);Assert.That(Match(KeyCode.Keypad3),Is.Null);
+        Assert.That(profile.TryBind("GarageToolRepair","K"),Is.True);
+        Assert.That(Match(KeyCode.K),Is.EqualTo(R41GarageTool.Repair));Assert.That(Match(KeyCode.Alpha3),Is.Null);
+        Assert.That(profile.TryBind("GarageToolRepair","MouseBack"),Is.True);
+        Assert.That(method.Invoke(null,new object[]{new Event{type=EventType.MouseDown,button=3},profile}),Is.EqualTo(R41GarageTool.Repair));
+    }
     [TestCase(2,true,"kolejnej części")]
     [TestCase(1,false,"zniszczone")]
     [TestCase(0,false,"Brak kolejnych")]
@@ -26,9 +39,11 @@ public sealed class UI943PortraitGarageTests
     [TestCase(KeyCode.A,false,null)]
     public void ToolShortcutsIgnoreModifiersAndOtherKeys(KeyCode key,bool modified,object expected)
     {
-        var method=typeof(R3GarageView).GetMethod("ToolShortcut",BindingFlags.Static|BindingFlags.NonPublic);
+        var method=typeof(R3GarageView).GetMethod("ToolShortcutForProfile",BindingFlags.Static|BindingFlags.NonPublic);
+        var profile=new R1ControlProfile(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"RRL-tool-keys-"+System.Guid.NewGuid()+".json"));
+        var input=new Event{type=EventType.KeyDown,keyCode=key,modifiers=modified?EventModifiers.Control:EventModifiers.None};
         Assert.That(method,Is.Not.Null);
-        Assert.That(method.Invoke(null,new object[]{key,modified}),Is.EqualTo(expected));
+        Assert.That(method.Invoke(null,new object[]{input,profile}),Is.EqualTo(expected));
     }
     [Test]
     public void MapEditorAndOverlaysKeepTheirOwnLayout()

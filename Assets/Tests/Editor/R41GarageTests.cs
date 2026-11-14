@@ -619,6 +619,23 @@ public class R41GarageTests
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(wallet));Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(parts));
         yield return null;
     }
+    [UnityTest] public IEnumerator ReassignedToolUsesGarageContextWithoutEditingVehicle()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("GarageToolRepair","K"),Is.True);
+            Assert.That(profile.TryBind("Weapon1","K"),Is.True);
+            var garage=Run.Garage;int wallet=Run.VehicleModel.Scrap,parts=Run.VehicleModel.Parts.Count;
+            garage.SetTool(R41GarageTool.Mount);garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K},Vector2.zero);
+            Assert.That(garage.Tool,Is.EqualTo(R41GarageTool.Repair));
+            garage.SetTool(R41GarageTool.Mount);garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.Alpha3},Vector2.zero);
+            Assert.That(garage.Tool,Is.EqualTo(R41GarageTool.Mount));
+            Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(wallet));Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(parts));
+        }
+        finally{profile.ResetDefaults();}
+        yield return null;
+    }
     [UnityTest] public IEnumerator GuiPointerEventsOrbitZoomAndNeverBuyThroughPanels()
     {
         var garage=Run.Garage;garage.Point(TopRay(new Vector3Int(2,1,2)));int funds=Run.VehicleModel.Scrap;

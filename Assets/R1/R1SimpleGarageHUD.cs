@@ -797,11 +797,12 @@ namespace RoboRougelike.R1
             Panel(new Rect(0,0,1280,76));Panel(new Rect(0,76,270,644));
             GUI.Label(new Rect(14,10,150,34),"GARAŻ",heading);
             GUI.Label(new Rect(14,40,245,36),model.CreativeMode?$"Darmowe części • Energia: {model.Energy.Maximum:0}":$"Złom: {model.Scrap} • {model.ConstructionBudgetUsed}/{model.ConstructionBudgetLimit} pkt\n{model.ConstructionSizeLabel}: {model.PhysicalPartCount} części • Energia: {model.Energy.Maximum:0}",small);
-            string[] labels={"1 Montuj","2 Zaznacz","3 Napraw","4 Zdejmij"};
+            string[] labels={"Montuj","Zaznacz","Napraw","Zdejmij"};
             for(int i=0;i<labels.Length;i++)
             {
                 compactButton.normal.background=garage.Tool==(R41GarageTool)i?buttonPressed:buttonNormal;GUI.backgroundColor=Color.white;
-                if(GUI.Button(new Rect(284+i*116,15,108,42),labels[i],compactButton))garage.SelectTool((R41GarageTool)i);
+                string caption=R1ControlProfile.Display(R1ControlProfile.Current.Binding(R3GarageView.ToolActions[i]))+" "+labels[i];
+                if(GUI.Button(new Rect(284+i*116,15,108,42),caption,compactButton))garage.SelectTool((R41GarageTool)i);
                 compactButton.normal.background=buttonNormal;
             }
             GUI.backgroundColor=Color.white;
@@ -868,11 +869,12 @@ namespace RoboRougelike.R1
             var garage=run.Garage;var model=run.VehicleModel;GUI.enabled=!garageOptionsOpen;
             GUI.Label(new Rect(24,12,185,40),"GARAŻ",heading);
             GUI.Label(new Rect(210,18,530,35),model.CreativeMode?$"{model.Design.Name} • Darmowe części • Energia: {model.Energy.Maximum:0}":$"{model.Design.Name} • {model.Scrap} Z • {model.ConstructionBudgetUsed}/{model.ConstructionBudgetLimit} pkt • Energia: {model.Energy.Maximum:0}",body);
-            string[] labels={"1 Montuj","2 Zaznacz","3 Napraw","4 Zdejmij"};
+            string[] labels={"Montuj","Zaznacz","Napraw","Zdejmij"};
             for(int i=0;i<labels.Length;i++)
             {
                 compactButton.normal.background=garage.Tool==(R41GarageTool)i?buttonPressed:buttonNormal;GUI.backgroundColor=Color.white;
-                if(GUI.Button(new Rect(24+i*183,584,171,42),labels[i],compactButton))garage.SelectTool((R41GarageTool)i);
+                string caption=R1ControlProfile.Display(R1ControlProfile.Current.Binding(R3GarageView.ToolActions[i]))+" "+labels[i];
+                if(GUI.Button(new Rect(24+i*183,584,171,42),caption,compactButton))garage.SelectTool((R41GarageTool)i);
                 compactButton.normal.background=buttonNormal;
             }
             GUI.backgroundColor=Color.white;

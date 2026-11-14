@@ -20,8 +20,8 @@ public sealed class UI943PortraitCatalogActionsTests
         var profile=new R1ControlProfile(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"RRL-categories-"+Guid.NewGuid()+".json"));
         object Match(KeyCode key)=>method.Invoke(null,new object[]{new Event{type=EventType.KeyDown,keyCode=key},profile});
         Assert.That(Match(KeyCode.Alpha6),Is.EqualTo(1));Assert.That(Match(KeyCode.Keypad6),Is.EqualTo(1));
-        Assert.That(profile.TryBind("MoveForward","Numpad6"),Is.True);Assert.That(Match(KeyCode.Keypad6),Is.Null);
-        Assert.That(profile.TryBind("MoveForward","W"),Is.True);Assert.That(profile.TryBind("GarageWheels","K"),Is.True);
+        Assert.That(profile.TryBind("GarageFrame","Numpad6"),Is.True);Assert.That(Match(KeyCode.Keypad6),Is.Null);
+        Assert.That(profile.TryBind("GarageFrame","Home"),Is.True);Assert.That(profile.TryBind("GarageWheels","K"),Is.True);
         Assert.That(Match(KeyCode.K),Is.EqualTo(1));Assert.That(Match(KeyCode.Alpha6),Is.Null);Assert.That(Match(KeyCode.Keypad6),Is.Null);
         Assert.That(profile.TryBind("GarageWheels","MouseBack"),Is.True);
         Assert.That(method.Invoke(null,new object[]{new Event{type=EventType.MouseDown,button=3},profile}),Is.EqualTo(1));
@@ -33,9 +33,9 @@ public sealed class UI943PortraitCatalogActionsTests
         var profile=new R1ControlProfile(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"RRL-search-"+Guid.NewGuid()+".json"));
         bool Match(KeyCode key)=> (bool)method.Invoke(null,new object[]{new Event{type=EventType.KeyDown,keyCode=key},profile});
         Assert.That(Match(KeyCode.Slash),Is.True);Assert.That(Match(KeyCode.KeypadDivide),Is.True);
-        Assert.That(profile.TryBind("MoveForward","NumpadDivide"),Is.True);
+        Assert.That(profile.TryBind("GarageFrame","NumpadDivide"),Is.True);
         Assert.That(Match(KeyCode.KeypadDivide),Is.False,"The legacy alias must not take an already assigned key.");
-        Assert.That(profile.TryBind("MoveForward","W"),Is.True);
+        Assert.That(profile.TryBind("GarageFrame","Home"),Is.True);
         Assert.That(profile.TryBind("GarageSearch","K"),Is.True);
         Assert.That(Match(KeyCode.K),Is.True);Assert.That(Match(KeyCode.Slash),Is.False);Assert.That(Match(KeyCode.KeypadDivide),Is.False);
         Assert.That((bool)method.Invoke(null,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.K,control=true},profile}),Is.False);

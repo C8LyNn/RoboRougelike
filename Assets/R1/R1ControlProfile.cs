@@ -14,12 +14,10 @@ namespace RoboRougelike.R1
     {
         public static readonly string[] Actions={"MoveForward","MoveBackward","TurnLeft","TurnRight",
             "Weapon1","Weapon2","Weapon3","Weapon4","Active1","Active2","Active3","Active4",
-            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails","ResetRange","WeaponStatusPage","DefenseStatusPage","GarageUnderside","GarageFrame","GarageSearch","GarageBlocks","GarageWheels","GarageWeapons","GarageModules"};
+            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails","ResetRange","WeaponStatusPage","DefenseStatusPage","GarageUnderside","GarageFrame","GarageSearch","GarageBlocks","GarageWheels","GarageWeapons","GarageModules","GarageToolMount","GarageToolInspect","GarageToolRepair","GarageToolRemove"};
         static readonly string[] Defaults={"W","S","A","D","MouseLeft","MouseRight","Q","E",
-            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I","R","Tab","P","U","Home","Slash","Digit5","Digit6","Digit7","Digit8"};
-        static readonly HashSet<string> FixedGarageKeys=new HashSet<string>{"Q","E","R","F","Z","X","Slash","NumpadDivide",
-            "Digit1","Digit2","Digit3","Digit4","Digit5","Digit6","Digit7","Digit8",
-            "Numpad1","Numpad2","Numpad3","Numpad4","Numpad5","Numpad6","Numpad7","Numpad8"};
+            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I","R","Tab","P","U","Home","Slash","Digit5","Digit6","Digit7","Digit8","Digit1","Digit2","Digit3","Digit4"};
+        static readonly HashSet<string> FixedGarageKeys=new HashSet<string>{"Q","E","R","F","Z","X"};
         const int OriginalActionCount=20;
         readonly Dictionary<string,string> bindings=new Dictionary<string,string>();
         readonly string path;
@@ -64,19 +62,23 @@ namespace RoboRougelike.R1
         static void FillMissing(string[] values,bool[] missing)
         {
             var used=new HashSet<string>(values.Where((v,i)=>!missing[i]&&v!=null),StringComparer.OrdinalIgnoreCase);
+            var garageUsed=new HashSet<string>(values.Where((v,i)=>!missing[i]&&v!=null&&GarageAction(Actions[i])),StringComparer.OrdinalIgnoreCase);
             for(int i=0;i<values.Length;i++)
             {
                 if(!missing[i])continue;
                 var candidates=new[]{Defaults[i],"F5","F6","F7","F9","F11","F12"}.Concat(Enum.GetNames(typeof(Key)));
-                string chosen=candidates.FirstOrDefault(key=>ValidBinding(key)&&!Reserved(key)&&!GarageKeyReserved(Actions[i],key)&&!used.Contains(key));
-                values[i]=chosen;if(chosen!=null)used.Add(chosen);
+                string chosen=candidates.FirstOrDefault(key=>ValidBinding(key)&&!Reserved(key)&&!GarageKeyReserved(Actions[i],key)&&
+                    !(GarageToolAction(Actions[i])?garageUsed:used).Contains(key));
+                values[i]=chosen;if(chosen!=null){used.Add(chosen);if(GarageAction(Actions[i]))garageUsed.Add(chosen);}
             }
         }
         public static bool ValidSnapshot(string[] values)
         {
             var full=NormalizeSnapshot(values);
-            return full!=null&&full.Length==Actions.Length&&full.Select((value,i)=>ValidBinding(value)&&!Reserved(value)&&!GarageMouseReserved(Actions[i],value)).All(valid=>valid)&&
-                full.Distinct(StringComparer.OrdinalIgnoreCase).Count()==Actions.Length;
+            if(full==null||full.Length!=Actions.Length||!full.Select((value,i)=>ValidBinding(value)&&!Reserved(value)&&!GarageMouseReserved(Actions[i],value)).All(valid=>valid))return false;
+            for(int i=0;i<full.Length;i++)for(int j=0;j<i;j++)
+                if(SameContext(Actions[i],Actions[j])&&string.Equals(full[i],full[j],StringComparison.OrdinalIgnoreCase))return false;
+            return true;
         }
         public bool TryRestoreSnapshot(string[] values,out string message)
         {
@@ -85,7 +87,7 @@ namespace RoboRougelike.R1
             try{Save();message="Przywrócono przypisania klawiszy.";return true;}
             catch(Exception error){RestoreValues(previous);message="Nie przywrócono klawiszy: "+error.Message;return false;}
         }
-        public string Conflict(string action,string binding)=>bindings.FirstOrDefault(x=>x.Key!=action&&
+        public string Conflict(string action,string binding)=>bindings.FirstOrDefault(x=>x.Key!=action&&SameContext(x.Key,action)&&
             string.Equals(x.Value,binding,StringComparison.OrdinalIgnoreCase)).Key;
         public static bool ValidBinding(string binding)
         {
@@ -98,15 +100,14 @@ namespace RoboRougelike.R1
             "UpArrow","DownArrow","LeftArrow","RightArrow","F4","F8","F10"}.Contains(binding);
         // These buttons already place, remove/orbit and pick parts in the garage.
         static bool GarageCategoryAction(string action)=>action=="GarageBlocks"||action=="GarageWheels"||action=="GarageWeapons"||action=="GarageModules";
-        static bool GarageAction(string action)=>action=="GarageUnderside"||action=="GarageFrame"||action=="GarageSearch"||GarageCategoryAction(action);
+        static bool GarageToolAction(string action)=>action=="GarageToolMount"||action=="GarageToolInspect"||action=="GarageToolRepair"||action=="GarageToolRemove";
+        static bool GarageAction(string action)=>action=="GarageUnderside"||action=="GarageFrame"||action=="GarageSearch"||GarageCategoryAction(action)||GarageToolAction(action);
+        static bool SameContext(string left,string right)=>GarageAction(left)==GarageAction(right);
         static bool GarageMouseReserved(string action,string binding)=>GarageAction(action)&&
             (binding=="MouseLeft"||binding=="MouseRight"||binding=="MouseMiddle");
         // These controls still have fixed garage actions. Existing profiles
         // remain readable; new conflicting assignments are rejected clearly.
-        static bool GarageKeyReserved(string action,string binding)=>GarageAction(action)&&
-            !(action=="GarageSearch"&&(binding=="Slash"||binding=="NumpadDivide"))&&
-            !(GarageCategoryAction(action)&&(binding=="Digit5"||binding=="Digit6"||binding=="Digit7"||binding=="Digit8"||
-                binding=="Numpad5"||binding=="Numpad6"||binding=="Numpad7"||binding=="Numpad8"))&&FixedGarageKeys.Contains(binding);
+        static bool GarageKeyReserved(string action,string binding)=>GarageAction(action)&&FixedGarageKeys.Contains(binding);
         public static string Display(string binding)=>binding=="MouseLeft"?"LPM":binding=="MouseRight"?"PPM":
             binding=="MouseMiddle"?"ŚPM":binding=="MouseForward"?"Mysz 4":binding=="MouseBack"?"Mysz 5":
             binding=="Comma"?",":binding=="Period"?".":binding=="Slash"?"/":binding=="NumpadDivide"?"Num /":
@@ -154,7 +155,9 @@ namespace RoboRougelike.R1
                 case "GarageUnderside":return "Garaż: widok od spodu";case "GarageFrame":return "Garaż: dopasuj widok";
                 case "GarageSearch":return "Garaż: szukaj części";
                 case "GarageBlocks":return "Garaż: bloki";case "GarageWheels":return "Garaż: koła";
-                case "GarageWeapons":return "Garaż: broń";case "GarageModules":return "Garaż: moduły";}
+                case "GarageWeapons":return "Garaż: broń";case "GarageModules":return "Garaż: moduły";
+                case "GarageToolMount":return "Garaż: montuj";case "GarageToolInspect":return "Garaż: zaznacz";
+                case "GarageToolRepair":return "Garaż: napraw";case "GarageToolRemove":return "Garaż: zdejmij";}
             if(action.StartsWith("Weapon"))return "Broń "+action.Substring(6);
             if(action.StartsWith("Active"))return "Moduł "+action.Substring(6);
             if(action.StartsWith("Deploy"))return "Urządzenie "+action.Substring(6);
