@@ -40,6 +40,16 @@ namespace RoboRougelike.R3
         private float rapidFireReduction;
         public R1RunStats EffectiveStats {get;private set;}
 
+        // Shared global damage group for owned deployables. Weapon-specific
+        // groups are deliberately excluded and remain on their weapon path.
+        public static float ScaleOwnedDamage(Transform owner,float amount)
+        {
+            if(float.IsNaN(amount)||float.IsInfinity(amount)||amount<=0)return 0;
+            var effects=owner!=null?owner.GetComponentInParent<R3MountedBonusEffects>():null;
+            float factor=effects?.EffectiveStats?.Damage??1f;
+            return (float)System.Math.Min(float.MaxValue,(double)amount*factor);
+        }
+
         public void SetOverdriveIncrease(float increase)
         {
             if(float.IsNaN(increase)||float.IsInfinity(increase)||increase<0)increase=0;

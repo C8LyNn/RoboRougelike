@@ -154,7 +154,7 @@ namespace RoboRougelike.R3
             var renderer=GetComponent<Renderer>();if(renderer!=null)shell.GetComponent<Renderer>().sharedMaterial=renderer.sharedMaterial;
             var shellCollider=shell.GetComponent<Collider>();foreach(var c in GetComponentsInChildren<Collider>())if(c!=null)Physics.IgnoreCollision(shellCollider,c,true);
             var rb=shell.AddComponent<Rigidbody>();rb.mass=1;rb.useGravity=false;rb.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;rb.linearVelocity=direction*38;
-            shell.AddComponent<P17PhysicalShell>().Configure(owner,damage,3,direction,target!=null?target.transform:null,45);
+            shell.AddComponent<P17PhysicalShell>().Configure(owner,R3MountedBonusEffects.ScaleOwnedDamage(owner,damage),3,direction,target!=null?target.transform:null,45);
         }
     }
 }

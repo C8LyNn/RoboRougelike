@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoboRougelike.R1.R1UpgradeDefinition
   Id: damage_more
   Title: "Wzmacniacz obrażeń"
-  Description: "Osobny mnożnik ×1,2 obrażeń broni za sprawny moduł."
+  Description: "Osobny mnożnik ×1,2 obrażeń broni, dronów, wieżyczek i pułapek za sprawny moduł."
   Effect: 1
   Operation: 2
   Amount: 0.2

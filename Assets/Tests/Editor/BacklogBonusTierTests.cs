@@ -226,6 +226,60 @@ public sealed class BacklogBonusTierGameplayTests
         Assert.That(hp.CurrentHp,Is.EqualTo(1000-40*1.8f).Within(.02),"Disabling the scoped module removes only its contribution.");
         Object.Destroy(muzzle.gameObject);Object.Destroy(target);Object.Destroy(global);Object.Destroy(more);Object.Destroy(basic);
     }
+    [UnityTest] public IEnumerator GlobalDamageBonusReachesDroneAndTurretButBasicCannonBonusDoesNot()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var global=BacklogBonusTierTests.OperationBonus("global-device",.25f,"Increased");
+        var basic=BacklogBonusTierTests.OperationBonus("basic-only-device",.3f,"Increased");basic.Scope=R1BonusScope.BasicCannon;
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{global,basic}),Is.True);
+        foreach(var id in model.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            var cell=cells.First(c=>model.OwnedPlacementError(id,c,default)==null);Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var globalPart=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeScope==R1BonusScope.Global);
+        var fire=typeof(R3FlyingDrone).GetMethod("Fire",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance);
+        Assert.That(fire,Is.Not.Null);
+        for(int i=0;i<2;i++)
+        {
+            var device=GameObject.CreatePrimitive(PrimitiveType.Cube);device.transform.position=new Vector3(1000+i*10,1000,1000);
+            var body=device.AddComponent<Rigidbody>();body.isKinematic=true;var gun=device.AddComponent<R3FlyingDrone>();
+            if(i==0)gun.Configure(run.Player.transform,0,.5f,10);else gun.ConfigureTurret(run.Player.transform,.5f,10);
+            gun.enabled=false;
+            var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=device.transform.position+Vector3.forward*4;
+            var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(1000,false);Physics.SyncTransforms();
+            fire.Invoke(gun,new object[]{Vector3.forward});
+            float deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+            Assert.That(hp.CurrentHp,Is.EqualTo(987.5f).Within(.02),i==0?"Drone shot":"Turret shot");
+            globalPart.gameObject.SetActive(false);yield return null;hp.RestoreHealthRatio(1);fire.Invoke(gun,new object[]{Vector3.forward});
+            deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+            Assert.That(hp.CurrentHp,Is.EqualTo(990).Within(.02),"An already deployed device must lose a disabled owner's bonus.");
+            globalPart.gameObject.SetActive(true);yield return null;
+            Object.Destroy(device);Object.Destroy(target);
+        }
+        Object.Destroy(global);Object.Destroy(basic);
+    }
+    [UnityTest] public IEnumerator GlobalDamageBonusReachesBlastTrapShieldImpact()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var bonus=BacklogBonusTierTests.OperationBonus("global-trap",.25f,"Increased");var model=run.VehicleModel;
+        Assert.That(model.ReceiveBonuses(new[]{bonus}),Is.True);var id=model.Inventory.Single().Id;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct().First(c=>model.OwnedPlacementError(id,c,default)==null);
+        Assert.That(run.GarageMount(id,cell),Is.True);Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var enemy=run.GetComponent<RoboRougelike.R6.R6TestRange>().TrainingTarget;
+        enemy.GetComponent<Rigidbody>().isKinematic=true;enemy.transform.position=new Vector3(1000,1000,1000);Physics.SyncTransforms();
+        var dome=GameObject.CreatePrimitive(PrimitiveType.Cube);dome.GetComponent<Collider>().enabled=false;dome.transform.position=enemy.Core.transform.position;
+        var boundary=dome.AddComponent<SphereCollider>();boundary.isTrigger=true;
+        var hp=dome.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(500,false);dome.AddComponent<R3ShieldDome>().Configure(2,6);
+        var root=new GameObject("Bonus trap");root.transform.position=dome.transform.position+Vector3.forward*8;
+        var sensor=root.AddComponent<SphereCollider>();sensor.isTrigger=true;sensor.radius=10;
+        var trap=root.AddComponent<R3DeployableTrap>();trap.Configure(root.transform,run.Player.transform,R3PartKind.BlastTrapDeployer,10,20,3,6,12,5,15,.5f,2);
+        Physics.SyncTransforms();float deadline=Time.time+2;
+        while(Time.time<deadline&&hp.CurrentHp>=500)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(475).Within(.02),"The global +25% must also apply to the trap's single shield impact.");
+        if(root!=null)Object.Destroy(root);Object.Destroy(dome);Object.Destroy(bonus);
+    }
     [UnityTest] public IEnumerator OperationsReachHullCoreMobilityAndReload()
     {
         var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);

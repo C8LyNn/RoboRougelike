@@ -157,6 +157,7 @@ namespace RoboRougelike.R3
         }
         void ApplyAreaDamage(Dictionary<Transform,Collider> targets,Vector3 origin,float amount,R3DamagePropagation.DamageKind damageKind)
         {
+            amount=R3MountedBonusEffects.ScaleOwnedDamage(owner,amount);
             R3ShieldDome.CollectExposedBlastBoundaries(origin,radius,owner,shieldBoundaries,exposedShields);unblockedTargets.Clear();
             foreach(var hit in targets.Values)
             {
