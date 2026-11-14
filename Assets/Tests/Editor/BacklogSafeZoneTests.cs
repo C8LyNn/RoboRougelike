@@ -9,6 +9,24 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogSafeZoneTests
 {
+    [Test] public void SafeZoneRefillsShieldChargeAtItsTierWithoutRevivingWrecks()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var working=new R3PartState(default,R3PartKind.DirectionalShield,.5f){Tier=2,DefenseCharge=17,DefenseRechargeAge=1};
+        var wreck=new R3PartState(default,R3PartKind.DirectionalShield,0){Tier=3,DefenseCharge=23,DefenseRechargeAge=0};
+        Assert.That(model.ReceiveSalvage(new[]{working,wreck}),Is.True);
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(working.Id,c,default)==null);
+        Assert.That(model.Mount(working.Id,cell),Is.True);Assert.That(model.TryEnterSafeZone(2),Is.True);
+        var installed=model.Parts.Single(p=>p.Id==working.Id);var stored=model.Inventory.Single(p=>p.Id==wreck.Id);
+        Assert.That(installed.DefenseCharge,Is.EqualTo(200));Assert.That(stored.DefenseCharge,Is.EqualTo(400));
+        Assert.That(installed.Health,Is.EqualTo(.75f).Within(.001));Assert.That(stored.Health,Is.Zero);
+        Assert.That(model.TryEnterSafeZone(2),Is.False,"Reopening the same zone must not grant a second refill.");
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==working.Id).DefenseCharge,Is.EqualTo(200));
+        Assert.That(restored.Inventory.Single(p=>p.Id==wreck.Id).DefenseCharge,Is.EqualTo(400));
+    }
     [Test] public void LegacyCheckpointWithoutJumpTimerLoadsAndRejectsInvalidTimer()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
@@ -114,7 +132,7 @@ public sealed class BacklogSafeZoneGameplayTests
     }
     [UnityTest] public IEnumerator SecondVictoryOpensGarageWithRefilledVehicleAndPartialRepair()
     {
-        string damagedId=null;
+        string damagedId=null,shieldId=null;
         for(int stage=1;stage<=2;stage++)
         {
             Assert.That(run,Is.Not.Null);Assert.That(run.Progress,Is.Not.Null);Assert.That(run.Encounter,Is.Not.Null);Assert.That(run.Encounter.Enemies,Is.Not.Null);
@@ -125,6 +143,8 @@ public sealed class BacklogSafeZoneGameplayTests
                 var part=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational);
                 damagedId=part.Id;part.Damageable.RestoreHealthRatio(.4f);
                 var bank=run.Player.GetComponent<VehicleEnergyBank>();Assert.That(bank.TrySpend(100),Is.True);
+                var shield=assembly.Parts.Single(p=>p.Id==shieldId).GetComponent<RoboRougelike.Defenses.DirectionalShield.DirectionalShieldGenerator>();
+                Assert.That(shield.Capacity,Is.EqualTo(200).Within(.001));shield.RestoreState(17,0);
                 Assert.That(run.VehicleModel.Charges.EnsurePool("safe-test",3),Is.True);
                 Assert.That(run.VehicleModel.Charges.TrySpend("safe-test",2),Is.True);
                 typeof(R3VehicleModel).GetProperty("RepairPulseReadyAt").SetValue(run.VehicleModel,Time.time+100);
@@ -144,6 +164,11 @@ public sealed class BacklogSafeZoneGameplayTests
             if(stage==1)
             {
                 Assert.That(run.VehicleModel.SafeZoneLastCompleted,Is.Zero);
+                var shield=new R3PartState(default,R3PartKind.DirectionalShield){Tier=2};shieldId=shield.Id;
+                Assert.That(run.VehicleModel.ReceiveSalvage(new[]{shield}),Is.True);
+                var shieldCell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                    .First(c=>run.VehicleModel.OwnedPlacementError(shield.Id,c,default)==null);
+                Assert.That(run.GarageMount(shield.Id,shieldCell),Is.True);
                 Assert.That(run.StartNextEncounter()&&run.ChooseRoute(0),Is.True);
                 for(int i=0;i<300&&run.Transitioning;i++)yield return null;
                 yield return null;
@@ -154,6 +179,9 @@ public sealed class BacklogSafeZoneGameplayTests
         Assert.That(run.VehicleModel.Charges.Current("safe-test"),Is.EqualTo(3));Assert.That(run.VehicleModel.RepairPulseReadyAt,Is.Zero);
         Assert.That(run.VehicleModel.Parts.Single(p=>p.Id==damagedId).Health,Is.EqualTo(.65f).Within(.001));
         var physical=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==damagedId);
+        var restoredShield=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==shieldId)
+            .GetComponent<RoboRougelike.Defenses.DirectionalShield.DirectionalShieldGenerator>();
+        Assert.That(restoredShield.Charge,Is.EqualTo(200).Within(.001));
         Assert.That(physical.Damageable.CurrentHp/physical.Damageable.MaxHp,Is.EqualTo(.65f).Within(.001));
         Assert.That(run.Garage.Message,Does.Contain("Bezpieczna strefa"));
         Assert.That(run.SafeVendorAvailable,Is.True);run.VehicleModel.Award(1000);

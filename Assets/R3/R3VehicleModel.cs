@@ -443,6 +443,11 @@ namespace RoboRougelike.R3
                         part.Weapon==R4WeaponKind.RocketLauncher?RoboRougelike.WeaponIntegration.RRLRocketBinding.Magazine:0;
                     if(capacity>0)part.Ammo=capacity;
                 }
+                if(part.Kind==R3PartKind.DirectionalShield)
+                {
+                    part.DefenseCharge=RoboRougelike.WeaponIntegration.RRLShieldBinding.BaseCapacity*TierEffectUnits(part.Tier);
+                    part.DefenseRechargeAge=float.PositiveInfinity;
+                }
                 part.DeviceReadyAt=0;part.ReloadReadyAt=0;part.DisruptionRemaining=0;part.ThermalHeat=0;part.ThermalLocked=false;
             }
             RepairPulseReadyAt=OverdriveReadyAt=RapidFireReadyAt=DoubleShotOverdriveReadyAt=TargetedEmpReadyAt=AreaEmpReadyAt=RechargePulseReadyAt=0;
