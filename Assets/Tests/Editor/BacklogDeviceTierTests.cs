@@ -260,10 +260,39 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(peak,Is.LessThan(8),"The pad must not multiply its impulse by the number of vehicle colliders");
         Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator GroundDroneUsesRealWheelContactsAndMovesTowardOwner()
+    {
+        Assert.That(System.Enum.TryParse("GroundDroneGenerator",out R3PartKind kind),Is.True,"Missing ground drone generator");
+        run.VehicleModel.Award(2500);FuseAndMount(kind);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.zero;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();Assert.That(service.TryDeploy(kind),Is.True);
+        var drone=GameObject.Find("Dron naziemny");Assert.That(drone,Is.Not.Null);
+        var rb=drone.GetComponent<Rigidbody>();var drive=drone.GetComponent<RoboRougelike.R6.R6VehicleDrive>();
+        Assert.That(rb,Is.Not.Null);Assert.That(drive,Is.Not.Null,"Use the real wheel solver");
+        float deadline=Time.realtimeSinceStartup+8;int contacts=0;
+        while(Time.realtimeSinceStartup<deadline&&contacts==0){yield return MOVSeriesDeviceTests.FixedStep();contacts=drive.GroundedWheels;}
+        Assert.That(contacts,Is.GreaterThan(0),"The actual wheels must touch terrain");
+        Vector3 before=rb.position;body.isKinematic=true;body.position=new Vector3(100,2,120);Physics.SyncTransforms();
+        float until=Time.fixedTime+3;while(Time.fixedTime<until)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(rb.position.z,Is.GreaterThan(before.z+.5f),"The wheeled drone must physically follow");
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"ground-drone-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();enemy.ConfigureMovement(0,12,0);var enemyBody=enemy.GetComponent<Rigidbody>();
+        enemyBody.position=rb.position+new Vector3(12,1,0);enemyBody.isKinematic=true;Physics.SyncTransforms();
+        float hp=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        deadline=Time.realtimeSinceStartup+12;
+        while(Time.realtimeSinceStartup<deadline&&enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp)>=hp)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.LessThan(hp),"The wheeled drone must hit an enemy with its physical projectile");
+        Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator FlyingDroneFollowsAndUsesPhysicalProjectilesAgainstEnemies()
     {
         Assert.That(System.Enum.TryParse("FlyingDroneGenerator",out R3PartKind kind),Is.True,"Missing flying drone generator");
-        run.VehicleModel.Award(2500);FuseAndMount(kind);
+        run.VehicleModel.Award(2500);FuseAndMount(kind);FuseAndMount(R3PartKind.GroundDroneGenerator);
         Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
         var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
         var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
@@ -288,6 +317,8 @@ public sealed class BacklogDeviceTierGameplayTests
         float deadline=Time.realtimeSinceStartup+12;
         while(Time.realtimeSinceStartup<deadline&&enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp)>=hp)yield return MOVSeriesDeviceTests.FixedStep();
         Assert.That(enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.LessThan(hp),"The drone must actually hit the enemy with its projectile");
+        Assert.That(service.TryDeploy(R3PartKind.GroundDroneGenerator),Is.True,"The other drone type must have its own independent active limit");
+        Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.GroundDronePool),Is.EqualTo(2));
         Vector3 beforePosition=drone.GetComponent<Rigidbody>().position;body.isKinematic=true;body.position=new Vector3(100,2,120);Physics.SyncTransforms();
         float followUntil=Time.fixedTime+1.5f;while(Time.fixedTime<followUntil)yield return MOVSeriesDeviceTests.FixedStep();
         Assert.That(drone.GetComponent<Rigidbody>().position.z,Is.GreaterThan(beforePosition.z+1),"The drone must physically follow a distant owner");
