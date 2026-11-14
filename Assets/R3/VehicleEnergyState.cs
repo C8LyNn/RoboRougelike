@@ -91,6 +91,7 @@ namespace RoboRougelike.R3
         public static float ConventionalShot(RoboRougelike.R4.R4WeaponKind weapon) =>
             weapon==RoboRougelike.R4.R4WeaponKind.Basic?BasicShot:OtherConventionalShot;
         public const float ContinuousWeaponPerSecond=6f, BoosterActivation=7.5f;
+        public const float OmniDrivePerSecond=2.5f, HoverDrivePerSecond=1f;
         public const float Jump=12.5f, Blink=15f, Grapple=6f;
     }
 }

@@ -595,6 +595,9 @@ namespace RoboRougelike.R1
             if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.BonusModule?
                 $"Moduł T{R3VehicleModel.NormalizedTier(part.Tier)}: {BonusInstanceText(part)}. Kliknij, aby zamontować.":kind==R3PartKind.Battery?
                 $"Bateria T{R3VehicleModel.NormalizedTier(part.Tier)}: +{VehicleEnergyState.BatteryCapacity*R3VehicleModel.TierEffectUnits(part.Tier):0} maks. energii. Kliknij, aby zamontować.":
+                kind==R3PartKind.OmniDrive?$"Omni T{R3VehicleModel.NormalizedTier(part.Tier)}: przyspieszenie ×{R3VehicleModel.TierEffectUnits(part.Tier)}, {VehicleEnergyCosts.OmniDrivePerSecond*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii/s podczas ruchu.":
+                kind==R3PartKind.HoverEngine?$"Hover T{R3VehicleModel.NormalizedTier(part.Tier)}: udźwig i napęd ×{R3VehicleModel.TierEffectUnits(part.Tier)}, {VehicleEnergyCosts.HoverDrivePerSecond*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii/s przy podparciu.":
+                kind==R3PartKind.CrawlerTrack?$"Gąsienica T{R3VehicleModel.NormalizedTier(part.Tier)}: nośność, ciąg i hamowanie ×{R3VehicleModel.TierEffectUnits(part.Tier)}.":
                 kind==R3PartKind.Booster?$"Booster T{R3VehicleModel.NormalizedTier(part.Tier)}: {run.VehicleModel.BoosterThrustNewtons*R3VehicleModel.TierEffectUnits(part.Tier):0} N, {VehicleEnergyCosts.BoosterActivation*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii za aktywację.":
                 kind==R3PartKind.MagneticGrapple?$"Zaczep T{R3VehicleModel.NormalizedTier(part.Tier)}: siła ×{R3VehicleModel.TierEffectUnits(part.Tier)}, {VehicleEnergyCosts.Grapple*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii za aktywację.":
                 kind==R3PartKind.Gyroscope?$"Żyroskop T{R3VehicleModel.NormalizedTier(part.Tier)}: stabilizacja ×{R3VehicleModel.TierEffectUnits(part.Tier)}, rezerwuje 25 energii.":

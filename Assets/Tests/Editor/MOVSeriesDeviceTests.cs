@@ -68,6 +68,133 @@ public class MOVSeriesDeviceTests
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
         vehicle.transform.SetParent(fixtures.transform,true);vehicle.Controller.SetGameplayInputEnabled(true);return vehicle;
     }
+    R1VehicleState BuildTieredDrive(R3PartKind kind,int tier,float x)
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var cell=FindFixtureCell(model,kind,new Vector3Int(1,1,0));model.Parts.Add(new R3PartState(cell,kind){Tier=tier});
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
+        vehicle.transform.SetParent(fixtures.transform,true);vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        vehicle.Controller.SetGameplayInputEnabled(true);return vehicle;
+    }
+    [UnityTest] public IEnumerator OmniTiersScaleAccelerationAndPreserveEnergyCostWhenDriving()
+    {
+        for(int tier=1;tier<=3;tier++)
+        {
+            var vehicle=BuildTieredDrive(R3PartKind.OmniDrive,tier,20*tier);
+            var module=vehicle.GetComponentInChildren<RoboRougelike.Mechanics.MOV005OmniDrive.OmniDriveModule>();
+            var adapter=vehicle.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>();
+            Assert.That(adapter.SetDriveMode(R3DriveKind.Omni),Is.True);
+            adapter.TryDrive(.5f,0,10,5,90);
+            Assert.That(module.LinearAcceleration,Is.EqualTo(4*R3VehicleModel.TierEffectUnits(tier)).Within(.001));
+            Assert.That(module.YawAngularAcceleration,Is.EqualTo(2*R3VehicleModel.TierEffectUnits(tier)).Within(.001));
+            Assert.That(module.EnergyCostPerSecond,Is.EqualTo(2.5f*R3VehicleModel.TierActivationCost(tier)).Within(.001));
+        }
+        yield return null;
+    }
+    [UnityTest] public IEnumerator HoverTiersScaleLiftThrustAndEnergy()
+    {
+        var multiplier=typeof(RoboRougelike.Mechanics.MOV007.HoverLiftPod).GetField("propulsionMultiplier");
+        Assert.That(multiplier,Is.Not.Null);
+        for(int tier=1;tier<=3;tier++)
+        {
+            var vehicle=BuildTieredDrive(R3PartKind.HoverEngine,tier,20*tier);
+            var pod=vehicle.GetComponentInChildren<RoboRougelike.Mechanics.MOV007.HoverLiftPod>();
+            Assert.That(pod.nominalLoadKg,Is.EqualTo(250*R3VehicleModel.TierEffectUnits(tier)).Within(.001));
+            Assert.That((float)multiplier.GetValue(pod),Is.EqualTo(R3VehicleModel.TierEffectUnits(tier)).Within(.001));
+            Assert.That(pod.energyPerSecond,Is.EqualTo(R3VehicleModel.TierActivationCost(tier)).Within(.001));
+        }
+        yield return null;
+    }
+    [UnityTest] public IEnumerator TrackTiersScaleLoadMotorAndBrake()
+    {
+        for(int tier=1;tier<=3;tier++)
+        {
+            var vehicle=BuildTieredDrive(R3PartKind.CrawlerTrack,tier,20*tier);
+            var track=vehicle.GetComponentInChildren<RoboRougelike.Mechanics.MOV008.CrawlerTrackModule>();
+            int units=R3VehicleModel.TierEffectUnits(tier);
+            Assert.That(track.NominalLoadKg,Is.EqualTo(500*units).Within(.001));
+            Assert.That(track.MaxDriveForceN,Is.EqualTo(1200*units).Within(.001));
+            Assert.That(track.MaxBrakeForceN,Is.EqualTo(1800*units).Within(.001));
+        }
+        yield return null;
+    }
+    [UnityTest] public IEnumerator HigherTierHoverProducesMorePhysicalPlanarAcceleration()
+    {
+        var low=BuildTieredDrive(R3PartKind.HoverEngine,1,-20);
+        var high=BuildTieredDrive(R3PartKind.HoverEngine,3,20);
+        foreach(var vehicle in new[]{low,high})
+        {
+            var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=false;body.useGravity=false;
+            var position=new Vector3(body.position.x,-.1f,body.position.z);
+            vehicle.transform.position=position;body.position=position;
+            foreach(var collider in vehicle.GetComponentsInChildren<Collider>())collider.enabled=false;
+            body.constraints=RigidbodyConstraints.FreezeRotation|RigidbodyConstraints.FreezePositionY;
+            Assert.That(vehicle.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>().SetDriveMode(R3DriveKind.Hover),Is.True);
+            vehicle.Controller.enabled=false;
+        }
+        Physics.SyncTransforms();yield return Seconds(.2f);
+        var lowHover=low.GetComponent<RoboRougelike.Mechanics.MOV007.HoverVehicleController>();
+        var highHover=high.GetComponent<RoboRougelike.Mechanics.MOV007.HoverVehicleController>();
+        var lowPod=low.GetComponentInChildren<RoboRougelike.Mechanics.MOV007.HoverLiftPod>();
+        var lowAdapter=low.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>();
+        string diagnostic=$"control={lowAdapter.CanControl}, enabled={lowHover.hoverModeEnabled}, available={lowPod.IsAvailableFor(low.GetComponent<Rigidbody>())}, pod={lowPod.transform.position}, contact={lowPod.HasGroundContact}, height={lowPod.LastMeasuredGroundDistance}, lift={lowPod.LastLiftForceNewtons}, energy={low.GetComponent<VehicleEnergyBank>().Current}";
+        Assert.That(lowHover.LastSupportedPodCount,Is.EqualTo(1),diagnostic);Assert.That(highHover.LastSupportedPodCount,Is.EqualTo(1));
+        low.GetComponent<Rigidbody>().linearVelocity=Vector3.zero;high.GetComponent<Rigidbody>().linearVelocity=Vector3.zero;
+        lowHover.SetMoveInput(Vector2.up);highHover.SetMoveInput(Vector2.up);yield return Seconds(.4f);
+        float lowSpeed=low.GetComponent<Rigidbody>().linearVelocity.z,highSpeed=high.GetComponent<Rigidbody>().linearVelocity.z;
+        Assert.That(lowSpeed,Is.GreaterThan(.05f));Assert.That(highSpeed,Is.GreaterThan(lowSpeed*1.5f));
+    }
+    [UnityTest] public IEnumerator HigherTierTracksProduceMorePhysicalAcceleration()
+    {
+        R1VehicleState Tracks(int tier,float x)
+        {
+            var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+            var wheels=model.Parts.Where(p=>p.Kind==R3PartKind.Wheel).GroupBy(p=>p.Cell.x<0).Select(g=>g.First().Cell).ToArray();
+            Assert.That(wheels.Length,Is.EqualTo(2));
+            foreach(var cell in wheels){Assert.That(model.Remove(cell),Is.True);model.Parts.Add(new R3PartState(cell,R3PartKind.CrawlerTrack){Tier=tier});}
+            var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
+            vehicle.transform.SetParent(fixtures.transform,true);vehicle.Controller.SetGameplayInputEnabled(true);
+            var body=vehicle.GetComponent<Rigidbody>();body.useGravity=false;
+            body.constraints=RigidbodyConstraints.FreezeRotation|RigidbodyConstraints.FreezePositionY;
+            foreach(var collider in vehicle.GetComponentsInChildren<Collider>())collider.enabled=false;
+            Assert.That(vehicle.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>().SetDriveMode(R3DriveKind.Tracks),Is.True);
+            vehicle.Controller.enabled=false;return vehicle;
+        }
+        var low=Tracks(1,-20);var high=Tracks(3,20);Physics.SyncTransforms();yield return Seconds(.2f);
+        var lowTracks=low.GetComponent<RoboRougelike.Mechanics.MOV008.CrawlerTrackController>();
+        var highTracks=high.GetComponent<RoboRougelike.Mechanics.MOV008.CrawlerTrackController>();
+        Assert.That(lowTracks.GroundedModuleCount,Is.EqualTo(2));Assert.That(highTracks.GroundedModuleCount,Is.EqualTo(2));
+        low.GetComponent<Rigidbody>().linearVelocity=Vector3.zero;high.GetComponent<Rigidbody>().linearVelocity=Vector3.zero;
+        lowTracks.SetInput(1,0);highTracks.SetInput(1,0);yield return Seconds(.4f);
+        float lowSpeed=low.GetComponent<Rigidbody>().linearVelocity.z,highSpeed=high.GetComponent<Rigidbody>().linearVelocity.z;
+        Assert.That(lowSpeed,Is.GreaterThan(.05f));Assert.That(highSpeed,Is.GreaterThan(lowSpeed*1.2f));
+    }
+    [UnityTest] public IEnumerator HigherTierOmniAcceleratesAndSpendsMoreEnergy()
+    {
+        var low=BuildTieredDrive(R3PartKind.OmniDrive,1,-20);var high=BuildTieredDrive(R3PartKind.OmniDrive,3,20);
+        foreach(var vehicle in new[]{low,high})
+        {
+            var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=false;body.useGravity=false;
+            var position=new Vector3(body.position.x,-.5f,body.position.z);vehicle.transform.position=position;body.position=position;
+            body.constraints=RigidbodyConstraints.FreezeRotation|RigidbodyConstraints.FreezePositionY;
+            foreach(var collider in vehicle.GetComponentsInChildren<Collider>())collider.enabled=false;
+            Assert.That(vehicle.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>().SetDriveMode(R3DriveKind.Omni),Is.True);
+            vehicle.Controller.enabled=false;vehicle.GetComponent<VehicleEnergyBank>().enabled=false;
+        }
+        Physics.SyncTransforms();yield return Seconds(.2f);
+        var lowBody=low.GetComponent<Rigidbody>();var highBody=high.GetComponent<Rigidbody>();
+        Assert.That(low.GetComponentInChildren<RoboRougelike.Mechanics.MOV005OmniDrive.OmniDriveModule>().CanDrive(lowBody),Is.True);
+        Assert.That(high.GetComponentInChildren<RoboRougelike.Mechanics.MOV005OmniDrive.OmniDriveModule>().CanDrive(highBody),Is.True);
+        var lowBank=low.GetComponent<VehicleEnergyBank>();var highBank=high.GetComponent<VehicleEnergyBank>();
+        float lowBefore=lowBank.Current,highBefore=highBank.Current;lowBody.linearVelocity=highBody.linearVelocity=Vector3.zero;
+        low.GetComponent<RoboRougelike.Mechanics.MOV005OmniDrive.OmniDriveController>().SetInput(Vector2.up,0);
+        high.GetComponent<RoboRougelike.Mechanics.MOV005OmniDrive.OmniDriveController>().SetInput(Vector2.up,0);
+        yield return Seconds(.2f);
+        Assert.That(lowBody.linearVelocity.z,Is.GreaterThan(.02f));
+        Assert.That(highBody.linearVelocity.z,Is.GreaterThan(lowBody.linearVelocity.z*1.5f));
+        float lowCost=lowBefore-lowBank.Current,highCost=highBefore-highBank.Current;
+        Assert.That(lowCost,Is.GreaterThan(.05f));Assert.That(highCost,Is.GreaterThan(lowCost*1.2f));
+    }
     R1VehicleState BuildTieredMovement(R3PartKind kind,int tier,float x)
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));

@@ -41,22 +41,25 @@ namespace RoboRougelike.MOVSeries
                 bool tiltedMount=Vector3.Dot(part.transform.localRotation*Vector3.up,Vector3.up)<.999f;
                 if(part.Kind==R3PartKind.OmniDrive)
                 {
-                    var m=part.gameObject.AddComponent<OmniDriveModule>();m.Configure(tank.EffectiveForwardSpeed,4,tank.EffectiveTurnSpeed,2,2.5f);
+                    int units=R3VehicleModel.TierEffectUnits(part.Tier);
+                    var m=part.gameObject.AddComponent<OmniDriveModule>();m.Configure(tank.EffectiveForwardSpeed,4*units,tank.EffectiveTurnSpeed,2*units,VehicleEnergyCosts.OmniDrivePerSecond*R3VehicleModel.TierActivationCost(part.Tier));
                     m.SetAvailabilityFilter(()=>Available(part));m.GroundProbe.SetGroundFilter(IsTerrain);
                 }
                 else if(part.Kind==R3PartKind.HoverEngine)
                 {
                     var m=part.gameObject.AddComponent<HoverLiftPod>();m.targetHeightMeters=Model.HoverHeightMeters;
-                    m.requireEnergy=true;m.energyPerSecond*=.5f;m.energySourceBehaviour=GetComponent<VehicleEnergyBank>();
+                    m.requireEnergy=true;m.energyPerSecond=VehicleEnergyCosts.HoverDrivePerSecond*R3VehicleModel.TierActivationCost(part.Tier);m.energySourceBehaviour=GetComponent<VehicleEnergyBank>();
                     m.SetUseMountAxes(tiltedMount);
-                    m.nominalLoadKg=250;m.maximumLiftToNominalWeight=1.8f;m.springFrequencyHz=1.1f;m.dampingRatio=1;
+                    m.nominalLoadKg=250*R3VehicleModel.TierEffectUnits(part.Tier);m.propulsionMultiplier=R3VehicleModel.TierEffectUnits(part.Tier);
+                    m.maximumLiftToNominalWeight=1.8f;m.springFrequencyHz=1.1f;m.dampingRatio=1;
                     m.SetAvailabilityFilter(()=>Available(part));m.SetGroundFilter(IsTerrain);
                 }
                 else
                 {
                     var m=part.gameObject.AddComponent<CrawlerTrackModule>();m.SetSide(part.Cell.x<0?CrawlerTrackSide.Left:CrawlerTrackSide.Right);
                     m.SetUseMountAxes(tiltedMount);
-                    m.ConfigureTraction(500,1200,1800);m.SetAvailabilityFilter(()=>Available(part));m.SetGroundFilter(IsTerrain);
+                    int units=R3VehicleModel.TierEffectUnits(part.Tier);
+                    m.ConfigureTraction(500*units,1200*units,1800*units);m.SetAvailabilityFilter(()=>Available(part));m.SetGroundFilter(IsTerrain);
                 }
             }
             if(omni!=null)omni.RebuildModules();if(hover!=null)hover.RefreshModules();if(tracks!=null)tracks.RefreshModules();
@@ -99,7 +102,10 @@ namespace RoboRougelike.MOVSeries
             float speed=backwards?reverse:forward;
             foreach(var part in assembly.Parts)
                 if(part!=null&&part.TryGetComponent<OmniDriveModule>(out var module))
-                    module.Configure(speed,4,turn,2);
+                {
+                    int units=R3VehicleModel.TierEffectUnits(part.Tier);
+                    module.Configure(speed,4*units,turn,2*units,VehicleEnergyCosts.OmniDrivePerSecond*R3VehicleModel.TierActivationCost(part.Tier));
+                }
             if(hover!=null){hover.forwardSpeedMetersPerSec=speed;hover.strafeSpeedMetersPerSec=forward*.8f;hover.yawDegreesPerSecond=turn;}
             if(tracks!=null)tracks.SetDriveLimits(forward,reverse,turn);
         }
