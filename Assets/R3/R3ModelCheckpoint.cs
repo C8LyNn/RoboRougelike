@@ -56,6 +56,8 @@ namespace RoboRougelike.R3
         public int[] deployableSlots;
         public R3ActiveSlotCheckpoint[] deployablePreferences;
         public int constructionBudgetVersion,constructionBudgetLimit,constructionBudgetMilestonesApplied,safeZoneLastCompleted,safeVendorStage,safeVendorSeed,safeVendorSoldMask,safeVendorRevision;
+        // Older saves omit this field and retain their four-bit purchase mask.
+        public int[] safeVendorExtraSold;
         public float repairPulseRemaining,boosterRemaining,jumpRemaining,blinkRemaining,overdriveRemaining,rapidFireRemaining,doubleShotOverdriveRemaining,targetedEmpRemaining,areaEmpRemaining,rechargePulseRemaining;
         public float scannerPulseRemaining,structuralScannerRemaining;
         public float rampDeployerRemaining,wallDeployerRemaining,jumpPadDeployerRemaining,blastTrapDeployerRemaining,empTrapDeployerRemaining,repelTrapDeployerRemaining,damageTrapDeployerRemaining,slowTrapDeployerRemaining,immobilizeTrapDeployerRemaining,flyingDroneRemaining,groundDroneRemaining,offensiveTurretRemaining,healingTurretRemaining,supportTurretRemaining,shieldTurretRemaining;
@@ -148,6 +150,7 @@ namespace RoboRougelike.R3
                 deployableSlotsVersion=1,deployableSlots=deployableSlots.Select(p=>p.HasValue?(int)p.Value:-1).ToArray(),
                 deployablePreferences=deployableSlotPreference.Select(p=>new R3ActiveSlotCheckpoint{kind=(int)p.Key,slot=p.Value}).ToArray(),
                 constructionBudgetVersion=1,constructionBudgetLimit=ConstructionBudgetLimit,constructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied,safeZoneLastCompleted=SafeZoneLastCompleted,safeVendorStage=SafeVendorStage,safeVendorSeed=SafeVendorSeed,safeVendorSoldMask=SafeVendorSoldMask,safeVendorRevision=SafeVendorRevision,
+                safeVendorExtraSold=safeVendorExtraSold.OrderBy(index=>index).ToArray(),
                 repairPulseRemaining=Remaining(RepairPulseReadyAt,now),boosterRemaining=Remaining(BoosterReadyAt,now),jumpRemaining=Remaining(JumpReadyAt,now),blinkRemaining=Remaining(BlinkReadyAt,now),overdriveRemaining=Remaining(OverdriveReadyAt,now),rapidFireRemaining=Remaining(RapidFireReadyAt,now),doubleShotOverdriveRemaining=Remaining(DoubleShotOverdriveReadyAt,now),targetedEmpRemaining=Remaining(TargetedEmpReadyAt,now),areaEmpRemaining=Remaining(AreaEmpReadyAt,now),
                 scannerPulseRemaining=Remaining(ScannerPulseReadyAt,now),structuralScannerRemaining=Remaining(StructuralScannerReadyAt,now),
                 energyVersion=1,energy=Energy.Current,chargesVersion=1,chargePools=Charges.Snapshot(),hasInitialEnergyPrepared=true,initialEnergyPrepared=InitialEnergyPrepared,
@@ -183,7 +186,9 @@ namespace RoboRougelike.R3
             if(data==null||!Enum.IsDefined(typeof(R3VehicleKind),kind)||variant<0||variant>=4||data.mounted==null||data.inventory==null||
                 data.wheels==null||data.groups==null||data.mounted.Length>2000||data.inventory.Length>InventoryCapacity||
                 data.constructionBudgetVersion<0||data.constructionBudgetVersion>1||
-                data.safeZoneLastCompleted<0||data.safeVendorStage<0||data.safeVendorStage>data.safeZoneLastCompleted||data.safeVendorSoldMask<0||data.safeVendorSoldMask>15||data.safeVendorRevision<0||data.safeVendorRevision>1||(data.constructionBudgetVersion==1&&(data.constructionBudgetLimit<0||data.constructionBudgetMilestonesApplied<0))||
+                data.safeZoneLastCompleted<0||data.safeVendorStage<0||data.safeVendorStage>data.safeZoneLastCompleted||data.safeVendorSoldMask<0||data.safeVendorSoldMask>15||data.safeVendorRevision<0||data.safeVendorRevision>1||
+                (data.safeVendorExtraSold!=null&&(data.safeVendorExtraSold.Any(i=>i<4)||data.safeVendorExtraSold.Distinct().Count()!=data.safeVendorExtraSold.Length||
+                  (data.safeVendorStage==0&&data.safeVendorExtraSold.Length>0)))||(data.constructionBudgetVersion==1&&(data.constructionBudgetLimit<0||data.constructionBudgetMilestonesApplied<0))||
                 data.wheels.Length>2000||data.groups.Length>4000||data.scrap<0||data.scrap>100000||
                 !Enum.IsDefined(typeof(R3DriveKind),data.drive)||!Enum.IsDefined(typeof(ActiveSuspensionSupportMode),data.suspensionMode)||
                 !Finite(data.suspensionHeight)||data.suspensionHeight<-.35f||data.suspensionHeight>.35f||
@@ -353,6 +358,7 @@ namespace RoboRougelike.R3
             if(data.constructionBudgetVersion==1){restored.ConstructionBudgetLimit=data.constructionBudgetLimit;restored.ConstructionBudgetMilestonesApplied=data.constructionBudgetMilestonesApplied;}
             restored.SafeZoneLastCompleted=data.safeZoneLastCompleted;
             restored.SafeVendorStage=data.safeVendorStage;restored.SafeVendorSeed=data.safeVendorSeed;restored.SafeVendorSoldMask=data.safeVendorSoldMask;restored.SafeVendorRevision=data.safeVendorRevision;
+            if(data.safeVendorExtraSold!=null)foreach(var index in data.safeVendorExtraSold)restored.safeVendorExtraSold.Add(index);
             restored.RepairPulseReadyAt=data.repairPulseRemaining>0?now+data.repairPulseRemaining:0;
             restored.OverdriveReadyAt=data.overdriveRemaining>0?now+data.overdriveRemaining:0;
             restored.RapidFireReadyAt=data.rapidFireRemaining>0?now+data.rapidFireRemaining:0;

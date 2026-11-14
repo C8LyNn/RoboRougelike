@@ -336,6 +336,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **Ograniczenie ekonomiczne z pierwszej iteracji:** przy pięciu sztukach w pakiecie i cenie 0,5 ceny bazowej natychmiastowy demontaż klocków dawałby zysk. Decyzję użytkownika oraz wdrożoną regułę opisano poniżej.
 - Unity 6000.3.14f1: **23 PASS, 0 FAIL**, exit 0 (`vendor-release.xml`, `vendor-release.log` w `Prototypy`). Testy EditMode obejmują scenariusz dwóch walk i zakupu sterowany API, brak pieniędzy i miejsca, ponowne zakupy, zapis/odczyt, kolejną strefę, cenę pakietu oraz kontrolę 50 losowań pod kątem zysku z natychmiastowego demontażu. Ręczna obsługa interfejsu, balans, fizyczny NPC i osobna lokacja: **NOT RUN / niezaimplementowane**. Punkt 35 pozostaje częściowy. Nowego buildu nie przygotowano.
 
+#### 35. Konfigurowalna liczba ofert sprzedawcy
+
+- Usunięto obcięcie ustawienia liczby ofert do czterech. Pierwsze cztery zachowują dotychczasowy sposób losowania i zgodność poprzednich zapisów; dalsze oferty są powtarzalnie losowane według indeksu z tych samych kategorii. Każda ma osobny stan zakupu, także powyżej indeksu 31. Zakupy, kopiowanie, zapis i wejście do kolejnej strefy zachowują prawidłowy stan; stare zapisy z czterema ofertami nadal działają.
+- Oferty są obliczane pojedynczo, a garaż pokazuje po cztery na stronie. Dzięki temu sama duża liczba w konfiguracji nie generuje z góry wielkiej listy. Domyślna liczba nadal wynosi cztery; ceny, stan technologii i zasady pakietów pozostają bez zmian.
+- Unity 6000.3.14f1: **28 PASS, 0 FAIL** (`C:\Users\kubap\Desktop\Prototypy\vendor-offer-count-first.xml`, `.log`), w tym zachowanie starszych ofert, zakupy indeksów 32 i 33, kopiowanie, zapis, reset strefy i indeksowanie bardzo dużej liczby ofert. Dodatkowo **9 PASS, 0 FAIL** (`vendor-offer-count-final.xml`) po sprawdzeniu braku nowego pola w starszym zapisie i odrzucenia nieprawidłowych indeksów. Przed zmianą `vendor-offer-count-red.xml`: **2 FAIL** — konfiguracja była obcinana do czterech. Klikań stron w Windows Playerze ani balansu zwiększonej liczby okazji nie sprawdzono; punkt 35 pozostaje częściowy z powodu braku fizycznego NPC i osobnej lokacji.
+
 #### Pakiety podstawowych klocków u sprzedawcy
 
 - Zgodnie z decyzją użytkownika do losowej oferty dodano pakiet pięciu podstawowych klocków. Łączny odzysk złomu z części konkretnego pakietu nie przekracza jego ceny. Limit jest przypisany do fizycznych części i wyświetlony w opisie oferty; demontaż innych części nadal korzysta z dotychczasowej wyceny.

@@ -6,6 +6,49 @@ using UnityEngine;
 
 public sealed class BacklogSafeVendorTests
 {
+    [Test] public void ConfiguredOffersBeyondFourRemainIndependentThroughSaveAndRestock()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        Assert.That(model.TryEnterSafeZone(2),Is.True);model.PrepareSafeZoneVendor(321);model.Award(1000);
+        var original=model.SafeZoneVendorOffers().Select(o=>(o.Kind,o.Weapon,o.Price)).ToArray();
+        model.Economy.SafeVendorOfferCount=40;var expanded=model.SafeZoneVendorOffers();
+        Assert.That(expanded.Count,Is.EqualTo(40));Assert.That(expanded.Take(4).Select(o=>(o.Kind,o.Weapon,o.Price)),Is.EqualTo(original));
+        Assert.That(model.TryPurchaseSafeZoneOffer(0),Is.True);Assert.That(model.TryPurchaseSafeZoneOffer(32),Is.True);
+        Assert.That(model.TryPurchaseSafeZoneOffer(33),Is.True);Assert.That(model.SafeZoneVendorOffers()[0].Sold,Is.True);
+        Assert.That(model.SafeZoneVendorOffers()[1].Sold,Is.False);Assert.That(model.SafeZoneVendorOffers()[32].Sold,Is.True);
+        Assert.That(model.SafeZoneVendorOffers()[33].Sold,Is.True);Assert.That(model.SafeZoneVendorOffers()[34].Sold,Is.False);
+        var saved=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.SafeZoneVendorOffers()[32].Sold,Is.True);Assert.That(restored.SafeZoneVendorOffers()[33].Sold,Is.True);
+        Assert.That(restored.TryPurchaseSafeZoneOffer(32),Is.False);var copy=restored.DeepCopy();
+        Assert.That(copy.SafeZoneVendorOffers()[33].Sold,Is.True);
+        Assert.That(copy.TryEnterSafeZone(4),Is.True);copy.PrepareSafeZoneVendor(44);
+        Assert.That(copy.SafeZoneVendorOffers()[32].Sold,Is.False);Assert.That(copy.SafeZoneVendorOffers()[0].Sold,Is.False);
+    }
+    [Test] public void HugeConfiguredOfferCountCanBeIndexedWithoutGeneratingEveryOffer()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        Assert.That(model.TryEnterSafeZone(2),Is.True);model.PrepareSafeZoneVendor(22);
+        model.Economy.SafeVendorOfferCount=int.MaxValue;var offers=model.SafeZoneVendorOffers();
+        Assert.That(offers.Count,Is.EqualTo(int.MaxValue));
+        var last=offers[int.MaxValue-1];Assert.That(last.Index,Is.EqualTo(int.MaxValue-1));
+        Assert.That(offers[int.MaxValue-1].Kind,Is.EqualTo(last.Kind));
+    }
+    [Test] public void VendorCheckpointAcceptsOldDataAndRejectsInvalidExtraSoldIndices()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        Assert.That(model.TryEnterSafeZone(2),Is.True);model.PrepareSafeZoneVendor(5);model.Award(1000);
+        model.Economy.SafeVendorOfferCount=40;Assert.That(model.TryPurchaseSafeZoneOffer(0),Is.True);
+        Assert.That(model.TryPurchaseSafeZoneOffer(32),Is.True);
+        var saved=model.MakeCheckpoint(0);saved.safeVendorExtraSold=null;
+        var old=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(saved));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(old,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.SafeZoneVendorOffers()[0].Sold,Is.True);Assert.That(restored.SafeZoneVendorOffers()[32].Sold,Is.False);
+        saved.safeVendorExtraSold=new[]{32,32};
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,0,out _,out _),Is.False);
+        saved.safeVendorExtraSold=new[]{1};
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,0,out _,out _),Is.False);
+    }
     static R3VehicleModel ModelWithArmorOffer()
     {
         for(int seed=0;seed<100;seed++)

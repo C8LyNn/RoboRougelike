@@ -10,6 +10,7 @@ namespace RoboRougelike.R1
     {
         bool garageOptionsOpen;
         int garageOptionsTab;
+        int vendorOfferPage;
         string garageOptionsFeedback;
         int quickPartCategory;
         bool quickOwnedOnly;
@@ -42,7 +43,7 @@ namespace RoboRougelike.R1
             }
             return garagePrimaryButton;
         }
-        void OpenSimpleGarageOptions(int tab){garageOptionsTab=tab;garageOptionsFeedback=null;activitySaveFeedback=null;garageOptionsOpen=true;repairQuoteModel=null;}
+        void OpenSimpleGarageOptions(int tab){garageOptionsTab=tab;if(tab==3)vendorOfferPage=0;garageOptionsFeedback=null;activitySaveFeedback=null;garageOptionsOpen=true;repairQuoteModel=null;}
         int SimpleGarageRepairQuote(R3VehicleModel model)
         {
             // The physical quote may construct temporary collision probes.
@@ -996,9 +997,12 @@ namespace RoboRougelike.R1
             var model=run.VehicleModel;
             GUI.Label(new Rect(area.x,area.y,area.width,35),$"Okazje dostępne w tej strefie • Złom: {model.Scrap}",body);
             var offers=model.SafeZoneVendorOffers();
-            for(int i=0;i<offers.Count;i++)
+            long pages=System.Math.Max(1L,((long)offers.Count+3)/4);
+            vendorOfferPage=(int)System.Math.Min(System.Math.Max(0,vendorOfferPage),pages-1);
+            int start=vendorOfferPage*4;
+            for(int i=0;i<4&&(long)start+i<offers.Count;i++)
             {
-                var offer=offers[i];int quantity=model.GrantQuantity(offer.Kind);
+                var offer=offers[start+i];int quantity=model.GrantQuantity(offer.Kind);
                 bool unlocked=run.CanBuyTechnology(offer.Kind,offer.Weapon);
                 bool room=(long)model.Inventory.Count+quantity<=model.AvailableInventoryCapacity;
                 string note=offer.Kind==R3PartKind.Armor?"\nŁączny odzysk złomu ograniczony do ceny pakietu.":string.Empty;
@@ -1009,7 +1013,16 @@ namespace RoboRougelike.R1
                     garageOptionsFeedback=run.GarageBuyVendorOffer(offer.Index)?"Kupiono ofertę. Części czekają w magazynie.":"Nie udało się kupić oferty.";
                 GUI.enabled=true;
             }
-            if(!string.IsNullOrEmpty(garageOptionsFeedback))GUI.Label(new Rect(area.x,area.y+320,area.width,50),garageOptionsFeedback,small);
+            if(pages>1)
+            {
+                GUI.enabled=vendorOfferPage>0;
+                if(GUI.Button(new Rect(area.x,area.y+310,80,36),"←",compactButton)){vendorOfferPage--;garageOptionsFeedback=null;}
+                GUI.enabled=vendorOfferPage+1L<pages;
+                if(GUI.Button(new Rect(area.x+area.width-80,area.y+310,80,36),"→",compactButton)){vendorOfferPage++;garageOptionsFeedback=null;}
+                GUI.enabled=true;
+                GUI.Label(new Rect(area.x+100,area.y+316,area.width-200,26),$"Strona {vendorOfferPage+1L}/{pages}",small);
+            }
+            if(!string.IsNullOrEmpty(garageOptionsFeedback))GUI.Label(new Rect(area.x,area.y+(pages>1?354:320),area.width,50),garageOptionsFeedback,small);
         }
     }
 }
