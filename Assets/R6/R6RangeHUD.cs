@@ -31,7 +31,7 @@ namespace RoboRougelike.R1
                 (string.IsNullOrEmpty(creativeEnemyMessage)?"":" • "+creativeEnemyMessage),small);
         }
         private static string ManualReloadAction(int ammo,int capacity,float reloadReadyAt,float now,bool available)
-            =>!available?"niedostępne":reloadReadyAt>now?"ładowanie":ammo>=capacity?"pełny":"T przeładuj";
+            =>!available?"niedostępne":reloadReadyAt>now?"ładowanie":ammo>=capacity?"pełny":R1ControlProfile.Display(R1ControlProfile.Current.Binding("Reload"))+" przeładuj";
         private static string ManualReloadWeaponStatus(int ammo,int capacity,float reloadReadyAt,float now,bool available)
             =>$"{ammo}/{capacity} • {ManualReloadAction(ammo,capacity,reloadReadyAt,now,available)}";
         private static string RocketWeaponStatus(int ammo,float reloadReadyAt,float readyAt,float now)
@@ -51,7 +51,8 @@ namespace RoboRougelike.R1
             {
                 if(run.CreativeWorkshop&&creativeEnemyMenu&&!run.RangeDisabled){DrawCreativeEnemyMenu(run);return;}
                 Panel(new Rect(190,115,900,550));
-                GUI.Label(new Rect(230,145,820,65),run.RangeDisabled?"Pojazd testowy unieruchomiony":"POLIGON • PAUZA",title);
+                GUI.Label(new Rect(230,145,560,65),run.RangeDisabled?"Pojazd testowy unieruchomiony":"POLIGON • PAUZA",title);
+                if(GUI.Button(new Rect(810,150,240,45),PauseCaption(run,5,"Sterowanie"),compactButton))OpenPauseControls();
                 GUI.Label(new Rect(230,225,820,50),"Testujesz kopię — uszkodzenia i złom nie zmieniają garażu.\nGłówne akcje: ↑ / ↓ i Enter • pad: krzyżak, A, B / Start",small);
                 var pausedRange=run.GetComponent<R6TestRange>();
                 if(run.CreativeWorkshop&&!run.RangeDisabled&&GUI.Button(new Rect(230,280,820,36),"Przeciwnicy — dodaj lub usuń",compactButton))

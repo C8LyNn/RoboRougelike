@@ -425,6 +425,7 @@ namespace RoboRougelike.R1
         {
             if (QuitRequested || Transitioning || Progress == null || Progress.State == R1RunState.Ready || RangeDisabled) return;
             Paused = !Paused;
+            if(!Paused)GetComponent<R1RunHUD>()?.ClosePauseControls();
             if(!Paused)pendingMapExitSnapshot=null;
             if(Paused&&MapEditing)EditorWorld?.HideGhost();
             PauseSelection = 0;
@@ -435,6 +436,7 @@ namespace RoboRougelike.R1
             if(lastEscapeFrame==Time.frameCount)return;
             lastEscapeFrame=Time.frameCount;
             var hud=GetComponent<R1RunHUD>();
+            if(Paused&&hud?.ClosePauseControls()==true)return;
             if(!Paused&&MapEditing&&hud?.CloseMapBrowser(this)==true)return;
             if(hud?.CloseQuickGarageSearch(this)==true)return;
             if(Paused&&CreativeWorkshop&&Progress?.State==R1RunState.TestDrive&&hud?.CloseCreativeEnemyMenu()==true)return;

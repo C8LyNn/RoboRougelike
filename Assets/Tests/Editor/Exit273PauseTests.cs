@@ -30,6 +30,20 @@ public sealed class Exit273PauseTests
         Assert.That(Time.timeScale, Is.Zero, "resuming garage must not start the physics simulation");
         yield return null;
     }
+    [UnityTest] public IEnumerator PauseControlsCloseBeforeResumingAndKeepSimulationPaused()
+    {
+        run.TogglePause();Assert.That(run.Paused,Is.True);
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var move=typeof(R1RunController).GetMethod("MovePauseSelection",flags);
+        var confirm=typeof(R1RunController).GetMethod("ConfirmPauseSelection",flags);
+        for(int i=0;i<3;i++)move.Invoke(run,new object[]{1});
+        Assert.That(run.PauseSelection,Is.EqualTo(3),"The controls option must be reachable with the keyboard or pad.");
+        confirm.Invoke(run,null);var hud=run.GetComponent<R1RunHUD>();
+        var property=typeof(R1RunHUD).GetProperty("PauseControlsOpen",flags);
+        Assert.That(property,Is.Not.Null);Assert.That(property.GetValue(hud),Is.True);
+        run.HandleEscape();Assert.That(run.Paused,Is.True);Assert.That(property.GetValue(hud),Is.False);
+        yield return null;run.HandleEscape();Assert.That(run.Paused,Is.False);Assert.That(Time.timeScale,Is.Zero);
+    }
     [UnityTest] public IEnumerator CombatPauseReturnsToMenuAndCleansActivity()
     {
         Assert.That(run.ChooseCheckpointRace(), Is.True);
@@ -81,6 +95,22 @@ public sealed class Exit273PauseTests
         while(run.Transitioning && Time.realtimeSinceStartup<deadline)yield return null;
         Assert.That(run.Player.GetInstanceID(), Is.Not.EqualTo(previousPlayer));
         Assert.That(run.Progress.State, Is.EqualTo(R1RunState.TestDrive));
+    }
+    [UnityTest] public IEnumerator ControlsPanelDoesNotResetPausedRangeOnR()
+    {
+        Assert.That(run.EnterTestRange(),Is.True);float deadline=Time.realtimeSinceStartup+15;
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        run.TogglePause();var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var move=typeof(R1RunController).GetMethod("MovePauseSelection",flags);
+        var confirm=typeof(R1RunController).GetMethod("ConfirmPauseSelection",flags);
+        for(int i=0;i<5;i++)move.Invoke(run,new object[]{1});
+        Assert.That(run.PauseSelection,Is.EqualTo(5));confirm.Invoke(run,null);
+        var panel=typeof(R1RunHUD).GetProperty("PauseControlsOpen",flags);var hud=run.GetComponent<R1RunHUD>();
+        Assert.That(panel.GetValue(hud),Is.True);int player=run.Player.GetInstanceID();
+        yield return PressRangeKey(Key.R);
+        Assert.That(run.Paused,Is.True);Assert.That(panel.GetValue(hud),Is.True);
+        Assert.That(run.Player.GetInstanceID(),Is.EqualTo(player));Assert.That(run.Transitioning,Is.False);
+        run.HandleEscape();Assert.That(panel.GetValue(hud),Is.False);Assert.That(run.Paused,Is.True);
     }
     [UnityTest] public IEnumerator RangePauseActionsSelectAndReturnToGarage()
     {

@@ -8,7 +8,16 @@ namespace RoboRougelike.R1
         string controlAwaiting,controlFeedback;
         int controlCaptureFrame;
         Vector2 controlScroll;
+        internal bool PauseControlsOpen {get;private set;}
         void OpenControls(){garageOptionsTab=5;controlAwaiting=null;controlFeedback=null;controlScroll=Vector2.zero;}
+        internal void OpenPauseControls(){PauseControlsOpen=true;controlAwaiting=null;controlFeedback=null;controlScroll=Vector2.zero;}
+        internal bool ClosePauseControls(){if(!PauseControlsOpen)return false;PauseControlsOpen=false;controlAwaiting=null;return true;}
+        void DrawPauseControls()
+        {
+            Panel(new Rect(190,70,900,590));
+            GUI.Label(new Rect(230,90,820,50),"STEROWANIE",heading);
+            DrawControls(new Rect(230,145,820,490));
+        }
         void DrawControls(Rect area)
         {
             var profile=R1ControlProfile.Current;var input=Event.current;
@@ -51,7 +60,7 @@ namespace RoboRougelike.R1
                 catch(System.Exception e){profile.RestoreValues(old);controlFeedback="Nie zapisano ustawień: "+e.Message;}
             }
             if(GUI.Button(new Rect(area.x+245,area.y+area.height-80,200,38),"Wróć",compactButton))
-            {controlAwaiting=null;garageOptionsTab=0;}
+            {controlAwaiting=null;if(PauseControlsOpen)ClosePauseControls();else garageOptionsTab=0;}
             if(!string.IsNullOrEmpty(controlFeedback))GUI.Label(new Rect(area.x,area.y+area.height-40,area.width,38),controlFeedback,small);
         }
     }

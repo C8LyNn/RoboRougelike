@@ -263,7 +263,7 @@ namespace RoboRougelike.R1
             else if(selected==R3PartKind.SalvageOptimizer)
                 GUI.Label(new Rect(30,355,280,100),$"Odzysk T1: +{m.Economy.SalvageOptimizerBonus*100:0}% złomu i do +{m.Economy.SalvageOptimizerExtraOffersPerUnit} ofert.\nBonusy sumują się.\nRezerwa: {VehicleEnergyState.PassiveReservation:0} energii na moduł.",small);
             else if(selected==R3PartKind.PointDefense)
-                GUI.Label(new Rect(30,355,280,100),"Obrona 1×1×1 • automat 24 m\n40 nabojów • T przeładuj (3 s)\nChroni przed pociskami i rakietami.\nWymaga wolnej linii strzału.",small);
+                GUI.Label(new Rect(30,355,280,100),"Obrona 1×1×1 • automat 24 m\n40 nabojów • "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("Reload"))+" przeładuj (3 s)\nChroni przed pociskami i rakietami.\nWymaga wolnej linii strzału.",small);
             else if(selected==R3PartKind.DirectionalShield)
             {
                 GUI.Label(new Rect(30,355,280,100),"Tarcza 1×1×1 • ładuje się sama\n100 osłony • 120° • zasięg 9 m\nRegeneracja 12/s po 3 s.\nKierunek zmienisz obrotem XYZ.",small);
@@ -312,7 +312,7 @@ namespace RoboRougelike.R1
                 a.GrappleAttached?"ponownie zwalnia":m.GrappleReadyAt>Time.time?$"{m.GrappleReadyAt-Time.time:0.0} s":"gotowy":null;
             AddPair(Installed(R3PartKind.Blink)?$"{m.ActiveSlotLabel(R3PartKind.Blink)} Blink: {AbilityStatus(a,R3PartKind.Blink)}":null,
                 grapple!=null?$"{m.ActiveSlotLabel(R3PartKind.MagneticGrapple)} zaczep: {grapple}":null);
-            AddPair(Installed(R3PartKind.Gyroscope)?$"G żyroskop: {(a.OperationalCount(R3PartKind.Gyroscope)==0?"niedostępny":m.GyroEnabled?"ON":"OFF")}":null,
+            AddPair(Installed(R3PartKind.Gyroscope)?$"{R1ControlProfile.Display(R1ControlProfile.Current.Binding("Gyro"))} żyroskop: {(a.OperationalCount(R3PartKind.Gyroscope)==0?"niedostępny":m.GyroEnabled?"ON":"OFF")}":null,
                 m.SelectedDrive==R3DriveKind.Hover?$"Hover: {m.HoverHeightMeters:0.0} m":null);
             string detail=steeringStatus??a.Feedback;
             if(!string.IsNullOrEmpty(detail))compactMovementRows.Add(detail);
