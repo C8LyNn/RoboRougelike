@@ -12,7 +12,8 @@ namespace RoboRougelike.Mechanics.StructuralScan
         [Min(0.01f)] public float displaySeconds = 5f;
         [Min(0f)] public float activationEnergy = 0f;
         [Range(1, 128)] public int maxRevealedParts = 16;
-        [Range(1, 4096)] public int maxRegisteredParts = 512;
+        // Retained only for old serialized settings; it no longer blocks scanning.
+        [HideInInspector] public int maxRegisteredParts = 512;
         public LayerMask obstructionMask = ~0;
 
         public void Validate()

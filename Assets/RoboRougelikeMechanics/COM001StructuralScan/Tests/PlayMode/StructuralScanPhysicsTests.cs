@@ -71,6 +71,17 @@ namespace RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode
             Assert.IsTrue(scanner.TryScan()); Assert.AreEqual(1, scanner.Contacts.Count); Assert.AreEqual(2, scanner.SelectedTargetOwner);
             yield return null;
         }
+        [UnityTest] public IEnumerator VisibleEnemyCanBeScannedWithMoreThan512RegisteredParts()
+        {
+            Target("visible",new Vector3(0,1,8));
+            var extras=Make("registered-outside-cone");extras.transform.position=new Vector3(0,1,-8);
+            for(int i=0;i<512;i++)extras.AddComponent<StructuralScanPartProxy>()
+                .Configure(registry,3,2,i,StructuralPartType.Armor);
+            Assert.AreEqual(513,registry.Count);
+            Assert.IsTrue(scanner.TryScan(),"Unrelated registered parts must not disable the scanner");
+            Assert.AreEqual(2,scanner.SelectedTargetOwner);Assert.AreEqual(1,scanner.Contacts.Count);
+            yield return null;
+        }
         [UnityTest] public IEnumerator BlockingWallHidesTarget()
         {
             Target("weapon", new Vector3(0, 1, 8)); Barrier(new Vector3(0, 1, 4), new Vector3(3, 4, .5f));

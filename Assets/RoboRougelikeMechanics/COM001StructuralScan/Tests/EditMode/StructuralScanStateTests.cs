@@ -52,6 +52,17 @@ namespace RoboRougelike.Mechanics.StructuralScan.Tests.EditMode
             Assert.IsTrue(reg.Register(proxy)); Assert.IsTrue(reg.Unregister(proxy)); Assert.AreEqual(0, reg.Count);
             Object.DestroyImmediate(p); Object.DestroyImmediate(go);
         }
+        [Test] public void RegistryReleasesIdentityOnRemovalAndClear()
+        {
+            var go=new GameObject("registry");var reg=go.AddComponent<StructuralScanRegistry>();
+            var a=new GameObject("a");var b=new GameObject("b");a.SetActive(false);b.SetActive(false);
+            var pa=a.AddComponent<StructuralScanPartProxy>();var pb=b.AddComponent<StructuralScanPartProxy>();
+            pa.Configure(reg,2,2,3,StructuralPartType.Wheel);pb.Configure(reg,2,2,3,StructuralPartType.Armor);
+            Assert.IsTrue(reg.Register(pa));Assert.IsFalse(reg.Register(pa));Assert.IsFalse(reg.Register(pb));
+            Assert.IsTrue(reg.Unregister(pa));Assert.IsFalse(reg.Unregister(pa));Assert.IsTrue(reg.Register(pb));
+            reg.Clear();Assert.AreEqual(0,reg.Count);Assert.IsTrue(reg.Register(pa));Assert.IsFalse(reg.Register(pb));
+            Object.DestroyImmediate(a);Object.DestroyImmediate(b);Object.DestroyImmediate(go);
+        }
         [Test] public void EnergyIsNotOverdrawn()
         {
             var go = new GameObject("energy"); var e = go.AddComponent<StructuralScanEnergyStore>(); e.Configure(10, 5);

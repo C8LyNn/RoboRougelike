@@ -82,7 +82,6 @@ namespace RoboRougelike.Mechanics.StructuralScan
         {
             if (!IsReady || registry == null || sensor == null || settings == null) return false;
             settings.Validate();
-            if (registry.Count > settings.maxRegisteredParts) return false; // fail closed
             RefreshAdapters();
             if (settings.activationEnergy > 0f && energy == null) return false;
 
