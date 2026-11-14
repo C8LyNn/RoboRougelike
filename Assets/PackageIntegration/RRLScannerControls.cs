@@ -31,7 +31,9 @@ namespace RoboRougelike.PackageIntegration
             if(group.Length==0||model.ScannerPulseReadyAt>Time.time||
                model.Parts.Any(p=>p.Kind==RoboRougelike.R3.R3PartKind.ScannerPulse&&p.DeviceReadyAt>Time.time)||
                group.Any(s=>!s.Pulse.Ready))return false;
-            if(!group[0].ActivateCombined(group.Length))return false;
+            int units=group.Sum(s=>RoboRougelike.R3.R3VehicleModel.TierEffectUnits(s.Device.State.Tier));
+            float cost=group.Sum(s=>RoboRougelike.R3.R3VehicleModel.TierActivationCost(s.Device.State.Tier));
+            if(!group[0].ActivateCombined(units,cost))return false;
             model.ScannerPulseReadyAt=Time.time+RRLPulseScannerBinding.CooldownSeconds;
             foreach(var state in model.Parts.Where(p=>p.Kind==RoboRougelike.R3.R3PartKind.ScannerPulse))state.DeviceReadyAt=model.ScannerPulseReadyAt;
             foreach(var scanner in group.Skip(1))scanner.Pulse.RestoreCooldown(RRLPulseScannerBinding.CooldownSeconds);
@@ -81,10 +83,11 @@ namespace RoboRougelike.PackageIntegration
                     var signals=visible.Take(3).ToArray();
                     GUI.Box(new Rect(20,top,410,58+signals.Length*22),GUIContent.none);
                     int active=pulses.Count(s=>s.Device.Available);
+                    int units=pulses.Where(s=>s.Device.Available).Sum(s=>RoboRougelike.R3.R3VehicleModel.TierEffectUnits(s.Device.State.Tier));
                     float cooldown=Mathf.Max(scanner.CooldownLeft,R1RunController.Instance.VehicleModel.ScannerPulseReadyAt-Time.time);
                     string readiness=active==0?"Moduły niesprawne":
                         cooldown>0?$"Odnowienie {cooldown:0.0} s":"Gotowy • sygnały także przez ściany";
-                    GUI.Label(new Rect(30,top+5,390,46),$"{R1RunController.Instance.VehicleModel.ActiveSlotLabel(RoboRougelike.R3.R3PartKind.ScannerPulse)} • Impuls skanera • {RRLPulseScannerBinding.BaseRadius*active:0} m / 3 s • {visible.Length} sygnałów\n{readiness}",label);
+                    GUI.Label(new Rect(30,top+5,390,46),$"{R1RunController.Instance.VehicleModel.ActiveSlotLabel(RoboRougelike.R3.R3PartKind.ScannerPulse)} • Impuls skanera • {RRLPulseScannerBinding.BaseRadius*units:0} m / 3 s • {visible.Length} sygnałów\n{readiness}",label);
                     int row=0;foreach(var signal in signals)
                     {
                         var offset=signal.transform.position-transform.position;

@@ -79,6 +79,32 @@ public class RRLW8PulseScannerTests
         Assert.That(before-run.VehicleModel.Energy.Current,Is.EqualTo(5).Within(.01));
         Assert.That(parts[1].GetComponent<ScannerPulse>().RadiusMeters,Is.EqualTo(20).Within(.01));
     }
+    [UnityTest] public IEnumerator TierThreePulseIncreasesRealRangeAndActivationCost()
+    {
+        kind=R3PartKind.ScannerPulse;yield return Build();
+        var binding=module.GetComponent<RRLPulseScannerBinding>();binding.Device.State.Tier=3;
+        var controls=run.Player.GetComponent<RRLScannerControls>();
+        var target=run.GetComponent<R6TestRange>().TrainingTarget;target.transform.position=run.Player.transform.position+Vector3.forward*65;Physics.SyncTransforms();
+        run.VehicleModel.Energy.Restore(100);float before=run.VehicleModel.Energy.Current;
+        Assert.That(controls.Activate(RRLScanKind.Pulse),Is.True);
+        Assert.That(pulse.RadiusMeters,Is.EqualTo(80).Within(.01));
+        Assert.That(pulse.Revealed.Any(s=>s.transform.IsChildOf(target.transform)),Is.True,"A tier-three pulse must detect the actual target beyond tier-one range.");
+        Assert.That(before-run.VehicleModel.Energy.Current,Is.EqualTo(7).Within(.01));
+    }
+    [UnityTest] public IEnumerator MixedTierPulseCopiesCombineRangeAndCost()
+    {
+        kind=R3PartKind.ScannerPulse;yield return Build(copies:2);
+        var parts=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==kind).ToArray();
+        parts[1].GetComponent<RRLPulseScannerBinding>().Device.State.Tier=2;
+        var controls=run.Player.GetComponent<RRLScannerControls>();
+        var target=run.GetComponent<R6TestRange>().TrainingTarget;target.transform.position=run.Player.transform.position+Vector3.forward*50;Physics.SyncTransforms();
+        run.VehicleModel.Energy.Restore(10);Assert.That(controls.Activate(RRLScanKind.Pulse),Is.False);
+        run.VehicleModel.Energy.Restore(100);float before=run.VehicleModel.Energy.Current;
+        Assert.That(controls.Activate(RRLScanKind.Pulse),Is.True);
+        Assert.That(before-run.VehicleModel.Energy.Current,Is.EqualTo(11).Within(.01));
+        var scans=parts.Select(p=>p.GetComponent<ScannerPulse>()).ToArray();
+        Assert.That(scans.Any(s=>Mathf.Abs(s.RadiusMeters-60)<.01f&&s.Revealed.Any(t=>t.transform.IsChildOf(target.transform))),Is.True);
+    }
     [UnityTest] public IEnumerator ScannerOnlyVehicleRespondsToItsAssignedActiveSlot()
     {
         kind=R3PartKind.ScannerPulse;yield return Build();

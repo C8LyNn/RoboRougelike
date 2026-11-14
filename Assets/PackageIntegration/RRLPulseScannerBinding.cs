@@ -27,13 +27,13 @@ namespace RoboRougelike.PackageIntegration
             var controls=Device?.Owner!=null?Device.Owner.GetComponent<RRLScannerControls>():null;
             return controls!=null&&controls.Activate(RRLScanKind.Pulse);
         }
-        internal bool ActivateCombined(int copies)
+        internal bool ActivateCombined(int units,float costMultiplier)
         {
             RefreshAvailability();if(Device==null||!Device.Available||Pulse==null||!Pulse.Ready)return false;
             RRLPulseSignal.Prepare(R1RunController.Instance);Physics.SyncTransforms();
             var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
-            float cost=EnergyPerCopy*copies;if(energy!=null&&!energy.TrySpend(cost))return false;
-            Pulse.Configure(BaseRadius*copies,CooldownSeconds,RevealSeconds,1<<RRLPulseSignal.SignalLayer);
+            float cost=EnergyPerCopy*costMultiplier;if(energy!=null&&!energy.TrySpend(cost))return false;
+            Pulse.Configure(BaseRadius*units,CooldownSeconds,RevealSeconds,1<<RRLPulseSignal.SignalLayer);
             if(Pulse.TryPulse(transform.position)<0){if(energy!=null)energy.Refund(cost);return false;}
             Device.State.DeviceReadyAt=Time.time+Pulse.RemainingCooldown;return true;
         }

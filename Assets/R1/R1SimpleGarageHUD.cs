@@ -597,7 +597,7 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.Booster?$"Booster T{R3VehicleModel.NormalizedTier(part.Tier)}: {run.VehicleModel.BoosterThrustNewtons*R3VehicleModel.TierEffectUnits(part.Tier):0} N, {VehicleEnergyCosts.BoosterActivation*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii za aktywację.":
                 kind==R3PartKind.MagneticGrapple?$"Zaczep T{R3VehicleModel.NormalizedTier(part.Tier)}: siła ×{R3VehicleModel.TierEffectUnits(part.Tier)}, {VehicleEnergyCosts.Grapple*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii za aktywację.":
                 kind==R3PartKind.Gyroscope?$"Żyroskop T{R3VehicleModel.NormalizedTier(part.Tier)}: stabilizacja ×{R3VehicleModel.TierEffectUnits(part.Tier)}, rezerwuje 25 energii.":
-                kind==R3PartKind.ScannerPulse?"Impuls skanera: każda sprawna kopia dodaje 20 m zasięgu i 5 energii kosztu. Jeden impuls, wspólne odnowienie 5 s.":
+                kind==R3PartKind.ScannerPulse?$"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: +{20*R3VehicleModel.TierEffectUnits(part.Tier)} m zasięgu i {5*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii. Kopie wspólnie aktywują impuls.":
                 kind==R3PartKind.JumpDrive?$"Napęd skoku T{R3VehicleModel.NormalizedTier(part.Tier)}: wkład ×{R3VehicleModel.TierEffectUnits(part.Tier)}, {VehicleEnergyCosts.Jump*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii za aktywację.":
                 kind==R3PartKind.Blink?$"Blink T{R3VehicleModel.NormalizedTier(part.Tier)}: +{8*R3VehicleModel.TierEffectUnits(part.Tier)} m zasięgu, {VehicleEnergyCosts.Blink*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii za aktywację.":
                 kind==R3PartKind.RepairPulse?
