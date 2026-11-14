@@ -39,7 +39,7 @@ namespace RoboRougelike.PackageIntegration
         {
             RefreshAvailability();if(Device==null||!Device.Available||Scanner==null||!Scanner.IsReady)return false;
             var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
-            Scanner.Configure(new StructuralScanSettings{rangeMeters=Mathf.Min(config.StructuralScanRange,1000f/units)*units,fullConeDegrees=85,cooldownSeconds=config.StructuralScanCooldown,activationEnergy=energy!=null?config.StructuralScanEnergy*costMultiplier:0f});
+            Scanner.Configure(new StructuralScanSettings{rangeMeters=StructuralScanSettings.CombinedRange(config.StructuralScanRange,units),fullConeDegrees=85,cooldownSeconds=config.StructuralScanCooldown,activationEnergy=energy!=null?config.StructuralScanEnergy*costMultiplier:0f});
             RRLScanWorld.Register(registry,R1RunController.Instance);
             if(!Scanner.TryScan())return false;
             Device.State.DeviceReadyAt=Time.time+Scanner.CooldownLeft;return true;

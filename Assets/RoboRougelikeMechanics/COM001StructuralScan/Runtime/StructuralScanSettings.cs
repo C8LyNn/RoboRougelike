@@ -17,13 +17,21 @@ namespace RoboRougelike.Mechanics.StructuralScan
 
         public void Validate()
         {
-            rangeMeters = Mathf.Clamp(Safe(rangeMeters, 24f), 0.1f, 1000f);
+            rangeMeters = Mathf.Max(Safe(rangeMeters, 24f), 0.1f);
             fullConeDegrees = Mathf.Clamp(Safe(fullConeDegrees, 75f), 1f, 180f);
             cooldownSeconds = Mathf.Clamp(Safe(cooldownSeconds, 8f), 0f, 3600f);
             displaySeconds = Mathf.Clamp(Safe(displaySeconds, 5f), 0.01f, 3600f);
             activationEnergy = Mathf.Clamp(Safe(activationEnergy, 0f), 0f, 1000000f);
             maxRevealedParts = Mathf.Clamp(maxRevealedParts, 1, 128);
             maxRegisteredParts = Mathf.Clamp(maxRegisteredParts, 1, 4096);
+        }
+
+        // Preserve the combined value until the maximum representable float,
+        // without overflowing an otherwise valid configuration to infinity.
+        public static float CombinedRange(float baseRange,int units)
+        {
+            if(float.IsNaN(baseRange)||float.IsInfinity(baseRange)||baseRange<=0||units<=0)return 0f;
+            return (float)Math.Min(float.MaxValue,(double)baseRange*units);
         }
 
         private static float Safe(float value, float fallback)

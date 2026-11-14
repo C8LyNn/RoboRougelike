@@ -95,7 +95,7 @@ namespace RoboRougelike.PackageIntegration
                     float cooldown=Mathf.Max(scanner.CooldownLeft,R1RunController.Instance.VehicleModel.StructuralScannerReadyAt-Time.time);
                     string readiness=active==0?"Moduły niesprawne":
                         cooldown>0?$"Odnowienie {cooldown:0.0} s":"Gotowy • wymaga widocznego celu";
-                    GUI.Label(new Rect(30,top+5,390,46),$"{R1RunController.Instance.VehicleModel.ActiveSlotLabel(RoboRougelike.R3.R3PartKind.StructuralScanner)} • Skan struktury • {Mathf.Min(1000f,R1RunController.Instance.VehicleModel.Economy.StructuralScanRange*units):0} m / 85° • {source.Contacts.Count} części\n{readiness}",label);
+                    GUI.Label(new Rect(30,top+5,390,46),$"{R1RunController.Instance.VehicleModel.ActiveSlotLabel(RoboRougelike.R3.R3PartKind.StructuralScanner)} • Skan struktury • {StructuralScanSettings.CombinedRange(R1RunController.Instance.VehicleModel.Economy.StructuralScanRange,units):0} m / 85° • {source.Contacts.Count} części\n{readiness}",label);
                     int row=0;foreach(var contact in source.Contacts.Take(3))
                         GUI.Label(new Rect(30,top+52+22*row++,390,22),$"{PartLabel(contact.Type)} • HP {contact.HealthFraction*100:0}% • {(contact.Functional?"sprawny":"niesprawny")} • odczyt {source.DisplayLeft:0.0}s",label);
                     top+=66+rows*22;

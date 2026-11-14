@@ -89,6 +89,28 @@ public class RRLW8PulseScannerTests
         Assert.That(run.Player.GetComponent<RRLScannerControls>().Activate(RRLScanKind.Structural),Is.True);
         Assert.That(before-run.VehicleModel.Energy.Current,Is.EqualTo(5).Within(.01));
     }
+    [UnityTest] public IEnumerator StructuralScannerCopiesReachVisibleTargetBeyondOldOneKilometerCap()
+    {
+        Assert.That(run.OpenSandboxGarage(),Is.True);MountScanner(R3PartKind.StructuralScanner);MountScanner(R3PartKind.StructuralScanner);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;yield return new WaitForFixedUpdate();
+        var parts=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.StructuralScanner).ToArray();
+        var target=run.GetComponent<R6TestRange>().TrainingTarget;
+        foreach(var other in run.Encounter.Enemies.Where(e=>e!=null&&e!=target))other.gameObject.SetActive(false);
+        var body=run.Player.GetComponent<Rigidbody>();body.isKinematic=true;body.position+=Vector3.up*150;body.transform.position=body.position;
+        target.transform.position+=Vector3.up*150;Physics.SyncTransforms();
+        parts[0].transform.rotation=Quaternion.LookRotation(Vector3.forward,Vector3.up);
+        var offset=target.Core.transform.position-target.transform.position;
+        target.transform.position=parts[0].transform.position+Vector3.forward*1200-offset;Physics.SyncTransforms();
+        var controls=run.Player.GetComponent<RRLScannerControls>();run.VehicleModel.Energy.Restore(100);
+        run.VehicleModel.Economy.StructuralScanRange=500;
+        Assert.That(controls.Activate(RRLScanKind.Structural),Is.False,"At a combined 1000 m the 1200 m target is outside range.");
+        run.VehicleModel.Economy.StructuralScanRange=650;
+        var delta=target.Core.transform.position-parts[0].transform.position;
+        var hits=Physics.RaycastAll(parts[0].transform.position,delta.normalized,delta.magnitude+1).OrderBy(h=>h.distance).Select(h=>h.collider.name+":"+h.distance.ToString("0.0"));
+        Assert.That(controls.Activate(RRLScanKind.Structural),Is.True,$"Two 650 m copies must reach the target; distance {delta.magnitude:0.0}, angle {Vector3.Angle(parts[0].transform.forward,delta):0.0}, hits {string.Join(", ",hits)}.");
+        Assert.That(parts.Select(p=>p.GetComponent<StructuralScanController>()).Any(s=>s.Contacts.Any(c=>c.OwnerKey==target.GetInstanceID())),Is.True);
+        yield return null;
+    }
     [UnityTest] public IEnumerator TierThreeStructuralScannerRevealsDistantVisibleEnemyForItsTierCost()
     {
         Assert.That(run.OpenSandboxGarage(),Is.True);MountScanner(R3PartKind.StructuralScanner);
