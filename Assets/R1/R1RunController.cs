@@ -184,6 +184,14 @@ namespace RoboRougelike.R1
         }
         public bool GaragePurchase(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,R3WheelStyle wheelStyle=R3WheelStyle.Offroad,R3ArmorShape armorShape=R3ArmorShape.Cube) =>
             !Transitioning&&Progress?.State==R1RunState.Garage&&VehicleModel!=null&&CanBuyTechnology(kind,weapon)&&VehicleModel.PurchaseToInventory(kind,weapon,wheelStyle,armorShape);
+        public bool SafeVendorAvailable=>!Transitioning&&!SandboxWorkshop&&Progress?.State==R1RunState.Garage&&VehicleModel!=null&&
+            VehicleModel.SafeVendorStage>0&&VehicleModel.SafeVendorStage==Progress.CompletedEncounters&&VehicleModel.SafeVendorStage==VehicleModel.SafeZoneLastCompleted;
+        public bool GarageBuyVendorOffer(int index)
+        {
+            if(!SafeVendorAvailable)return false;
+            var offers=VehicleModel.SafeZoneVendorOffers();
+            return index>=0&&index<offers.Count&&CanBuyTechnology(offers[index].Kind,offers[index].Weapon)&&VehicleModel.TryPurchaseSafeZoneOffer(index);
+        }
         public bool GarageBuy(Vector3Int cell,R3PartKind kind,Vector3Int rotation=default) =>
             CanBuyTechnology(kind)&&EditGarage(()=>VehicleModel.Buy(cell,kind,R4WeaponKind.Basic,rotation));
         public bool GarageBuyWeapon(Vector3Int cell,R4WeaponKind kind,Vector3Int rotation=default) =>
@@ -251,7 +259,11 @@ namespace RoboRougelike.R1
             {
                 // No stat bonus is applied here. Only a mounted, live module works.
                 bool safeZone=VehicleModel.TryEnterSafeZone(Progress.CompletedEncounters);
-                if(safeZone)RebuildGarageVehicle();
+                if(safeZone)
+                {
+                    VehicleModel.PrepareSafeZoneVendor(unchecked(Seed*397+Progress.CompletedEncounters));
+                    RebuildGarageVehicle();
+                }
                 Garage.Open();
                 if(safeZone)Garage.Message="Bezpieczna strefa: odnowiono energię i ładunki, zresetowano odnowienia oraz częściowo naprawiono sprawne części.";
             }

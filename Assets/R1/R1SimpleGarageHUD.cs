@@ -816,6 +816,7 @@ namespace RoboRougelike.R1
             }
             if(GUI.Button(new Rect(12,605,245,42),model.CreativeMode?$"Magazyn {model.Inventory.Count} • naprawy":$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
+            if(run.SafeVendorAvailable&&GUI.Button(new Rect(284,608,205,36),"Oferty sprzedawcy",compactButton))OpenSimpleGarageOptions(3);
             if(garageShortcutLabel==null)garageShortcutLabel=new GUIStyle(small){fontSize=14,wordWrap=false};
             GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • ŚPM: wybierz typ\nPPM przeciągnij: widok • U: spód\nQ/E R/F Z/X: obrót • Shift: część\nCtrl+LPM: napraw • Home: widok",garageShortcutLabel);
             string garageFeedback=SimpleGarageFeedback(run);
@@ -882,7 +883,8 @@ namespace RoboRougelike.R1
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
             if(GUI.Button(new Rect(458,784,138,40),"Ustawienia",compactButton))OpenSimpleGarageOptions(0);
             if(GUI.Button(new Rect(606,784,138,40),"Aktywności",compactButton))OpenSimpleGarageOptions(1);
-            if(GUI.Button(new Rect(458,831,286,40),"Dopasuj widok",compactButton))garage.FrameVehicle();
+            if(GUI.Button(new Rect(458,831,run.SafeVendorAvailable?138:286,40),"Dopasuj widok",compactButton))garage.FrameVehicle();
+            if(run.SafeVendorAvailable&&GUI.Button(new Rect(606,831,138,40),"Sprzedawca",compactButton))OpenSimpleGarageOptions(3);
             string garageFeedback=SimpleGarageFeedback(run);
             DrawGarageNotice(true,garageFeedback+
                 "\nPPM: zdejmij • ŚPM: wybierz typ • przeciągnij PPM: obrót widoku"+
@@ -900,7 +902,7 @@ namespace RoboRougelike.R1
         void DrawSimplePortraitOptions(R1RunController run)
         {
             Panel(new Rect(12,90,744,800));
-            GUI.Label(new Rect(24,105,540,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":"WYBÓR AKTYWNOŚCI",heading);
+            GUI.Label(new Rect(24,105,540,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":garageOptionsTab==3?"SPRZEDAWCA":"WYBÓR AKTYWNOŚCI",heading);
             if(GUI.Button(new Rect(606,105,138,40),"Zamknij",compactButton)){garageOptionsOpen=false;return;}
             if(garageOptionsTab==0)
             {
@@ -925,6 +927,7 @@ namespace RoboRougelike.R1
                 DrawSlotAssignments(run.VehicleModel,24,165,720);
                 if(GUI.Button(new Rect(24,510,250,44),"Wróć do ustawień",compactButton))garageOptionsTab=0;
             }
+            else if(garageOptionsTab==3)DrawSafeVendor(run,new Rect(24,165,720,540));
             else
             {
                 var matrix=GUI.matrix;
@@ -936,7 +939,7 @@ namespace RoboRougelike.R1
         void DrawSimpleGarageOptions(R1RunController run)
         {
             Panel(new Rect(280,90,800,545));
-            GUI.Label(new Rect(300,105,570,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":"WYBÓR AKTYWNOŚCI",heading);
+            GUI.Label(new Rect(300,105,570,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":garageOptionsTab==3?"SPRZEDAWCA":"WYBÓR AKTYWNOŚCI",heading);
             if(GUI.Button(new Rect(925,105,135,40),"Zamknij",compactButton)){garageOptionsOpen=false;return;}
             if(garageOptionsTab==0)
             {
@@ -961,12 +964,33 @@ namespace RoboRougelike.R1
                 DrawSlotAssignments(run.VehicleModel,300,165,740);
                 if(GUI.Button(new Rect(300,505,250,44),"Wróć do ustawień",compactButton))garageOptionsTab=0;
             }
+            else if(garageOptionsTab==3)DrawSafeVendor(run,new Rect(300,165,740,420));
             else
             {
                 var matrix=GUI.matrix;
                 try{GUI.matrix=matrix*Matrix4x4.Translate(new Vector3(280,-460,0));DrawPortraitActivities(run);}
                 finally{GUI.matrix=matrix;}
             }
+        }
+
+        void DrawSafeVendor(R1RunController run,Rect area)
+        {
+            var model=run.VehicleModel;
+            GUI.Label(new Rect(area.x,area.y,area.width,35),$"Okazje dostępne w tej strefie • Złom: {model.Scrap}",body);
+            var offers=model.SafeZoneVendorOffers();
+            for(int i=0;i<offers.Count;i++)
+            {
+                var offer=offers[i];int quantity=model.GrantQuantity(offer.Kind);
+                bool unlocked=run.CanBuyTechnology(offer.Kind,offer.Weapon);
+                bool room=(long)model.Inventory.Count+quantity<=model.AvailableInventoryCapacity;
+                GUI.Label(new Rect(area.x,area.y+45+i*65,area.width-220,54),$"{R4WeaponDefinition.PartName(offer.Kind,offer.Weapon)} • {quantity} szt. • {offer.Price} Z",body);
+                GUI.enabled=run.SafeVendorAvailable&&!offer.Sold&&unlocked&&room&&model.Scrap>=offer.Price;
+                string action=offer.Sold?"Kupione":!unlocked?"Zablokowane":!room?"Brak miejsca":model.Scrap<offer.Price?"Za mało złomu":"Kup";
+                if(GUI.Button(new Rect(area.x+area.width-205,area.y+45+i*65,205,45),action,compactButton))
+                    garageOptionsFeedback=run.GarageBuyVendorOffer(offer.Index)?"Kupiono ofertę. Części czekają w magazynie.":"Nie udało się kupić oferty.";
+                GUI.enabled=true;
+            }
+            if(!string.IsNullOrEmpty(garageOptionsFeedback))GUI.Label(new Rect(area.x,area.y+320,area.width,50),garageOptionsFeedback,small);
         }
     }
 }

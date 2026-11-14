@@ -93,6 +93,11 @@ public sealed class BacklogSafeZoneGameplayTests
         var physical=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==damagedId);
         Assert.That(physical.Damageable.CurrentHp/physical.Damageable.MaxHp,Is.EqualTo(.65f).Within(.001));
         Assert.That(run.Garage.Message,Does.Contain("Bezpieczna strefa"));
+        Assert.That(run.SafeVendorAvailable,Is.True);run.VehicleModel.Award(1000);
+        int count=run.VehicleModel.Inventory.Count;var offer=run.VehicleModel.SafeZoneVendorOffers()[0];
+        Assert.That(run.GarageBuyVendorOffer(offer.Index),Is.True);
+        Assert.That(run.VehicleModel.Inventory.Count-count,Is.EqualTo(run.VehicleModel.GrantQuantity(offer.Kind)));
+        Assert.That(run.GarageBuyVendorOffer(offer.Index),Is.False);
         yield return null;
     }
     [UnityTearDown] public IEnumerator Cleanup()
