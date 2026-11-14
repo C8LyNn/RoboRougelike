@@ -9,6 +9,19 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogBonusTierTests
 {
+    [Test] public void WeaponCategoryRewardSurvivesCheckpointAndNamesItsScope()
+    {
+        Assert.That(System.Enum.GetNames(typeof(R1BonusScope)),Does.Contain("Weapons"));
+        var reward=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.SingleOrDefault(u=>u!=null&&u.Id=="damage_weapons");
+        Assert.That(reward,Is.Not.Null);Assert.That(reward.Scope.ToString(),Is.EqualTo("Weapons"));
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        var item=model.Inventory.Single();var blueprint=R3BlueprintPart.FromPart(item,Vector3Int.zero);
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(blueprint.Matches(restored.Inventory.Single()),Is.True);
+        var label=typeof(R1RunHUD).GetMethod("BonusInstanceText",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That((string)label.Invoke(null,new object[]{item}),Does.Contain("broni"));
+    }
     internal static R1UpgradeDefinition OperationBonus(string id,float amount,string operation,R1UpgradeEffect effect=R1UpgradeEffect.Damage)
     {
         var field=typeof(R1UpgradeDefinition).GetField("Operation");Assert.That(field,Is.Not.Null,"Reward definitions need an explicit modifier operation.");
@@ -178,6 +191,42 @@ public sealed class BacklogBonusTierTests
 
 public sealed class BacklogBonusTierGameplayTests
 {
+    [UnityTest] public IEnumerator WeaponCategoryBonusAffectsWeaponHitsButNotDrones()
+    {
+        Assert.That(System.Enum.GetNames(typeof(R1BonusScope)),Does.Contain("Weapons"));
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var global=BacklogBonusTierTests.OperationBonus("global-weapons",.2f,"Increased");
+        var more=BacklogBonusTierTests.OperationBonus("global-more-weapons",.5f,"More");
+        var weapons=BacklogBonusTierTests.OperationBonus("weapons-only",.4f,"Increased");
+        weapons.Scope=(R1BonusScope)System.Enum.Parse(typeof(R1BonusScope),"Weapons");
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{global,more,weapons}),Is.True);
+        foreach(var id in model.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(id,c,default)==null);
+            Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var tank=run.Player.Controller;Assert.That(tank.PackageDamageScale,Is.EqualTo(2.4f).Within(.001));
+        Assert.That(tank.PackageBlastDamageScale,Is.EqualTo(2.4f).Within(.001));
+        Assert.That(tank.PackagePiercingDamageScale,Is.EqualTo(2.4f).Within(.001));
+        var muzzle=new GameObject("Weapon bonus muzzle").transform;muzzle.position=new Vector3(1000,1000,1000);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=muzzle.position+Vector3.forward*4;
+        var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(1000,false);Physics.SyncTransforms();
+        tank.FireFrom(muzzle,RoboRougelike.R4.R4WeaponKind.Basic,"weapon-scope");float deadline=Time.time+3;
+        while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(904).Within(.02));hp.RestoreHealthRatio(1);
+        var device=GameObject.CreatePrimitive(PrimitiveType.Cube);device.transform.position=muzzle.position;
+        var body=device.AddComponent<Rigidbody>();body.isKinematic=true;var drone=device.AddComponent<R3FlyingDrone>();
+        drone.Configure(run.Player.transform,0,.5f,10);drone.enabled=false;Physics.SyncTransforms();
+        typeof(R3FlyingDrone).GetMethod("Fire",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).Invoke(drone,new object[]{Vector3.forward});
+        deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(982).Within(.02),"Weapon bonuses must not apply to drones.");
+        var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==model.Parts.Single(s=>s.UpgradeId=="weapons-only").Id);
+        part.gameObject.SetActive(false);yield return null;
+        Assert.That(tank.PackageDamageScale,Is.EqualTo(1.8f).Within(.001));
+        Object.Destroy(muzzle.gameObject);Object.Destroy(target);Object.Destroy(device);Object.Destroy(global);Object.Destroy(more);Object.Destroy(weapons);
+    }
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");

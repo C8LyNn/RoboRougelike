@@ -46,6 +46,7 @@ namespace RoboRougelike.R3
         public float BlastTrapDamageMultiplier {get;private set;}=1;
         public float PiercingDamageMultiplier {get;private set;}=1;
         public float KineticDamageMultiplier {get;private set;}=1;
+        public float WeaponDamageMultiplier {get;private set;}=1;
         public float ShieldDurabilityMultiplier {get;private set;}=1;
 
         // Resolve global and matching category bonuses for owned deployables;
@@ -102,8 +103,9 @@ namespace RoboRougelike.R3
             var damage=new R1ModifierGroup();var basicDamage=new R1ModifierGroup();var basicBlastDamage=new R1ModifierGroup();var droneDamage=new R1ModifierGroup();
             var turretDamage=new R1ModifierGroup();var trapDamage=new R1ModifierGroup();var blastDamage=new R1ModifierGroup();
             var blastTrapDamage=new R1ModifierGroup();var piercingDamage=new R1ModifierGroup();var kineticDamage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
-            var core=new R1ModifierGroup();var reload=new R1ModifierGroup();var shieldDurability=new R1ModifierGroup();
+            var core=new R1ModifierGroup();var reload=new R1ModifierGroup();var shieldDurability=new R1ModifierGroup();var weaponDamage=new R1ModifierGroup();
             damage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            weaponDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             basicDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             basicBlastDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             droneDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
@@ -120,9 +122,11 @@ namespace RoboRougelike.R3
                 {
                     if(module.UpgradeScope==R1BonusScope.Global)
                         damage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
-                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.BasicCannon||module.UpgradeScope==R1BonusScope.KineticDamage)
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons)
+                        weaponDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons||module.UpgradeScope==R1BonusScope.BasicCannon||module.UpgradeScope==R1BonusScope.KineticDamage)
                         basicDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
-                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.BasicCannon||module.UpgradeScope==R1BonusScope.BlastDamage)
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons||module.UpgradeScope==R1BonusScope.BasicCannon||module.UpgradeScope==R1BonusScope.BlastDamage)
                         basicBlastDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                     if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Drones||module.UpgradeScope==R1BonusScope.KineticDamage)
                         droneDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
@@ -130,13 +134,13 @@ namespace RoboRougelike.R3
                         turretDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                     if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Traps||module.UpgradeScope==R1BonusScope.KineticDamage)
                         trapDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
-                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.BlastDamage)
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons||module.UpgradeScope==R1BonusScope.BlastDamage)
                         blastDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                     if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Traps||module.UpgradeScope==R1BonusScope.BlastDamage)
                         blastTrapDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
-                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.PiercingDamage)
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons||module.UpgradeScope==R1BonusScope.PiercingDamage)
                         piercingDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
-                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.KineticDamage)
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons||module.UpgradeScope==R1BonusScope.KineticDamage)
                         kineticDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 }
                 else if(module.UpgradeEffect==R1UpgradeEffect.Mobility)
@@ -160,6 +164,7 @@ namespace RoboRougelike.R3
             BlastTrapDamageMultiplier=blastTrapDamage.Apply(baseStats.Damage);
             PiercingDamageMultiplier=piercingDamage.Apply(baseStats.Damage);
             KineticDamageMultiplier=kineticDamage.Apply(baseStats.Damage);
+            WeaponDamageMultiplier=weaponDamage.Apply(baseStats.Damage);
             ShieldDurabilityMultiplier=shieldDurability.Apply(1);
             player.Apply(stats);
             player.Controller.SetBasicDamageProfile(basicDamage.Apply(baseStats.Damage),basicBlastDamage.Apply(baseStats.Damage),(float)System.Math.Min(1d,hybridShare));

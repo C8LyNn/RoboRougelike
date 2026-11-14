@@ -627,7 +627,7 @@ public float CurrentForwardSpeed =>
             }
         }
         public float WeaponInterval(RoboRougelike.R4.R4WeaponKind kind) => RoboRougelike.R4.R4WeaponDefinition.Get(kind).Interval*intervalModifier;
-        public float PackageDamageScale => damageModifier;
+        public float PackageDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.WeaponDamageMultiplier??damageModifier;
         public float PackageBlastDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.BlastDamageMultiplier??damageModifier;
         public float PackagePiercingDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.PiercingDamageMultiplier??damageModifier;
         public float PackageKineticDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.KineticDamageMultiplier??damageModifier;
