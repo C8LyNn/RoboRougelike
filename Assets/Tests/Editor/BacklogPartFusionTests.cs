@@ -14,6 +14,21 @@ using UnityEngine.TestTools;
 public sealed class BacklogPartFusionTests
 {
     [Test]
+    public void BoostersFuseFromTierOneToTierThreeAndKeepAverageCondition()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(5000);
+        for(int i=0;i<5;i++)Assert.That(model.PurchaseToInventory(R3PartKind.Booster),Is.True);
+        for(int i=0;i<3;i++)Assert.That(model.FuseInventory(model.Inventory.Where(p=>p.Kind==R3PartKind.Booster&&p.Tier<=1).Take(3).Select(p=>p.Id)),Is.True);
+        var tier2=model.Inventory.Where(p=>p.Kind==R3PartKind.Booster&&p.Tier==2).ToArray();
+        Assert.That(tier2.Length,Is.EqualTo(3));tier2[0].Health=.5f;tier2[1].Health=0;tier2[2].Health=1;
+        Assert.That(model.FuseInventory(tier2.Select(p=>p.Id)),Is.True);
+        var result=model.Inventory.Single(p=>p.Kind==R3PartKind.Booster&&p.Tier==3);
+        Assert.That(result.Health,Is.EqualTo(.5f).Within(.001));
+        Assert.That(R3VehicleModel.ValidEconomicPart(result),Is.True);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(model.MakeCheckpoint(0),R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Inventory.Single(p=>p.Id==result.Id).Tier,Is.EqualTo(3));
+    }
+    [Test]
     public void WreckCanBeFusedAndResultHasAveragePercentageHealth()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);

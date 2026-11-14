@@ -240,7 +240,7 @@ namespace RoboRougelike.R1
             var selected=run.Garage.SelectedPart;
             if(selected==R3PartKind.Booster)
             {
-                GUI.Label(new Rect(30,355,280,25),$"{m.BoosterThrustNewtons:0} N • {m.BoosterDurationSeconds:0.0} s • Shift",small);
+                GUI.Label(new Rect(30,355,280,25),$"{m.BoosterThrustNewtons:0} N / T1 • {m.BoosterDurationSeconds:0.0} s • {m.ActiveSlotLabel(R3PartKind.Booster)}",small);
                 if(GUI.Button(new Rect(30,384,135,31),"Siła − 500 N",compactButton))ChangeMovement(run,m.BoosterThrustNewtons-500,m.BoosterDurationSeconds,m.GyroEnabled,m.HoverHeightMeters);
                 if(GUI.Button(new Rect(175,384,135,31),"Siła + 500 N",compactButton))ChangeMovement(run,m.BoosterThrustNewtons+500,m.BoosterDurationSeconds,m.GyroEnabled,m.HoverHeightMeters);
                 if(GUI.Button(new Rect(30,420,135,31),"Czas − 0,2 s",compactButton))ChangeMovement(run,m.BoosterThrustNewtons,m.BoosterDurationSeconds-.2f,m.GyroEnabled,m.HoverHeightMeters);

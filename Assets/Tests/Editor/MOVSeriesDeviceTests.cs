@@ -60,6 +60,53 @@ public class MOVSeriesDeviceTests
         Assert.That(type,Is.Not.Null,"Real vehicle coordinator missing.");var c=v.GetComponent(type);Assert.That(c,Is.Not.Null);return c;
     }
     static bool Action(R1VehicleState v,string method)=>(bool)Adapter(v).GetType().GetMethod(method).Invoke(Adapter(v),null);
+    R1VehicleState BuildTieredBooster(int tier,float x)
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var cell=FindFixtureCell(model,R3PartKind.Booster,new Vector3Int(1,1,0));
+        model.Parts.Add(new R3PartState(cell,R3PartKind.Booster){Tier=tier});
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
+        vehicle.transform.SetParent(fixtures.transform,true);vehicle.Controller.SetGameplayInputEnabled(true);return vehicle;
+    }
+    R1VehicleState BuildMixedTierBoosters()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        foreach(int tier in new[]{1,3})
+        {
+            var cell=FindFixtureCell(model,R3PartKind.Booster,new Vector3Int(tier==1?-1:1,1,0));
+            model.Parts.Add(new R3PartState(cell,R3PartKind.Booster){Tier=tier});
+        }
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,.7f,1000),Quaternion.identity);
+        vehicle.transform.SetParent(fixtures.transform,true);vehicle.Controller.SetGameplayInputEnabled(true);return vehicle;
+    }
+    [UnityTest] public IEnumerator MixedTierBoostersSpendCombinedEnergyAndStopDisabledCopy()
+    {
+        var v=BuildMixedTierBoosters();yield return Seconds(.6f);
+        var bank=v.GetComponent<VehicleEnergyBank>();var boosters=v.GetComponentsInChildren<VehicleBooster>();
+        float cost=VehicleEnergyCosts.BoosterActivation*(R3VehicleModel.TierActivationCost(1)+R3VehicleModel.TierActivationCost(3));
+        Assert.That(bank.TrySpend(bank.Current-cost+.1f),Is.True);
+        float before=bank.Current;Assert.That(Action(v,"TryBoost"),Is.False);
+        Assert.That(bank.Current,Is.EqualTo(before).Within(.001));Assert.That(boosters.All(b=>!b.IsBoosting),Is.True);
+        bank.Recharge(100);before=bank.Current;Assert.That(Action(v,"TryBoost"),Is.True);
+        Assert.That(bank.Current,Is.EqualTo(before-cost).Within(.001));Assert.That(boosters.All(b=>b.IsBoosting),Is.True);
+        var high=boosters.Single(b=>b.GetComponent<R3MountedPart>().Tier==3);high.SetOperational(false);
+        Assert.That(high.IsBoosting,Is.False);Assert.That(boosters.Single(b=>b!=high).IsBoosting,Is.True);
+    }
+    [UnityTest] public IEnumerator HigherTierBoosterUsesTierEnergyAndAddsPhysicalThrust()
+    {
+        var one=BuildTieredBooster(1,-20);var two=BuildTieredBooster(2,20);var three=BuildTieredBooster(3,45);yield return Seconds(.6f);
+        var a=one.GetComponent<Rigidbody>();var b=two.GetComponent<Rigidbody>();var c=three.GetComponent<Rigidbody>();
+        a.linearVelocity=Vector3.zero;b.linearVelocity=Vector3.zero;c.linearVelocity=Vector3.zero;
+        var first=one.GetComponent<VehicleEnergyBank>();var second=two.GetComponent<VehicleEnergyBank>();var third=three.GetComponent<VehicleEnergyBank>();
+        float before1=first.Current,before2=second.Current,before3=third.Current;
+        Assert.That(Action(one,"TryBoost"),Is.True);Assert.That(Action(two,"TryBoost"),Is.True);Assert.That(Action(three,"TryBoost"),Is.True);
+        Assert.That(first.Current,Is.EqualTo(before1-VehicleEnergyCosts.BoosterActivation).Within(.001));
+        Assert.That(second.Current,Is.EqualTo(before2-VehicleEnergyCosts.BoosterActivation*R3VehicleModel.TierActivationCost(2)).Within(.001));
+        Assert.That(third.Current,Is.EqualTo(before3-VehicleEnergyCosts.BoosterActivation*R3VehicleModel.TierActivationCost(3)).Within(.001));
+        yield return Seconds(.25f);
+        Assert.That(b.linearVelocity.z,Is.GreaterThan(a.linearVelocity.z+.15f),"A higher tier must increase real thrust, not only its label.");
+        Assert.That(c.linearVelocity.z,Is.GreaterThan(b.linearVelocity.z+.15f),"Tier 3 must add physical thrust over tier 2.");
+    }
     [UnityTest] public IEnumerator TwoBoostersRequireCombinedEnergyAndBothProducePhysicalThrust()
     {
         var v=Build(R3VehicleKind.Light,0,R3PartKind.Booster,R3PartKind.Booster);yield return Seconds(.6f);

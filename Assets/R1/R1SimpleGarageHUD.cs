@@ -594,6 +594,7 @@ namespace RoboRougelike.R1
             if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.BonusModule?
                 $"Moduł T{R3VehicleModel.NormalizedTier(part.Tier)}: {BonusInstanceText(part)}. Kliknij, aby zamontować.":kind==R3PartKind.Battery?
                 $"Bateria T{R3VehicleModel.NormalizedTier(part.Tier)}: +{VehicleEnergyState.BatteryCapacity*R3VehicleModel.TierEffectUnits(part.Tier):0} maks. energii. Kliknij, aby zamontować.":
+                kind==R3PartKind.Booster?$"Booster T{R3VehicleModel.NormalizedTier(part.Tier)}: {run.VehicleModel.BoosterThrustNewtons*R3VehicleModel.TierEffectUnits(part.Tier):0} N, {VehicleEnergyCosts.BoosterActivation*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii za aktywację.":
                 kind==R3PartKind.RepairPulse?
                 $"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: slot aktywny 1–4, {R3RepairPulse.EnergyCost*R3VehicleModel.TierActivationCost(part.Tier):0} energii, {R3RepairPulse.Duration:0} s. Kliknij, aby zamontować.":
                 kind==R3PartKind.DrivePower?$"Silnik T{R3VehicleModel.NormalizedTier(part.Tier)} wspomaga koła; rezerwuje {VehicleEnergyState.PassiveReservation+R3VehicleModel.TierPassiveExtra(part.Tier):0} energii.":

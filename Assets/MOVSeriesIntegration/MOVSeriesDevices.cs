@@ -26,7 +26,7 @@ namespace RoboRougelike.MOVSeries
                 {
                     case R3PartKind.Booster:
                         var booster=part.gameObject.AddComponent<VehicleBooster>();booster.Bind(body,part.transform);
-                        booster.Configure(Mathf.Clamp(Model.BoosterThrustNewtons,500,6000),Mathf.Clamp(Model.BoosterDurationSeconds,.2f,2),5,0,0,VehicleEnergyCosts.BoosterActivation);
+                        ConfigureBooster(booster);
                         booster.SetEnergySource(GetComponent<VehicleEnergyBank>());
                         booster.SetAvailabilityFilter(()=>Available(part));boosters.Add(booster);break;
                     case R3PartKind.JumpDrive:
@@ -45,13 +45,20 @@ namespace RoboRougelike.MOVSeries
         {
             foreach(var g in gyros)if(g!=null)g.SetRequestedActive(Model.GyroEnabled&&CanControl);
         }
+        static int BoosterTier(VehicleBooster booster)=>booster.GetComponent<R3MountedPart>()?.Tier??1;
+        static float BoosterEnergy(VehicleBooster booster)=>VehicleEnergyCosts.BoosterActivation*R3VehicleModel.TierActivationCost(BoosterTier(booster));
+        void ConfigureBooster(VehicleBooster booster)
+        {
+            float thrust=Mathf.Clamp(Model.BoosterThrustNewtons,500,6000)*R3VehicleModel.TierEffectUnits(BoosterTier(booster));
+            booster.Configure(thrust,Mathf.Clamp(Model.BoosterDurationSeconds,.2f,2),5,0,0,BoosterEnergy(booster));
+        }
         public bool TryBoost()
         {
             if(!PrepareAction())return false;
             if(Model.BoosterReadyAt>Time.time||Model.Parts.Any(p=>p.Kind==R3PartKind.Booster&&p.DeviceReadyAt>Time.time))
             {Feedback="Booster: trwa odnowienie";return false;}
             var eligible=boosters.Where(b=>b!=null&&b.isActiveAndEnabled&&b.IsOperational).ToArray();
-            var energy=GetComponent<VehicleEnergyBank>();float cost=eligible.Length*VehicleEnergyCosts.BoosterActivation;
+            var energy=GetComponent<VehicleEnergyBank>();float cost=eligible.Sum(BoosterEnergy);
             if(eligible.Length==0||eligible.Any(b=>!b.IsReady)||energy==null||!energy.CanSpend(cost))
             {Feedback="Booster niedostępny / brak energii";return false;}
             var started=new List<VehicleBooster>();
@@ -60,8 +67,8 @@ namespace RoboRougelike.MOVSeries
                 if(!b.TryActivate())
                 {
                     foreach(var previous in started)
-                        previous.Configure(Mathf.Clamp(Model.BoosterThrustNewtons,500,6000),Mathf.Clamp(Model.BoosterDurationSeconds,.2f,2),5,0,0,VehicleEnergyCosts.BoosterActivation);
-                    energy.Refund(started.Count*VehicleEnergyCosts.BoosterActivation);
+                        ConfigureBooster(previous);
+                    energy.Refund(started.Sum(BoosterEnergy));
                     Feedback="Booster niedostępny";return false;
                 }
                 started.Add(b);
@@ -90,7 +97,7 @@ namespace RoboRougelike.MOVSeries
         }
         public void ApplyDeviceSettings()
         {
-            foreach(var b in boosters)if(b!=null)b.Configure(Mathf.Clamp(Model.BoosterThrustNewtons,500,6000),Mathf.Clamp(Model.BoosterDurationSeconds,.2f,2),5,0,0,VehicleEnergyCosts.BoosterActivation);
+            foreach(var b in boosters)if(b!=null)ConfigureBooster(b);
             foreach(var pod in GetComponentsInChildren<RoboRougelike.Mechanics.MOV007.HoverLiftPod>())pod.targetHeightMeters=Model.HoverHeightMeters;
             SyncDevices();
         }
