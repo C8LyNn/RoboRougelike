@@ -179,7 +179,7 @@ public sealed class BacklogBlueprintGarageTests
         Assert.That(model.Inventory.Any(p=>p.Id==id),Is.True);Assert.That(model.Scrap,Is.EqualTo(money));
         Assert.That(model.Parts.Concat(model.Inventory).Select(p=>p.Id).OrderBy(x=>x),Is.EqualTo(ids));UnityEngine.Object.Destroy(obstruction);yield return null;
     }
-    [UnityTest] public IEnumerator FullInventoryRejectsRebuildWithoutLosingOrMovingParts()
+    [UnityTest] public IEnumerator FullInventoryAllowsRepositionWhenTheFinalInventoryFits()
     {
         var model=run.VehicleModel;var blueprint=R3BlueprintLibrary.Capture(model,"Magazyn");
         var wheel=model.Parts.First(p=>p.Kind==R3PartKind.Wheel);string id=wheel.Id;var old=wheel.Cell;var rotation=wheel.RotationQuarterTurns;
@@ -192,9 +192,28 @@ public sealed class BacklogBlueprintGarageTests
         var ids=model.Parts.Concat(model.Inventory).Select(p=>p.Id).OrderBy(x=>x).ToArray();int money=model.Scrap;
         Assert.That(run.StartApplyBlueprint(blueprint),Is.True);
         float deadline=Time.realtimeSinceStartup+40;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
-        Assert.That(run.Transitioning,Is.False);Assert.That(run.BlueprintApplyMessage,Does.Contain("magazynie"));
-        Assert.That(run.VehicleModel,Is.SameAs(model));Assert.That(model.Parts.Single(p=>p.Id==id).Cell,Is.EqualTo(choices[0]));
-        Assert.That(model.Scrap,Is.EqualTo(money));Assert.That(model.Parts.Concat(model.Inventory).Select(p=>p.Id).OrderBy(x=>x),Is.EqualTo(ids));
+        Assert.That(run.Transitioning,Is.False);Assert.That(run.BlueprintApplyMessage,Does.Contain("Odtworzono"));
+        Assert.That(run.VehicleModel.Parts.Single(p=>p.Id==id).Cell,Is.EqualTo(old));
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(R3VehicleModel.InventoryCapacity));
+        Assert.That(run.VehicleModel.AvailableInventoryCapacity,Is.EqualTo(R3VehicleModel.InventoryCapacity));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(money));Assert.That(run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory).Select(p=>p.Id).OrderBy(x=>x),Is.EqualTo(ids));
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(run.VehicleModel.MakeCheckpoint(Time.time)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,run.VehicleModel.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Inventory.Count,Is.EqualTo(R3VehicleModel.InventoryCapacity));
+    }
+    [UnityTest] public IEnumerator FullInventoryStillRejectsAResultThatWouldOverflow()
+    {
+        var model=run.VehicleModel;var blueprint=R3BlueprintLibrary.Capture(model,"Nadmiar");
+        var wheel=model.Parts.First(p=>p.Kind==R3PartKind.Wheel);string id=wheel.Id;
+        blueprint.parts=blueprint.parts.Where(p=>p.cell!=wheel.Cell).ToArray();
+        var filler=Enumerable.Range(0,model.AvailableInventoryCapacity-model.Inventory.Count)
+            .Select(_=>new R3PartState(default,R3PartKind.Battery)).ToArray();Assert.That(model.ReceiveSalvage(filler),Is.True);
+        var ids=model.Parts.Concat(model.Inventory).Select(p=>p.Id).OrderBy(x=>x).ToArray();
+        Assert.That(run.StartApplyBlueprint(blueprint),Is.True);
+        float deadline=Time.realtimeSinceStartup+40;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Transitioning,Is.False);Assert.That(run.BlueprintApplyMessage,Does.Contain("magazyn"));
+        Assert.That(run.VehicleModel,Is.SameAs(model));Assert.That(model.Parts.Any(p=>p.Id==id),Is.True);
+        Assert.That(model.Parts.Concat(model.Inventory).Select(p=>p.Id).OrderBy(x=>x),Is.EqualTo(ids));
     }
     [UnityTest] public IEnumerator ApplyingRestoresRecordedWeaponSlotWithoutChangingGlobalKeys()
     {

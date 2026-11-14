@@ -219,7 +219,10 @@ namespace RoboRougelike.R3
         public R3VehicleDesign Design { get; }
         // A disposable workshop model; never serialized into an expedition.
         public bool CreativeMode { get; internal set; }
-        public int AvailableInventoryCapacity => CreativeMode ? int.MaxValue : InventoryCapacity;
+        // Private working copies may hold parts temporarily during an atomic
+        // blueprint rebuild; the published result must still fit the inventory.
+        internal bool BlueprintTransactionStaging {get;set;}
+        public int AvailableInventoryCapacity => CreativeMode||BlueprintTransactionStaging ? int.MaxValue : InventoryCapacity;
         public List<R3PartState> Parts { get; }
         private readonly List<R3PartState> inventory=new List<R3PartState>();
         public IReadOnlyList<R3PartState> Inventory => inventory;

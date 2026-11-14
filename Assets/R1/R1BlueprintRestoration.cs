@@ -54,6 +54,7 @@ namespace RoboRougelike.R1
             {
                 BlueprintApplyMessage="Nie udało się odtworzyć projektu; obecny pojazd pozostaje bez zmian.";
                 working=oldModel.DeepCopy();
+                working.BlueprintTransactionStaging=true;
                 original.gameObject.SetActive(false);
                 stage=BuildBlueprintStage(working,position,rotation);yield return null;
                 var keep=new HashSet<string>(plan.Placements.Where(p=>p.AlreadyPlaced).Select(p=>p.Id),StringComparer.Ordinal);
@@ -91,6 +92,9 @@ namespace RoboRougelike.R1
                     stage.gameObject.SetActive(false);Destroy(stage.gameObject);stage=BuildBlueprintStage(working,position,rotation);yield return null;
                 }
                 if(!ApplyBlueprintSlots(working,document)){BlueprintApplyMessage="Nie można odtworzyć przypisań slotów.";yield break;}
+                working.BlueprintTransactionStaging=false;
+                if(working.Inventory.Count>working.AvailableInventoryCapacity)
+                {BlueprintApplyMessage="Brakuje miejsca w magazynie na części zdjęte z pojazdu.";yield break;}
                 // Temporary staging may shrink capacity; do not spend stored resources.
                 working.RefreshEnergyLayout();working.Energy.Restore(energy);working.Charges.Restore(charges);
                 stage.gameObject.SetActive(false);Destroy(stage.gameObject);stage=null;
