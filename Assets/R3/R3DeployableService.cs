@@ -213,7 +213,7 @@ namespace RoboRougelike.R3
             if(source==null||units<=0||float.IsNaN(cost)||float.IsInfinity(cost)||cost<0||!energy.CanSpend(cost)||
                 float.IsNaN(e.TurretCooldown)||float.IsInfinity(e.TurretCooldown)||e.TurretCooldown<0||
                 float.IsNaN(e.TurretLifetime)||float.IsInfinity(e.TurretLifetime)||e.TurretLifetime<=0)return false;
-            if(kind==R3PartKind.OffensiveTurretGenerator&&(float.IsNaN(e.TurretFireInterval)||float.IsInfinity(e.TurretFireInterval)||e.TurretFireInterval<=0||
+            if(kind==R3PartKind.OffensiveTurretGenerator&&(float.IsNaN(e.TurretAttackRange)||float.IsInfinity(e.TurretAttackRange)||e.TurretAttackRange<=0||float.IsNaN(e.TurretFireInterval)||float.IsInfinity(e.TurretFireInterval)||e.TurretFireInterval<=0||
                 float.IsNaN(e.TurretDamage)||float.IsInfinity(e.TurretDamage)||e.TurretDamage<=0||(double)e.TurretDamage*units>float.MaxValue))return false;
             if(kind==R3PartKind.HealingTurretGenerator&&(float.IsNaN(e.HealingTurretRadius)||float.IsInfinity(e.HealingTurretRadius)||e.HealingTurretRadius<=0||
                 float.IsNaN(e.HealingTurretRate)||float.IsInfinity(e.HealingTurretRate)||e.HealingTurretRate<=0||(double)e.HealingTurretRate*units>float.MaxValue))return false;
@@ -238,7 +238,7 @@ namespace RoboRougelike.R3
             var renderer=source.GetComponent<Renderer>();if(renderer!=null)turret.GetComponent<Renderer>().sharedMaterial=renderer.sharedMaterial;
             var rb=turret.AddComponent<Rigidbody>();rb.isKinematic=true;
             var hp=turret.AddComponent<P12PipelineSafeDamageable>();hp.Configure(kind==R3PartKind.ShieldTurretGenerator?e.ShieldTurretHp*units:100,false);
-            if(kind==R3PartKind.OffensiveTurretGenerator)turret.AddComponent<R3FlyingDrone>().ConfigureTurret(transform,e.TurretFireInterval,e.TurretDamage*units);
+            if(kind==R3PartKind.OffensiveTurretGenerator)turret.AddComponent<R3FlyingDrone>().ConfigureTurret(transform,e.TurretFireInterval,e.TurretDamage*units,e.TurretAttackRange);
             else if(kind==R3PartKind.HealingTurretGenerator)turret.AddComponent<R3HealingTurret>().Configure(assembly,e.HealingTurretRadius,e.HealingTurretRate*units);
             else if(kind==R3PartKind.SupportTurretGenerator)turret.AddComponent<R3SupportTurret>().Configure(assembly,e.SupportTurretRadius,e.SupportTurretEnergyPerSecond*units); else {var boundary=turret.AddComponent<SphereCollider>();boundary.isTrigger=true;turret.AddComponent<R3ShieldDome>().Configure(RRLHitRouter.Team(transform),e.ShieldTurretRadius,GetComponent<R3MountedBonusEffects>());}
             hp.Died+=()=>{if(turret!=null)Destroy(turret);};spawned.Add(turret);Destroy(turret,e.TurretLifetime);return true;
@@ -255,7 +255,7 @@ namespace RoboRougelike.R3
                 !energy.CanSpend(cost)||float.IsNaN(e.DroneSpeed)||float.IsInfinity(e.DroneSpeed)||e.DroneSpeed<=0||
                 float.IsNaN(e.DroneCooldown)||float.IsInfinity(e.DroneCooldown)||e.DroneCooldown<0||
                 float.IsNaN(e.DroneLifetime)||float.IsInfinity(e.DroneLifetime)||e.DroneLifetime<=0||
-                float.IsNaN(e.DroneFireInterval)||float.IsInfinity(e.DroneFireInterval)||e.DroneFireInterval<=0||
+                float.IsNaN(e.DroneAttackRange)||float.IsInfinity(e.DroneAttackRange)||e.DroneAttackRange<=0||float.IsNaN(e.DroneFireInterval)||float.IsInfinity(e.DroneFireInterval)||e.DroneFireInterval<=0||
                 (!healing&&!support&&(float.IsNaN(e.DroneDamage)||float.IsInfinity(e.DroneDamage)||e.DroneDamage<=0))||
                 (healing&&(float.IsNaN(e.HealingDroneRadius)||float.IsInfinity(e.HealingDroneRadius)||e.HealingDroneRadius<=0||
                 float.IsNaN(e.HealingDroneRate)||float.IsInfinity(e.HealingDroneRate)||e.HealingDroneRate<=0||
@@ -314,7 +314,7 @@ namespace RoboRougelike.R3
                 }
                 drone.AddComponent<R6VehicleDrive>().RefreshParts();
             }
-            var behaviour=drone.AddComponent<R3FlyingDrone>();behaviour.Configure(transform,e.DroneSpeed,e.DroneFireInterval,healing?e.HealingDroneDamage:support?e.SupportDroneDamage:e.DroneDamage);behaviour.ConfigureGenerator(kind);if(healing)drone.AddComponent<R3HealingTurret>().Configure(assembly,e.HealingDroneRadius,e.HealingDroneRate);
+            var behaviour=drone.AddComponent<R3FlyingDrone>();behaviour.Configure(transform,e.DroneSpeed,e.DroneFireInterval,healing?e.HealingDroneDamage:support?e.SupportDroneDamage:e.DroneDamage,e.DroneAttackRange);behaviour.ConfigureGenerator(kind);if(healing)drone.AddComponent<R3HealingTurret>().Configure(assembly,e.HealingDroneRadius,e.HealingDroneRate);
             if(support)drone.AddComponent<R3SupportTurret>().Configure(assembly,e.SupportDroneRadius,e.SupportDroneEnergyPerSecond);
             hp.Died+=()=>{if(drone!=null)Destroy(drone);};spawned.Add(drone);Destroy(drone,e.DroneLifetime);return true;
         }

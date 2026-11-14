@@ -89,17 +89,17 @@ namespace RoboRougelike.R3
     // A physical, temporary ally. It follows a loose radius rather than a fixed offset.
     public sealed class R3FlyingDrone : MonoBehaviour,IRRLTeamMember
     {
-        Transform owner;Rigidbody body;Collider ownCollider;float speed,interval,damage,nextShot,nextScan;
+        Transform owner;Rigidbody body;Collider ownCollider;float speed,interval,damage,nextShot,nextScan,attackRange=40f;
         P12PipelineSafeEnemyTurret target;Collider aimCollider;RoboRougelike.R6.R6VehicleDrive groundDrive;bool stationary;
         public bool IsGround=>groundDrive!=null;
         public bool IsTurret=>stationary;
         public R3PartKind GeneratorKind {get;private set;}=R3PartKind.FlyingDroneGenerator;
         public int TeamId=>RRLHitRouter.Team(owner);
-        public void Configure(Transform source,float moveSpeed,float fireInterval,float shotDamage)
-        {owner=source;speed=moveSpeed;interval=fireInterval;damage=shotDamage;body=GetComponent<Rigidbody>();ownCollider=GetComponent<Collider>();groundDrive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();}
+        public void Configure(Transform source,float moveSpeed,float fireInterval,float shotDamage,float range=40f)
+        {owner=source;speed=moveSpeed;interval=fireInterval;damage=shotDamage;attackRange=float.IsNaN(range)||float.IsInfinity(range)||range<=0?40f:range;body=GetComponent<Rigidbody>();ownCollider=GetComponent<Collider>();groundDrive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();}
         public void ConfigureGenerator(R3PartKind kind){GeneratorKind=kind;}
-        public void ConfigureTurret(Transform source,float fireInterval,float shotDamage)
-        {Configure(source,0,fireInterval,shotDamage);stationary=true;}
+        public void ConfigureTurret(Transform source,float fireInterval,float shotDamage,float range=40f)
+        {Configure(source,0,fireInterval,shotDamage,range);stationary=true;}
         void FixedUpdate()
         {
             if(owner==null||body==null){Destroy(gameObject);return;}
@@ -120,13 +120,13 @@ namespace RoboRougelike.R3
             if(Time.time>=nextScan){nextScan=Time.time+.25f;FindTarget();}
             if(target==null||target.IsDefeated||aimCollider==null||Time.time<nextShot)return;
             Vector3 deltaAim=aimCollider.bounds.center-body.position;float distance=deltaAim.magnitude;
-            if(distance<.1f||distance>40||!ClearShot(deltaAim/distance,distance))return;
+            if(distance<.1f||distance>attackRange||!ClearShot(deltaAim/distance,distance))return;
             if(P17PhysicalShell.AvailableSlots<=0)return;
             Fire(deltaAim/distance);nextShot=Time.time+interval;
         }
         void FindTarget()
         {
-            target=null;aimCollider=null;float nearest=40*40;
+            target=null;aimCollider=null;double nearest=(double)attackRange*attackRange;
             var run=R1RunController.Instance;if(run==null)return;
             foreach(var enemy in RoboRougelike.PackageIntegration.RRLScanWorld.LiveEnemies(run))
             {
@@ -135,7 +135,8 @@ namespace RoboRougelike.R3
                 {
                     if(hp==null||hp.IsDead)continue;var collider=hp.GetComponent<Collider>();
                     if(collider==null||!collider.enabled||collider.isTrigger)continue;
-                    float distance=(collider.bounds.center-body.position).sqrMagnitude;
+                    var delta=collider.bounds.center-body.position;
+                    double distance=(double)delta.x*delta.x+(double)delta.y*delta.y+(double)delta.z*delta.z;
                     if(distance<nearest){nearest=distance;target=enemy;aimCollider=collider;}
                 }
             }
@@ -160,7 +161,9 @@ namespace RoboRougelike.R3
             var renderer=GetComponent<Renderer>();if(renderer!=null)shell.GetComponent<Renderer>().sharedMaterial=renderer.sharedMaterial;
             var shellCollider=shell.GetComponent<Collider>();foreach(var c in GetComponentsInChildren<Collider>())if(c!=null)Physics.IgnoreCollision(shellCollider,c,true);
             var rb=shell.AddComponent<Rigidbody>();rb.mass=1;rb.useGravity=false;rb.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;rb.linearVelocity=direction*38;
-            shell.AddComponent<P17PhysicalShell>().Configure(owner,R3MountedBonusEffects.ScaleOwnedDamage(owner,damage,stationary?R1BonusScope.Turrets:R1BonusScope.Drones),3,direction,target!=null?target.transform:null,45);
+            float projectileRange=(float)Math.Min(float.MaxValue,Math.Max(45d,(double)attackRange+5d));
+            float lifetime=(float)Math.Min(float.MaxValue,Math.Max(3d,projectileRange/38d+1d));
+            shell.AddComponent<P17PhysicalShell>().Configure(owner,R3MountedBonusEffects.ScaleOwnedDamage(owner,damage,stationary?R1BonusScope.Turrets:R1BonusScope.Drones),lifetime,direction,target!=null?target.transform:null,projectileRange);
         }
     }
 }

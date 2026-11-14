@@ -11,6 +11,13 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogDeviceTierTests
 {
+    [Test] public void DroneAndTurretAttackRangeDefaultsAndCopiesArePreserved()
+    {
+        var defaults=Resources.Load<R1RunDefinition>("R1/Run").GaragePrices;
+        Assert.That(defaults.DroneAttackRange,Is.EqualTo(40));Assert.That(defaults.TurretAttackRange,Is.EqualTo(40));
+        var model=Model();model.Economy.DroneAttackRange=70;model.Economy.TurretAttackRange=90;
+        var copy=model.DeepCopy();Assert.That(copy.Economy.DroneAttackRange,Is.EqualTo(70));Assert.That(copy.Economy.TurretAttackRange,Is.EqualTo(90));
+    }
     [Test] public void HealingDroneSettingsCopyAndOldCheckpointDefaultsAreValid()
     {
         var defaults=Resources.Load<R1RunDefinition>("R1/Run").GaragePrices;
@@ -755,6 +762,61 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(Vector3.Distance(turret.transform.position,origin),Is.LessThan(.01),"Turret must remain stationary");
         durability.ApplyDamage(10000,turret.transform.position,Vector3.up);yield return null;
         Assert.That(turret==null||!turret.activeInHierarchy,Is.True);Object.Destroy(floor);
+    }
+    [UnityTest] public IEnumerator DroneConfiguredLongRangeHitsDistantEnemy()=>LongRangeDeployable(false);
+    [UnityTest] public IEnumerator TurretConfiguredLongRangeHitsDistantEnemy()=>LongRangeDeployable(true);
+    [UnityTest] public IEnumerator InvalidDeployableRangesDoNotSpendEnergyOrCharges()
+    {
+        foreach(var kind in new[]{R3PartKind.FlyingDroneGenerator,R3PartKind.OffensiveTurretGenerator})
+        {
+            Assert.That(run.GaragePurchase(kind),Is.True);var part=run.VehicleModel.Inventory.Last(p=>p.Kind==kind);
+            var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>run.VehicleModel.OwnedPlacementError(part.Id,c,default)==null);
+            Assert.That(run.GarageMount(part.Id,cell),Is.True);
+        }
+        run.VehicleModel.Economy.DroneAttackRange=-1;run.VehicleModel.Economy.TurretAttackRange=float.NaN;
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);yield return null;var service=run.Player.GetComponent<R3DeployableService>();
+        var bank=run.Player.GetComponent<VehicleEnergyBank>();float energy=bank.Current;
+        int drone=run.VehicleModel.Charges.Current(R3DeployableService.FlyingDronePool);
+        int turret=run.VehicleModel.Charges.Current(R3DeployableService.OffensiveTurretPool);
+        Assert.That(drone,Is.GreaterThan(0));Assert.That(turret,Is.GreaterThan(0));
+        run.Player.GetComponent<Rigidbody>().linearVelocity=Vector3.forward*3;
+        Assert.That(service.TryDeploy(R3PartKind.FlyingDroneGenerator),Is.False);
+        Assert.That(service.TryDeploy(R3PartKind.OffensiveTurretGenerator),Is.False);
+        Assert.That(bank.Current,Is.EqualTo(energy));
+        Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.FlyingDronePool),Is.EqualTo(drone));
+        Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.OffensiveTurretPool),Is.EqualTo(turret));
+    }
+    IEnumerator LongRangeDeployable(bool turret)
+    {
+        var field=typeof(R3GarageEconomy).GetField(turret?"TurretAttackRange":"DroneAttackRange");
+        Assert.That(field,Is.Not.Null,"Attack range must be an editable setting.");
+        var kind=turret?R3PartKind.OffensiveTurretGenerator:R3PartKind.FlyingDroneGenerator;
+        Assert.That(run.GaragePurchase(kind),Is.True);var owned=run.VehicleModel.Inventory.Last(p=>p.Kind==kind);
+        var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>run.VehicleModel.OwnedPlacementError(owned.Id,c,default)==null);
+        Assert.That(run.GarageMount(owned.Id,cell),Is.True);field.SetValue(run.VehicleModel.Economy,70f);
+        Assert.That((float)field.GetValue(run.VehicleModel.DeepCopy().Economy),Is.EqualTo(70f));
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);var player=run.Player;var body=player.GetComponent<Rigidbody>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(200,1,200);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.zero;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=turret?Vector3.forward*3:Vector3.zero;
+        var range=run.GetComponent<R6TestRange>();if(range?.TrainingTarget!=null)range.TrainingTarget.gameObject.SetActive(false);
+        var service=player.GetComponent<R3DeployableService>();Assert.That(service.TryDeploy(kind),Is.True);
+        var deployed=GameObject.Find(turret?"Wieżyczka ofensywna":"Dron latający");Assert.That(deployed,Is.Not.Null);
+        body.isKinematic=true;
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"long-range-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();enemy.ConfigureMovement(0,12,0);var enemyBody=enemy.GetComponent<Rigidbody>();
+        enemyBody.position=deployed.transform.position+new Vector3(55,1,0);enemyBody.isKinematic=true;Physics.SyncTransforms();
+        float hp=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        float deadline=Time.realtimeSinceStartup+12;
+        while(Time.realtimeSinceStartup<deadline&&enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp)>=hp)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.LessThan(hp),"The projectile must reach a target beyond the former 45 m limit.");
+        Object.Destroy(floor);
     }
     [UnityTest] public IEnumerator SupportDroneRechargesOwnerAndAttacksWithIndependentResources()
     {
