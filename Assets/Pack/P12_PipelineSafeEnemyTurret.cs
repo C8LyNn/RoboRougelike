@@ -136,6 +136,7 @@ namespace RogueMachine.P12PipelineSafe
             {packageBatteryState=null;DiscardUnattachedDevice(item);return false;}
             packageBattery=item.AddComponent<P12PipelineSafeDamageable>();packageBattery.Configure(100*R3VehicleModel.TierHealth(tier),true);
             packageBattery.SetBaseTint(new Color(.2f,.9f,.35f));item.AddComponent<VehicleEnergyBattery>().Configure(packageBatteryState);
+            if(salvage!=null)HookPhysicalDrop(packageBattery,"battery",R3PartKind.Battery,R4WeaponKind.Basic);
             GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshParts();
             GetComponent<VehicleEnergyBank>()?.Refresh();return true;
         }
@@ -153,6 +154,7 @@ namespace RogueMachine.P12PipelineSafe
             {DiscardUnattachedDevice(item);return false;}
             var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(180,true);hp.SetBaseTint(new Color(.25f,.6f,1));
             packageShield=item.AddComponent<RoboRougelike.WeaponIntegration.RRLShieldBinding>();packageShield.Bind(state,transform);packageShieldState=state;
+            if(salvage!=null)HookPhysicalDrop(hp,"shield",R3PartKind.DirectionalShield,R4WeaponKind.Basic);
             GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshMass();return true;
         }
         public bool EquipPointDefense()
@@ -167,7 +169,8 @@ namespace RogueMachine.P12PipelineSafe
             if(!RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state))
             {DiscardUnattachedDevice(item);return false;}
             var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(160,true);
-            packagePointDefense=item.AddComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();packagePointDefense.Bind(state,transform);packagePointDefenseState=state;return true;
+            packagePointDefense=item.AddComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();packagePointDefense.Bind(state,transform);packagePointDefenseState=state;
+            if(salvage!=null)HookPhysicalDrop(hp,"point-defense",R3PartKind.PointDefense,R4WeaponKind.Basic);return true;
         }
         public bool EquipShotgun()
         {
@@ -532,11 +535,14 @@ namespace RogueMachine.P12PipelineSafe
             part!=null?part.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>()?.RemainingSeconds??0:0;
         private void RegisterPhysicalDropHooks()
         {
-            if(salvage==null||physicalDropHooks.Count>0)return;
+            if(salvage==null)return;
             if(variantGuns.Count==0)HookPhysicalDrop(weaponBlock,"gun",R3PartKind.Gun,WeaponKind);
             else for(int i=0;i<variantGuns.Count;i++)HookPhysicalDrop(variantGuns[i].Block,"gun/"+i,R3PartKind.Gun,variantGuns[i].Kind);
             for(int i=0;i<additionalGuns.Count;i++)HookPhysicalDrop(additionalGuns[i].Block,"extra-gun/"+i,R3PartKind.Gun,additionalGuns[i].Kind);
             for(int i=0;i<driveWheels.Count;i++)HookPhysicalDrop(driveWheels[i],"wheel/"+i,R3PartKind.Wheel,R4WeaponKind.Basic);
+            HookPhysicalDrop(packageBattery,"battery",R3PartKind.Battery,R4WeaponKind.Basic);
+            if(packageShield!=null&&packageShield.Device!=null)HookPhysicalDrop(packageShield.Device.Damageable,"shield",R3PartKind.DirectionalShield,R4WeaponKind.Basic);
+            if(packagePointDefense!=null&&packagePointDefense.Device!=null)HookPhysicalDrop(packagePointDefense.Device.Damageable,"point-defense",R3PartKind.PointDefense,R4WeaponKind.Basic);
         }
         private void HookPhysicalDrop(P12PipelineSafeDamageable part,string slot,R3PartKind kind,R4WeaponKind weapon)
         {
@@ -551,9 +557,11 @@ namespace RogueMachine.P12PipelineSafe
             float chance=run.VehicleModel.Economy.PhysicalLootDropChance;
             if(float.IsNaN(chance)||float.IsInfinity(chance)||chance<=0||(chance<1f&&UnityEngine.Random.value>=chance))return;
             if(slot=="gun"){if(packageSaw!=null)packageSaw.CaptureState();if(packageBeam!=null)packageBeam.CaptureState();}
+            if(slot=="shield"&&packageShield!=null)packageShield.CaptureState();
+            if(slot=="point-defense"&&packagePointDefense!=null)packagePointDefense.CaptureState();
             var device=part.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>();
             equipmentStates.TryGetValue(slot,out var saved);
-            var state=(device!=null?device.State:null)??saved??(slot=="gun"?packageWeaponState:null)??
+            var state=(device!=null?device.State:null)??saved??(slot=="gun"?packageWeaponState:slot=="battery"?packageBatteryState:slot=="shield"?packageShieldState:slot=="point-defense"?packagePointDefenseState:null)??
                 new R3PartState(default,kind){Id=EquipmentInstanceId(slot),Source=name+" / część",Weapon=weapon};
             state.DisruptionRemaining=SalvageDisruption(part);
             var item=new R4SalvageItem(state,0);

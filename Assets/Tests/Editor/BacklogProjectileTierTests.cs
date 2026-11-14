@@ -145,6 +145,44 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(run.VehicleModel.Owns(id),Is.True);
         Assert.That(run.VehicleModel.Inventory.Count(p=>p.Kind==R3PartKind.Wheel),Is.EqualTo(2));
     }
+    [UnityTest] public IEnumerator DestroyedEnemyBatteryDropsBeforeCoreDefeat()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        var enemy=run.Encounter.Enemies.Last();var body=enemy.GetComponent<Rigidbody>();body.isKinematic=true;
+        body.position=new Vector3(100,5,100);run.Encounter.SetCombatActive(true);Physics.SyncTransforms();
+        var battery=enemy.GetComponentInChildren<VehicleEnergyBattery>();Assert.That(battery,Is.Not.Null,"The scenario must contain a physically mounted enemy battery");
+        var hp=battery.GetComponent<P12PipelineSafeDamageable>();hp.ApplyDamageResolvedTyped(hp.CurrentHp/.75f+1,hp.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Kinetic);
+        Assert.That(hp.IsDead,Is.True);Assert.That(enemy.IsDefeated,Is.False);
+        var drop=Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None)
+            .FirstOrDefault(p=>run.Salvage.Items.Any(item=>item.Id==p.ItemId&&item.Kind==R3PartKind.Battery));
+        Assert.That(drop,Is.Not.Null,"The destroyed battery must be recoverable before the core dies");
+        string id=drop.ItemId;var player=run.Player.GetComponent<Rigidbody>();player.isKinematic=true;player.position=drop.transform.position;Physics.SyncTransforms();
+        float deadline=Time.realtimeSinceStartup+5;while(Time.realtimeSinceStartup<deadline&&!run.VehicleModel.Owns(id))yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(run.VehicleModel.Owns(id),Is.True);Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==id).Kind,Is.EqualTo(R3PartKind.Battery));
+        enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        Assert.That(run.Salvage.Items.Any(p=>p.Id==id),Is.False);
+        Assert.That(run.VehicleModel.Inventory.Count(p=>p.Id==id),Is.EqualTo(1));
+    }
+    [UnityTest] public IEnumerator DestroyedEnemyShieldDropsBeforeCoreDefeat()=>VerifyEnemyModuleDrop(R3PartKind.DirectionalShield);
+    [UnityTest] public IEnumerator DestroyedEnemyPointDefenseDropsBeforeCoreDefeat()=>VerifyEnemyModuleDrop(R3PartKind.PointDefense);
+    IEnumerator VerifyEnemyModuleDrop(R3PartKind kind)
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        var enemy=run.Encounter.Enemies.First();var body=enemy.GetComponent<Rigidbody>();body.isKinematic=true;
+        body.position=new Vector3(100,5,100);run.Encounter.SetCombatActive(true);Physics.SyncTransforms();
+        Assert.That(kind==R3PartKind.PointDefense?enemy.EquipPointDefense():enemy.EquipDirectionalShield(),Is.True);
+        var hp=kind==R3PartKind.PointDefense?enemy.GetComponentInChildren<RRLPointDefenseBinding>().Device.Damageable:
+            enemy.GetComponentInChildren<RRLShieldBinding>().Device.Damageable;
+        hp.RestoreHealthRatio(.01f);hp.ApplyDamageResolvedTyped(hp.CurrentHp/.9f+1,hp.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Piercing);
+        Assert.That(hp.IsDead,Is.True);Assert.That(enemy.IsDefeated,Is.False);
+        var drop=Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None)
+            .FirstOrDefault(p=>run.Salvage.Items.Any(item=>item.Id==p.ItemId&&item.Kind==kind));
+        Assert.That(drop,Is.Not.Null,"The destroyed module must drop before the core dies");
+        string id=drop.ItemId;var player=run.Player.GetComponent<Rigidbody>();player.isKinematic=true;player.position=drop.transform.position;Physics.SyncTransforms();
+        float deadline=Time.realtimeSinceStartup+5;while(Time.realtimeSinceStartup<deadline&&!run.VehicleModel.Owns(id))yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(run.VehicleModel.Owns(id),Is.True);enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        Assert.That(run.Salvage.Items.Any(p=>p.Id==id),Is.False);Assert.That(run.VehicleModel.Inventory.Count(p=>p.Id==id),Is.EqualTo(1));
+    }
     [UnityTest] public IEnumerator ShotgunTierTwoConsumesSixEnergyAndDamagesWithRealPellets()
     {
         var gun=Build(R4WeaponKind.Shotgun,out var energy);var hp=Target(gun,6);float before=energy.Current;
