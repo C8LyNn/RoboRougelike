@@ -277,7 +277,7 @@ namespace RoboRougelike.R1
             }
             else
             {
-                string hint=selected==R3PartKind.JumpDrive?"Slot 1–4 — skok z podłoża.\nKilka modułów zwiększa impuls.":selected==R3PartKind.Blink?"Blink: 8 m za sprawną kopię.\nDroga i lądowanie muszą być wolne.":selected==R3PartKind.MagneticGrapple?"Slot 1–4 — zaczep w punkt celowania.\nNaciśnij ponownie, aby zwolnić linę.":"Kliknij ścianę bloku, aby montować.\nZielony ghost: miejsce poprawne.\nOmni i gąsienice montuj nisko.";
+                string hint=selected==R3PartKind.JumpDrive?"Slot 1–4 — skok z podłoża.\nKilka modułów zwiększa impuls.":selected==R3PartKind.Blink?"Blink: 8 m za sprawną kopię.\nDroga i lądowanie muszą być wolne.":selected==R3PartKind.MagneticGrapple?"Kopie wzmacniają zaczep i koszt.\nNaciśnij ponownie, aby zwolnić linę.":"Kliknij ścianę bloku, aby montować.\nZielony ghost: miejsce poprawne.\nOmni i gąsienice montuj nisko.";
                 GUI.Label(new Rect(30,355,280,92),hint,small);
             }
         }

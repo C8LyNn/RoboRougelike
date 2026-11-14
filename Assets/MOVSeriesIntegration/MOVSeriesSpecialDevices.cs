@@ -13,6 +13,7 @@ namespace RoboRougelike.MOVSeries
         readonly List<BlinkDrive> blinks=new List<BlinkDrive>();
         readonly List<MagneticGrappleEmitter> emitters=new List<MagneticGrappleEmitter>();
         MagneticGrappleController grapple;
+        float grappleSpring,grappleDamping,grappleTension,grappleVehicleAcceleration,grappleTargetAcceleration;
         P12PipelineSafeVehicleStructure grappleTargetGraph;
         P12PipelineSafeDamageable[] grappleTargetParts;
         bool grappleTargetDirty;
@@ -27,6 +28,9 @@ namespace RoboRougelike.MOVSeries
                 grapple.SetEnergyProvider(GetComponent<VehicleEnergyBank>());grapple.Settings.maximumVehicleAcceleration=6;
                 grapple.Settings.maximumTargetAcceleration=4;grapple.Settings.maximumTensionNewtons=8000;
                 grapple.Settings.cooldownSeconds=6;grapple.TargetFilter=CanGrappleTarget;
+                grappleSpring=grapple.Settings.springStiffness;grappleDamping=grapple.Settings.damping;
+                grappleTension=grapple.Settings.maximumTensionNewtons;grappleVehicleAcceleration=grapple.Settings.maximumVehicleAcceleration;
+                grappleTargetAcceleration=grapple.Settings.maximumTargetAcceleration;
                 grapple.Released+=()=>{ClearGrappleTarget();if(assembly!=null)Model.GrappleReadyAt=Time.time+6;};
             }
             foreach(var part in assembly.Parts)
@@ -85,6 +89,16 @@ namespace RoboRougelike.MOVSeries
         }
         internal void InvalidateEmitter(MagneticGrappleEmitter emitter)
         {if(grapple!=null&&grapple.ActiveEmitter==emitter)ReleaseGrapples();}
+        void RefreshGrappleTuning()
+        {
+            if(grapple==null)return;
+            int copies=emitters.Count(e=>e!=null&&e.IsOperational);if(copies==0)return;
+            var settings=grapple.Settings;settings.activationEnergy=VehicleEnergyCosts.Grapple*copies;
+            settings.springStiffness=grappleSpring*copies;settings.damping=grappleDamping*copies;
+            settings.maximumTensionNewtons=grappleTension*copies;
+            settings.maximumVehicleAcceleration=grappleVehicleAcceleration*copies;
+            settings.maximumTargetAcceleration=grappleTargetAcceleration*copies;
+        }
         public bool TryBlink(Vector3 direction)
         {
             if(!PrepareAction())return false;
@@ -104,10 +118,11 @@ namespace RoboRougelike.MOVSeries
             if(!PrepareAction()||grapple==null)return false;
             if(grapple.IsAttached){ReleaseGrapples();return true;}
             if(Time.time<Model.GrappleReadyAt)return false;
+            RefreshGrappleTuning();
             foreach(var emitter in emitters)
             {
                 if(emitter==null||!grapple.TryFire(emitter,direction))continue;
-                Model.GrappleReadyAt=Time.time+6;Feedback="Zaczep aktywny • E zwalnia linę";return true;
+                Model.GrappleReadyAt=Time.time+6;Feedback="Zaczep aktywny • "+Model.ActiveSlotLabel(R3PartKind.MagneticGrapple)+" zwalnia linę";return true;
             }
             ClearGrappleTarget();
             Feedback="Zaczep: brak celu / niesprawny moduł";return false;

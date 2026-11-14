@@ -40,7 +40,7 @@ namespace RoboRougelike.MOVSeries
         {
             if(assembly==null)return;
             if(graphDirty){graphDirty=false;structure.EvaluateStructure();}
-            drive.RefreshMass();SyncDevices();SyncDrives();
+            drive.RefreshMass();SyncDevices();SyncDrives();RefreshGrappleTuning();
             if(!CanControl)CancelActions();
         }
         public void CancelActions()
