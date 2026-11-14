@@ -51,6 +51,17 @@ public sealed class BacklogDeviceTierTests
         var model=Model();float baseline=model.Energy.Maximum;var part=FuseThree(model,R3PartKind.Battery);Mount(model,part);
         Assert.That(model.Energy.Maximum,Is.EqualTo(baseline+200));
     }
+    [Test] public void SuspensionFusionReachesTierThreeAndSurvivesCheckpoint()
+    {
+        var model=Model();model.Award(3000);
+        for(int i=0;i<9;i++)Assert.That(model.PurchaseToInventory(R3PartKind.Suspension),Is.True);
+        for(int i=0;i<3;i++)Assert.That(model.FuseInventory(model.Inventory.Where(p=>p.Kind==R3PartKind.Suspension&&p.Tier==1).Take(3).Select(p=>p.Id).ToArray()),Is.True);
+        Assert.That(model.FuseInventory(model.Inventory.Where(p=>p.Kind==R3PartKind.Suspension&&p.Tier==2).Select(p=>p.Id).ToArray()),Is.True);
+        var part=model.Inventory.Single();Assert.That(part.Tier,Is.EqualTo(3));Mount(model,part);
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==part.Id).Tier,Is.EqualTo(3));
+    }
     [Test] public void TierTwoSalvageOptimizerCanBeMountedAndRestored()
     {
         var model=Model();float baseline=model.Energy.Maximum;var part=FuseThree(model,R3PartKind.SalvageOptimizer);Mount(model,part);
