@@ -90,18 +90,14 @@ namespace RoboRougelike.MOVSeries
             if(!PrepareAction())return false;
             if(GrappleAttached||FindObjectsByType<MagneticGrappleController>(FindObjectsSortMode.None).Any(g=>g.IsAttached&&g.AttachedRigidbody==body))
             {Feedback="Blink zablokowany: aktywna lina";return false;}
-            foreach(var blink in blinks)
-            {
-                if(blink==null)continue;var state=State(blink.GetComponent<R3MountedPart>());
-                if(Time.time<state.DeviceReadyAt)continue;
-                var result=blink.TryActivate(direction);Feedback="Blink: "+result;
-                if(result!=BlinkResult.Activated)continue;
-                state.DeviceReadyAt=Time.time+6;
-                var visual=blink.GetComponent<RoboRougelike.R4_1.R4BlinkArt>();
-                if(visual!=null)visual.PlayActivation();
-                return true;
-            }
-            return false;
+            if(Model.BlinkReadyAt>Time.time||Model.Parts.Any(p=>p.Kind==R3PartKind.Blink&&p.DeviceReadyAt>Time.time))return false;
+            var eligible=blinks.Where(b=>b!=null&&b.Operational).ToArray();if(eligible.Length==0)return false;
+            var primary=eligible[0];primary.Configure(new BlinkSettings{DistanceMeters=8*eligible.Length,CooldownSeconds=6,
+                EnergyCost=VehicleEnergyCosts.Blink*eligible.Length});
+            var result=primary.TryActivate(direction);Feedback="Blink: "+result;if(result!=BlinkResult.Activated)return false;
+            Model.BlinkReadyAt=Time.time+6;foreach(var state in Model.Parts.Where(p=>p.Kind==R3PartKind.Blink))state.DeviceReadyAt=Model.BlinkReadyAt;
+            foreach(var blink in eligible)blink.GetComponent<RoboRougelike.R4_1.R4BlinkArt>()?.PlayActivation();
+            return true;
         }
         public bool TryGrapple(Vector3 direction)
         {

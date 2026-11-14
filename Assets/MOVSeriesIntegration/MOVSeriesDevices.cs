@@ -117,7 +117,8 @@ namespace RoboRougelike.MOVSeries
             var parts=assembly.Parts.Where(p=>p.Kind==kind&&Available(p)).Select(State).ToArray();
             if(parts.Length==0)return float.PositiveInfinity;
             float gate=kind==R3PartKind.Booster?Mathf.Max(Model.BoosterReadyAt,Model.Parts.Where(p=>p.Kind==kind).Max(p=>p.DeviceReadyAt)):
-                kind==R3PartKind.JumpDrive?Mathf.Max(Model.JumpReadyAt,Model.Parts.Where(p=>p.Kind==kind).Max(p=>p.DeviceReadyAt)):parts.Min(p=>p.DeviceReadyAt);
+                kind==R3PartKind.JumpDrive?Mathf.Max(Model.JumpReadyAt,Model.Parts.Where(p=>p.Kind==kind).Max(p=>p.DeviceReadyAt)):
+                kind==R3PartKind.Blink?Mathf.Max(Model.BlinkReadyAt,Model.Parts.Where(p=>p.Kind==kind).Max(p=>p.DeviceReadyAt)):parts.Min(p=>p.DeviceReadyAt);
             return Mathf.Max(0,gate-Time.time);
         }
     }

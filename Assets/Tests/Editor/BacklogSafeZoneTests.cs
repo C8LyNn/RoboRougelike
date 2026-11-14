@@ -13,12 +13,15 @@ public sealed class BacklogSafeZoneTests
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
         string json=JsonUtility.ToJson(model.MakeCheckpoint(0));
-        string legacy=System.Text.RegularExpressions.Regex.Replace(json,",\"jumpRemaining\":[^,}]+","");
+        string legacy=System.Text.RegularExpressions.Regex.Replace(json,",\"(jumpRemaining|blinkRemaining)\":[^,}]+","");
         Assert.That(legacy,Does.Not.Contain("\"jumpRemaining\""));
+        Assert.That(legacy,Does.Not.Contain("\"blinkRemaining\""));
         var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(legacy);
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
-        Assert.That(restored.JumpReadyAt,Is.Zero);
+        Assert.That(restored.JumpReadyAt,Is.Zero);Assert.That(restored.BlinkReadyAt,Is.Zero);
         checkpoint.jumpRemaining=float.NaN;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out _,out _),Is.False);
+        checkpoint.jumpRemaining=0;checkpoint.blinkRemaining=float.NaN;
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out _,out _),Is.False);
     }
     [Test] public void SafeZoneRestoresResourcesAndPartiallyRepairsOnlyOnceAcrossCheckpoint()
@@ -32,12 +35,13 @@ public sealed class BacklogSafeZoneTests
         Assert.That(model.Charges.EnsurePool("safe-test",3),Is.True);Assert.That(model.Charges.TrySpend("safe-test",2),Is.True);
         typeof(R3VehicleModel).GetProperty("RepairPulseReadyAt").SetValue(model,500f);
         typeof(R3VehicleModel).GetProperty("JumpReadyAt").SetValue(model,500f);
+        typeof(R3VehicleModel).GetProperty("BlinkReadyAt").SetValue(model,500f);
         var enter=typeof(R3VehicleModel).GetMethod("TryEnterSafeZone");
         Assert.That(enter,Is.Not.Null,"The safe-zone visit must be a one-time model transaction");
         Assert.That((bool)enter.Invoke(model,new object[]{1}),Is.False,"A regular stage must not grant a safe-zone refill");
         Assert.That((bool)enter.Invoke(model,new object[]{2}),Is.True);
         Assert.That(model.Energy.Current,Is.EqualTo(model.Energy.Maximum));Assert.That(model.Charges.Current("safe-test"),Is.EqualTo(3));
-        Assert.That(model.RepairPulseReadyAt,Is.Zero);Assert.That(model.JumpReadyAt,Is.Zero);Assert.That(armor.Health,Is.EqualTo(.65f).Within(.001));
+        Assert.That(model.RepairPulseReadyAt,Is.Zero);Assert.That(model.JumpReadyAt,Is.Zero);Assert.That(model.BlinkReadyAt,Is.Zero);Assert.That(armor.Health,Is.EqualTo(.65f).Within(.001));
         Assert.That(gun.ReloadReadyAt,Is.Zero);Assert.That(gun.Ammo,Is.EqualTo(RoboRougelike.WeaponIntegration.RRLRocketBinding.Magazine));
         Assert.That(wreck.Health,Is.Zero,"Free repair must not revive an unmounted or disconnected wreck");
         Assert.That((bool)enter.Invoke(model,new object[]{2}),Is.False);Assert.That(armor.Health,Is.EqualTo(.65f).Within(.001));

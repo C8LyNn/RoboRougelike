@@ -163,6 +163,44 @@ public class MOVSeriesDeviceTests
         Assert.That(Action(replacement,"TryJump"),Is.False,"A new physical copy cannot bypass the saved kind cooldown.");
         Assert.That(bank.Current,Is.EqualTo(energy).Within(.001));
     }
+    [UnityTest] public IEnumerator BlinkCopiesUseOneCostDistanceAndPersistentCooldown()
+    {
+        var v=Build(R3VehicleKind.Light,0,R3PartKind.Blink,R3PartKind.Blink);yield return Seconds(.6f);
+        var adapter=Adapter(v);var method=adapter.GetType().GetMethod("TryBlink");var body=v.GetComponent<Rigidbody>();
+        var bank=v.GetComponent<VehicleEnergyBank>();float cost=VehicleEnergyCosts.Blink;
+        Assert.That(bank.TrySpend(bank.Current-cost*1.5f),Is.True);float before=bank.Current;var position=body.position;
+        Assert.That((bool)method.Invoke(adapter,new object[]{Vector3.forward}),Is.False);
+        Assert.That(bank.Current,Is.EqualTo(before).Within(.001));Assert.That(Vector3.Distance(body.position,position),Is.LessThan(.00001f));
+        bank.Recharge(100);before=bank.Current;
+        Assert.That((bool)method.Invoke(adapter,new object[]{Vector3.forward}),Is.True);
+        Assert.That(body.position.z-position.z,Is.EqualTo(16).Within(.01));
+        Assert.That(bank.Current,Is.EqualTo(before-2*cost).Within(.001));
+        var rings=v.GetComponentsInChildren<Transform>(true).Where(t=>t.name=="Blink_PhaseRing").ToArray();
+        Assert.That(rings.Length,Is.EqualTo(2));Assert.That(rings.All(r=>r.gameObject.activeSelf),Is.True);
+        Assert.That((bool)method.Invoke(adapter,new object[]{Vector3.forward}),Is.False,"Copies must share a cooldown.");
+        var model=v.GetComponent<R3VehicleAssembly>().Model;var oldCell=model.Parts.First(p=>p.Kind==R3PartKind.Blink).Cell;
+        var copy=model.DeepCopy();copy.Parts.RemoveAll(p=>p.Kind==R3PartKind.Blink);
+        var property=typeof(R3VehicleModel).GetProperty("BlinkReadyAt");Assert.That(property,Is.Not.Null);
+        Assert.That((float)property.GetValue(copy),Is.GreaterThan(Time.time));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(copy.MakeCheckpoint(Time.time),R3VehicleKind.Light,copy.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That((float)property.GetValue(restored),Is.GreaterThan(Time.time));
+        restored.Parts.Add(new R3PartState(oldCell,R3PartKind.Blink));
+        var replacement=R3VehicleAssembly.Build(restored,new R1RunStats(),palette,new Vector3(20,.7f,1000),Quaternion.identity);
+        replacement.transform.SetParent(fixtures.transform,true);replacement.Controller.SetGameplayInputEnabled(true);yield return Seconds(.3f);
+        var next=Adapter(replacement);var nextBank=replacement.GetComponent<VehicleEnergyBank>();before=nextBank.Current;position=replacement.transform.position;
+        Assert.That((bool)method.Invoke(next,new object[]{Vector3.forward}),Is.False);
+        Assert.That(nextBank.Current,Is.EqualTo(before).Within(.001));Assert.That(Vector3.Distance(replacement.transform.position,position),Is.LessThan(.00001f));
+    }
+    [UnityTest] public IEnumerator LongerBlinkDoesNotCrossObstacleOrSpendEnergy()
+    {
+        var v=Build(R3VehicleKind.Light,0,R3PartKind.Blink,R3PartKind.Blink);yield return Seconds(.6f);
+        var body=v.GetComponent<Rigidbody>();var obstacle=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        obstacle.transform.SetParent(fixtures.transform,true);obstacle.transform.position=body.position+new Vector3(0,0,12);
+        obstacle.transform.localScale=new Vector3(8,4,1);Physics.SyncTransforms();
+        var bank=v.GetComponent<VehicleEnergyBank>();float before=bank.Current;var position=body.position;
+        var adapter=Adapter(v);bool result=(bool)adapter.GetType().GetMethod("TryBlink").Invoke(adapter,new object[]{Vector3.forward});
+        Assert.That(result,Is.False);Assert.That(bank.Current,Is.EqualTo(before).Within(.001));Assert.That(Vector3.Distance(body.position,position),Is.LessThan(.00001f));
+    }
     [UnityTest] public IEnumerator TwoBoostersAccelerateMoreThanOneOnComparablePhysicalVehicles()
     {
         var one=Build(R3VehicleKind.Light,-20,R3PartKind.Booster,R3PartKind.Booster);

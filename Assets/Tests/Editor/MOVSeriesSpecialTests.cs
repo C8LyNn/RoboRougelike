@@ -92,7 +92,10 @@ public class MOVSeriesSpecialTests
         var floor=fixtures.transform.Find("Ground");floor.gameObject.SetActive(false);
         var actor=Box("Foreign body under destination",new Vector3(0,-.5f,1008),new Vector3(15,1,15));actor.AddComponent<Rigidbody>().isKinematic=true;
         Physics.SyncTransforms();Vector3 before=v.GetComponent<Rigidbody>().position;
-        Assert.That(Act(v,"TryBlink",Vector3.forward),Is.False);Assert.That(v.GetComponent<Rigidbody>().position,Is.EqualTo(before));
+        Assert.That(Act(v,"TryBlink",Vector3.forward),Is.False);
+        // Syncing Unity Rigidbody transforms can round the pose by a few float ULPs.
+        // Ten micrometres still detects gameplay-significant movement from Blink.
+        Assert.That(Vector3.Distance(v.GetComponent<Rigidbody>().position,before),Is.LessThan(.00001f));
         Assert.That(v.GetComponentInChildren<BlinkDrive>().CooldownRemaining,Is.Zero);actor.SetActive(false);
         Assert.That(Act(v,"TryBlink",Vector3.forward),Is.False);
     }

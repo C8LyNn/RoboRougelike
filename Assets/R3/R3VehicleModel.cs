@@ -396,6 +396,7 @@ namespace RoboRougelike.R3
         public float SupportTurretReadyAt {get;internal set;} public float ShieldTurretReadyAt {get;internal set;}
         public float BoosterReadyAt {get;internal set;}
         public float JumpReadyAt {get;internal set;}
+        public float BlinkReadyAt {get;internal set;}
         public long ConstructionBudgetUsed=>Parts.Sum(p=>(long)ConstructionPartCost(p));
         public int PhysicalPartCount=>Parts.Count(p=>p.Health>0);
         public R3ConstructionSize ConstructionSizeClass=>PhysicalPartCount<=Math.Max(0,ConstructionSettings.SmallPhysicalParts)?R3ConstructionSize.Small:
@@ -436,7 +437,7 @@ namespace RoboRougelike.R3
             }
             RepairPulseReadyAt=OverdriveReadyAt=RapidFireReadyAt=DoubleShotOverdriveReadyAt=TargetedEmpReadyAt=AreaEmpReadyAt=RechargePulseReadyAt=0;
             RampDeployerReadyAt=WallDeployerReadyAt=JumpPadDeployerReadyAt=BlastTrapDeployerReadyAt=EmpTrapDeployerReadyAt=RepelTrapDeployerReadyAt=DamageTrapDeployerReadyAt=SlowTrapDeployerReadyAt=ImmobilizeTrapDeployerReadyAt=0;
-            FlyingDroneReadyAt=GroundDroneReadyAt=OffensiveTurretReadyAt=HealingTurretReadyAt=SupportTurretReadyAt=ShieldTurretReadyAt=BoosterReadyAt=JumpReadyAt=GrappleReadyAt=0;
+            FlyingDroneReadyAt=GroundDroneReadyAt=OffensiveTurretReadyAt=HealingTurretReadyAt=SupportTurretReadyAt=ShieldTurretReadyAt=BoosterReadyAt=JumpReadyAt=BlinkReadyAt=GrappleReadyAt=0;
             RefreshEnergyLayout();Energy.Fill();Charges.RefillAll();SafeZoneLastCompleted=completedEncounters;return true;
         }
         public int ConstructionPartCost(R3PartState part)=>ConstructionSettings.Cost(part);
@@ -456,7 +457,7 @@ namespace RoboRougelike.R3
             copy.SuspensionEnabled=SuspensionEnabled;copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset;
             copy.RefreshEnergyLayout();copy.Energy.Restore(Energy.Current);copy.Charges.Restore(Charges.Snapshot());copy.InitialEnergyPrepared=InitialEnergyPrepared;
             copy.SelectedDrive=SelectedDrive;copy.GyroEnabled=GyroEnabled;copy.BoosterThrustNewtons=BoosterThrustNewtons;
-            copy.BoosterDurationSeconds=BoosterDurationSeconds;copy.GrappleReadyAt=GrappleReadyAt;copy.JumpReadyAt=JumpReadyAt;
+            copy.BoosterDurationSeconds=BoosterDurationSeconds;copy.GrappleReadyAt=GrappleReadyAt;copy.JumpReadyAt=JumpReadyAt;copy.BlinkReadyAt=BlinkReadyAt;
             copy.HoverHeightMeters=HoverHeightMeters;
             SyncWeaponGroups();copy.weaponGroupA=weaponGroupA;copy.weaponGroupB=weaponGroupB;copy.weaponGroupC=weaponGroupC;copy.weaponGroupD=weaponGroupD;
             foreach(var preference in weaponGroupPreference)copy.weaponGroupPreference[preference.Key]=preference.Value;
