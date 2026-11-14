@@ -38,6 +38,68 @@ public sealed class BacklogEmpTierPhysicsTests
         yield return new EnterPlayMode();
     }
 
+    [UnityTest] public IEnumerator ExtremeFiniteBeamAndSawDamageStillReachesTargets()
+    {
+        var owner=new GameObject("Continuous weapon owner");owner.transform.position=new Vector3(1000,1000,1000);
+        var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        GameObject Weapon(out Transform muzzle)
+        {
+            var part=GameObject.CreatePrimitive(PrimitiveType.Cube);part.transform.SetParent(owner.transform,false);
+            part.GetComponent<Collider>().enabled=false;part.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Configure(100,false);
+            muzzle=new GameObject("muzzle").transform;muzzle.SetParent(part.transform,false);return part;
+        }
+        GameObject Target(out RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable hp)
+        {
+            var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=owner.transform.position+Vector3.forward*4;
+            hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(1000,false);return target;
+        }
+        var beam=Weapon(out var muzzle).AddComponent<RRLBeamBinding>();
+        beam.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=R4WeaponKind.BeamCutter,Tier=3},owner.transform,muzzle,float.MaxValue);
+        var beamTarget=Target(out var beamHp);Physics.SyncTransforms();
+        var hit=new RoboRougelike.Mechanics.BeamCutter.BeamHitRequest(beamTarget.GetComponent<Collider>(),beamTarget.transform.position,Vector3.back,Vector3.forward,100,1,body,beam.gameObject);
+        beam.ApplyBeamHit(hit);
+        beamTarget.SetActive(false);
+        var protectedTarget=Target(out var protectedHp);
+        var dome=new GameObject("hostile shield");dome.transform.position=owner.transform.position+Vector3.forward*2;
+        dome.AddComponent<SphereCollider>().isTrigger=true;
+        var shieldHp=dome.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();shieldHp.Configure(500,false);
+        dome.AddComponent<R3ShieldDome>().Configure(2,1);Physics.SyncTransforms();
+        var shieldedHit=new RoboRougelike.Mechanics.BeamCutter.BeamHitRequest(protectedTarget.GetComponent<Collider>(),protectedTarget.transform.position,Vector3.back,Vector3.forward,100,1,body,beam.gameObject);
+        beam.ApplyBeamHit(shieldedHit);dome.SetActive(false);protectedTarget.SetActive(false);
+        var saw=Weapon(out var blade).AddComponent<RRLSawBinding>();
+        saw.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=R4WeaponKind.RotarySaw,Tier=3},owner.transform,blade,float.MaxValue);
+        var sawTarget=Target(out var sawHp);Physics.SyncTransforms();
+        var sawHit=new RoboRougelike.Weapons.RotarySaw.SawDamageEvent(sawHp.GetInstanceID(),100,sawTarget.transform.position,Vector3.up,sawTarget.GetComponent<Collider>(),saw.Module);
+        saw.ApplyDamage(sawHit);
+        Assert.That(beamHp.IsDead&&sawHp.IsDead&&shieldHp.IsDead&&!protectedHp.IsDead,Is.True,
+            $"Finite extreme damage: beam={beamHp.IsDead}, saw={sawHp.IsDead}, shield={shieldHp.IsDead}, protected={protectedHp.IsDead}.");
+        Object.Destroy(beamTarget);Object.Destroy(sawTarget);Object.Destroy(protectedTarget);Object.Destroy(dome);Object.Destroy(owner);yield return null;
+    }
+    [UnityTest] public IEnumerator ExtremeFiniteAuraBonusStillDamagesEnemy()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.EmpEmitter;state.Tier=3;
+        var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="aura-large";bonus.Effect=R1UpgradeEffect.Damage;bonus.Amount=float.MaxValue;
+        Assert.That(model.ReceiveBonuses(new[]{bonus}),Is.True);string bonusId=model.Inventory.Single(p=>p.UpgradeId==bonus.Id).Id;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(bonusId,c,default)==null);
+        Assert.That(model.Mount(bonusId,cell),Is.True);
+        var paletteObject=new GameObject("QA palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
+        for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
+        var enemy=new GameObject("aura enemy fixture");enemy.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret>().enabled=false;
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.SetParent(enemy.transform);target.transform.position=vehicle.transform.position+Vector3.forward*2;
+        var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(500,false);
+        Physics.SyncTransforms();var aura=gun.GetComponent<RRLDamageAuraBinding>();Assert.That(aura.Fire(),Is.True);
+        typeof(RRLDamageAuraBinding).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(aura,null);
+        Assert.That(hp.IsDead,Is.True,"A finite extreme damage modifier must not make the aura harmless.");
+        Object.Destroy(vehicle.gameObject);Object.Destroy(enemy);Object.Destroy(paletteObject);Object.Destroy(material);Object.Destroy(bonus);yield return null;
+    }
+
     [UnityTest] public IEnumerator DamageableWithoutRendererStillSettlesDamage()
     {
         var invisible=new GameObject("Niewidoczny element z HP");

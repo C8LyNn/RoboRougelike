@@ -60,6 +60,14 @@ namespace RoboRougelike.R3
                float.IsNaN(multiplier)||float.IsInfinity(multiplier)||multiplier<=0)return 0;
             return (float)System.Math.Min(float.MaxValue,(double)amount*multiplier);
         }
+        public static float SafeDamageProduct(float amount,float multiplier,float units,float seconds=1f)
+        {
+            if(float.IsNaN(amount)||float.IsInfinity(amount)||amount<=0||
+               float.IsNaN(multiplier)||float.IsInfinity(multiplier)||multiplier<=0||
+               float.IsNaN(units)||float.IsInfinity(units)||units<=0||
+               float.IsNaN(seconds)||float.IsInfinity(seconds)||seconds<=0)return 0;
+            return (float)System.Math.Min(float.MaxValue,(double)amount*multiplier*units*seconds);
+        }
 
         // Keep finite, non-negative cooldowns representable without a gameplay cap.
         // Preserve invalid inputs for each device's existing validation policy.

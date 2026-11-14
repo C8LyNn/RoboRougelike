@@ -57,7 +57,8 @@ namespace RoboRougelike.WeaponIntegration
         {
             if(!TryResolve(hit.contactCollider,out var part)||part.partId!=hit.partId)return;
             var direction=(hit.worldPoint-blade.position).normalized;
-            RRLHitRouter.Apply(hit.contactCollider,hit.damage*(tank!=null?tank.PackageKineticDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),hit.worldPoint,direction,Device.Owner);
+            float damage=R3MountedBonusEffects.SafeDamageProduct(hit.damage,tank!=null?tank.PackageKineticDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier));
+            RRLHitRouter.Apply(hit.contactCollider,damage,hit.worldPoint,direction,Device.Owner);
         }
         void Stop(){requested=false;if(Module!=null)Module.SetOperational(false);CaptureState();}
         void OnDisable()=>Stop();

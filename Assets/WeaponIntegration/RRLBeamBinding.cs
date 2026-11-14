@@ -51,7 +51,8 @@ namespace RoboRougelike.WeaponIntegration
                 R3ShieldDome.TryFirstHit(muzzle.position,result.EndPoint,Device.Owner,out var shield,out float distance))
             {
                 var direction=(result.EndPoint-muzzle.position).normalized;interceptionPoint=muzzle.position+direction*distance;
-                shield.Absorb(Module.Settings.damagePerSecond*result.ActiveSeconds*(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),interceptionPoint,direction);intercepted=true;
+                float damage=R3MountedBonusEffects.SafeDamageProduct(Module.Settings.damagePerSecond,tank!=null?tank.PackageDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier),result.ActiveSeconds);
+                shield.Absorb(damage,interceptionPoint,direction);intercepted=true;
             }
             if(intercepted&&beamLine!=null&&beamLine.positionCount>=2)beamLine.SetPosition(1,interceptionPoint);
             CaptureState();
@@ -60,12 +61,13 @@ namespace RoboRougelike.WeaponIntegration
         public void ApplyBeamHit(in BeamHitRequest hit)
         {
             if(!Device.Available||hit.ShooterBody!=Device.Body)return;
+            float damage=R3MountedBonusEffects.SafeDamageProduct(hit.Damage,tank!=null?tank.PackageDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier));
             if(muzzle!=null&&R3ShieldDome.TryFirstHit(muzzle.position,hit.Point,Device.Owner,out var shield,out float distance))
             {
                 var direction=(hit.Point-muzzle.position).normalized;interceptionPoint=muzzle.position+direction*distance;
-                shield.Absorb(hit.Damage*(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),interceptionPoint,direction);intercepted=true;return;
+                shield.Absorb(damage,interceptionPoint,direction);intercepted=true;return;
             }
-            RRLHitRouter.Apply(hit.Collider,hit.Damage*(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),hit.Point,hit.Direction,Device.Owner);
+            RRLHitRouter.Apply(hit.Collider,damage,hit.Point,hit.Direction,Device.Owner);
         }
         void Stop(){held=false;if(Module!=null){Module.SetTriggerHeld(false);Module.SetOperational(false);}CaptureState();}
         void OnDisable()=>Stop();
