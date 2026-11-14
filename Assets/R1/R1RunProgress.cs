@@ -13,6 +13,33 @@ namespace RoboRougelike.R1
     }
     public enum R1RunState { Ready, Combat, UpgradeChoice, Won, Lost, Garage, Salvage, Route, TestDrive }
 
+    // One additive increased/reduced group followed by independent more/less
+    // factors. Double intermediates and saturation prevent non-finite stats.
+    internal sealed class R1ModifierGroup
+    {
+        double additive,multiplier=1d;
+        public void Add(R1ModifierOperation operation,float amount,int copies,bool inverse=false)
+        {
+            if(float.IsNaN(amount)||float.IsInfinity(amount)||amount<0||copies<=0)return;
+            double sign=inverse?-1d:1d;
+            switch(operation)
+            {
+                case R1ModifierOperation.Increased:additive+=sign*amount*copies;break;
+                case R1ModifierOperation.Reduced:additive-=sign*amount*copies;break;
+                case R1ModifierOperation.More:Multiply(Math.Pow(Math.Max(0d,1d+sign*amount),copies));break;
+                case R1ModifierOperation.Less:Multiply(Math.Pow(Math.Max(0d,1d-sign*amount),copies));break;
+            }
+        }
+        void Multiply(double factor)
+        {multiplier=multiplier==0d||factor==0d?0d:Math.Min(double.MaxValue,multiplier*factor);}
+        public float Apply(float baseline)
+        {
+            double sum=Math.Max(0d,1d+additive);
+            if(baseline<=0||sum==0d||multiplier==0d)return 0f;
+            return (float)Math.Min(float.MaxValue,(double)baseline*sum*multiplier);
+        }
+    }
+
     public sealed class R1RunStats
     {
         public float Hull { get; private set; } = 1;
@@ -21,6 +48,8 @@ namespace RoboRougelike.R1
         public float Mobility { get; private set; } = 1;
         public float Core { get; private set; } = 1;
         public R1RunStats Copy() => new R1RunStats {Hull=Hull,Damage=Damage,FireInterval=FireInterval,Mobility=Mobility,Core=Core};
+        internal void ApplyBonusGroups(R1ModifierGroup hull,R1ModifierGroup damage,R1ModifierGroup reload,R1ModifierGroup mobility,R1ModifierGroup core)
+        {Hull=hull.Apply(Hull);Damage=damage.Apply(Damage);FireInterval=reload.Apply(FireInterval);Mobility=mobility.Apply(Mobility);Core=core.Apply(Core);}
         public void ApplyAdditiveDamage(float increase)
         {
             if(float.IsNaN(increase)||float.IsInfinity(increase)||increase<0)return;

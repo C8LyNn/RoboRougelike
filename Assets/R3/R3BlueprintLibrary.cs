@@ -19,16 +19,17 @@ namespace RoboRougelike.R3
         public int tier,footprint,contacts;
         public string upgradeId;
         public R1UpgradeEffect upgradeEffect;
+        public R1ModifierOperation upgradeOperation;
         public float upgradeAmount;
         public static R3BlueprintPart FromPart(R3PartState p,Vector3Int core)=>new R3BlueprintPart{
             cell=p.Cell-core,rotation=p.RotationQuarterTurns,kind=p.Kind,weapon=p.Weapon,wheel=p.WheelStyle,
             shape=p.ArmorShape,tier=R3VehicleModel.NormalizedTier(p.Tier),footprint=p.FootprintRevision,contacts=p.ContactMask,
-            upgradeId=p.UpgradeId,upgradeEffect=p.UpgradeEffect,upgradeAmount=p.UpgradeAmount};
+            upgradeId=p.UpgradeId,upgradeEffect=p.UpgradeEffect,upgradeOperation=p.UpgradeOperation,upgradeAmount=p.UpgradeAmount};
         public bool Matches(R3PartState p)=>p!=null&&p.Kind==kind&&R3VehicleModel.NormalizedTier(p.Tier)==tier&&
             (kind!=R3PartKind.Gun||(p.Weapon==weapon&&p.FootprintRevision==footprint))&&
             (kind!=R3PartKind.Wheel||(p.WheelStyle==wheel&&p.FootprintRevision==footprint))&&
             (kind!=R3PartKind.Armor||p.ArmorShape==shape)&&
-            (kind!=R3PartKind.BonusModule||(p.UpgradeId==upgradeId&&p.UpgradeEffect==upgradeEffect&&p.UpgradeAmount==upgradeAmount));
+            (kind!=R3PartKind.BonusModule||(p.UpgradeId==upgradeId&&p.UpgradeEffect==upgradeEffect&&p.UpgradeOperation==upgradeOperation&&p.UpgradeAmount==upgradeAmount));
     }
     [Serializable] public sealed class R3Blueprint
     {
@@ -99,10 +100,10 @@ namespace RoboRougelike.R3
                    Math.Abs((long)item.cell.x)>100||Math.Abs((long)item.cell.y)>100||Math.Abs((long)item.cell.z)>100||
                    item.rotation.x<0||item.rotation.x>3||item.rotation.y<0||item.rotation.y>3||item.rotation.z<0||item.rotation.z>3)return false;
                 var p=new R3PartState(item.cell,item.kind){Weapon=item.weapon,WheelStyle=item.wheel,ArmorShape=item.shape,Tier=item.tier,
-                    FootprintRevision=item.footprint,ContactMask=item.contacts,UpgradeId=item.upgradeId,UpgradeEffect=item.upgradeEffect,UpgradeAmount=item.upgradeAmount};
+                    FootprintRevision=item.footprint,ContactMask=item.contacts,UpgradeId=item.upgradeId,UpgradeEffect=item.upgradeEffect,UpgradeOperation=item.upgradeOperation,UpgradeAmount=item.upgradeAmount};
                 if(!R3VehicleModel.ValidEconomicPart(p)||item.contacts<0||item.contacts>63||item.tier<1||item.tier>3||
                    (item.kind==R3PartKind.BonusModule&&(string.IsNullOrWhiteSpace(item.upgradeId)||
-                    !Enum.IsDefined(typeof(R1UpgradeEffect),item.upgradeEffect)||float.IsNaN(item.upgradeAmount)||float.IsInfinity(item.upgradeAmount)||item.upgradeAmount<0||item.upgradeAmount>1)))return false;
+                    !Enum.IsDefined(typeof(R1UpgradeEffect),item.upgradeEffect)||!R3VehicleModel.ValidBonusOperation(item.upgradeEffect,item.upgradeOperation)||float.IsNaN(item.upgradeAmount)||float.IsInfinity(item.upgradeAmount)||item.upgradeAmount<0||item.upgradeAmount>1)))return false;
             }
             return true;
         }

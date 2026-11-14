@@ -111,7 +111,9 @@ public class RRLW34EffectsTests
             Assert.That(model.Mount(item.Id,cell),Is.True);
         }
         var baseline=Build(model.DeepCopy(),x:-40);
-        foreach(var part in baseline.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.BonusModule))part.gameObject.SetActive(false);
+        // Keep the same physical mass when comparing movement: disabling parts
+        // changes chassis tuning as well as the bonus under test.
+        foreach(var part in baseline.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.BonusModule))part.UpgradeAmount=0;
         yield return null;float baseSpeed=baseline.Controller.EffectiveForwardSpeed;
         var vehicle=Build(model);Assert.That(Effects(vehicle).EffectiveStats.Mobility,Is.EqualTo(1.45f).Within(.001));
         Assert.That(vehicle.Controller.EffectiveForwardSpeed,Is.EqualTo(baseSpeed*1.45f).Within(.01));

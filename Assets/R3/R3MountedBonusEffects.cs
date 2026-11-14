@@ -27,11 +27,12 @@ namespace RoboRougelike.R3
             readonly string id;
             readonly int tier;
             readonly R1UpgradeEffect effect;
+            readonly R1ModifierOperation operation;
             readonly float amount;
             public BonusSnapshot(R3MountedPart p)
-            {part=p;id=p.Id;tier=p.Tier;effect=p.UpgradeEffect;amount=p.UpgradeAmount;}
+            {part=p;id=p.Id;tier=p.Tier;effect=p.UpgradeEffect;operation=p.UpgradeOperation;amount=p.UpgradeAmount;}
             public bool Matches(R3MountedPart p)=>ReferenceEquals(part,p)&&id==p.Id&&tier==p.Tier&&
-                effect==p.UpgradeEffect&&amount.Equals(p.UpgradeAmount);
+                effect==p.UpgradeEffect&&operation==p.UpgradeOperation&&amount.Equals(p.UpgradeAmount);
         }
         private float lastRepairPulse;
         private float overdriveIncrease;
@@ -76,23 +77,22 @@ namespace RoboRougelike.R3
             snapshot.Clear();active.Clear();
             foreach(var part in nextActive){active.Add(part);snapshot.Add(new BonusSnapshot(part));}
             var stats=baseStats.Copy();
-            float addedDamage=overdriveIncrease,addedMobility=0,addedHull=0,addedCore=0,addedReloadReduction=rapidFireReduction;
+            var damage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
+            var core=new R1ModifierGroup();var reload=new R1ModifierGroup();
+            damage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            reload.Add(R1ModifierOperation.Increased,rapidFireReduction,1,true);
             foreach(var module in active)
                 if(module.UpgradeEffect==R1UpgradeEffect.Damage)
-                    addedDamage+=module.UpgradeAmount*R3VehicleModel.TierEffectUnits(module.Tier);
+                    damage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 else if(module.UpgradeEffect==R1UpgradeEffect.Mobility)
-                    addedMobility+=module.UpgradeAmount*R3VehicleModel.TierEffectUnits(module.Tier);
+                    mobility.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 else if(module.UpgradeEffect==R1UpgradeEffect.Hull)
-                    addedHull+=module.UpgradeAmount*R3VehicleModel.TierEffectUnits(module.Tier);
+                    hull.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 else if(module.UpgradeEffect==R1UpgradeEffect.Core)
-                    addedCore+=module.UpgradeAmount*R3VehicleModel.TierEffectUnits(module.Tier);
+                    core.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 else if(module.UpgradeEffect==R1UpgradeEffect.Reload)
-                    addedReloadReduction+=module.UpgradeAmount*R3VehicleModel.TierEffectUnits(module.Tier);
-                else for(int i=0;i<R3VehicleModel.TierEffectUnits(module.Tier);i++)stats.Apply(module.UpgradeEffect,module.UpgradeAmount);
-            stats.ApplyAdditiveDamage(addedDamage);
-            stats.ApplyAdditiveMobility(addedMobility);
-            stats.ApplyAdditiveDurability(addedHull,addedCore);
-            stats.ApplyAdditiveReloadReduction(addedReloadReduction);
+                    reload.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier),true);
+            stats.ApplyBonusGroups(hull,damage,reload,mobility,core);
             EffectiveStats=stats;
             player.Apply(stats);
         }
