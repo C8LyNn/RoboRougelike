@@ -137,17 +137,17 @@ namespace RoboRougelike.R1
         static bool GarageSearchExitKey(EventType type,KeyCode key,string focused,bool active)=>
             active&&focused==QuickSearchControlName&&type==EventType.KeyDown&&
             (key==KeyCode.Escape||key==KeyCode.Return||key==KeyCode.KeypadEnter);
-        static int? QuickCategoryShortcut(KeyCode key,bool modified)
+        static readonly string[] QuickCategoryActions={"GarageBlocks","GarageWheels","GarageWeapons","GarageModules"};
+        static int? QuickCategoryShortcutForProfile(Event input,R1ControlProfile profile)
         {
-            if(modified)return null;
-            switch(key)
-            {
-                case KeyCode.Alpha5:case KeyCode.Keypad5:return 0;
-                case KeyCode.Alpha6:case KeyCode.Keypad6:return 1;
-                case KeyCode.Alpha7:case KeyCode.Keypad7:return 2;
-                case KeyCode.Alpha8:case KeyCode.Keypad8:return 3;
-                default:return null;
-            }
+            if(input==null||profile==null||input.shift||input.control||input.alt||input.command)return null;
+            for(int i=0;i<QuickCategoryActions.Length;i++)if(profile.MatchesEvent(QuickCategoryActions[i],input))return i;
+            if(input.type!=EventType.KeyDown)return null;
+            int index=input.keyCode==KeyCode.Keypad5?0:input.keyCode==KeyCode.Keypad6?1:
+                input.keyCode==KeyCode.Keypad7?2:input.keyCode==KeyCode.Keypad8?3:-1;
+            if(index<0)return null;
+            string action=QuickCategoryActions[index],alias="Numpad"+(index+5);
+            return profile.Binding(action)=="Digit"+(index+5)&&profile.Conflict(action,alias)==null?index:(int?)null;
         }
         static bool QuickSearchShortcut(Event input,R1ControlProfile profile)
         {
@@ -159,8 +159,7 @@ namespace RoboRougelike.R1
         bool HandleQuickGarageKey(R1RunController run,Event current,bool textFocused)
         {
             if(textFocused||!R1ControlProfile.IsBindingInput(current))return false;
-            bool modified=current.shift||current.control||current.alt||current.command;
-            var category=current.type==EventType.KeyDown?QuickCategoryShortcut(current.keyCode,modified):null;
+            var category=QuickCategoryShortcutForProfile(current,R1ControlProfile.Current);
             if(category.HasValue)
             {
                 ApplyQuickSearch(run,string.Empty);SelectQuickCategory(run,category.Value);
@@ -721,14 +720,15 @@ namespace RoboRougelike.R1
             var model=run.VehicleModel;
             ClearMissingOwnedSelection(run);
 
-            string[] categories={"5 Bloki","6 Koła","7 Broń","8 Moduły"};
+            string[] categories={"Bloki","Koła","Broń","Moduły"};
             if(quickCategoryButton==null)quickCategoryButton=new GUIStyle(compactButton){fontSize=13,wordWrap=false,padding=new RectOffset(1,1,2,2)};
             float categoryWidth=(area.width-12)/4;
             bool searching=!string.IsNullOrWhiteSpace(quickPartSearch);
             for(int i=0;i<categories.Length;i++)
             {
                 quickCategoryButton.normal.background=!searching&&quickPartCategory==i?buttonPressed:buttonNormal;
-                if(GUI.Button(new Rect(area.x+i*(categoryWidth+4),area.y,categoryWidth,34),categories[i],quickCategoryButton))
+                string caption=R1ControlProfile.Display(R1ControlProfile.Current.Binding(QuickCategoryActions[i]))+" "+categories[i];
+                if(GUI.Button(new Rect(area.x+i*(categoryWidth+4),area.y,categoryWidth,34),caption,quickCategoryButton))
                 {
                     BrowseQuickCategory(run,i);
                     GUI.FocusControl(null);GUIUtility.keyboardControl=0;

@@ -11,6 +11,25 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [Test] public void GarageCategoryBindingsMigrateWithoutStealingExistingKeys()
+    {
+        string[] categories={"GarageBlocks","GarageWheels","GarageWeapons","GarageModules"};
+        foreach(var name in categories)Assert.That(R1ControlProfile.Actions,Does.Contain(name));
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-garage-categories-"+Guid.NewGuid()+".json");
+        try
+        {
+            var initial=new R1ControlProfile(path);var actions=R1ControlProfile.Actions.Where(a=>!categories.Contains(a)).ToArray();
+            var bindings=actions.Select(initial.Binding).ToArray();bindings[Array.IndexOf(actions,"MoveForward")]="Digit5";
+            var data=new LegacyControlData{actions=actions,bindings=bindings};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            var loaded=new R1ControlProfile(path);Assert.That(loaded.Error,Is.Null);
+            Assert.That(loaded.Binding("MoveForward"),Is.EqualTo("Digit5"));Assert.That(loaded.Binding("GarageBlocks"),Is.Not.EqualTo("Digit5"));
+            Assert.That(loaded.TrySaveBinding("GarageWheels","Numpad0",out _),Is.True);
+            Assert.That(new R1ControlProfile(path).Binding("GarageWheels"),Is.EqualTo("Numpad0"));
+            Assert.That(loaded.TryBind("GarageWheels","MouseMiddle"),Is.False);
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [TestCase(3,"MouseBack")] [TestCase(4,"MouseForward")]
     public void ExtraMouseButtonsAreCapturedFromRawUnityEvents(int button,string binding)
     {

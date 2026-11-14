@@ -13,6 +13,19 @@ using UnityEngine.TestTools;
 
 public sealed class UI943PortraitCatalogActionsTests
 {
+    [Test] public void GarageCategoryShortcutFollowsProfileAndDoesNotStealKeypadAliases()
+    {
+        var method=typeof(R1RunHUD).GetMethod("QuickCategoryShortcutForProfile",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        var profile=new R1ControlProfile(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"RRL-categories-"+Guid.NewGuid()+".json"));
+        object Match(KeyCode key)=>method.Invoke(null,new object[]{new Event{type=EventType.KeyDown,keyCode=key},profile});
+        Assert.That(Match(KeyCode.Alpha6),Is.EqualTo(1));Assert.That(Match(KeyCode.Keypad6),Is.EqualTo(1));
+        Assert.That(profile.TryBind("MoveForward","Numpad6"),Is.True);Assert.That(Match(KeyCode.Keypad6),Is.Null);
+        Assert.That(profile.TryBind("MoveForward","W"),Is.True);Assert.That(profile.TryBind("GarageWheels","K"),Is.True);
+        Assert.That(Match(KeyCode.K),Is.EqualTo(1));Assert.That(Match(KeyCode.Alpha6),Is.Null);Assert.That(Match(KeyCode.Keypad6),Is.Null);
+        Assert.That(profile.TryBind("GarageWheels","MouseBack"),Is.True);
+        Assert.That(method.Invoke(null,new object[]{new Event{type=EventType.MouseDown,button=3},profile}),Is.EqualTo(1));
+    }
     [Test] public void GarageSearchShortcutUsesProfileAndKeepsLegacyKeypadAlias()
     {
         var method=typeof(R1RunHUD).GetMethod("QuickSearchShortcut",BindingFlags.Static|BindingFlags.NonPublic);
@@ -955,8 +968,10 @@ public sealed class UI943PortraitCatalogActionsTests
     [TestCase(KeyCode.Alpha5,true,null)] [TestCase(KeyCode.Alpha4,false,null)]
     public void CategoryShortcutsIgnoreModifiersAndOtherKeys(KeyCode key,bool modified,object expected)
     {
-        var method=typeof(R1RunHUD).GetMethod("QuickCategoryShortcut",BindingFlags.Static|BindingFlags.NonPublic);
-        Assert.That(method,Is.Not.Null);Assert.That(method.Invoke(null,new object[]{key,modified}),Is.EqualTo(expected));
+        var method=typeof(R1RunHUD).GetMethod("QuickCategoryShortcutForProfile",BindingFlags.Static|BindingFlags.NonPublic);
+        var profile=new R1ControlProfile(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"RRL-category-keys-"+Guid.NewGuid()+".json"));
+        var input=new Event{type=EventType.KeyDown,keyCode=key,modifiers=modified?EventModifiers.Control:EventModifiers.None};
+        Assert.That(method,Is.Not.Null);Assert.That(method.Invoke(null,new object[]{input,profile}),Is.EqualTo(expected));
     }
 
     [UnityTest] public IEnumerator CategoryShortcutClearsSearchWithoutBuyingAndIgnoresTyping()
@@ -977,6 +992,27 @@ public sealed class UI943PortraitCatalogActionsTests
         key=new Event{type=EventType.KeyDown,keyCode=KeyCode.Alpha7,control=true};
         Assert.That((bool)Invoke(hud,"HandleQuickGarageKey",run,key,false),Is.False);
         Assert.That((int)Field(hud,"quickPartCategory"),Is.EqualTo(1));
+        yield return new ExitPlayMode();
+    }
+
+    [UnityTest] public IEnumerator ReassignedCategoryKeyChangesTheActualGarageCatalog()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var hud=run.GetComponent<R1RunHUD>();var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("GarageWheels","K"),Is.True);
+            Invoke(hud,"ApplyQuickSearch",run,"pancerz");int count=run.VehicleModel.Inventory.Count;
+            var key=new Event{type=EventType.KeyDown,keyCode=KeyCode.K};
+            Assert.That((bool)Invoke(hud,"HandleQuickGarageKey",run,key,false),Is.True);
+            Assert.That((int)Field(hud,"quickPartCategory"),Is.EqualTo(1));Assert.That((string)Field(hud,"quickPartSearch"),Is.Empty);
+            Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(count));
+            key=new Event{type=EventType.KeyDown,keyCode=KeyCode.Alpha6};
+            Assert.That((bool)Invoke(hud,"HandleQuickGarageKey",run,key,false),Is.False);
+        }
+        finally{profile.ResetDefaults();}
         yield return new ExitPlayMode();
     }
 
