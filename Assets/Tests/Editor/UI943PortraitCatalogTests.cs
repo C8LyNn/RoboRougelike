@@ -76,6 +76,9 @@ public sealed class UI943PortraitCatalogTests
         Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.Wheel),Is.EqualTo(12));
         Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.Armor),Is.EqualTo(7));
         Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.Gun),Is.EqualTo(R4WeaponDefinition.Count));
+        var healer=entries.Single(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.HealingDroneGenerator);
+        Assert.That(Field(healer,"Name"),Is.EqualTo("Generator drona naprawczego"));
+        Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.ShieldTurretGenerator),Is.EqualTo(1));
         Assert.That(entries.Select(e=>(Field(e,"Kind"),Field(e,"Weapon"),Field(e,"Group"))).Distinct().Count(),Is.EqualTo(entries.Length));
     }
     [Test] public void DifferentBonusEffectsWithTheSameIdDoNotShareAStack()

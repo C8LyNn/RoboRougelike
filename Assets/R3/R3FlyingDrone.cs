@@ -93,9 +93,11 @@ namespace RoboRougelike.R3
         P12PipelineSafeEnemyTurret target;Collider aimCollider;RoboRougelike.R6.R6VehicleDrive groundDrive;bool stationary;
         public bool IsGround=>groundDrive!=null;
         public bool IsTurret=>stationary;
+        public R3PartKind GeneratorKind {get;private set;}=R3PartKind.FlyingDroneGenerator;
         public int TeamId=>RRLHitRouter.Team(owner);
         public void Configure(Transform source,float moveSpeed,float fireInterval,float shotDamage)
         {owner=source;speed=moveSpeed;interval=fireInterval;damage=shotDamage;body=GetComponent<Rigidbody>();ownCollider=GetComponent<Collider>();groundDrive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();}
+        public void ConfigureGenerator(R3PartKind kind){GeneratorKind=kind;}
         public void ConfigureTurret(Transform source,float fireInterval,float shotDamage)
         {Configure(source,0,fireInterval,shotDamage);stationary=true;}
         void FixedUpdate()

@@ -11,6 +11,20 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogDeviceTierTests
 {
+    [Test] public void HealingDroneSettingsCopyAndOldCheckpointDefaultsAreValid()
+    {
+        var defaults=Resources.Load<R1RunDefinition>("R1/Run").GaragePrices;
+        Assert.That(defaults.HealingDroneRadius,Is.GreaterThan(0));Assert.That(defaults.HealingDroneRate,Is.GreaterThan(0));
+        Assert.That(defaults.HealingDroneDamage,Is.GreaterThan(0));
+        var model=Model();model.Economy.HealingDroneRadius=11;model.Economy.HealingDroneRate=.04f;model.Economy.HealingDroneDamage=7;
+        var copy=model.DeepCopy();Assert.That(copy.Economy.HealingDroneRadius,Is.EqualTo(11));
+        Assert.That(copy.Economy.HealingDroneRate,Is.EqualTo(.04f));Assert.That(copy.Economy.HealingDroneDamage,Is.EqualTo(7));
+        var checkpoint=model.MakeCheckpoint(0);checkpoint.healingDroneRemaining=0;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.HealingDroneReadyAt,Is.Zero);
+        checkpoint.healingDroneRemaining=float.NaN;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out _,out _),Is.False);
+    }
     [Test] public void ShieldDurabilityRewardExistsAndKeepsItsIdentity()
     {
         Assert.That(System.Enum.TryParse("ShieldDurability",out R1UpgradeEffect effect),Is.True);
@@ -727,6 +741,52 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(Vector3.Distance(turret.transform.position,origin),Is.LessThan(.01),"Turret must remain stationary");
         durability.ApplyDamage(10000,turret.transform.position,Vector3.up);yield return null;
         Assert.That(turret==null||!turret.activeInHierarchy,Is.True);Object.Destroy(floor);
+    }
+    [UnityTest] public IEnumerator HealingDroneHasIndependentSlotRepairsAndFires()
+    {
+        Assert.That(System.Enum.TryParse("HealingDroneGenerator",out R3PartKind kind),Is.True,"Missing healing drone generator");
+        Assert.That(R3VehicleModel.IsDeployableSlotPart(kind),Is.True);
+        run.VehicleModel.Award(2500);FuseAndMount(kind);FuseAndMount(R3PartKind.FlyingDroneGenerator);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.zero;body.isKinematic=true;Physics.SyncTransforms();
+        run.VehicleModel.Economy.DroneCooldown=30f;
+        var bank=player.GetComponent<VehicleEnergyBank>();float energy=bank.Current;
+        run.VehicleModel.Economy.HealingDroneRadius=float.NaN;
+        Assert.That(service.TryDeploy(kind),Is.False);Assert.That(bank.Current,Is.EqualTo(energy));
+        Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.HealingDronePool),Is.EqualTo(run.VehicleModel.Economy.DeviceBaseCharges));
+        run.VehicleModel.Economy.HealingDroneRadius=8;
+        var damaged=player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Armor).Damageable;
+        damaged.RestoreHealthRatio(.3f);float before=damaged.CurrentHp;
+        Assert.That(service.TryDeploy(kind),Is.True);
+        var drone=GameObject.Find("Dron naprawczy");Assert.That(drone,Is.Not.Null);
+        Assert.That(drone.GetComponent<R3HealingTurret>(),Is.Not.Null);
+        var flying=drone.GetComponent<R3FlyingDrone>();Assert.That(flying,Is.Not.Null);
+        int remaining=run.VehicleModel.Charges.Current(R3DeployableService.HealingDronePool);energy=bank.Current;
+        Assert.That(service.TryDeploy(kind),Is.False,"Cooldown must not spend a second charge or energy.");
+        Assert.That(bank.Current,Is.EqualTo(energy));Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.HealingDronePool),Is.EqualTo(remaining));
+        Assert.That(service.TryDeploy(R3PartKind.FlyingDroneGenerator),Is.True,"Offensive and healing drones have independent limits.");
+        GameObject.Find("Dron latający").GetComponent<R3FlyingDrone>().enabled=false;
+        Physics.SyncTransforms();for(int i=0;i<15;i++)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(damaged.CurrentHp,Is.GreaterThan(before));
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"healing-drone-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();enemy.ConfigureMovement(0,12,0);var enemyBody=enemy.GetComponent<Rigidbody>();
+        enemyBody.position=drone.GetComponent<Rigidbody>().position+new Vector3(12,0,0);enemyBody.isKinematic=true;Physics.SyncTransforms();
+        float enemyHp=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        float deadline=Time.realtimeSinceStartup+12;
+        while(Time.realtimeSinceStartup<deadline&&enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp)>=enemyHp)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.LessThan(enemyHp),"The healing drone also attacks enemies.");
+        Assert.That((float)typeof(R3FlyingDrone).GetField("nextShot",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(flying),Is.GreaterThan(0));
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(run.VehicleModel.MakeCheckpoint(Time.time)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,run.VehicleModel.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.GetDeployableSlots(),Does.Contain(kind));
+        var ready=typeof(R3VehicleModel).GetProperty("HealingDroneReadyAt");Assert.That(ready,Is.Not.Null);
+        Assert.That((float)ready.GetValue(restored),Is.GreaterThan(Time.time));
+        Assert.That(restored.Charges.Current(R3DeployableService.HealingDronePool),Is.EqualTo(remaining));
+        Assert.That(restored.TryEnterSafeZone(2),Is.True);Assert.That((float)ready.GetValue(restored),Is.Zero);
     }
     [UnityTest] public IEnumerator GroundDroneUsesRealWheelContactsAndMovesTowardOwner()
     {
