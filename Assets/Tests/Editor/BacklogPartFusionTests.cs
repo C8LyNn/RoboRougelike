@@ -42,6 +42,7 @@ public sealed class BacklogPartFusionTests
     [TestCase(R3PartKind.JumpDrive)]
     [TestCase(R3PartKind.Gyroscope)]
     [TestCase(R3PartKind.ScannerPulse)]
+    [TestCase(R3PartKind.StructuralScanner)]
     public void MovementDeviceFusesToTierThreeAndSurvivesSave(R3PartKind kind)
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(10000);

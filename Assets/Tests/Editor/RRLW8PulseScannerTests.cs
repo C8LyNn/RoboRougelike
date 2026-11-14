@@ -85,6 +85,24 @@ public class RRLW8PulseScannerTests
         Assert.That(run.Player.GetComponent<RRLScannerControls>().Activate(RRLScanKind.Structural),Is.True);
         Assert.That(before-run.VehicleModel.Energy.Current,Is.EqualTo(5).Within(.01));
     }
+    [UnityTest] public IEnumerator TierThreeStructuralScannerRevealsDistantVisibleEnemyForItsTierCost()
+    {
+        Assert.That(run.OpenSandboxGarage(),Is.True);MountScanner(R3PartKind.StructuralScanner);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==R3PartKind.StructuralScanner);
+        yield return new WaitForFixedUpdate();
+        part.GetComponent<RRLStructuralScannerBinding>().Device.State.Tier=3;
+        var target=run.GetComponent<R6TestRange>().TrainingTarget;
+        var body=run.Player.GetComponent<Rigidbody>();body.isKinematic=true;var elevated=body.position+Vector3.up*150;body.position=elevated;body.transform.position=elevated;
+        target.transform.position+=Vector3.up*150;Physics.SyncTransforms();part.transform.rotation=Quaternion.LookRotation(Vector3.forward,Vector3.up);
+        var offset=target.Core.transform.position-target.transform.position;
+        target.transform.position=part.transform.position+part.transform.forward*85-offset;Physics.SyncTransforms();
+        run.VehicleModel.Energy.Restore(100);float before=run.VehicleModel.Energy.Current;
+        Assert.That(run.Player.GetComponent<RRLScannerControls>().Activate(RRLScanKind.Structural),Is.True);
+        Assert.That(before-run.VehicleModel.Energy.Current,Is.EqualTo(7).Within(.01));
+        Assert.That(part.GetComponent<StructuralScanController>().Contacts.Any(c=>c.OwnerKey==target.GetInstanceID()),Is.True);
+        yield return null;
+    }
     [UnityTest] public IEnumerator PulseCopiesUseOneRangeCostAndCooldown()
     {
         kind=R3PartKind.ScannerPulse;yield return Build(copies:2);
