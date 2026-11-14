@@ -749,3 +749,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Suma i podział obrażeń jednego rodzaju korzystają z szerszego zakresu pośredniego, analogicznie do istniejącej ścieżki hybrydowej. Przy bardzo dużym skończonym trafieniu wiele odgałęzień nie zmienia niewykorzystanej części obrażeń w nieskończoność. Nadal obowiązuje ten sam graf, limit przejść i zasady podziału; wyniki dla części pozostają w dotychczasowym formacie.
 - Unity 6000.3.14f1: **21 PASS, 0 FAIL** (`damage-graph-overflow-final.xml`, `.log`): graf o maksymalnie sześciu połączeniach na węzeł z 18 odgałęzieniami, rozliczenie skrajnego trafienia, istniejące porównania typów i budżetu, rzeczywiste połączenia gracza i wrogów oraz ratunek. Przed poprawką `damage-graph-overflow-red.xml`: skończone trafienie dawało nieskończone niewykorzystane obrażenia. Skrajne obrażenia w ręcznej grze i koszt przy bardzo dużych grafach: **NOT RUN**.
+
+#### 14. Zerowy interwał zwykłych dział
+
+- Zwykłe działa przy zerowym lub nierozróżnialnie krótkim interwale nie wystrzeliwują drugi raz przy tym samym wskazaniu zegara; następna klatka z późniejszym czasem nadal może oddać strzał. Normalne dodatnie czasy, osobne egzemplarze i sprawdzenie dostępnego miejsca na pocisk pozostają zachowane.
+- Unity 6000.3.14f1: **14 PASS, 0 FAIL** (`conventional-zero-cooldown-final.xml`, `.log`): rzeczywiste działo, kolejna klatka, inne rodziny broni, grupy, pełna pula i ratunek. Przed poprawką `conventional-zero-cooldown-red.xml`: dwa wywołania w tej samej chwili tworzyły dwa pociski. Pomiar szybkostrzelności w Windows Playerze i zastąpienie globalnego limitu pocisków: **NOT RUN / otwarte**.

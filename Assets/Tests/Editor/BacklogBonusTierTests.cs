@@ -276,6 +276,23 @@ public sealed class BacklogBonusTierTests
 
 public sealed class BacklogBonusTierGameplayTests
 {
+    [UnityTest] public IEnumerator ConventionalZeroIntervalFiresOnlyOncePerClockValue()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var tank=run.Player.Controller;
+        var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun&&p.Weapon==RoboRougelike.R4.R4WeaponKind.Basic&&p.Operational);
+        int slot=System.Array.FindIndex(run.VehicleModel.GetWeaponSlots(),weapon=>weapon==RoboRougelike.R4.R4WeaponKind.Basic);
+        Assert.That(slot,Is.GreaterThanOrEqualTo(0));assembly.AimGuns(run.Player.transform.position+run.Player.transform.forward*100+Vector3.up*20);
+        Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(gun),Is.True);
+        R1EncounterManager.ClearTransientObjects();tank.SetRunModifiers(1,0,1);gun.NextFireTime=0;
+        int Shots()=>Object.FindObjectsByType<RogueMachine.P12PipelineSafe.P17PhysicalShell>(FindObjectsSortMode.None)
+            .Count(p=>p.OwnerRoot==run.Player.transform&&p.IsActiveProjectile);
+        assembly.FireSlot(slot);Assert.That(Shots(),Is.EqualTo(1));assembly.FireSlot(slot);
+        Assert.That(Shots(),Is.EqualTo(1),"Repeated calls at the same clock value must not create another shot.");
+        yield return null;assembly.FireSlot(slot);Assert.That(Shots(),Is.EqualTo(2),"A later frame may fire again.");
+        R1EncounterManager.ClearTransientObjects();
+    }
     [UnityTest] public IEnumerator LargeHullAndCoreBonusesKeepCoreAndHealthFractionFinite()
     {
         var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);

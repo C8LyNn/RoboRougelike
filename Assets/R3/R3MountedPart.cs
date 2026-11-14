@@ -17,6 +17,8 @@ namespace RoboRougelike.R3
         public RoboRougelike.R1.R1BonusScope UpgradeScope;
         public float UpgradeAmount;
         public float NextFireTime;
+        // Guards a zero or sub-clock interval without changing normal cooldowns.
+        internal float LastConventionalShotTime=float.NegativeInfinity;
         public P12PipelineSafeDamageable Damageable;
         public P12_PipelineSafePlayerBlock Block;
         public Transform GunPivot, Muzzle;
