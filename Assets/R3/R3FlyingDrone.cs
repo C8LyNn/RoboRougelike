@@ -109,6 +109,8 @@ namespace RoboRougelike.R3
                 desired.y=Mathf.Clamp((owner.position.y+3-body.position.y)*2,-speed,speed);
                 body.AddForce(Vector3.ClampMagnitude((desired-body.linearVelocity)*3,speed*4),ForceMode.Acceleration);
             }
+            var run=R1RunController.Instance;
+            if(run!=null&&run.Player!=null&&owner==run.Player.transform&&run.EmergencyRescueAttackBlocked)return;
             if(Time.time>=nextScan){nextScan=Time.time+.25f;FindTarget();}
             if(target==null||target.IsDefeated||aimCollider==null||Time.time<nextShot)return;
             Vector3 deltaAim=aimCollider.bounds.center-body.position;float distance=deltaAim.magnitude;

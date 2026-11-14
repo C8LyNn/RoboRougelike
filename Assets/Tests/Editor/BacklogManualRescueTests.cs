@@ -100,6 +100,21 @@ public sealed class BacklogManualRescueTests
         float end=Time.time+run.EmergencyRescueDurationSeconds+.1f;while(Time.time<end)yield return null;
         energy=bank.Current;tick.Invoke(aura,null);Assert.That(bank.Current,Is.LessThan(energy),"Aura resumes after protection ends");
     }
+    [UnityTest] public IEnumerator ExistingOffensiveTurretPausesItsFireDuringRescue()
+    {
+        run.Encounter.SetCombatActive(false);var enemy=run.Encounter.Enemies.First();
+        var turret=GameObject.CreatePrimitive(PrimitiveType.Cube);turret.transform.position=enemy.Core.transform.position+Vector3.up*8;
+        turret.transform.localScale=Vector3.one*.4f;var body=turret.AddComponent<Rigidbody>();body.isKinematic=true;
+        var weapon=turret.AddComponent<R3FlyingDrone>();weapon.ConfigureTurret(run.Player.transform,.2f,1);
+        Physics.SyncTransforms();Assert.That(run.TryEmergencyRescue(),Is.True);
+        var nextShot=typeof(R3FlyingDrone).GetField("nextShot",BindingFlags.NonPublic|BindingFlags.Instance);
+        float during=Time.time+.6f;while(Time.time<during)yield return new WaitForFixedUpdate();
+        Assert.That((float)nextShot.GetValue(weapon),Is.Zero,"An already deployed turret must not fire while its owner is being rescued.");
+        float deadline=Time.time+run.EmergencyRescueDurationSeconds+2f;
+        while(Time.time<deadline&&(float)nextShot.GetValue(weapon)<=0)yield return new WaitForFixedUpdate();
+        Assert.That((float)nextShot.GetValue(weapon),Is.GreaterThan(0),"The turret must resume firing after rescue.");
+        Object.Destroy(turret);
+    }
     [UnityTest] public IEnumerator BlockedDestinationsDoNotChargeOrStartRescue()
     {
         run.Encounter.SetCombatActive(false);
