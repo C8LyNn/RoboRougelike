@@ -9,6 +9,15 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogBonusTierTests
 {
+    [Test] public void RocketZeroCooldownDoesNotRepeatAtTheSameClockValue()
+    {
+        var gate=new RoboRougelike.Mechanics.Rockets.RocketFireGate();Assert.That(gate.Ready(0),Is.True);
+        gate.Commit(0,0);Assert.That(gate.Ready(0),Is.False);Assert.That(gate.Ready(.001f),Is.True);
+        gate.Reset();gate.Commit(3600,0);Assert.That(gate.Ready(3600),Is.False);Assert.That(gate.Ready(3600.001f),Is.True);
+        gate.Reset();gate.Commit(1,.005f);Assert.That(gate.Ready(1.006f),Is.True);
+        gate.Reset();gate.Commit(1,240);Assert.That(gate.Ready(130),Is.False);
+        gate.Reset();Assert.That(gate.Ready(float.NaN),Is.False);Assert.That(gate.Ready(float.PositiveInfinity),Is.False);
+    }
     [Test] public void ZeroFireIntervalDoesNotTurnIntoTenMillisecondPenaltyOrRepeatAtSameTime()
     {
         Assert.That(new RoboRougelike.WPN001Shotgun.ShotgunConfig{cooldownSeconds=0}.Snapshot().CooldownSeconds,Is.Zero);
@@ -249,6 +258,10 @@ public sealed class BacklogBonusTierGameplayTests
         rg.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.Railgun},owner.transform,rm,1,0);
         Assert.That(rg.Fire(),Is.True);Assert.That(rg.Module.CurrentSpec.Cooldown,Is.Zero);
         int railAmmo=rg.State.Ammo;Assert.That(rg.Fire(),Is.False);Assert.That(rg.State.Ammo,Is.EqualTo(railAmmo));
+        var rocket=Weapon(out var rocketMuzzle).AddComponent<RoboRougelike.WeaponIntegration.RRLRocketBinding>();
+        rocket.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.RocketLauncher},owner.transform,rocketMuzzle,1,0);
+        Assert.That(rocket.Fire(),Is.True);Assert.That(rocket.Module.CurrentSpec.Cooldown,Is.Zero);
+        int rocketAmmo=rocket.State.Ammo;Assert.That(rocket.Fire(),Is.False);Assert.That(rocket.State.Ammo,Is.EqualTo(rocketAmmo));
         R1EncounterManager.ClearTransientObjects();Object.Destroy(owner);yield return null;
     }
     [UnityTest] public IEnumerator FastCooldownReachesActualShotgunAndRailgunBindings()
