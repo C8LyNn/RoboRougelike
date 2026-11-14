@@ -115,6 +115,38 @@ public sealed class BacklogManualRescueTests
         Assert.That((float)nextShot.GetValue(weapon),Is.GreaterThan(0),"The turret must resume firing after rescue.");
         Object.Destroy(turret);
     }
+    R3DeployableTrap SpawnTrapAtEnemy(R3PartKind kind,P12PipelineSafeEnemyTurret enemy)
+    {
+        var trap=new GameObject("Test pułapki");trap.transform.position=enemy.Core.transform.position;
+        var sensor=trap.AddComponent<SphereCollider>();sensor.isTrigger=true;sensor.radius=4;
+        var component=trap.AddComponent<R3DeployableTrap>();
+        component.Configure(trap.transform,run.Player.transform,kind,4,20,3,6,12,8,15,.5f,2);
+        Physics.SyncTransforms();return component;
+    }
+    [UnityTest] public IEnumerator ExistingBlastTrapWaitsForRescueToEndWhenEnemyRemainsInside()
+    {
+        run.Encounter.SetCombatActive(false);var enemy=run.Encounter.Enemies.First();enemy.GetComponent<Rigidbody>().isKinematic=true;
+        var parts=enemy.GetComponentsInChildren<P12PipelineSafeDamageable>();float before=parts.Sum(p=>p.CurrentHp);
+        Assert.That(run.TryEmergencyRescue(),Is.True);var trap=SpawnTrapAtEnemy(R3PartKind.BlastTrapDeployer,enemy);
+        float during=Time.time+.4f;while(Time.time<during)yield return new WaitForFixedUpdate();
+        Assert.That(trap,Is.Not.Null);Assert.That(trap.Activated,Is.False);Assert.That(parts.Sum(p=>p.CurrentHp),Is.EqualTo(before).Within(.01));
+        float deadline=Time.time+run.EmergencyRescueDurationSeconds+1f;
+        while(Time.time<deadline&&parts.Sum(p=>p.CurrentHp)>=before-.01f)yield return new WaitForFixedUpdate();
+        Assert.That(parts.Sum(p=>p.CurrentHp),Is.LessThan(before),"The trap must trigger after rescue if the enemy remains in the sensor.");
+    }
+    [UnityTest] public IEnumerator ActiveDamageTrapStopsHurtingEnemiesDuringRescueAndResumesAfterwards()
+    {
+        run.Encounter.SetCombatActive(false);var enemy=run.Encounter.Enemies.First();enemy.GetComponent<Rigidbody>().isKinematic=true;
+        var parts=enemy.GetComponentsInChildren<P12PipelineSafeDamageable>();var trap=SpawnTrapAtEnemy(R3PartKind.DamageTrapDeployer,enemy);
+        float deadline=Time.time+1;while(Time.time<deadline&&!trap.Activated)yield return new WaitForFixedUpdate();
+        Assert.That(trap.Activated,Is.True);Assert.That(run.TryEmergencyRescue(),Is.True);float before=parts.Sum(p=>p.CurrentHp);
+        float during=Time.time+.4f;while(Time.time<during)yield return new WaitForFixedUpdate();
+        Assert.That(parts.Sum(p=>p.CurrentHp),Is.EqualTo(before).Within(.01),"An active damage field must not attack during rescue.");
+        deadline=Time.time+run.EmergencyRescueDurationSeconds+1f;
+        while(Time.time<deadline&&parts.Sum(p=>p.CurrentHp)>=before-.01f)yield return new WaitForFixedUpdate();
+        Assert.That(parts.Sum(p=>p.CurrentHp),Is.LessThan(before),"A field that has not expired must resume damage after rescue.");
+        Object.Destroy(trap.gameObject);
+    }
     [UnityTest] public IEnumerator BlockedDestinationsDoNotChargeOrStartRescue()
     {
         run.Encounter.SetCombatActive(false);

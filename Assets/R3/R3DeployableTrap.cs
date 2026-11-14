@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RoboRougelike.Mechanics.EMP;
+using RoboRougelike.R1;
 using RoboRougelike.WeaponIntegration;
 using RogueMachine.P12PipelineSafe;
 using UnityEngine;
@@ -35,18 +36,24 @@ namespace RoboRougelike.R3
         Transform owner,root;
         R3PartKind kind;
         float radius,damage,duration,repelSpeed,damagePerSecond,fieldDuration,expiresAt,slowFactor,slowSeconds;
-        bool activated;
+        bool activated,deferredTrigger;
         Collider[] damageHits;
         Dictionary<Transform,Collider> damageTargets;
         public bool Activated=>activated;
         public void Configure(Transform trap,Transform source,R3PartKind type,float triggerRadius,float blastDamage,float empDuration,float repel,float dot,float fieldSeconds,float trapSeconds,float slow,float slowDuration)
         {root=trap;owner=source;kind=type;radius=triggerRadius;damage=blastDamage;duration=empDuration;repelSpeed=repel;damagePerSecond=dot;fieldDuration=fieldSeconds;expiresAt=Time.time+trapSeconds;slowFactor=slow;slowSeconds=slowDuration;}
+        bool OwnerAttackBlocked
+        {
+            get {var run=R1RunController.Instance;return run!=null&&run.Player!=null&&owner==run.Player.transform&&run.EmergencyRescueAttackBlocked;}
+        }
+        void OnTriggerStay(Collider other){if(deferredTrigger&&!activated&&!OwnerAttackBlocked)OnTriggerEnter(other);}
         void OnTriggerEnter(Collider other)
         {
             if(activated||owner==null||root==null||!RRLHitRouter.CanHit(other,owner))return;
             var enemy=other.GetComponentInParent<P12PipelineSafeEnemyTurret>();
             if(enemy==null||enemy.IsDefeated)return;
-            activated=true;
+            if(OwnerAttackBlocked){deferredTrigger=true;return;}
+            activated=true;deferredTrigger=false;
             if(kind==R3PartKind.DamageTrapDeployer)
             {
                 damageHits=new Collider[64];damageTargets=new Dictionary<Transform,Collider>();
@@ -125,7 +132,7 @@ namespace RoboRougelike.R3
         {
             if(root==null)return;
             if(Time.time>=expiresAt){Destroy(root.gameObject);return;}
-            if(!activated||kind!=R3PartKind.DamageTrapDeployer||owner==null||root==null)return;
+            if(!activated||kind!=R3PartKind.DamageTrapDeployer||owner==null||root==null||OwnerAttackBlocked)return;
             damageTargets.Clear();Vector3 origin=root.position;int count;
             while(true)
             {
