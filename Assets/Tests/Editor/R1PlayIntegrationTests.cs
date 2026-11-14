@@ -62,7 +62,9 @@ public class R1PlayIntegrationTests
         Assert.That(Run.Progress.State, Is.EqualTo(R1RunState.Ready));
         Assert.That(Run.StartRun(), Is.True);
         yield return Until(() => !Run.Transitioning && Run.Player != null, "Pojazd powinien być gotowy.");
-        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(6),"Standard starter has six real wheels.");
+        int expectedWheels=Run.VehicleModel.Parts.Count(p=>p.Kind==R3PartKind.Wheel&&p.Health>0);
+        Assert.That(expectedWheels,Is.GreaterThan(0));
+        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(expectedWheels),"The chosen starter's physical wheels must match its model.");
     }
     [UnityTearDown]
     public IEnumerator Cleanup()
@@ -259,7 +261,7 @@ public class R1PlayIntegrationTests
     public IEnumerator KeyboardUpgradeChoiceWaitsForNewVehicleInitialization()
     {
         ConfigureVirtualInput();
-        Run.Definition.Upgrades=new[]{Run.Definition.Upgrades.Single(x=>x.Effect==R1UpgradeEffect.Core),Run.Definition.Upgrades.Single(x=>x.Effect==R1UpgradeEffect.Hull),Run.Definition.Upgrades.Single(x=>x.Effect==R1UpgradeEffect.Damage)};
+        Run.Definition.Upgrades=new[]{Run.Definition.Upgrades.Single(x=>x.Id=="core"),Run.Definition.Upgrades.Single(x=>x.Id=="armor"),Run.Definition.Upgrades.Single(x=>x.Id=="damage")};
         DefeatAllEnemies();yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Reward screen",automaticRewards:false);
         int choice=Run.Progress.Offers.ToList().FindIndex(x=>x.Effect==R1UpgradeEffect.Core);
         var key=choice==0?Key.Digit1:choice==1?Key.Digit2:Key.Digit3;
@@ -267,11 +269,14 @@ public class R1PlayIntegrationTests
         InputSystem.QueueStateEvent(keyboard,new KeyboardState());yield return null;
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Salvage),"Selection alone does not spend/confirm.");
         Assert.That(Run.Progress.Acquired,Is.Empty);
+        // The unified reward screen also requires a basket when offers exist.
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Q));yield return null;
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState());yield return null;
         InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));
         yield return Until(()=>Run.Progress.State==R1RunState.Garage,"Confirm unified keyboard rewards",5,automaticRewards:false);
         InputSystem.QueueStateEvent(keyboard,new KeyboardState());
-        Assert.That(Run.Progress.Acquired.Count,Is.EqualTo(1));Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(6));
-        Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Combat initialization");
+        Assert.That(Run.Progress.Acquired.Count,Is.EqualTo(1));Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(Run.VehicleModel.Parts.Count(p=>p.Kind==R3PartKind.Wheel&&p.Health>0)));
+        Assert.That(Run.StartNextEncounter(),Is.True);Assert.That(Run.ChooseRoute(0),Is.True);yield return Until(()=>!Run.Transitioning,"Combat initialization");
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));
     }
 
