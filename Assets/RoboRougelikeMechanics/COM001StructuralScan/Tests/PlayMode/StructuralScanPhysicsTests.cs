@@ -82,6 +82,23 @@ namespace RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode
             Assert.AreEqual(2,scanner.SelectedTargetOwner);Assert.AreEqual(1,scanner.Contacts.Count);
             yield return null;
         }
+        [UnityTest] public IEnumerator LargeFiniteEnergyCostIsSpentExactly()
+        {
+            Target("visible",new Vector3(0,1,8));
+            settings.activationEnergy=1100000;
+            var energy=Make("large-energy").AddComponent<StructuralScanEnergyStore>();energy.Configure(1500000,1500000);
+            scanner.Bind(sensor,ownerRoot,1,1,registry,energy);scanner.Configure(settings);
+            Assert.IsTrue(scanner.TryScan());Assert.AreEqual(400000,energy.Charge);
+            yield return null;
+        }
+        [UnityTest] public IEnumerator InsufficientLargeEnergyDoesNotStartScanOrSpendCharge()
+        {
+            Target("visible",new Vector3(0,1,8));settings.activationEnergy=1100000;
+            var energy=Make("limited-energy").AddComponent<StructuralScanEnergyStore>();energy.Configure(1000000,1000000);
+            scanner.Bind(sensor,ownerRoot,1,1,registry,energy);scanner.Configure(settings);
+            Assert.IsFalse(scanner.TryScan());Assert.AreEqual(1000000,energy.Charge);Assert.AreEqual(0,scanner.CooldownLeft);
+            yield return null;
+        }
         [UnityTest] public IEnumerator BlockingWallHidesTarget()
         {
             Target("weapon", new Vector3(0, 1, 8)); Barrier(new Vector3(0, 1, 4), new Vector3(3, 4, .5f));

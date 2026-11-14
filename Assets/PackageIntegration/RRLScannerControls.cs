@@ -39,7 +39,7 @@ namespace RoboRougelike.PackageIntegration
                float.IsNaN(config.StructuralScanEnergy)||float.IsInfinity(config.StructuralScanEnergy)||config.StructuralScanEnergy<0||
                float.IsNaN(config.StructuralScanCooldown)||float.IsInfinity(config.StructuralScanCooldown)||config.StructuralScanCooldown<0)return false;
             float totalEnergy=config.StructuralScanEnergy*cost;
-            if(units<=0||float.IsNaN(totalEnergy)||float.IsInfinity(totalEnergy)||totalEnergy>1000000f)return false;
+            if(units<=0||float.IsNaN(totalEnergy)||float.IsInfinity(totalEnergy))return false;
             var source=group.FirstOrDefault(s=>s.ActivateCombined(units,cost,config));if(source==null)return false;
             model.StructuralScannerReadyAt=Time.time+source.Scanner.CooldownLeft;
             foreach(var state in model.Parts.Where(p=>p.Kind==RoboRougelike.R3.R3PartKind.StructuralScanner))state.DeviceReadyAt=model.StructuralScannerReadyAt;

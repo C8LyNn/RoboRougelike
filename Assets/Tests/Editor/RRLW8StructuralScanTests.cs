@@ -48,6 +48,16 @@ public class RRLW8StructuralScanTests
         Assert.That(scanner.Contacts.Select(c=>c.PartKey),Is.EqualTo(contacts),"Cooldown retry must preserve the live snapshot");
         Assert.That(scanner.CooldownLeft,Is.InRange(7.9f,8.01f));yield return null;
     }
+    [UnityTest] public IEnumerator PhysicalScannerCanSpendLargeFiniteConfiguredCost()
+    {
+        run.VehicleModel.Economy.StructuralScanEnergy=1100000;
+        var bank=run.Player.GetComponent<VehicleEnergyBank>();var largeEnergy=new VehicleEnergyState();
+        largeEnergy.SetResourceMultipliers(4000,1);largeEnergy.Refresh(0,0,true);largeEnergy.Fill();
+        typeof(VehicleEnergyBank).GetField("assembly",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).SetValue(bank,null);
+        typeof(VehicleEnergyBank).GetField("state",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).SetValue(bank,largeEnergy);
+        Assert.That(Activate(),Is.True);Assert.That(largeEnergy.Current,Is.EqualTo(900000).Within(.5));
+        yield return null;
+    }
     [UnityTest] public IEnumerator SolidOccluderBlocksStructuralHpAndFailedScanDoesNotConsumeCooldown()
     {
         Assert.That(module,Is.Not.Null,"COM physical module missing");
