@@ -11,6 +11,31 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [TestCase(3,"MouseBack")] [TestCase(4,"MouseForward")]
+    public void ExtraMouseButtonsAreCapturedFromRawUnityEvents(int button,string binding)
+    {
+        var input=new Event{type=EventType.MouseDown,button=button};
+        Assert.That(R1ControlProfile.IsBindingInput(input),Is.True);
+        Assert.That(R1ControlProfile.FromEvent(input),Is.EqualTo(binding));
+    }
+    [Test] public void GarageSearchBindingMigratesAndMatchesReassignedKey()
+    {
+        Assert.That(R1ControlProfile.Actions,Does.Contain("GarageSearch"));
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-garage-search-"+Guid.NewGuid()+".json");
+        try
+        {
+            var original=new R1ControlProfile(path);var oldActions=R1ControlProfile.Actions.Where(a=>a!="GarageSearch").ToArray();
+            var oldValues=oldActions.Select(original.Binding).ToArray();oldValues[Array.IndexOf(oldActions,"MoveForward")]="Slash";
+            var data=new LegacyControlData{actions=oldActions,bindings=oldValues};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            var loaded=new R1ControlProfile(path);Assert.That(loaded.Error,Is.Null);Assert.That(loaded.Binding("MoveForward"),Is.EqualTo("Slash"));
+            Assert.That(loaded.Binding("GarageSearch"),Is.Not.EqualTo("Slash"));
+            Assert.That(loaded.TrySaveBinding("GarageSearch","Numpad0",out _),Is.True);
+            var restored=new R1ControlProfile(path);Assert.That(restored.MatchesEvent("GarageSearch",new Event{type=EventType.KeyDown,keyCode=KeyCode.Keypad0}),Is.True);
+            Assert.That(restored.TryBind("GarageSearch","MouseMiddle"),Is.False);
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [TestCase(KeyCode.Keypad0,"Numpad0")]
     [TestCase(KeyCode.Keypad9,"Numpad9")]
     [TestCase(KeyCode.KeypadDivide,"NumpadDivide")]
@@ -104,6 +129,7 @@ public sealed class BacklogControlProfileTests
     {
         Assert.That(R1ControlProfile.Display("Comma"),Is.EqualTo(","));
         Assert.That(R1ControlProfile.Display("Period"),Is.EqualTo("."));
+        Assert.That(R1ControlProfile.Display("Slash"),Is.EqualTo("/"));
     }
     [Serializable] sealed class LegacyControlData { public int version=1; public string[] actions,bindings; }
     [Test] public void LegacyPagingDefaultsDoNotOverrideExistingPOrTabBindings()

@@ -29,8 +29,7 @@ namespace RoboRougelike.R1
         void DrawControls(Rect area)
         {
             var profile=R1ControlProfile.Current;var input=Event.current;
-            if(controlAwaiting!=null&&Time.frameCount>controlCaptureFrame&&
-               (input.type==EventType.KeyDown||input.type==EventType.MouseDown))
+            if(controlAwaiting!=null&&Time.frameCount>controlCaptureFrame&&R1ControlProfile.IsBindingInput(input))
             {
                 if(input.type==EventType.KeyDown&&input.keyCode==KeyCode.Escape)
                 {controlAwaiting=null;controlFeedback="Anulowano zmianę.";input.Use();}

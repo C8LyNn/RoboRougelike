@@ -149,17 +149,24 @@ namespace RoboRougelike.R1
                 default:return null;
             }
         }
+        static bool QuickSearchShortcut(Event input,R1ControlProfile profile)
+        {
+            if(input==null||profile==null||input.shift||input.control||input.alt||input.command)return false;
+            if(profile.MatchesEvent("GarageSearch",input))return true;
+            return input.type==EventType.KeyDown&&input.keyCode==KeyCode.KeypadDivide&&profile.Binding("GarageSearch")=="Slash"&&
+                profile.Conflict("GarageSearch","NumpadDivide")==null;
+        }
         bool HandleQuickGarageKey(R1RunController run,Event current,bool textFocused)
         {
-            if(textFocused||current.type!=EventType.KeyDown)return false;
+            if(textFocused||!R1ControlProfile.IsBindingInput(current))return false;
             bool modified=current.shift||current.control||current.alt||current.command;
-            var category=QuickCategoryShortcut(current.keyCode,modified);
+            var category=current.type==EventType.KeyDown?QuickCategoryShortcut(current.keyCode,modified):null;
             if(category.HasValue)
             {
                 ApplyQuickSearch(run,string.Empty);SelectQuickCategory(run,category.Value);
                 current.Use();return true;
             }
-            if(!modified&&(current.keyCode==KeyCode.Slash||current.keyCode==KeyCode.KeypadDivide))
+            if(QuickSearchShortcut(current,R1ControlProfile.Current))
             {GUI.FocusControl(QuickSearchControlName);current.Use();return true;}
             return false;
         }
@@ -177,7 +184,7 @@ namespace RoboRougelike.R1
             GUI.SetNextControlName(QuickSearchControlName);
             string next=GUI.TextField(rect,quickPartSearch,64);
             if(string.IsNullOrEmpty(next)&&GUI.GetNameOfFocusedControl()!=QuickSearchControlName)
-            {var previous=GUI.color;GUI.color=new Color(.62f,.7f,.75f,1);GUI.Label(new Rect(rect.x+5,rect.y,rect.width-10,rect.height),"Szukaj /",small);GUI.color=previous;}
+            {var previous=GUI.color;GUI.color=new Color(.62f,.7f,.75f,1);GUI.Label(new Rect(rect.x+5,rect.y,rect.width-10,rect.height),"Szukaj "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageSearch")),small);GUI.color=previous;}
             if(GUI.Button(clear,"×",compactButton))next=string.Empty;
             ApplyQuickSearch(run,next);
         }

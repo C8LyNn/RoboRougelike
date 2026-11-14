@@ -13,6 +13,24 @@ using UnityEngine.TestTools;
 
 public sealed class UI943PortraitCatalogActionsTests
 {
+    [Test] public void GarageSearchShortcutUsesProfileAndKeepsLegacyKeypadAlias()
+    {
+        var method=typeof(R1RunHUD).GetMethod("QuickSearchShortcut",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        var profile=new R1ControlProfile(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"RRL-search-"+Guid.NewGuid()+".json"));
+        bool Match(KeyCode key)=> (bool)method.Invoke(null,new object[]{new Event{type=EventType.KeyDown,keyCode=key},profile});
+        Assert.That(Match(KeyCode.Slash),Is.True);Assert.That(Match(KeyCode.KeypadDivide),Is.True);
+        Assert.That(profile.TryBind("MoveForward","NumpadDivide"),Is.True);
+        Assert.That(Match(KeyCode.KeypadDivide),Is.False,"The legacy alias must not take an already assigned key.");
+        Assert.That(profile.TryBind("MoveForward","W"),Is.True);
+        Assert.That(profile.TryBind("GarageSearch","K"),Is.True);
+        Assert.That(Match(KeyCode.K),Is.True);Assert.That(Match(KeyCode.Slash),Is.False);Assert.That(Match(KeyCode.KeypadDivide),Is.False);
+        Assert.That((bool)method.Invoke(null,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.K,control=true},profile}),Is.False);
+        Assert.That(profile.TryBind("GarageSearch","MouseBack"),Is.True);
+        var mouse=new Event{type=EventType.MouseDown,button=3,modifiers=EventModifiers.None};
+        Assert.That(R1ControlProfile.FromEvent(mouse),Is.EqualTo("MouseBack"),$"type={mouse.type}, raw={mouse.rawType}, button={mouse.button}, modifiers={mouse.modifiers}");
+        Assert.That((bool)method.Invoke(null,new object[]{mouse,profile}),Is.True);
+    }
     static object Invoke(R1RunHUD hud,string name,params object[] args)
     {
         var method=typeof(R1RunHUD).GetMethod(name,BindingFlags.Instance|BindingFlags.NonPublic);

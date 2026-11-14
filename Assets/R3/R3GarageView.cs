@@ -745,10 +745,10 @@ namespace RoboRougelike.R3
                 var tool=ToolShortcut(current.keyCode,current.shift||current.control||current.alt||current.command);
                 if(tool.HasValue){SelectTool(tool.Value);current.Use();return;}
             }
-            if((current.type==EventType.KeyDown||(inside&&current.type==EventType.MouseDown))&&
+            if((current.type==EventType.KeyDown||(inside&&R1ControlProfile.IsBindingMouseDown(current)))&&
                R1ControlProfile.Current.MatchesEvent("GarageUnderside",current))
             {ToggleUndersideView();current.Use();return;}
-            if((current.type==EventType.KeyDown||(inside&&current.type==EventType.MouseDown))&&
+            if((current.type==EventType.KeyDown||(inside&&R1ControlProfile.IsBindingMouseDown(current)))&&
                !current.shift&&R1ControlProfile.Current.MatchesEvent("GarageFrame",current))
             {FrameVehicle();Message="Dopasowano widok pojazdu.";current.Use();return;}
             if(current.type==EventType.KeyDown&&(Tool==R41GarageTool.Mount||current.shift))
