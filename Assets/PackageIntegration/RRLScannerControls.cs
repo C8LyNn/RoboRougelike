@@ -19,9 +19,23 @@ namespace RoboRougelike.PackageIntegration
         public bool Activate(RRLScanKind kind)
         {
             if(!PlayerScope||R1RunController.Instance.Paused)return false;if(scanners==null)Cache();
+            if(kind==RRLScanKind.Pulse)return ActivatePulseGroup();
             foreach(var scanner in scanners)
                 if(scanner is MonoBehaviour component&&component!=null&&scanner.Kind==kind&&scanner.TryActivate())return true;
             return false;
+        }
+        bool ActivatePulseGroup()
+        {
+            var model=R1RunController.Instance.VehicleModel;
+            var group=scanners.OfType<RRLPulseScannerBinding>().Where(s=>s!=null&&s.Device!=null&&s.Device.Available&&s.Pulse!=null).ToArray();
+            if(group.Length==0||model.ScannerPulseReadyAt>Time.time||
+               model.Parts.Any(p=>p.Kind==RoboRougelike.R3.R3PartKind.ScannerPulse&&p.DeviceReadyAt>Time.time)||
+               group.Any(s=>!s.Pulse.Ready))return false;
+            if(!group[0].ActivateCombined(group.Length))return false;
+            model.ScannerPulseReadyAt=Time.time+RRLPulseScannerBinding.CooldownSeconds;
+            foreach(var state in model.Parts.Where(p=>p.Kind==RoboRougelike.R3.R3PartKind.ScannerPulse))state.DeviceReadyAt=model.ScannerPulseReadyAt;
+            foreach(var scanner in group.Skip(1))scanner.Pulse.RestoreCooldown(RRLPulseScannerBinding.CooldownSeconds);
+            return true;
         }
         public bool HandleGuiInput(Event input)
         {
@@ -58,16 +72,19 @@ namespace RoboRougelike.PackageIntegration
                         GUI.Label(new Rect(30,top+52+22*row++,390,22),$"{PartLabel(contact.Type)} • HP {contact.HealthFraction*100:0}% • {(contact.Functional?"sprawny":"niesprawny")} • odczyt {source.DisplayLeft:0.0}s",label);
                     top+=66+rows*22;
                 }
-                foreach(var scanner in scanners.OfType<RRLPulseScannerBinding>())
+                var pulses=scanners.OfType<RRLPulseScannerBinding>().Where(s=>s!=null&&s.Device!=null&&s.Pulse!=null).ToArray();
+                foreach(var scanner in pulses.OrderByDescending(s=>s.Pulse.Revealed.Count).ThenByDescending(s=>s.Device.HardwareAvailable).Take(1))
                 {
                     if(scanner==null||scanner.Device==null||scanner.Pulse==null)continue;
                     var source=scanner.Pulse;
                     var visible=source.Revealed.Where(signal=>source.IsRevealed(signal)).ToArray();
                     var signals=visible.Take(3).ToArray();
                     GUI.Box(new Rect(20,top,410,58+signals.Length*22),GUIContent.none);
-                    string readiness=!scanner.Device.HardwareAvailable?"Moduł niesprawny":
-                        scanner.CooldownLeft>0?$"Odnowienie {scanner.CooldownLeft:0.0} s":"Gotowy • sygnały także przez ściany";
-                    GUI.Label(new Rect(30,top+5,390,46),$"{R1RunController.Instance.VehicleModel.ActiveSlotLabel(RoboRougelike.R3.R3PartKind.ScannerPulse)} • Impuls skanera • 20 m / 3 s • {visible.Length} sygnałów\n{readiness}",label);
+                    int active=pulses.Count(s=>s.Device.Available);
+                    float cooldown=Mathf.Max(scanner.CooldownLeft,R1RunController.Instance.VehicleModel.ScannerPulseReadyAt-Time.time);
+                    string readiness=active==0?"Moduły niesprawne":
+                        cooldown>0?$"Odnowienie {cooldown:0.0} s":"Gotowy • sygnały także przez ściany";
+                    GUI.Label(new Rect(30,top+5,390,46),$"{R1RunController.Instance.VehicleModel.ActiveSlotLabel(RoboRougelike.R3.R3PartKind.ScannerPulse)} • Impuls skanera • {RRLPulseScannerBinding.BaseRadius*active:0} m / 3 s • {visible.Length} sygnałów\n{readiness}",label);
                     int row=0;foreach(var signal in signals)
                     {
                         var offset=signal.transform.position-transform.position;

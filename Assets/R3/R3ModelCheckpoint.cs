@@ -57,6 +57,7 @@ namespace RoboRougelike.R3
         public R3ActiveSlotCheckpoint[] deployablePreferences;
         public int constructionBudgetVersion,constructionBudgetLimit,constructionBudgetMilestonesApplied,safeZoneLastCompleted,safeVendorStage,safeVendorSeed,safeVendorSoldMask,safeVendorRevision;
         public float repairPulseRemaining,boosterRemaining,jumpRemaining,blinkRemaining,overdriveRemaining,rapidFireRemaining,doubleShotOverdriveRemaining,targetedEmpRemaining,areaEmpRemaining,rechargePulseRemaining;
+        public float scannerPulseRemaining;
         public float rampDeployerRemaining,wallDeployerRemaining,jumpPadDeployerRemaining,blastTrapDeployerRemaining,empTrapDeployerRemaining,repelTrapDeployerRemaining,damageTrapDeployerRemaining,slowTrapDeployerRemaining,immobilizeTrapDeployerRemaining,flyingDroneRemaining,groundDroneRemaining,offensiveTurretRemaining,healingTurretRemaining,supportTurretRemaining,shieldTurretRemaining;
         public int scrap;
         public bool suspensionEnabled,gyroEnabled,hasA,hasB,hasC,hasD;
@@ -148,6 +149,7 @@ namespace RoboRougelike.R3
                 deployablePreferences=deployableSlotPreference.Select(p=>new R3ActiveSlotCheckpoint{kind=(int)p.Key,slot=p.Value}).ToArray(),
                 constructionBudgetVersion=1,constructionBudgetLimit=ConstructionBudgetLimit,constructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied,safeZoneLastCompleted=SafeZoneLastCompleted,safeVendorStage=SafeVendorStage,safeVendorSeed=SafeVendorSeed,safeVendorSoldMask=SafeVendorSoldMask,safeVendorRevision=SafeVendorRevision,
                 repairPulseRemaining=Remaining(RepairPulseReadyAt,now),boosterRemaining=Remaining(BoosterReadyAt,now),jumpRemaining=Remaining(JumpReadyAt,now),blinkRemaining=Remaining(BlinkReadyAt,now),overdriveRemaining=Remaining(OverdriveReadyAt,now),rapidFireRemaining=Remaining(RapidFireReadyAt,now),doubleShotOverdriveRemaining=Remaining(DoubleShotOverdriveReadyAt,now),targetedEmpRemaining=Remaining(TargetedEmpReadyAt,now),areaEmpRemaining=Remaining(AreaEmpReadyAt,now),
+                scannerPulseRemaining=Remaining(ScannerPulseReadyAt,now),
                 energyVersion=1,energy=Energy.Current,chargesVersion=1,chargePools=Charges.Snapshot(),hasInitialEnergyPrepared=true,initialEnergyPrepared=InitialEnergyPrepared,
                 rechargePulseRemaining=Remaining(RechargePulseReadyAt,now),
                 rampDeployerRemaining=Remaining(RampDeployerReadyAt,now),
@@ -188,7 +190,7 @@ namespace RoboRougelike.R3
                 !Finite(data.boosterThrust)||data.boosterThrust<500||data.boosterThrust>6000||
                 !Finite(data.boosterDuration)||data.boosterDuration<.2f||data.boosterDuration>2||
                 !Finite(data.hoverHeight)||data.hoverHeight<.7f||data.hoverHeight>1.6f||
-                !Finite(data.grappleRemaining)||data.grappleRemaining<0||!Finite(data.jumpRemaining)||data.jumpRemaining<0||!Finite(data.blinkRemaining)||data.blinkRemaining<0||!Finite(data.repairPulseRemaining)||data.repairPulseRemaining<0||
+                !Finite(data.grappleRemaining)||data.grappleRemaining<0||!Finite(data.jumpRemaining)||data.jumpRemaining<0||!Finite(data.blinkRemaining)||data.blinkRemaining<0||!Finite(data.scannerPulseRemaining)||data.scannerPulseRemaining<0||!Finite(data.repairPulseRemaining)||data.repairPulseRemaining<0||
                 !Finite(data.boosterRemaining)||data.boosterRemaining<0||!Finite(data.overdriveRemaining)||data.overdriveRemaining<0||!Finite(data.rapidFireRemaining)||data.rapidFireRemaining<0||!Finite(data.doubleShotOverdriveRemaining)||data.doubleShotOverdriveRemaining<0||!Finite(data.targetedEmpRemaining)||data.targetedEmpRemaining<0||!Finite(data.areaEmpRemaining)||data.areaEmpRemaining<0||!Finite(data.rechargePulseRemaining)||data.rechargePulseRemaining<0||!Finite(data.rampDeployerRemaining)||data.rampDeployerRemaining<0||!Finite(data.wallDeployerRemaining)||data.wallDeployerRemaining<0||!Finite(data.jumpPadDeployerRemaining)||data.jumpPadDeployerRemaining<0||!Finite(data.blastTrapDeployerRemaining)||data.blastTrapDeployerRemaining<0||!Finite(data.empTrapDeployerRemaining)||data.empTrapDeployerRemaining<0||!Finite(data.repelTrapDeployerRemaining)||data.repelTrapDeployerRemaining<0||!Finite(data.damageTrapDeployerRemaining)||data.damageTrapDeployerRemaining<0||!Finite(data.slowTrapDeployerRemaining)||data.slowTrapDeployerRemaining<0||!Finite(data.immobilizeTrapDeployerRemaining)||data.immobilizeTrapDeployerRemaining<0||!Finite(data.flyingDroneRemaining)||data.flyingDroneRemaining<0||!Finite(data.groundDroneRemaining)||data.groundDroneRemaining<0||!Finite(data.offensiveTurretRemaining)||data.offensiveTurretRemaining<0||!Finite(data.healingTurretRemaining)||data.healingTurretRemaining<0||!Finite(data.supportTurretRemaining)||data.supportTurretRemaining<0||!Finite(data.shieldTurretRemaining)||data.shieldTurretRemaining<0)return false;
             var all=data.mounted.Concat(data.inventory).ToArray();
             if(data.energyVersion==0&&all.Any(p=>p!=null&&p.FootprintRevision!=0))return false;
@@ -375,6 +377,7 @@ namespace RoboRougelike.R3
             restored.BoosterReadyAt=data.boosterRemaining>0?now+data.boosterRemaining:0;
             restored.JumpReadyAt=data.jumpRemaining>0?now+data.jumpRemaining:0;
             restored.BlinkReadyAt=data.blinkRemaining>0?now+data.blinkRemaining:0;
+            restored.ScannerPulseReadyAt=data.scannerPulseRemaining>0?now+data.scannerPulseRemaining:0;
             restored.SuspensionMode=data.suspensionMode;restored.SuspensionHeightOffset=data.suspensionHeight;restored.GyroEnabled=data.gyroEnabled;
             restored.BoosterThrustNewtons=data.boosterThrust;restored.BoosterDurationSeconds=data.boosterDuration;restored.HoverHeightMeters=data.hoverHeight;
             restored.GrappleReadyAt=data.grappleRemaining>0?now+data.grappleRemaining:0;

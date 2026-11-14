@@ -24,6 +24,23 @@ public sealed class BacklogSafeZoneTests
         checkpoint.jumpRemaining=0;checkpoint.blinkRemaining=float.NaN;
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out _,out _),Is.False);
     }
+    [Test] public void ScannerSharedCooldownSurvivesSaveAndIsRefilledInSafeZone()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        typeof(R3VehicleModel).GetProperty("ScannerPulseReadyAt").SetValue(model,105f);
+        var checkpoint=model.MakeCheckpoint(100);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,200,out var restored,out var error),Is.True,error);
+        Assert.That(restored.ScannerPulseReadyAt,Is.EqualTo(205).Within(.001));
+        Assert.That(restored.DeepCopy().ScannerPulseReadyAt,Is.EqualTo(205).Within(.001));
+        Assert.That(restored.TryEnterSafeZone(2),Is.True);Assert.That(restored.ScannerPulseReadyAt,Is.Zero);
+        string legacy=System.Text.RegularExpressions.Regex.Replace(JsonUtility.ToJson(checkpoint),",\"scannerPulseRemaining\":[^,}]+","");
+        Assert.That(legacy,Does.Not.Contain("\"scannerPulseRemaining\""));
+        var oldCheckpoint=JsonUtility.FromJson<R3ModelCheckpoint>(legacy);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(oldCheckpoint,R3VehicleKind.Light,model.Economy,200,out var old,out error),Is.True,error);
+        Assert.That(old.ScannerPulseReadyAt,Is.Zero);
+        checkpoint.scannerPulseRemaining=float.NaN;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,200,out _,out _),Is.False);
+    }
     [Test] public void SafeZoneRestoresResourcesAndPartiallyRepairsOnlyOnceAcrossCheckpoint()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));

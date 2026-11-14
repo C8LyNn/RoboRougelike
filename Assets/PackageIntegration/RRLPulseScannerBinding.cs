@@ -9,6 +9,7 @@ namespace RoboRougelike.PackageIntegration
     [DisallowMultipleComponent]
     public sealed class RRLPulseScannerBinding : MonoBehaviour,IRRLScanDevice,IRRLDeviceLifecycle
     {
+        public const float BaseRadius=20f,CooldownSeconds=5f,RevealSeconds=3f,EnergyPerCopy=5f;
         public RRLDeviceBinding Device {get;private set;}
         public ScannerPulse Pulse {get;private set;}
         public RRLScanKind Kind=>RRLScanKind.Pulse;
@@ -16,18 +17,24 @@ namespace RoboRougelike.PackageIntegration
         public void Bind(R3PartState state,Transform owner)
         {
             Device=GetComponent<RRLDeviceBinding>();if(Device==null)Device=gameObject.AddComponent<RRLDeviceBinding>();Device.Bind(state,owner);
-            Pulse=gameObject.AddComponent<ScannerPulse>();Pulse.Configure(20,5,3,1<<RRLPulseSignal.SignalLayer);
+            Pulse=gameObject.AddComponent<ScannerPulse>();Pulse.Configure(BaseRadius,CooldownSeconds,RevealSeconds,1<<RRLPulseSignal.SignalLayer);
             Pulse.RestoreCooldown(state.DeviceReadyAt-Time.time);Device.Damageable.Died+=RefreshAvailability;RefreshAvailability();
         }
         public void RefreshAvailability()
         {if(Pulse!=null&&Device!=null)Pulse.SetOperational(isActiveAndEnabled&&Device.HardwareAvailable&&RRLScanWorld.InEncounter(R1RunController.Instance));}
         public bool TryActivate()
         {
+            var controls=Device?.Owner!=null?Device.Owner.GetComponent<RRLScannerControls>():null;
+            return controls!=null&&controls.Activate(RRLScanKind.Pulse);
+        }
+        internal bool ActivateCombined(int copies)
+        {
             RefreshAvailability();if(Device==null||!Device.Available||Pulse==null||!Pulse.Ready)return false;
             RRLPulseSignal.Prepare(R1RunController.Instance);Physics.SyncTransforms();
             var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
-            if(energy!=null&&!energy.TrySpend(5f))return false;
-            if(Pulse.TryPulse(transform.position)<0){if(energy!=null)energy.Refund(5f);return false;}
+            float cost=EnergyPerCopy*copies;if(energy!=null&&!energy.TrySpend(cost))return false;
+            Pulse.Configure(BaseRadius*copies,CooldownSeconds,RevealSeconds,1<<RRLPulseSignal.SignalLayer);
+            if(Pulse.TryPulse(transform.position)<0){if(energy!=null)energy.Refund(cost);return false;}
             Device.State.DeviceReadyAt=Time.time+Pulse.RemainingCooldown;return true;
         }
         void OnEnable(){if(Pulse!=null&&Device?.State!=null)Pulse.RestoreCooldown(Device.State.DeviceReadyAt-Time.time);RefreshAvailability();}

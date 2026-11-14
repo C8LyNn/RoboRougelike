@@ -24,13 +24,13 @@ public class RRLW8PulseScannerTests
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
         while(R1RunController.Instance?.Progress==null)yield return null;run=R1RunController.Instance;
     }
-    IEnumerator Build(bool withStructural=false)
+    IEnumerator Build(bool withStructural=false,int copies=1)
     {
         Assert.That(run.OpenSandboxGarage(),Is.True);
-        MountScanner(kind);
+        for(int i=0;i<copies;i++)MountScanner(kind);
         if(withStructural)MountScanner(R3PartKind.StructuralScanner);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
-        module=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==kind);
+        module=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==kind);
         pulse=module.GetComponent<ScannerPulse>();Assert.That(pulse,Is.Not.Null);Physics.SyncTransforms();yield return new WaitForFixedUpdate();
     }
     void MountScanner(R3PartKind scanner)
@@ -46,6 +46,38 @@ public class RRLW8PulseScannerTests
         var binding=(part??module).GetComponents<MonoBehaviour>().SingleOrDefault(c=>c.GetType().Name=="RRLPulseScannerBinding");
         Assert.That(binding,Is.Not.Null,"SEN must use the shared physical device boundary");
         return (bool)binding.GetType().GetMethod("TryActivate").Invoke(binding,null);
+    }
+    [UnityTest] public IEnumerator PulseCopiesUseOneRangeCostAndCooldown()
+    {
+        kind=R3PartKind.ScannerPulse;yield return Build(copies:2);
+        var controls=run.Player.GetComponent<RRLScannerControls>();var parts=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==kind).ToArray();
+        Assert.That(parts.Length,Is.EqualTo(2));run.VehicleModel.Energy.Restore(5);
+        Assert.That(controls.Activate(RRLScanKind.Pulse),Is.False,"Both operational modules must be affordable before scanning.");
+        Assert.That(run.VehicleModel.Energy.Current,Is.EqualTo(5).Within(.001));
+        run.VehicleModel.Energy.Restore(100);var before=run.VehicleModel.Energy.Current;
+        var target=run.GetComponent<R6TestRange>().TrainingTarget;target.transform.position=run.Player.transform.position+Vector3.forward*30;Physics.SyncTransforms();
+        Assert.That(controls.Activate(RRLScanKind.Pulse),Is.True);
+        Assert.That(before-run.VehicleModel.Energy.Current,Is.EqualTo(10).Within(.01));
+        Assert.That(parts.Select(p=>p.GetComponent<ScannerPulse>()).Any(p=>p.Revealed.Any(s=>s.transform.IsChildOf(target.transform))),Is.True,"Both copies extend the actual detection range.");
+        Assert.That(parts.All(p=>p.GetComponent<ScannerPulse>().RemainingCooldown>0),Is.True);
+        Assert.That(controls.Activate(RRLScanKind.Pulse),Is.False,"A second copy cannot bypass the shared cooldown.");
+        // Simulate freshly mounted hardware: its individual timers are empty,
+        // while the vehicle-wide cooldown must still deny activation.
+        foreach(var part in parts){part.GetComponent<ScannerPulse>().RestoreCooldown(0);part.GetComponent<RRLPulseScannerBinding>().Device.State.DeviceReadyAt=0;}
+        float remainingEnergy=run.VehicleModel.Energy.Current;
+        Assert.That(controls.Activate(RRLScanKind.Pulse),Is.False);
+        Assert.That(run.VehicleModel.Energy.Current,Is.EqualTo(remainingEnergy).Within(.001));
+    }
+    [UnityTest] public IEnumerator DestroyedPulseCopyStopsContributingRangeAndCost()
+    {
+        kind=R3PartKind.ScannerPulse;yield return Build(copies:2);
+        var controls=run.Player.GetComponent<RRLScannerControls>();var parts=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==kind).ToArray();
+        var destroyed=parts[0];destroyed.Damageable.ApplyDamage(destroyed.Damageable.CurrentHp/.75f+.01f,destroyed.transform.position,Vector3.up);
+        Assert.That(destroyed.Operational,Is.False);Assert.That(parts[1].Operational,Is.True);
+        run.VehicleModel.Energy.Restore(100);float before=run.VehicleModel.Energy.Current;
+        Assert.That(controls.Activate(RRLScanKind.Pulse),Is.True);
+        Assert.That(before-run.VehicleModel.Energy.Current,Is.EqualTo(5).Within(.01));
+        Assert.That(parts[1].GetComponent<ScannerPulse>().RadiusMeters,Is.EqualTo(20).Within(.01));
     }
     [UnityTest] public IEnumerator ScannerOnlyVehicleRespondsToItsAssignedActiveSlot()
     {
@@ -116,7 +148,9 @@ public class RRLW8PulseScannerTests
         Assert.That(Enum.TryParse("ScannerPulse",out kind),Is.True,"SEN must be an owned physical garage module");
         yield return Build();Assert.That(Activate(),Is.True);var assembly=run.Player.GetComponent<R3VehicleAssembly>();var state=run.VehicleModel.Parts.Single(p=>p.Id==module.Id);
         string id=state.Id;float ready=state.DeviceReadyAt;Assert.That(R3VehicleModel.OccupiedCells(state).Count(),Is.EqualTo(1));
-        module.Damageable.ApplyDamage(100000,module.transform.position,Vector3.up);assembly.Capture();Assert.That(state.Health,Is.Zero);Assert.That(Activate(),Is.False);
+        // Destroy this device without wiping out its support through the current
+        // connected-damage model; its recovery is the behavior under test.
+        module.Damageable.ApplyDamage(module.Damageable.CurrentHp/.75f+.01f,module.transform.position,Vector3.up);assembly.Capture();Assert.That(state.Health,Is.Zero);Assert.That(Activate(),Is.False);
         var copy=run.VehicleModel.DeepCopy();int scrap=copy.Scrap;Assert.That(copy.Repair(state.Cell),Is.True);Assert.That(copy.Scrap,Is.LessThan(scrap));
         var vehicle=R3VehicleAssembly.Build(copy,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
         var restored=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);Assert.That(restored.GetComponent<ScannerPulse>().RemainingCooldown,Is.GreaterThan(0));Assert.That(Activate(restored),Is.False);
