@@ -79,7 +79,11 @@ namespace RoboRougelike.R3
                 if(hp==null||hp.IsDead||hp.MaxHp<=0)continue;
                 float ratio=hp.CurrentHp/hp.MaxHp;if(ratio<weakest-.00001f){weakest=ratio;selected=hp;}
             }
-            if(selected!=null)selected.RestoreHealthRatio(Mathf.Min(1,weakest+rate*Time.fixedDeltaTime));
+            if(selected!=null)
+            {
+                float bonus=owner.GetComponent<R3MountedBonusEffects>()?.RepairEfficiencyMultiplier??1f;
+                selected.RestoreHealthRatio((float)Math.Min(1d,weakest+(double)rate*bonus*Time.fixedDeltaTime));
+            }
         }
     }
     // A physical, temporary ally. It follows a loose radius rather than a fixed offset.

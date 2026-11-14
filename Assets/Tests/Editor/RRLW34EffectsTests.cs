@@ -17,6 +17,24 @@ using Object=UnityEngine.Object;
 
 public class RRLW34EffectsTests
 {
+    [UnityTest] public IEnumerator RepairEfficiencyMultipliesFieldRepairAndStopsAfterLoss()
+    {
+        Assert.That(Enum.TryParse("RepairEfficiency",out R1UpgradeEffect efficiency),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);Assert.That(run.Progress.BeginTest(),Is.True);
+        var additive=Upgrade(efficiency,.5f);var more=Upgrade(efficiency,.2f);more.Operation=R1ModifierOperation.More;
+        var model=Model(Upgrade(R1UpgradeEffect.Repair,0),additive,more);var vehicle=Build(model);yield return null;
+        vehicle.Core.RestoreHealthRatio(.5f);var effects=Effects(vehicle);
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        void Pulse()
+        {
+            typeof(R3MountedBonusEffects).GetField("lastRepairPulse",flags).SetValue(effects,Time.time-.5f);
+            typeof(R3MountedBonusEffects).GetMethod("ApplyRepairPulse",flags).Invoke(effects,null);
+        }
+        Pulse();Assert.That(vehicle.Core.CurrentHp/vehicle.Core.MaxHp,Is.EqualTo(.5225f).Within(.001f));
+        foreach(var part in vehicle.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.UpgradeEffect==efficiency))part.gameObject.SetActive(false);
+        yield return null;vehicle.Core.RestoreHealthRatio(.5f);Pulse();
+        Assert.That(vehicle.Core.CurrentHp/vehicle.Core.MaxHp,Is.EqualTo(.5125f).Within(.001f));
+    }
     GameObject fixtures;R1RunController run;R3VisualPalette palette;
     readonly List<R1UpgradeDefinition> definitions=new List<R1UpgradeDefinition>();
     static IEnumerator Until(Func<bool> predicate,string message)

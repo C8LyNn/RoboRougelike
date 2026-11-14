@@ -35,6 +35,38 @@ public sealed class BacklogRepairPulseIntegrationTests
         run=R1RunController.Instance;
         Assert.That(run?.Progress,Is.Not.Null,"Game controller must finish initialization before the test.");
     }
+    [UnityTest] public IEnumerator RepairEfficiencyAffectsTheActivePulseAndHealingTurret()
+    {
+        Assert.That(Enum.TryParse("RepairEfficiency",out R1UpgradeEffect effect),Is.True);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(500);
+        Assert.That(run.GaragePurchase(R3PartKind.RepairPulse),Is.True);
+        var reward=ScriptableObject.CreateInstance<R1UpgradeDefinition>();reward.Id="repair-rate-qa";reward.Effect=effect;reward.Amount=.5f;
+        Assert.That(run.VehicleModel.ReceiveBonuses(new[]{reward}),Is.True);
+        foreach(var id in run.VehicleModel.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>run.VehicleModel.OwnedPlacementError(id,c,default)==null);
+            Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var pulse=run.Player.GetComponent<R3RepairPulse>();
+        var target=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational);target.Damageable.RestoreHealthRatio(.3f);
+        Assert.That(pulse.TryActivate(),Is.EqualTo(1));
+        var tick=typeof(R3RepairPulse).GetMethod("Tick",BindingFlags.Instance|BindingFlags.NonPublic);tick.Invoke(pulse,new object[]{1f});
+        Assert.That(target.Damageable.CurrentHp/target.Damageable.MaxHp,Is.EqualTo(.375f).Within(.001));
+        var turretObject=new GameObject("Repair efficiency turret");turretObject.transform.position=run.Player.GetComponent<Rigidbody>().position;
+        var turret=turretObject.AddComponent<R3HealingTurret>();turret.Configure(assembly,100,.05f);
+        target.Damageable.RestoreHealthRatio(.3f);Physics.SyncTransforms();
+        typeof(R3HealingTurret).GetMethod("FixedUpdate",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(turret,null);
+        Assert.That(target.Damageable.CurrentHp/target.Damageable.MaxHp,Is.EqualTo(.3f+.075f*Time.fixedDeltaTime).Within(.0001));
+        var bonus=assembly.Parts.Single(p=>p.UpgradeEffect==effect);bonus.gameObject.SetActive(false);yield return null;
+        target.Damageable.RestoreHealthRatio(.3f);tick.Invoke(pulse,new object[]{1f});
+        Assert.That(target.Damageable.CurrentHp/target.Damageable.MaxHp,Is.EqualTo(.35f).Within(.001));
+        bonus.UpgradeOperation=R1ModifierOperation.Reduced;bonus.UpgradeAmount=1;bonus.gameObject.SetActive(true);yield return null;
+        target.Damageable.RestoreHealthRatio(.3f);tick.Invoke(pulse,new object[]{1f});
+        Assert.That(target.Damageable.CurrentHp/target.Damageable.MaxHp,Is.EqualTo(.3f).Within(.001),"Zero repair rate must finish the tick without healing or looping.");
+        UnityEngine.Object.Destroy(turretObject);UnityEngine.Object.Destroy(reward);
+    }
     [UnityTest]
     public IEnumerator TwoCopiesActivateOneCombinedPulseWithAtomicCostAndSharedCooldown()
     {

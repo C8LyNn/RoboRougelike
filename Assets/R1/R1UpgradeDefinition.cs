@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace RoboRougelike.R1
 {
-    public enum R1UpgradeEffect { Hull, Damage, Reload, Mobility, Repair, Core, HybridBlastRounds, EnergyCapacity, EnergyRegeneration, ShieldDurability }
+    public enum R1UpgradeEffect { Hull, Damage, Reload, Mobility, Repair, Core, HybridBlastRounds, EnergyCapacity, EnergyRegeneration, ShieldDurability, RepairEfficiency }
     // Zero is the historical additive bonus in existing assets and saves.
     public enum R1ModifierOperation { Increased, Reduced, More, Less }
     // Older rewards and checkpoints have no scope and remain global.

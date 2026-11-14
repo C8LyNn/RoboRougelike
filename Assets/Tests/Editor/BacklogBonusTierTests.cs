@@ -9,6 +9,19 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogBonusTierTests
 {
+    [Test] public void RepairEfficiencyRewardIsAvailableAndDescribesItsEffect()
+    {
+        Assert.That(System.Enum.TryParse("RepairEfficiency",out R1UpgradeEffect effect),Is.True);
+        var reward=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.SingleOrDefault(u=>u!=null&&u.Id=="repair_efficiency");
+        Assert.That(reward,Is.Not.Null);Assert.That(reward.Effect,Is.EqualTo(effect));
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        var part=model.Inventory.Single();var blueprint=R3BlueprintPart.FromPart(part,Vector3Int.zero);
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(blueprint.Matches(restored.Inventory.Single()),Is.True);
+        var label=typeof(R1RunHUD).GetMethod("BonusInstanceText",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That((string)label.Invoke(null,new object[]{part}),Does.Contain("napraw"));
+    }
     [Test] public void WeaponCategoryRewardSurvivesCheckpointAndNamesItsScope()
     {
         Assert.That(System.Enum.GetNames(typeof(R1BonusScope)),Does.Contain("Weapons"));

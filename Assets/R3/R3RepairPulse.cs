@@ -104,7 +104,9 @@ namespace RoboRougelike.R3
                     if(pulse.Target==null)break;
                     var hp=pulse.Target.Damageable;
                     float ratio=hp.CurrentHp/hp.MaxHp;
-                    float rate=RepairRatioPerSecond*units;
+                    float bonus=GetComponent<R3MountedBonusEffects>()?.RepairEfficiencyMultiplier??1f;
+                    float rate=(float)System.Math.Min(float.MaxValue,(double)RepairRatioPerSecond*units*bonus);
+                    if(rate<=0)break;
                     float needed=(1f-ratio)/rate;
                     float used=Mathf.Min(frame,needed);
                     hp.RestoreHealthRatio(Mathf.Min(1f,ratio+used*rate));
