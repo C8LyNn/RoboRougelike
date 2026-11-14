@@ -418,7 +418,12 @@ public sealed class BacklogDeviceTierGameplayTests
         float deadline=Time.realtimeSinceStartup+12;
         while(Time.realtimeSinceStartup<deadline&&enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp)>=hp)yield return MOVSeriesDeviceTests.FixedStep();
         Assert.That(enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.LessThan(hp),"The drone must actually hit the enemy with its projectile");
+        run.VehicleModel.Economy.DroneCooldown=20;
+        float flyingReady=run.VehicleModel.FlyingDroneReadyAt;
         Assert.That(service.TryDeploy(R3PartKind.GroundDroneGenerator),Is.True,"The other drone type must have its own independent active limit");
+        Assert.That(run.VehicleModel.GroundDroneReadyAt,Is.GreaterThan(Time.time),"The ground drone must receive its own cooldown");
+        Assert.That(run.VehicleModel.FlyingDroneReadyAt,Is.EqualTo(flyingReady),"Launching a ground drone must not change the flying drone cooldown");
+        Assert.That(service.TryDeploy(R3PartKind.GroundDroneGenerator),Is.False,"A ground drone cannot bypass its cooldown");
         Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.GroundDronePool),Is.EqualTo(2));
         Vector3 beforePosition=drone.GetComponent<Rigidbody>().position;body.isKinematic=true;body.position=new Vector3(100,2,120);Physics.SyncTransforms();
         float followUntil=Time.fixedTime+1.5f;while(Time.fixedTime<followUntil)yield return MOVSeriesDeviceTests.FixedStep();
