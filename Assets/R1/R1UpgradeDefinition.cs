@@ -17,6 +17,6 @@ namespace RoboRougelike.R1
         public R1UpgradeEffect Effect;
         public R1ModifierOperation Operation;
         public R1BonusScope Scope;
-        [Range(0, 1)] public float Amount = 0.2f;
+        [Min(0)] public float Amount = 0.2f;
     }
 }

@@ -215,6 +215,7 @@ namespace RoboRougelike.R3
             ((effect!=R1UpgradeEffect.Repair&&effect!=R1UpgradeEffect.HybridBlastRounds)||operation==R1ModifierOperation.Increased);
         public static bool ValidBonusScope(R1UpgradeEffect effect,R1BonusScope scope)=>
             Enum.IsDefined(typeof(R1BonusScope),scope)&&(scope==R1BonusScope.Global||effect==R1UpgradeEffect.Damage);
+        public static bool ValidBonusAmount(float amount)=>!float.IsNaN(amount)&&!float.IsInfinity(amount)&&amount>=0;
         public static bool SupportsFusion(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||kind==R3PartKind.Suspension||kind==R3PartKind.OmniDrive||kind==R3PartKind.HoverEngine||kind==R3PartKind.CrawlerTrack||kind==R3PartKind.DirectionalShield||kind==R3PartKind.Booster||kind==R3PartKind.MagneticGrapple||kind==R3PartKind.JumpDrive||kind==R3PartKind.Blink||kind==R3PartKind.Gyroscope||kind==R3PartKind.ScannerPulse||kind==R3PartKind.StructuralScanner||
             kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.SalvageOptimizer||kind==R3PartKind.Overdrive||kind==R3PartKind.RapidFire||kind==R3PartKind.DoubleShot||kind==R3PartKind.DoubleShotOverdrive||kind==R3PartKind.TargetedEmp||kind==R3PartKind.AreaEmp||kind==R3PartKind.ChargeCapacity||kind==R3PartKind.ChargeRegenerator||kind==R3PartKind.RechargePulse||kind==R3PartKind.RampDeployer||kind==R3PartKind.WallDeployer||kind==R3PartKind.JumpPadDeployer||kind==R3PartKind.BlastTrapDeployer||kind==R3PartKind.EmpTrapDeployer||kind==R3PartKind.RepelTrapDeployer||kind==R3PartKind.DamageTrapDeployer||kind==R3PartKind.SlowTrapDeployer||kind==R3PartKind.ImmobilizeTrapDeployer||kind==R3PartKind.FlyingDroneGenerator||kind==R3PartKind.GroundDroneGenerator||kind==R3PartKind.OffensiveTurretGenerator||kind==R3PartKind.HealingTurretGenerator||kind==R3PartKind.SupportTurretGenerator||kind==R3PartKind.ShieldTurretGenerator||kind==R3PartKind.HealingDroneGenerator||kind==R3PartKind.SupportDroneGenerator||kind==R3PartKind.BonusModule||kind==R3PartKind.PointDefense||
             (kind==R3PartKind.Gun&&weapon>=R4WeaponKind.Basic&&weapon<=R4WeaponKind.EmpEmitter);
@@ -822,8 +823,7 @@ namespace RoboRougelike.R3
             if((long)inventory.Count+batch.Length>AvailableInventoryCapacity)return false;
             if(batch.Any(p=>!ValidEconomicPart(p)||(!allowArmor&&p.Kind==R3PartKind.Armor)||p.Kind==R3PartKind.Core||
                 (p.Kind==R3PartKind.BonusModule&&(string.IsNullOrWhiteSpace(p.UpgradeId)||
-                    !Enum.IsDefined(typeof(R1UpgradeEffect),p.UpgradeEffect)||!ValidBonusOperation(p.UpgradeEffect,p.UpgradeOperation)||!ValidBonusScope(p.UpgradeEffect,p.UpgradeScope)||float.IsNaN(p.UpgradeAmount)||
-                    float.IsInfinity(p.UpgradeAmount)||p.UpgradeAmount<0||p.UpgradeAmount>1))||
+                    !Enum.IsDefined(typeof(R1UpgradeEffect),p.UpgradeEffect)||!ValidBonusOperation(p.UpgradeEffect,p.UpgradeOperation)||!ValidBonusScope(p.UpgradeEffect,p.UpgradeScope)||!ValidBonusAmount(p.UpgradeAmount)))||
                 string.IsNullOrWhiteSpace(p.Id)||Owns(p.Id))||
                 batch.Select(p=>p.Id).Distinct().Count()!=batch.Length)return false;
             inventory.AddRange(batch.Select(p=>{var copy=p.Copy();copy.ContactMask=StoredWheelContacts(copy);NormalizeStoredEquipmentFootprint(copy);return copy;}));return true;
@@ -837,7 +837,7 @@ namespace RoboRougelike.R3
                 Id=Guid.NewGuid().ToString("N"),Source="Bonus za zwycięstwo",
                 UpgradeId=bonus.Id,UpgradeTitle=string.IsNullOrWhiteSpace(bonus.Title)?bonus.Id:bonus.Title,
                 UpgradeDescription=bonus.Description,UpgradeEffect=bonus.Effect,UpgradeOperation=bonus.Operation,UpgradeScope=bonus.Scope,
-                UpgradeAmount=Mathf.Clamp01(bonus.Amount)};
+                UpgradeAmount=Mathf.Max(0,bonus.Amount)};
         }
         public bool ReceiveBonuses(IEnumerable<R1UpgradeDefinition> rewards)
         {
@@ -884,7 +884,7 @@ namespace RoboRougelike.R3
             Enum.IsDefined(typeof(R1UpgradeEffect),a.UpgradeEffect)&&a.UpgradeEffect==b.UpgradeEffect&&
             ValidBonusOperation(a.UpgradeEffect,a.UpgradeOperation)&&a.UpgradeOperation==b.UpgradeOperation&&
             ValidBonusScope(a.UpgradeEffect,a.UpgradeScope)&&a.UpgradeScope==b.UpgradeScope&&
-            !float.IsNaN(a.UpgradeAmount)&&!float.IsInfinity(a.UpgradeAmount)&&a.UpgradeAmount>=0&&a.UpgradeAmount<=1&&a.UpgradeAmount==b.UpgradeAmount;
+            ValidBonusAmount(a.UpgradeAmount)&&a.UpgradeAmount==b.UpgradeAmount;
         public static bool SameFusionType(R3PartState a,R3PartState b) => a!=null&&b!=null&&a.Kind==b.Kind&&
             NormalizedTier(a.Tier)==NormalizedTier(b.Tier)&&
             (a.Kind!=R3PartKind.Gun||(a.Weapon==b.Weapon&&a.FootprintRevision==b.FootprintRevision))&&

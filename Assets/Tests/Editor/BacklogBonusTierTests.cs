@@ -9,6 +9,42 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogBonusTierTests
 {
+    [Test] public void LargeSingleBonusSurvivesRewardFusionBlueprintAndCheckpoint()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var reward=OperationBonus("large-bonus",1.5f,"Increased");
+        try
+        {
+            Assert.That(model.ReceiveBonuses(new[]{reward,reward,reward}),Is.True);
+            var items=model.Inventory.Where(p=>p.UpgradeId==reward.Id).ToArray();Assert.That(items.Length,Is.EqualTo(3));
+            Assert.That(items.All(p=>p.UpgradeAmount==1.5f),Is.True,"A single configured bonus must not be clipped at 100%.");
+            Assert.That(model.FuseInventory(items.Select(p=>p.Id)),Is.True);
+            var fused=model.Inventory.Single(p=>p.UpgradeId==reward.Id);Assert.That(fused.UpgradeAmount,Is.EqualTo(1.5f));
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(fused.Id,c,default)==null);
+            Assert.That(model.Mount(fused.Id,cell),Is.True);
+            var blueprint=R3BlueprintLibrary.Capture(model,"Duża premia");Assert.That(R3BlueprintLibrary.Valid(blueprint),Is.True);
+            Assert.That(blueprint.parts.Single(p=>p.upgradeId==reward.Id).upgradeAmount,Is.EqualTo(1.5f));
+            var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+            Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var loaded,out var error),Is.True,error);
+            Assert.That(loaded.Parts.Single(p=>p.Id==fused.Id).UpgradeAmount,Is.EqualTo(1.5f));
+            foreach(float bad in new[]{-1f,float.NaN,float.PositiveInfinity})
+            {
+                blueprint.parts.Single(p=>p.upgradeId==reward.Id).upgradeAmount=bad;
+                Assert.That(R3BlueprintLibrary.Valid(blueprint),Is.False,"Invalid bonus amounts must still be rejected.");
+                checkpoint.mounted.Single(p=>p.Id==fused.Id).UpgradeAmount=bad;
+                Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out _,out _),Is.False);
+            }
+        }
+        finally{Object.DestroyImmediate(reward);}
+    }
+    [Test] public void ExtremeFiniteBonusLabelDoesNotOverflow()
+    {
+        var item=new R3PartState(default,R3PartKind.BonusModule){Tier=3,UpgradeEffect=R1UpgradeEffect.Damage,UpgradeAmount=float.MaxValue};
+        var text=typeof(R1RunHUD).GetMethod("BonusInstanceText",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        string label=(string)text.Invoke(null,new object[]{item});
+        Assert.That(label,Does.Not.Contain("Infinity").And.Not.Contain("∞"));
+    }
     [Test] public void RocketZeroCooldownDoesNotRepeatAtTheSameClockValue()
     {
         var gate=new RoboRougelike.Mechanics.Rockets.RocketFireGate();Assert.That(gate.Ready(0),Is.True);
@@ -240,6 +276,30 @@ public sealed class BacklogBonusTierTests
 
 public sealed class BacklogBonusTierGameplayTests
 {
+    [UnityTest] public IEnumerator BonusAboveOneHundredPercentAffectsARealShotAndStopsOnLoss()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var reward=BacklogBonusTierTests.OperationBonus("large-physical-bonus",1.5f,"Increased");
+        Assert.That(run.VehicleModel.ReceiveBonuses(new[]{reward}),Is.True);
+        var model=run.VehicleModel;var bonus=model.Inventory.Single(p=>p.UpgradeId==reward.Id);
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(bonus.Id,c,default)==null);
+        Assert.That(run.GarageMount(bonus.Id,cell),Is.True);Assert.That(run.EnterTestRange(),Is.True);
+        while(run.Transitioning)yield return null;
+        var tank=run.Player.Controller;Assert.That(tank.PackageDamageScale,Is.EqualTo(2.5f).Within(.001));
+        var muzzle=new GameObject("Large bonus muzzle").transform;muzzle.position=new Vector3(1200,1200,1200);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=muzzle.position+Vector3.forward*4;
+        var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(1000,false);Physics.SyncTransforms();
+        tank.FireFrom(muzzle,RoboRougelike.R4.R4WeaponKind.Basic,"large-bonus");float end=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<end&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(900).Within(.05f));
+        var mounted=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==bonus.Id);mounted.gameObject.SetActive(false);yield return null;
+        Assert.That(tank.PackageDamageScale,Is.EqualTo(1).Within(.001));hp.RestoreHealthRatio(1);Physics.SyncTransforms();
+        tank.FireFrom(muzzle,RoboRougelike.R4.R4WeaponKind.Basic,"large-bonus");end=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<end&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(960).Within(.05f));
+        Object.Destroy(muzzle.gameObject);Object.Destroy(target);Object.Destroy(reward);
+    }
     [UnityTest] public IEnumerator ZeroCooldownDoesNotAllowSecondShotAtTheSameClockValue()
     {
         R1EncounterManager.ClearTransientObjects();var owner=new GameObject("Zero cooldown owner");

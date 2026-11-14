@@ -400,7 +400,7 @@ namespace RoboRougelike.R1
         {
             bool inverse=item.UpgradeEffect==R1UpgradeEffect.Reload;
             if(item.UpgradeOperation==R1ModifierOperation.Reduced)
-                return $"{name} {(inverse?"+":"−")}{item.UpgradeAmount*units*100:0.#}%";
+                return $"{name} {(inverse?"+":"−")}{(double)item.UpgradeAmount*units*100:0.#}%";
             bool more=item.UpgradeOperation==R1ModifierOperation.More;
             double sign=(more?1d:-1d)*(inverse?-1d:1d);
             double factor=System.Math.Pow(System.Math.Max(0d,1d+sign*item.UpgradeAmount),units);
@@ -413,18 +413,18 @@ namespace RoboRougelike.R1
                 return $"Regeneracja {units*.025f*100:0.#}% HP/s";
             if(item.UpgradeEffect==R1UpgradeEffect.HybridBlastRounds)
                 return $"Działo: do {Mathf.Min(1,item.UpgradeAmount*units)*100:0.#}% składowej wybuchowej";
-            string name;float percent;bool reduction=false;
+            string name;double percent;bool reduction=false;
             switch(item.UpgradeEffect)
             {
-                case R1UpgradeEffect.Hull:name="Wytrzymałość";percent=item.UpgradeAmount*units*100;break;
-                case R1UpgradeEffect.Damage:name=DamageBonusName(item);percent=item.UpgradeAmount*units*100;break;
-                case R1UpgradeEffect.Reload:name="Czas przeładowania";percent=Mathf.Min(100,item.UpgradeAmount*units*100);reduction=true;break;
-                case R1UpgradeEffect.Mobility:name="Mobilność";percent=item.UpgradeAmount*units*100;break;
-                case R1UpgradeEffect.Core:name="Rdzeń";percent=item.UpgradeAmount*units*100;break;
-                case R1UpgradeEffect.EnergyCapacity:name="Pojemność energii";percent=item.UpgradeAmount*units*100;break;
-                case R1UpgradeEffect.EnergyRegeneration:name="Regeneracja energii";percent=item.UpgradeAmount*units*100;break;
-                case R1UpgradeEffect.ShieldDurability:name="Wytrzymałość kopuły";percent=item.UpgradeAmount*units*100;break;
-                case R1UpgradeEffect.RepairEfficiency:name="Skuteczność napraw";percent=item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.Hull:name="Wytrzymałość";percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.Damage:name=DamageBonusName(item);percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.Reload:name="Czas przeładowania";percent=System.Math.Min(100d,(double)item.UpgradeAmount*units*100);reduction=true;break;
+                case R1UpgradeEffect.Mobility:name="Mobilność";percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.Core:name="Rdzeń";percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.EnergyCapacity:name="Pojemność energii";percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.EnergyRegeneration:name="Regeneracja energii";percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.ShieldDurability:name="Wytrzymałość kopuły";percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.RepairEfficiency:name="Skuteczność napraw";percent=(double)item.UpgradeAmount*units*100;break;
                 default:return "Nieznany bonus";
             }
             if(item.UpgradeOperation!=R1ModifierOperation.Increased)return OtherBonusOperationText(item,name,units);

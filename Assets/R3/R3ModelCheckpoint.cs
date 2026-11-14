@@ -178,7 +178,7 @@ namespace RoboRougelike.R3
                 p.RotationQuarterTurns.z>=0&&p.RotationQuarterTurns.z<4&&p.ContactMask>=0&&p.ContactMask<=63&&
                 Math.Abs((long)p.Cell.x)<=100&&Math.Abs((long)p.Cell.y)<=100&&Math.Abs((long)p.Cell.z)<=100&&
                 (p.Kind!=R3PartKind.BonusModule||(!string.IsNullOrWhiteSpace(p.UpgradeId)&&
-                  Enum.IsDefined(typeof(RoboRougelike.R1.R1UpgradeEffect),p.UpgradeEffect)&&ValidBonusOperation(p.UpgradeEffect,p.UpgradeOperation)&&ValidBonusScope(p.UpgradeEffect,p.UpgradeScope)&&Finite(p.UpgradeAmount)&&p.UpgradeAmount>=0&&p.UpgradeAmount<=1));
+                  Enum.IsDefined(typeof(RoboRougelike.R1.R1UpgradeEffect),p.UpgradeEffect)&&ValidBonusOperation(p.UpgradeEffect,p.UpgradeOperation)&&ValidBonusScope(p.UpgradeEffect,p.UpgradeScope)&&ValidBonusAmount(p.UpgradeAmount)));
         }
         public static bool TryRestoreCheckpoint(R3ModelCheckpoint data,R3VehicleKind kind,R3GarageEconomy economy,float now,out R3VehicleModel model,out string error,int variant=0)
         {

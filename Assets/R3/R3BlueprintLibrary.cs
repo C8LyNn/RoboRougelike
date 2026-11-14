@@ -105,7 +105,7 @@ namespace RoboRougelike.R3
                     FootprintRevision=item.footprint,ContactMask=item.contacts,UpgradeId=item.upgradeId,UpgradeEffect=item.upgradeEffect,UpgradeOperation=item.upgradeOperation,UpgradeScope=item.upgradeScope,UpgradeAmount=item.upgradeAmount};
                 if(!R3VehicleModel.ValidEconomicPart(p)||item.contacts<0||item.contacts>63||item.tier<1||item.tier>3||
                    (item.kind==R3PartKind.BonusModule&&(string.IsNullOrWhiteSpace(item.upgradeId)||
-                    !Enum.IsDefined(typeof(R1UpgradeEffect),item.upgradeEffect)||!R3VehicleModel.ValidBonusOperation(item.upgradeEffect,item.upgradeOperation)||!R3VehicleModel.ValidBonusScope(item.upgradeEffect,item.upgradeScope)||float.IsNaN(item.upgradeAmount)||float.IsInfinity(item.upgradeAmount)||item.upgradeAmount<0||item.upgradeAmount>1)))return false;
+                    !Enum.IsDefined(typeof(R1UpgradeEffect),item.upgradeEffect)||!R3VehicleModel.ValidBonusOperation(item.upgradeEffect,item.upgradeOperation)||!R3VehicleModel.ValidBonusScope(item.upgradeEffect,item.upgradeScope)||!R3VehicleModel.ValidBonusAmount(item.upgradeAmount))))return false;
             }
             return true;
         }
