@@ -98,10 +98,20 @@ namespace RoboRougelike.R3
             if(Live && amount > 0 && !float.IsNaN(amount) && !float.IsInfinity(amount)) hp.ApplyDamage(amount,point,direction);
         }
     }
-    public sealed class R3ShieldRocketPayload : MonoBehaviour
+    public sealed class R3ShieldRocketPayload : MonoBehaviour,IRocketFlightBoundary
     {
         public float Damage = 60f;
         public Vector3 LaunchPosition {get;private set;}
         void OnEnable()=>LaunchPosition=transform.position;
+        public bool TryIntercept(RocketProjectile projectile,Vector3 origin,Vector3 direction,float distance)
+        {
+            if(projectile==null||!projectile.IsInitialized||projectile.IsResolved||projectile.OwnerRoot==null||
+               !R3ShieldDome.TryFirstHit(origin,origin+direction*distance,projectile.OwnerRoot,out var shield,out float hitDistance))return false;
+            Vector3 point=origin+direction*hitDistance;var body=projectile.GetComponent<Rigidbody>();
+            if(body!=null)body.position=point;projectile.transform.position=point;
+            projectile.ApplyInterceptionDamage(float.MaxValue);
+            if(!projectile.IsResolved)return false;
+            shield.Absorb(Damage,point,direction);return true;
+        }
     }
 }

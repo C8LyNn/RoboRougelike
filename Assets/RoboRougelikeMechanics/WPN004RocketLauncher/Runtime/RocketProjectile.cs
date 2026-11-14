@@ -2,6 +2,12 @@ using UnityEngine;
 
 namespace RoboRougelike.Mechanics.Rockets
 {
+    // Optional game-side boundary handling; the rocket package retains its
+    // own solid-hit ordering and does not depend on any particular shield.
+    public interface IRocketFlightBoundary
+    {
+        bool TryIntercept(RocketProjectile projectile,Vector3 origin,Vector3 direction,float distance);
+    }
     [RequireComponent(typeof(Rigidbody), typeof(SphereCollider))]
     [DisallowMultipleComponent]
     public sealed class RocketProjectile : MonoBehaviour, IRocketInterceptable
@@ -20,6 +26,7 @@ namespace RoboRougelike.Mechanics.Rockets
         private Vector3 inheritedVelocity;
         private float speed, age, hitPoints;
         private bool initialized, resolved, checkedLaunchClearance;
+        private IRocketFlightBoundary flightBoundary;
 
         // Notification only; original flight, blast and interception remain authoritative.
         public static event System.Action<RocketProjectile,Vector3,Vector3> Detonated;
@@ -62,6 +69,7 @@ namespace RoboRougelike.Mechanics.Rockets
             castBuffer = new RaycastHit[spec.MaxCastHits];
             blastBuffer = new Collider[spec.MaxBlastColliders];
             occlusionBuffer = new RaycastHit[spec.MaxCastHits];
+            flightBoundary = GetComponent<IRocketFlightBoundary>();
             initialized = true;
             return true;
         }
@@ -124,6 +132,8 @@ namespace RoboRougelike.Mechanics.Rockets
                     nearestDistance = castBuffer[i].distance;
                 }
             }
+            float boundaryDistance=nearest>=0?Mathf.Max(0f,nearestDistance-.0001f):distance;
+            if(boundaryDistance>0f&&flightBoundary!=null&&flightBoundary.TryIntercept(this,body.position,direction,boundaryDistance))return;
             if (nearest >= 0)
             {
                 RaycastHit hit = castBuffer[nearest];

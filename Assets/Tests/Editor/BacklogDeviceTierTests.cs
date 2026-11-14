@@ -260,6 +260,58 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(peak,Is.LessThan(8),"The pad must not multiply its impulse by the number of vehicle colliders");
         Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator ShieldInterceptsHostileRocketCrossingEntireDomeInOnePhysicsStep()=>FastShieldRocket(false);
+    [UnityTest] public IEnumerator WallBeforeDomeStopsFastRocketWithoutDamagingShield()=>FastShieldRocket(true);
+    [UnityTest] public IEnumerator FastFriendlyRocketMayCrossDomeFromOutside()=>FastShieldRocketExit(true);
+    [UnityTest] public IEnumerator FastHostileRocketLaunchedInsideMayLeaveDome()=>FastShieldRocketExit(false);
+    IEnumerator FastShieldRocketExit(bool friendly)
+    {
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        Vector3 center=new Vector3(1000,1000,1000);
+        var dome=new GameObject("Test przejścia szybkiej rakiety");dome.transform.position=center;
+        var boundary=dome.AddComponent<SphereCollider>();boundary.isTrigger=true;
+        var hp=dome.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(500,false);
+        dome.AddComponent<R3ShieldDome>().Configure(1,2);
+        var owner=new GameObject("Źródło rakiety");
+        if(friendly)owner.AddComponent<RailgunFriendlyFixture>();else owner.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret>().enabled=false;
+        var ownerBody=owner.AddComponent<Rigidbody>();ownerBody.isKinematic=true;
+        var rocket=GameObject.CreatePrimitive(PrimitiveType.Sphere);rocket.transform.position=center+(friendly?Vector3.left*8:Vector3.zero);rocket.transform.localScale=Vector3.one*.16f;
+        var body=rocket.AddComponent<Rigidbody>();rocket.AddComponent<R3ShieldRocketPayload>();
+        var projectile=rocket.AddComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+        var config=new RoboRougelike.Mechanics.Rockets.RocketConfig{initialSpeed=2000,maxSpeed=2000,acceleration=0,maxLifetime=4};
+        Assert.That(projectile.TryInitialize(config.Snapshot(),ownerBody,owner.transform,owner,null,Vector3.right),Is.True);
+        Physics.SyncTransforms();float deadline=Time.time+.12f;
+        while(Time.time<deadline&&projectile!=null&&!projectile.IsResolved&&body.position.x<center.x+5)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(projectile!=null&&!projectile.IsResolved&&body.position.x>center.x+2,Is.True,"The rocket must cross without interception.");
+        Assert.That(hp.CurrentHp,Is.EqualTo(500).Within(.001));
+        if(rocket!=null)Object.Destroy(rocket);Object.Destroy(dome);Object.Destroy(owner);
+    }
+    IEnumerator FastShieldRocket(bool wallFirst)
+    {
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        Vector3 center=new Vector3(1000,1000,1000);
+        var dome=new GameObject("Test szybkiej rakiety");dome.transform.position=center;
+        var boundary=dome.AddComponent<SphereCollider>();boundary.isTrigger=true;
+        var hp=dome.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(500,false);
+        dome.AddComponent<R3ShieldDome>().Configure(1,2);
+        var protectedTarget=GameObject.CreatePrimitive(PrimitiveType.Cube);protectedTarget.transform.position=center;
+        var protectedHp=protectedTarget.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();protectedHp.Configure(500,false);
+        protectedTarget.AddComponent<RoboRougelike.WeaponIntegration.RRLRocketDamageReceiver>();
+        var owner=new GameObject("Źródło wrogiej rakiety");owner.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret>().enabled=false;
+        var ownerBody=owner.AddComponent<Rigidbody>();ownerBody.isKinematic=true;
+        GameObject wall=null;if(wallFirst){wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=center+Vector3.left*4;wall.transform.localScale=new Vector3(.5f,8,8);}
+        var rocket=GameObject.CreatePrimitive(PrimitiveType.Sphere);rocket.transform.position=center+Vector3.left*8;rocket.transform.localScale=Vector3.one*.16f;
+        rocket.AddComponent<Rigidbody>();rocket.AddComponent<R3ShieldRocketPayload>();var projectile=rocket.AddComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+        var config=new RoboRougelike.Mechanics.Rockets.RocketConfig{initialSpeed=2000,maxSpeed=2000,acceleration=0,maxLifetime=4};
+        Assert.That(projectile.TryInitialize(config.Snapshot(),ownerBody,owner.transform,owner,null,Vector3.right),Is.True);
+        Physics.SyncTransforms();float deadline=Time.time+.12f;
+        while(Time.time<deadline&&projectile!=null&&!projectile.IsResolved&&hp.CurrentHp>=500)yield return MOVSeriesDeviceTests.FixedStep();
+        if(wallFirst)Assert.That(hp.CurrentHp,Is.EqualTo(500).Within(.001),"A solid wall hit first must protect the dome.");
+        else Assert.That(hp.CurrentHp,Is.LessThan(500),"A fast hostile rocket must be intercepted by the dome.");
+        Assert.That(protectedHp.CurrentHp,Is.EqualTo(500).Within(.001),"The protected target must not take the intercepted blast.");
+        Assert.That(projectile==null||projectile.IsResolved,Is.True);
+        if(rocket!=null)Object.Destroy(rocket);if(wall!=null)Object.Destroy(wall);Object.Destroy(protectedTarget);Object.Destroy(dome);Object.Destroy(owner);
+    }
     [UnityTest] public IEnumerator ShieldInterceptsHostileShellCrossingEntireDomeInOnePhysicsStep()=>FastShieldShell(false);
     [UnityTest] public IEnumerator SolidWallBeforeDomeStopsFastShellWithoutDamagingShield()=>FastShieldShell(true);
     [UnityTest] public IEnumerator FastFriendlyShellMayCrossDomeFromOutside()=>FastShieldExit(true);
