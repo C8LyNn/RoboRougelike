@@ -613,6 +613,7 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.JumpPadDeployer?$"Wyrzutnik jump padów: stawia wyrzutnię skoku za jadącym pojazdem. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.JumpPadEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
                 kind==R3PartKind.BlastTrapDeployer?$"Pułapka wybuchowa: zostaje za pojazdem i atakuje wrogów w pobliżu. 1 ładunek, {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii; slot Z/X/C/V.":
                 kind==R3PartKind.EmpTrapDeployer?$"Pułapka EMP: zostaje za pojazdem i zakłóca elektronikę pobliskich wrogów. Bez obrażeń HP; slot Z/X/C/V.":
+                kind==R3PartKind.RepelTrapDeployer?$"Pułapka odrzucająca: odpycha pobliskich wrogów bez obrażeń. Slot Z/X/C/V; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kliknij, aby zamontować.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kliknij, aby zamontować.":
                 kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
@@ -641,6 +642,7 @@ namespace RoboRougelike.R1
                     kind==R3PartKind.JumpPadDeployer?$"Wyrzutnik jump padów: stawia wyrzutnię skoku za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.JumpPadEnergyPerCopy:0} energii. Slot Z/X/C/V.":
                     kind==R3PartKind.BlastTrapDeployer?$"Pułapka wybuchowa: zostaje za pojazdem; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot Z/X/C/V.":
                     kind==R3PartKind.EmpTrapDeployer?$"Pułapka EMP: zakłóca wrogów bez obrażeń HP; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot Z/X/C/V.":
+                    kind==R3PartKind.RepelTrapDeployer?$"Pułapka odrzucająca: odpycha wrogów bez obrażeń HP; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot Z/X/C/V.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kup część.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kup część.":
                     kind==R3PartKind.Armor&&CatalogArmorShape(bonus)==R3ArmorShape.Wedge?"Klin 1×1×1: mocowanie od spodu i z tyłu. Kup część.":

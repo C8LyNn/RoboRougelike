@@ -95,6 +95,7 @@ namespace RoboRougelike.R1
                     if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.JumpPadDeployer))charges+=$" • Skok {bank.Current(R3DeployableService.JumpPadPool)}/{bank.Maximum(R3DeployableService.JumpPadPool)}";
                     if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.BlastTrapDeployer))charges+=$" • Mina {bank.Current(R3DeployableService.BlastTrapPool)}/{bank.Maximum(R3DeployableService.BlastTrapPool)}";
                     if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.EmpTrapDeployer))charges+=$" • Mina EMP {bank.Current(R3DeployableService.EmpTrapPool)}/{bank.Maximum(R3DeployableService.EmpTrapPool)}";
+                    if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.RepelTrapDeployer))charges+=$" • Mina odrz. {bank.Current(R3DeployableService.RepelTrapPool)}/{bank.Maximum(R3DeployableService.RepelTrapPool)}";
                 }
                 GUI.Label(new Rect(34,151,580,22),$"Energia: {energy.Current:0}/{energy.Maximum:0}{charges}",small);
             }

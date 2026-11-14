@@ -48,8 +48,8 @@ namespace RoboRougelike.R3
     public sealed class R3DeployableService : MonoBehaviour
     {
         public const string RampPool="deployable-ramp";
-        public const string WallPool="deployable-wall",JumpPadPool="deployable-jump-pad",BlastTrapPool="deployable-blast-trap",EmpTrapPool="deployable-emp-trap";
-        static readonly R3PartKind[] Kinds={R3PartKind.RampDeployer,R3PartKind.WallDeployer,R3PartKind.JumpPadDeployer,R3PartKind.BlastTrapDeployer,R3PartKind.EmpTrapDeployer};
+        public const string WallPool="deployable-wall",JumpPadPool="deployable-jump-pad",BlastTrapPool="deployable-blast-trap",EmpTrapPool="deployable-emp-trap",RepelTrapPool="deployable-repel-trap";
+        static readonly R3PartKind[] Kinds={R3PartKind.RampDeployer,R3PartKind.WallDeployer,R3PartKind.JumpPadDeployer,R3PartKind.BlastTrapDeployer,R3PartKind.EmpTrapDeployer,R3PartKind.RepelTrapDeployer};
         R3VehicleAssembly assembly;
         VehicleEnergyBank energy;
         Rigidbody body;
@@ -66,13 +66,13 @@ namespace RoboRougelike.R3
         bool Ready(R3MountedPart part,R3PartKind kind)=>part!=null&&part.Kind==kind&&part.Operational&&
             part.gameObject.activeInHierarchy&&part.transform.IsChildOf(transform)&&!RRLEmpPartState.IsBlocked(part.gameObject);
         static string Pool(R3PartKind kind)=>kind==R3PartKind.RampDeployer?RampPool:kind==R3PartKind.WallDeployer?WallPool:
-            kind==R3PartKind.JumpPadDeployer?JumpPadPool:kind==R3PartKind.BlastTrapDeployer?BlastTrapPool:EmpTrapPool;
+            kind==R3PartKind.JumpPadDeployer?JumpPadPool:kind==R3PartKind.BlastTrapDeployer?BlastTrapPool:kind==R3PartKind.EmpTrapDeployer?EmpTrapPool:RepelTrapPool;
         float ReadyAt(R3PartKind kind)=>kind==R3PartKind.RampDeployer?assembly.Model.RampDeployerReadyAt:
             kind==R3PartKind.WallDeployer?assembly.Model.WallDeployerReadyAt:kind==R3PartKind.JumpPadDeployer?assembly.Model.JumpPadDeployerReadyAt:
-            kind==R3PartKind.BlastTrapDeployer?assembly.Model.BlastTrapDeployerReadyAt:assembly.Model.EmpTrapDeployerReadyAt;
+            kind==R3PartKind.BlastTrapDeployer?assembly.Model.BlastTrapDeployerReadyAt:kind==R3PartKind.EmpTrapDeployer?assembly.Model.EmpTrapDeployerReadyAt:assembly.Model.RepelTrapDeployerReadyAt;
         void SetReadyAt(R3PartKind kind,float value)
         {if(kind==R3PartKind.RampDeployer)assembly.Model.RampDeployerReadyAt=value;else if(kind==R3PartKind.WallDeployer)assembly.Model.WallDeployerReadyAt=value;
-         else if(kind==R3PartKind.JumpPadDeployer)assembly.Model.JumpPadDeployerReadyAt=value;else if(kind==R3PartKind.BlastTrapDeployer)assembly.Model.BlastTrapDeployerReadyAt=value;else assembly.Model.EmpTrapDeployerReadyAt=value;}
+         else if(kind==R3PartKind.JumpPadDeployer)assembly.Model.JumpPadDeployerReadyAt=value;else if(kind==R3PartKind.BlastTrapDeployer)assembly.Model.BlastTrapDeployerReadyAt=value;else if(kind==R3PartKind.EmpTrapDeployer)assembly.Model.EmpTrapDeployerReadyAt=value;else assembly.Model.RepelTrapDeployerReadyAt=value;}
         void EnsurePools()
         {
             if(poolsInitialized||assembly==null)return;
@@ -132,7 +132,7 @@ namespace RoboRougelike.R3
                 float projected=Vector3.Dot(bounds.center-body.position,behind)+Mathf.Abs(behind.x)*ext.x+Mathf.Abs(behind.z)*ext.z;
                 rear=Mathf.Max(rear,projected);
             }
-            bool trap=kind==R3PartKind.BlastTrapDeployer||kind==R3PartKind.EmpTrapDeployer;
+            bool trap=kind==R3PartKind.BlastTrapDeployer||kind==R3PartKind.EmpTrapDeployer||kind==R3PartKind.RepelTrapDeployer;
             float width=(trap?1f:3f)*Mathf.Sqrt(units),length=trap?1f:kind==R3PartKind.WallDeployer?.35f:kind==R3PartKind.JumpPadDeployer?3f:4f;
             float thickness=kind==R3PartKind.WallDeployer?2f:.3f,angle=kind==R3PartKind.RampDeployer?18f:0f;
             Vector3 at=body.position+behind*(rear+length*.5f+.6f);
@@ -155,10 +155,12 @@ namespace RoboRougelike.R3
             if(trap&&(float.IsNaN(radius)||float.IsInfinity(radius)||radius<=0||float.IsNaN(damage)||float.IsInfinity(damage)||damage<=0||
                 float.IsNaN(duration)||float.IsInfinity(duration)||duration<=0||radius>float.MaxValue/2||
                 (double)damage*units>float.MaxValue||(double)duration*units>float.MaxValue))return false;
+            float repel=assembly.Model.Economy.TrapRepelSpeed;
+            if(kind==R3PartKind.RepelTrapDeployer&&(float.IsNaN(repel)||float.IsInfinity(repel)||repel<=0||(double)repel*units>float.MaxValue))return false;
             if(!energy.TrySpend(cost))return false;
             assembly.Model.Charges.TrySpend(pool,1);SetReadyAt(kind,Time.time+cooldown);
             var ramp=GameObject.CreatePrimitive(PrimitiveType.Cube);
-            ramp.name=kind==R3PartKind.RampDeployer?"Rozstawiona rampa":kind==R3PartKind.WallDeployer?"Rozstawiony murek":kind==R3PartKind.JumpPadDeployer?"Rozstawiony jump pad":kind==R3PartKind.BlastTrapDeployer?"Pułapka wybuchowa":"Pułapka EMP";
+            ramp.name=kind==R3PartKind.RampDeployer?"Rozstawiona rampa":kind==R3PartKind.WallDeployer?"Rozstawiony murek":kind==R3PartKind.JumpPadDeployer?"Rozstawiony jump pad":kind==R3PartKind.BlastTrapDeployer?"Pułapka wybuchowa":kind==R3PartKind.EmpTrapDeployer?"Pułapka EMP":"Pułapka odrzucająca";
             ramp.transform.SetPositionAndRotation(center,rotation);ramp.transform.localScale=new Vector3(width,thickness,length);
             var renderer=source.GetComponent<Renderer>();if(renderer!=null)ramp.GetComponent<Renderer>().sharedMaterial=renderer.sharedMaterial;
             ramp.AddComponent<R3DeployableSurface>().Configure(RRLHitRouter.Team(transform));
@@ -173,7 +175,7 @@ namespace RoboRougelike.R3
                 var sensor=new GameObject("Czujnik pułapki");sensor.transform.SetParent(ramp.transform,false);
                 sensor.transform.localScale=new Vector3(1f/width,1f/thickness,1f/length);
                 var trigger=sensor.AddComponent<SphereCollider>();trigger.isTrigger=true;trigger.radius=radius;
-                sensor.AddComponent<R3DeployableTrap>().Configure(ramp.transform,transform,kind,radius,damage*units,duration*units);
+                sensor.AddComponent<R3DeployableTrap>().Configure(ramp.transform,transform,kind,radius,damage*units,duration*units,assembly.Model.Economy.TrapRepelSpeed*units);
             }
             spawned.Add(ramp);Destroy(ramp,lifetime);return true;
         }

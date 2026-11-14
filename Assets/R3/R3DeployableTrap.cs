@@ -11,11 +11,11 @@ namespace RoboRougelike.R3
     {
         Transform owner,root;
         R3PartKind kind;
-        float radius,damage,duration;
+        float radius,damage,duration,repelSpeed;
         bool activated;
         public bool Activated=>activated;
-        public void Configure(Transform trap,Transform source,R3PartKind type,float triggerRadius,float blastDamage,float empDuration)
-        {root=trap;owner=source;kind=type;radius=triggerRadius;damage=blastDamage;duration=empDuration;}
+        public void Configure(Transform trap,Transform source,R3PartKind type,float triggerRadius,float blastDamage,float empDuration,float repel)
+        {root=trap;owner=source;kind=type;radius=triggerRadius;damage=blastDamage;duration=empDuration;repelSpeed=repel;}
         void OnTriggerEnter(Collider other)
         {
             if(activated||owner==null||root==null||!RRLHitRouter.CanHit(other,owner))return;
@@ -29,6 +29,20 @@ namespace RoboRougelike.R3
                 emitter.BindVehicle(owner,owner.GetInstanceID(),RRLHitRouter.Team(owner));emitter.SetOrigin(root);
                 emitter.ConfigurePhysics(~0,~0,8192,512);emitter.Configure(radius*2,duration,0);
                 emitter.TryPulse(out _);
+            }
+            else if(kind==R3PartKind.RepelTrapDeployer)
+            {
+                var bodies=new HashSet<Rigidbody>();Vector3 origin=root.position;
+                foreach(var hit in Physics.OverlapSphere(origin,radius,~0,QueryTriggerInteraction.Ignore))
+                {
+                    if(!RRLHitRouter.CanHit(hit,owner))continue;
+                    var target=hit.GetComponentInParent<P12PipelineSafeEnemyTurret>();
+                    var body=hit.attachedRigidbody;
+                    if(target==null||target.IsDefeated||body==null||body.isKinematic||!bodies.Add(body))continue;
+                    Vector3 away=Vector3.ProjectOnPlane(body.position-origin,Vector3.up).normalized;
+                    if(away.sqrMagnitude<.01f)away=root.forward;
+                    body.AddForce(away*repelSpeed,ForceMode.VelocityChange);
+                }
             }
             else
             {

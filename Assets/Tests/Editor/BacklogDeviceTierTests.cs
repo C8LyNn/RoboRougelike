@@ -260,6 +260,32 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(peak,Is.LessThan(8),"The pad must not multiply its impulse by the number of vehicle colliders");
         Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator RepelTrapPushesRealEnemyAwayWithoutPushingOwner()
+    {
+        Assert.That(System.Enum.TryParse("RepelTrapDeployer",out R3PartKind kind),Is.True,"Missing repel trap");
+        run.VehicleModel.Award(2500);FuseAndMount(kind);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"repel-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();enemy.ConfigureMovement(0,12,0);var enemyBody=enemy.GetComponent<Rigidbody>();
+        enemyBody.position=new Vector3(140,2,140);enemyBody.useGravity=false;enemyBody.linearVelocity=Vector3.zero;
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.forward*3;
+        Assert.That(service.TryDeploy(kind),Is.True);var trap=GameObject.Find("Pułapka odrzucająca");Assert.That(trap,Is.Not.Null);
+        Vector3 origin=trap.transform.position;float ownHp=player.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        float enemyHp=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        enemyBody.position=origin+new Vector3(1,1,0);enemyBody.linearVelocity=Vector3.zero;Physics.SyncTransforms();
+        var sensor=trap.GetComponentInChildren<R3DeployableTrap>();float deadline=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<deadline&&trap!=null&&!sensor.Activated)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(sensor==null||sensor.Activated,Is.True);yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(enemyBody.linearVelocity.x,Is.GreaterThan(.1f),"The enemy must move outward from the trap");
+        Assert.That(enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.EqualTo(enemyHp));
+        Assert.That(player.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.EqualTo(ownHp));
+        Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator BlastAndEmpTrapsTriggerOnRealEnemiesWithoutHurtingTheirOwner()
     {
         run.VehicleModel.Award(2500);FuseAndMount(R3PartKind.BlastTrapDeployer);FuseAndMount(R3PartKind.EmpTrapDeployer);

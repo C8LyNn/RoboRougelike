@@ -156,3 +156,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Zamknięto obejście limitu czterech rodzajów rozstawianych urządzeń przez spreparowany zapis standardowej wyprawy. Prawidłowy zapis czterech rodzajów nadal się wczytuje; kreatywny warsztat pozostaje bez limitu i nie zapisuje stanu jako zwykłej wyprawy.
 - Unity EditMode: test reprodukcji przed poprawką **FAIL** (`backlog-deployable-save-red2.xml`: pięć rodzajów zostało przyjętych); po poprawce zestaw slotów, checkpointów i rzeczywistego przeciwnika **14 PASS, 0 FAIL**, exit 0 (`backlog-deployable-save-final.xml` i `.log`). Pierwsza wersja testu dawała fałszywie pozytywny wynik ze względu na nieprawidłową ręcznie skonstruowaną część, dlatego zastąpiono ją konstrukcją naprawdę zmontowaną w trybie kreatywnym.
+
+### 25. Pułapka odrzucająca — kolejny prototyp
+
+- Dodano generator 1×1×1 w garażu, przypisanie do wspólnej puli urządzeń, własną pulę ładunków i cooldown zapisany w checkpointach. Postawiona za robotem pułapka jednorazowo nadaje pobliskim wrogim Rigidbody impuls od siebie, bez zadawania obrażeń HP; wielokrotne collidery tego samego pojazdu nie mnożą impulsu. Siła jest konfigurowalna i rośnie z wkładem działających kopii. Pozostałe trzy rodzaje pułapek nadal wymagają pracy.
+- Unity EditMode: test przed implementacją FAIL z powodu brakującego rodzaju (`backlog-repel-red.xml`); pierwsza kompilacja po zmianie FAIL wskutek brakującego pola cooldown (`backlog-repel-first.log`); po poprawce **20 PASS, 0 FAIL**, kod 0 (`backlog-repel-second.xml` i `.log`). Test sprawdza rzeczywisty impuls Rigidbody przeciwnika i brak obrażeń, a także regresję pozostałych pułapek, slotów, ładunków i zapisów. Ręczny Windows Player i balans: NOT RUN.
