@@ -40,6 +40,27 @@ public class CreativeRangeTests
         yield return null;
     }
 
+    [UnityTest] public IEnumerator GarageUndersideUsesReassignedKey()
+    {
+        var profile=R1ControlProfile.Current;var old=profile.Snapshot();
+        try
+        {
+            profile.ResetDefaults();Assert.That(profile.TryBind("GarageUnderside","K"),Is.True);
+            var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+            var garage=run.Garage;var field=typeof(R3GarageView).GetField("pitch",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            float before=(float)field.GetValue(garage);
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.U},Vector2.zero);
+            Assert.That((float)field.GetValue(garage),Is.EqualTo(before));
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K},Vector2.zero);
+            Assert.That((float)field.GetValue(garage),Is.Not.EqualTo(before));
+            float changed=(float)field.GetValue(garage);
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K,control=true},Vector2.zero);
+            Assert.That((float)field.GetValue(garage),Is.EqualTo(changed));
+            yield return null;
+        }
+        finally{typeof(R1ControlProfile).GetMethod("RestoreValues",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(profile,new object[]{old});}
+    }
+
     [UnityTest] public IEnumerator EscapeClosesEnemyMenuBeforeResumingSimulation()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);

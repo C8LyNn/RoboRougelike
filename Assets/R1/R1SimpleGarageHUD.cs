@@ -833,7 +833,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(500,608,165,36),"Ustaw pojazd",compactButton))run.TryEmergencyRescue();
             if(GUI.Button(new Rect(675,608,175,36),"Projekty",compactButton))OpenBlueprintLibrary();
             if(garageShortcutLabel==null)garageShortcutLabel=new GUIStyle(small){fontSize=14,wordWrap=false};
-            GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • ŚPM: wybierz typ\nPPM przeciągnij: widok • U: spód\nQ/E R/F Z/X: obrót • Shift: część\nCtrl+LPM: napraw • Home: widok",garageShortcutLabel);
+            GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • ŚPM: wybierz typ\nPPM przeciągnij: widok • "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageUnderside"))+": spód\nQ/E R/F Z/X: obrót • Shift: część\nCtrl+LPM: napraw • Home: widok",garageShortcutLabel);
             string garageFeedback=SimpleGarageFeedback(run);
             DrawGarageNotice(false,garageFeedback,!run.MapEditorSession&&garageFeedback.Contains("Start zablokowany:"));
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);

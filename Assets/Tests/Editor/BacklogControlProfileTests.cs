@@ -11,6 +11,34 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [Test] public void GarageUndersideBindingMigratesAndCanBeChangedWithoutStealingExistingKeys()
+    {
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-garage-"+Guid.NewGuid()+".json");
+        try
+        {
+            var initial=new R1ControlProfile(path);var previousActions=R1ControlProfile.Actions.Where(a=>a!="GarageUnderside").ToArray();
+            var previousBindings=previousActions.Select(initial.Binding).ToArray();
+            previousBindings[Array.IndexOf(previousActions,"MoveForward")]="U";
+            var data=new LegacyControlData{actions=previousActions,bindings=previousBindings};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            var loaded=new R1ControlProfile(path);Assert.That(loaded.Error,Is.Null);
+            Assert.That(loaded.Binding("MoveForward"),Is.EqualTo("U"));
+            Assert.That(loaded.Binding("GarageUnderside"),Is.Not.EqualTo("U"));
+            Assert.That(R1ControlProfile.ValidSnapshot(previousBindings),Is.True);
+            Assert.That(loaded.TryBind("GarageUnderside","K"),Is.True);
+            Assert.That(loaded.TryBind("MoveBackward","K"),Is.False);
+            Assert.That(loaded.TrySaveBinding("GarageUnderside","MouseMiddle",out var blocked),Is.False);
+            Assert.That(blocked,Does.Contain("garażu"));
+            var invalid=loaded.Snapshot();invalid[Array.IndexOf(R1ControlProfile.Actions,"GarageUnderside")]="MouseMiddle";
+            Assert.That(R1ControlProfile.ValidSnapshot(invalid),Is.False);
+            Assert.That(loaded.TryBind("GarageUnderside","MouseBack"),Is.True);
+            Assert.That(loaded.TryBind("GarageUnderside","K"),Is.True);
+            loaded.Save();Assert.That(new R1ControlProfile(path).Binding("GarageUnderside"),Is.EqualTo("K"));
+            Assert.That(loaded.MatchesEvent("GarageUnderside",Event.KeyboardEvent("k")),Is.True);
+            Assert.That(loaded.MatchesEvent("GarageUnderside",Event.KeyboardEvent("u")),Is.False);
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [Test] public void PunctuationBindingsUsePlayerFacingSymbols()
     {
         Assert.That(R1ControlProfile.Display("Comma"),Is.EqualTo(","));

@@ -745,7 +745,8 @@ namespace RoboRougelike.R3
                 var tool=ToolShortcut(current.keyCode,current.shift||current.control||current.alt||current.command);
                 if(tool.HasValue){SelectTool(tool.Value);current.Use();return;}
             }
-            if(current.type==EventType.KeyDown&&current.keyCode==KeyCode.U)
+            if((current.type==EventType.KeyDown||(inside&&current.type==EventType.MouseDown))&&
+               R1ControlProfile.Current.MatchesEvent("GarageUnderside",current))
             {ToggleUndersideView();current.Use();return;}
             if(current.type==EventType.KeyDown&&current.keyCode==KeyCode.Home&&
                !current.shift&&!current.control&&!current.alt&&!current.command)

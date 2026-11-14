@@ -14,9 +14,9 @@ namespace RoboRougelike.R1
     {
         public static readonly string[] Actions={"MoveForward","MoveBackward","TurnLeft","TurnRight",
             "Weapon1","Weapon2","Weapon3","Weapon4","Active1","Active2","Active3","Active4",
-            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails","ResetRange","WeaponStatusPage","DefenseStatusPage"};
+            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails","ResetRange","WeaponStatusPage","DefenseStatusPage","GarageUnderside"};
         static readonly string[] Defaults={"W","S","A","D","MouseLeft","MouseRight","Q","E",
-            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I","R","Tab","P"};
+            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I","R","Tab","P","U"};
         const int OriginalActionCount=20;
         readonly Dictionary<string,string> bindings=new Dictionary<string,string>();
         readonly string path;
@@ -72,7 +72,7 @@ namespace RoboRougelike.R1
         public static bool ValidSnapshot(string[] values)
         {
             var full=NormalizeSnapshot(values);
-            return full!=null&&full.Length==Actions.Length&&full.All(x=>ValidBinding(x)&&!Reserved(x))&&
+            return full!=null&&full.Length==Actions.Length&&full.Select((value,i)=>ValidBinding(value)&&!Reserved(value)&&!GarageMouseReserved(Actions[i],value)).All(valid=>valid)&&
                 full.Distinct(StringComparer.OrdinalIgnoreCase).Count()==Actions.Length;
         }
         public bool TryRestoreSnapshot(string[] values,out string message)
@@ -93,6 +93,9 @@ namespace RoboRougelike.R1
         // Fixed session/UI shortcuts remain reserved until they too are configurable.
         public static bool Reserved(string binding)=>new[]{"Escape","Enter","NumpadEnter",
             "UpArrow","DownArrow","LeftArrow","RightArrow","F4","F8","F10"}.Contains(binding);
+        // These buttons already place, remove/orbit and pick parts in the garage.
+        static bool GarageMouseReserved(string action,string binding)=>action=="GarageUnderside"&&
+            (binding=="MouseLeft"||binding=="MouseRight"||binding=="MouseMiddle");
         public static string Display(string binding)=>binding=="MouseLeft"?"LPM":binding=="MouseRight"?"PPM":
             binding=="MouseMiddle"?"ŚPM":binding=="MouseForward"?"Mysz 4":binding=="MouseBack"?"Mysz 5":
             binding=="Comma"?",":binding=="Period"?".":
@@ -111,12 +114,13 @@ namespace RoboRougelike.R1
         public bool MatchesEvent(string action,Event e)=>string.Equals(Binding(action),FromEvent(e),StringComparison.Ordinal);
         public bool TryBind(string action,string binding)
         {
-            if(!bindings.ContainsKey(action)||!ValidBinding(binding)||Reserved(binding)||Conflict(action,binding)!=null)return false;
+            if(!bindings.ContainsKey(action)||!ValidBinding(binding)||Reserved(binding)||GarageMouseReserved(action,binding)||Conflict(action,binding)!=null)return false;
             bindings[action]=binding;return true;
         }
         public bool TrySaveBinding(string action,string binding,out string message)
         {
             var old=Binding(action);string conflict=Conflict(action,binding);
+            if(GarageMouseReserved(action,binding)){message="Ten przycisk wykonuje już podstawową akcję w garażu.";return false;}
             if(Reserved(binding)){message="Ten klawisz jest używany przez inne sterowanie.";return false;}
             if(conflict!=null){message="Ten przycisk jest już używany: "+ActionName(conflict)+".";return false;}
             if(!TryBind(action,binding)){message="Nie można przypisać tego przycisku.";return false;}
@@ -129,7 +133,8 @@ namespace RoboRougelike.R1
                 case "TurnLeft":return "Skręt w lewo";case "TurnRight":return "Skręt w prawo";
                 case "Gyro":return "Żyroskop";case "Reload":return "Przeładowanie";
                 case "SteeringLeft":return "Obrót w lewo";case "SteeringRight":return "Obrót w prawo";case "SteeringMode":return "Tryb skrętu";case "CombatDetails":return "Szczegóły w walce";case "ResetRange":return "Reset poligonu";
-                case "WeaponStatusPage":return "Następna strona uzbrojenia";case "DefenseStatusPage":return "Następna strona obrony";}
+                case "WeaponStatusPage":return "Następna strona uzbrojenia";case "DefenseStatusPage":return "Następna strona obrony";
+                case "GarageUnderside":return "Garaż: widok od spodu";}
             if(action.StartsWith("Weapon"))return "Broń "+action.Substring(6);
             if(action.StartsWith("Active"))return "Moduł "+action.Substring(6);
             if(action.StartsWith("Deploy"))return "Urządzenie "+action.Substring(6);
