@@ -95,6 +95,56 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None),Is.Empty);
         Assert.That(run.Salvage.Items.Count,Is.GreaterThan(0),"Zero world-drop chance must preserve ordinary rewards");
     }
+    [UnityTest] public IEnumerator DestroyedGunDropsBeforeCoreAndIsNotDuplicatedAtVictory()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        var enemy=run.Encounter.Enemies.First();var body=enemy.GetComponent<Rigidbody>();body.isKinematic=true;
+        body.position=new Vector3(100,5,100);run.Encounter.SetCombatActive(true);Physics.SyncTransforms();
+        var gun=enemy.WeaponBlock;Assert.That(gun,Is.Not.Null);
+        gun.ApplyDamageResolvedTyped(gun.CurrentHp/.9f+1,gun.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Kinetic);
+        Assert.That(enemy.IsDefeated,Is.False,"The enemy core must still be alive");
+        var drop=Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).FirstOrDefault();
+        Assert.That(drop,Is.Not.Null,"Destroying an enemy gun must produce a pickup before the core dies");
+        string id=drop.ItemId;var player=run.Player.GetComponent<Rigidbody>();player.isKinematic=true;player.position=drop.transform.position;
+        Physics.SyncTransforms();float deadline=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<deadline&&!run.VehicleModel.Owns(id))yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(run.VehicleModel.Owns(id),Is.True);
+        enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        Assert.That(run.Salvage.Items.Any(p=>p.Id==id),Is.False,"Wreck capture must not recreate the already collected gun");
+        Assert.That(Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Any(p=>p.ItemId==id),Is.False,"Wreck capture must not spawn a second pickup for an early drop");
+        Assert.That(run.VehicleModel.Inventory.Count(p=>p.Id==id),Is.EqualTo(1));
+        Assert.That(run.Salvage.Items.Count,Is.GreaterThan(0),"Remaining enemy parts must still be recorded");
+    }
+    [UnityTest] public IEnumerator UncollectedEarlyDropIsNotSpawnedAgainWhenEnemyDies()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        var enemy=run.Encounter.Enemies.First();var body=enemy.GetComponent<Rigidbody>();body.isKinematic=true;
+        body.position=new Vector3(100,5,100);run.Encounter.SetCombatActive(true);Physics.SyncTransforms();
+        var gun=enemy.WeaponBlock;gun.ApplyDamageResolvedTyped(gun.CurrentHp/.9f+1,gun.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Kinetic);
+        Assert.That(enemy.IsDefeated,Is.False);
+        var drop=Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).First();string id=drop.ItemId;
+        enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        Assert.That(Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Count(p=>p.ItemId==id),Is.EqualTo(1));
+        Assert.That(run.Salvage.Items.Count(p=>p.Id==id),Is.EqualTo(1));
+        yield return null;
+    }
+    [UnityTest] public IEnumerator DestroyedEnemyWheelDropsItsTwoPartPackageBeforeCoreDies()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        var enemy=run.Encounter.Enemies.First();var body=enemy.GetComponent<Rigidbody>();body.isKinematic=true;
+        body.position=new Vector3(100,5,100);run.Encounter.SetCombatActive(true);Physics.SyncTransforms();
+        var wheel=enemy.GetComponentsInChildren<P12PipelineSafeDamageable>().First(p=>p.gameObject.name=="Koło przeciwnika");
+        wheel.ApplyDamageResolvedTyped(wheel.CurrentHp/.75f+1,wheel.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Kinetic);
+        Assert.That(wheel.IsDead,Is.True,"The test impact must actually destroy the wheel");
+        Assert.That(enemy.IsDefeated,Is.False);
+        var drop=Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None)
+            .First(p=>run.Salvage.Items.Any(item=>item.Id==p.ItemId&&item.Kind==R3PartKind.Wheel));
+        string id=drop.ItemId;var player=run.Player.GetComponent<Rigidbody>();player.isKinematic=true;player.position=drop.transform.position;
+        Physics.SyncTransforms();float deadline=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<deadline&&!run.VehicleModel.Owns(id))yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(run.VehicleModel.Owns(id),Is.True);
+        Assert.That(run.VehicleModel.Inventory.Count(p=>p.Kind==R3PartKind.Wheel),Is.EqualTo(2));
+    }
     [UnityTest] public IEnumerator ShotgunTierTwoConsumesSixEnergyAndDamagesWithRealPellets()
     {
         var gun=Build(R4WeaponKind.Shotgun,out var energy);var hp=Target(gun,6);float before=energy.Current;

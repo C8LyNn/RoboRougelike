@@ -55,6 +55,20 @@ public class R4SalvageModelTests
         Assert.That(model.Inventory.Single(p=>p.Id==wheel.Id).Health,Is.EqualTo(.6f));
         Assert.That(ledger.Items.Any(p=>p.Id==wheel.Id),Is.False);
     }
+    [Test] public void PartDroppedBeforeEnemyDeathIsRecordedOnceAfterFullWreckCapture()
+    {
+        var model=Model();var ledger=new R4SalvageLedger(2);var early=Item("early-gun",0);var later=Item("later-gun",.8f);
+        var record=typeof(R4SalvageLedger).GetMethod("RecordDroppedPart");
+        Assert.That(record,Is.Not.Null,"Destroyed parts need a canonical early-drop transaction");
+        Assert.That((bool)record.Invoke(ledger,new object[]{"enemy",early}),Is.True);
+        Assert.That(ledger.TryCollectPhysical(model,"early-gun"),Is.True);
+        Assert.That(ledger.Record("other",new[]{early},R3EnemyArchetype.Gunner),Is.False,"Another enemy cannot reuse the identity");
+        Assert.That(ledger.Record("enemy",new[]{early,later},R3EnemyArchetype.Gunner),Is.True);
+        Assert.That(ledger.Items.Count(p=>p.Id=="early-gun"),Is.Zero);
+        Assert.That(ledger.Items.Count(p=>p.Id=="later-gun"),Is.EqualTo(1));
+        Assert.That(model.Inventory.Count(p=>p.Id=="early-gun"),Is.EqualTo(1));
+        Assert.That(ledger.CreateBasketOffers(2,0).SelectMany(p=>p.Items).Any(p=>p.Id=="early-gun"),Is.False);
+    }
     [Test] public void ClaimedEnemyPartsArriveHealthyWithoutChangingSnapshotsAmmoScrapOrOwnDamage()
     {
         var model=Model();var own=model.Parts.First(p=>p.Kind==R3PartKind.Armor);own.Health=.4f;

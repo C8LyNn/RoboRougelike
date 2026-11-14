@@ -52,6 +52,8 @@ namespace RoboRougelike.R4
         private readonly HashSet<string> enemies=new HashSet<string>();
         private readonly HashSet<string> ids=new HashSet<string>();
         private readonly HashSet<string> collected=new HashSet<string>(StringComparer.Ordinal);
+        private readonly Dictionary<string,string> earlyOwners=new Dictionary<string,string>(StringComparer.Ordinal);
+        private readonly Dictionary<string,R4SalvageItem> earlyItems=new Dictionary<string,R4SalvageItem>(StringComparer.Ordinal);
         private readonly List<(R3EnemyArchetype Type,R4SalvageItem[] Parts)> basketSources=new List<(R3EnemyArchetype,R4SalvageItem[])>();
         public IReadOnlyList<R4SalvageItem> Items => items.AsReadOnly();
         public int Limit { get; }
@@ -61,6 +63,13 @@ namespace RoboRougelike.R4
         public bool Record(string enemyId,IEnumerable<R4SalvageItem> equipment) => RecordCore(enemyId,equipment,null);
         public bool Record(string enemyId,IEnumerable<R4SalvageItem> equipment,R3EnemyArchetype archetype)
             => RecordCore(enemyId,equipment,archetype);
+        public bool RecordDroppedPart(string enemyId,R4SalvageItem item)
+        {
+            if(Closed||string.IsNullOrWhiteSpace(enemyId)||enemies.Contains(enemyId)||item==null||
+               string.IsNullOrWhiteSpace(item.Id)||!item.Selectable||ids.Contains(item.Id)||!R3VehicleModel.ValidEconomicPart(item.ToPart()))return false;
+            ids.Add(item.Id);items.Add(item);earlyOwners.Add(item.Id,enemyId);earlyItems.Add(item.Id,item);return true;
+        }
+        public bool HasEarlyDrop(string id)=>!string.IsNullOrWhiteSpace(id)&&earlyOwners.ContainsKey(id);
         // Collecting a world drop and reward settlement share the same identity
         // ledger. Only mark it collected after the whole inventory batch succeeds.
         public bool TryCollectPhysical(R3VehicleModel model,string id)
@@ -79,11 +88,18 @@ namespace RoboRougelike.R4
         {
             if(Closed||string.IsNullOrWhiteSpace(enemyId)||enemies.Contains(enemyId)||equipment==null)return false;
             var batch=equipment.ToArray();
-            if(batch.Any(p=>p==null||string.IsNullOrWhiteSpace(p.Id)||ids.Contains(p.Id)||p.Kind==R3PartKind.Core||
+            if(batch.Any(p=>p==null||string.IsNullOrWhiteSpace(p.Id)||(ids.Contains(p.Id)&&(!earlyOwners.TryGetValue(p.Id,out var owner)||owner!=enemyId))||p.Kind==R3PartKind.Core||
                 !R3VehicleModel.ValidEconomicPart(p.ToPart()))||
                 batch.Select(p=>p.Id).Distinct().Count()!=batch.Length)return false;
-            enemies.Add(enemyId);foreach(var item in batch){ids.Add(item.Id);items.Add(item);}
-            if(archetype.HasValue)basketSources.Add((archetype.Value,batch));
+            enemies.Add(enemyId);
+            foreach(var item in batch)if(ids.Add(item.Id))items.Add(item);
+            if(archetype.HasValue)
+            {
+                var seen=new HashSet<string>(batch.Select(p=>p.Id),StringComparer.Ordinal);
+                var source=batch.Select(p=>earlyItems.TryGetValue(p.Id,out var earlier)?earlier:p)
+                    .Concat(earlyOwners.Where(p=>p.Value==enemyId&&!seen.Contains(p.Key)).Select(p=>earlyItems[p.Key])).ToArray();
+                basketSources.Add((archetype.Value,source));
+            }
             return true;
         }
         public IReadOnlyList<R4SalvageBasket> CreateBasketOffers(int seed,int stage)=>CreateBasketOffers(seed,stage,3);
