@@ -6,18 +6,41 @@ using UnityEngine;
 
 namespace RoboRougelike.R3
 {
+    // Multiple effects remain independent; expiry of a stronger effect must
+    // reveal any weaker one that still has time left.
+    public sealed class R3EnemyMovementDebuff : MonoBehaviour
+    {
+        struct Effect {public float Factor,Until;}
+        readonly List<Effect> effects=new List<Effect>();
+        public void Apply(float factor,float seconds)
+        {
+            if(float.IsNaN(factor)||float.IsInfinity(factor)||factor<0||factor>=1||
+                float.IsNaN(seconds)||float.IsInfinity(seconds)||seconds<=0)return;
+            effects.Add(new Effect{Factor=factor,Until=Time.time+seconds});
+        }
+        public float Multiplier
+        {
+            get
+            {
+                float value=1;
+                for(int i=effects.Count-1;i>=0;i--)
+                    if(effects[i].Until<=Time.time)effects.RemoveAt(i);else value=Mathf.Min(value,effects[i].Factor);
+                return value;
+            }
+        }
+    }
     // Sensor is a child of the physical deployable so it has its own trigger collider.
     public sealed class R3DeployableTrap : MonoBehaviour
     {
         Transform owner,root;
         R3PartKind kind;
-        float radius,damage,duration,repelSpeed,damagePerSecond,fieldDuration,expiresAt;
+        float radius,damage,duration,repelSpeed,damagePerSecond,fieldDuration,expiresAt,slowFactor,slowSeconds;
         bool activated;
         Collider[] damageHits;
         Dictionary<Transform,Collider> damageTargets;
         public bool Activated=>activated;
-        public void Configure(Transform trap,Transform source,R3PartKind type,float triggerRadius,float blastDamage,float empDuration,float repel,float dot,float fieldSeconds,float trapSeconds)
-        {root=trap;owner=source;kind=type;radius=triggerRadius;damage=blastDamage;duration=empDuration;repelSpeed=repel;damagePerSecond=dot;fieldDuration=fieldSeconds;expiresAt=Time.time+trapSeconds;}
+        public void Configure(Transform trap,Transform source,R3PartKind type,float triggerRadius,float blastDamage,float empDuration,float repel,float dot,float fieldSeconds,float trapSeconds,float slow,float slowDuration)
+        {root=trap;owner=source;kind=type;radius=triggerRadius;damage=blastDamage;duration=empDuration;repelSpeed=repel;damagePerSecond=dot;fieldDuration=fieldSeconds;expiresAt=Time.time+trapSeconds;slowFactor=slow;slowSeconds=slowDuration;}
         void OnTriggerEnter(Collider other)
         {
             if(activated||owner==null||root==null||!RRLHitRouter.CanHit(other,owner))return;
@@ -38,6 +61,19 @@ namespace RoboRougelike.R3
                 emitter.BindVehicle(owner,owner.GetInstanceID(),RRLHitRouter.Team(owner));emitter.SetOrigin(root);
                 emitter.ConfigurePhysics(~0,~0,8192,512);emitter.Configure(radius*2,duration,0);
                 emitter.TryPulse(out _);
+            }
+            else if(kind==R3PartKind.SlowTrapDeployer)
+            {
+                var enemies=new HashSet<P12PipelineSafeEnemyTurret>();
+                foreach(var hit in Physics.OverlapSphere(root.position,radius,~0,QueryTriggerInteraction.Ignore))
+                {
+                    if(!RRLHitRouter.CanHit(hit,owner))continue;
+                    var target=hit.GetComponentInParent<P12PipelineSafeEnemyTurret>();
+                    if(target==null||target.IsDefeated||!enemies.Add(target))continue;
+                    var debuff=target.GetComponent<R3EnemyMovementDebuff>();
+                    if(debuff==null)debuff=target.gameObject.AddComponent<R3EnemyMovementDebuff>();
+                    debuff.Apply(slowFactor,slowSeconds);
+                }
             }
             else if(kind==R3PartKind.RepelTrapDeployer)
             {

@@ -374,6 +374,14 @@ namespace RogueMachine.P12PipelineSafe
         public bool HasAttachedWeapon => (variantGuns.Count>0?variantGuns.Any(g=>g.Attached(transform)):PrimaryWeaponAttached)||
             additionalGuns.Any(g=>g.Attached(transform));
         public bool RecoveringFromPlayerContact => contactRecovery.Recovering;
+        public float EffectiveMovementSpeed
+        {
+            get
+            {
+                var debuff=GetComponent<R3EnemyMovementDebuff>();
+                return moveSpeed*(debuff!=null&&debuff.isActiveAndEnabled?debuff.Multiplier:1f);
+            }
+        }
 
         public void ConfigureMovement(float speed, float distance, float strafe)
         {
@@ -790,7 +798,8 @@ namespace RogueMachine.P12PipelineSafe
         {
             var drive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();
             if(drive!=null)drive.StepWorld(Vector3.zero,0);
-            if (!combatActive || IsDefeated || movementBody == null || playerRoot == null || moveSpeed <= 0) return;
+            float effectiveSpeed=EffectiveMovementSpeed;
+            if (!combatActive || IsDefeated || movementBody == null || playerRoot == null || effectiveSpeed <= 0) return;
             ConstrainOutwardBoundaryVelocity();
             Vector3 toward = Vector3.ProjectOnPlane(playerRoot.position - movementBody.position, Vector3.up);
             float distance = toward.magnitude;
@@ -820,7 +829,7 @@ namespace RogueMachine.P12PipelineSafe
             desired=recovering?ConstrainRetreatDirection(desired,toward):desired.normalized;
             float wheelFactor=driveWheels.Count==0?1:ActiveWheelCount/(float)driveWheels.Count;
             if(wheelFactor<=0)return;
-            float step = moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor) * Time.fixedDeltaTime;
+            float step = effectiveSpeed * Mathf.Lerp(0.3f,1,wheelFactor) * Time.fixedDeltaTime;
             float clearance = Mathf.Max(step + 0.08f, 1.4f);
             // A backward probe may begin overlapping the player. Ignore that
             // player only for approach-by-ram or retreat; physical collisions
@@ -888,7 +897,7 @@ namespace RogueMachine.P12PipelineSafe
             next.x=Mathf.Clamp(next.x,movementBounds.min.x,movementBounds.max.x);next.z=Mathf.Clamp(next.z,movementBounds.min.z,movementBounds.max.z);
             if(drive!=null)
             {
-                float speed=moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor);
+                float speed=effectiveSpeed * Mathf.Lerp(0.3f,1,wheelFactor);
                 if(recovering)
                 {
                     var input=RoboRougelike.R6.R6VehicleDrive.WorldSteering(transform.forward,desired,drive.GroundNormal,drive.ForwardSpeed);

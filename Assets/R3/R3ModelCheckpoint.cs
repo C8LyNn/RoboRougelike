@@ -57,7 +57,7 @@ namespace RoboRougelike.R3
         public R3ActiveSlotCheckpoint[] deployablePreferences;
         public int constructionBudgetVersion,constructionBudgetLimit,constructionBudgetMilestonesApplied;
         public float repairPulseRemaining,boosterRemaining,overdriveRemaining,rapidFireRemaining,doubleShotOverdriveRemaining,targetedEmpRemaining,areaEmpRemaining,rechargePulseRemaining;
-        public float rampDeployerRemaining,wallDeployerRemaining,jumpPadDeployerRemaining,blastTrapDeployerRemaining,empTrapDeployerRemaining,repelTrapDeployerRemaining,damageTrapDeployerRemaining;
+        public float rampDeployerRemaining,wallDeployerRemaining,jumpPadDeployerRemaining,blastTrapDeployerRemaining,empTrapDeployerRemaining,repelTrapDeployerRemaining,damageTrapDeployerRemaining,slowTrapDeployerRemaining;
         public int scrap;
         public bool suspensionEnabled,gyroEnabled,hasA,hasB,hasC,hasD;
         public int groupA,groupB,groupC,groupD;
@@ -152,7 +152,7 @@ namespace RoboRougelike.R3
                 rechargePulseRemaining=Remaining(RechargePulseReadyAt,now),
                 rampDeployerRemaining=Remaining(RampDeployerReadyAt,now),
                 wallDeployerRemaining=Remaining(WallDeployerReadyAt,now),jumpPadDeployerRemaining=Remaining(JumpPadDeployerReadyAt,now),
-                blastTrapDeployerRemaining=Remaining(BlastTrapDeployerReadyAt,now),empTrapDeployerRemaining=Remaining(EmpTrapDeployerReadyAt,now),repelTrapDeployerRemaining=Remaining(RepelTrapDeployerReadyAt,now),damageTrapDeployerRemaining=Remaining(DamageTrapDeployerReadyAt,now),
+                blastTrapDeployerRemaining=Remaining(BlastTrapDeployerReadyAt,now),empTrapDeployerRemaining=Remaining(EmpTrapDeployerReadyAt,now),repelTrapDeployerRemaining=Remaining(RepelTrapDeployerReadyAt,now),damageTrapDeployerRemaining=Remaining(DamageTrapDeployerReadyAt,now),slowTrapDeployerRemaining=Remaining(SlowTrapDeployerReadyAt,now),
                 suspensionEnabled=SuspensionEnabled,suspensionMode=SuspensionMode,suspensionHeight=SuspensionHeightOffset,
                 gyroEnabled=GyroEnabled,drive=SelectedDrive,boosterThrust=BoosterThrustNewtons,boosterDuration=BoosterDurationSeconds,
                 hoverHeight=HoverHeightMeters,grappleRemaining=Remaining(GrappleReadyAt,now),
@@ -189,7 +189,7 @@ namespace RoboRougelike.R3
                 !Finite(data.boosterDuration)||data.boosterDuration<.2f||data.boosterDuration>2||
                 !Finite(data.hoverHeight)||data.hoverHeight<.7f||data.hoverHeight>1.6f||
                 !Finite(data.grappleRemaining)||data.grappleRemaining<0||!Finite(data.repairPulseRemaining)||data.repairPulseRemaining<0||
-                !Finite(data.boosterRemaining)||data.boosterRemaining<0||!Finite(data.overdriveRemaining)||data.overdriveRemaining<0||!Finite(data.rapidFireRemaining)||data.rapidFireRemaining<0||!Finite(data.doubleShotOverdriveRemaining)||data.doubleShotOverdriveRemaining<0||!Finite(data.targetedEmpRemaining)||data.targetedEmpRemaining<0||!Finite(data.areaEmpRemaining)||data.areaEmpRemaining<0||!Finite(data.rechargePulseRemaining)||data.rechargePulseRemaining<0||!Finite(data.rampDeployerRemaining)||data.rampDeployerRemaining<0||!Finite(data.wallDeployerRemaining)||data.wallDeployerRemaining<0||!Finite(data.jumpPadDeployerRemaining)||data.jumpPadDeployerRemaining<0||!Finite(data.blastTrapDeployerRemaining)||data.blastTrapDeployerRemaining<0||!Finite(data.empTrapDeployerRemaining)||data.empTrapDeployerRemaining<0||!Finite(data.repelTrapDeployerRemaining)||data.repelTrapDeployerRemaining<0||!Finite(data.damageTrapDeployerRemaining)||data.damageTrapDeployerRemaining<0)return false;
+                !Finite(data.boosterRemaining)||data.boosterRemaining<0||!Finite(data.overdriveRemaining)||data.overdriveRemaining<0||!Finite(data.rapidFireRemaining)||data.rapidFireRemaining<0||!Finite(data.doubleShotOverdriveRemaining)||data.doubleShotOverdriveRemaining<0||!Finite(data.targetedEmpRemaining)||data.targetedEmpRemaining<0||!Finite(data.areaEmpRemaining)||data.areaEmpRemaining<0||!Finite(data.rechargePulseRemaining)||data.rechargePulseRemaining<0||!Finite(data.rampDeployerRemaining)||data.rampDeployerRemaining<0||!Finite(data.wallDeployerRemaining)||data.wallDeployerRemaining<0||!Finite(data.jumpPadDeployerRemaining)||data.jumpPadDeployerRemaining<0||!Finite(data.blastTrapDeployerRemaining)||data.blastTrapDeployerRemaining<0||!Finite(data.empTrapDeployerRemaining)||data.empTrapDeployerRemaining<0||!Finite(data.repelTrapDeployerRemaining)||data.repelTrapDeployerRemaining<0||!Finite(data.damageTrapDeployerRemaining)||data.damageTrapDeployerRemaining<0||!Finite(data.slowTrapDeployerRemaining)||data.slowTrapDeployerRemaining<0)return false;
             var all=data.mounted.Concat(data.inventory).ToArray();
             if(data.energyVersion==0&&all.Any(p=>p!=null&&p.FootprintRevision!=0))return false;
             if(all.Any(p=>!ValidCheckpointPart(p))||all.Select(p=>p.Id).Distinct(StringComparer.Ordinal).Count()!=all.Length||
@@ -363,6 +363,7 @@ namespace RoboRougelike.R3
             restored.EmpTrapDeployerReadyAt=data.empTrapDeployerRemaining>0?now+data.empTrapDeployerRemaining:0;
             restored.RepelTrapDeployerReadyAt=data.repelTrapDeployerRemaining>0?now+data.repelTrapDeployerRemaining:0;
             restored.DamageTrapDeployerReadyAt=data.damageTrapDeployerRemaining>0?now+data.damageTrapDeployerRemaining:0;
+            restored.SlowTrapDeployerReadyAt=data.slowTrapDeployerRemaining>0?now+data.slowTrapDeployerRemaining:0;
             restored.BoosterReadyAt=data.boosterRemaining>0?now+data.boosterRemaining:0;
             restored.SuspensionMode=data.suspensionMode;restored.SuspensionHeightOffset=data.suspensionHeight;restored.GyroEnabled=data.gyroEnabled;
             restored.BoosterThrustNewtons=data.boosterThrust;restored.BoosterDurationSeconds=data.boosterDuration;restored.HoverHeightMeters=data.hoverHeight;
