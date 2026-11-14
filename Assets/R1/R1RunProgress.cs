@@ -11,7 +11,7 @@ namespace RoboRougelike.R1
         public float hull,damage,fireInterval,mobility,core;
         public string[] acquired;
     }
-    public enum R1RunState { Ready, Combat, UpgradeChoice, Won, Lost, Garage, Salvage, Route, TestDrive }
+    public enum R1RunState { Ready, Combat, UpgradeChoice, Won, Lost, Garage, Salvage, Route, TestDrive, SafeZone }
 
     // One additive increased/reduced group followed by independent more/less
     // factors. Double intermediates and saturation prevent non-finite stats.
@@ -119,7 +119,7 @@ namespace RoboRougelike.R1
         public R1RunProgress(int total = 3, bool useRoutes = false) { TotalEncounters = Math.Max(3, total); routes=useRoutes; }
         public R1ProgressCheckpoint MakeGarageCheckpoint()
         {
-            if(State!=R1RunState.Garage)return null;
+            if(State!=R1RunState.Garage&&State!=R1RunState.SafeZone)return null;
             return new R1ProgressCheckpoint{encounterIndex=EncounterIndex,completed=CompletedEncounters,
                 hull=Stats.Hull,damage=Stats.Damage,fireInterval=Stats.FireInterval,mobility=Stats.Mobility,core=Stats.Core,
                 acquired=acquired.ToArray()};
@@ -216,6 +216,8 @@ namespace RoboRougelike.R1
         public bool PrepareGarage(){if(State!=R1RunState.Route||EncounterIndex!=0||CompletedEncounters!=0)return false;State=R1RunState.Garage;return true;}
         public bool BeginTest(){if(State!=R1RunState.Garage)return false;State=R1RunState.TestDrive;return true;}
         public bool EndTest(){if(State!=R1RunState.TestDrive)return false;State=R1RunState.Garage;return true;}
+        public bool BeginSafeZone(){if(State!=R1RunState.Garage)return false;State=R1RunState.SafeZone;return true;}
+        public bool EndSafeZone(){if(State!=R1RunState.SafeZone)return false;State=R1RunState.Garage;return true;}
         public bool ChooseRoute()
         {
             if(State!=R1RunState.Route)return false;

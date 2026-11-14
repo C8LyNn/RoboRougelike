@@ -318,6 +318,11 @@ namespace RoboRougelike.R3
             if(support)drone.AddComponent<R3SupportTurret>().Configure(assembly,e.SupportDroneRadius,e.SupportDroneEnergyPerSecond);
             hp.Died+=()=>{if(drone!=null)Destroy(drone);};spawned.Add(drone);Destroy(drone,e.DroneLifetime);return true;
         }
-        void OnDestroy(){foreach(var item in spawned)if(item!=null)Destroy(item);spawned.Clear();}
+        public void ClearSpawned()
+        {
+            foreach(var item in spawned)if(item!=null){item.SetActive(false);Destroy(item);}
+            spawned.Clear();
+        }
+        void OnDestroy()=>ClearSpawned();
     }
 }

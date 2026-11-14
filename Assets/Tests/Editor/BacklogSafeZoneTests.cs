@@ -132,13 +132,15 @@ public sealed class BacklogSafeZoneTests
 
 public sealed class BacklogSafeZoneGameplayTests
 {
-    R1RunController run;string technologyPath;
+    R1RunController run;string technologyPath,savePath;
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
         for(int i=0;i<300&&R1RunController.Instance?.Progress==null;i++)yield return null;
         run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
         technologyPath=System.IO.Path.Combine(System.IO.Path.GetTempPath(),"rrl-safezone-tech-"+System.Guid.NewGuid().ToString("N")+".json");
+        savePath=System.IO.Path.Combine(System.IO.Path.GetTempPath(),"rrl-safezone-save-"+System.Guid.NewGuid().ToString("N")+".json");
+        R1RunCheckpointStorage.TestPath=savePath;
         typeof(R1RunController).GetProperty("Technology").GetSetMethod(true).Invoke(run,new object[]{new R1TechnologyProgress(technologyPath)});
         Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
         for(int i=0;i<300&&run.Transitioning;i++)yield return null;
@@ -216,9 +218,97 @@ public sealed class BacklogSafeZoneGameplayTests
         Assert.That(run.GarageBuyVendorOffer(offer.Index),Is.False);
         yield return null;
     }
+    [UnityTest] public IEnumerator SafeZoneWorldAllowsNearbyVendorTradeAndReturnsWithoutDuplicatingRewards()
+    {
+        for(int stage=1;stage<=2;stage++)
+        {
+            run.Encounter.SetCombatActive(false);
+            foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.up);
+            for(int i=0;i<600&&run.Progress.State!=R1RunState.Salvage;i++)
+            {
+                if(run.PickupGraceRemaining>0)typeof(R1RunController).GetField("pickupGraceDeadline",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).SetValue(run,Time.time);
+                yield return null;
+            }
+            Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+            Assert.That(run.ConfirmRewards(System.Array.Empty<string>(),new[]{0}),Is.True);
+            if(stage==1)
+            {
+                Assert.That(run.StartNextEncounter()&&run.ChooseRoute(0),Is.True);
+                for(int i=0;i<300&&run.Transitioning;i++)yield return null;
+            }
+        }
+        var enter=typeof(R1RunController).GetMethod("EnterSafeZone");
+        var leave=typeof(R1RunController).GetMethod("ReturnFromSafeZone");
+        var open=typeof(R1RunController).GetMethod("OpenSafeZoneTrade");
+        var close=typeof(R1RunController).GetMethod("CloseSafeZoneTrade");
+        Assert.That(enter,Is.Not.Null);Assert.That(leave,Is.Not.Null);Assert.That(open,Is.Not.Null);Assert.That(close,Is.Not.Null);
+        var model=run.VehicleModel;model.Award(1000);
+        var generator=new R3PartState(default,R3PartKind.HealingDroneGenerator);
+        Assert.That(model.ReceiveSalvage(new[]{generator}),Is.True);
+        var mount=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(generator.Id,c,default)==null);
+        Assert.That(run.GarageMount(generator.Id,mount),Is.True);
+        int initialCount=model.Inventory.Count;
+        typeof(R1RunController).GetField("emergencyRescueReadyAt",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).SetValue(run,Time.time+100);
+        Assert.That((bool)enter.Invoke(run,null),Is.True);
+        for(int i=0;i<300&&run.Transitioning;i++)yield return null;
+        Assert.That(run.Progress.State.ToString(),Is.EqualTo("SafeZone"));Assert.That(run.CanUseMovement,Is.True);
+        Assert.That(run.VehicleModel,Is.SameAs(model));
+        var drive=run.Player.GetComponent<RoboRougelike.R6.R6VehicleDrive>();var drivenBody=run.Player.GetComponent<Rigidbody>();
+        float startZ=drivenBody.position.z;float deadline=Time.realtimeSinceStartup+8;
+        while(Time.realtimeSinceStartup<deadline&&drivenBody.position.z<startZ+.3f)
+        {yield return MOVSeriesDeviceTests.FixedStep();drive.Step(1,0,10,6,80);}
+        Assert.That(drive.GroundedWheels,Is.GreaterThan(0),"The safe-zone floor must support physical wheels.");
+        Assert.That(drivenBody.position.z,Is.GreaterThan(startZ+.3f),"The player must be able to drive in the zone.");
+        var vendor=GameObject.Find("Sprzedawca bezpiecznej strefy");Assert.That(vendor,Is.Not.Null);
+        Assert.That(run.TryEmergencyRescue(),Is.True,"Rescue must also work in the safe zone.");
+        Assert.That(run.EmergencyRescueActive,Is.True);
+        Assert.That(run.Player.GetComponent<R3DeployableService>().TryDeploy(R3PartKind.HealingDroneGenerator),Is.True);
+        var drone=GameObject.Find("Dron naprawczy");Assert.That(drone,Is.Not.Null);
+        Assert.That((bool)open.Invoke(run,null),Is.False,"Trade requires approaching the vendor.");
+        var offer=model.SafeZoneVendorOffers()[0];Assert.That(run.GarageBuyVendorOffer(offer.Index),Is.False);
+        var gun=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Gun&&p.Operational);
+        float hp=gun.Damageable.CurrentHp;gun.Damageable.ApplyDamage(10,gun.transform.position,Vector3.up);
+        Assert.That(gun.Damageable.CurrentHp,Is.EqualTo(hp),"Rescue outside combat protects all HP.");
+        float rescueDeadline=Time.realtimeSinceStartup+8;
+        while(run.EmergencyRescueActive&&Time.realtimeSinceStartup<rescueDeadline)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(run.EmergencyRescueActive,Is.False);
+        float next=gun.NextFireTime;run.Player.GetComponent<R3VehicleAssembly>().FireSlot(0);
+        Assert.That(gun.NextFireTime,Is.EqualTo(next),"Weapons cannot fire in the safe zone even after rescue ends.");
+        var body=run.Player.GetComponent<Rigidbody>();body.position=vendor.transform.position+Vector3.back*3;body.linearVelocity=Vector3.zero;Physics.SyncTransforms();
+        Assert.That((bool)open.Invoke(run,null),Is.True);Assert.That(Time.timeScale,Is.Zero);
+        Assert.That((bool)enter.Invoke(run,null),Is.False,"The zone cannot be entered again while trading.");
+        Assert.That(run.GarageBuyVendorOffer(offer.Index),Is.True);
+        Assert.That(model.Inventory.Count,Is.EqualTo(initialCount+model.GrantQuantity(offer.Kind)));
+        Assert.That(run.GarageBuyVendorOffer(offer.Index),Is.False);
+        Assert.That(run.SaveRunCheckpoint(),Is.True,run.RunSaveMessage);
+        Assert.That(run.RunSaveMessage,Does.Contain("garażu"));
+        var ids=model.Inventory.Select(p=>p.Id).OrderBy(id=>id).ToArray();int scrap=model.Scrap;
+        Assert.That((bool)close.Invoke(run,null),Is.True);Assert.That(Time.timeScale,Is.EqualTo(1));
+        run.TogglePause();Assert.That(run.Paused,Is.True);Assert.That((bool)leave.Invoke(run,null),Is.False);
+        run.TogglePause();Assert.That(run.Paused,Is.False);Assert.That(Time.timeScale,Is.EqualTo(1));
+        Assert.That((bool)leave.Invoke(run,null),Is.True);
+        for(int i=0;i<300&&run.Transitioning;i++)yield return null;
+        Assert.That(drone==null||!drone.activeInHierarchy,Is.True,"Deployed objects must not leak back into the workshop.");
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.VehicleModel,Is.SameAs(model));
+        Assert.That(run.GarageBuyVendorOffer(offer.Index),Is.False,"Returning must not refresh the offer.");
+        Assert.That(model.Inventory.Count,Is.EqualTo(initialCount+model.GrantQuantity(offer.Kind)));
+        Assert.That((bool)enter.Invoke(run,null),Is.True);Assert.That((bool)leave.Invoke(run,null),Is.True);
+        Assert.That(model.Inventory.Count,Is.EqualTo(initialCount+model.GrantQuantity(offer.Kind)),"Re-entry cannot repeat purchases.");
+        var previous=run;run.RestartRun();
+        for(int i=0;i<300&&(R1RunController.Instance==previous||R1RunController.Instance?.Progress==null);i++)yield return null;
+        run=R1RunController.Instance;Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Ready));
+        typeof(R1RunController).GetProperty("Technology").GetSetMethod(true).Invoke(run,new object[]{new R1TechnologyProgress(technologyPath)});
+        Assert.That(run.LoadRunCheckpoint(),Is.True,run.RunSaveMessage);
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        Assert.That(run.VehicleModel.Inventory.Select(p=>p.Id).OrderBy(id=>id),Is.EqualTo(ids));
+        Assert.That(run.GarageBuyVendorOffer(offer.Index),Is.False,"The sold state survives save/load.");
+    }
     [UnityTearDown] public IEnumerator Cleanup()
     {
         if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}
+        R1RunCheckpointStorage.TestPath=null;
         if(!string.IsNullOrEmpty(technologyPath)&&System.IO.File.Exists(technologyPath))System.IO.File.Delete(technologyPath);
+        if(!string.IsNullOrEmpty(savePath)&&System.IO.File.Exists(savePath))System.IO.File.Delete(savePath);
     }
 }

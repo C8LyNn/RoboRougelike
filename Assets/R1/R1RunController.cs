@@ -185,7 +185,8 @@ namespace RoboRougelike.R1
         }
         public bool GaragePurchase(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,R3WheelStyle wheelStyle=R3WheelStyle.Offroad,R3ArmorShape armorShape=R3ArmorShape.Cube) =>
             !Transitioning&&Progress?.State==R1RunState.Garage&&VehicleModel!=null&&CanBuyTechnology(kind,weapon)&&VehicleModel.PurchaseToInventory(kind,weapon,wheelStyle,armorShape);
-        public bool SafeVendorAvailable=>!Transitioning&&!SandboxWorkshop&&Progress?.State==R1RunState.Garage&&VehicleModel!=null&&
+        public bool SafeVendorAvailable=>!Transitioning&&!SandboxWorkshop&&VehicleModel!=null&&
+            (Progress?.State==R1RunState.Garage||(Progress?.State==R1RunState.SafeZone&&SafeZoneTrading&&NearSafeZoneVendor))&&
             VehicleModel.SafeVendorStage>0&&VehicleModel.SafeVendorStage==Progress.CompletedEncounters&&VehicleModel.SafeVendorStage==VehicleModel.SafeZoneLastCompleted;
         public bool GarageBuyVendorOffer(int index)
         {
@@ -435,13 +436,14 @@ namespace RoboRougelike.R1
             if(!Paused)pendingMapExitSnapshot=null;
             if(Paused&&MapEditing)EditorWorld?.HideGhost();
             PauseSelection = 0;
-            SetSimulation(!Paused && (Progress.State == R1RunState.Combat || Progress.State == R1RunState.TestDrive));
+            SetSimulation(!Paused && (Progress.State == R1RunState.Combat || Progress.State == R1RunState.TestDrive || Progress.State==R1RunState.SafeZone));
         }
         public void HandleEscape()
         {
             if(lastEscapeFrame==Time.frameCount)return;
             lastEscapeFrame=Time.frameCount;
             var hud=GetComponent<R1RunHUD>();
+            if(SafeZoneTrading){CloseSafeZoneTrade();return;}
             if(hud?.CloseMainControls()==true)return;
             if(Paused&&hud?.ClosePauseControls()==true)return;
             if(!Paused&&MapEditing&&hud?.CloseMapBrowser(this)==true)return;
@@ -475,6 +477,7 @@ namespace RoboRougelike.R1
 
         private void OnDestroy()
         {
+            ClearSafeZone();
             ClearReactorActivity();
             ClearFullActivities();
             ClearGeneratedArena();

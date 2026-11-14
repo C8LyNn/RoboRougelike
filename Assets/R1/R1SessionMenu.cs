@@ -84,6 +84,7 @@ namespace RoboRougelike.R1
             if ((keys != null && keys.escapeKey.wasPressedThisFrame) ||
                 (pad != null && pad.startButton.wasPressedThisFrame))
             { HandleEscape(); return true; }
+            if(SafeZoneTrading){if(pad!=null&&pad.buttonEast.wasPressedThisFrame)CloseSafeZoneTrade();return true;}
             if(!Paused&&GetComponent<R1RunHUD>()?.MainControlsOpen==true)
             {if(pad!=null&&pad.buttonEast.wasPressedThisFrame)HandleEscape();return true;}
             if (!Paused) return false;

@@ -9,7 +9,7 @@ namespace RoboRougelike.R1
     {
         MOVSeriesVehicleAdapter Movement=>Player?.GetComponent<MOVSeriesVehicleAdapter>();
         public bool CanUseMovement=>!Transitioning&&!Paused&&Progress!=null&&Player!=null&&Player.Controller.GameplayInputEnabled&&
-            (Progress.State==R1RunState.Combat||Progress.State==R1RunState.TestDrive);
+            (Progress.State==R1RunState.Combat||Progress.State==R1RunState.TestDrive||Progress.State==R1RunState.SafeZone);
         bool CanConfigureMovement=>!Transitioning&&VehicleModel!=null&&Progress!=null&&
             (Progress.State==R1RunState.Garage||(Paused&&(Progress.State==R1RunState.TestDrive||Progress.State==R1RunState.Combat)));
         public bool UseBooster()=>CanUseMovement&&Movement?.TryBoost()==true;

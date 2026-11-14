@@ -19,12 +19,12 @@ namespace RoboRougelike.R1
             get
             {
                 if(Progress?.State==R1RunState.Garage)return Time.unscaledTime<garageRescueUntil;
-                if(Progress?.State!=R1RunState.Combat&&Progress?.State!=R1RunState.TestDrive)return false;
+                if(Progress?.State!=R1RunState.Combat&&Progress?.State!=R1RunState.TestDrive&&Progress?.State!=R1RunState.SafeZone)return false;
                 var automatic=Player!=null?Player.GetComponent<R6CoreRecovery>():null;
                 return EmergencyRescueRemaining>0||(automatic!=null&&automatic.isActiveAndEnabled&&automatic.IsRecovering);
             }
         }
-        public bool EmergencyRescueAttackBlocked=>EmergencyRescueActive;
+        public bool EmergencyRescueAttackBlocked=>EmergencyRescueActive||Progress?.State==R1RunState.SafeZone;
         public string EmergencyRescueMessage {get;private set;}
         public string EmergencyRescueNotice=>Time.unscaledTime<emergencyRescueMessageUntil?EmergencyRescueMessage:null;
         void SetRescueNotice(string text){EmergencyRescueMessage=text;emergencyRescueMessageUntil=Time.unscaledTime+3f;}
@@ -39,7 +39,7 @@ namespace RoboRougelike.R1
                 Garage.Message="Pojazd ustawiony w garażu.";SetRescueNotice(Garage.Message);return true;
             }
             if(EmergencyRescueCooldownLeft>0)return false;
-            if(Progress.State!=R1RunState.Combat&&Progress.State!=R1RunState.TestDrive)return false;
+            if(Progress.State!=R1RunState.Combat&&Progress.State!=R1RunState.TestDrive&&Progress.State!=R1RunState.SafeZone)return false;
             var body=Player.GetComponent<Rigidbody>();var core=Player.Core;
             if(body==null||body.isKinematic||core==null||core.IsDead)return false;
             if(!TryFindRescuePose(body,out var position,out var rotation))
@@ -64,7 +64,7 @@ namespace RoboRougelike.R1
             foreach(float distance in new[]{4f,8f,12f,20f})
                 foreach(var direction in new[]{Vector3.right,Vector3.left,Vector3.forward,Vector3.back,
                     new Vector3(1,0,1),new Vector3(-1,0,1),new Vector3(1,0,-1),new Vector3(-1,0,-1)})offsets.Add(direction*distance);
-            var anchor=Progress.State==R1RunState.TestDrive?
+            var anchor=Progress.State==R1RunState.SafeZone?SafeZoneSpawn:Progress.State==R1RunState.TestDrive?
                 (MapEditorTesting&&EditorDraft?.Spawn!=null?RoboRougelike.MapEditor.MapWorld.Position(EditorDraft.Spawn)+Vector3.up*.7f:new Vector3(0,.7f,-26)):
                 playerSpawn;
             foreach(var offset in offsets)

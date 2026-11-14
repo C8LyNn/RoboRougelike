@@ -836,6 +836,7 @@ namespace RoboRougelike.R1
             if(run.SafeVendorAvailable&&GUI.Button(new Rect(284,608,205,36),"Oferty sprzedawcy",compactButton))OpenSimpleGarageOptions(3);
             if(GUI.Button(new Rect(500,608,165,36),"Ustaw pojazd",compactButton))run.TryEmergencyRescue();
             if(GUI.Button(new Rect(675,608,175,36),"Projekty",compactButton))OpenBlueprintLibrary();
+            if(run.SafeVendorAvailable&&GUI.Button(new Rect(860,608,200,36),"Bezpieczna strefa",compactButton))run.EnterSafeZone();
             if(garageShortcutLabel==null)garageShortcutLabel=new GUIStyle(small){fontSize=14,wordWrap=false};
             GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • ŚPM: wybierz typ\nPPM przeciągnij: widok • "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageUnderside"))+": spód\nQ/E R/F Z/X: obrót • Shift: część\nCtrl+LPM: napraw • "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageFrame"))+": widok",garageShortcutLabel);
             string garageFeedback=SimpleGarageFeedback(run);
@@ -904,7 +905,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(606,784,138,40),"Aktywności",compactButton))OpenSimpleGarageOptions(1);
             if(GUI.Button(new Rect(458,831,run.SafeVendorAvailable?90:138,40),"Widok",compactButton))garage.FrameVehicle();
             if(GUI.Button(new Rect(run.SafeVendorAvailable?552:606,831,run.SafeVendorAvailable?90:138,40),"Ustaw",compactButton))run.TryEmergencyRescue();
-            if(run.SafeVendorAvailable&&GUI.Button(new Rect(646,831,98,40),"Oferty",compactButton))OpenSimpleGarageOptions(3);
+            if(run.SafeVendorAvailable&&GUI.Button(new Rect(646,831,98,40),"Strefa",compactButton))run.EnterSafeZone();
             string garageFeedback=SimpleGarageFeedback(run);
             DrawGarageNotice(true,garageFeedback+
                 "\nPPM: zdejmij • ŚPM: wybierz typ • przeciągnij PPM: obrót widoku"+
