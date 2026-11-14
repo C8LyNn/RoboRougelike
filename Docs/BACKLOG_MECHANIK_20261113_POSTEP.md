@@ -621,3 +621,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Kopia robocza używana wyłącznie podczas transakcji projektu może tymczasowo przechować zdejmowane części ponad limit, jeżeli końcowy magazyn znowu się mieści. Przed zastosowaniem pojazdu przywracany jest właściwy limit; jeśli wynik wymaga zbyt wiele miejsca, cała operacja jest wycofywana. Nie powstają dodatkowe części ani miejsce dostępne poza transakcją.
 - Unity 6000.3.14f1: **4 PASS, 0 FAIL** (`blueprint-full-first.xml`, `.log`) — przestawienie koła przy 200 przedmiotach, odrzucenie projektu wymagającego 201, przeszkoda i zależne części. Dodatkowo **1 PASS** (`blueprint-full-save.xml`) obejmuje przywrócony limit, zachowanie identyfikatorów i JSON po udanej przebudowie. Przed zmianą `blueprint-full-red.xml`: pełny magazyn blokował nawet przeniesienie tej samej części. Ręczna obsługa w Windows Playerze: **NOT RUN**.
+
+#### 14, 16. Widoczność skanera przy wielu colliderach
+
+- Zapełnienie bufora zapytań fizyki nie powoduje już automatycznego uznania celu za niewidoczny. Skaner powiększa i ponownie wykorzystuje bufory, a przy bardzo dużej liczbie trafień korzysta z pełnego zapytania; nadal odrzuca widoczność przez obcą przeszkodę i ignoruje elementy własnego pojazdu.
+- Unity 6000.3.14f1: **28 PASS, 0 FAIL**, PlayMode (`scanner-colliders-reuse.xml`, `.log`), w tym po 130 własnych colliderów wokół czujnika i na drodze promienia oraz ściana zasłaniająca cel. W poprzednim wariancie poprawki również **2 PASS** dla modułu zamontowanego na pojeździe (`scanner-colliders-mounted.xml`). Przed zmianą `scanner-colliders-red.xml`: **2 FAIL, 1 PASS**, widoczny cel znikał po zapełnieniu bufora. Pomiary wydajności i wariant z ponad 4096 colliderów: **NOT RUN**, podobnie ręczna gra.

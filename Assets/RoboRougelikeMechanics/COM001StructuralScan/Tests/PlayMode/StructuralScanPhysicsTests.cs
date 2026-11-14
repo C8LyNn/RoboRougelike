@@ -99,6 +99,31 @@ namespace RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode
             Assert.IsFalse(scanner.TryScan());Assert.AreEqual(1000000,energy.Charge);Assert.AreEqual(0,scanner.CooldownLeft);
             yield return null;
         }
+        private void ManyOwnColliders(bool atSensor)
+        {
+            var own=Make("many-own-colliders");own.transform.SetParent(ownerRoot,false);
+            for(int i=0;i<130;i++)
+            {
+                var box=own.AddComponent<BoxCollider>();box.size=Vector3.one*.01f;
+                box.center=atSensor?new Vector3(0,1,0):new Vector3(0,1,1+i*.04f);
+            }
+            Physics.SyncTransforms();
+        }
+        [UnityTest] public IEnumerator ManyOwnCollidersAroundSensorDoNotHideVisibleTarget()
+        {
+            Target("visible",new Vector3(0,1,8));ManyOwnColliders(true);
+            Assert.IsTrue(scanner.TryScan());Assert.AreEqual(1,scanner.Contacts.Count);yield return null;
+        }
+        [UnityTest] public IEnumerator ManyOwnCollidersAlongRayDoNotHideVisibleTarget()
+        {
+            Target("visible",new Vector3(0,1,8));ManyOwnColliders(false);
+            Assert.IsTrue(scanner.TryScan());Assert.AreEqual(1,scanner.Contacts.Count);yield return null;
+        }
+        [UnityTest] public IEnumerator ManyOwnCollidersDoNotRevealTargetBehindWall()
+        {
+            Target("hidden",new Vector3(0,1,8));ManyOwnColliders(false);Barrier(new Vector3(0,1,7),new Vector3(3,4,.5f));
+            Assert.IsFalse(scanner.TryScan());Assert.AreEqual(0,scanner.Contacts.Count);Assert.AreEqual(0,scanner.CooldownLeft);yield return null;
+        }
         [UnityTest] public IEnumerator BlockingWallHidesTarget()
         {
             Target("weapon", new Vector3(0, 1, 8)); Barrier(new Vector3(0, 1, 4), new Vector3(3, 4, .5f));
