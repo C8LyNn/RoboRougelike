@@ -189,6 +189,7 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - W istniejącym systemie nadal obowiązuje wspólny limit 96 fizycznych pocisków. Naprawiono błąd zwykłych broni: kiedy pula jest pełna, próba strzału nie pobiera energii i nie rozpoczyna cooldownu. Po zwolnieniu miejsca broń może oddać strzał. Istniejące osobne ścieżki strzelby, railguna i rakiet zachowują swoje zasady transakcyjne.
 - Unity 6000.3.14f1: **4 PASS, 0 FAIL**, exit 0 (`C:\Users\kubap\Desktop\Prototypy\projectile-pool-refund-final.xml`, `.log`): rzeczywisty automat przy 96 zajętych miejscach i po zwolnieniu jednego, Double Shot, śruciny oraz premia broni i dronów. Przed zmianą `projectile-pool-refund-red.xml`: **1 FAIL**, bo niepowstały pocisk kosztował 3 energii. To nie usuwa limitu ani jego wpływu na dodatkowe pociski; punkt 14 pozostaje otwarty. Ręczny Windows Player: **NOT RUN**.
+- HUD walki pokazuje komunikat o chwilowym oczekiwaniu broni, gdy pula jest pełna i pojazd ma sprawną broń wykorzystującą tę pulę; ostrzeżenia o krytycznym stanie zachowują pierwszeństwo. Unity: **16 PASS, 0 FAIL** (`projectile-pool-hud-final.xml`), istniejące testy HUD i ponownie scenariusz pełnej puli; nie sprawdzono rzeczywistego renderowania komunikatu w Playerze.
 
 ## 14. Moc silników kół — usunięcie limitu
 

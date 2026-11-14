@@ -309,6 +309,13 @@ namespace RoboRougelike.R1
                     bool weaponsInactive=modules.ActiveWeaponCount==0&&modules.HasSurvivingWeapon;
                     resourceWarning=CombatEquipmentWarning(drive,modules.InitialWheelCount,surviving,weaponsInactive)??resourceWarning;
                 }
+                if(resourceWarning==null&&player!=null&&RogueMachine.P12PipelineSafe.P17PhysicalShell.AvailableSlots==0)
+                {
+                    var mounted=player.GetComponent<R3VehicleAssembly>();
+                    if(mounted!=null&&mounted.Parts.Any(part=>part!=null&&part.Operational&&part.gameObject.activeInHierarchy&&
+                        part.Kind==R3PartKind.Gun&&part.Weapon<=R4WeaponKind.Railgun))
+                        resourceWarning="Dużo pocisków w powietrzu — broń chwilowo czeka.";
+                }
                 CombatPanel(new Rect(20,18,660,(combatDetailsOpen?180:125)+extraStatusHeight+(resourceWarning!=null?25:0)+(run.PickupGraceRemaining>0?25:0)),
                     lowCore?new Color(1f,.42f,.32f):new Color(.28f,.76f,.75f));
                 GUI.Label(new Rect(36, 27, 630, 30), $"STARCIE {progress.EncounterIndex + 1}/{progress.TotalEncounters}   •   Wrogowie: {run.Encounter.AliveCount}   •   Złom: {run.VehicleModel.Scrap}", body);
