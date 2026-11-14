@@ -139,6 +139,30 @@ public class MOVSeriesSpecialTests
         spare.SetOperational(false);yield return MOVSeriesDeviceTests.FixedStep();
         Assert.That(rope.IsAttached,Is.True);Assert.That(rope.Settings.maximumTensionNewtons,Is.EqualTo(8000));
     }
+    [UnityTest] public IEnumerator TieredGrapplesUseTierEnergyAndStrongerPhysicalPull()
+    {
+        R1VehicleState Make(int tier,float x)
+        {
+            var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+            var cell=MOVSeriesDeviceTests.FindFixtureCell(model,R3PartKind.MagneticGrapple,new Vector3Int(1,1,0));
+            model.Parts.Add(new R3PartState(cell,R3PartKind.MagneticGrapple){Tier=tier});
+            var v=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
+            v.transform.SetParent(fixtures.transform,true);v.Controller.SetGameplayInputEnabled(true);return v;
+        }
+        var one=Make(1,-20);var two=Make(2,0);var three=Make(3,20);
+        Box("Tier one anchor",new Vector3(-20,2,1015),new Vector3(8,4,1));
+        Box("Tier two anchor",new Vector3(0,2,1015),new Vector3(8,4,1));
+        Box("Tier three anchor",new Vector3(20,2,1015),new Vector3(8,4,1));yield return MOVSeriesDeviceTests.Seconds(.6f);
+        var a=one.GetComponent<Rigidbody>();var b=two.GetComponent<Rigidbody>();var c=three.GetComponent<Rigidbody>();
+        a.linearVelocity=Vector3.zero;b.linearVelocity=Vector3.zero;c.linearVelocity=Vector3.zero;
+        var energy2=two.GetComponent<VehicleEnergyBank>();var energy3=three.GetComponent<VehicleEnergyBank>();float before2=energy2.Current,before3=energy3.Current;
+        Assert.That(Act(one,"TryGrapple",Vector3.forward),Is.True);Assert.That(Act(two,"TryGrapple",Vector3.forward),Is.True);Assert.That(Act(three,"TryGrapple",Vector3.forward),Is.True);
+        Assert.That(energy2.Current,Is.EqualTo(before2-VehicleEnergyCosts.Grapple*R3VehicleModel.TierActivationCost(2)).Within(.001));
+        Assert.That(energy3.Current,Is.EqualTo(before3-VehicleEnergyCosts.Grapple*R3VehicleModel.TierActivationCost(3)).Within(.001));
+        yield return MOVSeriesDeviceTests.Seconds(.4f);
+        Assert.That(b.linearVelocity.z,Is.GreaterThan(a.linearVelocity.z+.05f));
+        Assert.That(c.linearVelocity.z,Is.GreaterThan(b.linearVelocity.z+.05f));
+    }
     [UnityTest] public IEnumerator DynamicTargetHasOppositeReactionIncomingBlinkGuardAndEmitterDetachRelease()
     {
         var source=Build(R3VehicleKind.Standard,0,R3PartKind.MagneticGrapple,R3PartKind.Blink);

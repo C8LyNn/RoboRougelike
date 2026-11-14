@@ -92,12 +92,20 @@ namespace RoboRougelike.MOVSeries
         void RefreshGrappleTuning()
         {
             if(grapple==null)return;
-            int copies=emitters.Count(e=>e!=null&&e.IsOperational);if(copies==0)return;
-            var settings=grapple.Settings;settings.activationEnergy=VehicleEnergyCosts.Grapple*copies;
-            settings.springStiffness=grappleSpring*copies;settings.damping=grappleDamping*copies;
-            settings.maximumTensionNewtons=grappleTension*copies;
-            settings.maximumVehicleAcceleration=grappleVehicleAcceleration*copies;
-            settings.maximumTargetAcceleration=grappleTargetAcceleration*copies;
+            int units=0;float cost=0;
+            foreach(var emitter in emitters)
+            {
+                if(emitter==null||!emitter.IsOperational)continue;
+                var part=emitter.GetComponent<R3MountedPart>();if(part==null)continue;
+                units+=R3VehicleModel.TierEffectUnits(part.Tier);
+                cost+=VehicleEnergyCosts.Grapple*R3VehicleModel.TierActivationCost(part.Tier);
+            }
+            if(units==0)return;
+            var settings=grapple.Settings;settings.activationEnergy=cost;
+            settings.springStiffness=grappleSpring*units;settings.damping=grappleDamping*units;
+            settings.maximumTensionNewtons=grappleTension*units;
+            settings.maximumVehicleAcceleration=grappleVehicleAcceleration*units;
+            settings.maximumTargetAcceleration=grappleTargetAcceleration*units;
         }
         public bool TryBlink(Vector3 direction)
         {
