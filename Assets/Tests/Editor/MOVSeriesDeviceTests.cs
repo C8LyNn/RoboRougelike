@@ -145,6 +145,24 @@ public class MOVSeriesDeviceTests
         Assert.That(b.linearVelocity.y,Is.GreaterThan(a.linearVelocity.y+.1f),"An extra drive must improve the shared physical jump.");
         Assert.That(Action(two,"TryJump"),Is.False,"The copies must share one cooldown.");
     }
+    [UnityTest] public IEnumerator JumpCooldownSurvivesRemovingEveryCopyAndCheckpoint()
+    {
+        var v=Build(R3VehicleKind.Light,0,R3PartKind.JumpDrive);yield return Seconds(.6f);
+        Assert.That(Action(v,"TryJump"),Is.True);var model=v.GetComponent<R3VehicleAssembly>().Model;
+        var oldCell=model.Parts.Single(p=>p.Kind==R3PartKind.JumpDrive).Cell;
+        var copy=model.DeepCopy();copy.Parts.RemoveAll(p=>p.Kind==R3PartKind.JumpDrive);
+        var property=typeof(R3VehicleModel).GetProperty("JumpReadyAt");
+        Assert.That(property,Is.Not.Null,"The kind needs a shared gate even when no physical copies remain.");
+        Assert.That((float)property.GetValue(copy),Is.GreaterThan(Time.time));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(copy.MakeCheckpoint(Time.time),R3VehicleKind.Light,copy.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That((float)property.GetValue(restored),Is.GreaterThan(Time.time));
+        restored.Parts.Add(new R3PartState(oldCell,R3PartKind.JumpDrive));
+        var replacement=R3VehicleAssembly.Build(restored,new R1RunStats(),palette,new Vector3(20,.7f,1000),Quaternion.identity);
+        replacement.transform.SetParent(fixtures.transform,true);replacement.Controller.SetGameplayInputEnabled(true);yield return Seconds(.3f);
+        var bank=replacement.GetComponent<VehicleEnergyBank>();float energy=bank.Current;
+        Assert.That(Action(replacement,"TryJump"),Is.False,"A new physical copy cannot bypass the saved kind cooldown.");
+        Assert.That(bank.Current,Is.EqualTo(energy).Within(.001));
+    }
     [UnityTest] public IEnumerator TwoBoostersAccelerateMoreThanOneOnComparablePhysicalVehicles()
     {
         var one=Build(R3VehicleKind.Light,-20,R3PartKind.Booster,R3PartKind.Booster);

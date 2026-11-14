@@ -81,7 +81,7 @@ namespace RoboRougelike.MOVSeries
         {
             if(!PrepareAction()||jumps.Count==0)return false;
             // One common gate prevents sequential airborne jumps through different mounts.
-            if(Model.Parts.Any(p=>p.Kind==R3PartKind.JumpDrive&&p.DeviceReadyAt>Time.time))return false;
+            if(Model.JumpReadyAt>Time.time||Model.Parts.Any(p=>p.Kind==R3PartKind.JumpDrive&&p.DeviceReadyAt>Time.time))return false;
             var eligible=jumps.Where(j=>j!=null&&j.isActiveAndEnabled&&j.IsOperational).ToArray();
             var energy=GetComponent<VehicleEnergyBank>();float cost=eligible.Length*VehicleEnergyCosts.Jump;
             if(eligible.Length==0||energy==null||!energy.CanSpend(cost)){Feedback="Skok niedostępny / brak energii";return false;}
@@ -96,7 +96,7 @@ namespace RoboRougelike.MOVSeries
                 MaxUpwardSpeedMps=5.2f*Mathf.Sqrt(units),CooldownSeconds=6,GroundProbeDistanceMeters=.3f,EnergyCost=cost});
             bool success=primary.TryActivate()==JumpDriveResult.Activated;
             if(success)foreach(var jump in eligible.Skip(1))jump.GetComponent<RoboRougelike.R4_1.R4JumpArt>()?.NotifySharedActivation();
-            if(success)foreach(var p in Model.Parts.Where(p=>p.Kind==R3PartKind.JumpDrive))p.DeviceReadyAt=Time.time+6;
+            if(success){Model.JumpReadyAt=Time.time+6;foreach(var p in Model.Parts.Where(p=>p.Kind==R3PartKind.JumpDrive))p.DeviceReadyAt=Model.JumpReadyAt;}
             Feedback=success?"Skok":"Skok wymaga podłoża i sprawnego modułu";return success;
         }
         public bool ToggleGyro()
@@ -117,7 +117,7 @@ namespace RoboRougelike.MOVSeries
             var parts=assembly.Parts.Where(p=>p.Kind==kind&&Available(p)).Select(State).ToArray();
             if(parts.Length==0)return float.PositiveInfinity;
             float gate=kind==R3PartKind.Booster?Mathf.Max(Model.BoosterReadyAt,Model.Parts.Where(p=>p.Kind==kind).Max(p=>p.DeviceReadyAt)):
-                kind==R3PartKind.JumpDrive?Model.Parts.Where(p=>p.Kind==kind).Max(p=>p.DeviceReadyAt):parts.Min(p=>p.DeviceReadyAt);
+                kind==R3PartKind.JumpDrive?Mathf.Max(Model.JumpReadyAt,Model.Parts.Where(p=>p.Kind==kind).Max(p=>p.DeviceReadyAt)):parts.Min(p=>p.DeviceReadyAt);
             return Mathf.Max(0,gate-Time.time);
         }
     }
