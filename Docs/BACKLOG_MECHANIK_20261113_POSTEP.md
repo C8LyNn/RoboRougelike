@@ -405,3 +405,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Generator sojuszniczej kopuły jest teraz rozpoznawany przez wieżyczkę leczniczą tak jak inne sojusznicze urządzenia. Naprawa używa istniejących HP generatora i nie odtwarza zniszczonego obiektu.
 - Unity 6000.3.14f1: **3 PASS, 0 FAIL**, exit 0 (`healing-dome-final.xml`, `.log` w `Prototypy`) dla rzeczywiście rozstawionej kopuły oraz regresji naprawy sojuszniczych pojazdów i dotychczasowych urządzeń. Próba przed zmianą **FAIL** (`healing-dome-red.xml`): generator nie otrzymywał naprawy. Stan HP generatora ustawiono bezpośrednio; ręczna gra i balans: **NOT RUN**.
+
+#### 06. Priorytet przycisków HUD przy skrócie myszy
+
+- Obsługa przypisanego skrótu szczegółów walki następuje po obsłudze przycisków HUD. Zdarzenie myszy wykorzystane przez przycisk nie powinno dodatkowo przełączać szczegółów; klawiatura nadal korzysta z tego samego profilu.
+- Unity 6000.3.14f1: celowane testy HUD i profilu **22 PASS, 0 FAIL**, exit 0 (`hud-mouse-priority-final.xml`, `.log` w `Prototypy`). Obejmują istniejące skróty i zapis ustawień, ale **nie symulują rzeczywistego kliknięcia IMGUI**. Pierwszeństwo kliknięć w Windows Playerze nadal wymaga ręcznej kontroli: **NOT RUN**.

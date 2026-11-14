@@ -267,7 +267,6 @@ namespace RoboRougelike.R1
             DismissCatalog();garageOptionsOpen=false;
             if (progress.State == R1RunState.Combat && !run.Transitioning)
             {
-                UpdateCombatDetails(Event.current);
                 var player = run.Player;
                 var core=player!=null?player.Core:null;
                 float hp=core!=null?core.CurrentHp:0,maxHp=core!=null?core.MaxHp:0;
@@ -398,6 +397,9 @@ namespace RoboRougelike.R1
                     DrawAimReticle(run);
                     GUI.Label(new Rect(24, 676, 900, 26),GameplayControlsHint(),small);
                     DrawFeedback();
+                    // Give HUD buttons the first chance to consume pointer input;
+                    // a mouse-bound shortcut only handles unclaimed clicks.
+                    UpdateCombatDetails(Event.current);
                     return;
                 }
             }
