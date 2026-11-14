@@ -77,6 +77,19 @@ public sealed class BacklogBonusTierTests
         Assert.That(reward,Is.Not.Null);Assert.That(reward.Effect,Is.EqualTo(R1UpgradeEffect.Damage));
         Assert.That(typeof(R1UpgradeDefinition).GetField("Scope").GetValue(reward).ToString(),Is.EqualTo("BasicCannon"));
     }
+    [Test] public void DroneRewardScopeSurvivesInventoryAndIsVisible()
+    {
+        var run=Resources.Load<R1RunDefinition>("R1/Run");
+        var reward=run.Upgrades.SingleOrDefault(p=>p!=null&&p.Id=="damage_drones");
+        Assert.That(reward,Is.Not.Null);Assert.That(reward.Scope.ToString(),Is.EqualTo("Drones"));
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        var item=model.Inventory.Single();var blueprint=R3BlueprintPart.FromPart(item,Vector3Int.zero);
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(blueprint.Matches(restored.Inventory.Single()),Is.True);
+        var text=typeof(R1RunHUD).GetMethod("BonusInstanceText",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That((string)text.Invoke(null,new object[]{item}),Does.Contain("dronów"));
+    }
     [Test] public void ModifierArithmeticIsOrderedAndStaysFiniteAtExtremeValues()
     {
         var type=typeof(R1RunStats).Assembly.GetType("RoboRougelike.R1.R1ModifierGroup");Assert.That(type,Is.Not.Null);
@@ -279,6 +292,45 @@ public sealed class BacklogBonusTierGameplayTests
         while(Time.time<deadline&&hp.CurrentHp>=500)yield return new WaitForFixedUpdate();
         Assert.That(hp.CurrentHp,Is.EqualTo(475).Within(.02),"The global +25% must also apply to the trap's single shield impact.");
         if(root!=null)Object.Destroy(root);Object.Destroy(dome);Object.Destroy(bonus);
+    }
+    [UnityTest] public IEnumerator DroneScopedBonusStacksWithGlobalButDoesNotAffectTurrets()
+    {
+        Assert.That(System.Enum.GetNames(typeof(R1BonusScope)),Does.Contain("Drones"),"The damage system needs a separate drone category.");
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var global=BacklogBonusTierTests.OperationBonus("global-drone",.25f,"Increased");
+        var more=BacklogBonusTierTests.OperationBonus("global-more-drone",.5f,"More");
+        var scoped=BacklogBonusTierTests.OperationBonus("drone-only",.4f,"Increased");
+        scoped.Scope=(R1BonusScope)System.Enum.Parse(typeof(R1BonusScope),"Drones");
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{global,more,scoped}),Is.True);
+        foreach(var id in model.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            var cell=cells.First(c=>model.OwnedPlacementError(id,c,default)==null);Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        Assert.That(run.Player.Controller.EffectiveDamage,Is.EqualTo(40*1.875f).Within(.01),"Drone bonuses must not affect the player's cannon.");
+        var dronePart=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeScope.ToString()=="Drones");
+        var fire=typeof(R3FlyingDrone).GetMethod("Fire",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance);
+        for(int i=0;i<2;i++)
+        {
+            var device=GameObject.CreatePrimitive(PrimitiveType.Cube);device.transform.position=new Vector3(1020+i*10,1000,1000);
+            var body=device.AddComponent<Rigidbody>();body.isKinematic=true;var gun=device.AddComponent<R3FlyingDrone>();
+            if(i==0)gun.Configure(run.Player.transform,0,.5f,10);else gun.ConfigureTurret(run.Player.transform,.5f,10);gun.enabled=false;
+            var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=device.transform.position+Vector3.forward*4;
+            var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(1000,false);Physics.SyncTransforms();
+            fire.Invoke(gun,new object[]{Vector3.forward});float deadline=Time.time+3;
+            while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+            Assert.That(hp.CurrentHp,Is.EqualTo(i==0?975.25f:981.25f).Within(.02),"Only drone damage receives its category's +40% before the global ×1.5.");
+            if(i==0)
+            {
+                dronePart.gameObject.SetActive(false);yield return null;hp.RestoreHealthRatio(1);fire.Invoke(gun,new object[]{Vector3.forward});
+                deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+                Assert.That(hp.CurrentHp,Is.EqualTo(981.25f).Within(.02),"Existing drones lose the category bonus when its module is disabled.");
+                dronePart.gameObject.SetActive(true);yield return null;
+            }
+            Object.Destroy(device);Object.Destroy(target);
+        }
+        Object.Destroy(global);Object.Destroy(more);Object.Destroy(scoped);
     }
     [UnityTest] public IEnumerator OperationsReachHullCoreMobilityAndReload()
     {

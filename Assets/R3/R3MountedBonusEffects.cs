@@ -39,14 +39,15 @@ namespace RoboRougelike.R3
         private float overdriveIncrease;
         private float rapidFireReduction;
         public R1RunStats EffectiveStats {get;private set;}
+        public float DroneDamageMultiplier {get;private set;}=1;
 
         // Shared global damage group for owned deployables. Weapon-specific
         // groups are deliberately excluded and remain on their weapon path.
-        public static float ScaleOwnedDamage(Transform owner,float amount)
+        public static float ScaleOwnedDamage(Transform owner,float amount,bool drone=false)
         {
             if(float.IsNaN(amount)||float.IsInfinity(amount)||amount<=0)return 0;
             var effects=owner!=null?owner.GetComponentInParent<R3MountedBonusEffects>():null;
-            float factor=effects?.EffectiveStats?.Damage??1f;
+            float factor=effects==null?1f:drone?effects.DroneDamageMultiplier:effects.EffectiveStats?.Damage??1f;
             return (float)System.Math.Min(float.MaxValue,(double)amount*factor);
         }
 
@@ -88,10 +89,11 @@ namespace RoboRougelike.R3
             snapshot.Clear();active.Clear();
             foreach(var part in nextActive){active.Add(part);snapshot.Add(new BonusSnapshot(part));}
             var stats=baseStats.Copy();
-            var damage=new R1ModifierGroup();var basicDamage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
+            var damage=new R1ModifierGroup();var basicDamage=new R1ModifierGroup();var droneDamage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
             var core=new R1ModifierGroup();var reload=new R1ModifierGroup();
             damage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             basicDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            droneDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             reload.Add(R1ModifierOperation.Increased,rapidFireReduction,1,true);
             foreach(var module in active)
                 if(module.UpgradeEffect==R1UpgradeEffect.Damage)
@@ -100,6 +102,8 @@ namespace RoboRougelike.R3
                         damage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                     if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.BasicCannon)
                         basicDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Drones)
+                        droneDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 }
                 else if(module.UpgradeEffect==R1UpgradeEffect.Mobility)
                     mobility.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
@@ -111,6 +115,7 @@ namespace RoboRougelike.R3
                     reload.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier),true);
             stats.ApplyBonusGroups(hull,damage,reload,mobility,core);
             EffectiveStats=stats;
+            DroneDamageMultiplier=droneDamage.Apply(baseStats.Damage);
             player.Apply(stats);
             player.Controller.SetBasicDamageModifier(basicDamage.Apply(baseStats.Damage));
         }

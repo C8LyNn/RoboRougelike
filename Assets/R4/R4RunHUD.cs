@@ -382,7 +382,7 @@ namespace RoboRougelike.R1
         {
             if(item.UpgradeEffect==R1UpgradeEffect.Repair)return "Regeneracja 2,5% HP/s";
             string name=item.UpgradeEffect switch {
-                R1UpgradeEffect.Hull=>"Wytrzymałość",R1UpgradeEffect.Damage=>item.UpgradeScope==R1BonusScope.BasicCannon?"Obrażenia działa podstawowego":"Obrażenia",
+                R1UpgradeEffect.Hull=>"Wytrzymałość",R1UpgradeEffect.Damage=>DamageBonusName(item),
                 R1UpgradeEffect.Reload=>"Czas przeładowania",R1UpgradeEffect.Mobility=>"Mobilność",
                 R1UpgradeEffect.Core=>"Rdzeń",_=>"Bonus"
             };
@@ -390,6 +390,8 @@ namespace RoboRougelike.R1
             return name+" "+(item.UpgradeEffect==R1UpgradeEffect.Reload?"−":"+")+
                 (item.UpgradeAmount*100).ToString("0")+"%";
         }
+        private static string DamageBonusName(R3PartState item)=>item.UpgradeScope switch {
+            R1BonusScope.BasicCannon=>"Obrażenia działa podstawowego",R1BonusScope.Drones=>"Obrażenia dronów",_=>"Obrażenia"};
         private static string OtherBonusOperationText(R3PartState item,string name,int units)
         {
             bool inverse=item.UpgradeEffect==R1UpgradeEffect.Reload;
@@ -409,7 +411,7 @@ namespace RoboRougelike.R1
             switch(item.UpgradeEffect)
             {
                 case R1UpgradeEffect.Hull:name="Wytrzymałość";percent=item.UpgradeAmount*units*100;break;
-                case R1UpgradeEffect.Damage:name=item.UpgradeScope==R1BonusScope.BasicCannon?"Obrażenia działa podstawowego":"Obrażenia";percent=item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.Damage:name=DamageBonusName(item);percent=item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.Reload:name="Czas przeładowania";percent=Mathf.Min(100,item.UpgradeAmount*units*100);reduction=true;break;
                 case R1UpgradeEffect.Mobility:name="Mobilność";percent=item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.Core:name="Rdzeń";percent=item.UpgradeAmount*units*100;break;
