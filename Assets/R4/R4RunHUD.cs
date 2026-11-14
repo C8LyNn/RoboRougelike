@@ -381,6 +381,7 @@ namespace RoboRougelike.R1
         private static string BonusText(R3PartState item)
         {
             if(item.UpgradeEffect==R1UpgradeEffect.Repair)return "Regeneracja 2,5% HP/s";
+            if(item.UpgradeEffect==R1UpgradeEffect.HybridBlastRounds)return $"Amunicja działa: {Mathf.Min(1,item.UpgradeAmount)*100:0.#}% wybuchowa";
             string name=item.UpgradeEffect switch {
                 R1UpgradeEffect.Hull=>"Wytrzymałość",R1UpgradeEffect.Damage=>DamageBonusName(item),
                 R1UpgradeEffect.Reload=>"Czas przeładowania",R1UpgradeEffect.Mobility=>"Mobilność",
@@ -410,6 +411,8 @@ namespace RoboRougelike.R1
             int units=R3VehicleModel.TierEffectUnits(item.Tier);
             if(item.UpgradeEffect==R1UpgradeEffect.Repair)
                 return $"Regeneracja {units*.025f*100:0.#}% HP/s";
+            if(item.UpgradeEffect==R1UpgradeEffect.HybridBlastRounds)
+                return $"Działo: do {Mathf.Min(1,item.UpgradeAmount*units)*100:0.#}% składowej wybuchowej";
             string name;float percent;bool reduction=false;
             switch(item.UpgradeEffect)
             {

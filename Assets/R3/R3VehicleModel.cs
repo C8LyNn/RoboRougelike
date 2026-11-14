@@ -208,7 +208,8 @@ namespace RoboRougelike.R3
         public static float TierPassiveExtra(int tier)=>0f;
         public static float TierActivationCost(int tier)=>NormalizedTier(tier)==3?1.4f:NormalizedTier(tier)==2?1.2f:1f;
         public static bool ValidBonusOperation(R1UpgradeEffect effect,R1ModifierOperation operation)=>
-            Enum.IsDefined(typeof(R1ModifierOperation),operation)&&(effect!=R1UpgradeEffect.Repair||operation==R1ModifierOperation.Increased);
+            Enum.IsDefined(typeof(R1ModifierOperation),operation)&&
+            ((effect!=R1UpgradeEffect.Repair&&effect!=R1UpgradeEffect.HybridBlastRounds)||operation==R1ModifierOperation.Increased);
         public static bool ValidBonusScope(R1UpgradeEffect effect,R1BonusScope scope)=>
             Enum.IsDefined(typeof(R1BonusScope),scope)&&(scope==R1BonusScope.Global||effect==R1UpgradeEffect.Damage);
         public static bool SupportsFusion(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||kind==R3PartKind.Booster||kind==R3PartKind.MagneticGrapple||kind==R3PartKind.JumpDrive||kind==R3PartKind.Blink||kind==R3PartKind.Gyroscope||kind==R3PartKind.ScannerPulse||kind==R3PartKind.StructuralScanner||

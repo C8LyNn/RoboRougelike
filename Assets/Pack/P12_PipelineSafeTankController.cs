@@ -80,10 +80,12 @@ namespace RogueMachine.P12PipelineSafe
         private bool gameplayInputEnabled = true;
         private float damageModifier = 1f;
         private float basicDamageModifier = 1f;
+        private float basicBlastDamageModifier = 1f;
+        private float basicBlastFraction;
         private float intervalModifier = 1f;
         private float mobilityModifier = 1f;
 
-        public float EffectiveDamage => shotDamage * basicDamageModifier;
+        public float EffectiveDamage => (float)System.Math.Min(float.MaxValue,(double)shotDamage*((1d-basicBlastFraction)*basicDamageModifier+basicBlastFraction*basicBlastDamageModifier));
         public float EffectiveFireInterval => fireInterval * intervalModifier;
         public float EffectiveForwardSpeed => forwardSpeed * mobilityModifier;
         public float EffectiveReverseSpeed => reverseSpeed * mobilityModifier;
@@ -94,11 +96,18 @@ namespace RogueMachine.P12PipelineSafe
         {
             damageModifier = float.IsNaN(damage)||float.IsInfinity(damage)?1f:Mathf.Max(0,damage);
             basicDamageModifier=damageModifier;
+            basicBlastDamageModifier=damageModifier;basicBlastFraction=0;
             intervalModifier = float.IsNaN(interval)||float.IsInfinity(interval)?1f:Mathf.Max(0,interval);
             mobilityModifier = float.IsNaN(mobility)||float.IsInfinity(mobility)?1f:Mathf.Max(0,mobility);
         }
         public void SetBasicDamageModifier(float damage)
-        {basicDamageModifier=float.IsNaN(damage)||float.IsInfinity(damage)?damageModifier:Mathf.Max(0,damage);}
+        {SetBasicDamageProfile(damage,damage,0);}
+        public void SetBasicDamageProfile(float kinetic,float blast,float blastFraction)
+        {
+            basicDamageModifier=float.IsNaN(kinetic)||float.IsInfinity(kinetic)?damageModifier:Mathf.Max(0,kinetic);
+            basicBlastDamageModifier=float.IsNaN(blast)||float.IsInfinity(blast)?damageModifier:Mathf.Max(0,blast);
+            basicBlastFraction=float.IsNaN(blastFraction)||float.IsInfinity(blastFraction)?0:Mathf.Clamp01(blastFraction);
+        }
 
         public void SetGameplayInputEnabled(bool active)
         {
@@ -583,8 +592,15 @@ public float CurrentForwardSpeed =>
         { FireFrom(muzzle); }
 
         public void FireFrom(Transform barrel)
-        { SpawnPhysicalShell(barrel,EffectiveDamage,projectileSpeed,projectileDiameter,projectileMass,
-            RoboRougelike.R4.R4WeaponKind.Basic,null); }
+        {
+            float kinetic=SafeShellDamage(shotDamage,1-basicBlastFraction,basicDamageModifier);
+            float blast=SafeShellDamage(shotDamage,basicBlastFraction,basicBlastDamageModifier);
+            SpawnPhysicalShell(barrel,kinetic,projectileSpeed,projectileDiameter,projectileMass,
+                RoboRougelike.R4.R4WeaponKind.Basic,null,blast);
+        }
+
+        static float SafeShellDamage(float damage,float fraction,float modifier)=>
+            (float)System.Math.Min(float.MaxValue,(double)damage*fraction*modifier);
 
         public void FireFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId)
         { FireFrom(barrel,kind,partId,0); }
@@ -595,13 +611,16 @@ public float CurrentForwardSpeed =>
             float tier=mounted!=null&&mounted.Kind==RoboRougelike.R3.R3PartKind.Gun&&mounted.Id==partId?
                 RoboRougelike.R3.R3VehicleModel.TierEffectUnits(mounted.Tier):1f;
             float weaponDamage=kind==RoboRougelike.R4.R4WeaponKind.Basic?basicDamageModifier:PackageKineticDamageScale;
-            var first=SpawnPhysicalShell(barrel,profile.Damage*weaponDamage*tier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
+            float fraction=kind==RoboRougelike.R4.R4WeaponKind.Basic?basicBlastFraction:0;
+            float kinetic=SafeShellDamage(profile.Damage*tier,1-fraction,weaponDamage);
+            float blast=SafeShellDamage(profile.Damage*tier,fraction,basicBlastDamageModifier);
+            var first=SpawnPhysicalShell(barrel,kinetic,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId,blast);
             if(first==null||extraShots<=0)return;
             var siblings=new System.Collections.Generic.List<Collider>{first};
             int allowed=Mathf.Min(extraShots,P17PhysicalShell.AvailableSlots);
             for(int i=0;i<allowed;i++)
             {
-                var extra=SpawnPhysicalShell(barrel,profile.Damage*weaponDamage*tier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
+                var extra=SpawnPhysicalShell(barrel,kinetic,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId,blast);
                 if(extra==null)break;
                 foreach(var sibling in siblings)if(sibling!=null)Physics.IgnoreCollision(extra,sibling,true);
                 siblings.Add(extra);
@@ -614,7 +633,7 @@ public float CurrentForwardSpeed =>
         public float PackageKineticDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.KineticDamageMultiplier??damageModifier;
         public float PackageIntervalScale => intervalModifier;
         private Collider SpawnPhysicalShell(Transform barrel,float hitDamage,float projectileSpeed,float projectileDiameter,
-            float projectileMass,RoboRougelike.R4.R4WeaponKind kind,string partId)
+            float projectileMass,RoboRougelike.R4.R4WeaponKind kind,string partId,float blastDamage=0)
         {
             if (barrel == null)
                 return null;
@@ -696,13 +715,8 @@ public float CurrentForwardSpeed =>
                     P17PhysicalShell
                 >();
 
-            projectile.Configure(
-                transform,
-                hitDamage,
-                projectileLifetime,
-                direction,
-                null
-            );
+            if(blastDamage>0)projectile.ConfigureHybrid(transform,hitDamage,blastDamage,projectileLifetime,direction,null);
+            else projectile.Configure(transform,hitDamage,projectileLifetime,direction,null);
 
             IgnoreOwnerColliders(
                 sphere
@@ -1406,6 +1420,8 @@ public float CurrentForwardSpeed =>
         private float damage;
         private Vector3 launchDirection;
         private bool spent;
+        private bool hybridDamage;
+        private float kineticComponent,blastComponent;
         private Vector3 launchPosition;
         private float maxTravelDistance=float.PositiveInfinity;
         private RoboRougelike.WeaponIntegration.RRLRailPenetration railgun;
@@ -1451,6 +1467,7 @@ public float CurrentForwardSpeed =>
             float maxDistance=float.PositiveInfinity)
         {
             if(!isActiveAndEnabled)return;
+            hybridDamage=false;kineticComponent=blastComponent=0;
             launchPosition=transform.position;
             maxTravelDistance=float.IsNaN(maxDistance)?0:Mathf.Max(0,maxDistance);
             ownerRoot = owner;
@@ -1476,6 +1493,15 @@ public float CurrentForwardSpeed =>
 
             if (targetRoot != null)
                 IgnoreTargetHelpers();
+        }
+
+        public void ConfigureHybrid(Transform owner,float kinetic,float blast,float lifetime,Vector3 direction,Transform targetToIgnoreNonDamageable,float maxDistance=float.PositiveInfinity)
+        {
+            if(float.IsNaN(kinetic)||float.IsInfinity(kinetic)||kinetic<0||float.IsNaN(blast)||float.IsInfinity(blast)||blast<0)return;
+            double total=(double)kinetic+blast,scale=total>float.MaxValue?float.MaxValue/total:1d;
+            Configure(owner,(float)(total*scale),lifetime,direction,targetToIgnoreNonDamageable,maxDistance);
+            if(!isActiveAndEnabled)return;
+            kineticComponent=(float)(kinetic*scale);blastComponent=(float)(blast*scale);hybridDamage=true;
         }
 
         private void IgnoreOwnerCollisions()
@@ -1583,7 +1609,10 @@ public float CurrentForwardSpeed =>
                     : transform.position;
 
             if((point-launchPosition).sqrMagnitude<=maxTravelDistance*maxTravelDistance)
-                RoboRougelike.WeaponIntegration.RRLHitRouter.Apply(collision.collider,damage,point,launchDirection,ownerRoot);
+            {
+                if(hybridDamage)RoboRougelike.WeaponIntegration.RRLHitRouter.ApplyHybrid(collision.collider,kineticComponent,blastComponent,point,launchDirection,ownerRoot);
+                else RoboRougelike.WeaponIntegration.RRLHitRouter.Apply(collision.collider,damage,point,launchDirection,ownerRoot);
+            }
 
             Rigidbody hitBody =
                 collision.rigidbody;

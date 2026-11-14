@@ -67,6 +67,9 @@ public sealed class BacklogManualRescueTests
             Assert.That(protectedDamage,Is.EqualTo(normal[k]*.5f).Within(.03f),kinds[k].ToString());
             for(int i=0;i<parts.Length;i++)parts[i].RestoreHealthRatio(ratios[i]);
         }
+        Assert.That(core.ApplyHybridDamageResolved(12,8,core.transform.position,Vector3.up),Is.EqualTo(10).Within(.001),"Rescue filters the hybrid hit once.");
+        Assert.That(before-parts.Sum(p=>p.CurrentHp),Is.EqualTo(10).Within(.03));
+        for(int i=0;i<parts.Length;i++)parts[i].RestoreHealthRatio(ratios[i]);
         float end=Time.time+run.EmergencyRescueDurationSeconds+.1f;while(Time.time<end)yield return null;
         Assert.That(run.EmergencyRescueActive,Is.False);Assert.That(run.EmergencyRescueAttackBlocked,Is.False);
         core.ApplyDamageResolvedTyped(20,core.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Blast);
@@ -215,6 +218,8 @@ public sealed class BacklogManualRescueRangeTests
         Assert.That(core.CurrentHp,Is.EqualTo(hp));Assert.That(run.EmergencyRescueAttackBlocked,Is.True);
         foreach(var kind in new[]{R3DamagePropagation.DamageKind.Kinetic,R3DamagePropagation.DamageKind.Piercing,R3DamagePropagation.DamageKind.Blast})
         {core.ApplyDamageResolvedTyped(20,core.transform.position,Vector3.up,kind);Assert.That(core.CurrentHp,Is.EqualTo(hp));}
+        Assert.That(core.ApplyHybridDamageResolved(12,8,core.transform.position,Vector3.up),Is.Zero);
+        Assert.That(core.CurrentHp,Is.EqualTo(hp));
         float end=Time.time+run.EmergencyRescueDurationSeconds+.1f;while(Time.time<end)yield return null;
         core.ApplyDamage(20,core.transform.position,Vector3.up);Assert.That(core.CurrentHp,Is.LessThan(hp));
     }

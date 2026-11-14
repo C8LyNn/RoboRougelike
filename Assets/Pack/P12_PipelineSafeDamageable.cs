@@ -98,6 +98,33 @@ namespace RogueMachine.P12PipelineSafe
             if (dead || amount<=0 || float.IsNaN(amount) || float.IsInfinity(amount))
                 return 0;
 
+            amount=FilterIncomingDamage(amount,hitPoint,hitDirection);
+            if(amount<=0)return 0;
+            var structure=GetComponentInParent<P12PipelineSafeVehicleStructure>();
+            if(structure!=null&&structure.TryRouteDamage(this,amount,hitPoint,hitDirection,damageKind))
+                return amount;
+
+            StageRoutedDamage(amount);
+            FinishRoutedDamage(hitPoint,hitDirection);
+            return amount;
+        }
+
+        public float ApplyHybridDamageResolved(float kinetic,float blast,Vector3 hitPoint,Vector3 hitDirection)
+        {
+            if(dead||float.IsNaN(kinetic)||float.IsInfinity(kinetic)||kinetic<0||
+                float.IsNaN(blast)||float.IsInfinity(blast)||blast<0)return 0;
+            double total=(double)kinetic+blast;if(total<=0)return 0;
+            float bounded=(float)System.Math.Min(float.MaxValue,total);
+            float accepted=FilterIncomingDamage(bounded,hitPoint,hitDirection);if(accepted<=0)return 0;
+            float scaledKinetic=(float)(kinetic/total*accepted),scaledBlast=(float)(blast/total*accepted);
+            var structure=GetComponentInParent<P12PipelineSafeVehicleStructure>();
+            if(structure!=null&&structure.TryRouteHybridDamage(this,scaledKinetic,scaledBlast,hitPoint,hitDirection))return accepted;
+            StageRoutedDamage(accepted);FinishRoutedDamage(hitPoint,hitDirection);return accepted;
+        }
+
+        float FilterIncomingDamage(float amount,Vector3 hitPoint,Vector3 hitDirection)
+        {
+
             // Apply once, before impact propagation and device mitigation, to
             // every damage source routed through the player's canonical HP.
             var run=RoboRougelike.R1.R1RunController.Instance;
@@ -115,12 +142,6 @@ namespace RogueMachine.P12PipelineSafe
                 amount=Mathf.Min(amount,filtered);
             }
 
-            var structure=GetComponentInParent<P12PipelineSafeVehicleStructure>();
-            if(structure!=null&&structure.TryRouteDamage(this,amount,hitPoint,hitDirection,damageKind))
-                return amount;
-
-            StageRoutedDamage(amount);
-            FinishRoutedDamage(hitPoint,hitDirection);
             return amount;
         }
 

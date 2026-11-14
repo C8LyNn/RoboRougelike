@@ -32,6 +32,49 @@ public sealed class R3DamagePropagationTests
     }
 
     [Test]
+    public void HybridImpactKeepsBothPropagationFractionsAndOneDamageBudget()
+    {
+        var method=typeof(R3DamagePropagation).GetMethod("ResolveHybrid");
+        Assert.That(method,Is.Not.Null,"A hybrid impact must route its components together.");
+        var graph=new[]{Part(0,200,1),Part(1,200,0,2),Part(2,200,1)};
+        var result=(R3DamagePropagation.Result)method.Invoke(null,new object[]{graph,0,60f,40f,2});
+        Assert.That(result.Damage[0],Is.EqualTo(69).Within(.001));
+        Assert.That(result.Damage[1],Is.EqualTo(20.85).Within(.001));
+        Assert.That(result.Damage[2],Is.EqualTo(10.15).Within(.001));
+        Assert.That(result.Damage.Values.Sum()+result.Unused,Is.EqualTo(100).Within(.001));
+        var damaged=new[]{Part(0,10,1),Part(1,10,0)};
+        result=(R3DamagePropagation.Result)method.Invoke(null,new object[]{damaged,0,60f,40f,2});
+        Assert.That(result.Damage.Values.Sum(),Is.EqualTo(20).Within(.001));Assert.That(result.Unused,Is.EqualTo(80).Within(.001));
+    }
+
+    [Test]
+    public void HybridPropagationConservesDamageAndMatchesSingleType()
+    {
+        var random=new System.Random(5613);
+        for(int trial=0;trial<100;trial++)
+        {
+            int count=random.Next(2,25);var neighbours=Enumerable.Range(0,count).Select(_=>new List<int>()).ToArray();
+            for(int i=1;i<count;i++){int parent=random.Next(i);neighbours[parent].Add(i);neighbours[i].Add(parent);}
+            var graph=Enumerable.Range(0,count).Select(i=>Part(i,random.Next(1,101),neighbours[i].ToArray())).ToArray();
+            int target=random.Next(count),hops=random.Next(0,4);float kinetic=random.Next(0,400),blast=random.Next(0,400);
+            var mixed=R3DamagePropagation.ResolveHybrid(graph,target,kinetic,blast,hops);
+            Assert.That(mixed.Damage.Values.Sum()+mixed.Unused,Is.EqualTo(kinetic+blast).Within(.02),$"trial {trial}");
+            foreach(var hit in mixed.Damage)Assert.That(hit.Value,Is.InRange(0,graph[hit.Key].Health+.001),$"trial {trial}");
+            foreach(var kind in new[]{R3DamagePropagation.DamageKind.Kinetic,R3DamagePropagation.DamageKind.Blast})
+            {
+                var old=R3DamagePropagation.Resolve(graph,target,kinetic,R3DamagePropagation.TransferFraction(kind),hops);
+                var current=R3DamagePropagation.ResolveHybrid(graph,target,kind==R3DamagePropagation.DamageKind.Kinetic?kinetic:0,kind==R3DamagePropagation.DamageKind.Blast?kinetic:0,hops);
+                Assert.That(current.Unused,Is.EqualTo(old.Unused).Within(.02),$"trial {trial}, {kind}");
+                foreach(var node in graph)
+                {
+                    old.Damage.TryGetValue(node.Id,out float a);current.Damage.TryGetValue(node.Id,out float b);
+                    Assert.That(b,Is.EqualTo(a).Within(.02),$"trial {trial}, node {node.Id}, {kind}");
+                }
+            }
+        }
+    }
+
+    [Test]
     public void CyclesDoNotRepeatDamageAndConvergentPathsAreCombined()
     {
         var graph=new[]{Part(0,100,1,2),Part(1,100,0,3),Part(2,100,0,3),Part(3,100,1,2)};
@@ -168,6 +211,29 @@ public sealed class R3DamagePropagationTests
         Assert.That(run.OpenSandboxGarage(),Is.True);
         yield return null;
         ValidatePlayerHit(run);
+    }
+
+    [UnityTest]
+    public IEnumerator RealVehicleRoutesHybridImpactOnceAcrossConnectedParts()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);yield return null;
+        ValidateHybridHit(run);
+    }
+    static void ValidateHybridHit(R1RunController run)
+    {
+        var parts=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p!=null&&p.Operational).ToArray();
+        Assert.That(parts.Length,Is.GreaterThan(0));
+        foreach(var part in parts)Assert.That(part.Damageable,Is.Not.Null,part.name);
+        R3MountedPart target=null;foreach(var part in parts)if(part!=null&&part.Cell==new Vector3Int(1,0,0))target=part;
+        Assert.That(target,Is.Not.Null,"The physical vehicle needs its adjacent armor piece.");
+        var before=new Dictionary<string,float>();foreach(var part in parts)before.Add(part.Id,part.Damageable.CurrentHp);
+        var method=target.Damageable.GetType().GetMethod("ApplyHybridDamageResolved");Assert.That(method,Is.Not.Null);
+        method.Invoke(target.Damageable,new object[]{6f,4f,target.transform.position,Vector3.forward});
+        Assert.That(before[target.Id]-target.Damageable.CurrentHp,Is.EqualTo(6.9f).Within(.001),"6 kinetic and 4 blast retain 4.5 + 2.4 on impact.");
+        Assert.That(parts.Where(p=>p!=target).Sum(p=>before[p.Id]-p.Damageable.CurrentHp),Is.EqualTo(3.1f).Within(.001));
     }
 
     [UnityTest]

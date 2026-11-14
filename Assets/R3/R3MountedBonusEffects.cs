@@ -98,12 +98,13 @@ namespace RoboRougelike.R3
             snapshot.Clear();active.Clear();
             foreach(var part in nextActive){active.Add(part);snapshot.Add(new BonusSnapshot(part));}
             var stats=baseStats.Copy();
-            var damage=new R1ModifierGroup();var basicDamage=new R1ModifierGroup();var droneDamage=new R1ModifierGroup();
+            var damage=new R1ModifierGroup();var basicDamage=new R1ModifierGroup();var basicBlastDamage=new R1ModifierGroup();var droneDamage=new R1ModifierGroup();
             var turretDamage=new R1ModifierGroup();var trapDamage=new R1ModifierGroup();var blastDamage=new R1ModifierGroup();
             var blastTrapDamage=new R1ModifierGroup();var piercingDamage=new R1ModifierGroup();var kineticDamage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
             var core=new R1ModifierGroup();var reload=new R1ModifierGroup();
             damage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             basicDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            basicBlastDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             droneDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             turretDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             trapDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
@@ -112,6 +113,7 @@ namespace RoboRougelike.R3
             piercingDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             kineticDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             reload.Add(R1ModifierOperation.Increased,rapidFireReduction,1,true);
+            double hybridShare=0;
             foreach(var module in active)
                 if(module.UpgradeEffect==R1UpgradeEffect.Damage)
                 {
@@ -119,6 +121,8 @@ namespace RoboRougelike.R3
                         damage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                     if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.BasicCannon||module.UpgradeScope==R1BonusScope.KineticDamage)
                         basicDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.BasicCannon||module.UpgradeScope==R1BonusScope.BlastDamage)
+                        basicBlastDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                     if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Drones||module.UpgradeScope==R1BonusScope.KineticDamage)
                         droneDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                     if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Turrets||module.UpgradeScope==R1BonusScope.KineticDamage)
@@ -142,6 +146,8 @@ namespace RoboRougelike.R3
                     core.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 else if(module.UpgradeEffect==R1UpgradeEffect.Reload)
                     reload.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier),true);
+                else if(module.UpgradeEffect==R1UpgradeEffect.HybridBlastRounds&&!float.IsNaN(module.UpgradeAmount)&&!float.IsInfinity(module.UpgradeAmount)&&module.UpgradeAmount>0)
+                    hybridShare+=(double)module.UpgradeAmount*R3VehicleModel.TierEffectUnits(module.Tier);
             stats.ApplyBonusGroups(hull,damage,reload,mobility,core);
             EffectiveStats=stats;
             DroneDamageMultiplier=droneDamage.Apply(baseStats.Damage);
@@ -152,7 +158,7 @@ namespace RoboRougelike.R3
             PiercingDamageMultiplier=piercingDamage.Apply(baseStats.Damage);
             KineticDamageMultiplier=kineticDamage.Apply(baseStats.Damage);
             player.Apply(stats);
-            player.Controller.SetBasicDamageModifier(basicDamage.Apply(baseStats.Damage));
+            player.Controller.SetBasicDamageProfile(basicDamage.Apply(baseStats.Damage),basicBlastDamage.Apply(baseStats.Damage),(float)System.Math.Min(1d,hybridShare));
         }
         private void ApplyRepairPulse()
         {

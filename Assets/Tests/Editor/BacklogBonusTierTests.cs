@@ -107,6 +107,18 @@ public sealed class BacklogBonusTierTests
         var text=typeof(R1RunHUD).GetMethod("BonusInstanceText",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
         Assert.That((string)text.Invoke(null,new object[]{item}),Does.Contain(label));
     }
+    [Test] public void HybridRoundsRewardSurvivesSaveAndIsClearlyDescribed()
+    {
+        var run=Resources.Load<R1RunDefinition>("R1/Run");var reward=run.Upgrades.SingleOrDefault(p=>p!=null&&p.Id=="hybrid_basic_rounds");
+        Assert.That(reward,Is.Not.Null);Assert.That(reward.Effect.ToString(),Is.EqualTo("HybridBlastRounds"));
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        var item=model.Inventory.Single();var blueprint=R3BlueprintPart.FromPart(item,Vector3Int.zero);
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(blueprint.Matches(restored.Inventory.Single()),Is.True);
+        var text=typeof(R1RunHUD).GetMethod("BonusInstanceText",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That((string)text.Invoke(null,new object[]{item}),Does.Contain("wybuchowej"));
+    }
     [Test] public void ModifierArithmeticIsOrderedAndStaysFiniteAtExtremeValues()
     {
         var type=typeof(R1RunStats).Assembly.GetType("RoboRougelike.R1.R1ModifierGroup");Assert.That(type,Is.Not.Null);
@@ -451,6 +463,46 @@ public sealed class BacklogBonusTierGameplayTests
         deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
         Assert.That(hp.CurrentHp,Is.EqualTo(1000-10*2.475f).Within(.02),"Drone kinetic damage receives the same global and kinetic groups.");
         Object.Destroy(device);Object.Destroy(muzzle.gameObject);Object.Destroy(target);Object.Destroy(global);Object.Destroy(more);Object.Destroy(kinetic);Object.Destroy(basic);
+    }
+    [UnityTest] public IEnumerator HybridCannonShotAppliesEachTypeBonusAndHitsShieldOnce()
+    {
+        Assert.That(System.Enum.GetNames(typeof(R1UpgradeEffect)),Does.Contain("HybridBlastRounds"),"A mounted module must enable a mixed projectile.");
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var hybrid=BacklogBonusTierTests.OperationBonus("hybrid",.5f,"Increased",(R1UpgradeEffect)System.Enum.Parse(typeof(R1UpgradeEffect),"HybridBlastRounds"));
+        var kinetic=BacklogBonusTierTests.OperationBonus("hybrid-kinetic",.5f,"Increased");kinetic.Scope=R1BonusScope.KineticDamage;
+        var blast=BacklogBonusTierTests.OperationBonus("hybrid-blast",.2f,"Increased");blast.Scope=R1BonusScope.BlastDamage;
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{hybrid,hybrid,kinetic,blast}),Is.True);
+        foreach(var id in model.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            var cell=cells.First(c=>model.OwnedPlacementError(id,c,default)==null);Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var hybrids=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeEffect.ToString()=="HybridBlastRounds").ToArray();
+        Assert.That(hybrids.Length,Is.EqualTo(2));hybrids[1].gameObject.SetActive(false);yield return null;
+        var muzzle=new GameObject("Hybrid muzzle").transform;muzzle.position=new Vector3(1000,1000,1000);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=muzzle.position+Vector3.forward*4;
+        var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(1000,false);Physics.SyncTransforms();
+        run.Player.Controller.FireFrom(muzzle,RoboRougelike.R4.R4WeaponKind.Basic,"hybrid-test");
+        hybrids[0].gameObject.SetActive(false);yield return null;
+        float deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(946).Within(.02),"The fired shot retains 40 × .5 × 1.5 kinetic + 40 × .5 × 1.2 blast = 54 after its module is disabled.");
+        hybrids[0].gameObject.SetActive(true);yield return null;
+        target.SetActive(false);var dome=GameObject.CreatePrimitive(PrimitiveType.Cube);dome.GetComponent<Collider>().enabled=false;
+        dome.transform.position=muzzle.position+Vector3.forward*6;var sphere=dome.AddComponent<SphereCollider>();sphere.isTrigger=true;
+        var shield=dome.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();shield.Configure(500,false);dome.AddComponent<R3ShieldDome>().Configure(2,2);
+        Physics.SyncTransforms();run.Player.Controller.FireFrom(muzzle,RoboRougelike.R4.R4WeaponKind.Basic,"hybrid-shield");
+        deadline=Time.time+3;while(Time.time<deadline&&shield.CurrentHp>=500)yield return new WaitForFixedUpdate();
+        Assert.That(shield.CurrentHp,Is.EqualTo(446).Within(.02),"A hybrid projectile hits the shield once for the sum of its components.");
+        dome.SetActive(false);target.SetActive(true);hp.RestoreHealthRatio(1);hybrids[1].gameObject.SetActive(true);yield return null;
+        run.Player.Controller.FireFrom(muzzle,RoboRougelike.R4.R4WeaponKind.Basic,"hybrid-full-blast");
+        deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(952).Within(.02),"Two modules convert the whole shot; the kinetic bonus no longer applies.");
+        hp.RestoreHealthRatio(1);foreach(var part in hybrids)part.gameObject.SetActive(false);yield return null;
+        run.Player.Controller.FireFrom(muzzle,RoboRougelike.R4.R4WeaponKind.Basic,"hybrid-removed");
+        deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(940).Within(.02),"Removing conversion modules restores the full kinetic shot.");
+        Object.Destroy(dome);Object.Destroy(target);Object.Destroy(muzzle.gameObject);Object.Destroy(hybrid);Object.Destroy(kinetic);Object.Destroy(blast);
     }
     [UnityTest] public IEnumerator OperationsReachHullCoreMobilityAndReload()
     {

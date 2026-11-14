@@ -105,6 +105,11 @@ namespace RogueMachine.P12PipelineSafe
 
         internal bool TryRouteDamage(P12PipelineSafeDamageable target,float amount,Vector3 point,Vector3 direction,
             RoboRougelike.R3.R3DamagePropagation.DamageKind damageKind)
+            =>TryRouteDamageInternal(target,amount,0,point,direction,damageKind,false);
+        internal bool TryRouteHybridDamage(P12PipelineSafeDamageable target,float kinetic,float blast,Vector3 point,Vector3 direction)
+            =>TryRouteDamageInternal(target,kinetic,blast,point,direction,RoboRougelike.R3.R3DamagePropagation.DamageKind.Kinetic,true);
+        bool TryRouteDamageInternal(P12PipelineSafeDamageable target,float amount,float blast,Vector3 point,Vector3 direction,
+            RoboRougelike.R3.R3DamagePropagation.DamageKind damageKind,bool hybrid)
         {
             var hitBlock=target!=null?target.GetComponent<P12_PipelineSafePlayerBlock>():null;
             if(!initialized||hitBlock==null||grid.Count==0||!hitBlock.transform.IsChildOf(transform))return false;
@@ -142,8 +147,8 @@ namespace RogueMachine.P12PipelineSafe
             var byId=blocks.ToDictionary(b=>ids[b],b=>health[b]);
             var nodes=blocks.Select(b=>new RoboRougelike.R3.R3DamagePropagation.Node(
                 ids[b],health[b].CurrentHp,links[b].Select(other=>ids[other]).ToArray()));
-            var result=RoboRougelike.R3.R3DamagePropagation.Resolve(nodes,ids[hitBlock],
-                amount,RoboRougelike.R3.R3DamagePropagation.TransferFraction(damageKind),DamageTransferMaxHops);
+            var result=hybrid?RoboRougelike.R3.R3DamagePropagation.ResolveHybrid(nodes,ids[hitBlock],amount,blast,DamageTransferMaxHops):
+                RoboRougelike.R3.R3DamagePropagation.Resolve(nodes,ids[hitBlock],amount,RoboRougelike.R3.R3DamagePropagation.TransferFraction(damageKind),DamageTransferMaxHops);
             // First stage every HP change, then run feedback and death callbacks.
             var ordered=result.Damage.OrderBy(x=>x.Key).ToArray();
             foreach(var impact in ordered)byId[impact.Key].StageRoutedDamage(impact.Value);
