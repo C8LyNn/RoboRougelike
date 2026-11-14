@@ -69,6 +69,15 @@ namespace RoboRougelike.R3
                 output.Add(new BlastBoundary(dome,center,radius,point,distance));
             }
         }
+        public static void CollectExposedBlastBoundaries(Vector3 origin,float blastRadius,Transform source,List<BlastBoundary> all,List<BlastBoundary> exposed)
+        {
+            CollectBlastBoundaries(origin,blastRadius,source,all);exposed.Clear();
+            foreach(var boundary in all)
+            {
+                if(TryFirstHit(origin,boundary.Point,source,out var first,out _)&&first!=boundary.Dome)continue;
+                exposed.Add(boundary);
+            }
+        }
         void OnTriggerEnter(Collider other)
         {
             if(!Live || other == null) return;

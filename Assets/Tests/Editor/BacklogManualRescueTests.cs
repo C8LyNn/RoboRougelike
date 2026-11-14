@@ -147,6 +147,30 @@ public sealed class BacklogManualRescueTests
         Assert.That(parts.Sum(p=>p.CurrentHp),Is.LessThan(before),"A field that has not expired must resume damage after rescue.");
         Object.Destroy(trap.gameObject);
     }
+    [UnityTest] public IEnumerator ShieldBlocksBlastTrapAndReceivesOneImpact()=>ShieldedTrap(R3PartKind.BlastTrapDeployer);
+    [UnityTest] public IEnumerator ShieldBlocksDamageTrapAndReceivesContinuousDamage()=>ShieldedTrap(R3PartKind.DamageTrapDeployer);
+    [UnityTest] public IEnumerator FriendlyShieldDoesNotBlockBlastTrap()=>ShieldedTrap(R3PartKind.BlastTrapDeployer,true);
+    IEnumerator ShieldedTrap(R3PartKind kind,bool friendly=false)
+    {
+        run.Encounter.SetCombatActive(false);var enemy=run.Encounter.Enemies.First();enemy.GetComponent<Rigidbody>().isKinematic=true;
+        var parts=enemy.GetComponentsInChildren<P12PipelineSafeDamageable>();float before=parts.Sum(p=>p.CurrentHp);
+        var dome=GameObject.CreatePrimitive(PrimitiveType.Cube);dome.name="Kopuła pułapki";dome.GetComponent<Collider>().enabled=false;
+        dome.transform.position=enemy.Core.transform.position;var boundary=dome.AddComponent<SphereCollider>();boundary.isTrigger=true;
+        var shield=dome.AddComponent<P12PipelineSafeDamageable>();shield.Configure(500,false);dome.AddComponent<R3ShieldDome>().Configure(friendly?1:2,6);
+        var trapObject=new GameObject("Pułapka za kopułą");trapObject.transform.position=dome.transform.position+Vector3.forward*8;
+        var trigger=trapObject.AddComponent<SphereCollider>();trigger.isTrigger=true;trigger.radius=10;
+        var trap=trapObject.AddComponent<R3DeployableTrap>();trap.Configure(trapObject.transform,run.Player.transform,kind,10,20,3,6,12,5,15,.5f,2);
+        Physics.SyncTransforms();float deadline=Time.time+2;
+        while(Time.time<deadline&&shield.CurrentHp>=500&&parts.Sum(p=>p.CurrentHp)>=before-.01f)yield return new WaitForFixedUpdate();
+        if(friendly){Assert.That(shield.CurrentHp,Is.EqualTo(500).Within(.01));Assert.That(parts.Sum(p=>p.CurrentHp),Is.LessThan(before),"A friendly shield must not block the trap.");}
+        else
+        {
+            Assert.That(shield.CurrentHp,Is.LessThan(500),"The shield must receive the trap's damage.");
+            Assert.That(parts.Sum(p=>p.CurrentHp),Is.EqualTo(before).Within(.01),"The shielded enemy must not also take trap damage.");
+            Assert.That(shield.CurrentHp,Is.GreaterThanOrEqualTo(480),"Multiple enemy colliders must not multiply the shield hit.");
+        }
+        if(trapObject!=null)Object.Destroy(trapObject);Object.Destroy(dome);
+    }
     [UnityTest] public IEnumerator BlockedDestinationsDoNotChargeOrStartRescue()
     {
         run.Encounter.SetCombatActive(false);

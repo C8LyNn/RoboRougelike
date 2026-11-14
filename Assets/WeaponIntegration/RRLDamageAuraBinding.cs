@@ -82,12 +82,7 @@ namespace RoboRougelike.WeaponIntegration
             }
             float scale=tank!=null?tank.PackageDamageScale:enemyDamageScale;
             float damage=DamagePerSecond*R3VehicleModel.TierEffectUnits(State.Tier)*scale*step;
-            R3ShieldDome.CollectBlastBoundaries(origin,Radius,Device.Owner,shieldBoundaries);exposedShields.Clear();unblockedTargets.Clear();
-            foreach(var boundary in shieldBoundaries)
-            {
-                if(R3ShieldDome.TryFirstHit(origin,boundary.Point,Device.Owner,out var first,out _)&&first!=boundary.Dome)continue;
-                exposedShields.Add(boundary);
-            }
+            R3ShieldDome.CollectExposedBlastBoundaries(origin,Radius,Device.Owner,shieldBoundaries,exposedShields);unblockedTargets.Clear();
             foreach(var collider in targets.Values)
             {
                 if(collider==null)continue;var point=collider.ClosestPoint(origin);

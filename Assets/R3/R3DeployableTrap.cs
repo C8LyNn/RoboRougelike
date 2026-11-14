@@ -39,6 +39,9 @@ namespace RoboRougelike.R3
         bool activated,deferredTrigger;
         Collider[] damageHits;
         Dictionary<Transform,Collider> damageTargets;
+        readonly List<R3ShieldDome.BlastBoundary> shieldBoundaries=new List<R3ShieldDome.BlastBoundary>();
+        readonly List<R3ShieldDome.BlastBoundary> exposedShields=new List<R3ShieldDome.BlastBoundary>();
+        readonly List<Collider> unblockedTargets=new List<Collider>();
         public bool Activated=>activated;
         public void Configure(Transform trap,Transform source,R3PartKind type,float triggerRadius,float blastDamage,float empDuration,float repel,float dot,float fieldSeconds,float trapSeconds,float slow,float slowDuration)
         {root=trap;owner=source;kind=type;radius=triggerRadius;damage=blastDamage;duration=empDuration;repelSpeed=repel;damagePerSecond=dot;fieldDuration=fieldSeconds;expiresAt=Time.time+trapSeconds;slowFactor=slow;slowSeconds=slowDuration;}
@@ -108,8 +111,7 @@ namespace RoboRougelike.R3
                         (hit.ClosestPoint(origin)-origin).sqrMagnitude<(previous.ClosestPoint(origin)-origin).sqrMagnitude)
                         targets[target.transform]=hit;
                 }
-                foreach(var hit in targets.Values)if(hit!=null)
-                    RRLHitRouter.ApplyTyped(hit,damage,hit.ClosestPoint(origin),hit.transform.position-origin,owner,R3DamagePropagation.DamageKind.Blast);
+                ApplyAreaDamage(targets,origin,damage,R3DamagePropagation.DamageKind.Blast);
             }
             Destroy(root.gameObject);
         }
@@ -151,8 +153,20 @@ namespace RoboRougelike.R3
                     (hit.ClosestPoint(origin)-origin).sqrMagnitude<(previous.ClosestPoint(origin)-origin).sqrMagnitude)
                     damageTargets[target.transform]=hit;
             }
-            foreach(var hit in damageTargets.Values)if(hit!=null)
-                RRLHitRouter.Apply(hit,damagePerSecond*Time.fixedDeltaTime,hit.ClosestPoint(origin),hit.transform.position-origin,owner);
+            ApplyAreaDamage(damageTargets,origin,damagePerSecond*Time.fixedDeltaTime,R3DamagePropagation.DamageKind.Kinetic);
+        }
+        void ApplyAreaDamage(Dictionary<Transform,Collider> targets,Vector3 origin,float amount,R3DamagePropagation.DamageKind damageKind)
+        {
+            R3ShieldDome.CollectExposedBlastBoundaries(origin,radius,owner,shieldBoundaries,exposedShields);unblockedTargets.Clear();
+            foreach(var hit in targets.Values)
+            {
+                if(hit==null)continue;Vector3 point=hit.ClosestPoint(origin);
+                if(!R3ShieldDome.TryFirstHit(origin,point,owner,out _,out _))unblockedTargets.Add(hit);
+            }
+            foreach(var hit in unblockedTargets)if(hit!=null)
+                RRLHitRouter.ApplyTyped(hit,amount,hit.ClosestPoint(origin),hit.transform.position-origin,owner,damageKind);
+            foreach(var boundary in exposedShields)if(boundary.Dome!=null)
+                boundary.Dome.Absorb(amount,boundary.Point,(boundary.Point-origin).normalized);
         }
     }
 }
