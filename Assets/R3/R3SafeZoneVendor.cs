@@ -79,10 +79,12 @@ namespace RoboRougelike.R3
             var offers=SafeZoneVendorOffers();if(index<0||index>=offers.Count)return false;
             var offer=offers[index];int firstNewItem=inventory.Count;
             if(offer.Sold||!PurchaseToInventoryAtPrice(offer.Kind,offer.Weapon,R3WheelStyle.Offroad,R3ArmorShape.Cube,offer.Price))return false;
-            if(offer.Kind==R3PartKind.Armor)
+            long resale=0;
+            for(int i=firstNewItem;i<inventory.Count;i++)resale+=DismantleFullValue(inventory[i]);
+            if(inventory.Count-firstNewItem>1&&resale>offer.Price)
             {
-                // Allocate at most the pack price across its actual physical
-                // blocks; standard purchases and all other parts are untouched.
+                // Only a discounted pack that would yield a profit needs a cap.
+                // Apply it to its physical items, including configured drive packs.
                 int remaining=offer.Price;
                 for(int i=firstNewItem;i<inventory.Count;i++)
                 {

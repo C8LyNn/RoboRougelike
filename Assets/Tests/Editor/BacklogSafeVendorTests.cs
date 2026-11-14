@@ -6,6 +6,35 @@ using UnityEngine;
 
 public sealed class BacklogSafeVendorTests
 {
+    [Test] public void DiscountedDrivePacksCannotProfitWhenTheirConfiguredSizeIncreases()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        model.Economy.DriveGrantQuantity=4;Assert.That(model.TryEnterSafeZone(2),Is.True);
+        model.PrepareSafeZoneVendor(917);model.Award(1000);var offer=model.SafeZoneVendorOffers()[0];
+        Assert.That(model.TryPurchaseSafeZoneOffer(offer.Index),Is.True);
+        var pack=model.Inventory.ToArray();Assert.That(pack.Length,Is.EqualTo(4));
+        Assert.That(pack.Sum(p=>model.DismantleValue(p)),Is.LessThanOrEqualTo(offer.Price));
+        Assert.That(model.FuseInventory(pack.Take(3).Select(p=>p.Id)),Is.True);
+        Assert.That(model.Inventory.Sum(p=>model.DismantleValue(p)),Is.LessThanOrEqualTo(offer.Price));
+        var saved=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Inventory.Sum(p=>restored.DismantleValue(p)),Is.LessThanOrEqualTo(offer.Price));
+    }
+    [Test] public void VendorDoesNotCapARegularDrivePackWhenResaleIsAlreadySafe()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        Assert.That(model.TryEnterSafeZone(2),Is.True);model.PrepareSafeZoneVendor(917);model.Award(1000);
+        var offer=model.SafeZoneVendorOffers()[0];Assert.That(model.TryPurchaseSafeZoneOffer(offer.Index),Is.True);
+        Assert.That(model.Inventory.Count,Is.EqualTo(2));Assert.That(model.Inventory.All(p=>!p.HasDismantleCap),Is.True);
+        Assert.That(model.Inventory.Sum(p=>model.DismantleValue(p)),Is.LessThanOrEqualTo(offer.Price));
+    }
+    [Test] public void LargerDiscountAlsoCapsAProfitableDrivePack()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Economy.SafeVendorPriceMultiplier=.1f;
+        Assert.That(model.TryEnterSafeZone(2),Is.True);model.PrepareSafeZoneVendor(917);model.Award(1000);
+        var offer=model.SafeZoneVendorOffers()[0];Assert.That(model.TryPurchaseSafeZoneOffer(offer.Index),Is.True);
+        Assert.That(model.Inventory.Count,Is.EqualTo(2));Assert.That(model.Inventory.Sum(p=>model.DismantleValue(p)),Is.LessThanOrEqualTo(offer.Price));
+    }
     [Test] public void ConfiguredOffersBeyondFourRemainIndependentThroughSaveAndRestock()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
