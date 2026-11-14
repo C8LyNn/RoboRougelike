@@ -5,6 +5,23 @@ using RoboRougelike.R3;
 
 public sealed class BacklogDeployableSlotTests
 {
+    [Test] public void SupportTurretAssignmentChargesAndCooldownSurviveCheckpoint()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(5000);
+        var kind=R3PartKind.SupportTurretGenerator;Assert.That(model.PurchaseToInventory(kind),Is.True);
+        var part=model.Inventory.Last(p=>p.Kind==kind);
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(part.Id,c,default)==null);
+        Assert.That(model.Mount(part.Id,cell),Is.True);Assert.That(model.AssignDeployableSlot(kind,3),Is.True);
+        Assert.That(model.Charges.EnsurePool(R3DeployableService.SupportTurretPool,3),Is.True);
+        Assert.That(model.Charges.TrySpend(R3DeployableService.SupportTurretPool,1),Is.True);
+        typeof(R3VehicleModel).GetProperty("SupportTurretReadyAt").SetValue(model,123f);
+        var saved=UnityEngine.JsonUtility.FromJson<R3ModelCheckpoint>(UnityEngine.JsonUtility.ToJson(model.MakeCheckpoint(100)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,200,out var restored,out var error),Is.True,error);
+        Assert.That(restored.GetDeployableSlots()[3],Is.EqualTo(kind));
+        Assert.That(restored.Charges.Current(R3DeployableService.SupportTurretPool),Is.EqualTo(2));
+        Assert.That(restored.SupportTurretReadyAt,Is.EqualTo(223).Within(.001));
+    }
     [Test] public void DroneAndTurretAssignmentsChargesAndCooldownsSurviveCheckpoint()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(5000);

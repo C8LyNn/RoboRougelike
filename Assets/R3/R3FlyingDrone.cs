@@ -6,6 +6,18 @@ using UnityEngine;
 
 namespace RoboRougelike.R3
 {
+    public sealed class R3SupportTurret : MonoBehaviour,IRRLTeamMember
+    {
+        R3VehicleAssembly owner;Rigidbody ownerBody;VehicleEnergyBank energy;float radius,rate;
+        public int TeamId=>owner!=null?RRLHitRouter.Team(owner.transform):0;
+        public void Configure(R3VehicleAssembly assembly,float range,float energyPerSecond)
+        {owner=assembly;ownerBody=assembly!=null?assembly.GetComponent<Rigidbody>():null;energy=assembly!=null?assembly.GetComponent<VehicleEnergyBank>():null;radius=range;rate=energyPerSecond;}
+        void FixedUpdate()
+        {
+            if(owner==null||ownerBody==null||energy==null){Destroy(gameObject);return;}
+            if((ownerBody.position-transform.position).sqrMagnitude<=radius*radius)energy.Recharge(rate*Time.fixedDeltaTime);
+        }
+    }
     // Uses the same physical HP as Repair Pulse; never revives destroyed parts.
     public sealed class R3HealingTurret : MonoBehaviour,IRRLTeamMember
     {
@@ -38,7 +50,7 @@ namespace RoboRougelike.R3
             for(int i=0;i<count;i++)
             {
                 var hit=hits[i];if(hit==null||team==0||RRLHitRouter.Team(hit.transform)!=team||hit.transform.IsChildOf(transform))continue;
-                if(hit.GetComponentInParent<R3FlyingDrone>()==null&&hit.GetComponentInParent<R3HealingTurret>()==null)continue;
+                if(hit.GetComponentInParent<R3FlyingDrone>()==null&&hit.GetComponentInParent<R3HealingTurret>()==null&&hit.GetComponentInParent<R3SupportTurret>()==null)continue;
                 var hp=hit.GetComponentInParent<P12PipelineSafeDamageable>();
                 if(hp==null||hp.IsDead||hp.MaxHp<=0)continue;
                 float ratio=hp.CurrentHp/hp.MaxHp;if(ratio<weakest-.00001f){weakest=ratio;selected=hp;}

@@ -207,3 +207,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Wieżyczka leczy teraz również znajdujące się w zasięgu żywe drony i wieżyczki tej samej drużyny, używając ich rzeczywistego HP. Nadal pomija przeciwników, zniszczone obiekty i samą siebie; priorytet otrzymuje najbardziej uszkodzony dostępny cel. Wyszukiwanie wykorzystuje bufor wielokrotnego użytku.
 - Test przed zmianą FAIL (`backlog-healing-allies-red.xml`: dron nie odzyskiwał HP); po zmianie **22 PASS, 0 FAIL**, exit 0 (`backlog-healing-allies-final.xml` i `.log`). Scenariusz obejmuje sojuszniczego drona, wroga w pobliżu, gracza, wyjście z zasięgu i zniszczenie wieżyczki. Ręczny Windows Player i balans: NOT RUN.
+
+### 23. Wieżyczka wspierająca — prototyp energetyczny
+
+- Dodano osobny generator 1×1×1 we wspólnej puli Z/X/C/V. Stacjonarna wieżyczka, postawiona za jadącym robotem, odnawia energię pojazdu właściciela w konfigurowalnym promieniu. Korzysta z istniejącego banku energii, nie przekracza jego maksimum i kończy działanie po zniszczeniu lub upływie życia. Ładunki i cooldown są osobne; kopie zwiększają szybkość wsparcia. Wartości i wybrana rola wsparcia są tymczasowe do playtestu.
+- Unity 6000.3.14f1 EditMode: przed implementacją FAIL (`backlog-support-turret-red.xml`: brak rodzaju), pierwszy zestaw 22/22 PASS; końcowy **23 PASS, 0 FAIL**, exit 0 (`backlog-support-turret-final.xml` i `.log`). Test izoluje wkład wieżyczki od naturalnej regeneracji, sprawdza zasięg, zniszczenie, zapis oraz regresję innych wieżyczek. Ręczna gra i balans: NOT RUN. Pozostaje kopuła osłonowa oraz ewentualne rozszerzenie wsparcia na inne sojusznicze banki energii.
