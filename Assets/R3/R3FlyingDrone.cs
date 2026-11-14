@@ -9,14 +9,14 @@ namespace RoboRougelike.R3
     // Uses the same physical HP as Repair Pulse; never revives destroyed parts.
     public sealed class R3HealingTurret : MonoBehaviour,IRRLTeamMember
     {
-        R3VehicleAssembly owner;Rigidbody ownerBody;float radius,rate;
+        R3VehicleAssembly owner;Rigidbody ownerBody;float radius,rate;Collider[] hits=new Collider[64];
         public int TeamId=>owner!=null?RRLHitRouter.Team(owner.transform):0;
         public void Configure(R3VehicleAssembly assembly,float range,float ratioPerSecond)
         {owner=assembly;ownerBody=assembly!=null?assembly.GetComponent<Rigidbody>():null;radius=range;rate=ratioPerSecond;}
         void FixedUpdate()
         {
             if(owner==null||ownerBody==null){Destroy(gameObject);return;}
-            R3MountedPart selected=null;float weakest=1;
+            P12PipelineSafeDamageable selected=null;float weakest=1;
             foreach(var part in owner.Parts)
             {
                 if(part==null||!part.Operational||!part.transform.IsChildOf(owner.transform)||part.Damageable==null||part.Damageable.MaxHp<=0)continue;
@@ -24,9 +24,26 @@ namespace RoboRougelike.R3
                 Vector3 point=ownerBody.position+ownerBody.rotation*local;
                 if((point-transform.position).sqrMagnitude>radius*radius)continue;
                 float ratio=part.Damageable.CurrentHp/part.Damageable.MaxHp;
-                if(ratio<weakest-.00001f){weakest=ratio;selected=part;}
+                if(ratio<weakest-.00001f){weakest=ratio;selected=part.Damageable;}
             }
-            if(selected!=null)selected.Damageable.RestoreHealthRatio(Mathf.Min(1,weakest+rate*Time.fixedDeltaTime));
+            int count;
+            while(true)
+            {
+                count=Physics.OverlapSphereNonAlloc(transform.position,radius,hits,~0,QueryTriggerInteraction.Ignore);
+                if(count<hits.Length)break;
+                if(hits.Length>=4096){hits=Physics.OverlapSphere(transform.position,radius,~0,QueryTriggerInteraction.Ignore);count=hits.Length;break;}
+                Array.Resize(ref hits,hits.Length*2);
+            }
+            int team=TeamId;
+            for(int i=0;i<count;i++)
+            {
+                var hit=hits[i];if(hit==null||team==0||RRLHitRouter.Team(hit.transform)!=team||hit.transform.IsChildOf(transform))continue;
+                if(hit.GetComponentInParent<R3FlyingDrone>()==null&&hit.GetComponentInParent<R3HealingTurret>()==null)continue;
+                var hp=hit.GetComponentInParent<P12PipelineSafeDamageable>();
+                if(hp==null||hp.IsDead||hp.MaxHp<=0)continue;
+                float ratio=hp.CurrentHp/hp.MaxHp;if(ratio<weakest-.00001f){weakest=ratio;selected=hp;}
+            }
+            if(selected!=null)selected.RestoreHealthRatio(Mathf.Min(1,weakest+rate*Time.fixedDeltaTime));
         }
     }
     // A physical, temporary ally. It follows a loose radius rather than a fixed offset.

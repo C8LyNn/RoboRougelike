@@ -263,7 +263,7 @@ public sealed class BacklogDeviceTierGameplayTests
     [UnityTest] public IEnumerator HealingTurretRepairsNearbyOwnedPartsWithoutAttacking()
     {
         Assert.That(System.Enum.TryParse("HealingTurretGenerator",out R3PartKind kind),Is.True,"Missing healing turret generator");
-        run.VehicleModel.Award(2500);FuseAndMount(kind);
+        run.VehicleModel.Award(2500);FuseAndMount(kind);FuseAndMount(R3PartKind.FlyingDroneGenerator);
         Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
         var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
         var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
@@ -278,6 +278,22 @@ public sealed class BacklogDeviceTierGameplayTests
         while(Time.realtimeSinceStartup<deadline&&part.Damageable.CurrentHp<=before+.01f)yield return MOVSeriesDeviceTests.FixedStep();
         Assert.That(part.Damageable.CurrentHp,Is.GreaterThan(before),"Nearby physical armor must actually recover HP");
         Assert.That(part.Damageable.CurrentHp,Is.LessThanOrEqualTo(part.Damageable.MaxHp));
+        part.Damageable.RestoreHealthRatio(1);
+        Assert.That(service.TryDeploy(R3PartKind.FlyingDroneGenerator),Is.True);
+        var drone=GameObject.Find("Dron latający");Assert.That(drone,Is.Not.Null);
+        drone.GetComponent<R3FlyingDrone>().enabled=false;
+        var droneHp=drone.GetComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();droneHp.RestoreHealthRatio(.5f);
+        float droneBefore=droneHp.CurrentHp;
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"healing-enemy-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();enemy.ConfigureMovement(0,12,0);var enemyBody=enemy.GetComponent<Rigidbody>();
+        enemyBody.position=turret.transform.position+new Vector3(3,1,0);enemyBody.isKinematic=true;Physics.SyncTransforms();
+        var enemyHp=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().First(p=>!p.IsDead);enemyHp.RestoreHealthRatio(.25f);float hostileBefore=enemyHp.CurrentHp;
+        deadline=Time.realtimeSinceStartup+8;
+        while(Time.realtimeSinceStartup<deadline&&droneHp.CurrentHp<=droneBefore+.01f)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(droneHp.CurrentHp,Is.GreaterThan(droneBefore),"The turret must heal a nearby allied drone");
+        Assert.That(enemyHp.CurrentHp,Is.EqualTo(hostileBefore).Within(.001),"It must never heal enemies");
         body.position=new Vector3(140,2,140);Physics.SyncTransforms();yield return MOVSeriesDeviceTests.FixedStep();
         float outside=part.Damageable.CurrentHp;for(int i=0;i<15;i++)yield return MOVSeriesDeviceTests.FixedStep();
         Assert.That(part.Damageable.CurrentHp,Is.EqualTo(outside).Within(.001),"Leaving the radius must stop healing");

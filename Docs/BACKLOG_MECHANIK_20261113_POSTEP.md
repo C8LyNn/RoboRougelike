@@ -202,3 +202,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Dodano osobny generator 1×1×1 do wspólnej puli Z/X/C/V. Rozstawia za jadącym robotem stacjonarną wieżyczkę z HP, kolizją, drużyną, czasem życia, ładunkami i niezależnym cooldownem. Naprawia najbardziej uszkodzoną sprawną część pojazdu właściciela w konfigurowalnym zasięgu, używając istniejącego HP; nie wskrzesza zniszczonych części i nie strzela. Kopie zwiększają szybkość naprawy. W tym prototypie leczenie obejmuje pojazd właściciela, a nie inne sojusznicze jednostki.
 - Unity 6000.3.14f1 EditMode: test przed implementacją FAIL (`backlog-healing-turret-red.xml`: brak rodzaju); po wdrożeniu **21 PASS, 0 FAIL**, a po uzupełnieniu testów wyjścia z zasięgu, zniszczenia wieżyczki i zapisu czterech osobnych slotów ponownie **21 PASS, 0 FAIL**, exit 0 (`backlog-healing-turret-final.xml` i `.log`). Scenariusze sterowane API; ręczna gra, balans, czytelność oraz naprawa innych sojuszników: NOT RUN / do rozbudowy. Pozostają wieżyczka wspierająca i kopuła osłonowa.
+
+#### Uzupełnienie: sojusznicze urządzenia
+
+- Wieżyczka leczy teraz również znajdujące się w zasięgu żywe drony i wieżyczki tej samej drużyny, używając ich rzeczywistego HP. Nadal pomija przeciwników, zniszczone obiekty i samą siebie; priorytet otrzymuje najbardziej uszkodzony dostępny cel. Wyszukiwanie wykorzystuje bufor wielokrotnego użytku.
+- Test przed zmianą FAIL (`backlog-healing-allies-red.xml`: dron nie odzyskiwał HP); po zmianie **22 PASS, 0 FAIL**, exit 0 (`backlog-healing-allies-final.xml` i `.log`). Scenariusz obejmuje sojuszniczego drona, wroga w pobliżu, gracza, wyjście z zasięgu i zniszczenie wieżyczki. Ręczny Windows Player i balans: NOT RUN.
