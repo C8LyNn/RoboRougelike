@@ -11,6 +11,25 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [Test] public void GarageFrameBindingMigratesOldProfilesWithoutTakingTheirHomeKey()
+    {
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-frame-"+Guid.NewGuid()+".json");
+        try
+        {
+            var initial=new R1ControlProfile(path);var actions=R1ControlProfile.Actions.Where(a=>a!="GarageFrame").ToArray();
+            var values=actions.Select(initial.Binding).ToArray();values[Array.IndexOf(actions,"MoveForward")]="Home";
+            var data=new LegacyControlData{actions=actions,bindings=values};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            var profile=new R1ControlProfile(path);Assert.That(profile.Error,Is.Null);
+            Assert.That(profile.Binding("MoveForward"),Is.EqualTo("Home"));
+            Assert.That(profile.Binding("GarageFrame"),Is.Not.Null.And.Not.EqualTo("Home"));
+            Assert.That(R1ControlProfile.ValidSnapshot(values),Is.True);
+            Assert.That(profile.TryBind("GarageFrame","MouseMiddle"),Is.False);
+            Assert.That(profile.TryBind("GarageFrame","K"),Is.True);profile.Save();
+            Assert.That(new R1ControlProfile(path).Binding("GarageFrame"),Is.EqualTo("K"));
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [Test] public void GarageUndersideBindingMigratesAndCanBeChangedWithoutStealingExistingKeys()
     {
         string path=Path.Combine(Path.GetTempPath(),"RRL-controls-garage-"+Guid.NewGuid()+".json");

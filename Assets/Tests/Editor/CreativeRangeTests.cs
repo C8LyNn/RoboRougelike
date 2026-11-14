@@ -61,6 +61,26 @@ public class CreativeRangeTests
         finally{typeof(R1ControlProfile).GetMethod("RestoreValues",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(profile,new object[]{old});}
     }
 
+    [UnityTest] public IEnumerator GarageFrameUsesReassignedKeyWithoutChangingSelection()
+    {
+        var profile=R1ControlProfile.Current;var old=profile.Snapshot();
+        try
+        {
+            profile.ResetDefaults();Assert.That(profile.TryBind("GarageFrame","K"),Is.True);
+            var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+            Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+            var item=run.VehicleModel.Inventory.Last();var garage=run.Garage;garage.ChooseInventory(item.Id);garage.Zoom(-100);
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.Home},Vector2.zero);
+            Assert.That(garage.Distance,Is.EqualTo(3));
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K,shift=true},Vector2.zero);
+            Assert.That(garage.Distance,Is.EqualTo(3));
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K},Vector2.zero);
+            Assert.That(garage.Distance,Is.GreaterThanOrEqualTo(4.5f));
+            Assert.That(garage.SelectedInventoryId,Is.EqualTo(item.Id));yield return null;
+        }
+        finally{typeof(R1ControlProfile).GetMethod("RestoreValues",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(profile,new object[]{old});}
+    }
+
     [UnityTest] public IEnumerator EscapeClosesEnemyMenuBeforeResumingSimulation()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);

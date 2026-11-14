@@ -748,8 +748,8 @@ namespace RoboRougelike.R3
             if((current.type==EventType.KeyDown||(inside&&current.type==EventType.MouseDown))&&
                R1ControlProfile.Current.MatchesEvent("GarageUnderside",current))
             {ToggleUndersideView();current.Use();return;}
-            if(current.type==EventType.KeyDown&&current.keyCode==KeyCode.Home&&
-               !current.shift&&!current.control&&!current.alt&&!current.command)
+            if((current.type==EventType.KeyDown||(inside&&current.type==EventType.MouseDown))&&
+               !current.shift&&R1ControlProfile.Current.MatchesEvent("GarageFrame",current))
             {FrameVehicle();Message="Dopasowano widok pojazdu.";current.Use();return;}
             if(current.type==EventType.KeyDown&&(Tool==R41GarageTool.Mount||current.shift))
             {
