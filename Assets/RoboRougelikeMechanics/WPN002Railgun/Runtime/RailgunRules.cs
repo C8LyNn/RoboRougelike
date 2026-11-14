@@ -5,6 +5,8 @@ namespace RoboRougelike.WPN002Railgun
     // Pure deterministic calculations, with no physics or Unity random state.
     public static class RailgunRules
     {
+        public static float NonNegativeCooldown(float value,float fallback)
+        { return !Finite(value)?fallback:Mathf.Max(0,value); }
         public static bool Finite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
         public static float ClampFinite(float v, float min, float max, float fallback)
             => Finite(v) ? Mathf.Clamp(v, min, max) : fallback;

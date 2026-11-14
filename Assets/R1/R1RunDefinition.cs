@@ -52,6 +52,7 @@ namespace RoboRougelike.R1
         public RoboRougelike.R5.R5StageDefinition[] RouteStages;
         public R1UpgradeDefinition[] Upgrades;
         [Range(0,8)] public int SalvageLimit = 2;
+        [Min(0)] public int RewardBasketRerollCost = 10;
         public RoboRougelike.R3.R3GarageEconomy GaragePrices = new RoboRougelike.R3.R3GarageEconomy();
     }
 }

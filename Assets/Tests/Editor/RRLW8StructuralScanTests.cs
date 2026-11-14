@@ -20,7 +20,9 @@ public class RRLW8StructuralScanTests
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
         while(R1RunController.Instance?.Progress==null)yield return null;run=R1RunController.Instance;
         if(!Enum.TryParse("StructuralScanner",out kind))yield break;
-        Assert.That(run.OpenSandboxGarage(),Is.True);Assert.That(run.GarageBuy(new Vector3Int(0,2,-2),kind),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);
+        var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct().OrderBy(c=>c.y).ThenBy(c=>Math.Abs(c.x));
+        Assert.That(cells.Any(cell=>run.VehicleModel.PlacementError(cell,kind)==null&&run.GarageBuy(cell,kind)),Is.True,"The fixture needs one valid scanner mount.");
         Assert.That(run.VehicleModel.Parts.Single(p=>p.Kind==kind).Id,Is.Not.Empty);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         module=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==kind);
@@ -45,6 +47,16 @@ public class RRLW8StructuralScanTests
         var contacts=scanner.Contacts.Select(c=>c.PartKey).ToArray();Assert.That(Activate(),Is.False);
         Assert.That(scanner.Contacts.Select(c=>c.PartKey),Is.EqualTo(contacts),"Cooldown retry must preserve the live snapshot");
         Assert.That(scanner.CooldownLeft,Is.InRange(7.9f,8.01f));yield return null;
+    }
+    [UnityTest] public IEnumerator PhysicalScannerCanSpendLargeFiniteConfiguredCost()
+    {
+        run.VehicleModel.Economy.StructuralScanEnergy=1100000;
+        var bank=run.Player.GetComponent<VehicleEnergyBank>();var largeEnergy=new VehicleEnergyState();
+        largeEnergy.SetResourceMultipliers(4000,1);largeEnergy.Refresh(0,0,true);largeEnergy.Fill();
+        typeof(VehicleEnergyBank).GetField("assembly",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).SetValue(bank,null);
+        typeof(VehicleEnergyBank).GetField("state",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).SetValue(bank,largeEnergy);
+        Assert.That(Activate(),Is.True);Assert.That(largeEnergy.Current,Is.EqualTo(900000).Within(.5));
+        yield return null;
     }
     [UnityTest] public IEnumerator SolidOccluderBlocksStructuralHpAndFailedScanDoesNotConsumeCooldown()
     {
@@ -73,9 +85,9 @@ public class RRLW8StructuralScanTests
         Assert.That(Activate(),Is.True);var assembly=run.Player.GetComponent<R3VehicleAssembly>();var model=assembly.Model;
         var state=model.Parts.Single(p=>p.Id==module.Id);Assert.That(R3VehicleModel.OccupiedCells(state).Count(),Is.EqualTo(1));Assert.That(module.GetComponents<P12PipelineSafeDamageable>().Length,Is.EqualTo(1));
         string id=state.Id;float readyAt=state.DeviceReadyAt;Assert.That(readyAt,Is.GreaterThan(Time.time));
-        module.Damageable.ApplyDamage(100000,module.transform.position,Vector3.up);assembly.Capture();
+        module.Damageable.ApplyDamageResolvedTyped(module.Damageable.CurrentHp/.75f+.01f,module.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Kinetic);assembly.Capture();
         Assert.That(Activate(),Is.False);Assert.That(scanner.Contacts,Is.Empty);Assert.That(state.Health,Is.Zero);Assert.That(state.DeviceReadyAt,Is.EqualTo(readyAt));
-        var copy=model.DeepCopy();int scrap=copy.Scrap;Assert.That(copy.Repair(state.Cell),Is.True);Assert.That(copy.Scrap,Is.LessThan(scrap));
+        var copy=model.DeepCopy();copy.Award(1000);int scrap=copy.Scrap;Assert.That(copy.Repair(state.Cell),Is.True);Assert.That(copy.Scrap,Is.LessThan(scrap));
         var rig=R3VehicleAssembly.Build(copy,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
         var restored=rig.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);var source=restored.GetComponent<StructuralScanController>();
         Assert.That(copy.Parts.Single(p=>p.Id==id).Health,Is.EqualTo(1));Assert.That(source.CooldownLeft,Is.GreaterThan(0));Assert.That(Activate(restored),Is.False);

@@ -46,7 +46,21 @@ MonoBehaviour:
   Upgrades:
   - {fileID: 11400000, guid: 290b6847714448b4903e6edcbb30893c, type: 2}
   - {fileID: 11400000, guid: fbceb90e8746428f9f41efb487ec94f4, type: 2}
+  - {fileID: 11400000, guid: 7c88029780a64e8e9cf9742ff394184c, type: 2}
+  - {fileID: 11400000, guid: 9a01c221d4aa43cb99f87e8791bc7f58, type: 2}
+  - {fileID: 11400000, guid: 82b2a14675164e5c86a9964c9dd2422d, type: 2}
+  - {fileID: 11400000, guid: e0f9b0bdb4fb4990b56feb1913613248, type: 2}
+  - {fileID: 11400000, guid: 18afddca326643a3ab30cef3d082a5dc, type: 2}
+  - {fileID: 11400000, guid: 3493200ac51142eea768cc2d10c8aa03, type: 2}
+  - {fileID: 11400000, guid: 092814e2632a4d8885244897d9334af8, type: 2}
+  - {fileID: 11400000, guid: 2bf5038c36ea4e959a1f507ed4046e0a, type: 2}
+  - {fileID: 11400000, guid: 09ea2fcc8d5b44c38d1b654cddfb01af, type: 2}
   - {fileID: 11400000, guid: 4c6d736b4bc44f7fbe23250fcb796e0b, type: 2}
   - {fileID: 11400000, guid: 0954e7575fc04bca85ef219aaf09829e, type: 2}
   - {fileID: 11400000, guid: aadb343dbbc64641897750c22d9d22dd, type: 2}
+  - {fileID: 11400000, guid: 357023cc484149548d24c5770db3356f, type: 2}
+  - {fileID: 11400000, guid: d628345295b44490868c9933631cbad4, type: 2}
+  - {fileID: 11400000, guid: fc3bd3aa82ba44b5981a749aa0402b07, type: 2}
+  - {fileID: 11400000, guid: a72266eb13fd485585c00b8b087ab544, type: 2}
+  - {fileID: 11400000, guid: 7091b320791b4070a74d5037f9bc26a7, type: 2}
   SalvageLimit: 2

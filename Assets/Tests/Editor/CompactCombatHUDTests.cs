@@ -32,16 +32,16 @@ public sealed class CompactCombatHUDTests
         var summary=(string)method.Invoke(null,new object[]{design});
         Assert.That(summary,Does.Contain("Energia: 550"),"500 core + 100 battery - 2×25 passive reservation.");
     }
-    [Test] public void GarageMotorAdviceDoesNotSuggestAddingPowerAtTheCap()
+    [Test] public void GarageMotorAdviceDoesNotClaimAnArbitraryCap()
     {
         var method=typeof(R1RunHUD).GetMethod("GarageWheelPowerAdvice",BindingFlags.Static|BindingFlags.NonPublic);
         Assert.That(method,Is.Not.Null);
         string below=(string)method.Invoke(null,new object[]{4f});
-        string capped=(string)method.Invoke(null,new object[]{5f});
+        string many=(string)method.Invoke(null,new object[]{12f});
         Assert.That(below,Does.Contain("dołóż silnik"));
-        Assert.That(capped,Does.Contain("Limit silników"));
-        Assert.That(capped,Does.Not.Contain("dołóż silnik"));
-        Assert.That(capped,Does.Contain("koła"));
+        Assert.That(many,Does.Not.Contain("Limit silników"));
+        Assert.That(many,Does.Contain("dołóż silnik"));
+        Assert.That(many,Does.Contain("koła"));
     }
     [TestCase(0f,100f,0f)]
     [TestCase(50f,100f,.5f)]
@@ -110,5 +110,52 @@ public sealed class CompactCombatHUDTests
             toggle.Invoke(hud,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.I}});Assert.That((bool)open.GetValue(hud),Is.False);
         }
         finally{Object.DestroyImmediate(go);}
+    }
+    [Test] public void CombatDetailsUsesReboundKeyInsteadOfHardcodedI()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();var go=new GameObject("HUD remap test");
+        try
+        {
+            Assert.That(profile.TryBind("DefenseStatusPage","F6"),Is.True);
+            Assert.That(profile.TryBind("CombatDetails","P"),Is.True);
+            var hud=go.AddComponent<R1RunHUD>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+            var toggle=typeof(R1RunHUD).GetMethod("UpdateCombatDetails",flags);var open=typeof(R1RunHUD).GetField("combatDetailsOpen",flags);
+            toggle.Invoke(hud,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.I}});Assert.That((bool)open.GetValue(hud),Is.False);
+            var key=new Event{type=EventType.KeyDown,keyCode=KeyCode.P};toggle.Invoke(hud,new object[]{key});
+            Assert.That((bool)open.GetValue(hud),Is.True);Assert.That(key.type,Is.EqualTo(EventType.Used));
+        }
+        finally{profile.ResetDefaults();Object.DestroyImmediate(go);}
+    }
+    [Test] public void RangeHintsShowConfiguredControls()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("MoveForward","K"),Is.True);
+            Assert.That(profile.TryBind("Weapon3","B"),Is.True);
+            Assert.That(profile.TryBind("Deploy1","H"),Is.True);
+            Assert.That(profile.TryBind("SteeringLeft","J"),Is.True);
+            Assert.That(profile.TryBind("DefenseStatusPage","F6"),Is.True);
+            Assert.That(profile.TryBind("ResetRange","P"),Is.True);
+            var method=typeof(R1RunHUD).GetMethod("RangeControlsHint",BindingFlags.Static|BindingFlags.NonPublic);
+            Assert.That(method,Is.Not.Null);string hint=(string)method.Invoke(null,null);
+            Assert.That(hint,Does.Contain("K/S/A/D").And.Contain("B").And.Contain("H/X/C/V").And.Contain("J/.").And.Contain("P — reset"));
+            Assert.That(hint,Does.Not.Contain("WASD").And.Not.Contain("R — reset"));
+        }
+        finally{profile.ResetDefaults();}
+    }
+    [Test] public void WeaponStatusLabelsUseConfiguredSlots()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("Weapon1","MouseMiddle"),Is.True);
+            Assert.That(profile.TryBind("Weapon3","B"),Is.True);
+            var method=typeof(R1RunHUD).GetMethod("WeaponSlotInputLabel",BindingFlags.Static|BindingFlags.NonPublic);
+            Assert.That(method,Is.Not.Null);
+            Assert.That((string)method.Invoke(null,new object[]{0}),Is.EqualTo("A / ŚPM"));
+            Assert.That((string)method.Invoke(null,new object[]{2}),Is.EqualTo("C / B"));
+        }
+        finally{profile.ResetDefaults();}
     }
 }

@@ -43,5 +43,16 @@ namespace RoboRougelike.WeaponIntegration
             if(hp==null)return false;
             hp.ApplyDamageResolvedTyped(damage,point,direction,damageKind);return true;
         }
+        public static bool ApplyHybrid(Collider collider,float kinetic,float blast,Vector3 point,Vector3 direction,Transform source)
+        {
+            if(!CanHit(collider,source)||float.IsNaN(kinetic)||float.IsInfinity(kinetic)||kinetic<0||
+                float.IsNaN(blast)||float.IsInfinity(blast)||blast<0||(double)kinetic+blast<=0)return false;
+            float total=(float)System.Math.Min(float.MaxValue,(double)kinetic+blast);
+            var receiver=collider.GetComponentInParent<IRRLHitReceiver>();
+            if(receiver!=null)return receiver.ReceiveHit(total,point,direction,source);
+            var hp=collider.GetComponentInParent<P12PipelineSafeDamageable>();
+            if(hp==null)return false;
+            hp.ApplyHybridDamageResolved(kinetic,blast,point,direction);return true;
+        }
     }
 }

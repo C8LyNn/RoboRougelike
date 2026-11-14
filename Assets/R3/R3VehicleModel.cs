@@ -8,12 +8,13 @@ using RoboRougelike.R1;
 namespace RoboRougelike.R3
 {
     // Append new values: checkpoints store these numeric IDs.
-    public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery, RepairPulse, DrivePower, EnergyRegenerator }
+    public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery, RepairPulse, DrivePower, EnergyRegenerator, SalvageOptimizer, Overdrive, RapidFire, DoubleShot, DoubleShotOverdrive, TargetedEmp, AreaEmp, ChargeCapacity, ChargeRegenerator, RechargePulse, RampDeployer, WallDeployer, JumpPadDeployer, BlastTrapDeployer, EmpTrapDeployer, RepelTrapDeployer, DamageTrapDeployer, SlowTrapDeployer, ImmobilizeTrapDeployer, FlyingDroneGenerator, GroundDroneGenerator, OffensiveTurretGenerator, HealingTurretGenerator, SupportTurretGenerator, ShieldTurretGenerator, HealingDroneGenerator, SupportDroneGenerator }
     public enum R3WheelStyle { Offroad, Slick, LargeOffroad, Monster, SmallFork, BalloonFork, SpikedFork, TwinRoad, SteerRoad, SteerOffroad, CasterSlick, SwingOffroad }
     // Zero preserves the shape of every pre-existing checkpoint.
     public enum R3ArmorShape { Cube, Wedge, HalfBlock, Pyramid, RoundEdge, HalfWedge, Dome }
     public enum R3DriveKind { Wheels, Tracks, Omni, Hover }
     public enum R3VehicleKind { Standard, Light, Heavy }
+    public enum R3ConstructionSize { Small, Medium, Large }
     [Serializable]
     public sealed class R3PartState
     {
@@ -24,6 +25,11 @@ namespace RoboRougelike.R3
         public float Health = 1;
         public string Id = Guid.NewGuid().ToString("N");
         public string Source = "Zakup / pojazd startowy";
+        // A discounted vendor pack can have a lower total scrap value than
+        // its individual blocks would otherwise yield. Old saves default to
+        // false, retaining their original dismantling value.
+        public bool HasDismantleCap;
+        public int DismantleCap;
         public R4WeaponKind Weapon;
         public R3WheelStyle WheelStyle;
         // Zero is the one-cell footprint written by all existing saves.
@@ -33,6 +39,8 @@ namespace RoboRougelike.R3
         // A bonus is a physical, single inventory item occupying one grid cell.
         public string UpgradeId, UpgradeTitle, UpgradeDescription;
         public R1UpgradeEffect UpgradeEffect;
+        public R1ModifierOperation UpgradeOperation;
+        public R1BonusScope UpgradeScope;
         public float UpgradeAmount;
         // Rotation in 90-degree steps around local X/Y/Z; mask encodes six
         // optional face-centre mounting contacts in local orientation.
@@ -46,11 +54,11 @@ namespace RoboRougelike.R3
         public float DisruptionRemaining;
         public float ThermalHeat;
         public bool ThermalLocked;
-        public float DefenseCharge=-1,DefenseRechargeAge=float.PositiveInfinity;
+        public float DefenseCharge=-1,DefenseRechargeAge=float.PositiveInfinity,DefenseCapacity;
         public R3PartState(Vector3Int cell, R3PartKind kind, float health = 1) { Cell = cell; Kind = kind; Health = health; }
-        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,Weapon=Weapon,WheelStyle=WheelStyle,FootprintRevision=FootprintRevision,ArmorShape=ArmorShape,Tier=Tier,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
+        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,HasDismantleCap=HasDismantleCap,DismantleCap=DismantleCap,Weapon=Weapon,WheelStyle=WheelStyle,FootprintRevision=FootprintRevision,ArmorShape=ArmorShape,Tier=Tier,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,DefenseCapacity=DefenseCapacity,
             UpgradeId=UpgradeId,UpgradeTitle=UpgradeTitle,UpgradeDescription=UpgradeDescription,
-            UpgradeEffect=UpgradeEffect,UpgradeAmount=UpgradeAmount,
+            UpgradeEffect=UpgradeEffect,UpgradeOperation=UpgradeOperation,UpgradeScope=UpgradeScope,UpgradeAmount=UpgradeAmount,
             RotationQuarterTurns=RotationQuarterTurns,ContactMask=ContactMask};
     }
     public sealed class R3VehicleDesign
@@ -60,15 +68,72 @@ namespace RoboRougelike.R3
         public readonly List<R3PartState> Parts = new List<R3PartState>();
     }
     [Serializable]
+    public sealed class R3ConstructionSettings
+    {
+        public int StartingBudget=200, StarterReserve=20, LightStarterExtraReserve=40, BlockCost=2, HalfBlockCost=1, WeaponCost=6, WeaponTierTwoCost=8, WeaponTierThreeCost=10;
+        public int WheelCost=2, ActiveModuleCost=4, PassiveModuleCost=3, DriveModuleCost=3;
+        public int TierTwoMultiplier=2, TierThreeMultiplier=3;
+        public int StageInterval=2, StageBudgetIncrease=20, SmallPhysicalParts=40, MediumPhysicalParts=80;
+        public R3ConstructionSettings Copy()=>new R3ConstructionSettings {
+            StartingBudget=StartingBudget,StarterReserve=StarterReserve,LightStarterExtraReserve=LightStarterExtraReserve,BlockCost=BlockCost,HalfBlockCost=HalfBlockCost,WeaponCost=WeaponCost,
+            WeaponTierTwoCost=WeaponTierTwoCost,WeaponTierThreeCost=WeaponTierThreeCost,
+            WheelCost=WheelCost,ActiveModuleCost=ActiveModuleCost,PassiveModuleCost=PassiveModuleCost,
+            DriveModuleCost=DriveModuleCost,TierTwoMultiplier=TierTwoMultiplier,TierThreeMultiplier=TierThreeMultiplier,
+            StageInterval=StageInterval,StageBudgetIncrease=StageBudgetIncrease,SmallPhysicalParts=SmallPhysicalParts,MediumPhysicalParts=MediumPhysicalParts};
+        public int Cost(R3PartState part)
+        {
+            if(part==null)return 0;
+            int tier=R3VehicleModel.NormalizedTier(part.Tier);
+            if(part.Kind==R3PartKind.Gun)return Math.Max(0,tier==3?WeaponTierThreeCost:tier==2?WeaponTierTwoCost:WeaponCost);
+            int baseCost=part.Kind==R3PartKind.Armor?
+                (part.ArmorShape==R3ArmorShape.HalfBlock||part.ArmorShape==R3ArmorShape.HalfWedge?HalfBlockCost:BlockCost):
+                part.Kind==R3PartKind.Core?BlockCost:
+                part.Kind==R3PartKind.Wheel?WheelCost:(R3VehicleModel.IsActiveSlotPart(part.Kind)||R3VehicleModel.IsDeployableSlotPart(part.Kind))?ActiveModuleCost:
+                R3VehicleModel.IsPassiveSlotPart(part.Kind)?PassiveModuleCost:DriveModuleCost;
+            int multiplier=tier==3?TierThreeMultiplier:tier==2?TierTwoMultiplier:1;
+            return (int)Math.Min(int.MaxValue,(long)Math.Max(0,baseCost)*Math.Max(0,multiplier));
+        }
+    }
+    [Serializable]
     public sealed class R3GarageEconomy
     {
         public int ArmorCost = 5, WheelCost = 15, GunCost = 30, MaxRepairCost = 3;
+        [Range(1,R3BlueprintLibrary.MaximumSlots)] public int BlueprintSlotCount=R3BlueprintLibrary.DefaultSlots;
+        public float StandardPurchaseMultiplier=3f;
+        public float SalvageOptimizerBonus=.25f;
+        public float PhysicalLootDropChance=.2f;
+        public float StructuralScanRange=60f,StructuralScanEnergy=5f,StructuralScanCooldown=8f;
+        public int MissedLootRecoveryCost=10;
+        public int SafeZoneInterval=2;
+        public float SafeZoneRepairFraction=.25f;
+        public int SafeVendorOfferCount=4;
+        public float SafeVendorPriceMultiplier=.5f;
+        public int SalvageOptimizerExtraOffersPerUnit=1;
+        public float OverdriveBonusPerUnit=.2f,OverdriveEnergyPerCopy=15f,OverdriveDuration=5f,OverdriveCooldown=15f;
+        public float RapidFireReductionPerUnit=.2f,RapidFireEnergyPerCopy=15f,RapidFireDuration=5f,RapidFireCooldown=15f;
+        public float DoubleShotChancePerUnit=.2f;
+        public float DoubleShotOverdriveEnergyPerCopy=15f,DoubleShotOverdriveDuration=5f,DoubleShotOverdriveCooldown=15f;
+        public int DoubleShotOverdriveExtraPerUnit=1;
+        public int DeviceBaseCharges=3,CapacityChargesPerUnit=1,RechargePulseChargesPerUnit=1;
+        public float ChargesPerSecondPerRegenerator=.05f,RechargePulseEnergyPerCopy=15f,RechargePulseCooldown=12f;
+        public float RampEnergyPerCopy=10f,RampCooldown=8f,RampLifetime=30f;
+        public float WallEnergyPerCopy=10f,WallCooldown=8f,WallLifetime=30f,JumpPadEnergyPerCopy=10f,JumpPadCooldown=8f,JumpPadLifetime=30f,JumpPadLaunchSpeed=6f;
+        public float TrapEnergyPerCopy=10f,TrapCooldown=8f,TrapLifetime=30f,TrapTriggerRadius=3f,TrapBlastDamage=60f,TrapEmpDuration=3f,TrapRepelSpeed=6f,TrapDamagePerSecond=12f,TrapDamageDuration=5f,TrapSlowMultiplier=.5f,TrapSlowDuration=2f,TrapImmobilizeDuration=2f;
+        public float DroneEnergyPerCopy=20f,DroneCooldown=5f,DroneLifetime=45f,DroneSpeed=7f,DroneFireInterval=1f,DroneDamage=12f;
+        public int DroneActivePerUnit=1;
+        public float HealingDroneRadius=8f,HealingDroneRate=.08f,HealingDroneDamage=4f;
+        public float SupportDroneRadius=8f,SupportDroneEnergyPerSecond=8f,SupportDroneDamage=4f;
+        public float TurretEnergyPerCopy=20f,TurretCooldown=8f,TurretLifetime=30f,TurretFireInterval=1f,TurretDamage=15f;
+        public float HealingTurretRadius=8f,HealingTurretRate=.08f;
+        public float SupportTurretRadius=8f,SupportTurretEnergyPerSecond=8f; public float ShieldTurretRadius=5f,ShieldTurretHp=200f;
+        public int BlockGrantQuantity=5,DriveGrantQuantity=2;
+        public R3ConstructionSettings Construction = new R3ConstructionSettings();
         public int Price(R3PartKind kind) => kind switch {
             R3PartKind.Suspension=>25, R3PartKind.Wheel=>WheelCost, R3PartKind.Gun=>GunCost,
             R3PartKind.Booster=>35, R3PartKind.JumpDrive=>45, R3PartKind.Blink=>60,
             R3PartKind.Gyroscope=>30, R3PartKind.OmniDrive=>40, R3PartKind.MagneticGrapple=>45,
             R3PartKind.HoverEngine=>35, R3PartKind.CrawlerTrack=>45,
-            R3PartKind.BonusModule=>60,R3PartKind.DirectionalShield=>60,R3PartKind.PointDefense=>70,R3PartKind.StructuralScanner=>40,R3PartKind.ScannerPulse=>30,R3PartKind.IndependentSteering=>45,R3PartKind.Battery=>25,R3PartKind.RepairPulse=>50,R3PartKind.DrivePower=>45,R3PartKind.EnergyRegenerator=>40, _=>ArmorCost };
+            R3PartKind.BonusModule=>60,R3PartKind.DirectionalShield=>60,R3PartKind.PointDefense=>70,R3PartKind.StructuralScanner=>40,R3PartKind.ScannerPulse=>30,R3PartKind.IndependentSteering=>45,R3PartKind.Battery=>25,R3PartKind.RepairPulse=>50,R3PartKind.DrivePower=>45,R3PartKind.EnergyRegenerator=>40,R3PartKind.SalvageOptimizer=>40,R3PartKind.Overdrive=>40,R3PartKind.RapidFire=>40,R3PartKind.DoubleShot=>40,R3PartKind.DoubleShotOverdrive=>40,R3PartKind.TargetedEmp=>50,R3PartKind.AreaEmp=>50,R3PartKind.ChargeCapacity=>40,R3PartKind.ChargeRegenerator=>40,R3PartKind.RechargePulse=>40,R3PartKind.RampDeployer=>50,R3PartKind.WallDeployer=>50,R3PartKind.JumpPadDeployer=>50,R3PartKind.BlastTrapDeployer=>50,R3PartKind.EmpTrapDeployer=>50,R3PartKind.RepelTrapDeployer=>50,R3PartKind.DamageTrapDeployer=>50,R3PartKind.SlowTrapDeployer=>50,R3PartKind.ImmobilizeTrapDeployer=>50,R3PartKind.FlyingDroneGenerator=>60,R3PartKind.GroundDroneGenerator=>60,R3PartKind.OffensiveTurretGenerator=>60,R3PartKind.HealingTurretGenerator=>60,R3PartKind.SupportTurretGenerator=>60,R3PartKind.ShieldTurretGenerator=>60,R3PartKind.HealingDroneGenerator=>60,R3PartKind.SupportDroneGenerator=>60, _=>ArmorCost };
     }
     public sealed partial class R3VehicleModel
     {
@@ -145,18 +210,28 @@ namespace RoboRougelike.R3
         // Passive capacity is reserved per physical module, independently of tier.
         public static float TierPassiveExtra(int tier)=>0f;
         public static float TierActivationCost(int tier)=>NormalizedTier(tier)==3?1.4f:NormalizedTier(tier)==2?1.2f:1f;
-        public static bool SupportsFusion(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||
-            kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.BonusModule||
+        public static bool ValidBonusOperation(R1UpgradeEffect effect,R1ModifierOperation operation)=>
+            Enum.IsDefined(typeof(R1ModifierOperation),operation)&&
+            ((effect!=R1UpgradeEffect.Repair&&effect!=R1UpgradeEffect.HybridBlastRounds)||operation==R1ModifierOperation.Increased);
+        public static bool ValidBonusScope(R1UpgradeEffect effect,R1BonusScope scope)=>
+            Enum.IsDefined(typeof(R1BonusScope),scope)&&(scope==R1BonusScope.Global||effect==R1UpgradeEffect.Damage);
+        public static bool ValidBonusAmount(float amount)=>!float.IsNaN(amount)&&!float.IsInfinity(amount)&&amount>=0;
+        public static bool SupportsFusion(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||kind==R3PartKind.Suspension||kind==R3PartKind.OmniDrive||kind==R3PartKind.HoverEngine||kind==R3PartKind.CrawlerTrack||kind==R3PartKind.DirectionalShield||kind==R3PartKind.Booster||kind==R3PartKind.MagneticGrapple||kind==R3PartKind.JumpDrive||kind==R3PartKind.Blink||kind==R3PartKind.Gyroscope||kind==R3PartKind.ScannerPulse||kind==R3PartKind.StructuralScanner||
+            kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.SalvageOptimizer||kind==R3PartKind.Overdrive||kind==R3PartKind.RapidFire||kind==R3PartKind.DoubleShot||kind==R3PartKind.DoubleShotOverdrive||kind==R3PartKind.TargetedEmp||kind==R3PartKind.AreaEmp||kind==R3PartKind.ChargeCapacity||kind==R3PartKind.ChargeRegenerator||kind==R3PartKind.RechargePulse||kind==R3PartKind.RampDeployer||kind==R3PartKind.WallDeployer||kind==R3PartKind.JumpPadDeployer||kind==R3PartKind.BlastTrapDeployer||kind==R3PartKind.EmpTrapDeployer||kind==R3PartKind.RepelTrapDeployer||kind==R3PartKind.DamageTrapDeployer||kind==R3PartKind.SlowTrapDeployer||kind==R3PartKind.ImmobilizeTrapDeployer||kind==R3PartKind.FlyingDroneGenerator||kind==R3PartKind.GroundDroneGenerator||kind==R3PartKind.OffensiveTurretGenerator||kind==R3PartKind.HealingTurretGenerator||kind==R3PartKind.SupportTurretGenerator||kind==R3PartKind.ShieldTurretGenerator||kind==R3PartKind.HealingDroneGenerator||kind==R3PartKind.SupportDroneGenerator||kind==R3PartKind.BonusModule||kind==R3PartKind.PointDefense||
             (kind==R3PartKind.Gun&&weapon>=R4WeaponKind.Basic&&weapon<=R4WeaponKind.EmpEmitter);
         public R3VehicleDesign Design { get; }
         // A disposable workshop model; never serialized into an expedition.
         public bool CreativeMode { get; internal set; }
-        public int AvailableInventoryCapacity => CreativeMode ? int.MaxValue : InventoryCapacity;
+        // Private working copies may hold parts temporarily during an atomic
+        // blueprint rebuild; the published result must still fit the inventory.
+        internal bool BlueprintTransactionStaging {get;set;}
+        public int AvailableInventoryCapacity => CreativeMode||BlueprintTransactionStaging ? int.MaxValue : InventoryCapacity;
         public List<R3PartState> Parts { get; }
         private readonly List<R3PartState> inventory=new List<R3PartState>();
         public IReadOnlyList<R3PartState> Inventory => inventory;
         public int Scrap { get; private set; }
         public VehicleEnergyState Energy { get; } = new VehicleEnergyState();
+        public VehicleChargeState Charges { get; } = new VehicleChargeState();
         internal bool InitialEnergyPrepared;
         public void PrepareInitialEnergy(){if(InitialEnergyPrepared)return;RefreshEnergyLayout();Energy.Fill();InitialEnergyPrepared=true;}
         private Func<R3PartState,string> installationGate;
@@ -180,40 +255,227 @@ namespace RoboRougelike.R3
         public float HoverHeightMeters=1;
         public float GrappleReadyAt;
         // Assignments follow mounted types, including damaged plans that can be repaired.
-        R4WeaponKind? weaponGroupA, weaponGroupB;
+        R4WeaponKind? weaponGroupA, weaponGroupB, weaponGroupC, weaponGroupD;
         readonly Dictionary<string,bool> weaponGroupPreference=new Dictionary<string,bool>(StringComparer.Ordinal);
-        public R4WeaponKind? WeaponGroupA { get { SyncWeaponGroups(); return weaponGroupA; } }
-        public R4WeaponKind? WeaponGroupB { get { SyncWeaponGroups(); return weaponGroupB; } }
-        public void SyncWeaponGroups()
+        readonly Dictionary<string,int> weaponSlotPreference=new Dictionary<string,int>(StringComparer.Ordinal);
+        readonly R3PartKind?[] activeSlots=new R3PartKind?[4];
+        readonly Dictionary<R3PartKind,int> activeSlotPreference=new Dictionary<R3PartKind,int>();
+        readonly R3PartKind?[] deployableSlots=new R3PartKind?[4];
+        readonly Dictionary<R3PartKind,int> deployableSlotPreference=new Dictionary<R3PartKind,int>();
+        public static bool IsDeployableSlotPart(R3PartKind kind)=>kind==R3PartKind.RampDeployer||kind==R3PartKind.WallDeployer||kind==R3PartKind.JumpPadDeployer||kind==R3PartKind.BlastTrapDeployer||kind==R3PartKind.EmpTrapDeployer||kind==R3PartKind.RepelTrapDeployer||kind==R3PartKind.DamageTrapDeployer||kind==R3PartKind.SlowTrapDeployer||kind==R3PartKind.ImmobilizeTrapDeployer||kind==R3PartKind.FlyingDroneGenerator||kind==R3PartKind.GroundDroneGenerator||kind==R3PartKind.OffensiveTurretGenerator||kind==R3PartKind.HealingTurretGenerator||kind==R3PartKind.SupportTurretGenerator||kind==R3PartKind.ShieldTurretGenerator||kind==R3PartKind.HealingDroneGenerator||kind==R3PartKind.SupportDroneGenerator;
+        public static bool IsActiveSlotPart(R3PartKind kind)=>
+            kind==R3PartKind.Booster||kind==R3PartKind.JumpDrive||kind==R3PartKind.Blink||
+            kind==R3PartKind.MagneticGrapple||kind==R3PartKind.StructuralScanner||
+            kind==R3PartKind.ScannerPulse||kind==R3PartKind.RepairPulse||kind==R3PartKind.Overdrive||kind==R3PartKind.RapidFire||kind==R3PartKind.DoubleShotOverdrive||kind==R3PartKind.TargetedEmp||kind==R3PartKind.AreaEmp||kind==R3PartKind.RechargePulse;
+        public static bool IsPassiveSlotPart(R3PartKind kind)=>
+            kind==R3PartKind.Suspension||kind==R3PartKind.Gyroscope||kind==R3PartKind.BonusModule||
+            kind==R3PartKind.DirectionalShield||kind==R3PartKind.PointDefense||kind==R3PartKind.IndependentSteering||
+            kind==R3PartKind.Battery||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.SalvageOptimizer||kind==R3PartKind.DoubleShot||kind==R3PartKind.ChargeCapacity||kind==R3PartKind.ChargeRegenerator;
+        static string ModuleTypeKey(R3PartState part)=>part.Kind==R3PartKind.BonusModule?
+            "bonus:"+(part.UpgradeId??string.Empty):"part:"+(int)part.Kind;
+        bool ExceedsModuleTypeLimit(R3PartState candidate,bool active)
         {
-            var types=Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Take(2).ToList();
-            if(weaponGroupA.HasValue&&!types.Contains(weaponGroupA.Value))weaponGroupA=null;
-            if(weaponGroupB.HasValue&&!types.Contains(weaponGroupB.Value))weaponGroupB=null;
+            var types=Parts.Where(p=>active?IsActiveSlotPart(p.Kind):IsPassiveSlotPart(p.Kind))
+                .Select(ModuleTypeKey).Distinct().ToArray();
+            return types.Length>=(active?4:8)&&!types.Contains(ModuleTypeKey(candidate));
+        }
+        public R3PartKind?[] GetActiveSlots()
+        {
+            var types=Parts.Where(p=>IsActiveSlotPart(p.Kind)).Select(p=>p.Kind).Distinct().ToArray();
+            for(int i=0;i<activeSlots.Length;i++)if(activeSlots[i].HasValue&&!types.Contains(activeSlots[i].Value))activeSlots[i]=null;
             foreach(var kind in types)
             {
-                if(weaponGroupA==kind||weaponGroupB==kind)continue;
-                var remembered=Parts.FirstOrDefault(p=>p.Kind==R3PartKind.Gun&&p.Weapon==kind&&
-                    !string.IsNullOrEmpty(p.Id)&&weaponGroupPreference.ContainsKey(p.Id));
-                if(remembered!=null&&weaponGroupPreference[remembered.Id]&&!weaponGroupB.HasValue)weaponGroupB=kind;
-                else if(remembered!=null&&!weaponGroupPreference[remembered.Id]&&!weaponGroupA.HasValue)weaponGroupA=kind;
-                else if(!weaponGroupA.HasValue)weaponGroupA=kind;
-                else if(!weaponGroupB.HasValue)weaponGroupB=kind;
+                if(activeSlots.Contains(kind))continue;
+                int available=activeSlotPreference.TryGetValue(kind,out var old)&&old>=0&&old<4&&!activeSlots[old].HasValue?
+                    old:Array.FindIndex(activeSlots,p=>!p.HasValue);
+                if(available>=0){activeSlots[available]=kind;activeSlotPreference[kind]=available;}
             }
+            return (R3PartKind?[])activeSlots.Clone();
+        }
+        public bool AssignActiveSlot(R3PartKind kind,int slot)
+        {
+            if(slot<0||slot>=4)return false;
+            GetActiveSlots();int old=Array.FindIndex(activeSlots,p=>p==kind);
+            if(old<0&&(!CreativeMode||!Parts.Any(p=>p.Kind==kind&&IsActiveSlotPart(p.Kind))))return false;
+            var displaced=activeSlots[slot];activeSlots[slot]=kind;if(old>=0)activeSlots[old]=displaced;
+            for(int i=0;i<4;i++)if(activeSlots[i].HasValue)activeSlotPreference[activeSlots[i].Value]=i;
+            return true;
+        }
+        public string ActiveSlotLabel(R3PartKind kind)
+        {
+            int slot=Array.FindIndex(GetActiveSlots(),p=>p==kind);
+            return slot<0?"—":RoboRougelike.R1.R1ControlProfile.Display(RoboRougelike.R1.R1ControlProfile.Current.Binding("Active"+(slot+1)));
+        }
+        public R3PartKind?[] GetDeployableSlots()
+        {
+            var types=Parts.Where(p=>IsDeployableSlotPart(p.Kind)).Select(p=>p.Kind).Distinct().ToArray();
+            for(int i=0;i<deployableSlots.Length;i++)if(deployableSlots[i].HasValue&&!types.Contains(deployableSlots[i].Value))deployableSlots[i]=null;
+            foreach(var kind in types)
+            {
+                if(deployableSlots.Contains(kind))continue;
+                int available=deployableSlotPreference.TryGetValue(kind,out var old)&&old>=0&&old<4&&!deployableSlots[old].HasValue?
+                    old:Array.FindIndex(deployableSlots,p=>!p.HasValue);
+                if(available>=0){deployableSlots[available]=kind;deployableSlotPreference[kind]=available;}
+            }
+            return (R3PartKind?[])deployableSlots.Clone();
+        }
+        public bool AssignDeployableSlot(R3PartKind kind,int slot)
+        {
+            if(slot<0||slot>=4)return false;
+            GetDeployableSlots();int old=Array.FindIndex(deployableSlots,p=>p==kind);
+            if(old<0&&(!CreativeMode||!Parts.Any(p=>p.Kind==kind&&IsDeployableSlotPart(p.Kind))))return false;
+            var displaced=deployableSlots[slot];deployableSlots[slot]=kind;if(old>=0)deployableSlots[old]=displaced;
+            for(int i=0;i<4;i++)if(deployableSlots[i].HasValue)deployableSlotPreference[deployableSlots[i].Value]=i;
+            return true;
+        }
+        public string DeployableSlotLabel(R3PartKind kind)
+        {
+            int slot=Array.FindIndex(GetDeployableSlots(),p=>p==kind);
+            return slot<0?"—":RoboRougelike.R1.R1ControlProfile.Display(RoboRougelike.R1.R1ControlProfile.Current.Binding("Deploy"+(slot+1)));
+        }
+        public R4WeaponKind? WeaponGroupA { get { SyncWeaponGroups(); return weaponGroupA; } }
+        public R4WeaponKind? WeaponGroupB { get { SyncWeaponGroups(); return weaponGroupB; } }
+        public R4WeaponKind? WeaponAtSlot(int slot)
+        {
+            if(slot<0||slot>=4)return null;
+            SyncWeaponGroups();return CurrentWeaponSlots()[slot];
+        }
+        public R4WeaponKind?[] GetWeaponSlots(){SyncWeaponGroups();return CurrentWeaponSlots();}
+        R4WeaponKind?[] CurrentWeaponSlots()=>new[]{weaponGroupA,weaponGroupB,weaponGroupC,weaponGroupD};
+        void SetWeaponSlots(R4WeaponKind?[] slots)
+        {weaponGroupA=slots[0];weaponGroupB=slots[1];weaponGroupC=slots[2];weaponGroupD=slots[3];}
+        public void SyncWeaponGroups()
+        {
+            var types=Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().ToList();
+            var slots=CurrentWeaponSlots();
+            for(int i=0;i<slots.Length;i++)if(slots[i].HasValue&&!types.Contains(slots[i].Value))slots[i]=null;
+            foreach(var kind in types)
+            {
+                if(slots.Contains(kind))continue;
+                var remembered=Parts.FirstOrDefault(p=>p.Kind==R3PartKind.Gun&&p.Weapon==kind&&
+                    !string.IsNullOrEmpty(p.Id)&&(weaponSlotPreference.ContainsKey(p.Id)||weaponGroupPreference.ContainsKey(p.Id)));
+                int preferred=remembered==null?-1:weaponSlotPreference.TryGetValue(remembered.Id,out var saved)?saved:
+                    weaponGroupPreference[remembered.Id]?1:0;
+                int available=preferred>=0&&preferred<slots.Length&&!slots[preferred].HasValue?preferred:Array.FindIndex(slots,s=>!s.HasValue);
+                if(available>=0)slots[available]=kind;
+            }
+            SetWeaponSlots(slots);
             RememberWeaponGroups();
         }
         void RememberWeaponGroups()
         {
+            var slots=CurrentWeaponSlots();
             foreach(var part in Parts.Where(p=>p.Kind==R3PartKind.Gun&&!string.IsNullOrEmpty(p.Id)))
             {
-                if(weaponGroupA==part.Weapon)weaponGroupPreference[part.Id]=false;
-                else if(weaponGroupB==part.Weapon)weaponGroupPreference[part.Id]=true;
+                int slot=Array.IndexOf(slots,(R4WeaponKind?)part.Weapon);
+                if(slot>=0)weaponSlotPreference[part.Id]=slot;
+                if(slot==0||slot==1)weaponGroupPreference[part.Id]=slot==1;
             }
+        }
+        public bool AssignWeaponSlot(R4WeaponKind kind,int slot)
+        {
+            if(slot<0||slot>=4)return false;
+            SyncWeaponGroups();var slots=CurrentWeaponSlots();int old=Array.FindIndex(slots,s=>s==kind);
+            if(old<0&&(!CreativeMode||!Parts.Any(p=>p.Kind==R3PartKind.Gun&&p.Weapon==kind)))return false;
+            var displaced=slots[slot];slots[slot]=kind;if(old>=0)slots[old]=displaced;
+            SetWeaponSlots(slots);RememberWeaponGroups();return true;
         }
         public void SwapWeaponGroups()
         { SyncWeaponGroups(); var old=weaponGroupA; weaponGroupA=weaponGroupB; weaponGroupB=old; RememberWeaponGroups(); }
         public R3GarageEconomy Economy { get; }
+        readonly R3ConstructionSettings fallbackConstructionSettings=new R3ConstructionSettings();
+        R3ConstructionSettings ConstructionSettings=>Economy.Construction??fallbackConstructionSettings;
+        public int ConstructionBudgetLimit {get;private set;}
+        public int ConstructionBudgetMilestonesApplied {get;private set;}
+        public int SafeZoneLastCompleted {get;private set;}
+        public float RepairPulseReadyAt {get;internal set;}
+        public float OverdriveReadyAt {get;internal set;}
+        public float RapidFireReadyAt {get;internal set;}
+        public float DoubleShotOverdriveReadyAt {get;internal set;}
+        public float TargetedEmpReadyAt {get;internal set;}
+        public float AreaEmpReadyAt {get;internal set;}
+        public float RechargePulseReadyAt {get;internal set;}
+        public float RampDeployerReadyAt {get;internal set;}
+        public float WallDeployerReadyAt {get;internal set;}
+        public float JumpPadDeployerReadyAt {get;internal set;}
+        public float BlastTrapDeployerReadyAt {get;internal set;}
+        public float EmpTrapDeployerReadyAt {get;internal set;}
+        public float RepelTrapDeployerReadyAt {get;internal set;}
+        public float DamageTrapDeployerReadyAt {get;internal set;}
+        public float SlowTrapDeployerReadyAt {get;internal set;}
+        public float ImmobilizeTrapDeployerReadyAt {get;internal set;}
+        public float FlyingDroneReadyAt {get;internal set;}
+        public float GroundDroneReadyAt {get;internal set;}
+        public float HealingDroneReadyAt {get;internal set;}
+        public float SupportDroneReadyAt {get;internal set;}
+        public float OffensiveTurretReadyAt {get;internal set;}
+        public float HealingTurretReadyAt {get;internal set;}
+        public float SupportTurretReadyAt {get;internal set;} public float ShieldTurretReadyAt {get;internal set;}
+        public float BoosterReadyAt {get;internal set;}
+        public float JumpReadyAt {get;internal set;}
+        public float BlinkReadyAt {get;internal set;}
+        public float ScannerPulseReadyAt {get;internal set;}
+        public float StructuralScannerReadyAt {get;internal set;}
+        public long ConstructionBudgetUsed=>Parts.Sum(p=>(long)ConstructionPartCost(p));
+        public int PhysicalPartCount=>Parts.Count(p=>p.Health>0);
+        public R3ConstructionSize ConstructionSizeClass=>PhysicalPartCount<=Math.Max(0,ConstructionSettings.SmallPhysicalParts)?R3ConstructionSize.Small:
+            PhysicalPartCount<=Math.Max(ConstructionSettings.SmallPhysicalParts,ConstructionSettings.MediumPhysicalParts)?R3ConstructionSize.Medium:R3ConstructionSize.Large;
+        public string ConstructionSizeLabel=>ConstructionSizeClass==R3ConstructionSize.Small?"Mały":ConstructionSizeClass==R3ConstructionSize.Medium?"Średni":"Duży";
+        public int ApplyCompletedBudgetMilestones(int completedEncounters)
+        {
+            int interval=ConstructionSettings.StageInterval;
+            if(interval<=0)return 0;
+            int target=Math.Max(0,completedEncounters)/interval;
+            if(target<=ConstructionBudgetMilestonesApplied)return 0;
+            long increase=(long)(target-ConstructionBudgetMilestonesApplied)*Math.Max(0,ConstructionSettings.StageBudgetIncrease);
+            int previous=ConstructionBudgetLimit;
+            ConstructionBudgetLimit=(int)Math.Min(int.MaxValue,(long)previous+increase);
+            ConstructionBudgetMilestonesApplied=target;
+            return ConstructionBudgetLimit-previous;
+        }
+        public bool CanEnterSafeZone(int completedEncounters)
+        {
+            int interval=Economy.SafeZoneInterval;float repair=Economy.SafeZoneRepairFraction;
+            return !CreativeMode&&interval>0&&completedEncounters>0&&completedEncounters%interval==0&&
+               completedEncounters>SafeZoneLastCompleted&&!float.IsNaN(repair)&&!float.IsInfinity(repair)&&repair>=0&&repair<=1;
+        }
+        public bool TryEnterSafeZone(int completedEncounters)
+        {
+            if(!CanEnterSafeZone(completedEncounters))return false;
+            float repair=Economy.SafeZoneRepairFraction;
+            foreach(var part in Parts)if(part.Health>0&&part.Health<1)part.Health=Math.Min(1,part.Health+repair);
+            var shieldBonus=new R1ModifierGroup();
+            foreach(var bonus in Parts)
+                if(bonus.Kind==R3PartKind.BonusModule&&bonus.Health>0&&bonus.UpgradeEffect==R1UpgradeEffect.ShieldDurability)
+                    shieldBonus.Add(bonus.UpgradeOperation,bonus.UpgradeAmount,TierEffectUnits(bonus.Tier));
+            float shieldMultiplier=shieldBonus.Apply(1);
+            foreach(var part in Parts.Concat(inventory))
+            {
+                // Refill partial magazines as well as finishing pending reloads.
+                int capacity=part.Kind==R3PartKind.PointDefense?40:
+                    part.Kind!=R3PartKind.Gun?0:
+                    part.Weapon==R4WeaponKind.Shotgun?RoboRougelike.WeaponIntegration.RRLShotgunBinding.MagazineSalvos:
+                    part.Weapon==R4WeaponKind.Railgun?RoboRougelike.WeaponIntegration.RRLRailgunBinding.Magazine:
+                    part.Weapon==R4WeaponKind.RocketLauncher?RoboRougelike.WeaponIntegration.RRLRocketBinding.Magazine:0;
+                if(capacity>0)part.Ammo=capacity;
+                if(part.Kind==R3PartKind.DirectionalShield)
+                {
+                    part.DefenseCharge=(float)Math.Min(float.MaxValue,(double)RoboRougelike.WeaponIntegration.RRLShieldBinding.BaseCapacity*TierEffectUnits(part.Tier)*shieldMultiplier);
+                    part.DefenseCapacity=part.DefenseCharge;
+                    part.DefenseRechargeAge=float.PositiveInfinity;
+                }
+                part.DeviceReadyAt=0;part.ReloadReadyAt=0;part.DisruptionRemaining=0;part.ThermalHeat=0;part.ThermalLocked=false;
+            }
+            RepairPulseReadyAt=OverdriveReadyAt=RapidFireReadyAt=DoubleShotOverdriveReadyAt=TargetedEmpReadyAt=AreaEmpReadyAt=RechargePulseReadyAt=0;
+            RampDeployerReadyAt=WallDeployerReadyAt=JumpPadDeployerReadyAt=BlastTrapDeployerReadyAt=EmpTrapDeployerReadyAt=RepelTrapDeployerReadyAt=DamageTrapDeployerReadyAt=SlowTrapDeployerReadyAt=ImmobilizeTrapDeployerReadyAt=0;
+            FlyingDroneReadyAt=GroundDroneReadyAt=HealingDroneReadyAt=SupportDroneReadyAt=OffensiveTurretReadyAt=HealingTurretReadyAt=SupportTurretReadyAt=ShieldTurretReadyAt=BoosterReadyAt=JumpReadyAt=BlinkReadyAt=GrappleReadyAt=0;
+            ScannerPulseReadyAt=StructuralScannerReadyAt=0;
+            RefreshEnergyLayout();Energy.Fill();Charges.RefillAll();SafeZoneLastCompleted=completedEncounters;return true;
+        }
+        public int ConstructionPartCost(R3PartState part)=>ConstructionSettings.Cost(part);
         public R3VehicleModel(R3VehicleDesign design, R3GarageEconomy economy = null)
         { Design = design; Parts = design.Parts.Select(p => {var part=p.Copy();part.Id=Guid.NewGuid().ToString("N");return part;}).ToList(); Economy = economy ?? new R3GarageEconomy();
+            ConstructionBudgetLimit=Math.Max(0,ConstructionSettings.StartingBudget);
             foreach(var part in Parts.Where(p=>p.Kind==R3PartKind.Wheel))factoryWheels.Add(part.Id,new FactoryWheelPose(part)); RefreshEnergyLayout(); Energy.Fill(); }
         public static readonly Vector3Int[] Neighbours = { Vector3Int.left, Vector3Int.right, Vector3Int.up,
             Vector3Int.down, Vector3Int.forward, Vector3Int.back };
@@ -221,31 +483,63 @@ namespace RoboRougelike.R3
         {
             var design=new R3VehicleDesign{Name=Design.Name,Description=Design.Description,Speed=Design.Speed,TurnSpeed=Design.TurnSpeed,CoreHp=Design.CoreHp};
             design.Parts.AddRange(Design.Parts.Select(p=>p.Copy()));
-            var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost});
-            copy.CreativeMode=CreativeMode;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
+            var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost,StandardPurchaseMultiplier=Economy.StandardPurchaseMultiplier,SalvageOptimizerBonus=Economy.SalvageOptimizerBonus,PhysicalLootDropChance=Economy.PhysicalLootDropChance,MissedLootRecoveryCost=Economy.MissedLootRecoveryCost,SafeZoneInterval=Economy.SafeZoneInterval,SafeZoneRepairFraction=Economy.SafeZoneRepairFraction,SafeVendorOfferCount=Economy.SafeVendorOfferCount,SafeVendorPriceMultiplier=Economy.SafeVendorPriceMultiplier,SalvageOptimizerExtraOffersPerUnit=Economy.SalvageOptimizerExtraOffersPerUnit,OverdriveBonusPerUnit=Economy.OverdriveBonusPerUnit,OverdriveEnergyPerCopy=Economy.OverdriveEnergyPerCopy,OverdriveDuration=Economy.OverdriveDuration,OverdriveCooldown=Economy.OverdriveCooldown,RapidFireReductionPerUnit=Economy.RapidFireReductionPerUnit,RapidFireEnergyPerCopy=Economy.RapidFireEnergyPerCopy,RapidFireDuration=Economy.RapidFireDuration,RapidFireCooldown=Economy.RapidFireCooldown,DoubleShotChancePerUnit=Economy.DoubleShotChancePerUnit,DoubleShotOverdriveEnergyPerCopy=Economy.DoubleShotOverdriveEnergyPerCopy,DoubleShotOverdriveDuration=Economy.DoubleShotOverdriveDuration,DoubleShotOverdriveCooldown=Economy.DoubleShotOverdriveCooldown,DoubleShotOverdriveExtraPerUnit=Economy.DoubleShotOverdriveExtraPerUnit,DeviceBaseCharges=Economy.DeviceBaseCharges,CapacityChargesPerUnit=Economy.CapacityChargesPerUnit,RechargePulseChargesPerUnit=Economy.RechargePulseChargesPerUnit,ChargesPerSecondPerRegenerator=Economy.ChargesPerSecondPerRegenerator,RechargePulseEnergyPerCopy=Economy.RechargePulseEnergyPerCopy,RechargePulseCooldown=Economy.RechargePulseCooldown,RampEnergyPerCopy=Economy.RampEnergyPerCopy,RampCooldown=Economy.RampCooldown,RampLifetime=Economy.RampLifetime,WallEnergyPerCopy=Economy.WallEnergyPerCopy,WallCooldown=Economy.WallCooldown,WallLifetime=Economy.WallLifetime,JumpPadEnergyPerCopy=Economy.JumpPadEnergyPerCopy,JumpPadCooldown=Economy.JumpPadCooldown,JumpPadLifetime=Economy.JumpPadLifetime,JumpPadLaunchSpeed=Economy.JumpPadLaunchSpeed,TrapEnergyPerCopy=Economy.TrapEnergyPerCopy,TrapCooldown=Economy.TrapCooldown,TrapLifetime=Economy.TrapLifetime,TrapTriggerRadius=Economy.TrapTriggerRadius,TrapBlastDamage=Economy.TrapBlastDamage,TrapEmpDuration=Economy.TrapEmpDuration,TrapRepelSpeed=Economy.TrapRepelSpeed,TrapDamagePerSecond=Economy.TrapDamagePerSecond,TrapDamageDuration=Economy.TrapDamageDuration,TrapSlowMultiplier=Economy.TrapSlowMultiplier,TrapSlowDuration=Economy.TrapSlowDuration,TrapImmobilizeDuration=Economy.TrapImmobilizeDuration,DroneEnergyPerCopy=Economy.DroneEnergyPerCopy,DroneCooldown=Economy.DroneCooldown,DroneLifetime=Economy.DroneLifetime,DroneSpeed=Economy.DroneSpeed,DroneFireInterval=Economy.DroneFireInterval,DroneDamage=Economy.DroneDamage,DroneActivePerUnit=Economy.DroneActivePerUnit,TurretEnergyPerCopy=Economy.TurretEnergyPerCopy,TurretCooldown=Economy.TurretCooldown,TurretLifetime=Economy.TurretLifetime,TurretFireInterval=Economy.TurretFireInterval,TurretDamage=Economy.TurretDamage,HealingTurretRadius=Economy.HealingTurretRadius,HealingTurretRate=Economy.HealingTurretRate,SupportTurretRadius=Economy.SupportTurretRadius,SupportTurretEnergyPerSecond=Economy.SupportTurretEnergyPerSecond,ShieldTurretRadius=Economy.ShieldTurretRadius,ShieldTurretHp=Economy.ShieldTurretHp,BlockGrantQuantity=Economy.BlockGrantQuantity,DriveGrantQuantity=Economy.DriveGrantQuantity,Construction=ConstructionSettings.Copy()});
+            copy.Economy.StructuralScanRange=Economy.StructuralScanRange;copy.Economy.StructuralScanEnergy=Economy.StructuralScanEnergy;copy.Economy.StructuralScanCooldown=Economy.StructuralScanCooldown;
+            copy.Economy.BlueprintSlotCount=Economy.BlueprintSlotCount;
+            copy.Economy.HealingDroneRadius=Economy.HealingDroneRadius;copy.Economy.HealingDroneRate=Economy.HealingDroneRate;copy.Economy.HealingDroneDamage=Economy.HealingDroneDamage;
+            copy.Economy.SupportDroneRadius=Economy.SupportDroneRadius;copy.Economy.SupportDroneEnergyPerSecond=Economy.SupportDroneEnergyPerSecond;copy.Economy.SupportDroneDamage=Economy.SupportDroneDamage;
+            foreach(var index in safeVendorExtraSold)copy.safeVendorExtraSold.Add(index);
+            copy.CreativeMode=CreativeMode;copy.ConstructionBudgetLimit=ConstructionBudgetLimit;copy.ConstructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied;copy.SafeZoneLastCompleted=SafeZoneLastCompleted;copy.SafeVendorStage=SafeVendorStage;copy.SafeVendorSeed=SafeVendorSeed;copy.SafeVendorSoldMask=SafeVendorSoldMask;copy.SafeVendorRevision=SafeVendorRevision;copy.RepairPulseReadyAt=RepairPulseReadyAt;copy.OverdriveReadyAt=OverdriveReadyAt;copy.RapidFireReadyAt=RapidFireReadyAt;copy.DoubleShotOverdriveReadyAt=DoubleShotOverdriveReadyAt;copy.TargetedEmpReadyAt=TargetedEmpReadyAt;copy.AreaEmpReadyAt=AreaEmpReadyAt;copy.RechargePulseReadyAt=RechargePulseReadyAt;copy.RampDeployerReadyAt=RampDeployerReadyAt;copy.WallDeployerReadyAt=WallDeployerReadyAt;copy.JumpPadDeployerReadyAt=JumpPadDeployerReadyAt;copy.BlastTrapDeployerReadyAt=BlastTrapDeployerReadyAt;copy.EmpTrapDeployerReadyAt=EmpTrapDeployerReadyAt;copy.RepelTrapDeployerReadyAt=RepelTrapDeployerReadyAt;copy.DamageTrapDeployerReadyAt=DamageTrapDeployerReadyAt;copy.SlowTrapDeployerReadyAt=SlowTrapDeployerReadyAt;copy.ImmobilizeTrapDeployerReadyAt=ImmobilizeTrapDeployerReadyAt;copy.FlyingDroneReadyAt=FlyingDroneReadyAt;copy.GroundDroneReadyAt=GroundDroneReadyAt;copy.HealingDroneReadyAt=HealingDroneReadyAt;copy.SupportDroneReadyAt=SupportDroneReadyAt;copy.OffensiveTurretReadyAt=OffensiveTurretReadyAt;copy.HealingTurretReadyAt=HealingTurretReadyAt;copy.SupportTurretReadyAt=SupportTurretReadyAt;copy.ShieldTurretReadyAt=ShieldTurretReadyAt;copy.BoosterReadyAt=BoosterReadyAt;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
             copy.factoryWheels.Clear();foreach(var item in factoryWheels)copy.factoryWheels.Add(item.Key,item.Value);
             copy.SuspensionEnabled=SuspensionEnabled;copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset;
-            copy.RefreshEnergyLayout();copy.Energy.Restore(Energy.Current);copy.InitialEnergyPrepared=InitialEnergyPrepared;
+            copy.RefreshEnergyLayout();copy.Energy.Restore(Energy.Current);copy.Charges.Restore(Charges.Snapshot());copy.InitialEnergyPrepared=InitialEnergyPrepared;
             copy.SelectedDrive=SelectedDrive;copy.GyroEnabled=GyroEnabled;copy.BoosterThrustNewtons=BoosterThrustNewtons;
-            copy.BoosterDurationSeconds=BoosterDurationSeconds;copy.GrappleReadyAt=GrappleReadyAt;
+            copy.BoosterDurationSeconds=BoosterDurationSeconds;copy.GrappleReadyAt=GrappleReadyAt;copy.JumpReadyAt=JumpReadyAt;copy.BlinkReadyAt=BlinkReadyAt;
+            copy.ScannerPulseReadyAt=ScannerPulseReadyAt;copy.StructuralScannerReadyAt=StructuralScannerReadyAt;
             copy.HoverHeightMeters=HoverHeightMeters;
-            SyncWeaponGroups();copy.weaponGroupA=weaponGroupA;copy.weaponGroupB=weaponGroupB;
+            SyncWeaponGroups();copy.weaponGroupA=weaponGroupA;copy.weaponGroupB=weaponGroupB;copy.weaponGroupC=weaponGroupC;copy.weaponGroupD=weaponGroupD;
             foreach(var preference in weaponGroupPreference)copy.weaponGroupPreference[preference.Key]=preference.Value;
+            foreach(var preference in weaponSlotPreference)copy.weaponSlotPreference[preference.Key]=preference.Value;
+            GetActiveSlots();Array.Copy(activeSlots,copy.activeSlots,4);
+            foreach(var preference in activeSlotPreference)copy.activeSlotPreference[preference.Key]=preference.Value;
+            GetDeployableSlots();Array.Copy(deployableSlots,copy.deployableSlots,4);
+            foreach(var preference in deployableSlotPreference)copy.deployableSlotPreference[preference.Key]=preference.Value;
             return copy;
         }
-        public const int MaxScrap=100000;
+        // Currency is stored as an int; its representable maximum is the only cap.
+        public const int MaxScrap=int.MaxValue;
         public int PreviewAward(int amount) => (int)Math.Min(Math.Max(0L,(long)MaxScrap-Scrap),Math.Max(0L,(long)amount));
         public void Award(int amount) { Scrap = (int)Math.Min((long)MaxScrap, Scrap + (long)Math.Max(0, amount)); }
+        public bool TrySpendScrap(int amount)
+        {if(amount<0||amount>Scrap)return false;Scrap-=amount;return true;}
         public static bool IsPassiveEnergyPart(R3PartKind kind) =>
             kind==R3PartKind.Suspension||kind==R3PartKind.Gyroscope||kind==R3PartKind.BonusModule||
-            kind==R3PartKind.DirectionalShield||kind==R3PartKind.IndependentSteering||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator;
+            kind==R3PartKind.DirectionalShield||kind==R3PartKind.IndependentSteering||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.SalvageOptimizer||kind==R3PartKind.DoubleShot||kind==R3PartKind.ChargeCapacity||kind==R3PartKind.ChargeRegenerator;
+        public int RewardBasketOfferCount
+        {
+            get
+            {
+                long units=Parts.Where(p=>p.Kind==R3PartKind.SalvageOptimizer&&p.Health>0).Sum(p=>(long)TierEffectUnits(p.Tier));
+                return (int)Math.Min(int.MaxValue,3+units*Math.Max(0,(long)Economy.SalvageOptimizerExtraOffersPerUnit));
+            }
+        }
         public void RefreshEnergyLayout()
         {
             var alive=Parts.Where(p=>p.Health>0).ToArray();
+            var capacity=new R1ModifierGroup();var regeneration=new R1ModifierGroup();
+            foreach(var part in alive)
+            {
+                if(part.Kind!=R3PartKind.BonusModule)continue;
+                if(part.UpgradeEffect==R1UpgradeEffect.EnergyCapacity)capacity.Add(part.UpgradeOperation,part.UpgradeAmount,TierEffectUnits(part.Tier));
+                if(part.UpgradeEffect==R1UpgradeEffect.EnergyRegeneration)regeneration.Add(part.UpgradeOperation,part.UpgradeAmount,TierEffectUnits(part.Tier));
+            }
+            Energy.SetResourceMultipliers(capacity.Apply(1),regeneration.Apply(1));
             Energy.SetAdditionalPassiveReservation(alive.Where(p=>IsPassiveEnergyPart(p.Kind)).Sum(p=>TierPassiveExtra(p.Tier)));
             Energy.Refresh(alive.Where(p=>p.Kind==R3PartKind.Battery).Sum(p=>TierEffectUnits(p.Tier)),
                 alive.Count(p=>IsPassiveEnergyPart(p.Kind)),alive.Any(p=>p.Kind==R3PartKind.Core));
             Energy.SetRegeneratorCount(alive.Where(p=>p.Kind==R3PartKind.EnergyRegenerator).Sum(p=>TierEffectUnits(p.Tier)));
+            long chargeUnits=alive.Where(p=>p.Kind==R3PartKind.ChargeCapacity).Sum(p=>(long)TierEffectUnits(p.Tier));
+            Charges.SetCapacityBonus((int)Math.Min(int.MaxValue,chargeUnits*Math.Max(0,(long)Economy.CapacityChargesPerUnit)));
         }
         // The legacy overload describes a one-cell item. Versioned owned
         // items use their own physical footprint via OccupiedCells(part).
@@ -302,26 +596,47 @@ namespace RoboRougelike.R3
             (part.FootprintRevision==1&&part.Kind==R3PartKind.Wheel&&HasSizedSideWheel(part.WheelStyle))||
             (part.FootprintRevision==2&&part.Kind==R3PartKind.Gun&&SupportsGunScale2(part.Weapon)));
         public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && ValidWheelStyle(part) && ValidArmorShape(part) && ValidFootprint(part) && part.Tier>=0&&part.Tier<=3&&
-            (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&
+            (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&part.DismantleCap>=0&&
             !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
-        public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => !ValidEconomicKind(kind,weapon)||CreativeMode?0:Math.Max(1,
+        int BasePrice(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>!ValidEconomicKind(kind,weapon)?0:Math.Max(1,
             kind==R3PartKind.Gun&&weapon!=R4WeaponKind.Basic?R4WeaponDefinition.Get(weapon).Price:Economy.Price(kind));
+        public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)
+        {
+            if(!ValidEconomicKind(kind,weapon)||CreativeMode)return 0;
+            float multiplier=Economy.StandardPurchaseMultiplier;
+            if(float.IsNaN(multiplier)||float.IsInfinity(multiplier))multiplier=3f;
+            return (int)Math.Min(int.MaxValue,Math.Max(1d,Math.Ceiling(BasePrice(kind,weapon)*(double)Math.Max(0,multiplier))));
+        }
+        public int GrantQuantity(R3PartKind kind,R3ArmorShape shape=R3ArmorShape.Cube)
+        {
+            if(kind==R3PartKind.Armor&&shape==R3ArmorShape.Cube)return Math.Max(1,Economy.BlockGrantQuantity);
+            if(kind==R3PartKind.Wheel||kind==R3PartKind.OmniDrive||kind==R3PartKind.HoverEngine||
+                kind==R3PartKind.CrawlerTrack||kind==R3PartKind.Booster||kind==R3PartKind.JumpDrive||
+                kind==R3PartKind.Blink||kind==R3PartKind.MagneticGrapple||kind==R3PartKind.DrivePower)
+                return Math.Max(1,Economy.DriveGrantQuantity);
+            return 1;
+        }
+        public int PurchaseQuantity(R3PartKind kind,R3ArmorShape shape=R3ArmorShape.Cube)=>CreativeMode?1:GrantQuantity(kind,shape);
         public bool Owns(string id) => Parts.Concat(inventory).Any(p=>p.Id==id);
         // Mounted wreck plans reserve their type too: rebuilding them must not
-        // turn a legal two-type design into a three-type vehicle. Inventory
+        // turn a legal four-type design into a five-type vehicle. Inventory
         // parts remain unrestricted until the player actually mounts them.
-        const int MaxWeaponTypes=2;
-        const string WeaponTypeLimitError="Maksymalnie 2 różne typy broni na pojeździe.";
+        const int MaxWeaponTypes=4;
+        const string WeaponTypeLimitError="Maksymalnie 4 różne typy broni na pojeździe.";
         HashSet<R4WeaponKind> MountedWeaponTypes() => new HashSet<R4WeaponKind>(
             Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon));
         bool InvalidWeaponTypes => !CreativeMode&&MountedWeaponTypes().Count>MaxWeaponTypes;
-        public bool WeaponInGroup(R4WeaponKind weapon,bool secondary)
-        {
-            var a=WeaponGroupA;var b=WeaponGroupB;
-            return MatchesWeaponGroup(weapon,secondary,a,b,CreativeMode);
-        }
+        public bool WeaponInGroup(R4WeaponKind weapon,bool secondary)=>WeaponInSlot(weapon,secondary?1:0);
         public static bool MatchesWeaponGroup(R4WeaponKind weapon,bool secondary,R4WeaponKind? a,R4WeaponKind? b,bool creative) =>
             secondary ? (b==weapon || (creative&&weapon!=a&&weapon!=b)) : a==weapon;
+        public bool WeaponInSlot(R4WeaponKind weapon,int slot)
+        {
+            if(slot<0||slot>=4)return false;
+            return MatchesWeaponSlot(weapon,slot,GetWeaponSlots(),CreativeMode);
+        }
+        public static bool MatchesWeaponSlot(R4WeaponKind weapon,int slot,R4WeaponKind?[] slots,bool creative)=>
+            slot>=0&&slot<4&&slots!=null&&slots.Length==4&&
+            (slots[slot]==weapon||(creative&&slot==1&&!slots.Contains(weapon)));
         public string PlacementError(Vector3Int cell, R3PartKind kind, bool owned=false,
             R4WeaponKind weapon=R4WeaponKind.Basic,Vector3Int rotation=default,
             int contactMask=R3MountingGrid.AllFaces)
@@ -349,7 +664,8 @@ namespace RoboRougelike.R3
             var footprint=OccupiedCells(candidate).ToArray();
             if(!CreativeMode&&footprint.Any(c=>Math.Abs(c.x)>6||Math.Abs(c.z)>7||c.y<0||c.y>5))return "Moduł wykracza poza siatkę montażową.";
             if(footprint.Any(c=>At(c)!=null))return "Zajęte pole części. Utraconą część odtwórz lub usuń jej plan.";
-            if(!CreativeMode&&Parts.Sum(p=>OccupiedCells(p).Count())+footprint.Length>180)return "Limit 180 pól części.";
+            if(!CreativeMode&&ConstructionBudgetUsed+ConstructionPartCost(candidate)>ConstructionBudgetLimit)
+                return $"Budżet konstrukcji: {ConstructionBudgetUsed}/{ConstructionBudgetLimit} pkt; część kosztuje {ConstructionPartCost(candidate)} pkt.";
             if(kind==R3PartKind.BonusModule&&!owned)return "Moduły bonusów zdobywa się wyłącznie jako nagrody.";
             if(kind==R3PartKind.Gun)
             {
@@ -362,15 +678,15 @@ namespace RoboRougelike.R3
                     Math.Abs((long)p.Cell.x-cell.x)<=1&&Math.Abs((long)p.Cell.y-cell.y)<=1&&Math.Abs((long)p.Cell.z-cell.z)<=1))
                     return "Zachowaj co najmniej jedno wolne pole odstępu między broniami.";
             }
-            if (!CreativeMode&&kind == R3PartKind.Wheel && Parts.Count(p => p.Kind == kind) >= 16) return "Limit 16 kół.";
-            if (!CreativeMode&&kind == R3PartKind.Suspension && Parts.Count(p => p.Kind == kind) >= 8) return "Limit 8 modułów zawieszenia.";
-            int limit=kind switch {R3PartKind.Booster=>4,R3PartKind.JumpDrive=>2,R3PartKind.Blink=>1,
-                R3PartKind.Gyroscope=>2,R3PartKind.MagneticGrapple=>2,R3PartKind.DirectionalShield=>2,R3PartKind.PointDefense=>2,R3PartKind.StructuralScanner=>1,R3PartKind.ScannerPulse=>1,R3PartKind.IndependentSteering=>1,_=>8};
-            if(!CreativeMode&&kind>=R3PartKind.Booster&&kind!=R3PartKind.Battery&&kind!=R3PartKind.RepairPulse&&kind!=R3PartKind.DrivePower&&kind!=R3PartKind.EnergyRegenerator&&Parts.Count(p=>p.Kind==kind)>=limit)return "Limit modułów: "+limit+".";
+            if(!CreativeMode&&IsActiveSlotPart(kind)&&ExceedsModuleTypeLimit(candidate,true))return "Maksymalnie 4 różne rodzaje modułów aktywnych.";
+            if(!CreativeMode&&IsPassiveSlotPart(kind)&&ExceedsModuleTypeLimit(candidate,false))return "Maksymalnie 8 różnych rodzajów modułów pasywnych.";
+            if(!CreativeMode&&IsDeployableSlotPart(kind)&&Parts.Where(p=>IsDeployableSlotPart(p.Kind)).Select(p=>p.Kind).Distinct().Count()>=4&&
+                !Parts.Any(p=>p.Kind==kind))return "Maksymalnie 4 różne rodzaje urządzeń rozstawianych.";
             if(kind==R3PartKind.CrawlerTrack&&cell.x==0)return "Gąsienicę zamontuj po lewej lub prawej stronie.";
             if (!HasAliveExternalNeighbour(cell,kind,rotation,contactMask,candidate))
                 return "Brak zgodnych punktów mocowania ze sprawną konstrukcją.";
             if (!owned && Scrap < Price(kind,weapon)) return "Za mało Złomu.";
+            if(!owned&&(long)inventory.Count+PurchaseQuantity(kind)-1>AvailableInventoryCapacity)return "Za mało miejsca w magazynie na pozostałe części pakietu.";
             if(installationGate==null)return null;
             return installationGate(candidate);
         }
@@ -384,22 +700,33 @@ namespace RoboRougelike.R3
                 FootprintRevision=NewPurchaseFootprint(kind,weapon,R3WheelStyle.Offroad)};
             if(kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle))part.ContactMask=SideWheelContactAt(part);
             Parts.Add(part);
+            for(int i=1;i<PurchaseQuantity(kind);i++)
+            {
+                var copy=part.Copy();copy.Id=Guid.NewGuid().ToString("N");copy.Cell=default;copy.ContactMask=StoredWheelContacts(copy);
+                inventory.Add(copy);
+            }
             return true;
         }
         public bool PurchaseToInventory(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,R3WheelStyle wheelStyle=R3WheelStyle.Offroad,R3ArmorShape armorShape=R3ArmorShape.Cube)
+            => PurchaseToInventoryAtPrice(kind,weapon,wheelStyle,armorShape,Price(kind,weapon));
+        bool PurchaseToInventoryAtPrice(R3PartKind kind,R4WeaponKind weapon,R3WheelStyle wheelStyle,R3ArmorShape armorShape,int price)
         {
-            if(kind==R3PartKind.Core||kind==R3PartKind.BonusModule||!ValidEconomicKind(kind,weapon)||inventory.Count>=AvailableInventoryCapacity||
+            if(kind==R3PartKind.Core||kind==R3PartKind.BonusModule||!ValidEconomicKind(kind,weapon)||
+                (long)inventory.Count+PurchaseQuantity(kind,armorShape)>AvailableInventoryCapacity||
                 !Enum.IsDefined(typeof(R3WheelStyle),wheelStyle)||(kind!=R3PartKind.Wheel&&wheelStyle!=R3WheelStyle.Offroad)||
                 (HasSizedSideWheel(wheelStyle)&&!R4_1.R4WheelArt.SizedWheelAvailable(wheelStyle))||
                 (HasForkMount(wheelStyle)&&!R4_1.R4WheelArt.ForkWheelAvailable(wheelStyle))||
                 !Enum.IsDefined(typeof(R3ArmorShape),armorShape)||(kind!=R3PartKind.Armor&&armorShape!=R3ArmorShape.Cube)||
                 (armorShape!=R3ArmorShape.Cube&&!R4_1.R41PartGeometry.ArmorShapeAvailable(armorShape)))return false;
-            int price=Price(kind,weapon);if((price<=0&&!CreativeMode)||Scrap<price)return false;
-            Scrap-=price;inventory.Add(new R3PartState(default,kind){Weapon=weapon,WheelStyle=wheelStyle,ArmorShape=armorShape,
+            if((price<=0&&!CreativeMode)||Scrap<price)return false;
+            Scrap-=price;var purchased=new R3PartState(default,kind){Weapon=weapon,WheelStyle=wheelStyle,ArmorShape=armorShape,
                 FootprintRevision=NewPurchaseFootprint(kind,weapon,wheelStyle),
                 ContactMask=kind==R3PartKind.Wheel?(HasForkMount(wheelStyle)?R3MountingGrid.FaceBit(Vector3Int.up):
                     R3MountingGrid.FaceBit(Vector3Int.right)|R3MountingGrid.FaceBit(Vector3Int.left)):
-                    armorShape==R3ArmorShape.Cube?R3MountingGrid.AllFaces:R4_1.R41PartGeometry.FullArmorContacts(armorShape)});return true;
+                    armorShape==R3ArmorShape.Cube?R3MountingGrid.AllFaces:R4_1.R41PartGeometry.FullArmorContacts(armorShape)};
+            inventory.Add(purchased);
+            for(int i=1;i<PurchaseQuantity(kind,armorShape);i++){var copy=purchased.Copy();copy.Id=Guid.NewGuid().ToString("N");inventory.Add(copy);}
+            return true;
         }        public int RepairCost(R3PartState part)
         {
             if (!ValidEconomicPart(part) || part.Health >= 1f || CreativeMode) return 0;
@@ -488,15 +815,16 @@ namespace RoboRougelike.R3
             }
             finally {if(!accepted){part.RotationQuarterTurns=oldRotation;part.ContactMask=oldContacts;}}
         }
-        public bool ReceiveSalvage(IEnumerable<R3PartState> recovered)
+        public bool ReceiveSalvage(IEnumerable<R3PartState> recovered)=>ReceiveSalvageCore(recovered,false);
+        internal bool ReceivePhysicalSalvage(IEnumerable<R3PartState> recovered)=>ReceiveSalvageCore(recovered,true);
+        bool ReceiveSalvageCore(IEnumerable<R3PartState> recovered,bool allowArmor)
         {
             if(recovered==null)return false;
             var batch=recovered.ToArray();
             if((long)inventory.Count+batch.Length>AvailableInventoryCapacity)return false;
-            if(batch.Any(p=>!ValidEconomicPart(p)||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
+            if(batch.Any(p=>!ValidEconomicPart(p)||(!allowArmor&&p.Kind==R3PartKind.Armor)||p.Kind==R3PartKind.Core||
                 (p.Kind==R3PartKind.BonusModule&&(string.IsNullOrWhiteSpace(p.UpgradeId)||
-                    !Enum.IsDefined(typeof(R1UpgradeEffect),p.UpgradeEffect)||float.IsNaN(p.UpgradeAmount)||
-                    float.IsInfinity(p.UpgradeAmount)||p.UpgradeAmount<0||p.UpgradeAmount>1))||
+                    !Enum.IsDefined(typeof(R1UpgradeEffect),p.UpgradeEffect)||!ValidBonusOperation(p.UpgradeEffect,p.UpgradeOperation)||!ValidBonusScope(p.UpgradeEffect,p.UpgradeScope)||!ValidBonusAmount(p.UpgradeAmount)))||
                 string.IsNullOrWhiteSpace(p.Id)||Owns(p.Id))||
                 batch.Select(p=>p.Id).Distinct().Count()!=batch.Length)return false;
             inventory.AddRange(batch.Select(p=>{var copy=p.Copy();copy.ContactMask=StoredWheelContacts(copy);NormalizeStoredEquipmentFootprint(copy);return copy;}));return true;
@@ -504,13 +832,13 @@ namespace RoboRougelike.R3
         public static R3PartState CreateBonusReward(R1UpgradeDefinition bonus)
         {
             if(bonus==null||string.IsNullOrWhiteSpace(bonus.Id)||
-                !Enum.IsDefined(typeof(R1UpgradeEffect),bonus.Effect)||
+                !Enum.IsDefined(typeof(R1UpgradeEffect),bonus.Effect)||!ValidBonusOperation(bonus.Effect,bonus.Operation)||!ValidBonusScope(bonus.Effect,bonus.Scope)||
                 float.IsNaN(bonus.Amount)||float.IsInfinity(bonus.Amount))return null;
             return new R3PartState(default,R3PartKind.BonusModule){
                 Id=Guid.NewGuid().ToString("N"),Source="Bonus za zwycięstwo",
                 UpgradeId=bonus.Id,UpgradeTitle=string.IsNullOrWhiteSpace(bonus.Title)?bonus.Id:bonus.Title,
-                UpgradeDescription=bonus.Description,UpgradeEffect=bonus.Effect,
-                UpgradeAmount=Mathf.Clamp01(bonus.Amount)};
+                UpgradeDescription=bonus.Description,UpgradeEffect=bonus.Effect,UpgradeOperation=bonus.Operation,UpgradeScope=bonus.Scope,
+                UpgradeAmount=Mathf.Max(0,bonus.Amount)};
         }
         public bool ReceiveBonuses(IEnumerable<R1UpgradeDefinition> rewards)
         {
@@ -539,13 +867,25 @@ namespace RoboRougelike.R3
             if(part==null||!ValidEconomicPart(part)||part.Health>=1||(cost<=0&&!CreativeMode)||Scrap<cost)return false;
             Scrap-=cost;part.Health=1;return true;
         }
-        int OwnedPartValue(R3PartState part)=>Price(part.Kind,part.Weapon)*(NormalizedTier(part.Tier)==3?9:NormalizedTier(part.Tier)==2?3:1);
-        public int DismantleValue(R3PartState part) => !ValidEconomicPart(part)?0:Mathf.FloorToInt(OwnedPartValue(part)*0.25f*Mathf.Clamp01(part.Health));
+        int OwnedPartValue(R3PartState part)=>(int)Math.Min(int.MaxValue,(long)BasePrice(part.Kind,part.Weapon)*(NormalizedTier(part.Tier)==3?9:NormalizedTier(part.Tier)==2?3:1));
+        int DismantleFullValue(R3PartState part)
+        {
+            int normal=Mathf.FloorToInt(OwnedPartValue(part)*0.25f);
+            return part.HasDismantleCap?Math.Min(normal,part.DismantleCap):normal;
+        }
+        public int DismantleValue(R3PartState part)
+        {
+            if(!ValidEconomicPart(part))return 0;
+            int normal=Mathf.FloorToInt(OwnedPartValue(part)*0.25f*Mathf.Clamp01(part.Health));
+            return part.HasDismantleCap?Math.Min(normal,part.DismantleCap):normal;
+        }
         public static bool SameBonusType(R3PartState a,R3PartState b)=>a!=null&&b!=null&&
             a.Kind==R3PartKind.BonusModule&&b.Kind==R3PartKind.BonusModule&&
             !string.IsNullOrWhiteSpace(a.UpgradeId)&&a.UpgradeId==b.UpgradeId&&
             Enum.IsDefined(typeof(R1UpgradeEffect),a.UpgradeEffect)&&a.UpgradeEffect==b.UpgradeEffect&&
-            !float.IsNaN(a.UpgradeAmount)&&!float.IsInfinity(a.UpgradeAmount)&&a.UpgradeAmount>=0&&a.UpgradeAmount<=1&&a.UpgradeAmount==b.UpgradeAmount;
+            ValidBonusOperation(a.UpgradeEffect,a.UpgradeOperation)&&a.UpgradeOperation==b.UpgradeOperation&&
+            ValidBonusScope(a.UpgradeEffect,a.UpgradeScope)&&a.UpgradeScope==b.UpgradeScope&&
+            ValidBonusAmount(a.UpgradeAmount)&&a.UpgradeAmount==b.UpgradeAmount;
         public static bool SameFusionType(R3PartState a,R3PartState b) => a!=null&&b!=null&&a.Kind==b.Kind&&
             NormalizedTier(a.Tier)==NormalizedTier(b.Tier)&&
             (a.Kind!=R3PartKind.Gun||(a.Weapon==b.Weapon&&a.FootprintRevision==b.FootprintRevision))&&
@@ -565,15 +905,36 @@ namespace RoboRougelike.R3
                 float.IsNaN(p.ReloadReadyAt)||float.IsInfinity(p.ReloadReadyAt)||p.ReloadReadyAt<0||
                 float.IsNaN(p.DisruptionRemaining)||float.IsInfinity(p.DisruptionRemaining)||p.DisruptionRemaining<0||
                 float.IsNaN(p.ThermalHeat)||float.IsInfinity(p.ThermalHeat)||p.ThermalHeat<0))return false;
+            if(parts[0].Kind==R3PartKind.DirectionalShield&&parts.Any(p=>float.IsNaN(p.DefenseCharge)||float.IsInfinity(p.DefenseCharge)||float.IsNaN(p.DefenseCapacity)||float.IsInfinity(p.DefenseCapacity)||p.DefenseCapacity<0||
+                float.IsNaN(p.DefenseRechargeAge)||float.IsNegativeInfinity(p.DefenseRechargeAge)||p.DefenseRechargeAge<0))return false;
             int tier=NormalizedTier(parts[0].Tier);
             if(tier>=3||parts.Any(p=>!SameFusionType(parts[0],p)))return false;
             // A new physical item represents all three inputs. Preserve average
             // condition so fusion never repairs damaged items for free.
             var result=parts[0].Copy();result.Id=Guid.NewGuid().ToString("N");result.Tier=tier+1;
             result.Health=parts.Average(p=>p.Health);result.Source="Fuzja trzech części T"+tier;
+            if(parts.Any(p=>p.HasDismantleCap))
+            {
+                // The output cannot recover more scrap than its inputs could
+                // individually recover at full health, including mixed packs.
+                result.HasDismantleCap=true;
+                result.DismantleCap=(int)Math.Min(int.MaxValue,parts.Sum(p=>(long)DismantleFullValue(p)));
+            }
             result.DeviceReadyAt=parts.Max(p=>p.DeviceReadyAt);result.ReloadReadyAt=parts.Max(p=>p.ReloadReadyAt);
             result.DisruptionRemaining=parts.Max(p=>p.DisruptionRemaining);
             result.ThermalHeat=parts.Max(p=>p.ThermalHeat);result.ThermalLocked=parts.Any(p=>p.ThermalLocked);
+            if(result.Kind==R3PartKind.DirectionalShield)
+            {
+                float oldCapacity=RoboRougelike.WeaponIntegration.RRLShieldBinding.BaseCapacity*TierEffectUnits(tier);
+                if(parts.Any(p=>p.DefenseCharge>=0))
+                {
+                    float fraction=parts.Average(p=>p.DefenseCharge<0?1f:Mathf.Clamp01(p.DefenseCharge/(p.DefenseCapacity>0?p.DefenseCapacity:oldCapacity)));
+                    result.DefenseCapacity=RoboRougelike.WeaponIntegration.RRLShieldBinding.BaseCapacity*TierEffectUnits(result.Tier);
+                    result.DefenseCharge=result.DefenseCapacity*fraction;
+                }
+                else result.DefenseCharge=-1;
+                result.DefenseRechargeAge=parts.Min(p=>p.DefenseRechargeAge);
+            }
             if(result.Kind==R3PartKind.Gun)
             {
                 int capacity=result.Weapon==R4WeaponKind.Shotgun?RoboRougelike.WeaponIntegration.RRLShotgunBinding.MagazineSalvos:
@@ -589,7 +950,7 @@ namespace RoboRougelike.R3
         {
             var part=inventory.FirstOrDefault(p=>p.Id==id);if(!ValidEconomicPart(part))return false;
             int quote=DismantleValue(part);
-            inventory.Remove(part);weaponGroupPreference.Remove(part.Id);Award(quote);return true;
+            inventory.Remove(part);weaponGroupPreference.Remove(part.Id);weaponSlotPreference.Remove(part.Id);Award(quote);return true;
         }
         public static bool Connected(IEnumerable<R3PartState> parts)
         {

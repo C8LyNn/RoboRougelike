@@ -83,7 +83,7 @@ namespace RoboRougelike.R1
         {
             // A rejected attempt must not expose a previous save's result.
             RunSaveMessage=null;
-            if(Progress?.State!=R1RunState.Garage||Transitioning||SandboxWorkshop||MapEditorSession||ReactorPrepared||VehicleModel==null)return false;
+            if((Progress?.State!=R1RunState.Garage&&Progress?.State!=R1RunState.SafeZone)||Transitioning||SandboxWorkshop||MapEditorSession||ReactorPrepared||VehicleModel==null)return false;
             try
             {
                 Player?.GetComponent<R3VehicleAssembly>()?.Capture();
@@ -93,7 +93,8 @@ namespace RoboRougelike.R1
                 if(!R3VehicleModel.TryRestoreCheckpoint(document.model,SelectedVehicle,Definition.GaragePrices,Time.time,out _,out var error,SelectedVehicleVariant))
                     throw new InvalidDataException(error);
                 R1RunCheckpointStorage.Write(R1RunCheckpointStorage.PathName,document);
-                RunSaveMessage="Zapisano wyprawę w garażu.";Garage.Message=RunSaveMessage;return true;
+                RunSaveMessage=Progress.State==R1RunState.SafeZone?"Zapisano wyprawę. Po wczytaniu wrócisz do garażu.":"Zapisano wyprawę w garażu.";
+                Garage.Message=RunSaveMessage;return true;
             }
             catch(Exception e){RunSaveMessage="Nie zapisano wyprawy: "+e.Message;Garage.Message=RunSaveMessage;return false;}
         }
@@ -114,6 +115,7 @@ namespace RoboRougelike.R1
                 var kind=(R3VehicleKind)data.vehicle;
                 if(!R3VehicleModel.TryRestoreCheckpoint(data.model,kind,Definition.GaragePrices,Time.time,out var restoredModel,out var error,data.variant))
                     throw new InvalidDataException(error);
+                restoredModel.ApplyCompletedBudgetMilestones(restoredProgress.CompletedEncounters);
                 var restoredPlan=new R5RunPlan(Definition.RouteStages,data.seed);
                 var player=R3VehicleAssembly.Build(restoredModel,restoredProgress.Stats,palette,new Vector3(0,.7f,-22),Quaternion.identity);
                 Progress=restoredProgress;VehicleModel=restoredModel;Plan=restoredPlan;SelectedVehicle=kind;SelectedVehicleVariant=data.variant;RequestedSeed=data.seed;runId=data.runId;

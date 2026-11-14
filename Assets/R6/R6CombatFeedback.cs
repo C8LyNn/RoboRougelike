@@ -39,7 +39,10 @@ namespace RoboRougelike.R6
         public static void Hit(P12PipelineSafeDamageable part,Vector3 point,bool destroyed)
         {
             if(ResolvedHit==null)
-                Ensure().Emit(point,PartColor(part),destroyed?.42f:.15f,destroyed?.32f:.16f,part.GetComponent<Renderer>()?.sharedMaterial);
+            {
+                var renderer=part.GetComponent<Renderer>();
+                Ensure().Emit(point,PartColor(part),destroyed?.42f:.15f,destroyed?.32f:.16f,renderer!=null?renderer.sharedMaterial:null);
+            }
             else
                 try{ResolvedHit.Invoke(part,point,destroyed);}catch(System.Exception error){Debug.LogException(error);}
             if(destroyed)ModuleLost(part);
@@ -59,9 +62,11 @@ namespace RoboRougelike.R6
         }
         public static void Muzzle(Transform barrel,R4WeaponKind kind)
         {
-            var renderer=barrel.GetComponentInParent<P12PipelineSafeDamageable>()?.GetComponent<Renderer>();
+            if(barrel==null)return;
+            var part=barrel.GetComponentInParent<P12PipelineSafeDamageable>();
+            var renderer=part!=null?part.GetComponent<Renderer>():null;
             Ensure().Emit(barrel.position,kind==R4WeaponKind.Automatic?new Color(.5f,.9f,1):new Color(1,.7f,.15f),
-                kind==R4WeaponKind.Heavy?.3f:kind==R4WeaponKind.Automatic?.11f:.18f,kind==R4WeaponKind.Heavy?.13f:.07f,renderer?.sharedMaterial);
+                kind==R4WeaponKind.Heavy?.3f:kind==R4WeaponKind.Automatic?.11f:.18f,kind==R4WeaponKind.Heavy?.13f:.07f,renderer!=null?renderer.sharedMaterial:null);
         }
         void Emit(Vector3 point,Color color,float size,float duration,Material template)
         {

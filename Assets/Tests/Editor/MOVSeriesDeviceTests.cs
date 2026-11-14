@@ -60,6 +60,316 @@ public class MOVSeriesDeviceTests
         Assert.That(type,Is.Not.Null,"Real vehicle coordinator missing.");var c=v.GetComponent(type);Assert.That(c,Is.Not.Null);return c;
     }
     static bool Action(R1VehicleState v,string method)=>(bool)Adapter(v).GetType().GetMethod(method).Invoke(Adapter(v),null);
+    R1VehicleState BuildTieredBooster(int tier,float x)
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var cell=FindFixtureCell(model,R3PartKind.Booster,new Vector3Int(1,1,0));
+        model.Parts.Add(new R3PartState(cell,R3PartKind.Booster){Tier=tier});
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
+        vehicle.transform.SetParent(fixtures.transform,true);vehicle.Controller.SetGameplayInputEnabled(true);return vehicle;
+    }
+    R1VehicleState BuildTieredDrive(R3PartKind kind,int tier,float x)
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var cell=FindFixtureCell(model,kind,new Vector3Int(1,1,0));model.Parts.Add(new R3PartState(cell,kind){Tier=tier});
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
+        vehicle.transform.SetParent(fixtures.transform,true);vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        vehicle.Controller.SetGameplayInputEnabled(true);return vehicle;
+    }
+    [UnityTest] public IEnumerator OmniTiersScaleAccelerationAndPreserveEnergyCostWhenDriving()
+    {
+        for(int tier=1;tier<=3;tier++)
+        {
+            var vehicle=BuildTieredDrive(R3PartKind.OmniDrive,tier,20*tier);
+            var module=vehicle.GetComponentInChildren<RoboRougelike.Mechanics.MOV005OmniDrive.OmniDriveModule>();
+            var adapter=vehicle.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>();
+            Assert.That(adapter.SetDriveMode(R3DriveKind.Omni),Is.True);
+            adapter.TryDrive(.5f,0,10,5,90);
+            Assert.That(module.LinearAcceleration,Is.EqualTo(4*R3VehicleModel.TierEffectUnits(tier)).Within(.001));
+            Assert.That(module.YawAngularAcceleration,Is.EqualTo(2*R3VehicleModel.TierEffectUnits(tier)).Within(.001));
+            Assert.That(module.EnergyCostPerSecond,Is.EqualTo(2.5f*R3VehicleModel.TierActivationCost(tier)).Within(.001));
+        }
+        yield return null;
+    }
+    [UnityTest] public IEnumerator HoverTiersScaleLiftThrustAndEnergy()
+    {
+        var multiplier=typeof(RoboRougelike.Mechanics.MOV007.HoverLiftPod).GetField("propulsionMultiplier");
+        Assert.That(multiplier,Is.Not.Null);
+        for(int tier=1;tier<=3;tier++)
+        {
+            var vehicle=BuildTieredDrive(R3PartKind.HoverEngine,tier,20*tier);
+            var pod=vehicle.GetComponentInChildren<RoboRougelike.Mechanics.MOV007.HoverLiftPod>();
+            Assert.That(pod.nominalLoadKg,Is.EqualTo(250*R3VehicleModel.TierEffectUnits(tier)).Within(.001));
+            Assert.That((float)multiplier.GetValue(pod),Is.EqualTo(R3VehicleModel.TierEffectUnits(tier)).Within(.001));
+            Assert.That(pod.energyPerSecond,Is.EqualTo(R3VehicleModel.TierActivationCost(tier)).Within(.001));
+        }
+        yield return null;
+    }
+    [UnityTest] public IEnumerator TrackTiersScaleLoadMotorAndBrake()
+    {
+        for(int tier=1;tier<=3;tier++)
+        {
+            var vehicle=BuildTieredDrive(R3PartKind.CrawlerTrack,tier,20*tier);
+            var track=vehicle.GetComponentInChildren<RoboRougelike.Mechanics.MOV008.CrawlerTrackModule>();
+            int units=R3VehicleModel.TierEffectUnits(tier);
+            Assert.That(track.NominalLoadKg,Is.EqualTo(500*units).Within(.001));
+            Assert.That(track.MaxDriveForceN,Is.EqualTo(1200*units).Within(.001));
+            Assert.That(track.MaxBrakeForceN,Is.EqualTo(1800*units).Within(.001));
+        }
+        yield return null;
+    }
+    [UnityTest] public IEnumerator HigherTierHoverProducesMorePhysicalPlanarAcceleration()
+    {
+        var low=BuildTieredDrive(R3PartKind.HoverEngine,1,-20);
+        var high=BuildTieredDrive(R3PartKind.HoverEngine,3,20);
+        foreach(var vehicle in new[]{low,high})
+        {
+            var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=false;body.useGravity=false;
+            var position=new Vector3(body.position.x,-.1f,body.position.z);
+            vehicle.transform.position=position;body.position=position;
+            foreach(var collider in vehicle.GetComponentsInChildren<Collider>())collider.enabled=false;
+            body.constraints=RigidbodyConstraints.FreezeRotation|RigidbodyConstraints.FreezePositionY;
+            Assert.That(vehicle.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>().SetDriveMode(R3DriveKind.Hover),Is.True);
+            vehicle.Controller.enabled=false;
+        }
+        Physics.SyncTransforms();yield return Seconds(.2f);
+        var lowHover=low.GetComponent<RoboRougelike.Mechanics.MOV007.HoverVehicleController>();
+        var highHover=high.GetComponent<RoboRougelike.Mechanics.MOV007.HoverVehicleController>();
+        var lowPod=low.GetComponentInChildren<RoboRougelike.Mechanics.MOV007.HoverLiftPod>();
+        var lowAdapter=low.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>();
+        string diagnostic=$"control={lowAdapter.CanControl}, enabled={lowHover.hoverModeEnabled}, available={lowPod.IsAvailableFor(low.GetComponent<Rigidbody>())}, pod={lowPod.transform.position}, contact={lowPod.HasGroundContact}, height={lowPod.LastMeasuredGroundDistance}, lift={lowPod.LastLiftForceNewtons}, energy={low.GetComponent<VehicleEnergyBank>().Current}";
+        Assert.That(lowHover.LastSupportedPodCount,Is.EqualTo(1),diagnostic);Assert.That(highHover.LastSupportedPodCount,Is.EqualTo(1));
+        low.GetComponent<Rigidbody>().linearVelocity=Vector3.zero;high.GetComponent<Rigidbody>().linearVelocity=Vector3.zero;
+        lowHover.SetMoveInput(Vector2.up);highHover.SetMoveInput(Vector2.up);yield return Seconds(.4f);
+        float lowSpeed=low.GetComponent<Rigidbody>().linearVelocity.z,highSpeed=high.GetComponent<Rigidbody>().linearVelocity.z;
+        Assert.That(lowSpeed,Is.GreaterThan(.05f));Assert.That(highSpeed,Is.GreaterThan(lowSpeed*1.5f));
+    }
+    [UnityTest] public IEnumerator HigherTierTracksProduceMorePhysicalAcceleration()
+    {
+        R1VehicleState Tracks(int tier,float x)
+        {
+            var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+            var wheels=model.Parts.Where(p=>p.Kind==R3PartKind.Wheel).GroupBy(p=>p.Cell.x<0).Select(g=>g.First().Cell).ToArray();
+            Assert.That(wheels.Length,Is.EqualTo(2));
+            foreach(var cell in wheels){Assert.That(model.Remove(cell),Is.True);model.Parts.Add(new R3PartState(cell,R3PartKind.CrawlerTrack){Tier=tier});}
+            var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
+            vehicle.transform.SetParent(fixtures.transform,true);vehicle.Controller.SetGameplayInputEnabled(true);
+            var body=vehicle.GetComponent<Rigidbody>();body.useGravity=false;
+            body.constraints=RigidbodyConstraints.FreezeRotation|RigidbodyConstraints.FreezePositionY;
+            foreach(var collider in vehicle.GetComponentsInChildren<Collider>())collider.enabled=false;
+            Assert.That(vehicle.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>().SetDriveMode(R3DriveKind.Tracks),Is.True);
+            vehicle.Controller.enabled=false;return vehicle;
+        }
+        var low=Tracks(1,-20);var high=Tracks(3,20);Physics.SyncTransforms();yield return Seconds(.2f);
+        var lowTracks=low.GetComponent<RoboRougelike.Mechanics.MOV008.CrawlerTrackController>();
+        var highTracks=high.GetComponent<RoboRougelike.Mechanics.MOV008.CrawlerTrackController>();
+        Assert.That(lowTracks.GroundedModuleCount,Is.EqualTo(2));Assert.That(highTracks.GroundedModuleCount,Is.EqualTo(2));
+        low.GetComponent<Rigidbody>().linearVelocity=Vector3.zero;high.GetComponent<Rigidbody>().linearVelocity=Vector3.zero;
+        lowTracks.SetInput(1,0);highTracks.SetInput(1,0);yield return Seconds(.4f);
+        float lowSpeed=low.GetComponent<Rigidbody>().linearVelocity.z,highSpeed=high.GetComponent<Rigidbody>().linearVelocity.z;
+        Assert.That(lowSpeed,Is.GreaterThan(.05f));Assert.That(highSpeed,Is.GreaterThan(lowSpeed*1.2f));
+    }
+    [UnityTest] public IEnumerator HigherTierOmniAcceleratesAndSpendsMoreEnergy()
+    {
+        var low=BuildTieredDrive(R3PartKind.OmniDrive,1,-20);var high=BuildTieredDrive(R3PartKind.OmniDrive,3,20);
+        foreach(var vehicle in new[]{low,high})
+        {
+            var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=false;body.useGravity=false;
+            var position=new Vector3(body.position.x,-.5f,body.position.z);vehicle.transform.position=position;body.position=position;
+            body.constraints=RigidbodyConstraints.FreezeRotation|RigidbodyConstraints.FreezePositionY;
+            foreach(var collider in vehicle.GetComponentsInChildren<Collider>())collider.enabled=false;
+            Assert.That(vehicle.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>().SetDriveMode(R3DriveKind.Omni),Is.True);
+            vehicle.Controller.enabled=false;vehicle.GetComponent<VehicleEnergyBank>().enabled=false;
+        }
+        Physics.SyncTransforms();yield return Seconds(.2f);
+        var lowBody=low.GetComponent<Rigidbody>();var highBody=high.GetComponent<Rigidbody>();
+        Assert.That(low.GetComponentInChildren<RoboRougelike.Mechanics.MOV005OmniDrive.OmniDriveModule>().CanDrive(lowBody),Is.True);
+        Assert.That(high.GetComponentInChildren<RoboRougelike.Mechanics.MOV005OmniDrive.OmniDriveModule>().CanDrive(highBody),Is.True);
+        var lowBank=low.GetComponent<VehicleEnergyBank>();var highBank=high.GetComponent<VehicleEnergyBank>();
+        float lowBefore=lowBank.Current,highBefore=highBank.Current;lowBody.linearVelocity=highBody.linearVelocity=Vector3.zero;
+        low.GetComponent<RoboRougelike.Mechanics.MOV005OmniDrive.OmniDriveController>().SetInput(Vector2.up,0);
+        high.GetComponent<RoboRougelike.Mechanics.MOV005OmniDrive.OmniDriveController>().SetInput(Vector2.up,0);
+        yield return Seconds(.2f);
+        Assert.That(lowBody.linearVelocity.z,Is.GreaterThan(.02f));
+        Assert.That(highBody.linearVelocity.z,Is.GreaterThan(lowBody.linearVelocity.z*1.5f));
+        float lowCost=lowBefore-lowBank.Current,highCost=highBefore-highBank.Current;
+        Assert.That(lowCost,Is.GreaterThan(.05f));Assert.That(highCost,Is.GreaterThan(lowCost*1.2f));
+    }
+    R1VehicleState BuildTieredMovement(R3PartKind kind,int tier,float x)
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var cell=FindFixtureCell(model,kind,new Vector3Int(1,1,0));model.Parts.Add(new R3PartState(cell,kind){Tier=tier});
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
+        vehicle.transform.SetParent(fixtures.transform,true);vehicle.Controller.SetGameplayInputEnabled(true);return vehicle;
+    }
+    [UnityTest] public IEnumerator TieredJumpDevicesUseTierEnergyAndProduceStrongerImpulse()
+    {
+        var one=BuildTieredMovement(R3PartKind.JumpDrive,1,-25);var two=BuildTieredMovement(R3PartKind.JumpDrive,2,0);
+        var three=BuildTieredMovement(R3PartKind.JumpDrive,3,25);yield return Seconds(.6f);
+        var a=one.GetComponent<Rigidbody>();var b=two.GetComponent<Rigidbody>();var c=three.GetComponent<Rigidbody>();
+        a.linearVelocity=Vector3.zero;b.linearVelocity=Vector3.zero;c.linearVelocity=Vector3.zero;
+        var e2=two.GetComponent<VehicleEnergyBank>();var e3=three.GetComponent<VehicleEnergyBank>();float before2=e2.Current,before3=e3.Current;
+        Assert.That(Action(one,"TryJump"),Is.True);Assert.That(Action(two,"TryJump"),Is.True);Assert.That(Action(three,"TryJump"),Is.True);
+        Assert.That(e2.Current,Is.EqualTo(before2-VehicleEnergyCosts.Jump*R3VehicleModel.TierActivationCost(2)).Within(.001));
+        Assert.That(e3.Current,Is.EqualTo(before3-VehicleEnergyCosts.Jump*R3VehicleModel.TierActivationCost(3)).Within(.001));
+        Assert.That(b.linearVelocity.y,Is.GreaterThan(a.linearVelocity.y+.1f));Assert.That(c.linearVelocity.y,Is.GreaterThan(b.linearVelocity.y+.1f));
+    }
+    [UnityTest] public IEnumerator TieredBlinkUsesTierEnergyAndExtendsTheCheckedTravelDistance()
+    {
+        var two=BuildTieredMovement(R3PartKind.Blink,2,-25);var three=BuildTieredMovement(R3PartKind.Blink,3,25);yield return Seconds(.6f);
+        var b=two.GetComponent<Rigidbody>();var c=three.GetComponent<Rigidbody>();float z2=b.position.z,z3=c.position.z;
+        var e2=two.GetComponent<VehicleEnergyBank>();var e3=three.GetComponent<VehicleEnergyBank>();float before2=e2.Current,before3=e3.Current;
+        bool Blink(R1VehicleState v){var adapter=Adapter(v);return (bool)adapter.GetType().GetMethod("TryBlink").Invoke(adapter,new object[]{Vector3.forward});}
+        Assert.That(Blink(two),Is.True);Assert.That(Blink(three),Is.True);
+        Assert.That(b.position.z-z2,Is.EqualTo(16).Within(.01));Assert.That(c.position.z-z3,Is.EqualTo(32).Within(.01));
+        Assert.That(e2.Current,Is.EqualTo(before2-VehicleEnergyCosts.Blink*R3VehicleModel.TierActivationCost(2)).Within(.001));
+        Assert.That(e3.Current,Is.EqualTo(before3-VehicleEnergyCosts.Blink*R3VehicleModel.TierActivationCost(3)).Within(.001));
+    }
+    R1VehicleState BuildMixedTierBoosters()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        foreach(int tier in new[]{1,3})
+        {
+            var cell=FindFixtureCell(model,R3PartKind.Booster,new Vector3Int(tier==1?-1:1,1,0));
+            model.Parts.Add(new R3PartState(cell,R3PartKind.Booster){Tier=tier});
+        }
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,.7f,1000),Quaternion.identity);
+        vehicle.transform.SetParent(fixtures.transform,true);vehicle.Controller.SetGameplayInputEnabled(true);return vehicle;
+    }
+    [UnityTest] public IEnumerator MixedTierBoostersSpendCombinedEnergyAndStopDisabledCopy()
+    {
+        var v=BuildMixedTierBoosters();yield return Seconds(.6f);
+        var bank=v.GetComponent<VehicleEnergyBank>();var boosters=v.GetComponentsInChildren<VehicleBooster>();
+        float cost=VehicleEnergyCosts.BoosterActivation*(R3VehicleModel.TierActivationCost(1)+R3VehicleModel.TierActivationCost(3));
+        Assert.That(bank.TrySpend(bank.Current-cost+.1f),Is.True);
+        float before=bank.Current;Assert.That(Action(v,"TryBoost"),Is.False);
+        Assert.That(bank.Current,Is.EqualTo(before).Within(.001));Assert.That(boosters.All(b=>!b.IsBoosting),Is.True);
+        bank.Recharge(100);before=bank.Current;Assert.That(Action(v,"TryBoost"),Is.True);
+        Assert.That(bank.Current,Is.EqualTo(before-cost).Within(.001));Assert.That(boosters.All(b=>b.IsBoosting),Is.True);
+        var high=boosters.Single(b=>b.GetComponent<R3MountedPart>().Tier==3);high.SetOperational(false);
+        Assert.That(high.IsBoosting,Is.False);Assert.That(boosters.Single(b=>b!=high).IsBoosting,Is.True);
+    }
+    [UnityTest] public IEnumerator HigherTierBoosterUsesTierEnergyAndAddsPhysicalThrust()
+    {
+        var one=BuildTieredBooster(1,-20);var two=BuildTieredBooster(2,20);var three=BuildTieredBooster(3,45);yield return Seconds(.6f);
+        var a=one.GetComponent<Rigidbody>();var b=two.GetComponent<Rigidbody>();var c=three.GetComponent<Rigidbody>();
+        a.linearVelocity=Vector3.zero;b.linearVelocity=Vector3.zero;c.linearVelocity=Vector3.zero;
+        var first=one.GetComponent<VehicleEnergyBank>();var second=two.GetComponent<VehicleEnergyBank>();var third=three.GetComponent<VehicleEnergyBank>();
+        float before1=first.Current,before2=second.Current,before3=third.Current;
+        Assert.That(Action(one,"TryBoost"),Is.True);Assert.That(Action(two,"TryBoost"),Is.True);Assert.That(Action(three,"TryBoost"),Is.True);
+        Assert.That(first.Current,Is.EqualTo(before1-VehicleEnergyCosts.BoosterActivation).Within(.001));
+        Assert.That(second.Current,Is.EqualTo(before2-VehicleEnergyCosts.BoosterActivation*R3VehicleModel.TierActivationCost(2)).Within(.001));
+        Assert.That(third.Current,Is.EqualTo(before3-VehicleEnergyCosts.BoosterActivation*R3VehicleModel.TierActivationCost(3)).Within(.001));
+        yield return Seconds(.25f);
+        Assert.That(b.linearVelocity.z,Is.GreaterThan(a.linearVelocity.z+.15f),"A higher tier must increase real thrust, not only its label.");
+        Assert.That(c.linearVelocity.z,Is.GreaterThan(b.linearVelocity.z+.15f),"Tier 3 must add physical thrust over tier 2.");
+    }
+    [UnityTest] public IEnumerator TwoBoostersRequireCombinedEnergyAndBothProducePhysicalThrust()
+    {
+        var v=Build(R3VehicleKind.Light,0,R3PartKind.Booster,R3PartKind.Booster);yield return Seconds(.6f);
+        var bank=v.GetComponent<VehicleEnergyBank>();var boosters=v.GetComponentsInChildren<VehicleBooster>();
+        Assert.That(boosters.Length,Is.EqualTo(2));
+        float oneCost=VehicleEnergyCosts.BoosterActivation;
+        Assert.That(bank.TrySpend(bank.Current-oneCost-1f),Is.True);
+        Assert.That(Action(v,"TryBoost"),Is.False,"Energy sufficient for one copy must not start a partial boost.");
+        Assert.That(boosters.All(b=>!b.IsBoosting),Is.True);
+        bank.Recharge(100);float before=bank.Current;
+        Assert.That(Action(v,"TryBoost"),Is.True);Assert.That(boosters.All(b=>b.IsBoosting),Is.True);
+        Assert.That(bank.Current,Is.EqualTo(before-2*oneCost).Within(.001f));
+        var copy=v.GetComponent<R3VehicleAssembly>().Model.DeepCopy();copy.Parts.RemoveAll(p=>p.Kind==R3PartKind.Booster);
+        Assert.That(copy.BoosterReadyAt,Is.GreaterThan(Time.time));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(copy.MakeCheckpoint(Time.time),R3VehicleKind.Light,copy.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.BoosterReadyAt,Is.GreaterThan(Time.time),"Removing every copy must not reset the shared cooldown in a save.");
+        float speed=v.GetComponent<Rigidbody>().linearVelocity.z;yield return Seconds(.25f);
+        Assert.That(v.GetComponent<Rigidbody>().linearVelocity.z,Is.GreaterThan(speed+.2f),"Real boosters must accelerate the vehicle.");
+        Assert.That(Action(v,"TryBoost"),Is.False,"Copies share their activation cycle.");
+    }
+    [UnityTest] public IEnumerator TwoJumpDrivesRequireCombinedEnergyAndProvideStrongerSharedJump()
+    {
+        var one=Build(R3VehicleKind.Light,-20,R3PartKind.JumpDrive,R3PartKind.JumpDrive);
+        var two=Build(R3VehicleKind.Light,20,R3PartKind.JumpDrive,R3PartKind.JumpDrive);
+        one.GetComponentsInChildren<JumpDrive>()[1].SetOperational(false);yield return Seconds(.6f);
+        var rings=two.GetComponentsInChildren<Transform>(true).Where(t=>t.name=="Jump_BlastRing").ToArray();
+        Assert.That(rings.Length,Is.EqualTo(2),"Both physical jump modules need their visual effects.");
+        var a=one.GetComponent<Rigidbody>();var b=two.GetComponent<Rigidbody>();a.linearVelocity=Vector3.zero;b.linearVelocity=Vector3.zero;
+        var bank=two.GetComponent<VehicleEnergyBank>();float cost=VehicleEnergyCosts.Jump;
+        Assert.That(bank.TrySpend(bank.Current-cost*1.5f),Is.True);float before=bank.Current;
+        Assert.That(Action(two,"TryJump"),Is.False,"Two modules must not partially activate with energy for only one.");
+        Assert.That(bank.Current,Is.EqualTo(before).Within(.001));Assert.That(b.linearVelocity.y,Is.EqualTo(0).Within(.001));
+        bank.Recharge(100);before=bank.Current;Assert.That(Action(one,"TryJump"),Is.True);Assert.That(Action(two,"TryJump"),Is.True);
+        Assert.That(bank.Current,Is.EqualTo(before-2*cost).Within(.001));
+        Assert.That(rings.All(r=>r.gameObject.activeSelf),Is.True,"Every active copy must show the shared jump effect.");
+        Assert.That(b.linearVelocity.y,Is.GreaterThan(a.linearVelocity.y+.1f),"An extra drive must improve the shared physical jump.");
+        Assert.That(Action(two,"TryJump"),Is.False,"The copies must share one cooldown.");
+    }
+    [UnityTest] public IEnumerator JumpCooldownSurvivesRemovingEveryCopyAndCheckpoint()
+    {
+        var v=Build(R3VehicleKind.Light,0,R3PartKind.JumpDrive);yield return Seconds(.6f);
+        Assert.That(Action(v,"TryJump"),Is.True);var model=v.GetComponent<R3VehicleAssembly>().Model;
+        var oldCell=model.Parts.Single(p=>p.Kind==R3PartKind.JumpDrive).Cell;
+        var copy=model.DeepCopy();copy.Parts.RemoveAll(p=>p.Kind==R3PartKind.JumpDrive);
+        var property=typeof(R3VehicleModel).GetProperty("JumpReadyAt");
+        Assert.That(property,Is.Not.Null,"The kind needs a shared gate even when no physical copies remain.");
+        Assert.That((float)property.GetValue(copy),Is.GreaterThan(Time.time));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(copy.MakeCheckpoint(Time.time),R3VehicleKind.Light,copy.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That((float)property.GetValue(restored),Is.GreaterThan(Time.time));
+        restored.Parts.Add(new R3PartState(oldCell,R3PartKind.JumpDrive));
+        var replacement=R3VehicleAssembly.Build(restored,new R1RunStats(),palette,new Vector3(20,.7f,1000),Quaternion.identity);
+        replacement.transform.SetParent(fixtures.transform,true);replacement.Controller.SetGameplayInputEnabled(true);yield return Seconds(.3f);
+        var bank=replacement.GetComponent<VehicleEnergyBank>();float energy=bank.Current;
+        Assert.That(Action(replacement,"TryJump"),Is.False,"A new physical copy cannot bypass the saved kind cooldown.");
+        Assert.That(bank.Current,Is.EqualTo(energy).Within(.001));
+    }
+    [UnityTest] public IEnumerator BlinkCopiesUseOneCostDistanceAndPersistentCooldown()
+    {
+        var v=Build(R3VehicleKind.Light,0,R3PartKind.Blink,R3PartKind.Blink);yield return Seconds(.6f);
+        var adapter=Adapter(v);var method=adapter.GetType().GetMethod("TryBlink");var body=v.GetComponent<Rigidbody>();
+        var bank=v.GetComponent<VehicleEnergyBank>();float cost=VehicleEnergyCosts.Blink;
+        Assert.That(bank.TrySpend(bank.Current-cost*1.5f),Is.True);float before=bank.Current;var position=body.position;
+        Assert.That((bool)method.Invoke(adapter,new object[]{Vector3.forward}),Is.False);
+        Assert.That(bank.Current,Is.EqualTo(before).Within(.001));Assert.That(Vector3.Distance(body.position,position),Is.LessThan(.00001f));
+        bank.Recharge(100);before=bank.Current;
+        Assert.That((bool)method.Invoke(adapter,new object[]{Vector3.forward}),Is.True);
+        Assert.That(body.position.z-position.z,Is.EqualTo(16).Within(.01));
+        Assert.That(bank.Current,Is.EqualTo(before-2*cost).Within(.001));
+        var rings=v.GetComponentsInChildren<Transform>(true).Where(t=>t.name=="Blink_PhaseRing").ToArray();
+        Assert.That(rings.Length,Is.EqualTo(2));Assert.That(rings.All(r=>r.gameObject.activeSelf),Is.True);
+        Assert.That((bool)method.Invoke(adapter,new object[]{Vector3.forward}),Is.False,"Copies must share a cooldown.");
+        var model=v.GetComponent<R3VehicleAssembly>().Model;var oldCell=model.Parts.First(p=>p.Kind==R3PartKind.Blink).Cell;
+        var copy=model.DeepCopy();copy.Parts.RemoveAll(p=>p.Kind==R3PartKind.Blink);
+        var property=typeof(R3VehicleModel).GetProperty("BlinkReadyAt");Assert.That(property,Is.Not.Null);
+        Assert.That((float)property.GetValue(copy),Is.GreaterThan(Time.time));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(copy.MakeCheckpoint(Time.time),R3VehicleKind.Light,copy.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That((float)property.GetValue(restored),Is.GreaterThan(Time.time));
+        restored.Parts.Add(new R3PartState(oldCell,R3PartKind.Blink));
+        var replacement=R3VehicleAssembly.Build(restored,new R1RunStats(),palette,new Vector3(20,.7f,1000),Quaternion.identity);
+        replacement.transform.SetParent(fixtures.transform,true);replacement.Controller.SetGameplayInputEnabled(true);yield return Seconds(.3f);
+        var next=Adapter(replacement);var nextBank=replacement.GetComponent<VehicleEnergyBank>();before=nextBank.Current;position=replacement.transform.position;
+        Assert.That((bool)method.Invoke(next,new object[]{Vector3.forward}),Is.False);
+        Assert.That(nextBank.Current,Is.EqualTo(before).Within(.001));Assert.That(Vector3.Distance(replacement.transform.position,position),Is.LessThan(.00001f));
+    }
+    [UnityTest] public IEnumerator LongerBlinkDoesNotCrossObstacleOrSpendEnergy()
+    {
+        var v=Build(R3VehicleKind.Light,0,R3PartKind.Blink,R3PartKind.Blink);yield return Seconds(.6f);
+        var body=v.GetComponent<Rigidbody>();var obstacle=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        obstacle.transform.SetParent(fixtures.transform,true);obstacle.transform.position=body.position+new Vector3(0,0,12);
+        obstacle.transform.localScale=new Vector3(8,4,1);Physics.SyncTransforms();
+        var bank=v.GetComponent<VehicleEnergyBank>();float before=bank.Current;var position=body.position;
+        var adapter=Adapter(v);bool result=(bool)adapter.GetType().GetMethod("TryBlink").Invoke(adapter,new object[]{Vector3.forward});
+        Assert.That(result,Is.False);Assert.That(bank.Current,Is.EqualTo(before).Within(.001));Assert.That(Vector3.Distance(body.position,position),Is.LessThan(.00001f));
+    }
+    [UnityTest] public IEnumerator TwoBoostersAccelerateMoreThanOneOnComparablePhysicalVehicles()
+    {
+        var one=Build(R3VehicleKind.Light,-20,R3PartKind.Booster,R3PartKind.Booster);
+        var two=Build(R3VehicleKind.Light,20,R3PartKind.Booster,R3PartKind.Booster);
+        one.GetComponentsInChildren<VehicleBooster>()[1].gameObject.SetActive(false);
+        yield return Seconds(.6f);
+        var a=one.GetComponent<Rigidbody>();var b=two.GetComponent<Rigidbody>();
+        a.linearVelocity=Vector3.zero;b.linearVelocity=Vector3.zero;
+        Assert.That(Action(one,"TryBoost"),Is.True);Assert.That(Action(two,"TryBoost"),Is.True);
+        yield return Seconds(.3f);
+        Assert.That(b.linearVelocity.z,Is.GreaterThan(a.linearVelocity.z+.2f),"A second working copy must add thrust, rather than sharing a fixed total cap.");
+    }
     [UnityTest] public IEnumerator ActualPartsBindOneBodyWithoutBecomingWeapons()
     {
         var v=Build(R3VehicleKind.Light,0,R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Gyroscope);
@@ -113,6 +423,26 @@ public class MOVSeriesDeviceTests
         Assert.That(tilt,Is.LessThan(initial*.5f));Assert.That(b.angularVelocity.y,Is.GreaterThan(.5f));
         Assert.That(Action(v,"ToggleGyro"),Is.True);yield return FixedStep();
         Assert.That(v.GetComponentInChildren<GyroStabilizer>().LastAngularAcceleration,Is.EqualTo(Vector3.zero));
+    }
+    [UnityTest] public IEnumerator GyroscopeCopiesAndTierProvideFullPhysicalCorrection()
+    {
+        var one=BuildTieredMovement(R3PartKind.Gyroscope,1,-25);
+        var two=Build(R3VehicleKind.Light,0,R3PartKind.Gyroscope,R3PartKind.Gyroscope);
+        var three=BuildTieredMovement(R3PartKind.Gyroscope,3,25);yield return Seconds(.3f);
+        foreach(var vehicle in new[]{one,two,three})
+        {
+            vehicle.Controller.enabled=false;var body=vehicle.GetComponent<Rigidbody>();
+            body.useGravity=false;body.position+=Vector3.up*8;body.rotation=Quaternion.Euler(0,0,30);body.angularVelocity=Vector3.zero;
+        }
+        Physics.SyncTransforms();yield return FixedStep();
+        float Correction(R1VehicleState v)=>v.GetComponentsInChildren<GyroStabilizer>().Sum(g=>g.LastAngularAcceleration.magnitude);
+        float first=Correction(one),second=Correction(two),third=Correction(three);
+        Assert.That(first,Is.GreaterThan(.1f));
+        Assert.That(second,Is.EqualTo(first*2).Within(first*.1f),"Copies must contribute fully rather than divide a fixed correction.");
+        Assert.That(third,Is.EqualTo(first*4).Within(first*.2f),"Tier 3 must improve real corrective acceleration.");
+        var copy=two.GetComponentsInChildren<GyroStabilizer>()[1];copy.SetOperational(false);
+        var rb=two.GetComponent<Rigidbody>();rb.rotation=Quaternion.Euler(0,0,30);rb.angularVelocity=Vector3.zero;Physics.SyncTransforms();
+        yield return FixedStep();Assert.That(Correction(two),Is.EqualTo(first).Within(first*.1f));
     }
     [UnityTest] public IEnumerator SameTickDetachDeathAndRebuildUseRealPartHealth()
     {

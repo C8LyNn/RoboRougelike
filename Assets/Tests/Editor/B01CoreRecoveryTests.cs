@@ -47,6 +47,21 @@ public class B01CoreRecoveryTests
         Require();PoseRoof();yield return MOVSeriesDeviceTests.Seconds(.6f);Assert.That(Attempts,Is.Zero);
         yield return MOVSeriesDeviceTests.Seconds(2);Assert.That(Attempts,Is.EqualTo(1));
     }
+    [UnityTest] public IEnumerator SupportedRobotOnItsSideReceivesBoundedRecoveryWithFiveSecondCooldown()
+    {
+        Require();body.useGravity=true;body.interpolation=RigidbodyInterpolation.None;
+        // A real rigidbody and floor, with rotation frozen to reproduce a
+        // stable sideways softlock independently of incidental wheel rolling.
+        body.constraints=RigidbodyConstraints.FreezeRotation;
+        var position=new Vector3(1000,1.5f,1000);var rotation=Quaternion.Euler(0,0,90);
+        body.transform.SetPositionAndRotation(position,rotation);body.position=position;body.rotation=rotation;
+        body.linearVelocity=body.angularVelocity=Vector3.zero;Physics.SyncTransforms();
+        float deadline=Time.time+6;
+        while(Attempts==0&&Time.time<deadline)yield return null;
+        Assert.That(Attempts,Is.EqualTo(1),"A supported, stationary robot on its side should receive an attempt.");
+        Assert.That(Telemetry("CooldownLeft"),Is.InRange(4.7f,5.05f));
+        Assert.That(Telemetry("LastPeakTorque"),Is.InRange(0,30000.1f));
+    }
     [UnityTest] public IEnumerator PHY_CORE_02_NormalSlopeAndAirborneTumbleCannotTriggerRecovery()
     {
         Require();var ramp=Solid(new Vector3(1000,1,1000),new Vector3(12,1,20));ramp.transform.rotation=Quaternion.Euler(-10,0,0);

@@ -50,8 +50,8 @@ namespace RogueMachine.P12PipelineSafe
 
         private float moveInput;
         private float turnInput;
-        private bool fireHeld, secondaryFireHeld;
-        private bool waitForPrimaryRelease, waitForSecondaryRelease;
+        private bool fireHeld, secondaryFireHeld, thirdFireHeld, fourthFireHeld;
+        private bool waitForPrimaryRelease, waitForSecondaryRelease, waitForThirdRelease, waitForFourthRelease;
 
         private float currentSpeed;
 
@@ -71,29 +71,42 @@ namespace RogueMachine.P12PipelineSafe
 
         public void ConfigureChassis(float speed, float turning, float mass)
         {
-            forwardSpeed = Mathf.Clamp(speed, 2, 14); reverseSpeed = forwardSpeed * 0.6f;
-            turnSpeed = Mathf.Clamp(turning, 35, 130);
+            forwardSpeed = float.IsNaN(speed)||float.IsInfinity(speed)?0f:Mathf.Max(0,speed); reverseSpeed = forwardSpeed * 0.6f;
+            turnSpeed = float.IsNaN(turning)||float.IsInfinity(turning)?35f:Mathf.Max(0,turning);
             GetComponent<Rigidbody>().mass = Mathf.Max(50, mass);
         }
 
         private Material projectileMaterial;
         private bool gameplayInputEnabled = true;
         private float damageModifier = 1f;
+        private float basicDamageModifier = 1f;
+        private float basicBlastDamageModifier = 1f;
+        private float basicBlastFraction;
         private float intervalModifier = 1f;
         private float mobilityModifier = 1f;
 
-        public float EffectiveDamage => shotDamage * damageModifier;
+        public float EffectiveDamage => (float)System.Math.Min(float.MaxValue,(double)shotDamage*((1d-basicBlastFraction)*basicDamageModifier+basicBlastFraction*basicBlastDamageModifier));
         public float EffectiveFireInterval => fireInterval * intervalModifier;
-        public float EffectiveForwardSpeed => forwardSpeed * mobilityModifier;
-        public float EffectiveReverseSpeed => reverseSpeed * mobilityModifier;
-        public float EffectiveTurnSpeed => turnSpeed * mobilityModifier;
+        public float EffectiveForwardSpeed => (float)System.Math.Min(float.MaxValue,(double)forwardSpeed * mobilityModifier);
+        public float EffectiveReverseSpeed => (float)System.Math.Min(float.MaxValue,(double)reverseSpeed * mobilityModifier);
+        public float EffectiveTurnSpeed => (float)System.Math.Min(float.MaxValue,(double)turnSpeed*mobilityModifier);
         public bool GameplayInputEnabled => gameplayInputEnabled;
 
         public void SetRunModifiers(float damage, float interval, float mobility)
         {
-            damageModifier = Mathf.Clamp(damage, 1f, 3f);
-            intervalModifier = Mathf.Clamp(interval, 0.35f, 1f);
-            mobilityModifier = Mathf.Clamp(mobility, 1f, 2f);
+            damageModifier = float.IsNaN(damage)||float.IsInfinity(damage)?1f:Mathf.Max(0,damage);
+            basicDamageModifier=damageModifier;
+            basicBlastDamageModifier=damageModifier;basicBlastFraction=0;
+            intervalModifier = float.IsNaN(interval)||float.IsInfinity(interval)?1f:Mathf.Max(0,interval);
+            mobilityModifier = float.IsNaN(mobility)||float.IsInfinity(mobility)?1f:Mathf.Max(0,mobility);
+        }
+        public void SetBasicDamageModifier(float damage)
+        {SetBasicDamageProfile(damage,damage,0);}
+        public void SetBasicDamageProfile(float kinetic,float blast,float blastFraction)
+        {
+            basicDamageModifier=float.IsNaN(kinetic)||float.IsInfinity(kinetic)?damageModifier:Mathf.Max(0,kinetic);
+            basicBlastDamageModifier=float.IsNaN(blast)||float.IsInfinity(blast)?damageModifier:Mathf.Max(0,blast);
+            basicBlastFraction=float.IsNaN(blastFraction)||float.IsInfinity(blastFraction)?0:Mathf.Clamp01(blastFraction);
         }
 
         public void SetGameplayInputEnabled(bool active)
@@ -103,9 +116,9 @@ namespace RogueMachine.P12PipelineSafe
             AimFeedback=default;
             weaponReticles.Clear();
             moveInput = turnInput = currentSpeed = 0;
-            fireHeld = secondaryFireHeld = false;
-            waitForPrimaryRelease = waitForSecondaryRelease = true;
-            if(modularAssembly!=null)modularAssembly.SetGroupTriggers(false,false);
+            fireHeld = secondaryFireHeld = thirdFireHeld = fourthFireHeld = false;
+            waitForPrimaryRelease = waitForSecondaryRelease = waitForThirdRelease = waitForFourthRelease = true;
+            if(modularAssembly!=null)modularAssembly.SetSlotTriggers(false,false,false,false);
             GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>()?.CancelActions();
             if (rb != null) StopResidualPhysics();
         }
@@ -170,33 +183,35 @@ public float CurrentForwardSpeed =>
         {
             moveInput = 0f;
             turnInput = 0f;
-            fireHeld = secondaryFireHeld = false;
+            fireHeld = secondaryFireHeld = thirdFireHeld = fourthFireHeld = false;
             if (!gameplayInputEnabled) return;
 
 #if ENABLE_INPUT_SYSTEM
             Keyboard keyboard = Keyboard.current;
+            var controls=RoboRougelike.R1.R1ControlProfile.Current;
 
-            if (keyboard != null)
             {
-                if (keyboard.wKey.isPressed ||
-                    keyboard.upArrowKey.isPressed)
+                if (controls.Pressed("MoveForward") ||
+                    (keyboard!=null&&keyboard.upArrowKey.isPressed))
                     moveInput += 1f;
 
-                if (keyboard.sKey.isPressed ||
-                    keyboard.downArrowKey.isPressed)
+                if (controls.Pressed("MoveBackward") ||
+                    (keyboard!=null&&keyboard.downArrowKey.isPressed))
                     moveInput -= 1f;
 
-                if (keyboard.dKey.isPressed ||
-                    keyboard.rightArrowKey.isPressed)
+                if (controls.Pressed("TurnRight") ||
+                    (keyboard!=null&&keyboard.rightArrowKey.isPressed))
                     turnInput += 1f;
 
-                if (keyboard.aKey.isPressed ||
-                    keyboard.leftArrowKey.isPressed)
+                if (controls.Pressed("TurnLeft") ||
+                    (keyboard!=null&&keyboard.leftArrowKey.isPressed))
                     turnInput -= 1f;
             }
 
-            bool primaryPressed=Mouse.current != null && Mouse.current.leftButton.isPressed;
-            bool secondaryPressed=Mouse.current != null && Mouse.current.rightButton.isPressed;
+            bool primaryPressed=controls.Pressed("Weapon1");
+            bool secondaryPressed=controls.Pressed("Weapon2");
+            bool thirdPressed=controls.Pressed("Weapon3");
+            bool fourthPressed=controls.Pressed("Weapon4");
 #else
             if (Input.GetKey(KeyCode.W) ||
                 Input.GetKey(KeyCode.UpArrow))
@@ -216,11 +231,17 @@ public float CurrentForwardSpeed =>
 
             bool primaryPressed=Input.GetMouseButton(0);
             bool secondaryPressed=Input.GetMouseButton(1);
+            bool thirdPressed=Input.GetKey(KeyCode.Q);
+            bool fourthPressed=Input.GetKey(KeyCode.E);
 #endif
             if(!primaryPressed)waitForPrimaryRelease=false;
             if(!secondaryPressed)waitForSecondaryRelease=false;
+            if(!thirdPressed)waitForThirdRelease=false;
+            if(!fourthPressed)waitForFourthRelease=false;
             fireHeld=primaryPressed&&!waitForPrimaryRelease;
             secondaryFireHeld=secondaryPressed&&!waitForSecondaryRelease;
+            thirdFireHeld=thirdPressed&&!waitForThirdRelease;
+            fourthFireHeld=fourthPressed&&!waitForFourthRelease;
         }
 
         private RoboRougelike.R6.R6VehicleDrive drive;
@@ -229,7 +250,7 @@ public float CurrentForwardSpeed =>
             if (rb.isKinematic) return;
             if(drive==null)drive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();
             RefreshCollisionEnvelope(false);
-            drive.Step(gameplayInputEnabled?moveInput:0,gameplayInputEnabled?turnInput:0,forwardSpeed*mobilityModifier,reverseSpeed*mobilityModifier,turnSpeed*mobilityModifier);
+            drive.Step(gameplayInputEnabled?moveInput:0,gameplayInputEnabled?turnInput:0,forwardSpeed*mobilityModifier,reverseSpeed*mobilityModifier,EffectiveTurnSpeed);
             currentSpeed=drive.ForwardSpeed;
         }
 
@@ -277,11 +298,17 @@ public float CurrentForwardSpeed =>
                 modularAssembly,this,aimPoint,LastConsumedAimCollider);
             RoboRougelike.WeaponIntegration.RRLWeaponReticles.Collect(aimCamera,modularAssembly,this,aimPoint,weaponReticles);
 
+            var run=RoboRougelike.R1.R1RunController.Instance;
+            if(run!=null&&run.Player!=null&&run.Player.Controller==this&&run.EmergencyRescueAttackBlocked)
+            {if(modularAssembly!=null)modularAssembly.SetSlotTriggers(false,false,false,false);return;}
+
             if(modularAssembly!=null)
             {
-                modularAssembly.SetGroupTriggers(fireHeld,secondaryFireHeld);
+                modularAssembly.SetSlotTriggers(fireHeld,secondaryFireHeld,thirdFireHeld,fourthFireHeld);
                 if(fireHeld)modularAssembly.FireGroup(false);
                 if(secondaryFireHeld)modularAssembly.FireGroup(true);
+                if(thirdFireHeld)modularAssembly.FireSlot(2);
+                if(fourthFireHeld)modularAssembly.FireSlot(3);
             }
             else if (fireHeld && Time.time >= nextFireTime)
             {
@@ -394,6 +421,12 @@ public float CurrentForwardSpeed =>
         {
             if(aimCamera==null)aimCamera=Camera.main;
             return aimCamera!=null?FindAimPoint():transform.position+transform.forward*24;
+        }
+        public Collider ModuleAimCollider()
+        {
+            if(aimCamera==null)aimCamera=Camera.main;
+            if(aimCamera==null)return null;
+            FindAimPoint(true);return LastConsumedAimCollider;
         }
         public Vector3 LastConsumedAimPoint {get;private set;}
         public Collider LastConsumedAimCollider {get;private set;}
@@ -559,25 +592,51 @@ public float CurrentForwardSpeed =>
         { FireFrom(muzzle); }
 
         public void FireFrom(Transform barrel)
-        { SpawnPhysicalShell(barrel,EffectiveDamage,projectileSpeed,projectileDiameter,projectileMass,
-            RoboRougelike.R4.R4WeaponKind.Basic,null); }
+        {
+            float kinetic=SafeShellDamage(shotDamage,1-basicBlastFraction,basicDamageModifier);
+            float blast=SafeShellDamage(shotDamage,basicBlastFraction,basicBlastDamageModifier);
+            SpawnPhysicalShell(barrel,kinetic,projectileSpeed,projectileDiameter,projectileMass,
+                RoboRougelike.R4.R4WeaponKind.Basic,null,blast);
+        }
+
+        static float SafeShellDamage(float damage,float fraction,float modifier)=>
+            (float)System.Math.Min(float.MaxValue,(double)damage*fraction*modifier);
 
         public void FireFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId)
+        { FireFrom(barrel,kind,partId,0); }
+        public void FireFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,int extraShots)
         {
             var profile=RoboRougelike.R4.R4WeaponDefinition.Get(kind);
             var mounted=barrel!=null?barrel.GetComponentInParent<RoboRougelike.R3.R3MountedPart>():null;
             float tier=mounted!=null&&mounted.Kind==RoboRougelike.R3.R3PartKind.Gun&&mounted.Id==partId?
                 RoboRougelike.R3.R3VehicleModel.TierEffectUnits(mounted.Tier):1f;
-            SpawnPhysicalShell(barrel,profile.Damage*damageModifier*tier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
+            float weaponDamage=kind==RoboRougelike.R4.R4WeaponKind.Basic?basicDamageModifier:PackageKineticDamageScale;
+            float fraction=kind==RoboRougelike.R4.R4WeaponKind.Basic?basicBlastFraction:0;
+            float kinetic=SafeShellDamage(profile.Damage*tier,1-fraction,weaponDamage);
+            float blast=SafeShellDamage(profile.Damage*tier,fraction,basicBlastDamageModifier);
+            var first=SpawnPhysicalShell(barrel,kinetic,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId,blast);
+            if(first==null||extraShots<=0)return;
+            var siblings=new System.Collections.Generic.List<Collider>{first};
+            int allowed=Mathf.Min(extraShots,P17PhysicalShell.AvailableSlots);
+            for(int i=0;i<allowed;i++)
+            {
+                var extra=SpawnPhysicalShell(barrel,kinetic,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId,blast);
+                if(extra==null)break;
+                foreach(var sibling in siblings)if(sibling!=null)Physics.IgnoreCollision(extra,sibling,true);
+                siblings.Add(extra);
+            }
         }
         public float WeaponInterval(RoboRougelike.R4.R4WeaponKind kind) => RoboRougelike.R4.R4WeaponDefinition.Get(kind).Interval*intervalModifier;
-        public float PackageDamageScale => damageModifier;
+        public float PackageDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.WeaponDamageMultiplier??damageModifier;
+        public float PackageBlastDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.BlastDamageMultiplier??damageModifier;
+        public float PackagePiercingDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.PiercingDamageMultiplier??damageModifier;
+        public float PackageKineticDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.KineticDamageMultiplier??damageModifier;
         public float PackageIntervalScale => intervalModifier;
-        private void SpawnPhysicalShell(Transform barrel,float hitDamage,float projectileSpeed,float projectileDiameter,
-            float projectileMass,RoboRougelike.R4.R4WeaponKind kind,string partId)
+        private Collider SpawnPhysicalShell(Transform barrel,float hitDamage,float projectileSpeed,float projectileDiameter,
+            float projectileMass,RoboRougelike.R4.R4WeaponKind kind,string partId,float blastDamage=0)
         {
             if (barrel == null)
-                return;
+                return null;
 
             Vector3 direction =
                 barrel.forward.normalized;
@@ -656,17 +715,13 @@ public float CurrentForwardSpeed =>
                     P17PhysicalShell
                 >();
 
-            projectile.Configure(
-                transform,
-                hitDamage,
-                projectileLifetime,
-                direction,
-                null
-            );
+            if(blastDamage>0)projectile.ConfigureHybrid(transform,hitDamage,blastDamage,projectileLifetime,direction,null);
+            else projectile.Configure(transform,hitDamage,projectileLifetime,direction,null);
 
             IgnoreOwnerColliders(
                 sphere
             );
+            return sphere;
         }
 
         private void IgnoreOwnerColliders(
@@ -1323,6 +1378,8 @@ public float CurrentForwardSpeed =>
         private void OnDisable(){activeShells.Remove(this);}
         private Transform ownerRoot;
         public Transform OwnerRoot=>ownerRoot;
+        public float DamageAmount=>damage;
+        public Vector3 LaunchPosition=>launchPosition;
         public bool IsActiveProjectile=>isActiveAndEnabled&&!spent&&ownerRoot!=null;
         public Vector3 FlightVelocity=>railgun!=null?railgun.Velocity:GetComponent<Rigidbody>().linearVelocity;
         public bool Intercept(float amount)
@@ -1363,12 +1420,42 @@ public float CurrentForwardSpeed =>
         private float damage;
         private Vector3 launchDirection;
         private bool spent;
+        private bool hybridDamage;
+        private float kineticComponent,blastComponent;
         private Vector3 launchPosition;
         private float maxTravelDistance=float.PositiveInfinity;
         private RoboRougelike.WeaponIntegration.RRLRailPenetration railgun;
         public void ConfigureRailgun(RoboRougelike.WPN002Railgun.RailgunShot shot,float damageScale)
         {railgun=gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRailPenetration>();railgun.Bind(shot,damageScale);}
-        private void FixedUpdate(){if(railgun!=null&&isActiveAndEnabled)railgun.Step(Time.fixedDeltaTime);}
+        private void FixedUpdate()
+        {
+            if(railgun!=null){if(isActiveAndEnabled)railgun.Step(Time.fixedDeltaTime);return;}
+            if(!IsActiveProjectile||damage<=0||float.IsNaN(damage)||float.IsInfinity(damage))return;
+            var body=GetComponent<Rigidbody>();var own=GetComponent<Collider>();
+            if(body==null||own==null)return;
+            var step=body.linearVelocity*Time.fixedDeltaTime;float distance=step.magnitude;
+            if(distance<=.00001f||float.IsNaN(distance)||float.IsInfinity(distance))return;
+            if(!float.IsInfinity(maxTravelDistance))distance=Mathf.Min(distance,Mathf.Max(0,maxTravelDistance-(body.position-launchPosition).magnitude));
+            if(distance<=.00001f)return;
+            Vector3 direction=step.normalized,start=body.position,end=start+direction*distance;
+            if(!RoboRougelike.R3.R3ShieldDome.TryFirstHit(start,end,ownerRoot,out var dome,out float shieldDistance))return;
+            bool Blocks(Collider collider)
+            {
+                if(collider==null||collider==own||collider.isTrigger||collider.transform.IsChildOf(transform)||
+                   collider.transform==ownerRoot||collider.transform.IsChildOf(ownerRoot)||Physics.GetIgnoreCollision(own,collider))return false;
+                var hp=collider.GetComponentInParent<P12PipelineSafeDamageable>();
+                return collider.GetComponentInParent<RoboRougelike.R3.R3Debris>()==null&&(hp==null||!hp.IsDead)&&
+                    RoboRougelike.WeaponIntegration.RRLHitRouter.CanHit(collider,ownerRoot);
+            }
+            var sphere=own as SphereCollider;
+            float radius=sphere!=null?sphere.radius*Mathf.Max(Mathf.Abs(transform.lossyScale.x),Mathf.Abs(transform.lossyScale.y),Mathf.Abs(transform.lossyScale.z)):.01f;
+            radius=Mathf.Max(.001f,radius);
+            foreach(var overlap in Physics.OverlapSphere(start,radius,~0,QueryTriggerInteraction.Ignore))if(Blocks(overlap))return;
+            foreach(var hit in Physics.SphereCastAll(start,radius,direction,shieldDistance,~0,QueryTriggerInteraction.Ignore))
+                if(Blocks(hit.collider))return;
+            float amount=damage;Vector3 point=start+direction*shieldDistance;
+            if(Intercept(1f))dome.Absorb(amount,point,direction);
+        }
 
 
         public void Configure(
@@ -1380,6 +1467,7 @@ public float CurrentForwardSpeed =>
             float maxDistance=float.PositiveInfinity)
         {
             if(!isActiveAndEnabled)return;
+            hybridDamage=false;kineticComponent=blastComponent=0;
             launchPosition=transform.position;
             maxTravelDistance=float.IsNaN(maxDistance)?0:Mathf.Max(0,maxDistance);
             ownerRoot = owner;
@@ -1405,6 +1493,15 @@ public float CurrentForwardSpeed =>
 
             if (targetRoot != null)
                 IgnoreTargetHelpers();
+        }
+
+        public void ConfigureHybrid(Transform owner,float kinetic,float blast,float lifetime,Vector3 direction,Transform targetToIgnoreNonDamageable,float maxDistance=float.PositiveInfinity)
+        {
+            if(float.IsNaN(kinetic)||float.IsInfinity(kinetic)||kinetic<0||float.IsNaN(blast)||float.IsInfinity(blast)||blast<0)return;
+            double total=(double)kinetic+blast,scale=total>float.MaxValue?float.MaxValue/total:1d;
+            Configure(owner,(float)(total*scale),lifetime,direction,targetToIgnoreNonDamageable,maxDistance);
+            if(!isActiveAndEnabled)return;
+            kineticComponent=(float)(kinetic*scale);blastComponent=(float)(blast*scale);hybridDamage=true;
         }
 
         private void IgnoreOwnerCollisions()
@@ -1512,7 +1609,10 @@ public float CurrentForwardSpeed =>
                     : transform.position;
 
             if((point-launchPosition).sqrMagnitude<=maxTravelDistance*maxTravelDistance)
-                RoboRougelike.WeaponIntegration.RRLHitRouter.Apply(collision.collider,damage,point,launchDirection,ownerRoot);
+            {
+                if(hybridDamage)RoboRougelike.WeaponIntegration.RRLHitRouter.ApplyHybrid(collision.collider,kineticComponent,blastComponent,point,launchDirection,ownerRoot);
+                else RoboRougelike.WeaponIntegration.RRLHitRouter.Apply(collision.collider,damage,point,launchDirection,ownerRoot);
+            }
 
             Rigidbody hitBody =
                 collision.rigidbody;

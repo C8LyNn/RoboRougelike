@@ -16,6 +16,7 @@ namespace RoboRougelike.WeaponIntegration
         public RocketLauncher Module {get;private set;}
         P12PipelineSafeTankController tank;
         Transform muzzle;
+        RocketProjectile projectileTemplate;
         float damageScale=1,intervalScale=1;
         public void Bind(R3PartState state,Transform owner,Transform barrel,float damageMultiplier=1,float intervalMultiplier=1)
         {
@@ -24,7 +25,7 @@ namespace RoboRougelike.WeaponIntegration
             muzzle=barrel;damageScale=damageMultiplier;intervalScale=intervalMultiplier;if(state.Ammo<0)state.Ammo=Magazine;
             var template=new GameObject("WPN004 inactive projectile template");template.SetActive(false);template.transform.SetParent(transform,false);
             var rb=template.AddComponent<Rigidbody>();rb.useGravity=false;rb.isKinematic=true;template.AddComponent<SphereCollider>().isTrigger=true;
-            var prefab=template.AddComponent<RocketProjectile>();template.AddComponent<RRLPointDefenseThreat>();
+            var prefab=template.AddComponent<RocketProjectile>();projectileTemplate=prefab;template.AddComponent<RRLPointDefenseThreat>();template.AddComponent<R3ShieldRocketPayload>();
             var visual=GameObject.CreatePrimitive(PrimitiveType.Capsule);visual.name="Rocket visual";visual.transform.SetParent(template.transform,false);
             visual.transform.localRotation=Quaternion.Euler(90,0,0);visual.transform.localScale=new Vector3(.16f,.36f,.16f);
             var col=visual.GetComponent<Collider>();col.enabled=false;Destroy(col);
@@ -56,12 +57,29 @@ namespace RoboRougelike.WeaponIntegration
             // The package fails closed on an incomplete physics query. The
             // integrated game admits large multi-collider vehicles, so size
             // both bounded buffers for that workload without weakening it.
-            Module.SetConfig(new RocketConfig{damageAtCenter=60*(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),cooldown=1.7f*(tank!=null?tank.PackageIntervalScale:intervalScale),maxBlastColliders=1024,maxCastHits=512});
+            float damage=R3MountedBonusEffects.SafeDamageProduct(60,tank!=null?tank.PackageBlastDamageScale:damageScale);
+            damage=R3MountedBonusEffects.SafeDamageProduct(damage,R3VehicleModel.TierEffectUnits(State.Tier));
+            Module.SetConfig(new RocketConfig{damageAtCenter=damage,cooldown=1.7f*(tank!=null?tank.PackageIntervalScale:intervalScale),maxBlastColliders=1024,maxCastHits=512});
+            projectileTemplate.GetComponent<R3ShieldRocketPayload>().Damage=Module.CurrentSpec.CenterDamage;
             var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
             float cost=VehicleEnergyCosts.Rocket*R3VehicleModel.TierActivationCost(State.Tier);
             if(energy!=null&&!energy.TrySpend(cost))return false;
             if(Module.TryFire()!=RocketFireResult.Fired){if(energy!=null)energy.Refund(cost);return false;}
             State.DeviceReadyAt=Module.NextReadyTime;
+            int extras=assembly!=null?assembly.RollDoubleShotExtras(Mathf.Max(0,31-live)):0;
+            for(int i=0;i<extras;i++)
+            {
+                RocketProjectile extra=null;
+                try
+                {
+                    extra=Object.Instantiate(projectileTemplate,muzzle.position,muzzle.rotation);
+                    if(!extra.TryInitialize(Module.CurrentSpec,Device.Body,Device.Owner,gameObject,null,muzzle.forward))
+                    {Object.Destroy(extra.gameObject);continue;}
+                    if(!extra.gameObject.activeSelf)extra.gameObject.SetActive(true);
+                }
+                catch(System.Exception problem)
+                {if(extra!=null)Object.Destroy(extra.gameObject);Debug.LogException(problem,this);}
+            }
             RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.RocketLauncher);return true;
         }
         public bool BeginReload(){Refresh();if(!Device.Available||State.Ammo>=Magazine||State.ReloadReadyAt>0)return false;State.ReloadReadyAt=Time.time+2.2f;return true;}

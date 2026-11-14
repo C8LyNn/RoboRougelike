@@ -39,6 +39,7 @@ namespace RoboRougelike.R1
         public R1EncounterDefinition CurrentEncounter { get; private set; }
         public int DefeatedEnemies { get; private set; }
         public int EarnedScrap { get; private set; }
+        void AddEarnedScrap(int amount)=>EarnedScrap=(int)System.Math.Min(int.MaxValue,(long)EarnedScrap+System.Math.Max(0,amount));
         public int RecoveredModules { get; private set; }
         public R5Arena Arena { get; private set; }
         private string runId;
@@ -107,7 +108,8 @@ namespace RoboRougelike.R1
             try{candidate=new R5RunPlan(Definition.RouteStages,RequestedSeed);}
             catch(System.ArgumentException problem){Error=problem.Message;return false;}
             if(!Progress.Start())return false;
-            VehicleModel=new R3VehicleModel(R3VehicleCatalog.Create(SelectedVehicle,SelectedVehicleVariant),Definition.GaragePrices);
+            ResetEmergencyRescue();
+            VehicleModel=new R3VehicleModel(R3VehicleCatalog.Create(SelectedVehicle,SelectedVehicleVariant,Definition.GaragePrices),Definition.GaragePrices);
             VehicleModel.Award(R3VehicleCatalog.StartingScrap(SelectedVehicle));
             runId=System.Guid.NewGuid().ToString("N");
             Plan=candidate;
@@ -184,6 +186,15 @@ namespace RoboRougelike.R1
         }
         public bool GaragePurchase(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,R3WheelStyle wheelStyle=R3WheelStyle.Offroad,R3ArmorShape armorShape=R3ArmorShape.Cube) =>
             !Transitioning&&Progress?.State==R1RunState.Garage&&VehicleModel!=null&&CanBuyTechnology(kind,weapon)&&VehicleModel.PurchaseToInventory(kind,weapon,wheelStyle,armorShape);
+        public bool SafeVendorAvailable=>!Transitioning&&!SandboxWorkshop&&VehicleModel!=null&&
+            (Progress?.State==R1RunState.Garage||(Progress?.State==R1RunState.SafeZone&&SafeZoneTrading&&NearSafeZoneVendor))&&
+            VehicleModel.SafeVendorStage>0&&VehicleModel.SafeVendorStage==Progress.CompletedEncounters&&VehicleModel.SafeVendorStage==VehicleModel.SafeZoneLastCompleted;
+        public bool GarageBuyVendorOffer(int index)
+        {
+            if(!SafeVendorAvailable)return false;
+            var offers=VehicleModel.SafeZoneVendorOffers();
+            return index>=0&&index<offers.Count&&CanBuyTechnology(offers[index].Kind,offers[index].Weapon)&&VehicleModel.TryPurchaseSafeZoneOffer(index);
+        }
         public bool GarageBuy(Vector3Int cell,R3PartKind kind,Vector3Int rotation=default) =>
             CanBuyTechnology(kind)&&EditGarage(()=>VehicleModel.Buy(cell,kind,R4WeaponKind.Basic,rotation));
         public bool GarageBuyWeapon(Vector3Int cell,R4WeaponKind kind,Vector3Int rotation=default) =>
@@ -228,7 +239,7 @@ namespace RoboRougelike.R1
             if(Transitioning||Progress?.State!=R1RunState.Garage||VehicleModel==null)return false;
             int before=VehicleModel.Scrap;
             if(!VehicleModel.Dismantle(id))return false;
-            RefreshInventoryPreview();EarnedScrap+=VehicleModel.Scrap-before;return true;
+            RefreshInventoryPreview();AddEarnedScrap(VehicleModel.Scrap-before);return true;
         }
         public bool ConfirmSalvage(System.Collections.Generic.IEnumerable<string> selected)
             => ConfirmRewards(selected,System.Array.Empty<int>());
@@ -237,7 +248,7 @@ namespace RoboRougelike.R1
             if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null||Salvage.Closed||VehicleModel==null)return false;
             int before=VehicleModel.Scrap;
             if(!VehicleModel.Dismantle(id))return false;
-            EarnedScrap+=VehicleModel.Scrap-before;
+            AddEarnedScrap(VehicleModel.Scrap-before);
             return true;
         }
         public bool ConfirmRewards(System.Collections.Generic.IEnumerable<string> selectedParts,
@@ -246,11 +257,22 @@ namespace RoboRougelike.R1
             if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null||VehicleModel==null)return false;
             var ids=selectedParts?.ToArray();var bonuses=selectedBonuses?.ToArray();
             if(!CommitRecovery(ids,bonuses))return false;
-            RecoveredModules+=ids.Length;EarnedScrap+=Salvage.DismantledScrap;
+            RecoveredModules+=ids.Length;AddEarnedScrap(Salvage.DismantledScrap);
             if(Progress.State==R1RunState.Garage)
             {
                 // No stat bonus is applied here. Only a mounted, live module works.
+                // Device OnDisable handlers capture the old live state. Do this
+                // before the one-time refill so they cannot overwrite it.
+                bool safeZone=VehicleModel.CanEnterSafeZone(Progress.CompletedEncounters);
+                if(safeZone&&Player!=null)Player.gameObject.SetActive(false);
+                if(safeZone)safeZone=VehicleModel.TryEnterSafeZone(Progress.CompletedEncounters);
+                if(safeZone)
+                {
+                    VehicleModel.PrepareSafeZoneVendor(unchecked(Seed*397+Progress.CompletedEncounters));
+                    RebuildGarageVehicle();
+                }
                 Garage.Open();
+                if(safeZone)Garage.Message="Bezpieczna strefa: odnowiono energię i ładunki, zresetowano odnowienia oraz częściowo naprawiono sprawne części.";
             }
             Debug.Log("[R4] Nagrody: bonusy="+bonuses.Length+"; moduły="+ids.Length+
                 "; złom z demontażu="+Salvage.DismantledScrap);
@@ -293,6 +315,7 @@ namespace RoboRougelike.R1
         private IEnumerator BeginEncounter()
         {
             Transitioning = true; Paused = false; SetSimulation(false);
+            ResetEmergencyRescue();
             pickupGraceDeadline=-1;
             Encounter.Clear();
             if(ld02Requested)playerSpawn=ActivateLD02Arena();
@@ -350,7 +373,7 @@ namespace RoboRougelike.R1
             {
                 if(Encounter.Cleared&&CheckpointRace?.Won!=true&&RoadChallenge?.Status!=RoboRougelike.MapSystemR4.MapR4Status.Completed)
                 {
-                    bool drops=FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None).Length>0;
+                    bool drops=FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None).Length>0||FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Length>0;
                     if(drops&&pickupGraceDeadline<0)pickupGraceDeadline=Time.time+8f;
                     if(drops&&Time.time<pickupGraceDeadline)return;
                 }
@@ -369,9 +392,10 @@ namespace RoboRougelike.R1
                     Debug.LogWarning("[R1] "+Error);
                     return;
                 }
+                VehicleModel.ApplyCompletedBudgetMilestones(Progress.CompletedEncounters);
                 LastScrapReward=VehicleModel.PreviewAward(Definition.Encounters[Progress.EncounterIndex].ScrapReward);
                 VehicleModel.Award(LastScrapReward);
-                EarnedScrap+=LastScrapReward;DefeatedEnemies+=Encounter.Enemies.Count(enemy=>enemy!=null&&enemy.IsDefeated);
+                AddEarnedScrap(LastScrapReward);DefeatedEnemies+=Encounter.Enemies.Count(enemy=>enemy!=null&&enemy.IsDefeated);
                 Progress.OpenSalvage();pickupGraceDeadline=-1;
                 OpenRecoveryWindow();
                 SetSimulation(false);
@@ -387,6 +411,12 @@ namespace RoboRougelike.R1
         {
 #if ENABLE_INPUT_SYSTEM
             var keyboard = Keyboard.current;
+            if((Progress.State==R1RunState.Combat||Progress.State==R1RunState.TestDrive||Progress.State==R1RunState.SafeZone)&&
+                !R1ControlProfile.Current.Binding("Rescue").StartsWith("Mouse",System.StringComparison.Ordinal)&&
+                R1ControlProfile.Current.Pressed("Rescue",true)){TryEmergencyRescue();return;}
+            if(!MapEditorTesting&&Progress.State==R1RunState.TestDrive&&
+                !R1ControlProfile.Current.Binding("ResetRange").StartsWith("Mouse",System.StringComparison.Ordinal)&&
+                R1ControlProfile.Current.Pressed("ResetRange",true)){ResetTestRange();return;}
             if (keyboard == null) return;
             if(PickupGraceRemaining>0&&keyboard.enterKey.wasPressedThisFrame){pickupGraceDeadline=Time.time;return;}
             if (Progress.State == R1RunState.Ready && keyboard.enterKey.wasPressedThisFrame) PrepareUnifiedRun();
@@ -397,7 +427,6 @@ namespace RoboRougelike.R1
                 else if (keyboard.digit2Key.wasPressedThisFrame) ChooseUpgrade(1);
                 else if (keyboard.digit3Key.wasPressedThisFrame) ChooseUpgrade(2);
             }
-            else if(!MapEditorTesting&&Progress.State==R1RunState.TestDrive&&keyboard.rKey.wasPressedThisFrame)ResetTestRange();
             else if ((Progress.State == R1RunState.Won || Progress.State == R1RunState.Lost) &&
                 keyboard.enterKey.wasPressedThisFrame) RestartRun();
 #endif
@@ -407,16 +436,20 @@ namespace RoboRougelike.R1
         {
             if (QuitRequested || Transitioning || Progress == null || Progress.State == R1RunState.Ready || RangeDisabled) return;
             Paused = !Paused;
+            if(!Paused)GetComponent<R1RunHUD>()?.ClosePauseControls();
             if(!Paused)pendingMapExitSnapshot=null;
             if(Paused&&MapEditing)EditorWorld?.HideGhost();
             PauseSelection = 0;
-            SetSimulation(!Paused && (Progress.State == R1RunState.Combat || Progress.State == R1RunState.TestDrive));
+            SetSimulation(!Paused && (Progress.State == R1RunState.Combat || Progress.State == R1RunState.TestDrive || Progress.State==R1RunState.SafeZone));
         }
         public void HandleEscape()
         {
             if(lastEscapeFrame==Time.frameCount)return;
             lastEscapeFrame=Time.frameCount;
             var hud=GetComponent<R1RunHUD>();
+            if(SafeZoneTrading){CloseSafeZoneTrade();return;}
+            if(hud?.CloseMainControls()==true)return;
+            if(Paused&&hud?.ClosePauseControls()==true)return;
             if(!Paused&&MapEditing&&hud?.CloseMapBrowser(this)==true)return;
             if(hud?.CloseQuickGarageSearch(this)==true)return;
             if(Paused&&CreativeWorkshop&&Progress?.State==R1RunState.TestDrive&&hud?.CloseCreativeEnemyMenu()==true)return;
@@ -448,6 +481,7 @@ namespace RoboRougelike.R1
 
         private void OnDestroy()
         {
+            ClearSafeZone();
             ClearReactorActivity();
             ClearFullActivities();
             ClearGeneratedArena();

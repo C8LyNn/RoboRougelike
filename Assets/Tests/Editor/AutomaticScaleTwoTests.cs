@@ -353,6 +353,7 @@ public sealed class AutomaticScaleTwoTests
         AssertPhysicalBarrelMatchesVisibleMuzzle(installed);
         run.Player.GetComponent<Rigidbody>().isKinematic=true;run.Player.GetComponent<P12PipelineSafeTankController>().enabled=false;
         run.Player.transform.SetPositionAndRotation(new Vector3(1000,20,1000),Quaternion.identity);
+        Physics.SyncTransforms();
         installed.GunPivot.rotation=Quaternion.identity;installed.GetComponent<R4WeaponArt>().Sync();
         var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=installed.Muzzle.position+installed.Muzzle.forward*5;
         target.transform.localScale=new Vector3(2,2,.5f);
@@ -432,7 +433,7 @@ public sealed class AutomaticScaleTwoTests
     }
 
     [UnityTest] public IEnumerator EnlargedBeamHitsAndConsumesEnergy() => VerifyBeamOrEmp(R4WeaponKind.BeamCutter);
-    [UnityTest] public IEnumerator EnlargedEmpDisruptsRealReceiver() => VerifyBeamOrEmp(R4WeaponKind.EmpEmitter);
+    [UnityTest] public IEnumerator EnlargedAuraDamagesEnemyAndConsumesEnergy() => VerifyBeamOrEmp(R4WeaponKind.EmpEmitter);
 
     [UnityTest] public IEnumerator EnlargedSawMountsAndCutsAtItsVisibleExtendedRadius()
     {
@@ -491,10 +492,19 @@ public sealed class AutomaticScaleTwoTests
         {
             Assert.That(installed.GunPivot.GetComponentsInChildren<Collider>().Any(c=>c.enabled),Is.False,
                 "EMP has no physical gun barrel that could block neighboring parts.");
-            target.transform.position=installed.transform.position+Vector3.forward*3;
-            var receiver=target.AddComponent<EmpReceiver>();receiver.ConfigureOwnership(target.transform,12345,2);Physics.SyncTransforms();
-            Assert.That(installed.GetComponent<RRLEmpBinding>().Fire(),Is.True);
-            Assert.That(receiver.IsDisrupted,Is.True);Assert.That(bank.Current,Is.EqualTo(energy-12.5f).Within(.01f));
+            Physics.SyncTransforms();
+            var enemy=new GameObject("enemy aura fixture");enemy.AddComponent<P12PipelineSafeEnemyTurret>().enabled=false;
+            target.transform.SetParent(enemy.transform);target.transform.position=run.Player.GetComponent<Rigidbody>().position+Vector3.forward*3;
+            var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);Physics.SyncTransforms();
+            var aura=installed.GetComponent<RRLDamageAuraBinding>();Assert.That(aura.Fire(),Is.True);
+            Assert.That(aura.Device.Available,Is.True);
+            Assert.That(RRLHitRouter.CanHit(target.GetComponent<Collider>(),run.Player.transform),Is.True);
+            Assert.That(Physics.OverlapSphere(run.Player.GetComponent<Rigidbody>().position,RRLDamageAuraBinding.Radius).Contains(target.GetComponent<Collider>()),Is.True,
+                $"target={target.transform.position}, physics={run.Player.GetComponent<Rigidbody>().position}, transform={run.Player.transform.position}");
+            typeof(RRLDamageAuraBinding).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(aura,null);
+            Assert.That(hp.CurrentHp,Is.LessThan(500));
+            Assert.That(bank.Current,Is.EqualTo(energy-RRLDamageAuraBinding.EnergyPerSecond*Time.fixedDeltaTime).Within(.01f));
+            Object.Destroy(enemy);
         }
         Object.Destroy(target);
     }

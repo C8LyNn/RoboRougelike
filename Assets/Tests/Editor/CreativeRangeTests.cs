@@ -15,6 +15,16 @@ using UnityEngine.InputSystem.LowLevel;
 
 public class CreativeRangeTests
 {
+    [UnityTest] public IEnumerator EarnedScrapSummaryStaysNonNegativeAfterLargeTotal()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);
+        var wheel=run.VehicleModel.Inventory.First(p=>p.Kind==R3PartKind.Wheel);
+        var property=typeof(R1RunController).GetProperty("EarnedScrap");property.GetSetMethod(true).Invoke(run,new object[]{int.MaxValue-1});
+        Assert.That(run.GarageDismantle(wheel.Id),Is.True);
+        Assert.That(run.EarnedScrap,Is.EqualTo(int.MaxValue),"The summary must not wrap into a negative saved value.");
+        yield return null;
+    }
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");
@@ -40,6 +50,47 @@ public class CreativeRangeTests
         yield return null;
     }
 
+    [UnityTest] public IEnumerator GarageUndersideUsesReassignedKey()
+    {
+        var profile=R1ControlProfile.Current;var old=profile.Snapshot();
+        try
+        {
+            profile.ResetDefaults();Assert.That(profile.TryBind("GarageUnderside","K"),Is.True);
+            var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+            var garage=run.Garage;var field=typeof(R3GarageView).GetField("pitch",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            float before=(float)field.GetValue(garage);
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.U},Vector2.zero);
+            Assert.That((float)field.GetValue(garage),Is.EqualTo(before));
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K},Vector2.zero);
+            Assert.That((float)field.GetValue(garage),Is.Not.EqualTo(before));
+            float changed=(float)field.GetValue(garage);
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K,control=true},Vector2.zero);
+            Assert.That((float)field.GetValue(garage),Is.EqualTo(changed));
+            yield return null;
+        }
+        finally{typeof(R1ControlProfile).GetMethod("RestoreValues",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(profile,new object[]{old});}
+    }
+
+    [UnityTest] public IEnumerator GarageFrameUsesReassignedKeyWithoutChangingSelection()
+    {
+        var profile=R1ControlProfile.Current;var old=profile.Snapshot();
+        try
+        {
+            profile.ResetDefaults();Assert.That(profile.TryBind("GarageFrame","K"),Is.True);
+            var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+            Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+            var item=run.VehicleModel.Inventory.Last();var garage=run.Garage;garage.ChooseInventory(item.Id);garage.Zoom(-100);
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.Home},Vector2.zero);
+            Assert.That(garage.Distance,Is.EqualTo(3));
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K,shift=true},Vector2.zero);
+            Assert.That(garage.Distance,Is.EqualTo(3));
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K},Vector2.zero);
+            Assert.That(garage.Distance,Is.GreaterThanOrEqualTo(4.5f));
+            Assert.That(garage.SelectedInventoryId,Is.EqualTo(item.Id));yield return null;
+        }
+        finally{typeof(R1ControlProfile).GetMethod("RestoreValues",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(profile,new object[]{old});}
+    }
+
     [UnityTest] public IEnumerator EscapeClosesEnemyMenuBeforeResumingSimulation()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
@@ -60,6 +111,32 @@ public class CreativeRangeTests
         run.HandleEscape();
         Assert.That(run.Paused,Is.False);
         Assert.That((bool)active.GetValue(enemy),Is.True);
+    }
+
+    [UnityTest] public IEnumerator SpawnedCreativeEnemyIsVisibleToAutonomousTurretAndScanners()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var range=run.GetComponent<R6TestRange>();var training=range.TrainingTarget;
+        Assert.That(run.SpawnCreativeEnemy(R3EnemyArchetype.Gunner),Is.True);
+        var enemy=range.Layout.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret>().Single(e=>e!=training);
+        enemy.SetCombatActive(false);enemy.GetComponent<Rigidbody>().isKinematic=true;
+        if(training!=null)training.gameObject.SetActive(false);range.SetTrainingTarget(null);Physics.SyncTransforms();
+        Assert.That(RoboRougelike.PackageIntegration.RRLScanWorld.LiveEnemies(run),Does.Contain(enemy),"Enemy spawned from the range menu must be a discoverable target.");
+        var registryObject=new GameObject("Test rejestru skanera");
+        var registry=registryObject.AddComponent<RoboRougelike.Mechanics.StructuralScan.StructuralScanRegistry>();
+        RoboRougelike.PackageIntegration.RRLScanWorld.Register(registry,run);
+        Assert.That(registry.Parts.Any(p=>p.OwnerKey==enemy.GetInstanceID()),Is.True,"The structural scanner must register the spawned enemy's parts.");
+        RoboRougelike.PackageIntegration.RRLPulseSignal.Prepare(run);
+        Assert.That(enemy.GetComponent<RoboRougelike.PackageIntegration.RRLPulseSignal>()?.Tag,Is.Not.Null,"The pulse scanner must prepare an enemy signal.");
+        var turret=GameObject.CreatePrimitive(PrimitiveType.Cube);turret.transform.position=enemy.Core.transform.position+Vector3.up*8;
+        turret.transform.localScale=Vector3.one*.4f;var body=turret.AddComponent<Rigidbody>();body.isKinematic=true;
+        var weapon=turret.AddComponent<R3FlyingDrone>();weapon.ConfigureTurret(run.Player.transform,.2f,1);Physics.SyncTransforms();
+        var nextShot=typeof(R3FlyingDrone).GetField("nextShot",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance);
+        float deadline=Time.time+3;while(Time.time<deadline&&(float)nextShot.GetValue(weapon)<=0)yield return new WaitForFixedUpdate();
+        Assert.That((float)nextShot.GetValue(weapon),Is.GreaterThan(0),"An autonomous turret must fire at the spawned enemy.");
+        run.ClearCreativeEnemies();Assert.That(RoboRougelike.PackageIntegration.RRLScanWorld.LiveEnemies(run).Contains(enemy),Is.False);
+        Object.Destroy(turret);Object.Destroy(registryObject);
     }
 
     [UnityTest] public IEnumerator CreativeGarageStartsWithCoreAndOffersFreeParts()
@@ -158,9 +235,21 @@ public class CreativeRangeTests
         Assert.That(model.Buy(new Vector3Int(0,1,3),R3PartKind.Gun,R4WeaponKind.Basic),Is.True);
         Assert.That(model.Buy(new Vector3Int(0,1,6),R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
         Assert.That(model.Buy(new Vector3Int(0,1,9),R3PartKind.Gun,R4WeaponKind.Heavy),Is.True);
-        Assert.That(model.WeaponInGroup(R4WeaponKind.Heavy,true),Is.True,"Dodatkowe typy obsługuje PPM.");
+        Assert.That(model.Buy(new Vector3Int(0,1,12),R3PartKind.Gun,R4WeaponKind.Shotgun),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,15),R3PartKind.Gun,R4WeaponKind.Railgun),Is.True);
+        Assert.That(model.WeaponInSlot(R4WeaponKind.Heavy,2),Is.True,"Trzeci typ ma własny slot.");
+        Assert.That(model.WeaponInSlot(R4WeaponKind.Railgun,1),Is.True,"Nadmiarowe typy kreatywne obsługuje PPM.");
         var groups=typeof(R1RunHUD).GetMethod("GarageWeaponGroups",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
         Assert.That((string)groups.Invoke(null,new object[]{model}),Does.Contain("PPM").And.Contain("pozostałe"));
+        Assert.That(model.AssignWeaponSlot(R4WeaponKind.Railgun,2),Is.True,"Nadmiarowy rodzaj w trybie kreatywnym musi dać się wybrać do slotu.");
+        Assert.That(model.WeaponAtSlot(2),Is.EqualTo(R4WeaponKind.Railgun));
+        Assert.That(model.Buy(new Vector3Int(0,1,20),R3PartKind.Booster),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,22),R3PartKind.JumpDrive),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,24),R3PartKind.Blink),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,26),R3PartKind.MagneticGrapple),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,28),R3PartKind.RepairPulse),Is.True);
+        Assert.That(model.AssignActiveSlot(R3PartKind.RepairPulse,3),Is.True,"Nadmiarowy moduł kreatywny musi dać się wybrać do slotu.");
+        Assert.That(model.GetActiveSlots()[3],Is.EqualTo(R3PartKind.RepairPulse));
         Assert.That(model.Scrap,Is.Zero);
         yield return null;
     }

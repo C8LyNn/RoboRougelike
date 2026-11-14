@@ -23,6 +23,8 @@ namespace RoboRougelike.Mechanics.StructuralScan.Tests.EditMode
         [Test] public void SettingsClampsNegativeCooldown() { var s = new StructuralScanSettings { cooldownSeconds = -3 }; s.Validate(); Assert.AreEqual(0, s.cooldownSeconds); }
         [Test] public void SettingsClampsNegativeEnergy() { var s = new StructuralScanSettings { activationEnergy = -100 }; s.Validate(); Assert.AreEqual(0, s.activationEnergy); }
         [Test] public void SettingsRepairsNaNRange() { var s = new StructuralScanSettings { rangeMeters = float.NaN }; s.Validate(); Assert.AreEqual(24, s.rangeMeters); }
+        [Test] public void SettingsRetainsLongFiniteRange() { var s = new StructuralScanSettings { rangeMeters = 1500 }; s.Validate(); Assert.AreEqual(1500, s.rangeMeters); }
+        [Test] public void CombinedRangeSaturatesInsteadOfOverflowing() { Assert.AreEqual(float.MaxValue,StructuralScanSettings.CombinedRange(float.MaxValue,2)); Assert.AreEqual(0,StructuralScanSettings.CombinedRange(float.NaN,2)); }
         [Test] public void SettingsRepairsInfinityTime() { var s = new StructuralScanSettings { displaySeconds = float.PositiveInfinity }; s.Validate(); Assert.AreEqual(5, s.displaySeconds); }
         [Test] public void SettingsClampsResultsCount() { var s = new StructuralScanSettings { maxRevealedParts = 10000 }; s.Validate(); Assert.AreEqual(128, s.maxRevealedParts); }
         [Test] public void SettingsClampsRegisteredCount() { var s = new StructuralScanSettings { maxRegisteredParts = -4 }; s.Validate(); Assert.AreEqual(1, s.maxRegisteredParts); }
@@ -49,6 +51,17 @@ namespace RoboRougelike.Mechanics.StructuralScan.Tests.EditMode
             var proxy = p.AddComponent<StructuralScanPartProxy>(); proxy.Configure(reg, 2, 2, 3, StructuralPartType.Wheel);
             Assert.IsTrue(reg.Register(proxy)); Assert.IsTrue(reg.Unregister(proxy)); Assert.AreEqual(0, reg.Count);
             Object.DestroyImmediate(p); Object.DestroyImmediate(go);
+        }
+        [Test] public void RegistryReleasesIdentityOnRemovalAndClear()
+        {
+            var go=new GameObject("registry");var reg=go.AddComponent<StructuralScanRegistry>();
+            var a=new GameObject("a");var b=new GameObject("b");a.SetActive(false);b.SetActive(false);
+            var pa=a.AddComponent<StructuralScanPartProxy>();var pb=b.AddComponent<StructuralScanPartProxy>();
+            pa.Configure(reg,2,2,3,StructuralPartType.Wheel);pb.Configure(reg,2,2,3,StructuralPartType.Armor);
+            Assert.IsTrue(reg.Register(pa));Assert.IsFalse(reg.Register(pa));Assert.IsFalse(reg.Register(pb));
+            Assert.IsTrue(reg.Unregister(pa));Assert.IsFalse(reg.Unregister(pa));Assert.IsTrue(reg.Register(pb));
+            reg.Clear();Assert.AreEqual(0,reg.Count);Assert.IsTrue(reg.Register(pa));Assert.IsFalse(reg.Register(pb));
+            Object.DestroyImmediate(a);Object.DestroyImmediate(b);Object.DestroyImmediate(go);
         }
         [Test] public void EnergyIsNotOverdrawn()
         {

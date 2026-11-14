@@ -14,6 +14,12 @@ namespace RoboRougelike.R3
 
         float fieldRemaining;
         int regeneratorCount;
+        float capacityMultiplier=1f,regenerationMultiplier=1f;
+        public void SetResourceMultipliers(float capacity,float regeneration)
+        {
+            capacityMultiplier=float.IsNaN(capacity)||float.IsInfinity(capacity)?1f:Math.Max(0,capacity);
+            regenerationMultiplier=float.IsNaN(regeneration)||float.IsInfinity(regeneration)?1f:Math.Max(0,regeneration);
+        }
         float additionalPassiveReservation;
         public void SetRegeneratorCount(int count)=>regeneratorCount=Math.Max(0,count);
         public void SetAdditionalPassiveReservation(float amount)=>additionalPassiveReservation=
@@ -25,7 +31,7 @@ namespace RoboRougelike.R3
         public void Refresh(int batteries, int passiveModules, bool coreAlive)
         {
             var available = coreAlive
-                ? CoreCapacity + Math.Max(0, (double)batteries) * BatteryCapacity
+                ? (CoreCapacity + Math.Max(0, (double)batteries) * BatteryCapacity)*capacityMultiplier
                     - Math.Max(0, (double)passiveModules) * PassiveReservation-additionalPassiveReservation
                 : 0d;
             Maximum = (float)Math.Min(float.MaxValue, Math.Max(0d, available));
@@ -45,7 +51,7 @@ namespace RoboRougelike.R3
         public void AdvanceWithMotion(float seconds, bool stationary)
         {
             if (float.IsNaN(seconds) || float.IsInfinity(seconds) || seconds <= 0f) return;
-            double charge=(RegenerationPerSecond+(double)regeneratorCount*RegenerationPerModule)*(stationary?4d:1d)*seconds;
+            double charge=(RegenerationPerSecond+(double)regeneratorCount*RegenerationPerModule)*regenerationMultiplier*(stationary?4d:1d)*seconds;
             charge+=Maximum*.05d*Math.Min(seconds,fieldRemaining);
             fieldRemaining=Math.Max(0f,fieldRemaining-seconds);
             for(int i=pickups.Count-1;i>=0;i--)
@@ -85,6 +91,7 @@ namespace RoboRougelike.R3
         public static float ConventionalShot(RoboRougelike.R4.R4WeaponKind weapon) =>
             weapon==RoboRougelike.R4.R4WeaponKind.Basic?BasicShot:OtherConventionalShot;
         public const float ContinuousWeaponPerSecond=6f, BoosterActivation=7.5f;
+        public const float OmniDrivePerSecond=2.5f, HoverDrivePerSecond=1f;
         public const float Jump=12.5f, Blink=15f, Grapple=6f;
     }
 }

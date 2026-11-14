@@ -11,6 +11,21 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogDrivePowerTests
 {
+    [Test] public void VehicleMassContinuesToAffectSpeedAndSteeringBeyondOldThresholds()
+    {
+        Assert.That(R3VehicleAssembly.SpeedFor(2000,4),Is.LessThan(R3VehicleAssembly.SpeedFor(1000,4)));
+        Assert.That(R3VehicleAssembly.TurnFor(2000),Is.LessThan(R3VehicleAssembly.TurnFor(1000)));
+        Assert.That(R3VehicleAssembly.SpeedFor(50,4),Is.GreaterThan(14));
+        Assert.That(R3VehicleAssembly.TurnFor(50),Is.GreaterThan(130));
+    }
+    [Test] public void MotorCopiesContinueAddingPowerWithoutAnArbitraryFiveUnitCap()
+    {
+        Assert.That(R6VehicleDrive.MotorMultiplier(5),Is.EqualTo(2).Within(.001));
+        Assert.That(R6VehicleDrive.MotorMultiplier(6),Is.EqualTo(2.2f).Within(.001));
+        Assert.That(R6VehicleDrive.MotorMultiplier(12),Is.EqualTo(3.4f).Within(.001));
+        Assert.That(R6VehicleDrive.MotorMultiplier(float.NaN),Is.EqualTo(1));
+        Assert.That(R6VehicleDrive.MotorMultiplier(float.PositiveInfinity),Is.EqualTo(1));
+    }
     [Test]
     public void DrivePowerIsAPhysicalPassivePartWithEnergyReservation()
     {
@@ -31,11 +46,59 @@ public sealed class BacklogDrivePowerIntegrationTests
     [UnitySetUp] public IEnumerator Setup()
     {EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();}
 
-    [UnityTest] public IEnumerator RealWheelsUseWorkingMotorPowerAndLoseItOnDamage()
+    [UnityTest] public IEnumerator SixthMountedMotorIncreasesTheRealWheelForce()
+    {
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=Vector3.down*.5f;floor.transform.localScale=new Vector3(100,1,100);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(5000);
+        model.Parts.RemoveAll(p=>p.Kind==R3PartKind.DrivePower);model.RefreshEnergyLayout();
+        for(int i=0;i<6;i++)
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.PlacementError(c,R3PartKind.DrivePower,false)==null);
+            Assert.That(model.Buy(cell,R3PartKind.DrivePower),Is.True);
+        }
+        var paletteObject=new GameObject("motor QA palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
+        for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,.7f,0),Quaternion.identity);
+        var drive=vehicle.GetComponent<R6VehicleDrive>();var assembly=vehicle.GetComponent<R3VehicleAssembly>();
+        float deadline=Time.realtimeSinceStartup+8;
+        while(drive.GroundedWheels==0&&Time.realtimeSinceStartup<deadline){yield return new WaitForFixedUpdate();drive.RefreshMass();}
+        Assert.That(drive.GroundedWheels,Is.GreaterThan(0));drive.RefreshMass();
+        Assert.That(drive.ActivePowerUnits,Is.EqualTo(6));float six=drive.AvailableForce;
+        assembly.TuneChassis();float sixTurn=vehicle.Controller.EffectiveTurnSpeed;float sixMass=vehicle.GetComponent<Rigidbody>().mass;
+        var upgraded=assembly.Parts.First(p=>p.Kind==R3PartKind.DrivePower);upgraded.Tier=2;assembly.TuneChassis();
+        float upgradedMass=vehicle.GetComponent<Rigidbody>().mass;
+        float expected=R3VehicleAssembly.TurnFor(upgradedMass)/R3VehicleAssembly.TurnFor(sixMass)*(1f+.12f*7)/(1f+.12f*6);
+        Assert.That(vehicle.Controller.EffectiveTurnSpeed/sixTurn,Is.EqualTo(expected).Within(.001),
+            "Motor steering must continue beyond five units while accounting for the tier's mass.");
+        vehicle.Controller.ConfigureChassis(7,400,upgradedMass);
+        Assert.That(vehicle.Controller.EffectiveTurnSpeed,Is.EqualTo(400),"The controller must not silently clamp the configured turning target to 130.");
+        drive.Step(0,0,7,4,vehicle.Controller.EffectiveTurnSpeed);
+        Assert.That(vehicle.GetComponent<Rigidbody>().maxAngularVelocity,Is.GreaterThanOrEqualTo(400*Mathf.Deg2Rad),
+            "The rigidbody must allow the steering target instead of silently enforcing 3 radians per second.");
+        vehicle.Controller.SetRunModifiers(1,1,float.MaxValue);
+        Assert.That(float.IsInfinity(vehicle.Controller.EffectiveTurnSpeed),Is.False,"Large finite bonuses must not create an infinite target.");
+        Assert.That(float.IsInfinity(vehicle.Controller.EffectiveForwardSpeed),Is.False);
+        vehicle.Controller.SetRunModifiers(1,1,1);vehicle.Controller.ConfigureChassis(20,400,upgradedMass);
+        Assert.That(vehicle.Controller.EffectiveForwardSpeed,Is.EqualTo(20));
+        vehicle.Controller.ConfigureChassis(.5f,400,upgradedMass);
+        Assert.That(vehicle.Controller.EffectiveForwardSpeed,Is.EqualTo(.5f));
+        vehicle.Controller.SetRunModifiers(1,1,1);
+        upgraded.Tier=1;assembly.TuneChassis();
+        assembly.Parts.First(p=>p.Kind==R3PartKind.DrivePower).gameObject.SetActive(false);drive.RefreshMass();
+        Assert.That(drive.ActivePowerUnits,Is.EqualTo(5));
+        Assert.That(six,Is.GreaterThan(drive.AvailableForce));
+        Assert.That(six/drive.AvailableForce,Is.EqualTo(2.2f/2f).Within(.001));
+        UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(floor);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);
+    }
+
+    [UnityTest] public IEnumerator RealWheelsKeepPassiveMotorPowerUntilDestruction()
     {
         var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=Vector3.down*.5f;floor.transform.localScale=new Vector3(100,1,100);
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
-        // Isolate one motor below the power cap so damage changes measured force.
+        // Isolate one motor below the power cap so its contribution is measurable.
         model.Parts.RemoveAll(p=>p.Kind==R3PartKind.DrivePower);model.RefreshEnergyLayout();
         var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
             .First(c=>model.PlacementError(c,R3PartKind.DrivePower,false)==null);
@@ -67,9 +130,11 @@ public sealed class BacklogDrivePowerIntegrationTests
         wheel.gameObject.SetActive(true);drive.RefreshMass();
         Assert.That(drive.Wheels,Is.EqualTo(wheels));Assert.That(body.mass,Is.EqualTo(fullMass).Within(.01f));
         motor.Damageable.RestoreHealthRatio(.5f);drive.RefreshMass();
-        Assert.That(drive.ActivePowerUnits,Is.EqualTo(.5f).Within(.001f));
-        Assert.That(drive.AvailableForce,Is.LessThan(fullForce));
-        Assert.That(vehicle.Controller.EffectiveTurnSpeed,Is.LessThan(fullTurn));
+        Assert.That(drive.ActivePowerUnits,Is.EqualTo(1f).Within(.001f),"A passive module retains its full effect until destroyed.");
+        Assert.That(drive.AvailableForce,Is.EqualTo(fullForce).Within(.001f));
+        Assert.That(vehicle.Controller.EffectiveTurnSpeed,Is.EqualTo(fullTurn).Within(.001f));
+        motor.Damageable.RestoreHealthRatio(.01f);drive.RefreshMass();
+        Assert.That(drive.ActivePowerUnits,Is.EqualTo(1f).Within(.001f));
         motor.Damageable.ApplyDamage(100000,motor.transform.position,Vector3.up);drive.RefreshMass();
         Assert.That(drive.ActivePowerUnits,Is.Zero);
         UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(floor);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);

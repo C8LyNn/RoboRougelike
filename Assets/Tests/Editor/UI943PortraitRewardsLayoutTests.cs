@@ -36,6 +36,30 @@ public sealed class UI943PortraitRewardsLayoutTests
         Assert.That((bool)Method("RewardSelectionReady").Invoke(null,new object[]{0,3,-1,1,0,0}),Is.False);
         Assert.That((string)Method("RewardConfirmCaption").Invoke(null,new object[]{1}),Does.Contain("oba"));
     }
+    [Test] public void RewardContentsShowActualConfiguredBundleQuantity()
+    {
+        var model=new R3VehicleModel(new R3VehicleDesign());model.Economy.DriveGrantQuantity=3;
+        var wheel=new R4SalvageItem(new R3PartState(Vector3Int.zero,R3PartKind.Wheel),1);
+        var label=(string)Method("RewardBasketContentsForModel").Invoke(null,new object[]{new[]{wheel},model});
+        Assert.That(label,Does.Contain("×3"));
+    }
+    [Test] public void RerollButtonsFitAlongsideInventoryAndBasketCards()
+    {
+        var portrait=RectOf("PortraitRewardRerollRect");var pager=RectOf("PortraitRewardPager");
+        Assert.That(portrait.xMin,Is.GreaterThanOrEqualTo(pager.xMin));Assert.That(portrait.xMax,Is.LessThanOrEqualTo(pager.xMax));
+        Assert.That(portrait.Overlaps(new Rect(pager.x+370,pager.y,350,44)),Is.False);
+        for(int i=0;i<3;i++)Assert.That(portrait.Overlaps(RectOf("PortraitRewardBasketCard",i)),Is.False);
+        var landscape=RectOf("RewardRerollRect");Assert.That(landscape.Overlaps(new Rect(850,556,375,35)),Is.False);
+    }
+    [Test] public void ReorderingExistingRewardBasketsIsNotANewOffer()
+    {
+        var ledger=new R4SalvageLedger(3);
+        Assert.That(ledger.Record("a",new[]{new R4SalvageItem("gun","test",R3PartKind.Gun,R4WeaponKind.Basic,1)},R3EnemyArchetype.Scout),Is.True);
+        Assert.That(ledger.Record("b",new[]{new R4SalvageItem("wheel","test",R3PartKind.Wheel,R4WeaponKind.Basic,1)},R3EnemyArchetype.Bruiser),Is.True);
+        var offers=ledger.CreateBasketOffers(7,0);Assert.That(offers.Count,Is.EqualTo(3));
+        var reordered=offers.Skip(1).Concat(offers.Take(1)).ToArray();
+        Assert.That((bool)Method("SameRewardBaskets").Invoke(null,new object[]{offers,reordered}),Is.True);
+    }
     [Test] public void DamagedRewardInventoryShowsWorstPartsFirstWithoutChangingInventory()
     {
         var model=new R3VehicleModel(new R3VehicleDesign());
@@ -108,10 +132,12 @@ public sealed class UI943PortraitRewardsLayoutTests
     {
         var item=new R3PartState(Vector3Int.zero,R3PartKind.BonusModule,1){Tier=2,UpgradeEffect=R1UpgradeEffect.Damage,UpgradeAmount=.2f};
         string Text()=>(string)Method("BonusInstanceText").Invoke(null,new object[]{item});
-        Assert.That(Text(),Does.Contain("44%"));
-        item.UpgradeEffect=R1UpgradeEffect.Reload;Assert.That(Text(),Does.Contain("36%"));
+        Assert.That(Text(),Does.Contain("40%"));
+        item.UpgradeEffect=R1UpgradeEffect.Mobility;Assert.That(Text(),Does.Contain("40%"));
+        item.UpgradeEffect=R1UpgradeEffect.Hull;Assert.That(Text(),Does.Contain("40%"));
+        item.UpgradeEffect=R1UpgradeEffect.Reload;Assert.That(Text(),Does.Contain("40%"));
         item.UpgradeEffect=R1UpgradeEffect.Repair;Assert.That(Text(),Does.Contain("5%"));
-        item.Tier=3;Assert.That(Text(),Does.Contain("8%"),"Repair bonus follows its actual cap.");
+        item.Tier=3;Assert.That(Text(),Does.Contain("10%"),"Four repair contributions each provide 2.5% per second.");
     }
     [Test] public void ActualPortraitBasketCardsFitWithoutCoveringTheirControls()
     {

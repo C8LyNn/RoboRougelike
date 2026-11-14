@@ -10,6 +10,60 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogEnergyRegenTests
 {
+    [Test] public void ResourceBonusesRespectReservationsAndOnlyAffectNaturalRegeneration()
+    {
+        Assert.That(Enum.TryParse("EnergyCapacity",out R1UpgradeEffect capacity),Is.True);
+        Assert.That(Enum.TryParse("EnergyRegeneration",out R1UpgradeEffect regeneration),Is.True);
+        var design=new R3VehicleDesign();design.Parts.Add(new R3PartState(default,R3PartKind.Core));
+        var model=new R3VehicleModel(design);
+        model.Parts.Add(new R3PartState(default,R3PartKind.BonusModule){UpgradeEffect=capacity,UpgradeAmount=.2f});
+        var regen=new R3PartState(default,R3PartKind.BonusModule){UpgradeEffect=regeneration,UpgradeAmount=.5f};
+        model.Parts.Add(regen);model.RefreshEnergyLayout();
+        Assert.That(model.Energy.Maximum,Is.EqualTo(550).Within(.001),"The two passives each reserve 25 after the capacity bonus.");
+        model.Energy.Fill();Assert.That(model.Energy.TrySpend(model.Energy.Current),Is.True);
+        model.Energy.Advance(1);Assert.That(model.Energy.Current,Is.EqualTo(15).Within(.001));
+        model.Energy.AdvanceWithMotion(1,true);Assert.That(model.Energy.Current,Is.EqualTo(75).Within(.001));
+        model.Energy.ApplyEnergyPickup();model.Energy.Advance(1);
+        Assert.That(model.Energy.Current,Is.EqualTo(145).Within(.001),"The pickup retains 10% maximum per second.");
+        regen.Health=0;model.RefreshEnergyLayout();Assert.That(model.Energy.Maximum,Is.EqualTo(575).Within(.001));
+        model.Energy.Advance(1);Assert.That(model.Energy.Current,Is.EqualTo(212.5).Within(.001));
+    }
+    [Test] public void ResourceBonusesAreAvailableInRewardCatalog()
+    {
+        var run=Resources.Load<R1RunDefinition>("R1/Run");
+        Assert.That(run.Upgrades.Any(u=>u!=null&&u.Id=="energy_capacity"),Is.True);
+        Assert.That(run.Upgrades.Any(u=>u!=null&&u.Id=="energy_regeneration"),Is.True);
+    }
+    [Test] public void CapacityBonusGroupsAndStoredEnergySurviveCheckpoint()
+    {
+        Assert.That(Enum.TryParse("EnergyCapacity",out R1UpgradeEffect capacity),Is.True);
+        var increased=BacklogBonusTierTests.OperationBonus("capacity-increased",.2f,"Increased",capacity);
+        var more=BacklogBonusTierTests.OperationBonus("capacity-more",.5f,"More",capacity);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        float oldMaximum=model.Energy.Maximum;
+        Assert.That(model.ReceiveBonuses(new[]{increased,more}),Is.True);
+        foreach(var id in model.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(id,c,default)==null);
+            Assert.That(model.Mount(id,cell),Is.True);
+        }
+        model.RefreshEnergyLayout();
+        var oldReservation=model.Parts.Count(p=>R3VehicleModel.IsPassiveEnergyPart(p.Kind))-2;
+        var gross=oldMaximum+oldReservation*25;
+        Assert.That(model.Energy.Maximum,Is.EqualTo(gross*1.2f*1.5f-(oldReservation+2)*25).Within(.001));
+        model.PrepareInitialEnergy();Assert.That(model.Energy.Current,Is.EqualTo(model.Energy.Maximum));
+        Assert.That(model.Energy.TrySpend(model.Energy.Current-123),Is.True);
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Energy.Maximum,Is.EqualTo(model.Energy.Maximum).Within(.001));
+        Assert.That(restored.Energy.Current,Is.EqualTo(123).Within(.001));
+        var bonus=restored.Parts.Single(p=>p.UpgradeId=="capacity-more");bonus.Health=0;restored.RefreshEnergyLayout();
+        Assert.That(restored.Energy.Current,Is.EqualTo(123).Within(.001));
+        bonus.Health=1;restored.RefreshEnergyLayout();
+        Assert.That(restored.Energy.Current,Is.EqualTo(123).Within(.001),"Restoring capacity must not create energy.");
+        UnityEngine.Object.DestroyImmediate(increased);UnityEngine.Object.DestroyImmediate(more);
+    }
     [TestCase(1)][TestCase(2)][TestCase(3)]
     public void EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt(int tier)
     {
@@ -91,6 +145,32 @@ public sealed class BacklogEnergyRegenIntegrationTests
 {
     [UnitySetUp] public IEnumerator Setup()
     {EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();}
+
+    [UnityTest] public IEnumerator LiveResourceBonusDisappearsWithItsPhysicalModule()
+    {
+        Assert.That(Enum.TryParse("EnergyRegeneration",out R1UpgradeEffect effect),Is.True);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var reward=ScriptableObject.CreateInstance<R1UpgradeDefinition>();reward.Id="qa-energy";reward.Effect=effect;reward.Amount=.5f;
+        Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        var id=model.Inventory.Single().Id;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(id,c,default)==null);
+        Assert.That(model.Mount(id,cell),Is.True);model.RefreshEnergyLayout();
+        var paletteObject=new GameObject("QA palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
+        for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
+        var bank=vehicle.GetComponent<VehicleEnergyBank>();bank.Refresh();
+        Assert.That(bank.TrySpend(bank.Current),Is.True);model.Energy.Advance(1);
+        Assert.That(bank.Current,Is.EqualTo(15).Within(.001));
+        var bonus=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==R3PartKind.BonusModule);
+        bonus.gameObject.SetActive(false);bank.Refresh();
+        Assert.That(bank.TrySpend(bank.Current),Is.True);model.Energy.Advance(1);
+        Assert.That(bank.Current,Is.EqualTo(10).Within(.001));
+        UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);UnityEngine.Object.Destroy(reward);
+        yield return null;
+    }
 
     [UnityTest] public IEnumerator DestroyingRealRegeneratorRemovesItsRateAndReservation()
     {

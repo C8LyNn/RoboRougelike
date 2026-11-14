@@ -30,6 +30,29 @@ public class R5EncounterTests
             yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Loot");RRLW2TestFlow.Claim(Run,Array.Empty<string>());Run.StartNextEncounter();
         }
     }
+    [UnityTest] public IEnumerator SecondVictoryAwardsConstructionBudgetOnce()
+    {
+        yield return Reach(1);
+        Assert.That(Run.VehicleModel.ConstructionBudgetLimit,Is.EqualTo(200));
+        RRLW2TestFlow.DefeatAll(Run);
+        yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Second encounter loot");
+        Assert.That(Run.VehicleModel.ConstructionBudgetLimit,Is.EqualTo(220));
+        yield return null;
+        Assert.That(Run.VehicleModel.ConstructionBudgetLimit,Is.EqualTo(220));
+        var path=System.IO.Path.Combine(Application.temporaryCachePath,"rrl-budget-"+Guid.NewGuid().ToString("N")+".json");
+        R1RunCheckpointStorage.TestPath=path;
+        try
+        {
+            Assert.That(RRLW2TestFlow.Claim(Run,Array.Empty<string>()),Is.True);
+            Assert.That(Run.SaveRunCheckpoint(),Is.True,Run.RunSaveMessage);
+            var previous=Run;Run.RestartRun();
+            yield return Until(()=>Run!=null&&Run!=previous&&Run.Progress!=null,"Restart");
+            Assert.That(Run.LoadRunCheckpoint(),Is.True,Run.RunSaveMessage);
+            Assert.That(Run.Progress.CompletedEncounters,Is.EqualTo(2));
+            Assert.That(Run.VehicleModel.ConstructionBudgetLimit,Is.EqualTo(220),"Loading must not award the milestone twice.");
+        }
+        finally {R1RunCheckpointStorage.TestPath=null;if(System.IO.File.Exists(path))System.IO.File.Delete(path);}
+    }
     [UnityTest] public IEnumerator BossHasTwoIndependentDestructibleWeaponsAndNormalSalvage()
     {
         yield return Reach(5);var boss=Run.Encounter.Enemies.First();

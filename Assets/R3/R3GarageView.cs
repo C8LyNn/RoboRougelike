@@ -32,19 +32,17 @@ namespace RoboRougelike.R3
 
     public static class R3GarageRotationInput
     {
-        public static bool TryStep(KeyCode key,out Vector3Int step)
+        static readonly string[] Actions={"GarageRotateYLeft","GarageRotateYRight","GarageRotateXPositive","GarageRotateXNegative","GarageRotateZNegative","GarageRotateZPositive"};
+        static readonly Vector3Int[] Steps={new Vector3Int(0,-1,0),new Vector3Int(0,1,0),new Vector3Int(1,0,0),
+            new Vector3Int(-1,0,0),new Vector3Int(0,0,-1),new Vector3Int(0,0,1)};
+        public static bool TryStepForProfile(Event input,R1ControlProfile profile,out Vector3Int step)
         {
-            switch(key)
-            {
-                case KeyCode.Q:step=new Vector3Int(0,-1,0);return true;
-                case KeyCode.E:step=new Vector3Int(0,1,0);return true;
-                case KeyCode.R:step=new Vector3Int(1,0,0);return true;
-                case KeyCode.F:step=new Vector3Int(-1,0,0);return true;
-                case KeyCode.Z:step=new Vector3Int(0,0,-1);return true;
-                case KeyCode.X:step=new Vector3Int(0,0,1);return true;
-                default:step=default;return false;
-            }
+            step=default;if(input==null||profile==null||input.control||input.alt||input.command)return false;
+            for(int i=0;i<Actions.Length;i++)if(profile.MatchesEvent(Actions[i],input)){step=Steps[i];return true;}
+            return false;
         }
+        public static string Describe(R1ControlProfile profile)=>string.Join(" ",Enumerable.Range(0,3).Select(i=>
+            R1ControlProfile.Display(profile.Binding(Actions[i*2]))+"/"+R1ControlProfile.Display(profile.Binding(Actions[i*2+1]))));
     }
 
     public sealed class R3GarageView : MonoBehaviour
@@ -691,17 +689,17 @@ namespace RoboRougelike.R3
             if(Tool==R41GarageTool.Inspect)SetTool(prior);
             return false;
         }
-        private static R41GarageTool? ToolShortcut(KeyCode key,bool modified)
+        internal static readonly string[] ToolActions={"GarageToolMount","GarageToolInspect","GarageToolRepair","GarageToolRemove"};
+        private static R41GarageTool? ToolShortcutForProfile(Event input,R1ControlProfile profile)
         {
-            if(modified)return null;
-            switch(key)
-            {
-                case KeyCode.Alpha1:case KeyCode.Keypad1:return R41GarageTool.Mount;
-                case KeyCode.Alpha2:case KeyCode.Keypad2:return R41GarageTool.Inspect;
-                case KeyCode.Alpha3:case KeyCode.Keypad3:return R41GarageTool.Repair;
-                case KeyCode.Alpha4:case KeyCode.Keypad4:return R41GarageTool.Remove;
-                default:return null;
-            }
+            if(input==null||profile==null||input.shift||input.control||input.alt||input.command)return null;
+            for(int i=0;i<ToolActions.Length;i++)if(profile.MatchesEvent(ToolActions[i],input))return (R41GarageTool)i;
+            if(input.type!=EventType.KeyDown)return null;
+            int index=input.keyCode==KeyCode.Keypad1?0:input.keyCode==KeyCode.Keypad2?1:
+                input.keyCode==KeyCode.Keypad3?2:input.keyCode==KeyCode.Keypad4?3:-1;
+            if(index<0)return null;
+            string action=ToolActions[index],alias="Numpad"+(index+1);
+            return profile.Binding(action)=="Digit"+(index+1)&&profile.Conflict(action,alias)==null?(R41GarageTool?)index:null;
         }
         public bool RotatePointed(Ray ray,Vector3Int turns)
         {
@@ -740,19 +738,20 @@ namespace RoboRougelike.R3
             if(run.Progress?.State!=R1RunState.Garage||run.Transitioning||run.Paused||run.QuitRequested)
             {CancelPointerGesture();return;}
             var screen=new Vector2(rawTopLeft.x,Screen.height-rawTopLeft.y);bool inside=InBuildArea(screen,Screen.width,Screen.height);
-            if(current.type==EventType.KeyDown)
+            if(current.type==EventType.KeyDown||(inside&&R1ControlProfile.IsBindingMouseDown(current)))
             {
-                var tool=ToolShortcut(current.keyCode,current.shift||current.control||current.alt||current.command);
+                var tool=ToolShortcutForProfile(current,R1ControlProfile.Current);
                 if(tool.HasValue){SelectTool(tool.Value);current.Use();return;}
             }
-            if(current.type==EventType.KeyDown&&current.keyCode==KeyCode.U)
+            if((current.type==EventType.KeyDown||(inside&&R1ControlProfile.IsBindingMouseDown(current)))&&
+               R1ControlProfile.Current.MatchesEvent("GarageUnderside",current))
             {ToggleUndersideView();current.Use();return;}
-            if(current.type==EventType.KeyDown&&current.keyCode==KeyCode.Home&&
-               !current.shift&&!current.control&&!current.alt&&!current.command)
+            if((current.type==EventType.KeyDown||(inside&&R1ControlProfile.IsBindingMouseDown(current)))&&
+               !current.shift&&R1ControlProfile.Current.MatchesEvent("GarageFrame",current))
             {FrameVehicle();Message="Dopasowano widok pojazdu.";current.Use();return;}
-            if(current.type==EventType.KeyDown&&(Tool==R41GarageTool.Mount||current.shift))
+            if((current.type==EventType.KeyDown||(inside&&R1ControlProfile.IsBindingMouseDown(current)))&&(Tool==R41GarageTool.Mount||current.shift))
             {
-                if(R3GarageRotationInput.TryStep(current.keyCode,out var turns))
+                if(R3GarageRotationInput.TryStepForProfile(current,R1ControlProfile.Current,out var turns))
                 {
                     if(current.shift&&inside)RotatePointed(view.ScreenPointToRay(screen),turns);
                     else if(!current.shift&&Tool==R41GarageTool.Mount)

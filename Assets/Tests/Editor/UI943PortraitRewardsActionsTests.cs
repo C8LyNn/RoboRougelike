@@ -65,6 +65,55 @@ public sealed class UI943PortraitRewardsActionsTests
         Assert.That(ContainsId(run.VehicleModel,choices[7].Id),Is.False);
         Assert.That((bool)Call("PortraitRewardConfirm",run),Is.False,"Nie wolno wypłacić nagród dwukrotnie.");
     }
+    [UnityTest] public IEnumerator SelectingRecoveredWheelReportsAllRequiredBundleSlots()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Call("TrackRewardLedger",run.Salvage);
+        var wheel=Choices(run).First(p=>p.Kind==R3PartKind.Wheel);
+        Call("PortraitRewardToggleLoot",wheel);
+        Assert.That((int)Call("SelectedRewardPartCount",run),Is.EqualTo(2),"The UI must reserve both wheels in the reward package.");
+        Call("PortraitRewardSelectBonus",0);
+        Assert.That(run.VehicleModel.ReceiveSalvage(Enumerable.Range(0,198).Select(_=>new R3PartState(default,R3PartKind.Gun))),Is.True);
+        int funds=run.VehicleModel.Scrap;
+        Assert.That((bool)Call("PortraitRewardConfirm",run),Is.False,"Two wheels and the bonus cannot fit in two slots.");
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(198));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(funds));
+        Assert.That(run.Salvage.Closed,Is.False);
+    }
+    [UnityTest] public IEnumerator RerollChargesOnceKeepsBonusAndRequiresANewBasketSelection()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Call("TrackRewardLedger",run.Salvage);
+        Call("PortraitRewardSelectBonus",0);Call("ChooseRewardBasket",0);
+        var old=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(old.Count,Is.GreaterThan(0));
+        var reroll=typeof(R1RunHUD).GetMethod("RerollRewardBaskets",BindingFlags.Instance|BindingFlags.NonPublic);
+        Assert.That(reroll,Is.Not.Null,"The live reward interface must support rerolling.");
+        var price=typeof(R1RunDefinition).GetField("RewardBasketRerollCost");Assert.That(price,Is.Not.Null);
+        int cost=(int)price.GetValue(run.Definition),before=run.VehicleModel.Scrap;
+        Assert.That(before,Is.GreaterThanOrEqualTo(cost));
+        Assert.That((bool)reroll.Invoke(hud,new object[]{run}),Is.True);
+        var updated=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        string Signature(IReadOnlyList<R4SalvageBasket> offers)=>string.Join("|",offers.Select(b=>string.Join(",",b.Items.Select(p=>p.Id).OrderBy(id=>id))));
+        Assert.That(Signature(updated),Is.Not.EqualTo(Signature(old)));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-cost));Assert.That(run.Salvage.Closed,Is.False);
+        Assert.That((int)Field("selectedBonus"),Is.EqualTo(0));Assert.That((int)Field("selectedBasket"),Is.EqualTo(-1));
+        Assert.That((HashSet<string>)Field("lootSelection"),Is.Empty);
+        Assert.That(cost,Is.GreaterThan(0));Call("ChooseRewardBasket",0);
+        Assert.That(run.VehicleModel.TrySpendScrap(run.VehicleModel.Scrap),Is.True);
+        Assert.That((bool)reroll.Invoke(hud,new object[]{run}),Is.False);
+        Assert.That(run.VehicleModel.Scrap,Is.Zero);Assert.That((int)Field("selectedBasket"),Is.EqualTo(0));
+        Assert.That((string)Field("rewardClaimFeedback"),Does.Contain("Brakuje"));
+        run.VehicleModel.Award(100);
+        var single=new R4SalvageLedger(3);
+        Assert.That(single.Record("only-enemy",new[]{new R4SalvageItem("only-gun","fixture",R3PartKind.Gun,R4WeaponKind.Basic,1)},R3EnemyArchetype.Scout),Is.True);
+        typeof(R1RunController).GetProperty("Salvage").GetSetMethod(true).Invoke(run,new object[]{single});
+        Call("TrackRewardLedger",single);Call("ChooseRewardBasket",0);int funds=run.VehicleModel.Scrap;
+        Assert.That((bool)reroll.Invoke(hud,new object[]{run}),Is.False,"Identical offers must not incur a fee.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(funds));Assert.That((int)Field("selectedBasket"),Is.EqualTo(0));
+        Assert.That((string)Field("rewardClaimFeedback"),Does.Contain("Brak innego"));
+    }
     [UnityTest] public IEnumerator EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation()
     {
         foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
@@ -78,6 +127,9 @@ public sealed class UI943PortraitRewardsActionsTests
         Assert.That((bool)Field("rewardInventoryOpen"),Is.False);
         Assert.That(Field("rewardDismantleConfirmation"),Is.Null);
         Assert.That(run.Paused,Is.False,"Closing the top overlay must not also pause the game.");
+        Field("rewardMissedOpen",true);yield return null;run.HandleEscape();
+        Assert.That((bool)Field("rewardMissedOpen"),Is.False);
+        Assert.That(run.Paused,Is.False,"Closing missed loot must not also pause the game.");
         yield return null;run.HandleEscape();
         Assert.That(run.Paused,Is.True,"The next Escape still opens the session pause menu.");
     }
@@ -108,6 +160,29 @@ public sealed class UI943PortraitRewardsActionsTests
         yield return null;
     }
 #if ENABLE_INPUT_SYSTEM
+    [UnityTest] public IEnumerator ExtraBasketPageKeysSelectThatPageAndOnlyOneBasket()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(50,0,0),R3PartKind.SalvageOptimizer){Health=1});
+        Call("TrackRewardLedger",run.Salvage);
+        var baskets=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(baskets.Count,Is.GreaterThanOrEqualTo(4));
+        Field("basketPage",1);
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        InputSystem.settings=settings;settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Q));InputSystem.Update();hud.ReadRewardInput(keyboard);
+            Assert.That((int)Field("selectedBasket"),Is.EqualTo(3));
+            Assert.That((HashSet<string>)Field("lootSelection"),Is.EquivalentTo(baskets[3].Items.Select(p=>p.Id)));
+            Assert.That(run.Salvage.Closed,Is.False);
+        }
+        finally {if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
+    }
     [UnityTest] public IEnumerator CollectedFinalPickupDoesNotConsumeRewardConfirmationKey()
     {
         // Defeated enemies only drop energy while combat is active. The shared
@@ -118,6 +193,7 @@ public sealed class UI943PortraitRewardsActionsTests
         for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
         Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0),"Expected the post-battle pickup window.");
         foreach(var pickup in UnityEngine.Object.FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None))pickup.gameObject.SetActive(false);
+        foreach(var pickup in UnityEngine.Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None))pickup.gameObject.SetActive(false);
         for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
         Assert.That(run.PickupGraceRemaining,Is.Zero,"Pickup grace must not remain active in rewards.");

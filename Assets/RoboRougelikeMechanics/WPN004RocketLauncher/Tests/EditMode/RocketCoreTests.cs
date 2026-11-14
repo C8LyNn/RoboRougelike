@@ -84,11 +84,12 @@ namespace RoboRougelike.WPN004.Tests.EditMode
         }
 
         [Test]
-        public void FireGateIgnoresNegativeCooldown()
+        public void FireGateTreatsNegativeCooldownAsZeroWithSameClockProtection()
         {
             var gate = new RocketFireGate();
             gate.Commit(10f, -3f);
-            Assert.IsTrue(gate.Ready(10f));
+            Assert.IsFalse(gate.Ready(10f));
+            Assert.IsTrue(gate.Ready(10.001f));
         }
 
         [Test]

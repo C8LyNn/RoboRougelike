@@ -25,9 +25,23 @@ namespace RoboRougelike.R1
             var evt=runId+"/victory/"+Progress.EncounterIndex;
             recoveryHost=new RecoveryHost(this,VehicleModel,Salvage,evt,committedRecoveryEvents);
             recoveryWindow=new RewardKeep3Service(new R3RewardPort(VehicleModel,recoveryHost));
-            var choices=Salvage.Items.Select(p=>new RewardCandidate(p.Id,p.Kind.ToString(),RecoveryDefinition(p),p.Health));
+            var choices=Salvage.RewardItems.Select(p=>new RewardCandidate(p.Id,p.Kind.ToString(),RecoveryDefinition(p),p.Health));
             if(!recoveryWindow.TryOpen(evt,choices,out var error))
             {RecoveryError=error;Debug.LogError("[RC2 recovery] Cannot open authenticated reward window: "+error);}
+        }
+        public bool TryRecoverMissedLoot(string id)
+        {
+            if(Transitioning||Progress?.State!=R1RunState.Salvage||VehicleModel==null||Salvage==null||Salvage.Closed||
+               recoveryWindow==null||recoveryWindow.IsQuarantined||!recoveryWindow.HasOpenWindow||!Salvage.MissedPhysicalItems.Any(p=>p.Id==id))return false;
+            // Prepare the replacement authenticated window before moving money
+            // or inventory, so an invalid offer never leaves a half transaction.
+            var evt=runId+"/victory/"+Progress.EncounterIndex;
+            var nextHost=new RecoveryHost(this,VehicleModel,Salvage,evt,committedRecoveryEvents);
+            var nextWindow=new RewardKeep3Service(new R3RewardPort(VehicleModel,nextHost));
+            var choices=Salvage.RewardItems.Select(p=>new RewardCandidate(p.Id,p.Kind.ToString(),RecoveryDefinition(p),p.Health));
+            if(!nextWindow.TryOpen(evt,choices,out var error)){RecoveryError=error;return false;}
+            if(!Salvage.TryRecoverMissed(VehicleModel,id))return false;
+            recoveryHost=nextHost;recoveryWindow=nextWindow;RecoveryError=null;return true;
         }
         bool CommitRecovery(string[] parts,int[] bonuses)
         {

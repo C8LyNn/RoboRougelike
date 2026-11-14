@@ -20,7 +20,8 @@ namespace RoboRougelike.PackageIntegration
             registry=gameObject.AddComponent<StructuralScanRegistry>();Scanner=gameObject.AddComponent<StructuralScanController>();
             // Profile from the supplied PR4 production bridge, not the package24m/75deg default.
             var energy=owner.GetComponent<VehicleEnergyBank>();
-            Scanner.Configure(new StructuralScanSettings{rangeMeters=60,fullConeDegrees=85,activationEnergy=energy!=null?5f:0f});
+            var config=owner.GetComponent<R3VehicleAssembly>()?.Model?.Economy??new R3GarageEconomy();
+            Scanner.Configure(new StructuralScanSettings{rangeMeters=config.StructuralScanRange,fullConeDegrees=85,cooldownSeconds=config.StructuralScanCooldown,activationEnergy=energy!=null?config.StructuralScanEnergy:0f});
             Scanner.Bind(transform,owner,owner.GetInstanceID(),RRLHitRouter.Team(owner),registry,energy);
             Scanner.RestoreCooldown(state.DeviceReadyAt-Time.time);Device.Damageable.Died+=RefreshAvailability;RefreshAvailability();
         }
@@ -31,10 +32,23 @@ namespace RoboRougelike.PackageIntegration
         }
         public bool TryActivate()
         {
+            var controls=Device?.Owner!=null?Device.Owner.GetComponent<RRLScannerControls>():null;
+            return controls!=null&&controls.Activate(RRLScanKind.Structural);
+        }
+        internal bool ActivateCombined(int units,float costMultiplier,R3GarageEconomy config)
+        {
             RefreshAvailability();if(Device==null||!Device.Available||Scanner==null||!Scanner.IsReady)return false;
+            var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
+            Scanner.Configure(new StructuralScanSettings{rangeMeters=StructuralScanSettings.CombinedRange(config.StructuralScanRange,units),fullConeDegrees=85,cooldownSeconds=config.StructuralScanCooldown,activationEnergy=energy!=null?config.StructuralScanEnergy*costMultiplier:0f});
             RRLScanWorld.Register(registry,R1RunController.Instance);
             if(!Scanner.TryScan())return false;
             Device.State.DeviceReadyAt=Time.time+Scanner.CooldownLeft;return true;
+        }
+        internal void RestoreCombinedCooldown(float seconds)
+        {
+            var config=Device.Owner.GetComponent<R3VehicleAssembly>().Model.Economy;
+            Scanner.Configure(new StructuralScanSettings{rangeMeters=config.StructuralScanRange,fullConeDegrees=85,cooldownSeconds=config.StructuralScanCooldown,activationEnergy=config.StructuralScanEnergy});
+            Scanner.RestoreCooldown(seconds);
         }
         void OnEnable(){if(Scanner!=null&&Device?.State!=null)Scanner.RestoreCooldown(Device.State.DeviceReadyAt-Time.time);RefreshAvailability();}
         void Update()=>RefreshAvailability();

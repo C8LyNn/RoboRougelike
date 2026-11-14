@@ -33,10 +33,14 @@ public class RRLW6EmpPhysicalTests
     {
         var binding=gun.GetComponents<MonoBehaviour>().Single(p=>p.GetType().Name=="RRLEmpBinding");return (bool)binding.GetType().GetMethod("Fire").Invoke(binding,null);
     }
-    [UnityTest] public IEnumerator ActualEmpPulseStopsEnemyGunWithoutHpDamagePhysicalLossOrMomentumReset()
+    [UnityTest] public IEnumerator OriginalEmpPulseComponentStopsEnemyGunWithoutHpDamagePhysicalLossOrMomentumReset()
     {
         Assert.That(Enum.TryParse("EmpEmitter",out R4WeaponKind kind),Is.True,"WPN006 absent from real gun catalog");
-        var assembly=Build(kind,out _);var gun=assembly.Parts.Single(p=>p.Kind==R3PartKind.Gun);
+        var assembly=Build(kind,out var model);var gun=assembly.Parts.Single(p=>p.Kind==R3PartKind.Gun);
+        // The original emitter is now a separate active module, not the aura weapon.
+        // Exercise the original pulse adapter directly; production active-module
+        // behavior is covered by EmpDevicesDisruptRealEnemyWithoutDamageAndPreserveCooldown.
+        gun.gameObject.AddComponent<RRLEmpBinding>().Bind(model.Parts.Single(p=>p.Id==gun.Id),assembly.transform);
         var run=R1RunController.Instance;
         var template=(P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(run);
         run.Encounter.Spawn(template,run.Player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"emp-fixture");
@@ -78,13 +82,17 @@ public class RRLW6EmpPhysicalTests
         Assert.That(rebuilt.Parts.Where(p=>p.Kind==R3PartKind.Wheel).All(p=>p.GetComponent<EmpReceiver>().IsDisrupted),Is.True);
         foreach(var wheel in wheels)wheel.GetComponent<EmpReceiver>().ClearEmp();Assert.That(drive.Wheels,Is.EqualTo(count));yield return null;
     }
-    [UnityTest] public IEnumerator RepairedEmpEmitterPreservesCommittedCooldown()
+    [UnityTest] public IEnumerator RepairedAuraWeaponReturnsOffUntilActivated()
     {
         Assert.That(Enum.TryParse("EmpEmitter",out R4WeaponKind kind),Is.True,"EMP absent from player catalog");
-        var assembly=Build(kind,out var model);var gun=assembly.Parts.Single(p=>p.Kind==R3PartKind.Gun);Assert.That(Fire(gun),Is.True);
-        gun.Damageable.ApplyDamage(10000,gun.transform.position,Vector3.up);assembly.Capture();model.Award(500);Assert.That(model.Repair(gun.Cell),Is.True);
+        var assembly=Build(kind,out var model);var gun=assembly.Parts.Single(p=>p.Kind==R3PartKind.Gun);
+        var aura=gun.GetComponent<RRLDamageAuraBinding>();Assert.That(aura.Fire(),Is.True);
+        // A controlled physical hit kills this low-HP gun without wiping out all its support.
+        gun.Damageable.Configure(1,true);gun.Damageable.ApplyDamage(2,gun.transform.position,Vector3.up);
+        Assert.That(aura.IsActive,Is.False);assembly.Capture();model.Award(500);Assert.That(model.Repair(gun.Cell),Is.True);
         var rebuilt=R3VehicleAssembly.Build(model.DeepCopy(),new R1RunStats(),R1RunController.Instance.GetComponent<R3VisualPalette>(),new Vector3(150,4,100),Quaternion.identity).GetComponent<R3VehicleAssembly>();
-        var restored=rebuilt.Parts.Single(p=>p.Id==gun.Id);Assert.That(restored.GetComponent<EmpEmitter>().CooldownRemaining,Is.GreaterThan(11));Assert.That(Fire(restored),Is.False);yield return null;
+        var restored=rebuilt.Parts.Single(p=>p.Id==gun.Id).GetComponent<RRLDamageAuraBinding>();
+        Assert.That(restored.IsActive,Is.False);Assert.That(restored.Fire(),Is.True);yield return null;
     }
     [UnityTest] public IEnumerator EveryIntegratedWeaponUsesTemporaryDeviceGateWithoutLosingPhysicalPower()
     {
@@ -223,7 +231,9 @@ public class RRLW6EmpPhysicalTests
         var support=defense.transform.parent.GetComponentInParent<P12PipelineSafeDamageable>();
         Assert.That(support.GetComponentsInChildren<P12PipelineSafeDamageable>().Length,Is.EqualTo(2));
         var owner=enemy.GetComponent<Rigidbody>();float before=owner.mass;
-        support.ApplyDamage(10000,support.transform.position,Vector3.up);
+        // A hit just above the support's retained HP detaches this one fragment;
+        // massive overkill also propagates and destroys unrelated armor.
+        support.ApplyDamage((support.CurrentHp+1)/(1-R3DamagePropagation.TransferFraction(R3DamagePropagation.DamageKind.Kinetic)),support.transform.position,Vector3.up);
         var fragment=defense.GetComponentInParent<Rigidbody>();Assert.That(fragment,Is.Not.SameAs(owner));
         Assert.That(fragment.mass,Is.EqualTo(43).Within(.001),"Fragment is8kg armor plus35kg live attached PDS");
         Assert.That(owner.mass,Is.EqualTo(before-43).Within(.001));

@@ -25,7 +25,7 @@ namespace RoboRougelike.R4
             new R4WeaponDefinition("WPN-003 Beam Cutter",35,.02f,0,.065f,0,30,130,55,new Color(.15f,1,.9f)),
             new R4WeaponDefinition("WPN-004 Rocket Launcher",60,1.7f,18,.24f,1,38,160,60,new Color(1,.65f,.15f)),
             new R4WeaponDefinition("WPN-005 Rotary Saw",52,.02f,0,1.8f,0,25,130,50,new Color(.9f,.3f,.2f)),
-            new R4WeaponDefinition("WPN-006 EMP Emitter",0,12,0,0,0,30,140,65,new Color(.5f,.6f,1)) };
+            new R4WeaponDefinition("WPN-006 Aura energetyczna",25,1,0,0,0,30,140,65,new Color(.5f,.6f,1)) };
         public static int Count => definitions.Length;
         public static string Brief(R3PartState part,float damageScale=1,float intervalScale=1)
         {
@@ -38,7 +38,7 @@ namespace RoboRougelike.R4
                 R4WeaponKind.BeamCutter=>$"{35*damageScale:0} obrażeń/s • 16 m\nWiązka • ciepło • puść przycisk ognia, by schłodzić",
                 R4WeaponKind.RocketLauncher=>$"Wybuch do {60*damageScale:0} obrażeń • 3,2 m\n{Ammo(10)} rakiet • automatyczne przeładowanie (T: ręcznie)",
                 R4WeaponKind.RotarySaw=>"Kontakt • do 2800 RPM\nTwarde cele blokują; kontroluj ciepło",
-                R4WeaponKind.EmpEmitter=>$"EMP 9 m • zakłócenie do {3*R3VehicleModel.TierEffectUnits(part.Tier):0} s\nOdnowienie {12*intervalScale:0.0} s • widoczny cel",
+                R4WeaponKind.EmpEmitter=>$"Aura {RoboRougelike.WeaponIntegration.RRLDamageAuraBinding.Radius:0} m • {25*damageScale:0} obrażeń/s\nNaciśnij: włącz / wyłącz • {RoboRougelike.WeaponIntegration.RRLDamageAuraBinding.EnergyPerSecond*R3VehicleModel.TierActivationCost(part.Tier):0} energii/s",
                 _=>$"{profile.Damage*damageScale:0} obrażeń • co {profile.Interval*intervalScale:0.00} s\n{profile.Speed:0} m/s"};
         }
         public static R4WeaponDefinition Get(R4WeaponKind kind)
@@ -76,6 +76,6 @@ namespace RoboRougelike.R4
                 R3PartKind.Booster=>"Booster",R3PartKind.JumpDrive=>"Napęd skokowy",R3PartKind.Blink=>"Blink",
                 R3PartKind.Gyroscope=>"Żyroskop",R3PartKind.OmniDrive=>"Omni",R3PartKind.MagneticGrapple=>"Zaczep magnetyczny",
                 R3PartKind.HoverEngine=>"Silnik zawisu",R3PartKind.CrawlerTrack=>"Gąsienica",
-                R3PartKind.Battery=>"Bateria",R3PartKind.RepairPulse=>"Impuls naprawczy",R3PartKind.DrivePower=>"Silnik kół",R3PartKind.EnergyRegenerator=>"Regenerator energii",R3PartKind.BonusModule=>"Moduł bonusu 1×1×1",R3PartKind.DirectionalShield=>"DEF-001 Tarcza kierunkowa",R3PartKind.PointDefense=>"DEF-002 Obrona punktowa",R3PartKind.StructuralScanner=>"COM-001 Skan struktury",R3PartKind.ScannerPulse=>"SEN-001 Impuls skanera",R3PartKind.IndependentSteering=>"MOV-011 Sterowanie osiami",_=>"Pancerz"};
+                R3PartKind.Battery=>"Bateria",R3PartKind.RepairPulse=>"Impuls naprawczy",R3PartKind.DrivePower=>"Silnik kół",R3PartKind.EnergyRegenerator=>"Regenerator energii",R3PartKind.SalvageOptimizer=>"Optymalizator odzysku",R3PartKind.Overdrive=>"Overdrive",R3PartKind.RapidFire=>"Rapid Fire",R3PartKind.DoubleShot=>"Double Shot",R3PartKind.DoubleShotOverdrive=>"Double Shot Overdrive",R3PartKind.TargetedEmp=>"EMP celowany",R3PartKind.AreaEmp=>"EMP obszarowy",R3PartKind.ChargeCapacity=>"Pojemność ładunków",R3PartKind.ChargeRegenerator=>"Regenerator ładunków",R3PartKind.RechargePulse=>"Impuls ładunków",R3PartKind.RampDeployer=>"Wyrzutnik ramp",R3PartKind.WallDeployer=>"Wyrzutnik murków",R3PartKind.JumpPadDeployer=>"Wyrzutnik jump padów",R3PartKind.BlastTrapDeployer=>"Pułapka wybuchowa",R3PartKind.EmpTrapDeployer=>"Pułapka EMP",R3PartKind.RepelTrapDeployer=>"Pułapka odrzucająca",R3PartKind.DamageTrapDeployer=>"Pułapka obrażeń",R3PartKind.SlowTrapDeployer=>"Pułapka spowalniająca",R3PartKind.ImmobilizeTrapDeployer=>"Pułapka unieruchamiająca",R3PartKind.FlyingDroneGenerator=>"Generator drona",R3PartKind.GroundDroneGenerator=>"Generator drona naziemnego",R3PartKind.HealingDroneGenerator=>"Generator drona naprawczego",R3PartKind.SupportDroneGenerator=>"Generator drona energetycznego",R3PartKind.OffensiveTurretGenerator=>"Wieżyczka ofensywna",R3PartKind.HealingTurretGenerator=>"Wieżyczka lecznicza",R3PartKind.SupportTurretGenerator=>"Wieżyczka wspierająca",R3PartKind.ShieldTurretGenerator=>"Wieżyczka osłonowa",R3PartKind.BonusModule=>"Moduł bonusu 1×1×1",R3PartKind.DirectionalShield=>"DEF-001 Tarcza kierunkowa",R3PartKind.PointDefense=>"DEF-002 Obrona punktowa",R3PartKind.StructuralScanner=>"COM-001 Skan struktury",R3PartKind.ScannerPulse=>"SEN-001 Impuls skanera",R3PartKind.IndependentSteering=>"MOV-011 Sterowanie osiami",_=>"Pancerz"};
     }
 }

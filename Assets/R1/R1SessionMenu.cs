@@ -46,7 +46,7 @@ namespace RoboRougelike.R1
         bool RangePause=>!MapEditorTesting&&Progress?.State==R1RunState.TestDrive;
         void MovePauseSelection(int direction)
         {
-            int count=MapEditorTesting?4:RangePause?5:3;
+            int count=MapEditorTesting?5:RangePause?6:4;
             PauseSelection=(PauseSelection+count+direction)%count;
         }
         void ConfirmPauseSelection()
@@ -57,12 +57,14 @@ namespace RoboRougelike.R1
                 else if(PauseSelection==1)ResetTestRange();
                 else if(PauseSelection==2)ReturnFromTestRange();
                 else if(PauseSelection==3)RestartRun();
-                else RequestQuitFromMenu();
+                else if(PauseSelection==4)RequestQuitFromMenu();
+                else GetComponent<R1RunHUD>()?.OpenPauseControls();
             }
             else if(PauseSelection==0)TogglePause();
             else if(PauseSelection==1&&MapEditorTesting)ReturnFromEditedMapTest();
             else if(PauseSelection==1||(PauseSelection==2&&MapEditorTesting))RestartRun();
-            else RequestQuitFromMenu();
+            else if((MapEditorTesting&&PauseSelection==3)||(!MapEditorTesting&&PauseSelection==2))RequestQuitFromMenu();
+            else GetComponent<R1RunHUD>()?.OpenPauseControls();
         }
 
         // Run before state/transition guards: quitting must also work while loading.
@@ -82,7 +84,12 @@ namespace RoboRougelike.R1
             if ((keys != null && keys.escapeKey.wasPressedThisFrame) ||
                 (pad != null && pad.startButton.wasPressedThisFrame))
             { HandleEscape(); return true; }
+            if(SafeZoneTrading){if(pad!=null&&pad.buttonEast.wasPressedThisFrame)CloseSafeZoneTrade();return true;}
+            if(!Paused&&GetComponent<R1RunHUD>()?.MainControlsOpen==true)
+            {if(pad!=null&&pad.buttonEast.wasPressedThisFrame)HandleEscape();return true;}
             if (!Paused) return false;
+            if(GetComponent<R1RunHUD>()?.PauseControlsOpen==true)
+            {if(pad!=null&&pad.buttonEast.wasPressedThisFrame)HandleEscape();return true;}
             bool rangePause=RangePause;
             if(rangePause&&GetComponent<R1RunHUD>()?.CreativeEnemyMenuOpen==true)
             {
@@ -90,7 +97,8 @@ namespace RoboRougelike.R1
                 return true; // The visible enemy menu owns its pointer input.
             }
             // Preserve the range reset shortcut while the session menu owns other input.
-            if (rangePause && keys != null && keys.rKey.wasPressedThisFrame)
+            if (rangePause && !R1ControlProfile.Current.Binding("ResetRange").StartsWith("Mouse",System.StringComparison.Ordinal)&&
+                R1ControlProfile.Current.Pressed("ResetRange",true))
             { ResetTestRange(); return true; }
             if ((keys != null && keys.upArrowKey.wasPressedThisFrame) ||
                 (pad != null && pad.dpad.up.wasPressedThisFrame)) MovePauseSelection(-1);

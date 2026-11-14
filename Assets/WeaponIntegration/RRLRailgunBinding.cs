@@ -56,21 +56,25 @@ namespace RoboRougelike.WeaponIntegration
             if(!Device.Available||shot.OwnerBody!=Device.Body||shot.OwnerRoot!=Device.Owner.gameObject||P17PhysicalShell.AvailableSlots<1)return false;
             var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>(),shot.InitialVelocity,shot.Spec.Range,shot.Spec.Radius))return false;
-            GameObject shell=null;
+            var created=new System.Collections.Generic.List<GameObject>();
+            int extras=assembly!=null?assembly.RollDoubleShotExtras(Mathf.Max(0,P17PhysicalShell.AvailableSlots-1)):0;
             try
             {
-                shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);shell.name="WPN002 physical rail";
-                shell.transform.SetPositionAndRotation(shot.Origin,Quaternion.LookRotation(shot.Direction));shell.transform.localScale=Vector3.one*shot.Spec.Radius*2;
-                shell.GetComponent<Collider>().isTrigger=true;
-                shell.GetComponent<Renderer>().sharedMaterial=GetComponent<Renderer>().sharedMaterial;
-                var rb=shell.AddComponent<Rigidbody>();rb.useGravity=false;rb.isKinematic=true;rb.interpolation=RigidbodyInterpolation.Interpolate;
-                var origin=shell.AddComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.Railgun;origin.PartId=State.Id;
-                var projectile=shell.AddComponent<P17PhysicalShell>();projectile.Configure(Device.Owner,0,30,shot.Direction,null,shot.Spec.Range);
-                projectile.ConfigureRailgun(shot,(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier));
+                for(int i=0;i<=extras;i++)
+                {
+                    var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);created.Add(shell);shell.name="WPN002 physical rail";
+                    shell.transform.SetPositionAndRotation(shot.Origin,Quaternion.LookRotation(shot.Direction));shell.transform.localScale=Vector3.one*shot.Spec.Radius*2;
+                    shell.GetComponent<Collider>().isTrigger=true;
+                    shell.GetComponent<Renderer>().sharedMaterial=GetComponent<Renderer>().sharedMaterial;
+                    var rb=shell.AddComponent<Rigidbody>();rb.useGravity=false;rb.isKinematic=true;rb.interpolation=RigidbodyInterpolation.Interpolate;
+                    var origin=shell.AddComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.Railgun;origin.PartId=State.Id;
+                    var projectile=shell.AddComponent<P17PhysicalShell>();projectile.Configure(Device.Owner,0,30,shot.Direction,null,shot.Spec.Range);
+                    projectile.ConfigureRailgun(shot,R3MountedBonusEffects.SafeDamageProduct(tank!=null?tank.PackagePiercingDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier)));
+                }
                 State.DeviceReadyAt=Time.time+shot.Spec.Cooldown;debitPending=false;
                 RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.Railgun);return true;
             }
-            catch{if(shell!=null){shell.SetActive(false);Destroy(shell);}return false;}
+            catch{foreach(var shell in created)if(shell!=null){shell.SetActive(false);Destroy(shell);}return false;}
         }
         void Stop(){if(Module!=null)Module.SetOperational(false);}
         void OnDisable()=>Stop();

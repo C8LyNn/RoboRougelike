@@ -11,6 +11,37 @@ using RoboRougelike.Defenses.DirectionalShield;
 
 public class RRLW6ShieldModelTests
 {
+    [Test] public void ShieldFusionUsesEachInputsStoredCapacityAndLoadsLegacyCheckpoint()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(1000);
+        for(int i=0;i<3;i++)Assert.That(model.PurchaseToInventory(R3PartKind.DirectionalShield),Is.True);
+        var parts=model.Inventory.ToArray();parts[0].DefenseCapacity=200;parts[0].DefenseCharge=100;
+        parts[1].DefenseCapacity=100;parts[1].DefenseCharge=25;parts[2].DefenseCharge=75;
+        Assert.That(model.FuseInventory(parts.Select(p=>p.Id)),Is.True);
+        var fused=model.Inventory.Single();Assert.That(fused.DefenseCapacity,Is.EqualTo(200));Assert.That(fused.DefenseCharge,Is.EqualTo(100).Within(.001));
+        string json=JsonUtility.ToJson(model.MakeCheckpoint(0));
+        string legacy=System.Text.RegularExpressions.Regex.Replace(json,",\"DefenseCapacity\":[^,}]+","");
+        Assert.That(legacy,Does.Not.Contain("DefenseCapacity"));
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(legacy);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Inventory.Single().DefenseCapacity,Is.Zero);
+        Assert.That(restored.Inventory.Single().DefenseCharge,Is.EqualTo(100).Within(.001));
+    }
+    [Test] public void FusingShieldsPreservesMeanConditionAndProportionalStoredCharge()
+    {
+        Assert.That(R3VehicleModel.SupportsFusion(R3PartKind.DirectionalShield),Is.True);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(1000);
+        for(int i=0;i<3;i++)Assert.That(model.PurchaseToInventory(R3PartKind.DirectionalShield),Is.True);
+        var parts=model.Inventory.ToArray();parts[0].Health=.5f;parts[1].Health=0;parts[2].Health=1;
+        parts[0].DefenseCharge=0;parts[1].DefenseCharge=50;parts[2].DefenseCharge=100;
+        parts[0].DefenseRechargeAge=5;parts[1].DefenseRechargeAge=2;parts[2].DefenseRechargeAge=7;
+        Assert.That(model.FuseInventory(parts.Select(p=>p.Id)),Is.True);var result=model.Inventory.Single();
+        Assert.That(result.Tier,Is.EqualTo(2));Assert.That(result.Health,Is.EqualTo(.5f).Within(.001));
+        Assert.That(result.DefenseCharge,Is.EqualTo(100).Within(.001));Assert.That(result.DefenseRechargeAge,Is.EqualTo(2));
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Inventory.Single().DefenseCharge,Is.EqualTo(100).Within(.001));
+    }
     [Test] public void ShieldUsesOneCellForEveryRotationWithoutReindexingBonuses()
     {
         Assert.That((int)R3PartKind.BonusModule,Is.EqualTo(13));
@@ -22,6 +53,26 @@ public class RRLW6ShieldModelTests
 
 public class RRLW6ShieldPhysicalTests
 {
+    [UnityTest] public IEnumerator DirectionalShieldTiersScaleAbsorptionAndRegeneration()
+    {
+        var run=R1RunController.Instance;
+        for(int tier=1;tier<=3;tier++)
+        {
+            var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+            var cell=MOVSeriesDeviceTests.FindFixtureCell(model,R3PartKind.DirectionalShield,new Vector3Int(0,2,0));
+            var state=new R3PartState(cell,R3PartKind.DirectionalShield){Tier=tier};model.Parts.Add(state);
+            var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(tier*20,20,100),Quaternion.identity);
+            var part=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
+            var generator=part.GetComponent<DirectionalShieldGenerator>();int units=R3VehicleModel.TierEffectUnits(tier);
+            Assert.That(generator.Capacity,Is.EqualTo(100*units).Within(.001));
+            generator.RestoreState(0,3);generator.Advance(1);
+            Assert.That(generator.Charge,Is.EqualTo(12*units).Within(.001));
+            generator.RestoreState(100*units,0);var hit=part.transform.position+part.transform.forward*2;
+            Assert.That(generator.Absorb(1000,hit,-part.transform.forward),Is.EqualTo(100*units).Within(.001));
+            UnityEngine.Object.Destroy(vehicle.gameObject);
+        }
+        yield return null;
+    }
     static float TotalHealth(R3VehicleAssembly assembly)=>assembly.Parts
         .Where(p=>p!=null&&p.Damageable!=null&&!p.Damageable.IsDead)
         .Sum(p=>p.Damageable.CurrentHp);
@@ -96,7 +147,11 @@ public class RRLW6ShieldPhysicalTests
         binding.Device.Damageable.ApplyDamage(45,binding.transform.position,Vector3.up);
         binding.Generator.RestoreState(35,1.2f);binding.CaptureState();
         string id=binding.Device.State.Id;
-        enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        // A huge overkill now correctly propagates into the shield, changing the
+        // snapshot under test. Finish the weakened core with a bounded real hit.
+        enemy.Core.RestoreHealthRatio(.001f);
+        enemy.Core.ApplyDamageResolvedTyped(enemy.Core.CurrentHp/.9f+1,enemy.Core.transform.position,Vector3.up,
+            R3DamagePropagation.DamageKind.Piercing);
         var item=run.Salvage.Items.Single(p=>p.Id==id);var recovered=item.ToPart();
         Assert.That(item.Selectable,Is.True);Assert.That(item.Health,Is.EqualTo(.75f).Within(.001));
         Assert.That(recovered.Kind,Is.EqualTo(R3PartKind.DirectionalShield));

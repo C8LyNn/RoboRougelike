@@ -11,7 +11,7 @@ namespace RoboRougelike.R6
 {
     [Serializable] public sealed class R6CoreRecoverySettings
     {
-        public float TiltThresholdDegrees=110,ConfirmationSeconds=1.5f,AttemptSeconds=2,CooldownSeconds=8;
+        public float TiltThresholdDegrees=75,ConfirmationSeconds=1.5f,AttemptSeconds=2,CooldownSeconds=5;
         public float TargetLiftSpeed=1.4f,MaximumLiftImpulse=1800,MaximumTorqueNm=30000;
         public float AngularAcceleration=9,AngularDamping=6.5f;
     }
@@ -82,11 +82,11 @@ namespace RoboRougelike.R6
                 {IsRecovering=false;return;}
                 ApplyTorque();return;
             }
-            bool confirmed=CooldownLeft<=0&&angle>=Limit(Tuning.TiltThresholdDegrees,110,100,170)&&
+            bool confirmed=CooldownLeft<=0&&angle>=Limit(Tuning.TiltThresholdDegrees,75,70,170)&&
                 body.linearVelocity.magnitude<2&&body.angularVelocity.magnitude<1.2f&&StillSupported();
             confirmation=confirmed?confirmation+Time.fixedDeltaTime:0;
             if(confirmation<Limit(Tuning.ConfirmationSeconds,1.5f,.5f,10))return;
-            confirmation=0;state.DeviceReadyAt=Time.time+Limit(Tuning.CooldownSeconds,8,5,60);
+            confirmation=0;state.DeviceReadyAt=Time.time+Limit(Tuning.CooldownSeconds,5,5,60);
             activeUntil=Time.time+Limit(Tuning.AttemptSeconds,2,.1f,3);AttemptsStarted++;IsRecovering=true;LastPeakTorque=0;
             recoveryLever=SupportLever();
             LastLiftImpulse=Mathf.Min(Limit(Tuning.MaximumLiftImpulse,1800,0,3000),

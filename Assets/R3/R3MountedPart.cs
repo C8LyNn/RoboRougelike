@@ -13,6 +13,8 @@ namespace RoboRougelike.R3
         public string Id;
         // One physical reward module carries its own independently switchable stat modifier.
         public RoboRougelike.R1.R1UpgradeEffect UpgradeEffect;
+        public RoboRougelike.R1.R1ModifierOperation UpgradeOperation;
+        public RoboRougelike.R1.R1BonusScope UpgradeScope;
         public float UpgradeAmount;
         public float NextFireTime;
         public P12PipelineSafeDamageable Damageable;

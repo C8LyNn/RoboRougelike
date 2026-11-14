@@ -11,7 +11,35 @@ namespace RoboRougelike.R1
         public float hull,damage,fireInterval,mobility,core;
         public string[] acquired;
     }
-    public enum R1RunState { Ready, Combat, UpgradeChoice, Won, Lost, Garage, Salvage, Route, TestDrive }
+    public enum R1RunState { Ready, Combat, UpgradeChoice, Won, Lost, Garage, Salvage, Route, TestDrive, SafeZone }
+
+    // One additive increased/reduced group followed by independent more/less
+    // factors. Double intermediates and saturation prevent non-finite stats.
+    internal sealed class R1ModifierGroup
+    {
+        double additive,multiplier=1d;
+        public void Reset(){additive=0;multiplier=1d;}
+        public void Add(R1ModifierOperation operation,float amount,int copies,bool inverse=false)
+        {
+            if(float.IsNaN(amount)||float.IsInfinity(amount)||amount<0||copies<=0)return;
+            double sign=inverse?-1d:1d;
+            switch(operation)
+            {
+                case R1ModifierOperation.Increased:additive+=sign*amount*copies;break;
+                case R1ModifierOperation.Reduced:additive-=sign*amount*copies;break;
+                case R1ModifierOperation.More:Multiply(Math.Pow(Math.Max(0d,1d+sign*amount),copies));break;
+                case R1ModifierOperation.Less:Multiply(Math.Pow(Math.Max(0d,1d-sign*amount),copies));break;
+            }
+        }
+        void Multiply(double factor)
+        {multiplier=multiplier==0d||factor==0d?0d:Math.Min(double.MaxValue,multiplier*factor);}
+        public float Apply(float baseline)
+        {
+            double sum=Math.Max(0d,1d+additive);
+            if(baseline<=0||sum==0d||multiplier==0d)return 0f;
+            return (float)Math.Min(float.MaxValue,(double)baseline*sum*multiplier);
+        }
+    }
 
     public sealed class R1RunStats
     {
@@ -21,6 +49,32 @@ namespace RoboRougelike.R1
         public float Mobility { get; private set; } = 1;
         public float Core { get; private set; } = 1;
         public R1RunStats Copy() => new R1RunStats {Hull=Hull,Damage=Damage,FireInterval=FireInterval,Mobility=Mobility,Core=Core};
+        internal void ApplyBonusGroups(R1ModifierGroup hull,R1ModifierGroup damage,R1ModifierGroup reload,R1ModifierGroup mobility,R1ModifierGroup core)
+        {Hull=hull.Apply(Hull);Damage=damage.Apply(Damage);FireInterval=reload.Apply(FireInterval);Mobility=mobility.Apply(Mobility);Core=core.Apply(Core);}
+        public void ApplyAdditiveDamage(float increase)
+        {
+            if(float.IsNaN(increase)||float.IsInfinity(increase)||increase<0)return;
+            double result=(double)Damage*(1d+increase);
+            Damage=(float)Math.Min(float.MaxValue,result);
+        }
+        public void ApplyAdditiveMobility(float increase)
+        {
+            if(float.IsNaN(increase)||float.IsInfinity(increase)||increase<0)return;
+            double result=(double)Mobility*(1d+increase);
+            Mobility=(float)Math.Min(float.MaxValue,result);
+        }
+        public void ApplyAdditiveDurability(float hullIncrease,float coreIncrease)
+        {
+            if(!float.IsNaN(hullIncrease)&&!float.IsInfinity(hullIncrease)&&hullIncrease>=0)
+                Hull=(float)Math.Min(float.MaxValue,(double)Hull*(1d+hullIncrease));
+            if(!float.IsNaN(coreIncrease)&&!float.IsInfinity(coreIncrease)&&coreIncrease>=0)
+                Core=(float)Math.Min(float.MaxValue,(double)Core*(1d+coreIncrease));
+        }
+        public void ApplyAdditiveReloadReduction(float reduction)
+        {
+            if(float.IsNaN(reduction)||float.IsInfinity(reduction)||reduction<0)return;
+            FireInterval*=Mathf.Max(0,1-reduction);
+        }
         internal static bool TryRestore(R1ProgressCheckpoint c,out R1RunStats stats)
         {
             stats=null;
@@ -65,7 +119,7 @@ namespace RoboRougelike.R1
         public R1RunProgress(int total = 3, bool useRoutes = false) { TotalEncounters = Math.Max(3, total); routes=useRoutes; }
         public R1ProgressCheckpoint MakeGarageCheckpoint()
         {
-            if(State!=R1RunState.Garage)return null;
+            if(State!=R1RunState.Garage&&State!=R1RunState.SafeZone)return null;
             return new R1ProgressCheckpoint{encounterIndex=EncounterIndex,completed=CompletedEncounters,
                 hull=Stats.Hull,damage=Stats.Damage,fireInterval=Stats.FireInterval,mobility=Stats.Mobility,core=Stats.Core,
                 acquired=acquired.ToArray()};
@@ -162,6 +216,8 @@ namespace RoboRougelike.R1
         public bool PrepareGarage(){if(State!=R1RunState.Route||EncounterIndex!=0||CompletedEncounters!=0)return false;State=R1RunState.Garage;return true;}
         public bool BeginTest(){if(State!=R1RunState.Garage)return false;State=R1RunState.TestDrive;return true;}
         public bool EndTest(){if(State!=R1RunState.TestDrive)return false;State=R1RunState.Garage;return true;}
+        public bool BeginSafeZone(){if(State!=R1RunState.Garage)return false;State=R1RunState.SafeZone;return true;}
+        public bool EndSafeZone(){if(State!=R1RunState.SafeZone)return false;State=R1RunState.Garage;return true;}
         public bool ChooseRoute()
         {
             if(State!=R1RunState.Route)return false;

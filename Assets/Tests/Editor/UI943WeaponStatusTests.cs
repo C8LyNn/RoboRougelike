@@ -69,6 +69,26 @@ public sealed class UI943WeaponStatusTests
         }
         finally{Object.DestroyImmediate(go);}
     }
+    [Test] public void WeaponAndDefensePagingUseConfiguredKeys()
+    {
+        var go=new GameObject("Rebound HUD paging");var profile=R1ControlProfile.Current;
+        try
+        {
+            profile.ResetDefaults();Assert.That(profile.TryBind("WeaponStatusPage","K"),Is.True);
+            Assert.That(profile.TryBind("DefenseStatusPage","L"),Is.True);
+            var hud=go.AddComponent<R1RunHUD>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+            var weapon=typeof(R1RunHUD).GetMethod("UpdateWeaponPaging",flags);var defense=typeof(R1RunHUD).GetMethod("UpdateDefensePaging",flags);
+            Assert.That(weapon,Is.Not.Null);Assert.That(defense,Is.Not.Null);
+            var weaponPage=typeof(R1RunHUD).GetField("weaponStatusPage",flags);var defensePage=typeof(R1RunHUD).GetField("defenseStatusPage",flags);
+            weapon.Invoke(hud,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.Tab},3});
+            defense.Invoke(hud,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.P},10});
+            Assert.That((int)weaponPage.GetValue(hud),Is.Zero);Assert.That((int)defensePage.GetValue(hud),Is.Zero);
+            weapon.Invoke(hud,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.K},3});
+            defense.Invoke(hud,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.L},10});
+            Assert.That((int)weaponPage.GetValue(hud),Is.EqualTo(1));Assert.That((int)defensePage.GetValue(hud),Is.EqualTo(1));
+        }
+        finally{profile.ResetDefaults();Object.DestroyImmediate(go);}
+    }
     [UnityTest] public IEnumerator DefenseRowsUseActualMountedDevicesInOrderAcrossPages()
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();
@@ -79,7 +99,7 @@ public sealed class UI943WeaponStatusTests
         var design=R3VehicleCatalog.Create(R3VehicleKind.Standard);
         for(int i=0;i<5;i++)
         {
-            design.Parts.Add(new R3PartState(new Vector3Int(i-2,2,-2),R3PartKind.DirectionalShield){DefenseCharge=20+i});
+            design.Parts.Add(new R3PartState(new Vector3Int(i-2,2,-2),R3PartKind.DirectionalShield){DefenseCharge=20+i,Tier=i==0?2:1});
             design.Parts.Add(new R3PartState(new Vector3Int(i-2,2,-1),R3PartKind.PointDefense){Ammo=10+i});
         }
         var rig=R3VehicleAssembly.Build(new R3VehicleModel(design),new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
@@ -91,7 +111,8 @@ public sealed class UI943WeaponStatusTests
             string[] Page(int p)=>(string[])method.Invoke(null,new object[]{shields,defenses,p});
             var first=Page(0);var second=Page(1);Assert.That(first.Length,Is.EqualTo(9));Assert.That(second.Length,Is.EqualTo(1));
             var rows=first.Concat(second).ToArray();
-            for(int i=0;i<5;i++)Assert.That(rows[i],Is.EqualTo($"DEF-001 • {shields[i].Generator.Charge:0}/100 • "+(shields[i].Generator.Operational?"ON":"OFF")));
+            for(int i=0;i<5;i++)Assert.That(rows[i],Is.EqualTo($"DEF-001 • {shields[i].Generator.Charge:0}/{shields[i].Generator.Capacity:0} • "+(shields[i].Generator.Operational?"ON":"OFF")));
+            Assert.That(rows[0],Does.Contain("/200"),"A tier-two shield must show its actual capacity.");
             for(int i=0;i<5;i++)Assert.That(rows[i+5],Is.EqualTo($"DEF-002 • {defenses[i].State.Ammo}/40 • "+(defenses[i].Controller.IsOperational?"ON":"OFF")+" • T przeładuj"));
             defenses[4].State.Ammo=40;Assert.That(Page(1)[0],Does.Contain("40/40").And.Contain("pełny"));
             defenses[4].State.Ammo=3;Assert.That(Page(1)[0],Does.Contain("3/40").And.Contain("T przeładuj"));

@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
+using RoboRougelike.R4;
 using RoboRougelike.MOVSeries;
 using RoboRougelike.Mechanics.Booster;
 using RoboRougelike.Mechanics.MOV004GyroscopicStabilizer;
@@ -53,22 +54,55 @@ public class MOVSeriesGarageTests
         Assert.That(build,Is.Not.Null);Assert.That(rowsField,Is.Not.Null);
         build.Invoke(hud,new object[]{run,adapter,null});
         var rows=((System.Collections.Generic.List<string>)rowsField.GetValue(hud)).ToArray();
-        Assert.That(rows.Any(row=>row.Contains("Shift Booster")&&row.Contains("Spacja skok")),Is.True);
+        Assert.That(rows.Any(row=>row.Contains(run.VehicleModel.ActiveSlotLabel(R3PartKind.Booster)+" Booster")&&row.Contains(run.VehicleModel.ActiveSlotLabel(R3PartKind.JumpDrive)+" skok")),Is.True);
         Assert.That(rows.Any(row=>row.Contains("Blink")||row.Contains("zaczep")||row.Contains("żyroskop")||row.Contains("Hover")),Is.False);
         Assert.That(rows.Length,Is.EqualTo(2),"Unused abilities must not reserve a HUD row.");
         yield return null;
     }
-    void Corners(R3PartKind kind)
-    {foreach(int x in new[]{-1,1})foreach(int z in new[]{-3,3})Buy(new Vector3Int(x,0,z),kind);}
-    void FullConstruction(bool keepGunClear=false)
+    void BuyAvailable(R3PartKind kind,int side=0)
     {
-        Corners(R3PartKind.HoverEngine);
-        foreach(int x in new[]{-1,1})foreach(int z in new[]{-2,2})Buy(new Vector3Int(x,1,z),R3PartKind.Suspension);
-        foreach(int x in new[]{-1,1})Buy(new Vector3Int(x*2,0,0),R3PartKind.CrawlerTrack);
-        Buy(new Vector3Int(-1,1,0),R3PartKind.Booster);Buy(new Vector3Int(0,0,-3),R3PartKind.JumpDrive);
-        Buy(new Vector3Int(keepGunClear?1:0,1,1),R3PartKind.Blink);Buy(new Vector3Int(0,1,-1),R3PartKind.Gyroscope);
-        Buy(new Vector3Int(0,1,2),R3PartKind.MagneticGrapple);Buy(new Vector3Int(0,0,3),R3PartKind.OmniDrive);
-        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(15));
+        var model=run.VehicleModel;
+        var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .Where(c=>side==0||Math.Sign(c.x)==side)
+            .OrderBy(c=>Math.Abs(c.y)).ThenByDescending(c=>Math.Abs(c.x)).ThenBy(c=>Math.Abs(c.z)).ToArray();
+        foreach(var cell in cells)
+            if(model.PlacementError(cell,kind)==null&&run.GarageBuy(cell,kind))return;
+        var reasons=cells.Select(c=>model.PlacementError(c,kind)??"garage transaction refused")
+            .GroupBy(x=>x).Select(g=>g.Key+" ("+g.Count()+")");
+        Assert.Fail("No valid physical garage placement for "+kind+" on side "+side+": "+string.Join("; ",reasons));
+    }
+    void ReplaceAt(Vector3Int cell,R3PartKind kind)
+    {
+        if(run.VehicleModel.At(cell)!=null)Assert.That(run.GarageRemove(cell),Is.True,"Cannot prepare test cell "+cell);
+        Buy(cell,kind);
+    }
+    [UnityTest] public IEnumerator IndependentYawUsesCommaPeriodAndLeavesDeployableKeysFree()
+    {
+        var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>run.VehicleModel.PlacementError(c,R3PartKind.OmniDrive)==null);
+        Buy(cell,R3PartKind.OmniDrive);VirtualInput();
+        Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning&&run.CanUseMovement);
+        var adapter=run.Player.GetComponent<MOVSeriesVehicleAdapter>();Assert.That(adapter,Is.Not.Null);
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Period));yield return null;
+        Assert.That(adapter.IndependentYaw,Is.EqualTo(1));
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Comma));yield return null;
+        Assert.That(adapter.IndependentYaw,Is.EqualTo(-1));
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Z));yield return null;
+        Assert.That(adapter.IndependentYaw,Is.Zero);
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.C));yield return null;
+        Assert.That(adapter.IndependentYaw,Is.Zero);
+    }
+    void FullConstruction()
+    {
+        // The current starters occupy the historical fixed cells; select valid
+        // locations without removing armor or bypassing the real placement gate.
+        run.VehicleModel.Award(10000);int start=run.VehicleModel.Scrap;int spent=0;
+        void Add(R3PartKind kind,int side=0){int price=run.VehicleModel.Price(kind);BuyAvailable(kind,side);spent+=price;}
+        foreach(int side in new[]{-1,1})Add(R3PartKind.CrawlerTrack,side);
+        foreach(int side in new[]{-1,1})for(int i=0;i<2;i++)Add(R3PartKind.HoverEngine,side);
+        for(int i=0;i<4;i++)Add(R3PartKind.Suspension);
+        foreach(var kind in new[]{R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Blink,R3PartKind.Gyroscope,R3PartKind.MagneticGrapple,R3PartKind.OmniDrive})Add(kind);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(start-spent),"The test must pay actual current store prices.");
         foreach(var part in run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind>=R3PartKind.Booster))
         {
             Assert.That(part.Damageable.MaxHp,Is.EqualTo(part.Kind==R3PartKind.CrawlerTrack?140:100));
@@ -90,6 +124,46 @@ public class MOVSeriesGarageTests
         InputSystem.QueueStateEvent(keyboard,new KeyboardState(keys));yield return null;yield return null;
         InputSystem.QueueStateEvent(keyboard,new KeyboardState());yield return null;yield return null;
     }
+    void BuyWeaponOnAvailableSupport(R4WeaponKind kind)
+    {
+        var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .OrderByDescending(c=>Math.Abs(c.x)).ThenBy(c=>c.y).ToArray();
+        foreach(var cell in cells)
+            if(run.VehicleModel.PlacementError(cell,R3PartKind.Gun,false,kind)==null&&run.GarageBuyWeapon(cell,kind))return;
+        Assert.Fail("No valid physical garage placement for "+kind);
+    }
+    R3MountedPart GunAtSlot(int slot)
+    {
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var kind=assembly.Model.WeaponAtSlot(slot);
+        Assert.That(kind.HasValue,Is.True,"Expected weapon slot "+slot);
+        return assembly.Parts.First(p=>p.Kind==R3PartKind.Gun&&p.Weapon==kind.Value);
+    }
+    bool ThirdFireInputReady()=>!(bool)typeof(P12PipelineSafeTankController).GetField("waitForThirdRelease",
+        System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(run.Player.Controller);
+    [UnityTest] public IEnumerator QAndEFireOnlyTheirAssignedWeaponSlots()
+    {
+        run.VehicleModel.Award(2000);
+        BuyWeaponOnAvailableSupport(R4WeaponKind.Automatic);
+        BuyWeaponOnAvailableSupport(R4WeaponKind.Heavy);
+        BuyWeaponOnAvailableSupport(R4WeaponKind.Shotgun);
+        VirtualInput();Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning);
+        var aimObject=new GameObject("Four-slot input test camera");aimObject.transform.SetParent(run.Player.transform,false);
+        aimObject.transform.localPosition=new Vector3(0,5,-5);aimObject.transform.localRotation=Quaternion.Euler(-70,0,0);
+        var aimCamera=aimObject.AddComponent<Camera>();aimCamera.enabled=false;
+        var aimField=typeof(P12PipelineSafeTankController).GetField("aimCamera",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        aimField.SetValue(run.Player.Controller,aimCamera);
+        yield return Until(()=>run.Player.Controller.LastConsumedAimFrame>0&&
+            run.Player.GetComponent<R3VehicleAssembly>().ClearProjectilePath(GunAtSlot(2))&&
+            run.Player.GetComponent<R3VehicleAssembly>().ClearProjectilePath(GunAtSlot(3)));
+        Assert.That(GunAtSlot(2).NextFireTime,Is.Zero);Assert.That(GunAtSlot(3).NextFireTime,Is.Zero);
+        yield return Until(ThirdFireInputReady);
+        yield return KeyPress(Key.Q);
+        Assert.That(GunAtSlot(2).NextFireTime,Is.GreaterThan(0),"Q must fire slot 3.");
+        Assert.That(GunAtSlot(3).NextFireTime,Is.Zero,"Q must not fire slot 4.");
+        yield return KeyPress(Key.E);
+        Assert.That(GunAtSlot(3).NextFireTime,Is.GreaterThan(0),"E must fire slot 4.");
+        UnityEngine.Object.Destroy(aimObject);
+    }
     [UnityTest] public IEnumerator AllOriginalPartsSettingsInventoryAndResourcesSurviveRangeDamageResetAndReturn()
     {
         FullConstruction();Assert.That(Invoke("ConfigureDrive",R3DriveKind.Hover),Is.True);
@@ -103,7 +177,7 @@ public class MOVSeriesGarageTests
         part.Damageable.ApplyDamage(10000,part.transform.position,Vector3.zero);
         run.TogglePause();Assert.That(Invoke("ConfigureMovement",3000f,.8f,true,1.4f),Is.True);
         Assert.That(Snapshot(original),Is.EqualTo(before));Assert.That(run.ResetTestRange(),Is.True);yield return Until(()=>!run.Transitioning);
-        Assert.That(Snapshot(run.VehicleModel),Is.EqualTo(before));Assert.That(run.VehicleModel.Inventory.Single().Id,Is.EqualTo(inventoryId));
+        Assert.That(Snapshot(run.VehicleModel),Is.EqualTo(before));Assert.That(run.VehicleModel.Inventory.Count(p=>p.Id==inventoryId),Is.EqualTo(1));
         Assert.That(run.ReturnFromTestRange(),Is.True);yield return Until(()=>!run.Transitioning);
         Assert.That(run.VehicleModel,Is.SameAs(original));Assert.That(Snapshot(original),Is.EqualTo(before));
         Assert.That(run.VehicleModel.BoosterThrustNewtons,Is.EqualTo(2500));Assert.That(run.VehicleModel.BoosterDurationSeconds,Is.EqualTo(1.25f));
@@ -126,14 +200,38 @@ public class MOVSeriesGarageTests
     }
     [UnityTest] public IEnumerator ActualKeyboardActivatesAbilitiesAndExistingMouseStillFires()
     {
-        // This input test needs a clear barrel; the old Blink placement intersected it.
-        FullConstruction(keepGunClear:true);VirtualInput();Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning);yield return MOVSeriesDeviceTests.Seconds(.6f);
-        yield return KeyPress(Key.LeftShift);Assert.That(run.Player.GetComponentInChildren<VehicleBooster>().IsBoosting,Is.True);
+        // Starter layouts evolve: find real valid placements instead of assuming
+        // the old light chassis has vacant cells at fixed coordinates.
+        run.VehicleModel.Award(2000);
+        var devices=new System.Collections.Generic.List<R3PartKind>();
+        devices.Add(R3PartKind.Booster);devices.Add(R3PartKind.JumpDrive);devices.Add(R3PartKind.Blink);
+        devices.Add(R3PartKind.Gyroscope);devices.Add(R3PartKind.MagneticGrapple);
+        foreach(var kind in devices)
+        {
+            var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .OrderByDescending(c=>Math.Abs(c.x)).ThenBy(c=>c.y).ToArray();
+            bool mounted=false;
+            foreach(var cell in cells)
+                if(run.VehicleModel.PlacementError(cell,kind)==null&&run.GarageBuy(cell,kind)){mounted=true;break;}
+            Assert.That(mounted,Is.True,"No valid physical garage placement for "+kind);
+        }
+        VirtualInput();Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning);yield return MOVSeriesDeviceTests.Seconds(.6f);
+        Key ActiveKey(R3PartKind kind)
+        {
+            int slot=Array.FindIndex(run.VehicleModel.GetActiveSlots(),p=>p==kind);
+            Assert.That(slot,Is.InRange(0,3),kind+" must have an active slot");
+            return slot==0?Key.Digit1:slot==1?Key.Digit2:slot==2?Key.Digit3:Key.Digit4;
+        }
+        float blinkReady=run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.Blink).DeviceReadyAt;
+        yield return KeyPress(Key.Q);yield return KeyPress(Key.E);
+        Assert.That(run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.Blink).DeviceReadyAt,Is.EqualTo(blinkReady),"Q must not also activate Blink.");
+        Assert.That(run.Player.GetComponent<MOVSeriesVehicleAdapter>().GrappleAttached,Is.False,"E must not also activate the grapple.");
+        yield return KeyPress(ActiveKey(R3PartKind.Booster));Assert.That(run.Player.GetComponentInChildren<VehicleBooster>().IsBoosting,Is.True);
         bool gyro=run.VehicleModel.GyroEnabled;yield return KeyPress(Key.G);Assert.That(run.VehicleModel.GyroEnabled,Is.EqualTo(!gyro));
-        yield return KeyPress(Key.Q);Assert.That(run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.Blink).DeviceReadyAt,Is.GreaterThan(Time.time));
-        yield return KeyPress(Key.Space);Assert.That(run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.JumpDrive).DeviceReadyAt,Is.GreaterThan(Time.time));
-        yield return MOVSeriesDeviceTests.Seconds(1.4f);yield return KeyPress(Key.E);Assert.That(run.Player.GetComponent<MOVSeriesVehicleAdapter>().GrappleAttached,Is.True);
-        yield return KeyPress(Key.E);Assert.That(run.Player.GetComponent<MOVSeriesVehicleAdapter>().GrappleAttached,Is.False);
+        yield return KeyPress(ActiveKey(R3PartKind.Blink));Assert.That(run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.Blink).DeviceReadyAt,Is.GreaterThan(Time.time));
+        yield return KeyPress(ActiveKey(R3PartKind.JumpDrive));Assert.That(run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.JumpDrive).DeviceReadyAt,Is.GreaterThan(Time.time));
+        yield return MOVSeriesDeviceTests.Seconds(1.4f);yield return KeyPress(ActiveKey(R3PartKind.MagneticGrapple));Assert.That(run.Player.GetComponent<MOVSeriesVehicleAdapter>().GrappleAttached,Is.True);
+        yield return KeyPress(ActiveKey(R3PartKind.MagneticGrapple));Assert.That(run.Player.GetComponent<MOVSeriesVehicleAdapter>().GrappleAttached,Is.False);
         var assembly=run.Player.GetComponent<R3VehicleAssembly>();
         // The real aiming loop follows its camera every frame. Point a dedicated test
         // camera into open sky so it does not turn the barrel back into the grapple.
@@ -153,22 +251,25 @@ public class MOVSeriesGarageTests
     }
     [UnityTest] public IEnumerator NoWheelOmniUsesWasdStrafeIndependentYawAndKeepsWeaponOnline()
     {
-        Corners(R3PartKind.OmniDrive);Buy(new Vector3Int(-1,1,0),R3PartKind.Gyroscope);
+        foreach(int x in new[]{-1,1})foreach(int z in new[]{-3,3})ReplaceAt(new Vector3Int(x,0,z),R3PartKind.OmniDrive);
+        ReplaceAt(new Vector3Int(-1,1,0),R3PartKind.Gyroscope);
         Assert.That(Invoke("ConfigureDrive",R3DriveKind.Omni),Is.True);
         foreach(var wheel in run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray())Assert.That(run.GarageRemove(wheel.Cell),Is.True);
         VirtualInput();Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning);yield return MOVSeriesDeviceTests.Seconds(.5f);
         Assert.That(run.Player.Modules.ActiveWheelCount,Is.Zero);Assert.That(run.Player.DefeatReason,Is.Null);
-        float x=run.Player.transform.position.x;InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.A));yield return MOVSeriesDeviceTests.Seconds(.6f);
-        Assert.That(run.Player.transform.position.x,Is.LessThan(x-.2f));
+        float startingX=run.Player.transform.position.x;InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.A));yield return MOVSeriesDeviceTests.Seconds(.6f);
+        Assert.That(run.Player.transform.position.x,Is.LessThan(startingX-.2f));
         Assert.That(Mathf.Abs(Mathf.DeltaAngle(0,run.Player.transform.eulerAngles.y)),Is.LessThan(5));
-        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.C));yield return MOVSeriesDeviceTests.Seconds(.5f);
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Period));yield return MOVSeriesDeviceTests.Seconds(.5f);
         Assert.That(run.Player.GetComponent<Rigidbody>().angularVelocity.y,Is.GreaterThan(.2f));
         InputSystem.QueueStateEvent(keyboard,new KeyboardState());Assert.That(run.Player.Modules.WeaponOnline,Is.True);Assert.That(run.RangeDisabled,Is.False);
     }
     [UnityTest] public IEnumerator HoverKeyboardMovesTurnsAndSuppressesRequestedSuspension()
     {
-        Corners(R3PartKind.HoverEngine);Buy(new Vector3Int(-1,1,0),R3PartKind.Gyroscope);
-        foreach(int x in new[]{-1,1})foreach(int z in new[]{-2,2})Buy(new Vector3Int(x,1,z),R3PartKind.Suspension);
+        run.VehicleModel.Award(2000); // Movement setup is independent of shop pricing.
+        foreach(int x in new[]{-1,1})foreach(int z in new[]{-3,3})ReplaceAt(new Vector3Int(x,0,z),R3PartKind.HoverEngine);
+        ReplaceAt(new Vector3Int(-1,1,0),R3PartKind.Gyroscope);
+        foreach(int x in new[]{-1,1})foreach(int z in new[]{-2,2})ReplaceAt(new Vector3Int(x,1,z),R3PartKind.Suspension);
         Assert.That(run.ConfigureSuspension(true,ActiveSuspensionSupportMode.FullSupport,.3f),Is.True);
         Assert.That(Invoke("ConfigureDrive",R3DriveKind.Hover),Is.True);VirtualInput();
         Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning);yield return MOVSeriesDeviceTests.Seconds(1.5f);
@@ -176,7 +277,7 @@ public class MOVSeriesGarageTests
         Assert.That(run.Player.GetComponent<Rigidbody>().position.y,Is.InRange(.85f,1.25f));
         Assert.That(run.Player.GetComponent<ActiveSuspensionController>().LastTotalLiftNewtons,Is.Zero);
         float x0=run.Player.transform.position.x;InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.A));yield return MOVSeriesDeviceTests.Seconds(.6f);
-        Assert.That(run.Player.transform.position.x,Is.LessThan(x0-.2f));InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.C));yield return MOVSeriesDeviceTests.Seconds(.5f);
+        Assert.That(run.Player.transform.position.x,Is.LessThan(x0-.2f));InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Period));yield return MOVSeriesDeviceTests.Seconds(.5f);
         Assert.That(run.Player.GetComponent<Rigidbody>().angularVelocity.y,Is.GreaterThan(.2f));InputSystem.QueueStateEvent(keyboard,new KeyboardState());
         run.TogglePause();Assert.That(Invoke("ConfigureDrive",R3DriveKind.Wheels),Is.True);run.TogglePause();yield return MOVSeriesDeviceTests.FixedStep();
         Assert.That(run.Player.GetComponent<ActiveSuspensionController>().SuspensionEnabled,Is.True);
@@ -193,9 +294,10 @@ public class MOVSeriesGarageTests
         while(run.Progress.State!=R1RunState.Garage&&Time.realtimeSinceStartup<deadline)
         {if(run.Progress.State==R1RunState.Salvage)Assert.That(RRLW2TestFlow.Claim(run,Array.Empty<string>()),Is.True);yield return null;}
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
-        int earned=run.VehicleModel.Scrap;Assert.That(earned,Is.GreaterThanOrEqualTo(65));
-        Buy(new Vector3Int(-1,1,0),R3PartKind.Booster);Buy(new Vector3Int(1,1,0),R3PartKind.Gyroscope);
-        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(earned-65));string id=run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.Booster).Id;
+        int earned=run.VehicleModel.Scrap;int cost=run.VehicleModel.Price(R3PartKind.Booster)+run.VehicleModel.Price(R3PartKind.Gyroscope);
+        Assert.That(earned,Is.GreaterThanOrEqualTo(cost),"The earned money must cover the current shop prices.");
+        BuyAvailable(R3PartKind.Booster);BuyAvailable(R3PartKind.Gyroscope);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(earned-cost));string id=run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.Booster).Id;
         Assert.That(run.StartNextEncounter(),Is.True);if(run.Progress.State==R1RunState.Route)Assert.That(run.ChooseRoute(0),Is.True);
         yield return Until(()=>!run.Transitioning&&run.Progress.State==R1RunState.Combat);VirtualInput();
         var positions=run.Encounter.Enemies.Select(e=>e.transform.position).ToArray();

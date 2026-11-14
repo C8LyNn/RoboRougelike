@@ -19,7 +19,7 @@ public sealed class EnergyCombatRefinementTests
             var design=R3VehicleCatalog.Create(kind,variant);
             var model=new R3VehicleModel(design);
             int motors=design.Parts.Count(p=>p.Kind==R3PartKind.DrivePower);
-            int expected=kind==R3VehicleKind.Light?(variant%2==0?5:3):kind==R3VehicleKind.Heavy?(variant==3?3:4):5;
+            int expected=kind==R3VehicleKind.Light?(variant%2==0?5:3):kind==R3VehicleKind.Heavy?3:5;
             Assert.That(motors,Is.EqualTo(expected),$"{kind}/{variant}: actual modules supply the motor power.");
             Assert.That(R3VehicleModel.Connected(design.Parts),Is.True,$"{kind}/{variant}: every module must remain attached.");
             Assert.That(model.DeployError,Is.Null,$"{kind}/{variant}: the starter must be deployable.");
@@ -145,14 +145,15 @@ public sealed class EnergyCombatRefinementTests
         Assert.That(VehicleEnergyCosts.BoosterActivation,Is.EqualTo(7.5f));
         Assert.That(VehicleEnergyState.PassiveReservation,Is.EqualTo(25f));
     }
-    [Test] public void PurchasingAddsIndividualPartsToInventoryBeforeMounting()
+    [Test] public void PurchasingDriveBundlesAddsIndividualPartsToInventoryBeforeMounting()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(100);
         int before=model.Scrap,price=model.Price(R3PartKind.Wheel);
         Assert.That(model.PurchaseToInventory(R3PartKind.Wheel),Is.True);
         Assert.That(model.PurchaseToInventory(R3PartKind.Wheel),Is.True);
         var items=model.Inventory.Where(p=>p.Kind==R3PartKind.Wheel).ToArray();
-        Assert.That(items.Length,Is.EqualTo(2));Assert.That(items[0].Id,Is.Not.EqualTo(items[1].Id));
+        Assert.That(items.Length,Is.EqualTo(2*model.Economy.DriveGrantQuantity));
+        Assert.That(items.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(items.Length),"Every item in each bundle keeps its own identity");
         Assert.That(items.All(p=>p.Health==1),Is.True);Assert.That(model.Scrap,Is.EqualTo(before-2*price));
         Assert.That(model.Parts.Count(p=>p.Kind==R3PartKind.Wheel),Is.EqualTo(4));
     }

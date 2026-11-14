@@ -30,6 +30,20 @@ public sealed class Exit273PauseTests
         Assert.That(Time.timeScale, Is.Zero, "resuming garage must not start the physics simulation");
         yield return null;
     }
+    [UnityTest] public IEnumerator PauseControlsCloseBeforeResumingAndKeepSimulationPaused()
+    {
+        run.TogglePause();Assert.That(run.Paused,Is.True);
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var move=typeof(R1RunController).GetMethod("MovePauseSelection",flags);
+        var confirm=typeof(R1RunController).GetMethod("ConfirmPauseSelection",flags);
+        for(int i=0;i<3;i++)move.Invoke(run,new object[]{1});
+        Assert.That(run.PauseSelection,Is.EqualTo(3),"The controls option must be reachable with the keyboard or pad.");
+        confirm.Invoke(run,null);var hud=run.GetComponent<R1RunHUD>();
+        var property=typeof(R1RunHUD).GetProperty("PauseControlsOpen",flags);
+        Assert.That(property,Is.Not.Null);Assert.That(property.GetValue(hud),Is.True);
+        run.HandleEscape();Assert.That(run.Paused,Is.True);Assert.That(property.GetValue(hud),Is.False);
+        yield return null;run.HandleEscape();Assert.That(run.Paused,Is.False);Assert.That(Time.timeScale,Is.Zero);
+    }
     [UnityTest] public IEnumerator CombatPauseReturnsToMenuAndCleansActivity()
     {
         Assert.That(run.ChooseCheckpointRace(), Is.True);
@@ -81,6 +95,66 @@ public sealed class Exit273PauseTests
         while(run.Transitioning && Time.realtimeSinceStartup<deadline)yield return null;
         Assert.That(run.Player.GetInstanceID(), Is.Not.EqualTo(previousPlayer));
         Assert.That(run.Progress.State, Is.EqualTo(R1RunState.TestDrive));
+    }
+    [UnityTest] public IEnumerator RangeResetUsesReboundKeyWhileDrivingAndPaused()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("DefenseStatusPage","F6"),Is.True);
+            Assert.That(profile.TryBind("ResetRange","P"),Is.True);
+            Assert.That(run.EnterTestRange(),Is.True);float deadline=Time.realtimeSinceStartup+20;
+            while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+            int previous=run.Player.GetInstanceID();yield return PressRangeKey(Key.R);
+            Assert.That(run.Player.GetInstanceID(),Is.EqualTo(previous));Assert.That(run.Transitioning,Is.False);
+            yield return PressRangeKey(Key.P);while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(run.Player.GetInstanceID(),Is.Not.EqualTo(previous));
+            previous=run.Player.GetInstanceID();run.TogglePause();Assert.That(run.Paused,Is.True);
+            yield return PressRangeKey(Key.P);while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(run.Paused,Is.False);Assert.That(run.Player.GetInstanceID(),Is.Not.EqualTo(previous));
+        }
+        finally{profile.ResetDefaults();}
+    }
+    [UnityTest] public IEnumerator ExtraMouseButtonResetsRangeWhenRunningAndPaused()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("ResetRange","MouseBack"),Is.True);
+            Assert.That(run.EnterTestRange(),Is.True);float deadline=Time.realtimeSinceStartup+20;
+            while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+            var method=typeof(R1RunHUD).GetMethod("TryRangeMouseReset",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static);
+            Assert.That(method,Is.Not.Null);
+            for(int i=0;i<2;i++)
+            {
+                if(i==1){run.TogglePause();Assert.That(run.Paused,Is.True);}
+                int previous=run.Player.GetInstanceID();var used=new Event{type=EventType.MouseDown,button=3};used.Use();
+                method.Invoke(null,new object[]{run,used});Assert.That(run.Transitioning,Is.False,"UI-consumed input must not reset the range.");
+                var input=new Event{type=EventType.MouseDown,button=3};
+                Assert.That(R1ControlProfile.IsBindingMouseDown(input),Is.True);Assert.That(profile.MatchesEvent("ResetRange",input),Is.True);
+                method.Invoke(null,new object[]{run,input});
+                Assert.That(run.Transitioning,Is.True,"The configured extra button must trigger the range reset.");
+                deadline=Time.realtimeSinceStartup+20;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+                Assert.That(run.Player.GetInstanceID(),Is.Not.EqualTo(previous));Assert.That(run.Paused,Is.False);
+            }
+        }
+        finally{profile.ResetDefaults();}
+    }
+    [UnityTest] public IEnumerator ControlsPanelDoesNotResetPausedRangeOnR()
+    {
+        Assert.That(run.EnterTestRange(),Is.True);float deadline=Time.realtimeSinceStartup+15;
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        run.TogglePause();var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var move=typeof(R1RunController).GetMethod("MovePauseSelection",flags);
+        var confirm=typeof(R1RunController).GetMethod("ConfirmPauseSelection",flags);
+        for(int i=0;i<5;i++)move.Invoke(run,new object[]{1});
+        Assert.That(run.PauseSelection,Is.EqualTo(5));confirm.Invoke(run,null);
+        var panel=typeof(R1RunHUD).GetProperty("PauseControlsOpen",flags);var hud=run.GetComponent<R1RunHUD>();
+        Assert.That(panel.GetValue(hud),Is.True);int player=run.Player.GetInstanceID();
+        yield return PressRangeKey(Key.R);
+        Assert.That(run.Paused,Is.True);Assert.That(panel.GetValue(hud),Is.True);
+        Assert.That(run.Player.GetInstanceID(),Is.EqualTo(player));Assert.That(run.Transitioning,Is.False);
+        run.HandleEscape();Assert.That(panel.GetValue(hud),Is.False);Assert.That(run.Paused,Is.True);
     }
     [UnityTest] public IEnumerator RangePauseActionsSelectAndReturnToGarage()
     {
@@ -146,4 +220,28 @@ public sealed class Exit273PauseTests
         if(probe!=null)Object.DestroyImmediate(probe.gameObject);
         if (Application.isPlaying) { Time.timeScale = 1; yield return new ExitPlayMode(); }
     }
+}
+
+public sealed class MainMenuControlsTests
+{
+    RC2EditorInputProbe probe;
+    [UnityTest] public IEnumerator MainMenuControlsBlockStartingRunAndCloseOnEscape()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;var hud=run.GetComponent<R1RunHUD>();
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var open=typeof(R1RunHUD).GetMethod("OpenMainControls",flags);
+        Assert.That(open,Is.Not.Null,"The main menu needs a controls screen.");open.Invoke(hud,null);
+        var property=typeof(R1RunHUD).GetProperty("MainControlsOpen",flags);
+        Assert.That(property.GetValue(hud),Is.True);
+        probe=new GameObject("main controls input").AddComponent<RC2EditorInputProbe>();probe.InjectKey=Key.Enter;
+        float deadline=Time.realtimeSinceStartup+5;
+        while(!probe.Sent&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(probe.PressObserved,Is.True);yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Ready));
+        Object.DestroyImmediate(probe.gameObject);probe=null;yield return null;
+        run.HandleEscape();Assert.That(property.GetValue(hud),Is.False);Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Ready));
+    }
+    [UnityTearDown] public IEnumerator Cleanup(){if(probe!=null)Object.DestroyImmediate(probe.gameObject);if(Application.isPlaying)yield return new ExitPlayMode();}
 }

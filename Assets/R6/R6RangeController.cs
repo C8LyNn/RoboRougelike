@@ -76,6 +76,7 @@ namespace RoboRougelike.R1
         IEnumerator BuildTestRange()
         {
             Transitioning=true;Paused=false;RangeDisabled=false;SetSimulation(false);Encounter.Clear();
+            ResetEmergencyRescue();
             if(Player!=null){Player.gameObject.SetActive(false);Destroy(Player.gameObject);}
             if(testRange!=null)testRange.Clear();
             R1EncounterManager.ClearTransientObjects();

@@ -5,6 +5,23 @@ using UnityEngine;
 
 public sealed class UI943CombatHudLayoutTests
 {
+    [TestCase(1)][TestCase(2)][TestCase(3)][TestCase(4)]
+    public void MultipleActiveAbilityRowsDoNotOverlapDetailsOrButton(int count)
+    {
+        var flags=BindingFlags.NonPublic|BindingFlags.Static;
+        var extra=typeof(R1RunHUD).GetMethod("CombatAbilityExtraHeight",flags);
+        var row=typeof(R1RunHUD).GetMethod("CombatAbilityStatusRect",flags);
+        Assert.That(extra,Is.Not.Null);Assert.That(row,Is.Not.Null);
+        int height=(int)extra.Invoke(null,new object[]{count});
+        var details=new Rect(36,120+height,630,26);var button=new Rect(535,88,130,30);
+        for(int i=0;i<count;i++)
+        {
+            var rect=(Rect)row.Invoke(null,new object[]{i});
+            Assert.That(rect.Overlaps(details),Is.False);
+            Assert.That(rect.Overlaps(button),Is.False);
+            if(i>0)Assert.That(rect.Overlaps((Rect)row.Invoke(null,new object[]{i-1})),Is.False);
+        }
+    }
     [TestCase(18,42)] [TestCase(36,50)] [TestCase(90,65)]
     public void AimStatusPanelFitsTextAndStaysOutsideCombatPanels(float textHeight,float expected)
     {

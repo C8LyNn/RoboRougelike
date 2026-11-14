@@ -76,9 +76,9 @@ namespace RoboRougelike.R1
             DrawCatalogBulkRepair(run,items,PortraitCatalogBulkRepairRect());
             int price=model.Price(selectedKind,selectedWeapon);
             bool unlocked=run.CanBuyTechnology(selectedKind,selectedWeapon);
-            GUI.enabled=unlocked&&(model.CreativeMode||selectedKind!=R3PartKind.BonusModule)&&model.Scrap>=price&&model.Inventory.Count<model.AvailableInventoryCapacity;
+            GUI.enabled=unlocked&&(model.CreativeMode||selectedKind!=R3PartKind.BonusModule)&&model.Scrap>=price&&(long)model.Inventory.Count+CatalogPurchaseQuantity(model,selectedKind)<=model.AvailableInventoryCapacity;
             var buyRect=PortraitCatalogBuyRect();
-            if(GUI.Button(new Rect(buyRect.x,buyRect.y,172,buyRect.height),model.CreativeMode?"Dodaj za darmo":GaragePurchaseCaption(selectedKind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))PortraitCatalogPurchase(run,selectedKind,selectedWeapon);
+            if(GUI.Button(new Rect(buyRect.x,buyRect.y,172,buyRect.height),CatalogPurchaseCaption(model,selectedKind,unlocked,price),compactButton))PortraitCatalogPurchase(run,selectedKind,selectedWeapon);
             DrawBuyFive(run,selectedKind,selectedWeapon,new Rect(buyRect.x+180,buyRect.y,174,buyRect.height));
             GUI.enabled=true;
             var selected=items.FirstOrDefault(p=>p.Id==run.Garage.SelectedInventoryId);
@@ -108,7 +108,7 @@ namespace RoboRougelike.R1
             if(AddSelectedCatalogPart(run,kind,weapon))
             {
                 var purchased=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(purchased.Id);DismissCatalog();
-                run.Garage.Message=run.CreativeWorkshop?"Dodano część za darmo. Kliknij pojazd, aby ją zamontować.":"Kupiono część. Kliknij pojazd, aby ją zamontować.";
+                run.Garage.Message=run.CreativeWorkshop?"Dodano część za darmo. Kliknij pojazd, aby ją zamontować.":$"Kupiono {CatalogPurchaseQuantity(run.VehicleModel,kind)} szt. Kliknij pojazd, aby zamontować część.";
             }
             else catalogFeedback=run.Garage.Message=PurchaseFailure(run,kind,weapon);
         }

@@ -10,6 +10,7 @@ namespace RoboRougelike.R1
     {
         bool garageOptionsOpen;
         int garageOptionsTab;
+        int vendorOfferPage;
         string garageOptionsFeedback;
         int quickPartCategory;
         bool quickOwnedOnly;
@@ -42,7 +43,7 @@ namespace RoboRougelike.R1
             }
             return garagePrimaryButton;
         }
-        void OpenSimpleGarageOptions(int tab){garageOptionsTab=tab;garageOptionsFeedback=null;activitySaveFeedback=null;garageOptionsOpen=true;repairQuoteModel=null;}
+        void OpenSimpleGarageOptions(int tab){garageOptionsTab=tab;if(tab==3)vendorOfferPage=0;garageOptionsFeedback=null;activitySaveFeedback=null;garageOptionsOpen=true;repairQuoteModel=null;}
         int SimpleGarageRepairQuote(R3VehicleModel model)
         {
             // The physical quote may construct temporary collision probes.
@@ -136,29 +137,35 @@ namespace RoboRougelike.R1
         static bool GarageSearchExitKey(EventType type,KeyCode key,string focused,bool active)=>
             active&&focused==QuickSearchControlName&&type==EventType.KeyDown&&
             (key==KeyCode.Escape||key==KeyCode.Return||key==KeyCode.KeypadEnter);
-        static int? QuickCategoryShortcut(KeyCode key,bool modified)
+        static readonly string[] QuickCategoryActions={"GarageBlocks","GarageWheels","GarageWeapons","GarageModules"};
+        static int? QuickCategoryShortcutForProfile(Event input,R1ControlProfile profile)
         {
-            if(modified)return null;
-            switch(key)
-            {
-                case KeyCode.Alpha5:case KeyCode.Keypad5:return 0;
-                case KeyCode.Alpha6:case KeyCode.Keypad6:return 1;
-                case KeyCode.Alpha7:case KeyCode.Keypad7:return 2;
-                case KeyCode.Alpha8:case KeyCode.Keypad8:return 3;
-                default:return null;
-            }
+            if(input==null||profile==null||input.shift||input.control||input.alt||input.command)return null;
+            for(int i=0;i<QuickCategoryActions.Length;i++)if(profile.MatchesEvent(QuickCategoryActions[i],input))return i;
+            if(input.type!=EventType.KeyDown)return null;
+            int index=input.keyCode==KeyCode.Keypad5?0:input.keyCode==KeyCode.Keypad6?1:
+                input.keyCode==KeyCode.Keypad7?2:input.keyCode==KeyCode.Keypad8?3:-1;
+            if(index<0)return null;
+            string action=QuickCategoryActions[index],alias="Numpad"+(index+5);
+            return profile.Binding(action)=="Digit"+(index+5)&&profile.Conflict(action,alias)==null?index:(int?)null;
+        }
+        static bool QuickSearchShortcut(Event input,R1ControlProfile profile)
+        {
+            if(input==null||profile==null||input.shift||input.control||input.alt||input.command)return false;
+            if(profile.MatchesEvent("GarageSearch",input))return true;
+            return input.type==EventType.KeyDown&&input.keyCode==KeyCode.KeypadDivide&&profile.Binding("GarageSearch")=="Slash"&&
+                profile.Conflict("GarageSearch","NumpadDivide")==null;
         }
         bool HandleQuickGarageKey(R1RunController run,Event current,bool textFocused)
         {
-            if(textFocused||current.type!=EventType.KeyDown)return false;
-            bool modified=current.shift||current.control||current.alt||current.command;
-            var category=QuickCategoryShortcut(current.keyCode,modified);
+            if(textFocused||!R1ControlProfile.IsBindingInput(current))return false;
+            var category=QuickCategoryShortcutForProfile(current,R1ControlProfile.Current);
             if(category.HasValue)
             {
                 ApplyQuickSearch(run,string.Empty);SelectQuickCategory(run,category.Value);
                 current.Use();return true;
             }
-            if(!modified&&(current.keyCode==KeyCode.Slash||current.keyCode==KeyCode.KeypadDivide))
+            if(QuickSearchShortcut(current,R1ControlProfile.Current))
             {GUI.FocusControl(QuickSearchControlName);current.Use();return true;}
             return false;
         }
@@ -176,7 +183,7 @@ namespace RoboRougelike.R1
             GUI.SetNextControlName(QuickSearchControlName);
             string next=GUI.TextField(rect,quickPartSearch,64);
             if(string.IsNullOrEmpty(next)&&GUI.GetNameOfFocusedControl()!=QuickSearchControlName)
-            {var previous=GUI.color;GUI.color=new Color(.62f,.7f,.75f,1);GUI.Label(new Rect(rect.x+5,rect.y,rect.width-10,rect.height),"Szukaj /",small);GUI.color=previous;}
+            {var previous=GUI.color;GUI.color=new Color(.62f,.7f,.75f,1);GUI.Label(new Rect(rect.x+5,rect.y,rect.width-10,rect.height),"Szukaj "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageSearch")),small);GUI.color=previous;}
             if(GUI.Button(clear,"×",compactButton))next=string.Empty;
             ApplyQuickSearch(run,next);
         }
@@ -254,6 +261,15 @@ namespace RoboRougelike.R1
                 return GaragePurchaseCaption(kind,unlocked,price,scrap,full);
             return $"Kup i wybierz\n{price} Z";
         }
+        int CatalogPurchaseQuantity(R3VehicleModel model,R3PartKind kind)=>model.PurchaseQuantity(kind,
+            kind==R3PartKind.Armor?CatalogArmorShape(catalogBonusId):R3ArmorShape.Cube);
+        string CatalogPurchaseCaption(R3VehicleModel model,R3PartKind kind,bool unlocked,int price)
+        {
+            int quantity=CatalogPurchaseQuantity(model,kind);
+            bool full=(long)model.Inventory.Count+quantity>model.AvailableInventoryCapacity;
+            if(quantity>1&&unlocked&&!full&&price>0&&model.Scrap>=price)return $"Kup ×{quantity}\n{price} Z";
+            return QuickPurchaseCaption(model.CreativeMode,kind,unlocked,price,model.Scrap,full);
+        }
 
         static bool CanBuyFive(R3PartKind kind,bool unlocked,int price,int scrap,int inventoryCount)=>
             kind!=R3PartKind.BonusModule&&unlocked&&price>0&&scrap>=0&&inventoryCount>=0&&
@@ -286,6 +302,8 @@ namespace RoboRougelike.R1
             string basic=model.CreativeMode?null:BasicPurchaseFailure(!run.Transitioning&&run.Progress?.State==R1RunState.Garage,
                 kind,run.CanBuyTechnology(kind,weapon),model.Price(kind,weapon),model.Scrap,model.Inventory.Count);
             if(basic!=null)return basic;
+            int quantity=CatalogPurchaseQuantity(model,kind);
+            if((long)model.Inventory.Count+quantity>model.AvailableInventoryCapacity)return $"Brak miejsca na pakiet {quantity} części.";
             if(kind==R3PartKind.Wheel)
             {
                 var style=CatalogWheelStyle(catalogBonusId);
@@ -305,6 +323,8 @@ namespace RoboRougelike.R1
         void DrawBuyFive(R1RunController run,R3PartKind kind,R4WeaponKind weapon,Rect rect)
         {
             var model=run.VehicleModel;int price=model.Price(kind,weapon);bool unlocked=run.CanBuyTechnology(kind,weapon);
+            int quantity=CatalogPurchaseQuantity(model,kind);
+            if(quantity>1){GUI.Label(rect,$"Pakiet: {quantity} szt.",small);return;}
             bool previouslyEnabled=GUI.enabled;
             GUI.enabled=previouslyEnabled&&((model.CreativeMode&&unlocked)||CanBuyFive(kind,unlocked,price,model.Scrap,model.Inventory.Count));
             if(GUI.Button(rect,model.CreativeMode?"Dodaj 5 za darmo":BuyFiveCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count),compactButton))
@@ -356,8 +376,54 @@ namespace RoboRougelike.R1
 
         static string GarageWeaponGroups(R3VehicleModel model)
         {
-            bool extra=model.CreativeMode&&model.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>2;
-            return "A / LPM: "+WeaponGroupName(model.WeaponGroupA)+"\nB / PPM: "+WeaponGroupName(model.WeaponGroupB)+(extra?" + pozostałe":"");
+            var slots=model.GetWeaponSlots();
+            bool extra=model.CreativeMode&&model.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>4;
+            var control=R1ControlProfile.Current;
+            return R1ControlProfile.Display(control.Binding("Weapon1"))+": "+WeaponGroupName(slots[0])+"  •  "+R1ControlProfile.Display(control.Binding("Weapon2"))+": "+WeaponGroupName(slots[1])+
+                "\n"+R1ControlProfile.Display(control.Binding("Weapon3"))+": "+WeaponGroupName(slots[2])+"  •  "+R1ControlProfile.Display(control.Binding("Weapon4"))+": "+WeaponGroupName(slots[3])+(extra?" + pozostałe":"");
+        }
+        void DrawSlotAssignments(R3VehicleModel model,float x,float y,float width)
+        {
+            var weapons=model.GetWeaponSlots();var active=model.GetActiveSlots();var deployables=model.GetDeployableSlots();
+            bool showDeployables=deployables.Any(p=>p.HasValue);
+            float col=(width-(showDeployables?24:12))/(showDeployables?3:2);
+            var controls=R1ControlProfile.Current;
+            GUI.Label(new Rect(x,y,col,30),"BROŃ",heading);
+            GUI.Label(new Rect(x+col+12,y,col,30),"MODUŁY AKTYWNE",heading);
+            if(showDeployables)GUI.Label(new Rect(x+2*(col+12),y,col,30),"URZĄDZENIA",heading);
+            for(int i=0;i<4;i++)
+            {
+                float row=y+40+i*50;
+                GUI.enabled=weapons[i].HasValue;
+                if(GUI.Button(new Rect(x,row,col,44),R1ControlProfile.Display(controls.Binding("Weapon"+(i+1)))+": "+WeaponGroupName(weapons[i]),compactButton))
+                    model.AssignWeaponSlot(weapons[i].Value,(i+1)%4);
+                GUI.enabled=active[i].HasValue;
+                if(GUI.Button(new Rect(x+col+12,row,col,44),R1ControlProfile.Display(controls.Binding("Active"+(i+1)))+": "+(active[i].HasValue?R4WeaponDefinition.PartName(active[i].Value):"—"),compactButton))
+                    model.AssignActiveSlot(active[i].Value,(i+1)%4);
+                if(showDeployables)
+                {
+                    GUI.enabled=deployables[i].HasValue;
+                    if(GUI.Button(new Rect(x+2*(col+12),row,col,44),R1ControlProfile.Display(controls.Binding("Deploy"+(i+1)))+": "+(deployables[i].HasValue?R4WeaponDefinition.PartName(deployables[i].Value):"—"),compactButton))
+                        model.AssignDeployableSlot(deployables[i].Value,(i+1)%4);
+                }
+            }
+            GUI.enabled=true;
+            if(model.CreativeMode)
+            {
+                var extraWeapon=model.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct()
+                    .Where(kind=>!weapons.Contains(kind)).Select(kind=>(R4WeaponKind?)kind).FirstOrDefault();
+                var extraActive=model.Parts.Where(p=>R3VehicleModel.IsActiveSlotPart(p.Kind)).Select(p=>p.Kind).Distinct()
+                    .Where(kind=>!active.Contains(kind)).Select(kind=>(R3PartKind?)kind).FirstOrDefault();
+                var extraDeployable=model.Parts.Where(p=>R3VehicleModel.IsDeployableSlotPart(p.Kind)).Select(p=>p.Kind).Distinct()
+                    .Where(kind=>!deployables.Contains(kind)).Select(kind=>(R3PartKind?)kind).FirstOrDefault();
+                if(extraWeapon.HasValue&&GUI.Button(new Rect(x,y+245,col,44),"Slot E: "+WeaponGroupName(extraWeapon),compactButton))
+                    model.AssignWeaponSlot(extraWeapon.Value,3);
+                if(extraActive.HasValue&&GUI.Button(new Rect(x+col+12,y+245,col,44),"Slot 4: "+R4WeaponDefinition.PartName(extraActive.Value),compactButton))
+                    model.AssignActiveSlot(extraActive.Value,3);
+                if(showDeployables&&extraDeployable.HasValue&&GUI.Button(new Rect(x+2*(col+12),y+245,col,44),"Slot V: "+R4WeaponDefinition.PartName(extraDeployable.Value),compactButton))
+                    model.AssignDeployableSlot(extraDeployable.Value,3);
+            }
+            GUI.Label(new Rect(x,y+296,width,42),"Kliknij rodzaj, aby przenieść go do kolejnego slotu. Zajęte sloty zamienią się miejscami.",small);
         }
 
         static string GarageInspectionSummary(R3VehicleModel model,R3PartState part)
@@ -448,9 +514,6 @@ namespace RoboRougelike.R1
 
         static string GarageWheelPowerAdvice(float units)
         {
-            float limit=RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(100);
-            if(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(units)>=limit-.001f)
-                return "Limit silników osiągnięty. Zmniejsz masę albo dodaj mocniejsze koła. Koła muszą dotykać podłoża.";
             float firstMotor=(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(1)-1)*100;
             return $"Podjazd: dołóż silnik lub koła albo zmniejsz masę. T1: +{firstMotor:0}% siły, −{VehicleEnergyState.PassiveReservation:0} maks. energii. Koła muszą dotykać podłoża.";
         }
@@ -470,9 +533,8 @@ namespace RoboRougelike.R1
             var drive=run.Player.GetComponent<RoboRougelike.R6.R6VehicleDrive>();
             if(drive==null)return "Dane napędu są niedostępne.";
             float bonus=(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(drive.ActivePowerUnits)-1)*100;
-            float maxBonus=(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(100)-1)*100;
             return $"Masa: {body.mass:0} kg • Sprawne koła: {drive.Wheels}\n"+
-                $"Siła silników kół: +{bonus:0}% (maks. +{maxBonus:0}%)\n"+
+                $"Siła silników kół: +{bonus:0}%\n"+
                 GarageWheelPowerAdvice(drive.ActivePowerUnits);
         }
 
@@ -539,13 +601,52 @@ namespace RoboRougelike.R1
             if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.BonusModule?
                 $"Moduł T{R3VehicleModel.NormalizedTier(part.Tier)}: {BonusInstanceText(part)}. Kliknij, aby zamontować.":kind==R3PartKind.Battery?
                 $"Bateria T{R3VehicleModel.NormalizedTier(part.Tier)}: +{VehicleEnergyState.BatteryCapacity*R3VehicleModel.TierEffectUnits(part.Tier):0} maks. energii. Kliknij, aby zamontować.":
+                kind==R3PartKind.Suspension?$"Zawieszenie T{R3VehicleModel.NormalizedTier(part.Tier)}: sprężystość i maksymalna siła ×{R3VehicleModel.TierEffectUnits(part.Tier)}; tłumienie dostosowane do tieru.":
+                kind==R3PartKind.OmniDrive?$"Omni T{R3VehicleModel.NormalizedTier(part.Tier)}: przyspieszenie ×{R3VehicleModel.TierEffectUnits(part.Tier)}, {VehicleEnergyCosts.OmniDrivePerSecond*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii/s podczas ruchu.":
+                kind==R3PartKind.HoverEngine?$"Hover T{R3VehicleModel.NormalizedTier(part.Tier)}: udźwig i napęd ×{R3VehicleModel.TierEffectUnits(part.Tier)}, {VehicleEnergyCosts.HoverDrivePerSecond*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii/s przy podparciu.":
+                kind==R3PartKind.CrawlerTrack?$"Gąsienica T{R3VehicleModel.NormalizedTier(part.Tier)}: nośność, ciąg i hamowanie ×{R3VehicleModel.TierEffectUnits(part.Tier)}.":
+                kind==R3PartKind.DirectionalShield?$"Tarcza T{R3VehicleModel.NormalizedTier(part.Tier)}: {RoboRougelike.WeaponIntegration.RRLShieldBinding.BaseCapacity*R3VehicleModel.TierEffectUnits(part.Tier):0} osłony, {RoboRougelike.WeaponIntegration.RRLShieldBinding.BaseRegenerationPerSecond*R3VehicleModel.TierEffectUnits(part.Tier):0}/s; rezerwuje 25 energii.":
+                kind==R3PartKind.Booster?$"Booster T{R3VehicleModel.NormalizedTier(part.Tier)}: {run.VehicleModel.BoosterThrustNewtons*R3VehicleModel.TierEffectUnits(part.Tier):0} N, {VehicleEnergyCosts.BoosterActivation*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii za aktywację.":
+                kind==R3PartKind.MagneticGrapple?$"Zaczep T{R3VehicleModel.NormalizedTier(part.Tier)}: siła ×{R3VehicleModel.TierEffectUnits(part.Tier)}, {VehicleEnergyCosts.Grapple*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii za aktywację.":
+                kind==R3PartKind.Gyroscope?$"Żyroskop T{R3VehicleModel.NormalizedTier(part.Tier)}: stabilizacja ×{R3VehicleModel.TierEffectUnits(part.Tier)}, rezerwuje 25 energii.":
+                kind==R3PartKind.ScannerPulse?$"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: +{20*R3VehicleModel.TierEffectUnits(part.Tier)} m zasięgu i {5*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii. Kopie wspólnie aktywują impuls.":
+                kind==R3PartKind.StructuralScanner?$"Skan struktury T{R3VehicleModel.NormalizedTier(part.Tier)}: +{RoboRougelike.Mechanics.StructuralScan.StructuralScanSettings.CombinedRange(run.VehicleModel.Economy.StructuralScanRange,R3VehicleModel.TierEffectUnits(part.Tier)):0} m zasięgu grupy, {run.VehicleModel.Economy.StructuralScanEnergy*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii. Wymaga widocznego celu.":
+                kind==R3PartKind.JumpDrive?$"Napęd skoku T{R3VehicleModel.NormalizedTier(part.Tier)}: wkład ×{R3VehicleModel.TierEffectUnits(part.Tier)}, {VehicleEnergyCosts.Jump*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii za aktywację.":
+                kind==R3PartKind.Blink?$"Blink T{R3VehicleModel.NormalizedTier(part.Tier)}: +{8*R3VehicleModel.TierEffectUnits(part.Tier)} m zasięgu, {VehicleEnergyCosts.Blink*R3VehicleModel.TierActivationCost(part.Tier):0.##} energii za aktywację.":
                 kind==R3PartKind.RepairPulse?
-                $"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: V, {R3RepairPulse.EnergyCost*R3VehicleModel.TierActivationCost(part.Tier):0} energii, {R3RepairPulse.Duration:0} s. Kliknij, aby zamontować.":
+                $"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: slot aktywny 1–4, {R3RepairPulse.EnergyCost*R3VehicleModel.TierActivationCost(part.Tier):0} energii, {R3RepairPulse.Duration:0} s. Kliknij, aby zamontować.":
                 kind==R3PartKind.DrivePower?$"Silnik T{R3VehicleModel.NormalizedTier(part.Tier)} wspomaga koła; rezerwuje {VehicleEnergyState.PassiveReservation+R3VehicleModel.TierPassiveExtra(part.Tier):0} energii.":
                 kind==R3PartKind.EnergyRegenerator?$"Regenerator T{R3VehicleModel.NormalizedTier(part.Tier)}: +{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(part.Tier):0} energii/s, rezerwa {VehicleEnergyState.PassiveReservation+R3VehicleModel.TierPassiveExtra(part.Tier):0}.":
+                kind==R3PartKind.SalvageOptimizer?$"Odzysk T{R3VehicleModel.NormalizedTier(part.Tier)}: +{run.VehicleModel.Economy.SalvageOptimizerBonus*R3VehicleModel.TierEffectUnits(part.Tier)*100:0}% złomu i do +{run.VehicleModel.Economy.SalvageOptimizerExtraOffersPerUnit*R3VehicleModel.TierEffectUnits(part.Tier)} ofert. Rezerwa {VehicleEnergyState.PassiveReservation:0} energii.":
+                kind==R3PartKind.Overdrive?$"Overdrive T{R3VehicleModel.NormalizedTier(part.Tier)}: +{run.VehicleModel.Economy.OverdriveBonusPerUnit*R3VehicleModel.TierEffectUnits(part.Tier)*100:0}% obrażeń na {run.VehicleModel.Economy.OverdriveDuration:0} s. Slot aktywny 1–4.":
+                kind==R3PartKind.RapidFire?$"Rapid Fire T{R3VehicleModel.NormalizedTier(part.Tier)}: −{run.VehicleModel.Economy.RapidFireReductionPerUnit*R3VehicleModel.TierEffectUnits(part.Tier)*100:0}% czasu między strzałami na {run.VehicleModel.Economy.RapidFireDuration:0} s. Slot 1–4.":
+                kind==R3PartKind.DoubleShot?$"Double Shot T{R3VehicleModel.NormalizedTier(part.Tier)}: +{run.VehicleModel.Economy.DoubleShotChancePerUnit*R3VehicleModel.TierEffectUnits(part.Tier)*100:0}% szansy. Działa na działa, strzelbę, railgun i rakiety. Rezerwa {VehicleEnergyState.PassiveReservation:0} energii. Limit: 96 pocisków / 32 rakiety na mapie.":
+                kind==R3PartKind.DoubleShotOverdrive?$"Double Shot Overdrive T{R3VehicleModel.NormalizedTier(part.Tier)}: +{run.VehicleModel.Economy.DoubleShotOverdriveExtraPerUnit*R3VehicleModel.TierEffectUnits(part.Tier)} na każdy pocisk przez {run.VehicleModel.Economy.DoubleShotOverdriveDuration:0} s. Limit: 96 pocisków / 32 rakiety. Slot 1–4.":
+                kind==R3PartKind.TargetedEmp?$"EMP celowany: zakłóca elektronikę wskazanego wroga do {R3EmpDevices.TargetRange:0} m. Zużywa 1 ładunek; bazowo {run.VehicleModel.Economy.DeviceBaseCharges}. Bez obrażeń. Slot 1–4.":
+                kind==R3PartKind.AreaEmp?$"EMP obszarowy: zakłóca elektronikę wrogów wokół pojazdu. Zużywa 1 ładunek; bazowo {run.VehicleModel.Economy.DeviceBaseCharges}. Bez obrażeń. Slot 1–4.":
+                kind==R3PartKind.ChargeCapacity?$"Pojemność: +{run.VehicleModel.Economy.CapacityChargesPerUnit*R3VehicleModel.TierEffectUnits(part.Tier)} ładunków dla każdego urządzenia. Rezerwa {VehicleEnergyState.PassiveReservation:0} energii.":
+                kind==R3PartKind.ChargeRegenerator?$"Regenerator: +{run.VehicleModel.Economy.ChargesPerSecondPerRegenerator*R3VehicleModel.TierEffectUnits(part.Tier):0.##} ładunku/s na urządzenie. Rezerwa {VehicleEnergyState.PassiveReservation:0} energii.":
+                kind==R3PartKind.RechargePulse?$"Impuls: +{run.VehicleModel.Economy.RechargePulseChargesPerUnit*R3VehicleModel.TierEffectUnits(part.Tier)} ładunków każdemu sprawnemu urządzeniu. Slot 1–4.":
+                kind==R3PartKind.RampDeployer?$"Wyrzutnik ramp: stawia rampę za jadącym pojazdem. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.RampEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii. Więcej kopii poszerza rampę.":
+                kind==R3PartKind.WallDeployer?$"Wyrzutnik murków: stawia osłonę za jadącym pojazdem. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.WallEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.JumpPadDeployer?$"Wyrzutnik jump padów: stawia wyrzutnię skoku za jadącym pojazdem. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.JumpPadEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.BlastTrapDeployer?$"Pułapka wybuchowa: zostaje za pojazdem i atakuje wrogów w pobliżu. 1 ładunek, {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii; slot urządzenia.":
+                kind==R3PartKind.EmpTrapDeployer?$"Pułapka EMP: zostaje za pojazdem i zakłóca elektronikę pobliskich wrogów. Bez obrażeń HP; slot urządzenia.":
+                kind==R3PartKind.RepelTrapDeployer?$"Pułapka odrzucająca: odpycha pobliskich wrogów bez obrażeń. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.DamageTrapDeployer?$"Pułapka obrażeń: tworzy pole raniące wrogów przez krótki czas. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.SlowTrapDeployer?$"Pułapka spowalniająca: czasowo osłabia napęd wrogów. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.ImmobilizeTrapDeployer?$"Pułapka unieruchamiająca: czasowo wyłącza napęd wrogów. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.FlyingDroneGenerator?$"Generator drona: wypuszcza latającego sojusznika. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.SupportDroneGenerator?$"Dron energetyczny: odnawia energię sojuszników i słabo ostrzeliwuje wrogów. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.HealingDroneGenerator?$"Dron naprawczy: naprawia sojuszników i słabo ostrzeliwuje wrogów. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.GroundDroneGenerator?$"Generator drona naziemnego: wypuszcza kołowego sojusznika. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.OffensiveTurretGenerator?$"Wieżyczka ofensywna: rozstawia się za jadącym robotem i strzela do wrogów. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.HealingTurretGenerator?$"Wieżyczka lecznicza: naprawia pobliskie sojusznicze pojazdy i urządzenia. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.SupportTurretGenerator?$"Wieżyczka wspierająca: odnawia energię sojuszniczych pojazdów w zasięgu. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.ShieldTurretGenerator?$"Kopuła osłonowa: zatrzymuje wrogie strzały, a przyjazne mogą wydostać się ze środka. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kliknij, aby zamontować.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kliknij, aby zamontować.":
-                kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
+                kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj "+R3GarageRotationInput.Describe(R1ControlProfile.Current)+".":
                 kind==R3PartKind.Wheel?GarageWheelSelection(part):"Kliknij pojazd, aby zamontować część.";}
             else {garage.SelectedInventoryId=null;garage.SetTool(R41GarageTool.Mount);
                 garage.Message=run.CreativeWorkshop?"Ta część jest obecnie niedostępna w poligonie.":
@@ -553,9 +654,36 @@ namespace RoboRougelike.R1
                     run.VehicleModel.Inventory.Any(p=>InCatalogGroup(p,kind,weapon,bonus))?"Brak sprawnej części. Użyj naprawy poniżej.":
                     !run.CanBuyTechnology(kind,weapon)?"Zablokowane: pokonaj przeciwnika z tą bronią, aby odkryć technologię.":kind==R3PartKind.Battery?
                     $"Bateria T1: +{VehicleEnergyState.BatteryCapacity:0} maks. energii. Kup część lub otwórz szczegóły.":kind==R3PartKind.RepairPulse?
-                    $"Impuls naprawczy: V, {R3RepairPulse.EnergyCost:0} energii, {R3RepairPulse.Duration:0} s. Kup część lub otwórz szczegóły.":
+                    $"Impuls naprawczy: slot aktywny 1–4, {R3RepairPulse.EnergyCost:0} energii, {R3RepairPulse.Duration:0} s. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.DrivePower?$"Silnik wspomaga koła; zajmuje {VehicleEnergyState.PassiveReservation:0} maks. energii. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.EnergyRegenerator?$"Regenerator: +{VehicleEnergyState.RegenerationPerModule:0} energii/s, −{VehicleEnergyState.PassiveReservation:0} maks. energii. Kup część lub otwórz szczegóły.":
+                    kind==R3PartKind.SalvageOptimizer?$"Odzysk: +{run.VehicleModel.Economy.SalvageOptimizerBonus*100:0}% złomu i do +{run.VehicleModel.Economy.SalvageOptimizerExtraOffersPerUnit} ofert. Rezerwa {VehicleEnergyState.PassiveReservation:0} energii.":
+                    kind==R3PartKind.Overdrive?$"Overdrive: +{run.VehicleModel.Economy.OverdriveBonusPerUnit*100:0}% obrażeń na {run.VehicleModel.Economy.OverdriveDuration:0} s za {run.VehicleModel.Economy.OverdriveEnergyPerCopy:0} energii. Slot aktywny 1–4.":
+                    kind==R3PartKind.RapidFire?$"Rapid Fire: −{run.VehicleModel.Economy.RapidFireReductionPerUnit*100:0}% czasu między strzałami na {run.VehicleModel.Economy.RapidFireDuration:0} s za {run.VehicleModel.Economy.RapidFireEnergyPerCopy:0} energii. Slot 1–4.":
+                    kind==R3PartKind.DoubleShot?$"Double Shot: +{run.VehicleModel.Economy.DoubleShotChancePerUnit*100:0}% szansy. Działa na działa, strzelbę, railgun i rakiety. Rezerwa {VehicleEnergyState.PassiveReservation:0} energii. Limit: 96 pocisków / 32 rakiety na mapie.":
+                    kind==R3PartKind.DoubleShotOverdrive?$"Double Shot Overdrive: +{run.VehicleModel.Economy.DoubleShotOverdriveExtraPerUnit} na każdy pocisk przez {run.VehicleModel.Economy.DoubleShotOverdriveDuration:0} s za {run.VehicleModel.Economy.DoubleShotOverdriveEnergyPerCopy:0} energii. Limit: 96 pocisków / 32 rakiety. Slot 1–4.":
+                    kind==R3PartKind.TargetedEmp?$"EMP celowany: zakłóca wroga do {R3EmpDevices.TargetRange:0} m; 1 ładunek i {R3EmpDevices.EnergyPerCopy:0} energii. Bazowo {run.VehicleModel.Economy.DeviceBaseCharges} ładunki; slot 1–4.":
+                    kind==R3PartKind.AreaEmp?$"EMP obszarowy: zakłóca wrogów w promieniu {R3EmpDevices.AreaRadius:0} m; 1 ładunek i {R3EmpDevices.EnergyPerCopy:0} energii. Bazowo {run.VehicleModel.Economy.DeviceBaseCharges} ładunki; slot 1–4.":
+                    kind==R3PartKind.ChargeCapacity?$"Pojemność: +{run.VehicleModel.Economy.CapacityChargesPerUnit} ładunek na urządzenie. Rezerwa {VehicleEnergyState.PassiveReservation:0} energii.":
+                    kind==R3PartKind.ChargeRegenerator?$"Regenerator: +{run.VehicleModel.Economy.ChargesPerSecondPerRegenerator:0.##} ładunku/s na urządzenie. Rezerwa {VehicleEnergyState.PassiveReservation:0} energii.":
+                    kind==R3PartKind.RechargePulse?$"Impuls: +{run.VehicleModel.Economy.RechargePulseChargesPerUnit} ładunek każdemu sprawnemu urządzeniu za {run.VehicleModel.Economy.RechargePulseEnergyPerCopy:0} energii. Slot 1–4.":
+                    kind==R3PartKind.RampDeployer?$"Wyrzutnik ramp: stawia rampę za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.RampEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.WallDeployer?$"Wyrzutnik murków: stawia osłonę za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.WallEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.JumpPadDeployer?$"Wyrzutnik jump padów: stawia wyrzutnię skoku za jadącym pojazdem; 1 ładunek i {run.VehicleModel.Economy.JumpPadEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.BlastTrapDeployer?$"Pułapka wybuchowa: zostaje za pojazdem; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.EmpTrapDeployer?$"Pułapka EMP: zakłóca wrogów bez obrażeń HP; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.RepelTrapDeployer?$"Pułapka odrzucająca: odpycha wrogów bez obrażeń HP; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.DamageTrapDeployer?$"Pułapka obrażeń: tworzy pole raniące wrogów przez krótki czas; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.SlowTrapDeployer?$"Pułapka spowalniająca: czasowo osłabia napęd wrogów; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.ImmobilizeTrapDeployer?$"Pułapka unieruchamiająca: czasowo wyłącza napęd wrogów; 1 ładunek i {run.VehicleModel.Economy.TrapEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.FlyingDroneGenerator?$"Generator drona: wypuszcza latającego sojusznika; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.SupportDroneGenerator?$"Dron energetyczny: odnawia energię sojuszników i słabo ostrzeliwuje wrogów; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy:0} energii. Slot urządzenia.":
+                kind==R3PartKind.HealingDroneGenerator?$"Dron naprawczy: naprawia sojuszników i słabo ostrzeliwuje wrogów; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy:0} energii. Slot urządzenia.":
+                kind==R3PartKind.GroundDroneGenerator?$"Generator drona naziemnego: wypuszcza kołowego sojusznika; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.OffensiveTurretGenerator?$"Wieżyczka ofensywna: rozstawia się za jadącym robotem; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.HealingTurretGenerator?$"Wieżyczka lecznicza: naprawia pobliskie sojusznicze pojazdy i urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.SupportTurretGenerator?$"Wieżyczka wspierająca: odnawia energię sojuszniczych pojazdów w zasięgu; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.ShieldTurretGenerator?$"Kopuła osłonowa: zatrzymuje nadlatujące wrogie pociski; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot urządzenia.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kup część.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kup część.":
                     kind==R3PartKind.Armor&&CatalogArmorShape(bonus)==R3ArmorShape.Wedge?"Klin 1×1×1: mocowanie od spodu i z tyłu. Kup część.":
@@ -592,14 +720,15 @@ namespace RoboRougelike.R1
             var model=run.VehicleModel;
             ClearMissingOwnedSelection(run);
 
-            string[] categories={"5 Bloki","6 Koła","7 Broń","8 Moduły"};
+            string[] categories={"Bloki","Koła","Broń","Moduły"};
             if(quickCategoryButton==null)quickCategoryButton=new GUIStyle(compactButton){fontSize=13,wordWrap=false,padding=new RectOffset(1,1,2,2)};
             float categoryWidth=(area.width-12)/4;
             bool searching=!string.IsNullOrWhiteSpace(quickPartSearch);
             for(int i=0;i<categories.Length;i++)
             {
                 quickCategoryButton.normal.background=!searching&&quickPartCategory==i?buttonPressed:buttonNormal;
-                if(GUI.Button(new Rect(area.x+i*(categoryWidth+4),area.y,categoryWidth,34),categories[i],quickCategoryButton))
+                string caption=R1ControlProfile.Display(R1ControlProfile.Current.Binding(QuickCategoryActions[i]))+" "+categories[i];
+                if(GUI.Button(new Rect(area.x+i*(categoryWidth+4),area.y,categoryWidth,34),caption,quickCategoryButton))
                 {
                     BrowseQuickCategory(run,i);
                     GUI.FocusControl(null);GUIUtility.keyboardControl=0;
@@ -634,7 +763,7 @@ namespace RoboRougelike.R1
             {
                 var item=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(item.Id);
                 run.Garage.ShowActionMessage(run.CreativeWorkshop?"Dodano część za darmo. Kliknij pojazd, aby ją zamontować.":
-                    $"Kupiono część • koszt {before-run.VehicleModel.Scrap} Z. Kliknij pojazd, aby ją zamontować.");
+                    $"Kupiono {CatalogPurchaseQuantity(run.VehicleModel,catalogGroup.Value)} szt. • koszt {before-run.VehicleModel.Scrap} Z. Kliknij pojazd, aby zamontować część.");
             }
             else run.Garage.ShowActionMessage(PurchaseFailure(run,catalogGroup.Value,catalogWeapon));
         }
@@ -667,12 +796,13 @@ namespace RoboRougelike.R1
             GUI.enabled=!garageOptionsOpen;
             Panel(new Rect(0,0,1280,76));Panel(new Rect(0,76,270,644));
             GUI.Label(new Rect(14,10,150,34),"GARAŻ",heading);
-            GUI.Label(new Rect(14,43,245,25),model.CreativeMode?$"Darmowe części • Energia: {model.Energy.Maximum:0}":$"Złom: {model.Scrap} • Energia maks.: {model.Energy.Maximum:0}",small);
-            string[] labels={"1 Montuj","2 Zaznacz","3 Napraw","4 Zdejmij"};
+            GUI.Label(new Rect(14,40,245,36),model.CreativeMode?$"Darmowe części • Energia: {model.Energy.Maximum:0}":$"Złom: {model.Scrap} • {model.ConstructionBudgetUsed}/{model.ConstructionBudgetLimit} pkt\n{model.ConstructionSizeLabel}: {model.PhysicalPartCount} części • Energia: {model.Energy.Maximum:0}",small);
+            string[] labels={"Montuj","Zaznacz","Napraw","Zdejmij"};
             for(int i=0;i<labels.Length;i++)
             {
                 compactButton.normal.background=garage.Tool==(R41GarageTool)i?buttonPressed:buttonNormal;GUI.backgroundColor=Color.white;
-                if(GUI.Button(new Rect(284+i*116,15,108,42),labels[i],compactButton))garage.SelectTool((R41GarageTool)i);
+                string caption=R1ControlProfile.Display(R1ControlProfile.Current.Binding(R3GarageView.ToolActions[i]))+" "+labels[i];
+                if(GUI.Button(new Rect(284+i*116,15,108,42),caption,compactButton))garage.SelectTool((R41GarageTool)i);
                 compactButton.normal.background=buttonNormal;
             }
             GUI.backgroundColor=Color.white;
@@ -704,15 +834,19 @@ namespace RoboRougelike.R1
             {
                 var kind=catalogGroup.Value;int price=model.Price(kind,catalogWeapon);
                 bool unlocked=run.CanBuyTechnology(kind,catalogWeapon);
-                GUI.enabled=!garageOptionsOpen&&unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&model.Inventory.Count<model.AvailableInventoryCapacity;
-                if(GUI.Button(new Rect(12,560,120,42),QuickPurchaseCaption(model.CreativeMode,kind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))BuyQuickPart(run);
+                GUI.enabled=!garageOptionsOpen&&unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&(long)model.Inventory.Count+CatalogPurchaseQuantity(model,kind)<=model.AvailableInventoryCapacity;
+                if(GUI.Button(new Rect(12,560,120,42),CatalogPurchaseCaption(model,kind,unlocked,price),compactButton))BuyQuickPart(run);
                 DrawBuyFive(run,kind,catalogWeapon,new Rect(137,560,120,42));
                 GUI.enabled=!garageOptionsOpen;
             }
             if(GUI.Button(new Rect(12,605,245,42),model.CreativeMode?$"Magazyn {model.Inventory.Count} • naprawy":$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
+            if(run.SafeVendorAvailable&&GUI.Button(new Rect(284,608,205,36),"Oferty sprzedawcy",compactButton))OpenSimpleGarageOptions(3);
+            if(GUI.Button(new Rect(500,608,165,36),"Ustaw pojazd",compactButton))run.TryEmergencyRescue();
+            if(GUI.Button(new Rect(675,608,175,36),"Projekty",compactButton))OpenBlueprintLibrary();
+            if(run.SafeVendorAvailable&&GUI.Button(new Rect(860,608,200,36),"Bezpieczna strefa",compactButton))run.EnterSafeZone();
             if(garageShortcutLabel==null)garageShortcutLabel=new GUIStyle(small){fontSize=14,wordWrap=false};
-            GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • ŚPM: wybierz typ\nPPM przeciągnij: widok • U: spód\nQ/E R/F Z/X: obrót • Shift: część\nCtrl+LPM: napraw • Home: widok",garageShortcutLabel);
+            GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • ŚPM: wybierz typ\nPPM przeciągnij: widok • "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageUnderside"))+": spód\n"+R3GarageRotationInput.Describe(R1ControlProfile.Current)+": obrót • Shift: część\nCtrl+LPM: napraw • "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageFrame"))+": widok",garageShortcutLabel);
             string garageFeedback=SimpleGarageFeedback(run);
             DrawGarageNotice(false,garageFeedback,!run.MapEditorSession&&garageFeedback.Contains("Start zablokowany:"));
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);
@@ -734,12 +868,13 @@ namespace RoboRougelike.R1
             GUI.DrawTexture(new Rect(0,opening.yMax,768,1024-opening.yMax),Texture2D.whiteTexture);GUI.color=color;
             var garage=run.Garage;var model=run.VehicleModel;GUI.enabled=!garageOptionsOpen;
             GUI.Label(new Rect(24,12,185,40),"GARAŻ",heading);
-            GUI.Label(new Rect(210,18,530,35),model.CreativeMode?$"{model.Design.Name} • Darmowe części • Energia: {model.Energy.Maximum:0}":$"{model.Design.Name} • Złom: {model.Scrap} • Energia maks.: {model.Energy.Maximum:0}",body);
-            string[] labels={"1 Montuj","2 Zaznacz","3 Napraw","4 Zdejmij"};
+            GUI.Label(new Rect(210,18,530,35),model.CreativeMode?$"{model.Design.Name} • Darmowe części • Energia: {model.Energy.Maximum:0}":$"{model.Design.Name} • {model.Scrap} Z • {model.ConstructionBudgetUsed}/{model.ConstructionBudgetLimit} pkt • Energia: {model.Energy.Maximum:0}",body);
+            string[] labels={"Montuj","Zaznacz","Napraw","Zdejmij"};
             for(int i=0;i<labels.Length;i++)
             {
                 compactButton.normal.background=garage.Tool==(R41GarageTool)i?buttonPressed:buttonNormal;GUI.backgroundColor=Color.white;
-                if(GUI.Button(new Rect(24+i*183,584,171,42),labels[i],compactButton))garage.SelectTool((R41GarageTool)i);
+                string caption=R1ControlProfile.Display(R1ControlProfile.Current.Binding(R3GarageView.ToolActions[i]))+" "+labels[i];
+                if(GUI.Button(new Rect(24+i*183,584,171,42),caption,compactButton))garage.SelectTool((R41GarageTool)i);
                 compactButton.normal.background=buttonNormal;
             }
             GUI.backgroundColor=Color.white;
@@ -768,8 +903,8 @@ namespace RoboRougelike.R1
             {
                 var kind=catalogGroup.Value;int price=model.Price(kind,catalogWeapon);
                 bool unlocked=run.CanBuyTechnology(kind,catalogWeapon);
-                GUI.enabled=!garageOptionsOpen&&unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&model.Inventory.Count<model.AvailableInventoryCapacity;
-                if(GUI.Button(new Rect(458,690,140,40),QuickPurchaseCaption(model.CreativeMode,kind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))BuyQuickPart(run);
+                GUI.enabled=!garageOptionsOpen&&unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&(long)model.Inventory.Count+CatalogPurchaseQuantity(model,kind)<=model.AvailableInventoryCapacity;
+                if(GUI.Button(new Rect(458,690,140,40),CatalogPurchaseCaption(model,kind,unlocked,price),compactButton))BuyQuickPart(run);
                 DrawBuyFive(run,kind,catalogWeapon,new Rect(604,690,140,40));
                 GUI.enabled=!garageOptionsOpen;
             }
@@ -777,11 +912,13 @@ namespace RoboRougelike.R1
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
             if(GUI.Button(new Rect(458,784,138,40),"Ustawienia",compactButton))OpenSimpleGarageOptions(0);
             if(GUI.Button(new Rect(606,784,138,40),"Aktywności",compactButton))OpenSimpleGarageOptions(1);
-            if(GUI.Button(new Rect(458,831,286,40),"Dopasuj widok",compactButton))garage.FrameVehicle();
+            if(GUI.Button(new Rect(458,831,run.SafeVendorAvailable?90:138,40),"Widok",compactButton))garage.FrameVehicle();
+            if(GUI.Button(new Rect(run.SafeVendorAvailable?552:606,831,run.SafeVendorAvailable?90:138,40),"Ustaw",compactButton))run.TryEmergencyRescue();
+            if(run.SafeVendorAvailable&&GUI.Button(new Rect(646,831,98,40),"Strefa",compactButton))run.EnterSafeZone();
             string garageFeedback=SimpleGarageFeedback(run);
             DrawGarageNotice(true,garageFeedback+
                 "\nPPM: zdejmij • ŚPM: wybierz typ • przeciągnij PPM: obrót widoku"+
-                "\nQ/E R/F Z/X: obrót • Shift: część • Ctrl+LPM: napraw • Home: widok",!run.MapEditorSession&&garageFeedback.Contains("Start zablokowany:"));
+                "\n"+R3GarageRotationInput.Describe(R1ControlProfile.Current)+": obrót • Shift: część • Ctrl+LPM: napraw • "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageFrame"))+": widok",!run.MapEditorSession&&garageFeedback.Contains("Start zablokowany:"));
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);
             if(run.MapEditorSession){if(GUI.Button(new Rect(24,960,350,44),"Wróć do edytora",compactButton))run.ReturnToMapEditorFromGarage();}
             else if(GUI.Button(new Rect(24,960,350,44),"Testuj pojazd",run.SandboxWorkshop?GaragePrimaryButton():compactButton))run.EnterTestRange();
@@ -795,7 +932,7 @@ namespace RoboRougelike.R1
         void DrawSimplePortraitOptions(R1RunController run)
         {
             Panel(new Rect(12,90,744,800));
-            GUI.Label(new Rect(24,105,540,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":"WYBÓR AKTYWNOŚCI",heading);
+            GUI.Label(new Rect(24,105,540,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":garageOptionsTab==3?"SPRZEDAWCA":garageOptionsTab==4?"PROJEKTY":garageOptionsTab==5?"STEROWANIE":"WYBÓR AKTYWNOŚCI",heading);
             if(GUI.Button(new Rect(606,105,138,40),"Zamknij",compactButton)){garageOptionsOpen=false;return;}
             if(garageOptionsTab==0)
             {
@@ -804,7 +941,7 @@ namespace RoboRougelike.R1
                 finally{GUI.matrix=matrix;}
                 var model=run.VehicleModel;
                 GUI.Label(new Rect(350,180,380,70),GarageWeaponGroups(model),small);
-                if(GUI.Button(new Rect(350,255,380,44),"Zamień grupy broni",compactButton))model.SwapWeaponGroups();
+                if(GUI.Button(new Rect(350,255,380,44),"Konfiguruj sloty",compactButton))garageOptionsTab=2;
                 int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0||(model.CreativeMode&&model.Parts.Any(p=>p.Health<1));
                 if(GUI.Button(new Rect(350,309,380,44),GarageBulkRepairCaption(model,repair),compactButton))
                     RepairFromGarageOptions(run,false);
@@ -814,7 +951,17 @@ namespace RoboRougelike.R1
                 GUI.enabled=true;
                 GUI.Label(new Rect(350,425,380,135),GarageDriveSummary(run),small);
                 if(!string.IsNullOrEmpty(garageOptionsFeedback))GUI.Label(new Rect(350,575,380,60),garageOptionsFeedback,small);
+                if(GUI.Button(new Rect(350,650,380,44),"Biblioteka projektów",compactButton))OpenBlueprintLibrary();
+                if(GUI.Button(new Rect(350,705,380,44),"Sterowanie",compactButton))OpenControls();
             }
+            else if(garageOptionsTab==2)
+            {
+                DrawSlotAssignments(run.VehicleModel,24,165,720);
+                if(GUI.Button(new Rect(24,510,250,44),"Wróć do ustawień",compactButton))garageOptionsTab=0;
+            }
+            else if(garageOptionsTab==3)DrawSafeVendor(run,new Rect(24,165,720,540));
+            else if(garageOptionsTab==4)DrawBlueprintLibrary(run,new Rect(24,165,720,650));
+            else if(garageOptionsTab==5)DrawControls(new Rect(24,165,720,650));
             else
             {
                 var matrix=GUI.matrix;
@@ -826,7 +973,7 @@ namespace RoboRougelike.R1
         void DrawSimpleGarageOptions(R1RunController run)
         {
             Panel(new Rect(280,90,800,545));
-            GUI.Label(new Rect(300,105,570,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":"WYBÓR AKTYWNOŚCI",heading);
+            GUI.Label(new Rect(300,105,570,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":garageOptionsTab==3?"SPRZEDAWCA":garageOptionsTab==4?"PROJEKTY":garageOptionsTab==5?"STEROWANIE":"WYBÓR AKTYWNOŚCI",heading);
             if(GUI.Button(new Rect(925,105,135,40),"Zamknij",compactButton)){garageOptionsOpen=false;return;}
             if(garageOptionsTab==0)
             {
@@ -835,7 +982,7 @@ namespace RoboRougelike.R1
                 finally{GUI.matrix=matrix;}
                 var model=run.VehicleModel;
                 GUI.Label(new Rect(680,190,350,70),GarageWeaponGroups(model),small);
-                if(GUI.Button(new Rect(680,270,300,40),"Zamień grupy broni",compactButton))model.SwapWeaponGroups();
+                if(GUI.Button(new Rect(680,270,300,40),"Konfiguruj sloty",compactButton))garageOptionsTab=2;
                 int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0||(model.CreativeMode&&model.Parts.Any(p=>p.Health<1));
                 if(GUI.Button(new Rect(680,325,300,40),GarageBulkRepairCaption(model,repair),compactButton))
                     RepairFromGarageOptions(run,false);
@@ -845,13 +992,56 @@ namespace RoboRougelike.R1
                 GUI.enabled=true;
                 GUI.Label(new Rect(680,435,350,145),GarageDriveSummary(run),small);
                 if(!string.IsNullOrEmpty(garageOptionsFeedback))GUI.Label(new Rect(680,585,350,40),garageOptionsFeedback,small);
+                if(GUI.Button(new Rect(300,585,250,38),"Biblioteka projektów",compactButton))OpenBlueprintLibrary();
+                if(GUI.Button(new Rect(300,535,250,38),"Sterowanie",compactButton))OpenControls();
             }
+            else if(garageOptionsTab==2)
+            {
+                DrawSlotAssignments(run.VehicleModel,300,165,740);
+                if(GUI.Button(new Rect(300,505,250,44),"Wróć do ustawień",compactButton))garageOptionsTab=0;
+            }
+            else if(garageOptionsTab==3)DrawSafeVendor(run,new Rect(300,165,740,420));
+            else if(garageOptionsTab==4)DrawBlueprintLibrary(run,new Rect(300,165,740,420));
+            else if(garageOptionsTab==5)DrawControls(new Rect(300,165,740,420));
             else
             {
                 var matrix=GUI.matrix;
                 try{GUI.matrix=matrix*Matrix4x4.Translate(new Vector3(280,-460,0));DrawPortraitActivities(run);}
                 finally{GUI.matrix=matrix;}
             }
+        }
+
+        void DrawSafeVendor(R1RunController run,Rect area)
+        {
+            var model=run.VehicleModel;
+            GUI.Label(new Rect(area.x,area.y,area.width,35),$"Okazje dostępne w tej strefie • Złom: {model.Scrap}",body);
+            var offers=model.SafeZoneVendorOffers();
+            long pages=System.Math.Max(1L,((long)offers.Count+3)/4);
+            vendorOfferPage=(int)System.Math.Min(System.Math.Max(0,vendorOfferPage),pages-1);
+            int start=vendorOfferPage*4;
+            for(int i=0;i<4&&(long)start+i<offers.Count;i++)
+            {
+                var offer=offers[start+i];int quantity=model.GrantQuantity(offer.Kind);
+                bool unlocked=run.CanBuyTechnology(offer.Kind,offer.Weapon);
+                bool room=(long)model.Inventory.Count+quantity<=model.AvailableInventoryCapacity;
+                string note=offer.Kind==R3PartKind.Armor?"\nŁączny odzysk złomu ograniczony do ceny pakietu.":string.Empty;
+                GUI.Label(new Rect(area.x,area.y+45+i*65,area.width-220,54),$"{R4WeaponDefinition.PartName(offer.Kind,offer.Weapon)} • {quantity} szt. • {offer.Price} Z"+note,small);
+                GUI.enabled=run.SafeVendorAvailable&&!offer.Sold&&unlocked&&room&&model.Scrap>=offer.Price;
+                string action=offer.Sold?"Kupione":!unlocked?"Zablokowane":!room?"Brak miejsca":model.Scrap<offer.Price?"Za mało złomu":"Kup";
+                if(GUI.Button(new Rect(area.x+area.width-205,area.y+45+i*65,205,45),action,compactButton))
+                    garageOptionsFeedback=run.GarageBuyVendorOffer(offer.Index)?"Kupiono ofertę. Części czekają w magazynie.":"Nie udało się kupić oferty.";
+                GUI.enabled=true;
+            }
+            if(pages>1)
+            {
+                GUI.enabled=vendorOfferPage>0;
+                if(GUI.Button(new Rect(area.x,area.y+310,80,36),"←",compactButton)){vendorOfferPage--;garageOptionsFeedback=null;}
+                GUI.enabled=vendorOfferPage+1L<pages;
+                if(GUI.Button(new Rect(area.x+area.width-80,area.y+310,80,36),"→",compactButton)){vendorOfferPage++;garageOptionsFeedback=null;}
+                GUI.enabled=true;
+                GUI.Label(new Rect(area.x+100,area.y+316,area.width-200,26),$"Strona {vendorOfferPage+1L}/{pages}",small);
+            }
+            if(!string.IsNullOrEmpty(garageOptionsFeedback))GUI.Label(new Rect(area.x,area.y+(pages>1?354:320),area.width,50),garageOptionsFeedback,small);
         }
     }
 }

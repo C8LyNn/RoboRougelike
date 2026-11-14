@@ -35,7 +35,7 @@ namespace RoboRougelike.R1
         {
             get
             {
-                float hp = 0, max = 0;
+                double hp = 0, max = 0;
                 healthQuery.Clear();GetComponentsInChildren(false,healthQuery);
                 try
                 {
@@ -43,7 +43,7 @@ namespace RoboRougelike.R1
                     { if (!part.IsDead) { hp += part.CurrentHp; max += part.MaxHp; } }
                 }
                 finally{healthQuery.Clear();}
-                return max > 0 ? hp / max : 0;
+                return max > 0 ? (float)(hp / max) : 0;
             }
         }
         public string DefeatReason
@@ -71,7 +71,7 @@ namespace RoboRougelike.R1
             foreach (var part in GetComponentsInChildren<P12PipelineSafeDamageable>())
             {
                 var block = part.GetComponent<P12_PipelineSafePlayerBlock>();
-                float factor = stats.Hull * (block != null && block.IsCore ? stats.Core : 1);
+                float factor = (float)System.Math.Min(float.MaxValue,(double)stats.Hull*(block != null && block.IsCore ? stats.Core : 1));
                 part.SetDurabilityMultiplier(factor);
             }
         }

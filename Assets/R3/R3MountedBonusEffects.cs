@@ -27,14 +27,62 @@ namespace RoboRougelike.R3
             readonly string id;
             readonly int tier;
             readonly R1UpgradeEffect effect;
+            readonly R1ModifierOperation operation;
+            readonly R1BonusScope scope;
             readonly float amount;
             public BonusSnapshot(R3MountedPart p)
-            {part=p;id=p.Id;tier=p.Tier;effect=p.UpgradeEffect;amount=p.UpgradeAmount;}
+            {part=p;id=p.Id;tier=p.Tier;effect=p.UpgradeEffect;operation=p.UpgradeOperation;scope=p.UpgradeScope;amount=p.UpgradeAmount;}
             public bool Matches(R3MountedPart p)=>ReferenceEquals(part,p)&&id==p.Id&&tier==p.Tier&&
-                effect==p.UpgradeEffect&&amount.Equals(p.UpgradeAmount);
+                effect==p.UpgradeEffect&&operation==p.UpgradeOperation&&scope==p.UpgradeScope&&amount.Equals(p.UpgradeAmount);
         }
         private float lastRepairPulse;
+        private float overdriveIncrease;
+        private float rapidFireReduction;
         public R1RunStats EffectiveStats {get;private set;}
+        public float DroneDamageMultiplier {get;private set;}=1;
+        public float TurretDamageMultiplier {get;private set;}=1;
+        public float TrapDamageMultiplier {get;private set;}=1;
+        public float BlastDamageMultiplier {get;private set;}=1;
+        public float BlastTrapDamageMultiplier {get;private set;}=1;
+        public float PiercingDamageMultiplier {get;private set;}=1;
+        public float KineticDamageMultiplier {get;private set;}=1;
+        public float WeaponDamageMultiplier {get;private set;}=1;
+        public float ShieldDurabilityMultiplier {get;private set;}=1;
+        public float RepairEfficiencyMultiplier {get;private set;}=1;
+
+        // Saturation is only the representable numeric limit, not a balance cap.
+        public static float SafeDamageProduct(float amount,float multiplier)
+        {
+            if(float.IsNaN(amount)||float.IsInfinity(amount)||amount<=0||
+               float.IsNaN(multiplier)||float.IsInfinity(multiplier)||multiplier<=0)return 0;
+            return (float)System.Math.Min(float.MaxValue,(double)amount*multiplier);
+        }
+
+        // Resolve global and matching category bonuses for owned deployables;
+        // weapon-specific bonuses remain on the weapon path.
+        public static float ScaleOwnedDamage(Transform owner,float amount,R1BonusScope category=R1BonusScope.Global,bool blast=false)
+        {
+            if(float.IsNaN(amount)||float.IsInfinity(amount)||amount<=0)return 0;
+            var effects=owner!=null?owner.GetComponentInParent<R3MountedBonusEffects>():null;
+            float factor=effects==null?1f:category switch {
+                R1BonusScope.Drones=>effects.DroneDamageMultiplier,R1BonusScope.Turrets=>effects.TurretDamageMultiplier,
+                R1BonusScope.Traps=>blast?effects.BlastTrapDamageMultiplier:effects.TrapDamageMultiplier,
+                _=>blast?effects.BlastDamageMultiplier:effects.EffectiveStats?.Damage??1f};
+            return SafeDamageProduct(amount,factor);
+        }
+
+        public void SetOverdriveIncrease(float increase)
+        {
+            if(float.IsNaN(increase)||float.IsInfinity(increase)||increase<0)increase=0;
+            if(overdriveIncrease==increase)return;
+            overdriveIncrease=increase;Refresh(true);
+        }
+        public void SetRapidFireReduction(float reduction)
+        {
+            if(float.IsNaN(reduction)||float.IsInfinity(reduction)||reduction<0)reduction=0;
+            if(rapidFireReduction==reduction)return;
+            rapidFireReduction=reduction;Refresh(true);
+        }
 
         public void Configure(R3VehicleAssembly owner,R1VehicleState vehicle,R1RunStats baseline)
         {
@@ -61,10 +109,77 @@ namespace RoboRougelike.R3
             snapshot.Clear();active.Clear();
             foreach(var part in nextActive){active.Add(part);snapshot.Add(new BonusSnapshot(part));}
             var stats=baseStats.Copy();
+            var damage=new R1ModifierGroup();var basicDamage=new R1ModifierGroup();var basicBlastDamage=new R1ModifierGroup();var droneDamage=new R1ModifierGroup();
+            var turretDamage=new R1ModifierGroup();var trapDamage=new R1ModifierGroup();var blastDamage=new R1ModifierGroup();
+            var blastTrapDamage=new R1ModifierGroup();var piercingDamage=new R1ModifierGroup();var kineticDamage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
+            var core=new R1ModifierGroup();var reload=new R1ModifierGroup();var shieldDurability=new R1ModifierGroup();var weaponDamage=new R1ModifierGroup();var repairEfficiency=new R1ModifierGroup();
+            damage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            weaponDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            basicDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            basicBlastDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            droneDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            turretDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            trapDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            blastDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            blastTrapDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            piercingDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            kineticDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            reload.Add(R1ModifierOperation.Increased,rapidFireReduction,1,true);
+            double hybridShare=0;
             foreach(var module in active)
-                for(int i=0;i<R3VehicleModel.TierEffectUnits(module.Tier);i++)stats.Apply(module.UpgradeEffect,module.UpgradeAmount);
+                if(module.UpgradeEffect==R1UpgradeEffect.Damage)
+                {
+                    if(module.UpgradeScope==R1BonusScope.Global)
+                        damage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons)
+                        weaponDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons||module.UpgradeScope==R1BonusScope.BasicCannon||module.UpgradeScope==R1BonusScope.KineticDamage)
+                        basicDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons||module.UpgradeScope==R1BonusScope.BasicCannon||module.UpgradeScope==R1BonusScope.BlastDamage)
+                        basicBlastDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Drones||module.UpgradeScope==R1BonusScope.KineticDamage)
+                        droneDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Turrets||module.UpgradeScope==R1BonusScope.KineticDamage)
+                        turretDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Traps||module.UpgradeScope==R1BonusScope.KineticDamage)
+                        trapDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons||module.UpgradeScope==R1BonusScope.BlastDamage)
+                        blastDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Traps||module.UpgradeScope==R1BonusScope.BlastDamage)
+                        blastTrapDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons||module.UpgradeScope==R1BonusScope.PiercingDamage)
+                        piercingDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons||module.UpgradeScope==R1BonusScope.KineticDamage)
+                        kineticDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                }
+                else if(module.UpgradeEffect==R1UpgradeEffect.Mobility)
+                    mobility.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                else if(module.UpgradeEffect==R1UpgradeEffect.Hull)
+                    hull.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                else if(module.UpgradeEffect==R1UpgradeEffect.Core)
+                    core.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                else if(module.UpgradeEffect==R1UpgradeEffect.Reload)
+                    reload.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier),true);
+                else if(module.UpgradeEffect==R1UpgradeEffect.ShieldDurability)
+                    shieldDurability.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                else if(module.UpgradeEffect==R1UpgradeEffect.RepairEfficiency)
+                    repairEfficiency.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                else if(module.UpgradeEffect==R1UpgradeEffect.HybridBlastRounds&&!float.IsNaN(module.UpgradeAmount)&&!float.IsInfinity(module.UpgradeAmount)&&module.UpgradeAmount>0)
+                    hybridShare+=(double)module.UpgradeAmount*R3VehicleModel.TierEffectUnits(module.Tier);
+            stats.ApplyBonusGroups(hull,damage,reload,mobility,core);
             EffectiveStats=stats;
+            DroneDamageMultiplier=droneDamage.Apply(baseStats.Damage);
+            TurretDamageMultiplier=turretDamage.Apply(baseStats.Damage);
+            TrapDamageMultiplier=trapDamage.Apply(baseStats.Damage);
+            BlastDamageMultiplier=blastDamage.Apply(baseStats.Damage);
+            BlastTrapDamageMultiplier=blastTrapDamage.Apply(baseStats.Damage);
+            PiercingDamageMultiplier=piercingDamage.Apply(baseStats.Damage);
+            KineticDamageMultiplier=kineticDamage.Apply(baseStats.Damage);
+            WeaponDamageMultiplier=weaponDamage.Apply(baseStats.Damage);
+            ShieldDurabilityMultiplier=shieldDurability.Apply(1);
+            RepairEfficiencyMultiplier=repairEfficiency.Apply(1);
             player.Apply(stats);
+            player.Controller.SetBasicDamageProfile(basicDamage.Apply(baseStats.Damage),basicBlastDamage.Apply(baseStats.Damage),(float)System.Math.Min(1d,hybridShare));
         }
         private void ApplyRepairPulse()
         {
@@ -76,7 +191,7 @@ namespace RoboRougelike.R3
             if(repairModules==0||elapsed<=0)return;
             var state=R1RunController.Instance?.Progress?.State;
             if(state!=R1RunState.Combat&&state!=R1RunState.TestDrive)return;
-            float increase=Mathf.Min(0.08f,repairModules*0.025f)*elapsed;
+            float increase=(float)System.Math.Min(1d,repairModules*.025d*elapsed*RepairEfficiencyMultiplier);
             foreach(var piece in player.GetComponentsInChildren<P12PipelineSafeDamageable>())
             {
                 if(piece==null||piece.IsDead||piece.MaxHp<=0)continue;

@@ -34,7 +34,8 @@ namespace RoboRougelike.WeaponIntegration
             tank=owner.GetComponent<P12PipelineSafeTankController>();enemy=owner.GetComponent<P12PipelineSafeEnemyTurret>();
             device=GetComponent<RRLDeviceBinding>();if(device==null)device=gameObject.AddComponent<RRLDeviceBinding>();
             device.Bind(state,owner);
-            damageScale=Mathf.Max(0,damageMultiplier);intervalScale=Mathf.Max(.01f,intervalMultiplier);
+            damageScale=Mathf.Max(0,damageMultiplier);
+            intervalScale=float.IsNaN(intervalMultiplier)||float.IsInfinity(intervalMultiplier)?1f:Mathf.Max(0,intervalMultiplier);
             if(State.Ammo<0)State.Ammo=MagazineSalvos;
             Module=GetComponent<ShotgunModule>();if(Module==null)Module=gameObject.AddComponent<ShotgunModule>();
             Module.Bind(body,muzzle,owner.gameObject);Module.BindSink(this);Module.BindResourceBank(this);
@@ -99,10 +100,20 @@ namespace RoboRougelike.WeaponIntegration
                     var range=Mathf.Min(pellet.MaxDistance,velocity.magnitude*pellet.Lifetime);
                     if(!assembly.ClearProjectilePath(part,velocity,range,.05f))return false;
                 }
-            var created=new List<GameObject>(pellets.Count);
+            var planned=new List<ShotgunPelletSpawn>(pellets);
+            int extraSlots=P17PhysicalShell.AvailableSlots-pellets.Count;
+            if(assembly!=null)
+                foreach(var pellet in pellets)
+                {
+                    int extras=assembly.RollDoubleShotExtras(extraSlots);
+                    for(int i=0;i<extras;i++)planned.Add(pellet);
+                    extraSlots-=extras;
+                    if(extraSlots<=0)break;
+                }
+            var created=new List<GameObject>(planned.Count);
             try
             {
-                foreach(var pellet in pellets)
+                foreach(var pellet in planned)
                 {
                     if(pellet.OwnerRoot!=Owner.gameObject||pellet.OwnerBody!=body)throw new System.InvalidOperationException("Wrong projectile owner");
                     var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);created.Add(shell);
@@ -118,7 +129,9 @@ namespace RoboRougelike.WeaponIntegration
                     var rb=shell.AddComponent<Rigidbody>();rb.mass=.2f;rb.useGravity=false;
                     rb.interpolation=RigidbodyInterpolation.Interpolate;rb.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;
                     rb.linearVelocity=pellet.Direction*pellet.ProjectileSpeed+pellet.InheritedVelocity;
-                    shell.AddComponent<P17PhysicalShell>().Configure(Owner,pellet.Damage*(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),pellet.Lifetime,pellet.Direction,null,pellet.MaxDistance);
+                    float pelletDamage=R3MountedBonusEffects.SafeDamageProduct(pellet.Damage,tank!=null?tank.PackageKineticDamageScale:damageScale);
+                    pelletDamage=R3MountedBonusEffects.SafeDamageProduct(pelletDamage,R3VehicleModel.TierEffectUnits(State.Tier));
+                    shell.AddComponent<P17PhysicalShell>().Configure(Owner,pelletDamage,pellet.Lifetime,pellet.Direction,null,pellet.MaxDistance);
                 }
                 debitPending=false;
                 RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.Shotgun);

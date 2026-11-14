@@ -17,6 +17,24 @@ using Object=UnityEngine.Object;
 
 public class RRLW34EffectsTests
 {
+    [UnityTest] public IEnumerator RepairEfficiencyMultipliesFieldRepairAndStopsAfterLoss()
+    {
+        Assert.That(Enum.TryParse("RepairEfficiency",out R1UpgradeEffect efficiency),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);Assert.That(run.Progress.BeginTest(),Is.True);
+        var additive=Upgrade(efficiency,.5f);var more=Upgrade(efficiency,.2f);more.Operation=R1ModifierOperation.More;
+        var model=Model(Upgrade(R1UpgradeEffect.Repair,0),additive,more);var vehicle=Build(model);yield return null;
+        vehicle.Core.RestoreHealthRatio(.5f);var effects=Effects(vehicle);
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        void Pulse()
+        {
+            typeof(R3MountedBonusEffects).GetField("lastRepairPulse",flags).SetValue(effects,Time.time-.5f);
+            typeof(R3MountedBonusEffects).GetMethod("ApplyRepairPulse",flags).Invoke(effects,null);
+        }
+        Pulse();Assert.That(vehicle.Core.CurrentHp/vehicle.Core.MaxHp,Is.EqualTo(.5225f).Within(.001f));
+        foreach(var part in vehicle.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.UpgradeEffect==efficiency))part.gameObject.SetActive(false);
+        yield return null;vehicle.Core.RestoreHealthRatio(.5f);Pulse();
+        Assert.That(vehicle.Core.CurrentHp/vehicle.Core.MaxHp,Is.EqualTo(.5125f).Within(.001f));
+    }
     GameObject fixtures;R1RunController run;R3VisualPalette palette;
     readonly List<R1UpgradeDefinition> definitions=new List<R1UpgradeDefinition>();
     static IEnumerator Until(Func<bool> predicate,string message)
@@ -43,7 +61,14 @@ public class RRLW34EffectsTests
         var m=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
         Assert.That(m.ReceiveBonuses(bonuses),Is.True);
         var ids=m.Inventory.Select(p=>p.Id).ToArray();
-        for(int i=0;i<ids.Length;i++)Assert.That(m.Mount(ids[i],Slot(i)),Is.True,"mount "+i);
+        for(int i=0;i<ids.Length;i++)
+        {
+            var cell=Slot(i);
+            if(m.OwnedPlacementError(ids[i],cell,default)!=null)
+                cell=m.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                    .First(c=>m.OwnedPlacementError(ids[i],c,default)==null);
+            Assert.That(m.Mount(ids[i],cell),Is.True,"mount "+i);
+        }
         return m;
     }
     R1VehicleState Build(R3VehicleModel model,R1RunStats baseline=null,float x=0)
@@ -55,6 +80,104 @@ public class RRLW34EffectsTests
     static R3MountedBonusEffects Effects(R1VehicleState v)=>v.GetComponent<R3MountedBonusEffects>();
     static R3MountedPart Module(R1VehicleState v,R1UpgradeEffect effect)=>
         v.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeEffect==effect);
+    R3VehicleModel ModelWithOneMountedBonus(R1UpgradeEffect effect)
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        Assert.That(model.ReceiveBonuses(new[]{Upgrade(effect)}),Is.True);
+        var item=model.Inventory.Single();
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(item.Id,c,default)==null);
+        Assert.That(model.Mount(item.Id,cell),Is.True);return model;
+    }
+    R3VehicleModel ModelWithDamageBonuses(params float[] amounts)
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        Assert.That(model.ReceiveBonuses(amounts.Select(amount=>Upgrade(R1UpgradeEffect.Damage,amount))),Is.True);
+        foreach(var item in model.Inventory.ToArray())
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(item.Id,c,default)==null);
+            Assert.That(model.Mount(item.Id,cell),Is.True);
+        }
+        return model;
+    }
+    [UnityTest] public IEnumerator MountedDamageBonusesAddAndReachPhysicalShotsWithoutOldCap()
+    {
+        var small=Build(ModelWithDamageBonuses(.25f,.2f),x:-40);
+        Assert.That(Effects(small).EffectiveStats.Damage,Is.EqualTo(1.45f).Within(.001));
+        Assert.That(small.Controller.PackageDamageScale,Is.EqualTo(1.45f).Within(.001));
+        var strong=Build(ModelWithDamageBonuses(1f,1f,1f,1f),x:0);
+        Assert.That(Effects(strong).EffectiveStats.Damage,Is.EqualTo(5f).Within(.001));
+        Assert.That(strong.Controller.PackageDamageScale,Is.EqualTo(5f).Within(.001));
+        var barrel=new GameObject("Additive bonus test muzzle").transform;barrel.SetParent(fixtures.transform);
+        barrel.position=new Vector3(40,20,1000);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.SetParent(fixtures.transform);
+        target.transform.position=barrel.position+Vector3.forward*4;
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
+        strong.Controller.FireFrom(barrel,R4WeaponKind.Basic,"additive-test");
+        yield return Until(()=>hp.CurrentHp<1000,"Physical shot reaches target");
+        Assert.That(hp.CurrentHp,Is.EqualTo(1000-R4WeaponDefinition.Get(R4WeaponKind.Basic).Damage*5f).Within(.01));
+    }
+    [UnityTest] public IEnumerator MountedMobilityBonusesAddWithoutArtificialMultiplierCap()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        Assert.That(model.ReceiveBonuses(new[]{Upgrade(R1UpgradeEffect.Mobility,.25f),Upgrade(R1UpgradeEffect.Mobility,.2f)}),Is.True);
+        foreach(var item in model.Inventory.ToArray())
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(item.Id,c,default)==null);
+            Assert.That(model.Mount(item.Id,cell),Is.True);
+        }
+        var baseline=Build(model.DeepCopy(),x:-40);
+        // Keep the same physical mass when comparing movement: disabling parts
+        // changes chassis tuning as well as the bonus under test.
+        foreach(var part in baseline.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.BonusModule))part.UpgradeAmount=0;
+        yield return null;float baseSpeed=baseline.Controller.EffectiveForwardSpeed;
+        var vehicle=Build(model);Assert.That(Effects(vehicle).EffectiveStats.Mobility,Is.EqualTo(1.45f).Within(.001));
+        Assert.That(vehicle.Controller.EffectiveForwardSpeed,Is.EqualTo(baseSpeed*1.45f).Within(.01));
+        foreach(var part in vehicle.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.BonusModule))part.UpgradeAmount=1f;
+        yield return null;
+        Assert.That(Effects(vehicle).EffectiveStats.Mobility,Is.EqualTo(3f).Within(.001));
+        Assert.That(vehicle.Controller.EffectiveForwardSpeed,Is.EqualTo(baseSpeed*3f).Within(.01));
+    }
+    [UnityTest] public IEnumerator HullAndCoreBonusesAddWithinTheirGroupsAndExceedOldDurabilityCap()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        Assert.That(model.ReceiveBonuses(new[]{Upgrade(R1UpgradeEffect.Hull,1f),Upgrade(R1UpgradeEffect.Hull,1f),
+            Upgrade(R1UpgradeEffect.Hull,1f),Upgrade(R1UpgradeEffect.Hull,1f),
+            Upgrade(R1UpgradeEffect.Core,1f),Upgrade(R1UpgradeEffect.Core,1f)}),Is.True);
+        foreach(var item in model.Inventory.ToArray())
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(item.Id,c,default)==null);
+            Assert.That(model.Mount(item.Id,cell),Is.True);
+        }
+        var vehicle=Build(model);var stats=Effects(vehicle).EffectiveStats;
+        Assert.That(stats.Hull,Is.EqualTo(5f).Within(.001));Assert.That(stats.Core,Is.EqualTo(3f).Within(.001));
+        Assert.That(vehicle.Core.MaxHp,Is.EqualTo(1500f).Within(.01),"Independent hull and core groups combine without the old 12x cap.");
+        vehicle.Core.RestoreHealthRatio(.4f);
+        var hullModule=Module(vehicle,R1UpgradeEffect.Hull);hullModule.gameObject.SetActive(false);yield return null;
+        Assert.That(vehicle.Core.MaxHp,Is.EqualTo(1200f).Within(.01));
+        Assert.That(vehicle.Core.CurrentHp/vehicle.Core.MaxHp,Is.EqualTo(.4f).Within(.001),"Changing bonuses preserves HP percentage.");
+    }
+    [UnityTest] public IEnumerator ReloadReductionsAddAndCanReachZeroWithoutNegativeInterval()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        Assert.That(model.ReceiveBonuses(new[]{Upgrade(R1UpgradeEffect.Reload,.2f),Upgrade(R1UpgradeEffect.Reload,.2f)}),Is.True);
+        foreach(var item in model.Inventory.ToArray())
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(item.Id,c,default)==null);
+            Assert.That(model.Mount(item.Id,cell),Is.True);
+        }
+        var vehicle=Build(model);var controller=vehicle.Controller;
+        Assert.That(Effects(vehicle).EffectiveStats.FireInterval,Is.EqualTo(.6f).Within(.001));
+        Assert.That(controller.WeaponInterval(R4WeaponKind.Basic),Is.EqualTo(R4WeaponDefinition.Get(R4WeaponKind.Basic).Interval*.6f).Within(.001));
+        foreach(var part in vehicle.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.BonusModule))part.UpgradeAmount=.75f;
+        yield return null;
+        Assert.That(Effects(vehicle).EffectiveStats.FireInterval,Is.Zero);
+        Assert.That(controller.WeaponInterval(R4WeaponKind.Basic),Is.Zero,"An interval cannot become negative or retain a hidden balance cap.");
+    }
     [UnityTest] public IEnumerator InventoryIsInactiveAndAllMountedEffectsReachLiveWeaponsHpAndOmni()
     {
         var m=Model(Upgrade(R1UpgradeEffect.Damage,.25f),Upgrade(R1UpgradeEffect.Damage,.2f),
@@ -65,8 +188,8 @@ public class RRLW34EffectsTests
         var unboosted=m.DeepCopy();unboosted.Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeEffect==R1UpgradeEffect.Mobility).UpgradeAmount=0;
         var reference=Build(unboosted,x:-40);float unboostedSpeed=reference.Controller.EffectiveForwardSpeed;reference.gameObject.SetActive(false);
         var v=Build(m);var tank=v.Controller;var stats=Effects(v).EffectiveStats;
-        Assert.That(stats.Damage,Is.EqualTo(1.5f).Within(.001));Assert.That(stats.Mobility,Is.EqualTo(1.3f).Within(.001));
-        Assert.That(tank.EffectiveDamage,Is.EqualTo(60).Within(.001));
+        Assert.That(stats.Damage,Is.EqualTo(1.45f).Within(.001));Assert.That(stats.Mobility,Is.EqualTo(1.3f).Within(.001));
+        Assert.That(tank.EffectiveDamage,Is.EqualTo(58).Within(.001));
         Assert.That(tank.WeaponInterval(R4WeaponKind.Basic),Is.EqualTo(R4WeaponDefinition.Get(R4WeaponKind.Basic).Interval*.8f).Within(.001));
         Assert.That(v.Core.MaxHp,Is.EqualTo(210).Within(.001));
         var gun=v.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Gun);
@@ -81,7 +204,7 @@ public class RRLW34EffectsTests
         var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
         tank.FireFrom(barrel,R4WeaponKind.Basic,"w34-live-bonus");
         yield return Until(()=>hp.CurrentHp<1000,"Physical bonus shot reaches target");
-        Assert.That(hp.CurrentHp,Is.EqualTo(1000-R4WeaponDefinition.Get(R4WeaponKind.Basic).Damage*1.5f).Within(.01));
+        Assert.That(hp.CurrentHp,Is.EqualTo(1000-R4WeaponDefinition.Get(R4WeaponKind.Basic).Damage*1.45f).Within(.01));
         Assert.That(run.Progress.Stats.Damage,Is.EqualTo(1));
     }
     [UnityTest] public IEnumerator DestructionAndBridgeDetachmentRemoveEffectsWithoutHealing()
@@ -115,15 +238,30 @@ public class RRLW34EffectsTests
     [UnityTest] public IEnumerator FieldRepairOnlyHealsLivingConnectedPartsDuringTestAndStopsOnLoss()
     {
         Assert.That(run.OpenSandboxGarage(),Is.True);Time.timeScale=1;
-        var model=Model(Upgrade(R1UpgradeEffect.Repair));var v=Build(model);v.Core.RestoreHealthRatio(.5f);
+        var model=ModelWithOneMountedBonus(R1UpgradeEffect.Repair);var v=Build(model);v.Core.RestoreHealthRatio(.5f);
         float end=Time.time+.4f;while(Time.time<end)yield return null;
         Assert.That(v.Core.CurrentHp/v.Core.MaxHp,Is.EqualTo(.5f).Within(.001),"Garage never grants passive repair.");
         Assert.That(run.Progress.BeginTest(),Is.True);end=Time.time+.6f;while(Time.time<end)yield return null;
         Assert.That(v.Core.CurrentHp/v.Core.MaxHp,Is.GreaterThan(.505f));
-        var module=Module(v,R1UpgradeEffect.Repair);module.Damageable.ApplyDamage(10000,module.transform.position,Vector3.right);
+        var module=Module(v,R1UpgradeEffect.Repair);
+        module.Damageable.ApplyDamageResolvedTyped(module.Damageable.CurrentHp/.9f+1f,module.transform.position,Vector3.right,
+            R3DamagePropagation.DamageKind.Piercing);
         yield return null;yield return null;float ratio=v.Core.CurrentHp/v.Core.MaxHp;
+        Assert.That(v.Core.IsDead,Is.False,"The recipient must remain alive when checking that regeneration stopped.");
         end=Time.time+.6f;while(Time.time<end)yield return null;
         Assert.That(v.Core.CurrentHp/v.Core.MaxHp,Is.EqualTo(ratio).Within(.001));
+    }
+    [UnityTest] public IEnumerator TierThreeFieldRepairAddsAllFourContributions()
+    {
+        Assert.That(run.OpenSandboxGarage(),Is.True);Assert.That(run.Progress.BeginTest(),Is.True);
+        var model=ModelWithOneMountedBonus(R1UpgradeEffect.Repair);
+        model.Parts.Single(p=>p.Kind==R3PartKind.BonusModule).Tier=3;
+        var vehicle=Build(model);vehicle.Core.RestoreHealthRatio(.5f);
+        var effects=Effects(vehicle);var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        typeof(R3MountedBonusEffects).GetField("lastRepairPulse",flags).SetValue(effects,Time.time-.5f);
+        typeof(R3MountedBonusEffects).GetMethod("ApplyRepairPulse",flags).Invoke(effects,null);
+        Assert.That(vehicle.Core.CurrentHp/vehicle.Core.MaxHp,Is.EqualTo(.55f).Within(.001f),"Four tier contributions must each add 2.5% per second.");
+        yield return null;
     }
     [UnityTest] public IEnumerator RangeResetAndReturnPreserveWorkshopModuleIdentityWithoutStacking()
     {

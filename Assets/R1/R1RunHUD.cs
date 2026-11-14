@@ -9,8 +9,17 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunHUD : MonoBehaviour
     {
         private GUIStyle title, heading, body, small, button, compactButton;
+        private static int CombatAbilityExtraHeight(int count)=>Mathf.Max(0,count-1)*22;
+        private static Rect CombatAbilityStatusRect(int row)=>new Rect(340,90+22*row,190,22);
         private Texture2D buttonNormal,buttonHover,buttonPressed;
         private bool combatDetailsOpen;
+        static string GameplayControlsHint()
+        {
+            var profile=R1ControlProfile.Current;
+            string Names(params string[] actions)=>string.Join("/",actions.Select(a=>R1ControlProfile.Display(profile.Binding(a))));
+            return Names("MoveForward","MoveBackward","TurnLeft","TurnRight")+" — ruch • Mysz — celowanie • "+
+                Names("Weapon1","Weapon2","Weapon3","Weapon4")+" — broń • "+Names("Active1","Active2","Active3","Active4")+" — moduły • Esc — pauza";
+        }
         private int[] starterOffers;
         private R3VehicleDesign[] starterDesigns;
         private string[] starterDescriptions,starterSummaries;
@@ -112,8 +121,8 @@ namespace RoboRougelike.R1
         }
         private void UpdateCombatDetails(Event input)
         {
-            if(input!=null&&input.type==EventType.KeyDown&&input.keyCode==KeyCode.I)
-            {combatDetailsOpen=!combatDetailsOpen;input.Use();}
+            if(input!=null&&R1ControlProfile.Current.MatchesEvent("CombatDetails",input))
+            {bool keyboard=input.type==EventType.KeyDown;combatDetailsOpen=!combatDetailsOpen;if(keyboard)input.Use();}
         }
         private static float BarFraction(float current,float maximum)
         {
@@ -177,6 +186,16 @@ namespace RoboRougelike.R1
             var before=GUI.color;GUI.color=accent;
             GUI.DrawTexture(new Rect(rect.x,rect.y,3,rect.height),Texture2D.whiteTexture);GUI.color=before;
         }
+        static string RescueButtonText(R1RunController run)=>run.EmergencyRescueCooldownLeft>0?
+            $"Ratunek {Mathf.CeilToInt(run.EmergencyRescueCooldownLeft)}s":
+            "Ratunek ["+R1ControlProfile.Display(R1ControlProfile.Current.Binding("Rescue"))+"]";
+        static void TryRescueMouse(R1RunController run,Event input)
+        {
+            if(run==null||run.Paused||run.QuitRequested||run.Transitioning||run.MapEditing||run.SafeZoneTrading||run.Error!=null||
+               (run.Progress?.State!=R1RunState.Combat&&run.Progress?.State!=R1RunState.TestDrive&&run.Progress?.State!=R1RunState.SafeZone)||
+               !R1ControlProfile.IsBindingMouseDown(input)||!R1ControlProfile.Current.MatchesEvent("Rescue",input))return;
+            if(run.TryEmergencyRescue())input.Use();
+        }
         private void OnGUI()
         {
             var run = R1RunController.Instance;
@@ -225,6 +244,7 @@ namespace RoboRougelike.R1
             {
                 Draw(run,portraitReady,portraitGarage,portraitRoute,portraitSalvage);
                 if(run.Paused)LightStylePrototype.Instance?.DrawPausePanel();
+                if(!sessionOverlay)TryRescueMouse(run,Event.current);
                 if(quickSearchActive&&!garageSearchKey&&!catalogOpen&&!garageOptionsOpen)
                     HandleQuickGarageKey(run,Event.current,false);
                 quickSearchEditing=quickSearchActive&&!run.Paused&&!catalogOpen&&!garageOptionsOpen&&
@@ -239,6 +259,8 @@ namespace RoboRougelike.R1
         {
             if (run.QuitRequested)
             { Panel(new Rect(0,0,1280,720)); GUI.Label(new Rect(350,300,650,80),"Zamykanie gry…",title); return; }
+            if(run.Progress?.State==R1RunState.Ready&&MainControlsOpen){DrawMainControls(portraitReady);return;}
+            if(run.Paused&&PauseControlsOpen){DrawPauseControls();return;}
             if (run.Paused && run.Progress?.State != R1RunState.TestDrive)
             { DrawSessionPause(run); return; }
             if (run.Error != null)
@@ -252,11 +274,11 @@ namespace RoboRougelike.R1
             var progress = run.Progress;
             if(run.MapEditing&&!run.Paused){DrawMapEditor(run);return;}
             if(progress.State==R1RunState.TestDrive){DrawTestRange(run);return;}
+            if(progress.State==R1RunState.SafeZone){DrawSafeZone(run);return;}
             if(progress.State==R1RunState.Garage&&!run.Transitioning){if(catalogOpen){if(portraitGarage)DrawPortraitCatalog(run);else DrawFullCatalog(run);}else if(portraitGarage)DrawSimplePortraitGarage(run);else DrawSimpleGarage(run);return;}
             DismissCatalog();garageOptionsOpen=false;
             if (progress.State == R1RunState.Combat && !run.Transitioning)
             {
-                UpdateCombatDetails(Event.current);
                 var player = run.Player;
                 var core=player!=null?player.Core:null;
                 float hp=core!=null?core.CurrentHp:0,maxHp=core!=null?core.MaxHp:0;
@@ -265,6 +287,34 @@ namespace RoboRougelike.R1
                 bool lowCore=CombatResourceLow(hp,maxHp,.25f),lowEnergy=CombatResourceLow(currentEnergy,maxEnergy,.2f);
                 string resourceWarning=CombatResourceWarning(hp,maxHp,currentEnergy,maxEnergy);
                 var modules=player!=null?player.Modules:null;
+                var repairPulse=player!=null?player.GetComponent<R3RepairPulse>():null;
+                var offensive=player!=null?player.GetComponent<R3OffensiveDevices>():null;
+                bool hasOverdrive=offensive!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.Overdrive);
+                bool hasRapidFire=offensive!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.RapidFire);
+                bool hasDoubleBoost=offensive!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.DoubleShotOverdrive);
+                var emp=player!=null?player.GetComponent<R3EmpDevices>():null;
+                bool hasTargetEmp=emp!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.TargetedEmp);
+                bool hasAreaEmp=emp!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.AreaEmp);
+                var recharge=player!=null?player.GetComponent<R3RechargePulse>():null;
+                var deploy=player!=null?player.GetComponent<R3DeployableService>():null;
+                bool hasRamp=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.RampDeployer);
+                bool hasWall=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.WallDeployer);
+                bool hasJumpPad=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.JumpPadDeployer);
+                bool hasBlastTrap=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.BlastTrapDeployer);
+                bool hasEmpTrap=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.EmpTrapDeployer);
+                bool hasRepelTrap=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.RepelTrapDeployer);
+                bool hasDamageTrap=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.DamageTrapDeployer);
+                bool hasSlowTrap=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.SlowTrapDeployer);
+                bool hasImmobilizeTrap=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.ImmobilizeTrapDeployer);
+                bool hasFlyingDrone=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.FlyingDroneGenerator);
+                bool hasGroundDrone=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.GroundDroneGenerator);
+                bool hasHealingDrone=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.HealingDroneGenerator);
+                bool hasSupportDrone=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.SupportDroneGenerator);
+                bool hasOffensiveTurret=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.OffensiveTurretGenerator);
+                bool hasHealingTurret=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.HealingTurretGenerator);
+                bool hasSupportTurret=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.SupportTurretGenerator);
+                bool hasShieldTurret=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.ShieldTurretGenerator);
+                int extraStatusHeight=energy!=null?CombatAbilityExtraHeight((repairPulse!=null?1:0)+(hasOverdrive?1:0)+(hasRapidFire?1:0)+(hasDoubleBoost?1:0)+(hasTargetEmp?1:0)+(hasAreaEmp?1:0)+(recharge!=null?1:0)+(hasRamp?1:0)+(hasWall?1:0)+(hasJumpPad?1:0)+(hasBlastTrap?1:0)+(hasEmpTrap?1:0)+(hasRepelTrap?1:0)+(hasDamageTrap?1:0)+(hasSlowTrap?1:0)+(hasImmobilizeTrap?1:0)+(hasFlyingDrone?1:0)+(hasGroundDrone?1:0)+(hasHealingDrone?1:0)+(hasSupportDrone?1:0)+(hasOffensiveTurret?1:0)+(hasHealingTurret?1:0)+(hasSupportTurret?1:0)+(hasShieldTurret?1:0)):0;
                 if(!lowCore&&modules!=null&&run.VehicleModel!=null)
                 {
                     var drive=run.VehicleModel.SelectedDrive;
@@ -273,7 +323,14 @@ namespace RoboRougelike.R1
                     bool weaponsInactive=modules.ActiveWeaponCount==0&&modules.HasSurvivingWeapon;
                     resourceWarning=CombatEquipmentWarning(drive,modules.InitialWheelCount,surviving,weaponsInactive)??resourceWarning;
                 }
-                CombatPanel(new Rect(20,18,660,(combatDetailsOpen?180:125)+(resourceWarning!=null?25:0)+(run.PickupGraceRemaining>0?25:0)),
+                if(resourceWarning==null&&player!=null&&RogueMachine.P12PipelineSafe.P17PhysicalShell.AvailableSlots==0)
+                {
+                    var mounted=player.GetComponent<R3VehicleAssembly>();
+                    if(mounted!=null&&mounted.Parts.Any(part=>part!=null&&part.Operational&&part.gameObject.activeInHierarchy&&
+                        part.Kind==R3PartKind.Gun&&part.Weapon<=R4WeaponKind.Railgun))
+                        resourceWarning="Dużo pocisków w powietrzu — broń chwilowo czeka.";
+                }
+                CombatPanel(new Rect(20,18,660,(combatDetailsOpen?180:125)+extraStatusHeight+(resourceWarning!=null?25:0)+(run.PickupGraceRemaining>0?25:0)),
                     lowCore?new Color(1f,.42f,.32f):new Color(.28f,.76f,.75f));
                 GUI.Label(new Rect(36, 27, 630, 30), $"STARCIE {progress.EncounterIndex + 1}/{progress.TotalEncounters}   •   Wrogowie: {run.Encounter.AliveCount}   •   Złom: {run.VehicleModel.Scrap}", body);
                 if (player != null)
@@ -284,30 +341,54 @@ namespace RoboRougelike.R1
                     GUI.contentColor=beforeText;
                     DrawResourceBar(new Rect(215,65,110,12),hp,maxHp,lowCore?new Color(1f,.35f,.25f):new Color(.35f,.85f,.67f));
                     GUI.Label(new Rect(340,58,325,28),ActivityGoal(run),small);
-                    var repairPulse=player.GetComponent<R3RepairPulse>();
                     if(energy!=null)
                     {
                         if(lowEnergy)GUI.contentColor=new Color(1f,.78f,.38f);
                         GUI.Label(new Rect(36,90,175,25),$"Energia{(lowEnergy?"!":":")} {currentEnergy:0}/{maxEnergy:0}",small);
                         GUI.contentColor=beforeText;
                         DrawResourceBar(new Rect(215,95,110,12),currentEnergy,maxEnergy,lowEnergy?new Color(1f,.68f,.24f):new Color(.25f,.65f,.95f));
-                        if(repairPulse!=null)GUI.Label(new Rect(340,90,190,25),$"V — naprawa: {repairPulse.Status}",small);
+                        int statusRow=0;
+                        if(repairPulse!=null)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RepairPulse)} naprawa: {repairPulse.Status}",small);
+                        if(hasOverdrive)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.Overdrive)} Overdrive: {offensive.OverdriveStatus}",small);
+                        if(hasRapidFire)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RapidFire)} Rapid: {offensive.RapidFireStatus}",small);
+                        if(hasDoubleBoost)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.DoubleShotOverdrive)} Double: {offensive.DoubleShotOverdriveStatus}",small);
+                        if(hasTargetEmp)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.TargetedEmp)} EMP cel.: {emp.Status(R3PartKind.TargetedEmp)}",small);
+                        if(hasAreaEmp)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.AreaEmp)} EMP obsz.: {emp.Status(R3PartKind.AreaEmp)}",small);
+                        if(recharge!=null)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.ActiveSlotLabel(R3PartKind.RechargePulse)} ładunki: {recharge.Status}",small);
+                        if(hasRamp)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.RampDeployer)} rampa: {deploy.StatusFor(R3PartKind.RampDeployer)}",small);
+                        if(hasWall)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.WallDeployer)} murek: {deploy.StatusFor(R3PartKind.WallDeployer)}",small);
+                        if(hasJumpPad)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.JumpPadDeployer)} jump pad: {deploy.StatusFor(R3PartKind.JumpPadDeployer)}",small);
+                        if(hasBlastTrap)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.BlastTrapDeployer)} pułapka: {deploy.StatusFor(R3PartKind.BlastTrapDeployer)}",small);
+                        if(hasEmpTrap)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.EmpTrapDeployer)} pułapka EMP: {deploy.StatusFor(R3PartKind.EmpTrapDeployer)}",small);
+                        if(hasRepelTrap)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.RepelTrapDeployer)} odrzucanie: {deploy.StatusFor(R3PartKind.RepelTrapDeployer)}",small);
+                        if(hasDamageTrap)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.DamageTrapDeployer)} pole obrażeń: {deploy.StatusFor(R3PartKind.DamageTrapDeployer)}",small);
+                        if(hasSlowTrap)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.SlowTrapDeployer)} spowolnienie: {deploy.StatusFor(R3PartKind.SlowTrapDeployer)}",small);
+                        if(hasImmobilizeTrap)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.ImmobilizeTrapDeployer)} blokada napędu: {deploy.StatusFor(R3PartKind.ImmobilizeTrapDeployer)}",small);
+                        if(hasFlyingDrone)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.FlyingDroneGenerator)} dron: {deploy.StatusFor(R3PartKind.FlyingDroneGenerator)}",small);
+                        if(hasGroundDrone)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.GroundDroneGenerator)} dron naziemny: {deploy.StatusFor(R3PartKind.GroundDroneGenerator)}",small);
+                        if(hasHealingDrone)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.HealingDroneGenerator)} dron naprawczy: {deploy.StatusFor(R3PartKind.HealingDroneGenerator)}",small);
+                        if(hasSupportDrone)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.SupportDroneGenerator)} dron energetyczny: {deploy.StatusFor(R3PartKind.SupportDroneGenerator)}",small);
+                        if(hasOffensiveTurret)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.OffensiveTurretGenerator)} wieżyczka: {deploy.StatusFor(R3PartKind.OffensiveTurretGenerator)}",small);
+                        if(hasHealingTurret)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.HealingTurretGenerator)} naprawa: {deploy.StatusFor(R3PartKind.HealingTurretGenerator)}",small);
+                        if(hasSupportTurret)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.SupportTurretGenerator)} wsparcie: {deploy.StatusFor(R3PartKind.SupportTurretGenerator)}",small);
+                        if(hasShieldTurret)GUI.Label(CombatAbilityStatusRect(statusRow),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.ShieldTurretGenerator)} kopuła: {deploy.StatusFor(R3PartKind.ShieldTurretGenerator)}",small);
                     }
-                    if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?"Mniej [I]":"Szczegóły [I]",compactButton))combatDetailsOpen=!combatDetailsOpen;
+                    string detailsKey=R1ControlProfile.Display(R1ControlProfile.Current.Binding("CombatDetails"));
+                    if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?$"Mniej [{detailsKey}]":$"Szczegóły [{detailsKey}]",compactButton))combatDetailsOpen=!combatDetailsOpen;
                     if(combatDetailsOpen)
                     {
                         int plannedGuns=run.VehicleModel.Parts.FindAll(p=>p.Kind==R3PartKind.Gun).Count;
-                        GUI.Label(new Rect(36,120,630,26),$"Konstrukcja: {player.Structure.ConnectedBlockCount}/{player.Structure.InitialStructuralBlockCount} • Koła: {player.Modules.ActiveWheelCount}/{player.Modules.InitialWheelCount} • Bronie: {player.Modules.ActiveWeaponCount}/{plannedGuns}",small);
+                        GUI.Label(new Rect(36,120+extraStatusHeight,630,26),$"Konstrukcja: {player.Structure.ConnectedBlockCount}/{player.Structure.InitialStructuralBlockCount} • Koła: {player.Modules.ActiveWheelCount}/{player.Modules.InitialWheelCount} • Bronie: {player.Modules.ActiveWeaponCount}/{plannedGuns}",small);
                         var physicsBody=player.GetComponent<Rigidbody>();
-                        GUI.Label(new Rect(36,148,630,25),$"Masa: {physicsBody.mass:0} kg • Prędkość: {physicsBody.linearVelocity.magnitude:0.0} m/s • Esc — pauza",small);
+                        GUI.Label(new Rect(36,148+extraStatusHeight,630,25),$"Masa: {physicsBody.mass:0} kg • Prędkość: {physicsBody.linearVelocity.magnitude:0.0} m/s • Esc — pauza",small);
                     }
-                    float noticeY=combatDetailsOpen?174:121;
+                    float noticeY=(combatDetailsOpen?174:121)+extraStatusHeight;
                     if(resourceWarning!=null)
                     {var before=GUI.contentColor;GUI.contentColor=lowCore?new Color(1f,.62f,.52f):new Color(1f,.8f,.48f);
                      GUI.Label(new Rect(36,noticeY,630,22),resourceWarning,small);GUI.contentColor=before;noticeY+=25;}
                     if(run.PickupGraceRemaining>0)
                     {
-                        GUI.Label(new Rect(36,noticeY,630,22),$"Zbierz energię: {run.PickupGraceRemaining:0.0} s • Enter — nagrody",small);
+                        GUI.Label(new Rect(36,noticeY,630,22),$"Zbierz łupy i energię: {run.PickupGraceRemaining:0.0} s • Enter — nagrody",small);
                         GUI.Label(new Rect(640,210,285,55),"ZWYCIĘSTWO",title);
                     }
                 }
@@ -331,13 +412,18 @@ namespace RoboRougelike.R1
                     if(row==0&&run.Encounter.Enemies.Count>0)GUI.Label(new Rect(940,80,305,50),"Wszyscy przeciwnicy pokonani.",small);
                     }
                     if(GUI.Button(new Rect(1130,670,125,35),"Pauza",compactButton))run.TogglePause();
+                    GUI.enabled=run.EmergencyRescueCooldownLeft<=0;
+                    if(GUI.Button(new Rect(990,670,130,35),RescueButtonText(run),compactButton))run.TryEmergencyRescue();
+                    GUI.enabled=true;
+                    if(run.EmergencyRescueNotice!=null||run.EmergencyRescueActive)GUI.Label(new Rect(660,637,450,30),
+                        run.EmergencyRescueNotice??"Ratunek: 50% otrzymywanych obrażeń; atak wstrzymany.",small);
                     DrawAimReticle(run);
-                    GUI.Label(new Rect(24, 676, 900, 26),!combatDetailsOpen?
-                        "WASD — ruch • Mysz — celowanie • LPM/PPM — ogień • I — szczegóły":
-                        run.VehicleModel.SelectedDrive>=R3DriveKind.Omni?
-                        "W/S — jazda • A/D — ruch boczny • Z/C — obrót • Mysz — celowanie • LPM/PPM — ogień":
-                        "W/S — jazda • A/D — skręt • Mysz — celowanie • LPM/PPM — ogień • Kółko — przybliżenie",small);
+                    GUI.Label(new Rect(24, 676, 900, 26),GameplayControlsHint(),small);
                     DrawFeedback();
+                    // Give HUD buttons the first chance to consume pointer input;
+                    // a mouse-bound shortcut only handles unclaimed clicks.
+                    UpdateCombatPaging(Event.current);
+                    UpdateCombatDetails(Event.current);
                     return;
                 }
             }
@@ -350,6 +436,7 @@ namespace RoboRougelike.R1
             {
                 if(portraitReady){DrawPortraitReady(run);return;}
                 GUI.Label(new Rect(90, 55, 1100, 60), "ROBOROGUELIKE • PEŁNA INTEGRACJA", title);
+                if(GUI.Button(new Rect(1010,55,180,45),"Sterowanie",compactButton))OpenMainControls();
                 GUI.Label(new Rect(90, 125, 1100, 45), "Wybierz jeden z trzech wylosowanych pojazdów", heading);
                 GUI.Label(new Rect(90,173,1100,28),"Jeden pojazd, wspólny garaż i nagrody. Aktywność wybierzesz po przygotowaniu.",small);
                 for(int i=0;i<3;i++)
@@ -372,7 +459,7 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(640,600,550,65),"Poligon kreatywny — buduj od rdzenia",button))run.OpenCreativeGarage();
                 if(GUI.Button(new Rect(640,548,300,38),"Edytor map",compactButton))run.OpenMapEditor();
                 if(GUI.Button(new Rect(960,552,230,38),"Wyjdź z gry",button))run.RequestQuit();
-                GUI.Label(new Rect(90,675,1100,30),"WASD — jazda / hamowanie • Mysz — celowanie • LPM/PPM — ogień • Esc — pauza",small);
+                GUI.Label(new Rect(90,675,1100,30),GameplayControlsHint(),small);
             }
             else if (progress.State == R1RunState.UpgradeChoice)
             {
@@ -405,6 +492,7 @@ namespace RoboRougelike.R1
         private void DrawPortraitReady(R1RunController run)
         {
             GUI.Label(new Rect(24,20,720,48),"ROBOROGUELIKE",title);
+            if(GUI.Button(new Rect(540,20,200,45),"Sterowanie",compactButton))OpenMainControls();
             GUI.Label(new Rect(24,74,720,38),"Wybierz jeden z trzech pojazdów",heading);
             GUI.Label(new Rect(24,113,720,28),"Jeden pojazd, wspólny garaż i nagrody.",small);
             for(int i=0;i<3;i++)
@@ -427,7 +515,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(PortraitActionRect(2),"Edytor map",compactButton))run.OpenMapEditor();
             if(GUI.Button(PortraitActionRect(3),"Wyjdź z gry",compactButton))run.RequestQuit();
             GUI.Label(new Rect(24,920,720,43),"6 starć • nagrody • garaż\nPo walce wybierz moduł i części z wraków.",small);
-            GUI.Label(new Rect(24,975,720,40),"WASD — jazda • Mysz — celowanie • LPM/PPM — ogień • Esc — pauza",small);
+            GUI.Label(new Rect(24,975,720,40),GameplayControlsHint(),small);
         }
 
         private void DrawSessionPause(R1RunController run)
@@ -437,6 +525,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(350,220,580,58),PauseCaption(run,0,"Wznów  [Esc]"),button))run.TogglePause();
             if(GUI.Button(new Rect(350,290,580,58),PauseCaption(run,1,run.MapReturnPending?"Potwierdź powrót":"Powrót do menu głównego"),button))run.RestartRun();
             if(GUI.Button(new Rect(350,360,580,58),PauseCaption(run,2,run.MapQuitPending?"Potwierdź wyjście":"Wyjdź z gry"),button))run.RequestQuitFromMenu();
+            if(GUI.Button(new Rect(950,220,240,58),PauseCaption(run,3,"Sterowanie"),compactButton))OpenPauseControls();
             GUI.Label(new Rect(350,430,580,60),run.MapExitPending?run.EditorMessage:"↑ / ↓ i Enter • pad: krzyżak, A, B / Start",small);
             DrawMovementPause(run);DrawSuspensionPause(run);
         }
@@ -457,7 +546,7 @@ namespace RoboRougelike.R1
             var garage=run.Garage;var model=run.VehicleModel;var selected=model.At(garage.Cell);
             Panel(new Rect(10,10,320,700));Panel(new Rect(950,10,320,700));
             GUI.Label(new Rect(30,25,290,40),"GARAŻ",heading);
-            GUI.Label(new Rect(30,67,290,35),$"Złom: {model.Scrap}  •  Pola: {System.Linq.Enumerable.Sum(model.Parts,p=>System.Linq.Enumerable.Count(R3VehicleModel.OccupiedCells(p)))}/180",body);
+            GUI.Label(new Rect(30,67,290,35),$"Złom: {model.Scrap} • Punkty: {model.ConstructionBudgetUsed}/{model.ConstructionBudgetLimit}",body);
             var garageEnergy=run.Player!=null?run.Player.GetComponent<VehicleEnergyBank>():null;
             if(garageEnergy!=null)GUI.Label(new Rect(30,91,290,20),$"Energia: {garageEnergy.Current:0}/{garageEnergy.Maximum:0}",small);
             DrawMovementCatalog(run);
