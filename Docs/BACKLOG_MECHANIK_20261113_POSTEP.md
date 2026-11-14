@@ -400,3 +400,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Wieżyczka uwzględnia również zamontowane, sprawne części innych sojuszniczych pojazdów. Nadal naprawia jedną najsłabszą dostępną część naraz, nie wskrzesza zniszczonych elementów i pomija wrogów oraz obiekty poza zasięgiem. Dotychczasowa naprawa własnego pojazdu i sojuszniczych urządzeń pozostaje dostępna. Opis w garażu uwzględnia rozszerzenie.
 - Unity 6000.3.14f1: **3 PASS, 0 FAIL**, exit 0 (`healing-allies-final.xml`, `.log` w `Prototypy`): najsłabsza część sojusznika, ochrona wroga i odległego pojazdu, wcześniejsza naprawa właściciela i regresja wieżyczki wsparcia. Próba przed zmianą **FAIL** (`healing-allies-red.xml`): część sojusznika pozostawała bez naprawy. Stan HP w nowym scenariuszu ustawiono bezpośrednio, a samo leczenie i wybór celu zachodzą w rzeczywistej fizyce Unity. Ręczna gra, balans i wydajność wielu wieżyczek: **NOT RUN**.
+
+#### 23–24. Naprawa generatora kopuły
+
+- Generator sojuszniczej kopuły jest teraz rozpoznawany przez wieżyczkę leczniczą tak jak inne sojusznicze urządzenia. Naprawa używa istniejących HP generatora i nie odtwarza zniszczonego obiektu.
+- Unity 6000.3.14f1: **3 PASS, 0 FAIL**, exit 0 (`healing-dome-final.xml`, `.log` w `Prototypy`) dla rzeczywiście rozstawionej kopuły oraz regresji naprawy sojuszniczych pojazdów i dotychczasowych urządzeń. Próba przed zmianą **FAIL** (`healing-dome-red.xml`): generator nie otrzymywał naprawy. Stan HP generatora ustawiono bezpośrednio; ręczna gra i balans: **NOT RUN**.

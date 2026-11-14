@@ -404,6 +404,24 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(distant.CurrentHp,Is.EqualTo(farBefore).Within(.001));Assert.That(hostile.CurrentHp,Is.EqualTo(enemyBefore).Within(.001));
         Object.Destroy(ally.gameObject);Object.Destroy(far.gameObject);Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator HealingTurretRepairsTheAlliedShieldEmitter()
+    {
+        run.VehicleModel.Award(2500);FuseAndMount(R3PartKind.HealingTurretGenerator);FuseAndMount(R3PartKind.ShieldTurretGenerator);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.forward*3;
+        Assert.That(service.TryDeploy(R3PartKind.HealingTurretGenerator),Is.True);
+        var healer=GameObject.Find("Wieżyczka lecznicza");Assert.That(healer,Is.Not.Null);
+        body.position+=Vector3.right*5;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        Assert.That(service.TryDeploy(R3PartKind.ShieldTurretGenerator),Is.True);
+        var dome=GameObject.Find("Kopuła osłonowa");Assert.That(dome,Is.Not.Null);
+        var hp=dome.GetComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.RestoreHealthRatio(.3f);float before=hp.CurrentHp;
+        Physics.SyncTransforms();for(int i=0;i<15;i++)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(hp.CurrentHp,Is.GreaterThan(before),"A friendly shield emitter is a repairable allied device.");
+        Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator HealingTurretRepairsNearbyOwnedPartsWithoutAttacking()
     {
         Assert.That(System.Enum.TryParse("HealingTurretGenerator",out R3PartKind kind),Is.True,"Missing healing turret generator");
