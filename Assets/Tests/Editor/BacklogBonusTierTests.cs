@@ -276,6 +276,28 @@ public sealed class BacklogBonusTierTests
 
 public sealed class BacklogBonusTierGameplayTests
 {
+    [UnityTest] public IEnumerator LargeHullAndCoreBonusesKeepCoreAndHealthFractionFinite()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var hull=BacklogBonusTierTests.OperationBonus("large-hull",1e38f,"Increased");hull.Effect=R1UpgradeEffect.Hull;
+        var core=BacklogBonusTierTests.OperationBonus("large-core",10f,"Increased");core.Effect=R1UpgradeEffect.Core;
+        Assert.That(run.VehicleModel.ReceiveBonuses(new[]{hull,core}),Is.True);var model=run.VehicleModel;
+        string hullId=model.Inventory.Single(p=>p.UpgradeId==hull.Id).Id;
+        foreach(var bonus in model.Inventory.Where(p=>p.UpgradeId==hull.Id||p.UpgradeId==core.Id).ToArray())
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(bonus.Id,c,default)==null);
+            Assert.That(run.GarageMount(bonus.Id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var vehicle=run.Player;Assert.That(vehicle.Core.MaxHp,Is.EqualTo(float.MaxValue),"Core and hull products must not become infinity and lose the bonus.");
+        Assert.That(float.IsNaN(vehicle.HealthFraction)||float.IsInfinity(vehicle.HealthFraction),Is.False);
+        Assert.That(vehicle.HealthFraction,Is.EqualTo(1).Within(.001));
+        var hullPart=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==hullId);
+        hullPart.gameObject.SetActive(false);yield return null;
+        Assert.That(vehicle.Core.MaxHp,Is.LessThan(10000));Assert.That(vehicle.HealthFraction,Is.EqualTo(1).Within(.001));
+        Object.Destroy(hull);Object.Destroy(core);
+    }
     [UnityTest] public IEnumerator BonusAboveOneHundredPercentAffectsARealShotAndStopsOnLoss()
     {
         var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
