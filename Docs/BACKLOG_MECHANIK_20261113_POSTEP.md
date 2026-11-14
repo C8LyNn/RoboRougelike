@@ -74,6 +74,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Dodano fizyczną premię +40% obrażeń dronów, dostępną jako osobna, opisana nagroda. Łączy się addytywnie z ogólnymi `increased/reduced` i korzysta z ogólnych osobnych mnożników; nie zwiększa obrażeń wieżyczek, broni ani pułapek. Jej wyłączenie odbiera premię także już rozstawionym dronom. Wartość i wpływ nowej nagrody na losowanie są tymczasowe i wymagają playtestu.
 - Unity 6000.3.14f1: **13 PASS, 0 FAIL**, exit 0 (`C:\Users\kubap\Desktop\Prototypy\bonus-drone-scope-final.xml`, `.log`). Sprawdzono rzeczywiste trafienia drona i wieżyczki z premią ogólną i ograniczoną, wyłączenie modułu, brak premii dla działa, zachowanie zakresu w zapisie i blueprintach oraz wcześniejsze rodzaje premii. Przed zmianą `bonus-drone-scope-red.xml`: **1 FAIL** — brak zakresu dronów. Scenariusz bezpośrednio wyzwala metodę strzału urządzeń; ręczna rozgrywka i pozostałe kategorie: **NOT RUN / nadal do realizacji**.
 
+#### 13. Osobne kategorie wieżyczek i pułapek
+
+- Dodano oddzielne fizyczne premie do obrażeń wieżyczek ofensywnych i pułapek; współdziałają z premiami ogólnymi, ale nie wzmacniają innych kategorii. Dwie nowe nagrody pokazują swój zakres, przechodzą przez zapis i blueprinty. Wstępne wartości +40% i +50%, jak również wpływ większej puli nagród na losowanie, wymagają playtestu.
+- Unity 6000.3.14f1: **17 PASS, 0 FAIL**, exit 0 (`C:\Users\kubap\Desktop\Prototypy\bonus-deployable-scopes-final.xml`, `.log`): fizyczny strzał wieżyczki i drona, wybuch pułapki na kopule, zakres działa i wcześniejsze premie, zapis nowych nagród oraz regresja osłon. Przed zmianą `bonus-deployable-scopes-red.xml`: **1 FAIL** — brak kategorii. Strzały urządzeń wyzwolono bezpośrednio z testu; ręczny playtest, inne statystyki kategorii, rodzaje obrażeń i hybrydy: **NOT RUN / nadal do zrobienia**.
+
 ## 16–19. Wspólny aktywny impuls naprawczy — częściowo
 
 - Sprawne kopie Repair Pulse wyzwalają jeden wspólny impuls; ich wkłady tierów sumują tempo naprawy wybranego celu. Utrata lub zakłócenie kopii w trakcie działania zmniejsza jego siłę. Aktywacja pobiera łączny koszt atomowo: przy braku energii na całą grupę nie uruchamia się żadna część.

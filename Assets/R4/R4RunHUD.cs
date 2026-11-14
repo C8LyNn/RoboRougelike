@@ -391,7 +391,8 @@ namespace RoboRougelike.R1
                 (item.UpgradeAmount*100).ToString("0")+"%";
         }
         private static string DamageBonusName(R3PartState item)=>item.UpgradeScope switch {
-            R1BonusScope.BasicCannon=>"Obrażenia działa podstawowego",R1BonusScope.Drones=>"Obrażenia dronów",_=>"Obrażenia"};
+            R1BonusScope.BasicCannon=>"Obrażenia działa podstawowego",R1BonusScope.Drones=>"Obrażenia dronów",
+            R1BonusScope.Turrets=>"Obrażenia wieżyczek",R1BonusScope.Traps=>"Obrażenia pułapek",_=>"Obrażenia"};
         private static string OtherBonusOperationText(R3PartState item,string name,int units)
         {
             bool inverse=item.UpgradeEffect==R1UpgradeEffect.Reload;

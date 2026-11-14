@@ -90,6 +90,20 @@ public sealed class BacklogBonusTierTests
         var text=typeof(R1RunHUD).GetMethod("BonusInstanceText",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
         Assert.That((string)text.Invoke(null,new object[]{item}),Does.Contain("dronów"));
     }
+    [TestCase("damage_turrets","Turrets","wieżyczek")]
+    [TestCase("damage_traps","Traps","pułapek")]
+    public void DeployableCategoryRewardsSurviveSaveAndShowScope(string id,string scope,string label)
+    {
+        var run=Resources.Load<R1RunDefinition>("R1/Run");var reward=run.Upgrades.SingleOrDefault(p=>p!=null&&p.Id==id);
+        Assert.That(reward,Is.Not.Null);Assert.That(reward.Scope.ToString(),Is.EqualTo(scope));
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        var item=model.Inventory.Single();var blueprint=R3BlueprintPart.FromPart(item,Vector3Int.zero);
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(blueprint.Matches(restored.Inventory.Single()),Is.True);
+        var text=typeof(R1RunHUD).GetMethod("BonusInstanceText",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That((string)text.Invoke(null,new object[]{item}),Does.Contain(label));
+    }
     [Test] public void ModifierArithmeticIsOrderedAndStaysFiniteAtExtremeValues()
     {
         var type=typeof(R1RunStats).Assembly.GetType("RoboRougelike.R1.R1ModifierGroup");Assert.That(type,Is.Not.Null);
@@ -331,6 +345,46 @@ public sealed class BacklogBonusTierGameplayTests
             Object.Destroy(device);Object.Destroy(target);
         }
         Object.Destroy(global);Object.Destroy(more);Object.Destroy(scoped);
+    }
+    [UnityTest] public IEnumerator TurretAndTrapScopedBonusesAffectOnlyTheirOwnDevices()
+    {
+        var names=System.Enum.GetNames(typeof(R1BonusScope));
+        Assert.That(names,Does.Contain("Turrets"));Assert.That(names,Does.Contain("Traps"));
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var turret=BacklogBonusTierTests.OperationBonus("turret-only",.4f,"Increased");turret.Scope=(R1BonusScope)System.Enum.Parse(typeof(R1BonusScope),"Turrets");
+        var trapBonus=BacklogBonusTierTests.OperationBonus("trap-only",.5f,"Increased");trapBonus.Scope=(R1BonusScope)System.Enum.Parse(typeof(R1BonusScope),"Traps");
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{turret,trapBonus}),Is.True);
+        foreach(var id in model.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            var cell=cells.First(c=>model.OwnedPlacementError(id,c,default)==null);Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        Assert.That(run.Player.Controller.EffectiveDamage,Is.EqualTo(40).Within(.01));
+        var fire=typeof(R3FlyingDrone).GetMethod("Fire",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance);
+        for(int i=0;i<2;i++)
+        {
+            var device=GameObject.CreatePrimitive(PrimitiveType.Cube);device.transform.position=new Vector3(1050+i*10,1000,1000);
+            device.AddComponent<Rigidbody>().isKinematic=true;var gun=device.AddComponent<R3FlyingDrone>();
+            if(i==0)gun.ConfigureTurret(run.Player.transform,.5f,10);else gun.Configure(run.Player.transform,0,.5f,10);gun.enabled=false;
+            var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=device.transform.position+Vector3.forward*4;
+            var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(1000,false);Physics.SyncTransforms();
+            fire.Invoke(gun,new object[]{Vector3.forward});float deadline=Time.time+3;
+            while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+            Assert.That(hp.CurrentHp,Is.EqualTo(i==0?986f:990f).Within(.02),"Only the turret receives its category's +40%.");
+            Object.Destroy(device);Object.Destroy(target);
+        }
+        var enemy=run.GetComponent<RoboRougelike.R6.R6TestRange>().TrainingTarget;
+        enemy.GetComponent<Rigidbody>().isKinematic=true;enemy.transform.position=new Vector3(1000,1000,1000);Physics.SyncTransforms();
+        var dome=GameObject.CreatePrimitive(PrimitiveType.Cube);dome.GetComponent<Collider>().enabled=false;dome.transform.position=enemy.Core.transform.position;
+        var boundary=dome.AddComponent<SphereCollider>();boundary.isTrigger=true;
+        var shield=dome.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();shield.Configure(500,false);dome.AddComponent<R3ShieldDome>().Configure(2,6);
+        var root=new GameObject("Scoped bonus trap");root.transform.position=dome.transform.position+Vector3.forward*8;
+        var sensor=root.AddComponent<SphereCollider>();sensor.isTrigger=true;sensor.radius=10;
+        var trap=root.AddComponent<R3DeployableTrap>();trap.Configure(root.transform,run.Player.transform,R3PartKind.BlastTrapDeployer,10,20,3,6,12,5,15,.5f,2);
+        Physics.SyncTransforms();float end=Time.time+2;while(Time.time<end&&shield.CurrentHp>=500)yield return new WaitForFixedUpdate();
+        Assert.That(shield.CurrentHp,Is.EqualTo(470).Within(.02),"The trap receives only its own +50%.");
+        if(root!=null)Object.Destroy(root);Object.Destroy(dome);Object.Destroy(turret);Object.Destroy(trapBonus);
     }
     [UnityTest] public IEnumerator OperationsReachHullCoreMobilityAndReload()
     {
