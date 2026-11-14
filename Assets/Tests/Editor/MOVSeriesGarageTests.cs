@@ -59,8 +59,18 @@ public class MOVSeriesGarageTests
         Assert.That(rows.Length,Is.EqualTo(2),"Unused abilities must not reserve a HUD row.");
         yield return null;
     }
-    void Corners(R3PartKind kind)
-    {foreach(int x in new[]{-1,1})foreach(int z in new[]{-3,3})Buy(new Vector3Int(x,0,z),kind);}
+    void BuyAvailable(R3PartKind kind,int side=0)
+    {
+        var model=run.VehicleModel;
+        var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .Where(c=>side==0||Math.Sign(c.x)==side)
+            .OrderBy(c=>Math.Abs(c.y)).ThenByDescending(c=>Math.Abs(c.x)).ThenBy(c=>Math.Abs(c.z)).ToArray();
+        foreach(var cell in cells)
+            if(model.PlacementError(cell,kind)==null&&run.GarageBuy(cell,kind))return;
+        var reasons=cells.Select(c=>model.PlacementError(c,kind)??"garage transaction refused")
+            .GroupBy(x=>x).Select(g=>g.Key+" ("+g.Count()+")");
+        Assert.Fail("No valid physical garage placement for "+kind+" on side "+side+": "+string.Join("; ",reasons));
+    }
     void ReplaceAt(Vector3Int cell,R3PartKind kind)
     {
         if(run.VehicleModel.At(cell)!=null)Assert.That(run.GarageRemove(cell),Is.True,"Cannot prepare test cell "+cell);
@@ -82,15 +92,17 @@ public class MOVSeriesGarageTests
         InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.C));yield return null;
         Assert.That(adapter.IndependentYaw,Is.Zero);
     }
-    void FullConstruction(bool keepGunClear=false)
+    void FullConstruction()
     {
-        Corners(R3PartKind.HoverEngine);
-        foreach(int x in new[]{-1,1})foreach(int z in new[]{-2,2})Buy(new Vector3Int(x,1,z),R3PartKind.Suspension);
-        foreach(int x in new[]{-1,1})Buy(new Vector3Int(x*2,0,0),R3PartKind.CrawlerTrack);
-        Buy(new Vector3Int(-1,1,0),R3PartKind.Booster);Buy(new Vector3Int(0,0,-3),R3PartKind.JumpDrive);
-        Buy(new Vector3Int(keepGunClear?1:0,1,1),R3PartKind.Blink);Buy(new Vector3Int(0,1,-1),R3PartKind.Gyroscope);
-        Buy(new Vector3Int(0,1,2),R3PartKind.MagneticGrapple);Buy(new Vector3Int(0,0,3),R3PartKind.OmniDrive);
-        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(15));
+        // The current starters occupy the historical fixed cells; select valid
+        // locations without removing armor or bypassing the real placement gate.
+        run.VehicleModel.Award(10000);int start=run.VehicleModel.Scrap;int spent=0;
+        void Add(R3PartKind kind,int side=0){int price=run.VehicleModel.Price(kind);BuyAvailable(kind,side);spent+=price;}
+        foreach(int side in new[]{-1,1})Add(R3PartKind.CrawlerTrack,side);
+        foreach(int side in new[]{-1,1})for(int i=0;i<2;i++)Add(R3PartKind.HoverEngine,side);
+        for(int i=0;i<4;i++)Add(R3PartKind.Suspension);
+        foreach(var kind in new[]{R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Blink,R3PartKind.Gyroscope,R3PartKind.MagneticGrapple,R3PartKind.OmniDrive})Add(kind);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(start-spent),"The test must pay actual current store prices.");
         foreach(var part in run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind>=R3PartKind.Booster))
         {
             Assert.That(part.Damageable.MaxHp,Is.EqualTo(part.Kind==R3PartKind.CrawlerTrack?140:100));
@@ -165,7 +177,7 @@ public class MOVSeriesGarageTests
         part.Damageable.ApplyDamage(10000,part.transform.position,Vector3.zero);
         run.TogglePause();Assert.That(Invoke("ConfigureMovement",3000f,.8f,true,1.4f),Is.True);
         Assert.That(Snapshot(original),Is.EqualTo(before));Assert.That(run.ResetTestRange(),Is.True);yield return Until(()=>!run.Transitioning);
-        Assert.That(Snapshot(run.VehicleModel),Is.EqualTo(before));Assert.That(run.VehicleModel.Inventory.Single().Id,Is.EqualTo(inventoryId));
+        Assert.That(Snapshot(run.VehicleModel),Is.EqualTo(before));Assert.That(run.VehicleModel.Inventory.Count(p=>p.Id==inventoryId),Is.EqualTo(1));
         Assert.That(run.ReturnFromTestRange(),Is.True);yield return Until(()=>!run.Transitioning);
         Assert.That(run.VehicleModel,Is.SameAs(original));Assert.That(Snapshot(original),Is.EqualTo(before));
         Assert.That(run.VehicleModel.BoosterThrustNewtons,Is.EqualTo(2500));Assert.That(run.VehicleModel.BoosterDurationSeconds,Is.EqualTo(1.25f));
@@ -282,9 +294,10 @@ public class MOVSeriesGarageTests
         while(run.Progress.State!=R1RunState.Garage&&Time.realtimeSinceStartup<deadline)
         {if(run.Progress.State==R1RunState.Salvage)Assert.That(RRLW2TestFlow.Claim(run,Array.Empty<string>()),Is.True);yield return null;}
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
-        int earned=run.VehicleModel.Scrap;Assert.That(earned,Is.GreaterThanOrEqualTo(65));
-        Buy(new Vector3Int(-1,1,0),R3PartKind.Booster);Buy(new Vector3Int(1,1,0),R3PartKind.Gyroscope);
-        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(earned-65));string id=run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.Booster).Id;
+        int earned=run.VehicleModel.Scrap;int cost=run.VehicleModel.Price(R3PartKind.Booster)+run.VehicleModel.Price(R3PartKind.Gyroscope);
+        Assert.That(earned,Is.GreaterThanOrEqualTo(cost),"The earned money must cover the current shop prices.");
+        BuyAvailable(R3PartKind.Booster);BuyAvailable(R3PartKind.Gyroscope);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(earned-cost));string id=run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.Booster).Id;
         Assert.That(run.StartNextEncounter(),Is.True);if(run.Progress.State==R1RunState.Route)Assert.That(run.ChooseRoute(0),Is.True);
         yield return Until(()=>!run.Transitioning&&run.Progress.State==R1RunState.Combat);VirtualInput();
         var positions=run.Encounter.Enemies.Select(e=>e.transform.position).ToArray();
