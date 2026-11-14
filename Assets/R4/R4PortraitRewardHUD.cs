@@ -38,6 +38,7 @@ namespace RoboRougelike.R1
         private void DrawPortraitSalvage(R1RunController run)
         {
             var ledger=run.Salvage;TrackRewardLedger(ledger);
+            if(rewardMissedOpen){DrawMissedLoot(run,true);return;}
             if(rewardInventoryOpen){DrawPortraitRewardInventory(run);return;}
             GUI.Label(new Rect(24,20,720,42),"ZWYCIĘSTWO",title);
             GUI.Label(new Rect(24,68,720,28),$"{(run.LastActivityWasReactor?"Reaktor obroniony":$"Starcie {run.Progress.CompletedEncounters}/{run.Progress.TotalEncounters}")} • +{run.LastScrapReward} Z"+
@@ -73,7 +74,9 @@ namespace RoboRougelike.R1
             if(rewardBaskets.Count==0)GUI.Label(new Rect(36,495,680,50),"Brak części do odzyskania.",small);
             var pager=PortraitRewardPager();
             DrawRerollRewardButton(run,PortraitRewardRerollRect());
-            if(GUI.Button(new Rect(pager.x+370,pager.y,350,44),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity}",compactButton))rewardInventoryOpen=true;
+            bool hasMissed=ledger.MissedPhysicalItems.Any();
+            if(GUI.Button(new Rect(pager.x+370,pager.y,hasMissed?170:350,44),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity}",compactButton))rewardInventoryOpen=true;
+            if(hasMissed)DrawMissedLootButton(run,new Rect(pager.x+550,pager.y,170,44));
             int rewardPartCount=SelectedRewardPartCount(run);
             int missing=RewardInventoryMissingSlots(run.VehicleModel.Inventory.Count,rewardPartCount);
             bool room=missing==0;

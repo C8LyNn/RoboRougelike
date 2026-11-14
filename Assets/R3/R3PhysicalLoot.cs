@@ -24,6 +24,7 @@ namespace RoboRougelike.R3
             if(shader!=null){pickup.material=new Material(shader);pickup.material.SetColor("_BaseColor",new Color(1f,.67f,.09f));item.GetComponent<Renderer>().sharedMaterial=pickup.material;}
             var body=item.AddComponent<Rigidbody>();body.mass=.25f;body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;
             body.AddForce(new Vector3(Random.Range(-1f,1f),2f,Random.Range(-1f,1f)),ForceMode.Impulse);
+            if(!source.MarkPhysicalDrop(id)){item.SetActive(false);Destroy(item);}
         }
         void FixedUpdate()
         {

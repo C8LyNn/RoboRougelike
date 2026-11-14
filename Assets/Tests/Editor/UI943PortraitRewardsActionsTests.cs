@@ -127,6 +127,9 @@ public sealed class UI943PortraitRewardsActionsTests
         Assert.That((bool)Field("rewardInventoryOpen"),Is.False);
         Assert.That(Field("rewardDismantleConfirmation"),Is.Null);
         Assert.That(run.Paused,Is.False,"Closing the top overlay must not also pause the game.");
+        Field("rewardMissedOpen",true);yield return null;run.HandleEscape();
+        Assert.That((bool)Field("rewardMissedOpen"),Is.False);
+        Assert.That(run.Paused,Is.False,"Closing missed loot must not also pause the game.");
         yield return null;run.HandleEscape();
         Assert.That(run.Paused,Is.True,"The next Escape still opens the session pause menu.");
     }
@@ -190,6 +193,7 @@ public sealed class UI943PortraitRewardsActionsTests
         for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
         Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0),"Expected the post-battle pickup window.");
         foreach(var pickup in UnityEngine.Object.FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None))pickup.gameObject.SetActive(false);
+        foreach(var pickup in UnityEngine.Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None))pickup.gameObject.SetActive(false);
         for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
         Assert.That(run.PickupGraceRemaining,Is.Zero,"Pickup grace must not remain active in rewards.");

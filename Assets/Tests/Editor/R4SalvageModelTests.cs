@@ -8,6 +8,44 @@ public class R4SalvageModelTests
 {
     private R3VehicleModel Model()=>new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
     private R4SalvageItem Item(string id,float hp=1)=>new R4SalvageItem(id,"run/1/scout/gun",R3PartKind.Gun,R4WeaponKind.Automatic,hp);
+    [Test] public void MissedPhysicalLootRequiresPaymentAndCannotAlsoBecomeAFreeReward()
+    {
+        var model=Model();var ledger=new R4SalvageLedger(2);
+        Assert.That(ledger.Record("enemy",new[]{Item("missed",.4f),Item("reward",.7f)},R3EnemyArchetype.Scout),Is.True);
+        var mark=typeof(R4SalvageLedger).GetMethod("MarkPhysicalDrop");var recover=typeof(R4SalvageLedger).GetMethod("TryRecoverMissed");
+        Assert.That(mark,Is.Not.Null,"A spawned drop must be tracked separately from ordinary rewards");Assert.That(recover,Is.Not.Null);
+        Assert.That((bool)mark.Invoke(ledger,new object[]{"missed"}),Is.True);
+        Assert.That(ledger.CreateBasketOffers(2,0).SelectMany(b=>b.Items).Any(p=>p.Id=="missed"),Is.False);
+        Assert.That(ledger.Claim(model,new[]{"missed"}),Is.False,"Missed drops cannot be redeemed for free");
+        Assert.That((bool)recover.Invoke(ledger,new object[]{model,"missed"}),Is.False,"Insufficient scrap must not award the item");
+        Assert.That(model.Inventory,Is.Empty);model.Award(20);
+        Assert.That((bool)recover.Invoke(ledger,new object[]{model,"missed"}),Is.True);
+        Assert.That(model.Scrap,Is.EqualTo(10));Assert.That(model.Inventory.Single(p=>p.Id=="missed").Health,Is.EqualTo(.4f));
+        Assert.That((bool)recover.Invoke(ledger,new object[]{model,"missed"}),Is.False,"Recovery cannot be repeated");
+        Assert.That(ledger.Claim(model,new[]{"reward"}),Is.True);Assert.That(model.Inventory.Count(p=>p.Id=="missed"),Is.EqualTo(1));
+    }
+    [Test] public void MissedWheelRecoveryRefundsPaymentWhenFullPackageDoesNotFit()
+    {
+        var model=Model();model.Award(10000);
+        while(model.Inventory.Count+model.GrantQuantity(R3PartKind.Armor)<=model.AvailableInventoryCapacity)
+            Assert.That(model.PurchaseToInventory(R3PartKind.Armor),Is.True);
+        var ledger=new R4SalvageLedger();var wheel=new R4SalvageItem("missed-wheel","enemy",R3PartKind.Wheel,R4WeaponKind.Basic,.5f);
+        Assert.That(ledger.Record("enemy",new[]{wheel}),Is.True);Assert.That(ledger.MarkPhysicalDrop(wheel.Id),Is.True);
+        int before=model.Scrap;Assert.That(ledger.TryRecoverMissed(model,wheel.Id),Is.False);
+        Assert.That(model.Scrap,Is.EqualTo(before));Assert.That(ledger.MissedPhysicalItems.Any(p=>p.Id==wheel.Id),Is.True);
+        Assert.That(model.Dismantle(model.Inventory[0].Id),Is.True);Assert.That(model.Dismantle(model.Inventory[0].Id),Is.True);
+        before=model.Scrap;Assert.That(ledger.TryRecoverMissed(model,wheel.Id),Is.True);
+        Assert.That(model.Scrap,Is.EqualTo(before-model.Economy.MissedLootRecoveryCost));
+        Assert.That(model.Inventory.Count(p=>p.Kind==R3PartKind.Wheel),Is.EqualTo(2));
+    }
+    [Test] public void MissedLootPriceUsesConfigAndSurvivesModelCopy()
+    {
+        var model=Model();model.Economy.MissedLootRecoveryCost=17;var copy=model.DeepCopy();
+        Assert.That(copy.Economy.MissedLootRecoveryCost,Is.EqualTo(17));copy.Award(20);
+        var ledger=new R4SalvageLedger();Assert.That(ledger.Record("enemy",new[]{Item("priced")}),Is.True);
+        Assert.That(ledger.MarkPhysicalDrop("priced"),Is.True);Assert.That(ledger.TryRecoverMissed(copy,"priced"),Is.True);
+        Assert.That(copy.Scrap,Is.EqualTo(3));
+    }
     [Test] public void PhysicalPickupPreservesIdentityAndCannotAlsoBeClaimedOrDismantledAsReward()
     {
         var model=Model();var ledger=new R4SalvageLedger(2);

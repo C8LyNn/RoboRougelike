@@ -52,10 +52,13 @@ namespace RoboRougelike.R4
         private readonly HashSet<string> enemies=new HashSet<string>();
         private readonly HashSet<string> ids=new HashSet<string>();
         private readonly HashSet<string> collected=new HashSet<string>(StringComparer.Ordinal);
+        private readonly HashSet<string> physicalDrops=new HashSet<string>(StringComparer.Ordinal);
         private readonly Dictionary<string,string> earlyOwners=new Dictionary<string,string>(StringComparer.Ordinal);
         private readonly Dictionary<string,R4SalvageItem> earlyItems=new Dictionary<string,R4SalvageItem>(StringComparer.Ordinal);
         private readonly List<(R3EnemyArchetype Type,R4SalvageItem[] Parts)> basketSources=new List<(R3EnemyArchetype,R4SalvageItem[])>();
         public IReadOnlyList<R4SalvageItem> Items => items.AsReadOnly();
+        public IEnumerable<R4SalvageItem> RewardItems => items.Where(p=>!physicalDrops.Contains(p.Id));
+        public IEnumerable<R4SalvageItem> MissedPhysicalItems => items.Where(p=>physicalDrops.Contains(p.Id));
         public int Limit { get; }
         public bool Closed { get; private set; }
         public int DismantledScrap { get; private set; }
@@ -70,6 +73,19 @@ namespace RoboRougelike.R4
             ids.Add(item.Id);items.Add(item);earlyOwners.Add(item.Id,enemyId);earlyItems.Add(item.Id,item);return true;
         }
         public bool HasEarlyDrop(string id)=>!string.IsNullOrWhiteSpace(id)&&earlyOwners.ContainsKey(id);
+        public bool MarkPhysicalDrop(string id)
+        {
+            if(Closed||string.IsNullOrWhiteSpace(id)||!items.Any(p=>p.Id==id&&p.Selectable))return false;
+            return physicalDrops.Add(id);
+        }
+        public bool TryRecoverMissed(R3VehicleModel model,string id)
+        {
+            if(Closed||model==null||!physicalDrops.Contains(id)||!items.Any(p=>p.Id==id))return false;
+            int cost=model.Economy.MissedLootRecoveryCost;if(cost<=0)return false;
+            if(!model.TrySpendScrap(cost))return false;
+            if(TryCollectPhysical(model,id))return true;
+            model.Award(cost);return false;
+        }
         // Collecting a world drop and reward settlement share the same identity
         // ledger. Only mark it collected after the whole inventory batch succeeds.
         public bool TryCollectPhysical(R3VehicleModel model,string id)
@@ -107,7 +123,7 @@ namespace RoboRougelike.R4
         {
             // Select among the most common archetypes that actually appeared.
             // Every offer draws from one real defeated robot; armor stays excluded.
-            var groups=basketSources.Where(s=>s.Parts.Any(p=>p.Selectable&&!collected.Contains(p.Id))).GroupBy(s=>s.Type)
+            var groups=basketSources.Where(s=>s.Parts.Any(p=>p.Selectable&&!collected.Contains(p.Id)&&!physicalDrops.Contains(p.Id))).GroupBy(s=>s.Type)
                 .OrderByDescending(g=>g.Count()).ThenBy(g=>g.Key).Take(3).ToArray();
             if(groups.Length==0||Limit==0)return Array.Empty<R4SalvageBasket>();
             var random=new System.Random(seed);
@@ -122,7 +138,7 @@ namespace RoboRougelike.R4
                 {
                     var group=groups[(i+attempt)%groups.Length].ToArray();
                     var source=group[random.Next(group.Length)];
-                    var pool=source.Parts.Where(p=>p.Selectable&&!collected.Contains(p.Id)).OrderBy(p=>p.Id,StringComparer.Ordinal).ToArray();
+                    var pool=source.Parts.Where(p=>p.Selectable&&!collected.Contains(p.Id)&&!physicalDrops.Contains(p.Id)).OrderBy(p=>p.Id,StringComparer.Ordinal).ToArray();
                     int tier=Math.Max(0,Math.Min(5,stage));
                     int percent=random.Next(30+tier*5,61+tier*5);
                     int count=Math.Min(Limit,Math.Max(1,(int)Math.Ceiling(pool.Length*percent/100d)));
@@ -142,7 +158,7 @@ namespace RoboRougelike.R4
         {
             if(model==null||items.Any(p=>p==null||!R3VehicleModel.ValidEconomicPart(p.ToPart())))return 0;
             var keep=new HashSet<string>(selected??Array.Empty<string>());
-            long baseScrap=items.Where(p=>!collected.Contains(p.Id)&&!keep.Contains(p.Id)).Sum(p=>(long)(p.Recoverable?model.DismantleValue(p.ToPart()):1));
+            long baseScrap=items.Where(p=>!collected.Contains(p.Id)&&!physicalDrops.Contains(p.Id)&&!keep.Contains(p.Id)).Sum(p=>(long)(p.Recoverable?model.DismantleValue(p.ToPart()):1));
             float bonus=model.Economy.SalvageOptimizerBonus;
             if(float.IsNaN(bonus)||float.IsInfinity(bonus))bonus=0;
             long units=model.Parts.Where(p=>p.Kind==R3PartKind.SalvageOptimizer&&p.Health>0)
@@ -159,7 +175,7 @@ namespace RoboRougelike.R4
         {
             if(Closed||model==null||selected==null||items.Any(p=>p==null||!R3VehicleModel.ValidEconomicPart(p.ToPart())))return false;
             var chosen=selected.ToArray();var keep=new HashSet<string>(chosen);
-            if(chosen.Length!=keep.Count||keep.Count>Limit||keep.Any(id=>collected.Contains(id)||!items.Any(p=>p.Id==id&&p.Selectable)||model.Owns(id)))return false;
+            if(chosen.Length!=keep.Count||keep.Count>Limit||keep.Any(id=>collected.Contains(id)||physicalDrops.Contains(id)||!items.Any(p=>p.Id==id&&p.Selectable)||model.Owns(id)))return false;
             // Repair only the copies selected as rewards. The immutable wreck
             // snapshots remain intact for condition-based scrap calculation.
             var recovered=items.Where(p=>keep.Contains(p.Id)).Select(p=>{var copy=p.ToPart();copy.Health=1;return copy;}).ToArray();

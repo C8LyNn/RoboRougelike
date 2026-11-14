@@ -95,6 +95,36 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None),Is.Empty);
         Assert.That(run.Salvage.Items.Count,Is.GreaterThan(0),"Zero world-drop chance must preserve ordinary rewards");
     }
+    [UnityTest] public IEnumerator MissedDropCanBePaidForThenBonusClaimedWithoutDuplicatingItem()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;run.Encounter.SetCombatActive(true);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        var drops=Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None);Assert.That(drops.Length,Is.GreaterThan(0));
+        string id=drops[0].ItemId;Assert.That(run.TryRecoverMissedLoot(id),Is.False,"Paid recovery is available only after victory");
+        var ordinary=new R3PartState(default,R3PartKind.Gun){Id=System.Guid.NewGuid().ToString("N"),Weapon=R4WeaponKind.Basic,Source="test/ordinary"};
+        Assert.That(run.Salvage.Record("test/ordinary-enemy",new[]{new R4SalvageItem(ordinary,1)},R3EnemyArchetype.Scout),Is.True);
+        yield return null;
+        typeof(R1RunController).GetField("pickupGraceDeadline",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).SetValue(run,Time.time);
+        float deadline=Time.realtimeSinceStartup+8;
+        while(Time.realtimeSinceStartup<deadline&&run.Progress.State!=R1RunState.Salvage)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        Assert.That(run.Salvage.MissedPhysicalItems.Any(p=>p.Id==id),Is.True);
+        Assert.That(run.RecoveryWindow.VisibleOptions.Any(p=>p.InstanceId==id),Is.False);
+        Assert.That(run.RecoveryWindow.VisibleOptions.Any(p=>p.InstanceId==ordinary.Id),Is.True);
+        Assert.That(run.VehicleModel.TrySpendScrap(run.VehicleModel.Scrap),Is.True);
+        var previousWindow=run.RecoveryWindow;
+        Assert.That(run.TryRecoverMissedLoot(id),Is.False,"Insufficient funds must leave recovery and rewards intact");
+        Assert.That(run.RecoveryWindow,Is.SameAs(previousWindow));Assert.That(run.Salvage.MissedPhysicalItems.Any(p=>p.Id==id),Is.True);
+        run.VehicleModel.Award(50);int before=run.VehicleModel.Scrap;
+        var quarantine=previousWindow.GetType().GetField("quarantined",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        quarantine.SetValue(previousWindow,true);Assert.That(run.TryRecoverMissedLoot(id),Is.False,"Recovery must not bypass a quarantined reward transaction");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before));quarantine.SetValue(previousWindow,false);
+        Assert.That(run.TryRecoverMissedLoot(id),Is.True);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-run.VehicleModel.Economy.MissedLootRecoveryCost));
+        Assert.That(run.TryRecoverMissedLoot(id),Is.False);Assert.That(run.VehicleModel.Inventory.Count(p=>p.Id==id),Is.EqualTo(1));
+        Assert.That(run.RecoveryWindow.VisibleOptions.Any(p=>p.InstanceId==ordinary.Id),Is.True,"Recovering missed loot must preserve ordinary reward offers");
+        Assert.That(run.ConfirmRewards(new[]{ordinary.Id},new[]{0}),Is.True);
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.VehicleModel.Inventory.Count(p=>p.Id==id),Is.EqualTo(1));
+    }
     [UnityTest] public IEnumerator DestroyedGunDropsBeforeCoreAndIsNotDuplicatedAtVictory()
     {
         run.VehicleModel.Economy.PhysicalLootDropChance=1;

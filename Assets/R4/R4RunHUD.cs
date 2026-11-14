@@ -23,6 +23,9 @@ namespace RoboRougelike.R1
         private string dismantleConfirmation;
         private string catalogFeedback;
         private bool rewardInventoryOpen;
+        private bool rewardMissedOpen;
+        private int rewardMissedPage;
+        private string rewardMissedFeedback;
         private bool rewardInventoryDamagedOnly;
         private int rewardInventoryPage;
         private string rewardDismantleConfirmation;
@@ -54,10 +57,11 @@ namespace RoboRougelike.R1
             rewardBaskets=ledger?.CreateBasketOffers((run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397),run?.Progress?.EncounterIndex??0,run?.VehicleModel?.RewardBasketOfferCount??3)
                 ??System.Array.Empty<R4SalvageBasket>();
             selectedBasket=-1;
-            rewardInventoryOpen=false;rewardInventoryDamagedOnly=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;rewardClaimFeedback=null;
+            rewardInventoryOpen=false;rewardMissedOpen=false;rewardMissedPage=0;rewardMissedFeedback=null;rewardInventoryDamagedOnly=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;rewardClaimFeedback=null;
         }
         internal bool CloseRewardInventory()
         {
+            if(rewardMissedOpen){rewardMissedOpen=false;rewardMissedFeedback=null;return true;}
             if(!rewardInventoryOpen)return false;
             rewardInventoryOpen=false;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;return true;
         }
@@ -196,7 +200,7 @@ namespace RoboRougelike.R1
             var run=R1RunController.Instance;
             if(run?.Progress?.State!=R1RunState.Salvage||run.Transitioning||run.Salvage==null)return;
             TrackRewardLedger(run.Salvage);
-            if(rewardInventoryOpen)return;
+            if(rewardInventoryOpen||rewardMissedOpen)return;
             int index=keyboard.digit1Key.wasPressedThisFrame?0:keyboard.digit2Key.wasPressedThisFrame?1:keyboard.digit3Key.wasPressedThisFrame?2:-1;
             if(index>=0&&index<run.Progress.Offers.Count)
             {
@@ -211,6 +215,7 @@ namespace RoboRougelike.R1
         {
             var ledger=run.Salvage;
             TrackRewardLedger(ledger);
+            if(rewardMissedOpen){DrawMissedLoot(run,false);return;}
             if(rewardInventoryOpen){DrawRewardInventory(run);return;}
             GUI.Label(new Rect(45,30,1190,60),run.LastActivityWasReactor?"ZWYCIĘSTWO • REAKTOR OBRONIONY":"ZWYCIĘSTWO • WYBÓR NAGRÓD",title);
             GUI.Label(new Rect(45,97,1190,50),
@@ -254,6 +259,7 @@ namespace RoboRougelike.R1
             if(rewardBaskets.Count==0)GUI.Label(new Rect(465,205,735,60),"Brak części do odzyskania.",small);
 
             DrawRerollRewardButton(run,RewardRerollRect());
+            DrawMissedLootButton(run,new Rect(45,556,370,35));
             if(GUI.Button(new Rect(850,556,375,35),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • zwolnij miejsce",compactButton))
                 rewardInventoryOpen=true;
             int rewardPartCount=SelectedRewardPartCount(run);
@@ -268,6 +274,47 @@ namespace RoboRougelike.R1
                 ConfirmSelectedRewards(run);
             GUI.enabled=true;
             if(!room||!string.IsNullOrEmpty(rewardClaimFeedback))GUI.Label(new Rect(45,685,1180,30),!room?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. Otwórz magazyn, aby je zwolnić.":rewardClaimFeedback,small);
+        }
+        private void DrawMissedLootButton(R1RunController run,Rect rect)
+        {
+            int count=run.Salvage.MissedPhysicalItems.Count();
+            if(count>0&&GUI.Button(rect,$"Pominięte łupy ({count})",compactButton))
+            {rewardMissedOpen=true;rewardMissedPage=0;rewardMissedFeedback=null;}
+        }
+        private void DrawMissedLoot(R1RunController run,bool portrait)
+        {
+            var model=run.VehicleModel;var items=run.Salvage.MissedPhysicalItems.ToArray();
+            int pages=Mathf.Max(1,Mathf.CeilToInt(items.Length/5f));rewardMissedPage=Mathf.Clamp(rewardMissedPage,0,pages-1);
+            float left=portrait?24:45,width=portrait?720:1180,top=portrait?170:180,height=portrait?108:68,step=portrait?120:76;
+            GUI.Label(new Rect(left,20,width,45),"POMINIĘTE ŁUPY",title);
+            GUI.Label(new Rect(left,72,width,76),$"Odzyskaj część za {model.Economy.MissedLootRecoveryCost} Z • masz {model.Scrap} Z.\nStan HP pozostaje taki jak na polu walki.",small);
+            if(items.Length==0)GUI.Label(new Rect(left,top,width,45),"Brak pominiętych części.",body);
+            var visible=items.Skip(rewardMissedPage*5).Take(5).ToArray();
+            for(int i=0;i<visible.Length;i++)
+            {
+                var item=visible[i];var part=item.ToPart();int quantity=model.GrantQuantity(part.Kind,part.ArmorShape);
+                float y=top+i*step;Panel(new Rect(left,y,width,height));
+                float buttonWidth=portrait?190:250;
+                GUI.Label(new Rect(left+12,y+5,width-buttonWidth-30,height-10),$"{R4WeaponDefinition.PartName(part)} × {quantity} • HP {part.Health*100:0}%\n{part.Source}",small);
+                bool hasRoom=(long)model.Inventory.Count+quantity<=model.AvailableInventoryCapacity;
+                int price=model.Economy.MissedLootRecoveryCost;bool affordable=price>0&&model.Scrap>=price;
+                bool enabled=GUI.enabled;GUI.enabled=enabled&&hasRoom&&affordable;
+                string caption=!hasRoom?"Brak miejsca":!affordable?"Brak środków":$"Odzyskaj • {price} Z";
+                if(GUI.Button(new Rect(left+width-buttonWidth-12,y+(height-48)/2,buttonWidth,48),caption,compactButton))
+                {
+                    bool accepted=run.TryRecoverMissedLoot(item.Id);
+                    rewardMissedFeedback=accepted?"Część trafiła do magazynu.":"Nie udało się odzyskać części.";
+                    if(accepted)return;
+                }
+                GUI.enabled=enabled;
+            }
+            float pagerY=portrait?800:580;bool previous=GUI.enabled;
+            GUI.enabled=previous&&rewardMissedPage>0;if(GUI.Button(new Rect(left,pagerY,90,40),"←",compactButton))rewardMissedPage--;
+            GUI.enabled=previous;GUI.Label(new Rect(left+105,pagerY+5,220,32),$"Strona {rewardMissedPage+1}/{pages}",small);
+            GUI.enabled=previous&&rewardMissedPage<pages-1;if(GUI.Button(new Rect(left+320,pagerY,90,40),"→",compactButton))rewardMissedPage++;
+            GUI.enabled=previous;
+            if(!string.IsNullOrEmpty(rewardMissedFeedback))GUI.Label(new Rect(left,portrait?865:625,portrait?720:700,35),rewardMissedFeedback,small);
+            if(GUI.Button(portrait?new Rect(24,930,720,64):new Rect(805,630,420,60),"Wróć do nagród [Esc]",button))CloseRewardInventory();
         }
         private static Rect RewardInventoryDetailsRect(int index)=>new Rect(60,187+index*76,475,57);
         private static Rect RewardInventoryStatusRect(int index)=>new Rect(550,187+index*76,280,57);
