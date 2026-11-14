@@ -126,7 +126,7 @@ namespace RoboRougelike.R1
             GUI.enabled=true;
             if(run.EmergencyRescueNotice!=null||run.EmergencyRescueActive)GUI.Label(new Rect(570,630,680,30),
                 run.EmergencyRescueNotice??"Ratunek: niewrażliwość; atak wstrzymany.",small);
-            GUI.Label(new Rect(25,677,1000,25),"WASD — jazda • Mysz — widok i celowanie • LPM — ogień • Esc — pauza",small);
+            GUI.Label(new Rect(25,677,1000,25),GameplayControlsHint(),small);
         }
     }
 }

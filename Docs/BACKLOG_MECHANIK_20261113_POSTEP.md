@@ -410,3 +410,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Obsługa przypisanego skrótu szczegółów walki następuje po obsłudze przycisków HUD. Zdarzenie myszy wykorzystane przez przycisk nie powinno dodatkowo przełączać szczegółów; klawiatura nadal korzysta z tego samego profilu.
 - Unity 6000.3.14f1: celowane testy HUD i profilu **22 PASS, 0 FAIL**, exit 0 (`hud-mouse-priority-final.xml`, `.log` w `Prototypy`). Obejmują istniejące skróty i zapis ustawień, ale **nie symulują rzeczywistego kliknięcia IMGUI**. Pierwszeństwo kliknięć w Windows Playerze nadal wymaga ręcznej kontroli: **NOT RUN**.
+
+#### 06. Aktualne sterowanie podczas testu własnej mapy
+
+- Ekran jazdy na mapie z edytora korzysta ze wspólnej wskazówki odczytującej aktualny profil sterowania, zamiast zawsze pokazywać WASD i LPM.
+- Unity 6000.3.14f1: **4 PASS, 0 FAIL**, exit 0 (`map-test-hints-final.xml`, `.log` w `Prototypy`), obejmujące przejście menu → edytor → garaż → test → powrót oraz kontrolę profilu. Są to testy sterowane kodem; wygląd i czytelność podpowiedzi w Windows Playerze: **NOT RUN**.
