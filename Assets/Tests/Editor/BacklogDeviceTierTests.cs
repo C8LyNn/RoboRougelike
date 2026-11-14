@@ -1264,6 +1264,24 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(run.VehicleModel.RapidFireReadyAt,Is.GreaterThan(Time.time));
         yield return null;
     }
+    [UnityTest] public IEnumerator ExtremeFiniteActiveBonusesDoNotDisappearWhenCopiesStack()
+    {
+        foreach(var kind in new[]{R3PartKind.Overdrive,R3PartKind.Overdrive,R3PartKind.RapidFire,R3PartKind.RapidFire})
+        {
+            Assert.That(run.GaragePurchase(kind),Is.True);
+            var part=run.VehicleModel.Inventory.Last(p=>p.Kind==kind);
+            var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            Assert.That(run.GarageMount(part.Id,cells.First(c=>run.VehicleModel.OwnedPlacementError(part.Id,c,default)==null)),Is.True);
+        }
+        run.VehicleModel.Economy.OverdriveBonusPerUnit=float.MaxValue;
+        run.VehicleModel.Economy.RapidFireReductionPerUnit=float.MaxValue;
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);
+        var devices=run.Player.GetComponent<R3OffensiveDevices>();var effects=run.Player.GetComponent<R3MountedBonusEffects>();
+        Assert.That(devices.TryActivate(),Is.EqualTo(2));Assert.That(devices.TryActivateRapidFire(),Is.EqualTo(2));
+        Assert.That(effects.EffectiveStats.Damage==float.MaxValue&&effects.EffectiveStats.FireInterval==0,Is.True,
+            $"Damage={effects.EffectiveStats.Damage}; interval={effects.EffectiveStats.FireInterval}.");
+    }
     [UnityTest] public IEnumerator DoubleShotOverdriveAddsOneProjectileToPassiveShotWithoutRecursion()
     {
         Assert.That(System.Enum.TryParse("DoubleShotOverdrive",out R3PartKind boostKind),Is.True);

@@ -95,7 +95,7 @@ namespace RoboRougelike.R3
             if(units==0){Clear(device);return;}
             if(device.Kind==R3PartKind.DoubleShotOverdrive)
                 return;
-            SetContribution(device,Bonus(device)*units);
+            SetContribution(device,(float)System.Math.Min(float.MaxValue,(double)Bonus(device)*units));
         }
         void Clear(ActiveDevice device)
         {device.Copies.Clear();device.EndsAt=0;if(device.Kind!=R3PartKind.DoubleShotOverdrive&&effects!=null)SetContribution(device,0);}
