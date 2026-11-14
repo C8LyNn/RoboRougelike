@@ -818,6 +818,7 @@ namespace RoboRougelike.R1
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
             if(run.SafeVendorAvailable&&GUI.Button(new Rect(284,608,205,36),"Oferty sprzedawcy",compactButton))OpenSimpleGarageOptions(3);
             if(GUI.Button(new Rect(500,608,165,36),"Ustaw pojazd",compactButton))run.TryEmergencyRescue();
+            if(GUI.Button(new Rect(675,608,175,36),"Projekty",compactButton))OpenBlueprintLibrary();
             if(garageShortcutLabel==null)garageShortcutLabel=new GUIStyle(small){fontSize=14,wordWrap=false};
             GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • ŚPM: wybierz typ\nPPM przeciągnij: widok • U: spód\nQ/E R/F Z/X: obrót • Shift: część\nCtrl+LPM: napraw • Home: widok",garageShortcutLabel);
             string garageFeedback=SimpleGarageFeedback(run);
@@ -904,7 +905,7 @@ namespace RoboRougelike.R1
         void DrawSimplePortraitOptions(R1RunController run)
         {
             Panel(new Rect(12,90,744,800));
-            GUI.Label(new Rect(24,105,540,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":garageOptionsTab==3?"SPRZEDAWCA":"WYBÓR AKTYWNOŚCI",heading);
+            GUI.Label(new Rect(24,105,540,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":garageOptionsTab==3?"SPRZEDAWCA":garageOptionsTab==4?"PROJEKTY":"WYBÓR AKTYWNOŚCI",heading);
             if(GUI.Button(new Rect(606,105,138,40),"Zamknij",compactButton)){garageOptionsOpen=false;return;}
             if(garageOptionsTab==0)
             {
@@ -923,6 +924,7 @@ namespace RoboRougelike.R1
                 GUI.enabled=true;
                 GUI.Label(new Rect(350,425,380,135),GarageDriveSummary(run),small);
                 if(!string.IsNullOrEmpty(garageOptionsFeedback))GUI.Label(new Rect(350,575,380,60),garageOptionsFeedback,small);
+                if(GUI.Button(new Rect(350,650,380,44),"Biblioteka projektów",compactButton))OpenBlueprintLibrary();
             }
             else if(garageOptionsTab==2)
             {
@@ -930,6 +932,7 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(24,510,250,44),"Wróć do ustawień",compactButton))garageOptionsTab=0;
             }
             else if(garageOptionsTab==3)DrawSafeVendor(run,new Rect(24,165,720,540));
+            else if(garageOptionsTab==4)DrawBlueprintLibrary(run,new Rect(24,165,720,650));
             else
             {
                 var matrix=GUI.matrix;
@@ -941,7 +944,7 @@ namespace RoboRougelike.R1
         void DrawSimpleGarageOptions(R1RunController run)
         {
             Panel(new Rect(280,90,800,545));
-            GUI.Label(new Rect(300,105,570,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":garageOptionsTab==3?"SPRZEDAWCA":"WYBÓR AKTYWNOŚCI",heading);
+            GUI.Label(new Rect(300,105,570,40),garageOptionsTab==0?"USTAWIENIA POJAZDU":garageOptionsTab==2?"SLOTY":garageOptionsTab==3?"SPRZEDAWCA":garageOptionsTab==4?"PROJEKTY":"WYBÓR AKTYWNOŚCI",heading);
             if(GUI.Button(new Rect(925,105,135,40),"Zamknij",compactButton)){garageOptionsOpen=false;return;}
             if(garageOptionsTab==0)
             {
@@ -960,6 +963,7 @@ namespace RoboRougelike.R1
                 GUI.enabled=true;
                 GUI.Label(new Rect(680,435,350,145),GarageDriveSummary(run),small);
                 if(!string.IsNullOrEmpty(garageOptionsFeedback))GUI.Label(new Rect(680,585,350,40),garageOptionsFeedback,small);
+                if(GUI.Button(new Rect(300,585,250,38),"Biblioteka projektów",compactButton))OpenBlueprintLibrary();
             }
             else if(garageOptionsTab==2)
             {
@@ -967,6 +971,7 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(300,505,250,44),"Wróć do ustawień",compactButton))garageOptionsTab=0;
             }
             else if(garageOptionsTab==3)DrawSafeVendor(run,new Rect(300,165,740,420));
+            else if(garageOptionsTab==4)DrawBlueprintLibrary(run,new Rect(300,165,740,420));
             else
             {
                 var matrix=GUI.matrix;
