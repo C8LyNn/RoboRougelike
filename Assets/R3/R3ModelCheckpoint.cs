@@ -172,7 +172,7 @@ namespace RoboRougelike.R3
                 p.Tier>=0&&p.Tier<=3&&(p.Tier<=1||SupportsFusion(p.Kind,p.Weapon))&&p.DismantleCap>=0&&
                 Finite(p.Health)&&p.Health>=0&&p.Health<=1&&Finite(p.DeviceReadyAt)&&p.DeviceReadyAt>=0&&
                 Finite(p.ReloadReadyAt)&&p.ReloadReadyAt>=0&&Finite(p.DisruptionRemaining)&&p.DisruptionRemaining>=0&&
-                Finite(p.ThermalHeat)&&p.ThermalHeat>=0&&Finite(p.DefenseCharge)&&Finite(p.DefenseRechargeAge)&&
+                Finite(p.ThermalHeat)&&p.ThermalHeat>=0&&Finite(p.DefenseCharge)&&Finite(p.DefenseRechargeAge)&&Finite(p.DefenseCapacity)&&p.DefenseCapacity>=0&&
                 Enum.IsDefined(typeof(RoboRougelike.Mechanics.IndependentSteering.SteeringMode),p.SteeringMode)&&
                 p.RotationQuarterTurns.x>=0&&p.RotationQuarterTurns.x<4&&p.RotationQuarterTurns.y>=0&&p.RotationQuarterTurns.y<4&&
                 p.RotationQuarterTurns.z>=0&&p.RotationQuarterTurns.z<4&&p.ContactMask>=0&&p.ContactMask<=63&&

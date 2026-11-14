@@ -11,6 +11,22 @@ using RoboRougelike.Defenses.DirectionalShield;
 
 public class RRLW6ShieldModelTests
 {
+    [Test] public void ShieldFusionUsesEachInputsStoredCapacityAndLoadsLegacyCheckpoint()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(1000);
+        for(int i=0;i<3;i++)Assert.That(model.PurchaseToInventory(R3PartKind.DirectionalShield),Is.True);
+        var parts=model.Inventory.ToArray();parts[0].DefenseCapacity=200;parts[0].DefenseCharge=100;
+        parts[1].DefenseCapacity=100;parts[1].DefenseCharge=25;parts[2].DefenseCharge=75;
+        Assert.That(model.FuseInventory(parts.Select(p=>p.Id)),Is.True);
+        var fused=model.Inventory.Single();Assert.That(fused.DefenseCapacity,Is.EqualTo(200));Assert.That(fused.DefenseCharge,Is.EqualTo(100).Within(.001));
+        string json=JsonUtility.ToJson(model.MakeCheckpoint(0));
+        string legacy=System.Text.RegularExpressions.Regex.Replace(json,",\"DefenseCapacity\":[^,}]+","");
+        Assert.That(legacy,Does.Not.Contain("DefenseCapacity"));
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(legacy);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Inventory.Single().DefenseCapacity,Is.Zero);
+        Assert.That(restored.Inventory.Single().DefenseCharge,Is.EqualTo(100).Within(.001));
+    }
     [Test] public void FusingShieldsPreservesMeanConditionAndProportionalStoredCharge()
     {
         Assert.That(R3VehicleModel.SupportsFusion(R3PartKind.DirectionalShield),Is.True);

@@ -54,9 +54,9 @@ namespace RoboRougelike.R3
         public float DisruptionRemaining;
         public float ThermalHeat;
         public bool ThermalLocked;
-        public float DefenseCharge=-1,DefenseRechargeAge=float.PositiveInfinity;
+        public float DefenseCharge=-1,DefenseRechargeAge=float.PositiveInfinity,DefenseCapacity;
         public R3PartState(Vector3Int cell, R3PartKind kind, float health = 1) { Cell = cell; Kind = kind; Health = health; }
-        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,HasDismantleCap=HasDismantleCap,DismantleCap=DismantleCap,Weapon=Weapon,WheelStyle=WheelStyle,FootprintRevision=FootprintRevision,ArmorShape=ArmorShape,Tier=Tier,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
+        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,HasDismantleCap=HasDismantleCap,DismantleCap=DismantleCap,Weapon=Weapon,WheelStyle=WheelStyle,FootprintRevision=FootprintRevision,ArmorShape=ArmorShape,Tier=Tier,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,DefenseCapacity=DefenseCapacity,
             UpgradeId=UpgradeId,UpgradeTitle=UpgradeTitle,UpgradeDescription=UpgradeDescription,
             UpgradeEffect=UpgradeEffect,UpgradeOperation=UpgradeOperation,UpgradeScope=UpgradeScope,UpgradeAmount=UpgradeAmount,
             RotationQuarterTurns=RotationQuarterTurns,ContactMask=ContactMask};
@@ -430,6 +430,11 @@ namespace RoboRougelike.R3
             if(CreativeMode||interval<=0||completedEncounters<=0||completedEncounters%interval!=0||
                completedEncounters<=SafeZoneLastCompleted||float.IsNaN(repair)||float.IsInfinity(repair)||repair<0||repair>1)return false;
             foreach(var part in Parts)if(part.Health>0&&part.Health<1)part.Health=Math.Min(1,part.Health+repair);
+            var shieldBonus=new R1ModifierGroup();
+            foreach(var bonus in Parts)
+                if(bonus.Kind==R3PartKind.BonusModule&&bonus.Health>0&&bonus.UpgradeEffect==R1UpgradeEffect.ShieldDurability)
+                    shieldBonus.Add(bonus.UpgradeOperation,bonus.UpgradeAmount,TierEffectUnits(bonus.Tier));
+            float shieldMultiplier=shieldBonus.Apply(1);
             foreach(var part in Parts.Concat(inventory))
             {
                 // Finishing a reload must also refill it; simply clearing the timer
@@ -445,7 +450,8 @@ namespace RoboRougelike.R3
                 }
                 if(part.Kind==R3PartKind.DirectionalShield)
                 {
-                    part.DefenseCharge=RoboRougelike.WeaponIntegration.RRLShieldBinding.BaseCapacity*TierEffectUnits(part.Tier);
+                    part.DefenseCharge=(float)Math.Min(float.MaxValue,(double)RoboRougelike.WeaponIntegration.RRLShieldBinding.BaseCapacity*TierEffectUnits(part.Tier)*shieldMultiplier);
+                    part.DefenseCapacity=part.DefenseCharge;
                     part.DefenseRechargeAge=float.PositiveInfinity;
                 }
                 part.DeviceReadyAt=0;part.ReloadReadyAt=0;part.DisruptionRemaining=0;part.ThermalHeat=0;part.ThermalLocked=false;
@@ -885,7 +891,7 @@ namespace RoboRougelike.R3
                 float.IsNaN(p.ReloadReadyAt)||float.IsInfinity(p.ReloadReadyAt)||p.ReloadReadyAt<0||
                 float.IsNaN(p.DisruptionRemaining)||float.IsInfinity(p.DisruptionRemaining)||p.DisruptionRemaining<0||
                 float.IsNaN(p.ThermalHeat)||float.IsInfinity(p.ThermalHeat)||p.ThermalHeat<0))return false;
-            if(parts[0].Kind==R3PartKind.DirectionalShield&&parts.Any(p=>float.IsNaN(p.DefenseCharge)||float.IsInfinity(p.DefenseCharge)||
+            if(parts[0].Kind==R3PartKind.DirectionalShield&&parts.Any(p=>float.IsNaN(p.DefenseCharge)||float.IsInfinity(p.DefenseCharge)||float.IsNaN(p.DefenseCapacity)||float.IsInfinity(p.DefenseCapacity)||p.DefenseCapacity<0||
                 float.IsNaN(p.DefenseRechargeAge)||float.IsNegativeInfinity(p.DefenseRechargeAge)||p.DefenseRechargeAge<0))return false;
             int tier=NormalizedTier(parts[0].Tier);
             if(tier>=3||parts.Any(p=>!SameFusionType(parts[0],p)))return false;
@@ -908,8 +914,9 @@ namespace RoboRougelike.R3
                 float oldCapacity=RoboRougelike.WeaponIntegration.RRLShieldBinding.BaseCapacity*TierEffectUnits(tier);
                 if(parts.Any(p=>p.DefenseCharge>=0))
                 {
-                    float fraction=parts.Average(p=>p.DefenseCharge<0?1f:Mathf.Clamp01(p.DefenseCharge/oldCapacity));
-                    result.DefenseCharge=RoboRougelike.WeaponIntegration.RRLShieldBinding.BaseCapacity*TierEffectUnits(result.Tier)*fraction;
+                    float fraction=parts.Average(p=>p.DefenseCharge<0?1f:Mathf.Clamp01(p.DefenseCharge/(p.DefenseCapacity>0?p.DefenseCapacity:oldCapacity)));
+                    result.DefenseCapacity=RoboRougelike.WeaponIntegration.RRLShieldBinding.BaseCapacity*TierEffectUnits(result.Tier);
+                    result.DefenseCharge=result.DefenseCapacity*fraction;
                 }
                 else result.DefenseCharge=-1;
                 result.DefenseRechargeAge=parts.Min(p=>p.DefenseRechargeAge);

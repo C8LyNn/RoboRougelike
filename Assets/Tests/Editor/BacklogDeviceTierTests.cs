@@ -98,6 +98,41 @@ public sealed class BacklogDeviceTierTests
 
 public sealed class BacklogDeviceTierGameplayTests
 {
+    [UnityTest] public IEnumerator ShieldDurabilityAlsoAppliesToExistingDirectionalShieldAndSurvivesRebuild()
+    {
+        run.VehicleModel.Award(2500);var shieldState=FuseAndMount(R3PartKind.DirectionalShield);
+        var reward=ScriptableObject.CreateInstance<R1UpgradeDefinition>();reward.Id="directional-shield-qa";
+        reward.Effect=R1UpgradeEffect.ShieldDurability;reward.Amount=.5f;
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        var bonusId=model.Inventory.Single(p=>p.UpgradeId==reward.Id).Id;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(bonusId,c,default)==null);
+        Assert.That(run.GarageMount(bonusId,cell),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        var shield=assembly.Parts.Single(p=>p.Id==shieldState.Id).GetComponent<RoboRougelike.Defenses.DirectionalShield.DirectionalShieldGenerator>();
+        var bonus=assembly.Parts.Single(p=>p.Id==bonusId);
+        Assert.That(shield.Capacity,Is.EqualTo(300).Within(.001));Assert.That(shield.Charge,Is.EqualTo(300).Within(.001));
+        shield.RestoreState(150,0);bonus.gameObject.SetActive(false);yield return null;yield return null;
+        Assert.That(shield.Capacity,Is.EqualTo(200).Within(.001));Assert.That(shield.Charge,Is.EqualTo(100).Within(.1));
+        bonus.gameObject.SetActive(true);yield return null;yield return null;
+        Assert.That(shield.Capacity,Is.EqualTo(300).Within(.001));Assert.That(shield.Charge,Is.EqualTo(150).Within(.1));
+        assembly.Capture();
+        var captured=assembly.Model;
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(captured.MakeCheckpoint(Time.time)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,captured.Economy,Time.time,out var loaded,out var error),Is.True,error);
+        var rebuilt=R3VehicleAssembly.Build(loaded,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(150,20,100),Quaternion.identity);
+        var rebuiltShield=rebuilt.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==shieldState.Id)
+            .GetComponent<RoboRougelike.Defenses.DirectionalShield.DirectionalShieldGenerator>();
+        Assert.That(rebuiltShield.Capacity,Is.EqualTo(300).Within(.001));Assert.That(rebuiltShield.Charge,Is.EqualTo(150).Within(.1));
+        var zoneModel=captured.DeepCopy();typeof(R3VehicleModel).GetProperty("CreativeMode").SetValue(zoneModel,false);
+        Assert.That(zoneModel.TryEnterSafeZone(2),Is.True);
+        var refilled=R3VehicleAssembly.Build(zoneModel,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(180,20,100),Quaternion.identity);
+        var refilledShield=refilled.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==shieldState.Id)
+            .GetComponent<RoboRougelike.Defenses.DirectionalShield.DirectionalShieldGenerator>();
+        Assert.That(refilledShield.Charge,Is.EqualTo(300).Within(.001));
+        Object.Destroy(rebuilt.gameObject);Object.Destroy(refilled.gameObject);Object.Destroy(reward);
+    }
     [UnityTest] public IEnumerator ShieldDurabilityBonusFollowsItsPhysicalModule()
     {
         Assert.That(System.Enum.TryParse("ShieldDurability",out R1UpgradeEffect effect),Is.True);
