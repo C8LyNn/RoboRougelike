@@ -250,7 +250,10 @@ namespace RoboRougelike.R1
             if(Progress.State==R1RunState.Garage)
             {
                 // No stat bonus is applied here. Only a mounted, live module works.
+                bool safeZone=VehicleModel.TryEnterSafeZone(Progress.CompletedEncounters);
+                if(safeZone)RebuildGarageVehicle();
                 Garage.Open();
+                if(safeZone)Garage.Message="Bezpieczna strefa: odnowiono energię i ładunki, zresetowano odnowienia oraz częściowo naprawiono sprawne części.";
             }
             Debug.Log("[R4] Nagrody: bonusy="+bonuses.Length+"; moduły="+ids.Length+
                 "; złom z demontażu="+Salvage.DismantledScrap);

@@ -55,7 +55,7 @@ namespace RoboRougelike.R3
         public int deployableSlotsVersion;
         public int[] deployableSlots;
         public R3ActiveSlotCheckpoint[] deployablePreferences;
-        public int constructionBudgetVersion,constructionBudgetLimit,constructionBudgetMilestonesApplied;
+        public int constructionBudgetVersion,constructionBudgetLimit,constructionBudgetMilestonesApplied,safeZoneLastCompleted;
         public float repairPulseRemaining,boosterRemaining,overdriveRemaining,rapidFireRemaining,doubleShotOverdriveRemaining,targetedEmpRemaining,areaEmpRemaining,rechargePulseRemaining;
         public float rampDeployerRemaining,wallDeployerRemaining,jumpPadDeployerRemaining,blastTrapDeployerRemaining,empTrapDeployerRemaining,repelTrapDeployerRemaining,damageTrapDeployerRemaining,slowTrapDeployerRemaining,immobilizeTrapDeployerRemaining,flyingDroneRemaining,groundDroneRemaining,offensiveTurretRemaining,healingTurretRemaining,supportTurretRemaining,shieldTurretRemaining;
         public int scrap;
@@ -146,7 +146,7 @@ namespace RoboRougelike.R3
                 activePreferences=activeSlotPreference.Select(p=>new R3ActiveSlotCheckpoint{kind=(int)p.Key,slot=p.Value}).ToArray(),
                 deployableSlotsVersion=1,deployableSlots=deployableSlots.Select(p=>p.HasValue?(int)p.Value:-1).ToArray(),
                 deployablePreferences=deployableSlotPreference.Select(p=>new R3ActiveSlotCheckpoint{kind=(int)p.Key,slot=p.Value}).ToArray(),
-                constructionBudgetVersion=1,constructionBudgetLimit=ConstructionBudgetLimit,constructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied,
+                constructionBudgetVersion=1,constructionBudgetLimit=ConstructionBudgetLimit,constructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied,safeZoneLastCompleted=SafeZoneLastCompleted,
                 repairPulseRemaining=Remaining(RepairPulseReadyAt,now),boosterRemaining=Remaining(BoosterReadyAt,now),overdriveRemaining=Remaining(OverdriveReadyAt,now),rapidFireRemaining=Remaining(RapidFireReadyAt,now),doubleShotOverdriveRemaining=Remaining(DoubleShotOverdriveReadyAt,now),targetedEmpRemaining=Remaining(TargetedEmpReadyAt,now),areaEmpRemaining=Remaining(AreaEmpReadyAt,now),
                 energyVersion=1,energy=Energy.Current,chargesVersion=1,chargePools=Charges.Snapshot(),hasInitialEnergyPrepared=true,initialEnergyPrepared=InitialEnergyPrepared,
                 rechargePulseRemaining=Remaining(RechargePulseReadyAt,now),
@@ -181,7 +181,7 @@ namespace RoboRougelike.R3
             if(data==null||!Enum.IsDefined(typeof(R3VehicleKind),kind)||variant<0||variant>=4||data.mounted==null||data.inventory==null||
                 data.wheels==null||data.groups==null||data.mounted.Length>2000||data.inventory.Length>InventoryCapacity||
                 data.constructionBudgetVersion<0||data.constructionBudgetVersion>1||
-                (data.constructionBudgetVersion==1&&(data.constructionBudgetLimit<0||data.constructionBudgetMilestonesApplied<0))||
+                data.safeZoneLastCompleted<0||(data.constructionBudgetVersion==1&&(data.constructionBudgetLimit<0||data.constructionBudgetMilestonesApplied<0))||
                 data.wheels.Length>2000||data.groups.Length>4000||data.scrap<0||data.scrap>100000||
                 !Enum.IsDefined(typeof(R3DriveKind),data.drive)||!Enum.IsDefined(typeof(ActiveSuspensionSupportMode),data.suspensionMode)||
                 !Finite(data.suspensionHeight)||data.suspensionHeight<-.35f||data.suspensionHeight>.35f||
@@ -349,6 +349,7 @@ namespace RoboRougelike.R3
             }
             restored.Scrap=data.scrap;restored.SelectedDrive=data.drive;restored.SuspensionEnabled=data.suspensionEnabled;
             if(data.constructionBudgetVersion==1){restored.ConstructionBudgetLimit=data.constructionBudgetLimit;restored.ConstructionBudgetMilestonesApplied=data.constructionBudgetMilestonesApplied;}
+            restored.SafeZoneLastCompleted=data.safeZoneLastCompleted;
             restored.RepairPulseReadyAt=data.repairPulseRemaining>0?now+data.repairPulseRemaining:0;
             restored.OverdriveReadyAt=data.overdriveRemaining>0?now+data.overdriveRemaining:0;
             restored.RapidFireReadyAt=data.rapidFireRemaining>0?now+data.rapidFireRemaining:0;
