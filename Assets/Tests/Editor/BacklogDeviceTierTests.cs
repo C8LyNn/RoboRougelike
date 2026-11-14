@@ -260,6 +260,34 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(peak,Is.LessThan(8),"The pad must not multiply its impulse by the number of vehicle colliders");
         Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator ImmobilizeTrapStopsEnemyDriveWithoutDamageAndExpires()
+    {
+        Assert.That(System.Enum.TryParse("ImmobilizeTrapDeployer",out R3PartKind kind),Is.True,"Missing immobilize trap");
+        run.VehicleModel.Award(2500);FuseAndMount(kind);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"immobilize-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();enemy.ConfigureMovement(8,12,0);var enemyBody=enemy.GetComponent<Rigidbody>();
+        float baseSpeed=enemy.EffectiveMovementSpeed;Assert.That(baseSpeed,Is.GreaterThan(0));
+        enemyBody.position=new Vector3(140,2,140);enemyBody.useGravity=false;enemyBody.linearVelocity=Vector3.zero;
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.forward*3;
+        Assert.That(service.TryDeploy(kind),Is.True);var trap=GameObject.Find("Pułapka unieruchamiająca");Assert.That(trap,Is.Not.Null);
+        float hp=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        enemyBody.position=trap.transform.position+Vector3.up;enemyBody.linearVelocity=Vector3.zero;Physics.SyncTransforms();
+        var sensor=trap.GetComponentInChildren<R3DeployableTrap>();float deadline=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<deadline&&trap!=null&&!sensor.Activated)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(sensor==null||sensor.Activated,Is.True);Assert.That(enemy.EffectiveMovementSpeed,Is.Zero);
+        Assert.That(enemyBody.isKinematic,Is.False,"Immobilization must not replace or freeze physics");
+        Assert.That(enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.EqualTo(hp));
+        deadline=Time.realtimeSinceStartup+10;
+        while(Time.realtimeSinceStartup<deadline&&enemy.EffectiveMovementSpeed<baseSpeed-.01f)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(enemy.EffectiveMovementSpeed,Is.EqualTo(baseSpeed).Within(.01));
+        Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator SlowTrapReducesEnemyDriveSpeedAndExpires()
     {
         Assert.That(System.Enum.TryParse("SlowTrapDeployer",out R3PartKind kind),Is.True,"Missing slow trap");

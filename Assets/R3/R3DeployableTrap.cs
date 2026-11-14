@@ -62,7 +62,7 @@ namespace RoboRougelike.R3
                 emitter.ConfigurePhysics(~0,~0,8192,512);emitter.Configure(radius*2,duration,0);
                 emitter.TryPulse(out _);
             }
-            else if(kind==R3PartKind.SlowTrapDeployer)
+            else if(kind==R3PartKind.SlowTrapDeployer||kind==R3PartKind.ImmobilizeTrapDeployer)
             {
                 var enemies=new HashSet<P12PipelineSafeEnemyTurret>();
                 foreach(var hit in Physics.OverlapSphere(root.position,radius,~0,QueryTriggerInteraction.Ignore))
