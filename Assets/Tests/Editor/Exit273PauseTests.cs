@@ -115,6 +115,31 @@ public sealed class Exit273PauseTests
         }
         finally{profile.ResetDefaults();}
     }
+    [UnityTest] public IEnumerator ExtraMouseButtonResetsRangeWhenRunningAndPaused()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("ResetRange","MouseBack"),Is.True);
+            Assert.That(run.EnterTestRange(),Is.True);float deadline=Time.realtimeSinceStartup+20;
+            while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+            var method=typeof(R1RunHUD).GetMethod("TryRangeMouseReset",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static);
+            Assert.That(method,Is.Not.Null);
+            for(int i=0;i<2;i++)
+            {
+                if(i==1){run.TogglePause();Assert.That(run.Paused,Is.True);}
+                int previous=run.Player.GetInstanceID();var used=new Event{type=EventType.MouseDown,button=3};used.Use();
+                method.Invoke(null,new object[]{run,used});Assert.That(run.Transitioning,Is.False,"UI-consumed input must not reset the range.");
+                var input=new Event{type=EventType.MouseDown,button=3};
+                Assert.That(R1ControlProfile.IsBindingMouseDown(input),Is.True);Assert.That(profile.MatchesEvent("ResetRange",input),Is.True);
+                method.Invoke(null,new object[]{run,input});
+                Assert.That(run.Transitioning,Is.True,"The configured extra button must trigger the range reset.");
+                deadline=Time.realtimeSinceStartup+20;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+                Assert.That(run.Player.GetInstanceID(),Is.Not.EqualTo(previous));Assert.That(run.Paused,Is.False);
+            }
+        }
+        finally{profile.ResetDefaults();}
+    }
     [UnityTest] public IEnumerator ControlsPanelDoesNotResetPausedRangeOnR()
     {
         Assert.That(run.EnterTestRange(),Is.True);float deadline=Time.realtimeSinceStartup+15;

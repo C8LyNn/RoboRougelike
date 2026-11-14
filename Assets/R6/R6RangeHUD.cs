@@ -91,7 +91,7 @@ namespace RoboRougelike.R1
                 DrawMovementPause(run);
                 if(GUI.Button(new Rect(230,660,395,42),PauseCaption(run,3,"Powrót do menu głównego"),compactButton))run.RestartRun();
                 if(GUI.Button(new Rect(650,660,400,42),PauseCaption(run,4,"Wyjdź z gry"),compactButton))run.RequestQuitFromMenu();
-                TryRangeMouseReset(run);
+                TryRangeMouseReset(run,Event.current);
                 return;
             }
             creativeEnemyMenu=false;
@@ -150,13 +150,12 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(34,635,1200,60),RangeControlsHint()+
                 (run.CreativeWorkshop?" i przeciwnicy":"")+
                 "\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Zawieszenie: porównaj OFF/Assist/Full na torze x≈12 • Cele na północy",small);
-            TryRangeMouseReset(run);
+            TryRangeMouseReset(run,Event.current);
             UpdateCombatPaging(Event.current);
         }
-        static void TryRangeMouseReset(R1RunController run)
+        static void TryRangeMouseReset(R1RunController run,Event input)
         {
-            var input=Event.current;
-            if(input!=null&&input.type==EventType.MouseDown&&R1ControlProfile.Current.MatchesEvent("ResetRange",input)&&run.ResetTestRange())input.Use();
+            if(R1ControlProfile.IsBindingMouseDown(input)&&R1ControlProfile.Current.MatchesEvent("ResetRange",input)&&run.ResetTestRange())input.Use();
         }
         private static Rect AimStatusPanelRect(float textHeight)
         {
