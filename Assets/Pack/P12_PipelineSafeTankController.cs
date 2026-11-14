@@ -1403,7 +1403,35 @@ public float CurrentForwardSpeed =>
         private RoboRougelike.WeaponIntegration.RRLRailPenetration railgun;
         public void ConfigureRailgun(RoboRougelike.WPN002Railgun.RailgunShot shot,float damageScale)
         {railgun=gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRailPenetration>();railgun.Bind(shot,damageScale);}
-        private void FixedUpdate(){if(railgun!=null&&isActiveAndEnabled)railgun.Step(Time.fixedDeltaTime);}
+        private void FixedUpdate()
+        {
+            if(railgun!=null){if(isActiveAndEnabled)railgun.Step(Time.fixedDeltaTime);return;}
+            if(!IsActiveProjectile||damage<=0||float.IsNaN(damage)||float.IsInfinity(damage))return;
+            var body=GetComponent<Rigidbody>();var own=GetComponent<Collider>();
+            if(body==null||own==null)return;
+            var step=body.linearVelocity*Time.fixedDeltaTime;float distance=step.magnitude;
+            if(distance<=.00001f||float.IsNaN(distance)||float.IsInfinity(distance))return;
+            if(!float.IsInfinity(maxTravelDistance))distance=Mathf.Min(distance,Mathf.Max(0,maxTravelDistance-(body.position-launchPosition).magnitude));
+            if(distance<=.00001f)return;
+            Vector3 direction=step.normalized,start=body.position,end=start+direction*distance;
+            if(!RoboRougelike.R3.R3ShieldDome.TryFirstHit(start,end,ownerRoot,out var dome,out float shieldDistance))return;
+            bool Blocks(Collider collider)
+            {
+                if(collider==null||collider==own||collider.isTrigger||collider.transform.IsChildOf(transform)||
+                   collider.transform==ownerRoot||collider.transform.IsChildOf(ownerRoot)||Physics.GetIgnoreCollision(own,collider))return false;
+                var hp=collider.GetComponentInParent<P12PipelineSafeDamageable>();
+                return collider.GetComponentInParent<RoboRougelike.R3.R3Debris>()==null&&(hp==null||!hp.IsDead)&&
+                    RoboRougelike.WeaponIntegration.RRLHitRouter.CanHit(collider,ownerRoot);
+            }
+            var sphere=own as SphereCollider;
+            float radius=sphere!=null?sphere.radius*Mathf.Max(Mathf.Abs(transform.lossyScale.x),Mathf.Abs(transform.lossyScale.y),Mathf.Abs(transform.lossyScale.z)):.01f;
+            radius=Mathf.Max(.001f,radius);
+            foreach(var overlap in Physics.OverlapSphere(start,radius,~0,QueryTriggerInteraction.Ignore))if(Blocks(overlap))return;
+            foreach(var hit in Physics.SphereCastAll(start,radius,direction,shieldDistance,~0,QueryTriggerInteraction.Ignore))
+                if(Blocks(hit.collider))return;
+            float amount=damage;Vector3 point=start+direction*shieldDistance;
+            if(Intercept(1f))dome.Absorb(amount,point,direction);
+        }
 
 
         public void Configure(

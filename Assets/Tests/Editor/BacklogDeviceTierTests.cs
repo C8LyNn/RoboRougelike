@@ -260,6 +260,52 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(peak,Is.LessThan(8),"The pad must not multiply its impulse by the number of vehicle colliders");
         Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator ShieldInterceptsHostileShellCrossingEntireDomeInOnePhysicsStep()=>FastShieldShell(false);
+    [UnityTest] public IEnumerator SolidWallBeforeDomeStopsFastShellWithoutDamagingShield()=>FastShieldShell(true);
+    [UnityTest] public IEnumerator FastFriendlyShellMayCrossDomeFromOutside()=>FastShieldExit(true);
+    [UnityTest] public IEnumerator FastHostileShellLaunchedInsideMayLeaveDome()=>FastShieldExit(false);
+    IEnumerator FastShieldExit(bool friendly)
+    {
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        Vector3 center=new Vector3(1000,1000,1000);
+        var dome=new GameObject("Test swobodnego przejścia przez kopułę");dome.transform.position=center;
+        var boundary=dome.AddComponent<SphereCollider>();boundary.isTrigger=true;
+        var hp=dome.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(500,false);
+        dome.AddComponent<R3ShieldDome>().Configure(1,2);
+        var owner=new GameObject("Źródło pocisku");
+        if(friendly)owner.AddComponent<RailgunFriendlyFixture>();else owner.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret>().enabled=false;
+        var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);shell.transform.position=center+(friendly?Vector3.left*8:Vector3.zero);shell.transform.localScale=Vector3.one*.16f;
+        var body=shell.AddComponent<Rigidbody>();body.useGravity=false;body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;body.linearVelocity=Vector3.right*2000;
+        shell.AddComponent<RogueMachine.P12PipelineSafe.P17PhysicalShell>().Configure(owner.transform,20,4,Vector3.right,null);
+        Physics.SyncTransforms();float deadline=Time.time+.12f;
+        while(Time.time<deadline&&shell!=null&&shell.activeInHierarchy&&shell.transform.position.x<center.x+5)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(shell!=null&&shell.activeInHierarchy&&shell.transform.position.x>center.x+2,Is.True,"The shell must cross the boundary without interception.");
+        Assert.That(hp.CurrentHp,Is.EqualTo(500).Within(.001));
+        if(shell!=null)Object.Destroy(shell);Object.Destroy(dome);Object.Destroy(owner);
+    }
+    IEnumerator FastShieldShell(bool wallFirst)
+    {
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        Vector3 center=new Vector3(1000,1000,1000);
+        var dome=new GameObject("Test szybkiej kopuły");dome.transform.position=center;
+        var boundary=dome.AddComponent<SphereCollider>();boundary.isTrigger=true;
+        var hp=dome.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(500,false);
+        dome.AddComponent<R3ShieldDome>().Configure(1,2);
+        var protectedTarget=GameObject.CreatePrimitive(PrimitiveType.Cube);protectedTarget.transform.position=center;
+        var protectedHp=protectedTarget.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();protectedHp.Configure(500,false);
+        var owner=new GameObject("Źródło wrogiego pocisku");owner.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret>().enabled=false;
+        GameObject wall=null;
+        if(wallFirst){wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=center+Vector3.left*4;wall.transform.localScale=new Vector3(.5f,8,8);}
+        var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);shell.transform.position=center+Vector3.left*8;shell.transform.localScale=Vector3.one*.16f;
+        var body=shell.AddComponent<Rigidbody>();body.useGravity=false;body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;body.linearVelocity=Vector3.right*2000;
+        shell.AddComponent<RogueMachine.P12PipelineSafe.P17PhysicalShell>().Configure(owner.transform,20,4,Vector3.right,null);
+        Physics.SyncTransforms();float deadline=Time.time+.12f;
+        while(Time.time<deadline&&shell!=null&&shell.activeInHierarchy&&hp.CurrentHp>=500)yield return MOVSeriesDeviceTests.FixedStep();
+        if(wallFirst){Assert.That(hp.CurrentHp,Is.EqualTo(500).Within(.001),"A solid wall hit first must protect the dome.");Assert.That(shell==null||!shell.activeInHierarchy,Is.True,"The shell must actually hit the wall.");}
+        else {Assert.That(hp.CurrentHp,Is.LessThan(500),"A fast hostile shell must not cross the dome without being intercepted.");Assert.That(shell==null||!shell.activeInHierarchy,Is.True);}
+        Assert.That(protectedHp.CurrentHp,Is.EqualTo(500).Within(.001),"The target behind the shield must not also take damage.");
+        if(shell!=null)Object.Destroy(shell);if(wall!=null)Object.Destroy(wall);Object.Destroy(protectedTarget);Object.Destroy(dome);Object.Destroy(owner);
+    }
     [UnityTest] public IEnumerator ShieldDomeLetsFriendlyShotsOutAndBlocksEnemyShellAndRocket()
     {
         Assert.That(System.Enum.TryParse("ShieldTurretGenerator",out R3PartKind kind),Is.True,"Missing shield turret generator");
