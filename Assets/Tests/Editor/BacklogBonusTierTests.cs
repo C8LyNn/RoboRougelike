@@ -204,6 +204,46 @@ public sealed class BacklogBonusTierTests
 
 public sealed class BacklogBonusTierGameplayTests
 {
+    [UnityTest] public IEnumerator ExtremeFiniteWeaponDamageDoesNotOverflowIntoZeroOrInvalidHits()
+    {
+        R1EncounterManager.ClearTransientObjects();
+        var owner=new GameObject("Extreme weapon owner");owner.transform.position=new Vector3(1500,1500,1500);
+        owner.AddComponent<Rigidbody>().isKinematic=true;
+        GameObject Weapon(string label,out Transform muzzle)
+        {
+            var part=GameObject.CreatePrimitive(PrimitiveType.Cube);part.name=label;part.transform.SetParent(owner.transform,false);
+            part.GetComponent<Collider>().enabled=false;part.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Configure(100,false);
+            muzzle=new GameObject("muzzle").transform;muzzle.SetParent(part.transform,false);muzzle.localPosition=Vector3.forward;return part;
+        }
+        var shotgunObject=Weapon("extreme shotgun",out var shotgunMuzzle);
+        var shotgun=shotgunObject.AddComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
+        shotgun.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.Shotgun,Tier=3},owner.transform,shotgunMuzzle,float.MaxValue);
+        Assert.That(shotgun.Fire(),Is.True);
+        var pellets=Object.FindObjectsByType<RogueMachine.P12PipelineSafe.P17PhysicalShell>(FindObjectsSortMode.None)
+            .Where(p=>p.name=="WPN001 physical pellet").ToArray();
+        Assert.That(pellets.Length,Is.GreaterThan(0));
+        Assert.That(pellets.All(p=>!float.IsNaN(p.DamageAmount)&&!float.IsInfinity(p.DamageAmount)&&p.DamageAmount>1e30f),Is.True,"Pellets must retain finite positive damage.");
+        R1EncounterManager.ClearTransientObjects();yield return null;
+        var rocketObject=Weapon("extreme rocket",out var rocketMuzzle);
+        var rocket=rocketObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRocketBinding>();
+        rocket.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.RocketLauncher,Tier=3},owner.transform,rocketMuzzle,float.MaxValue);
+        Assert.That(rocket.Fire(),Is.True);
+        Assert.That(rocket.Module.CurrentSpec.CenterDamage,Is.GreaterThan(1e30f));
+        Assert.That(float.IsInfinity(rocket.Module.CurrentSpec.CenterDamage),Is.False);
+        R1EncounterManager.ClearTransientObjects();yield return null;
+        var railObject=Weapon("extreme rail",out var railMuzzle);
+        var rail=railObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
+        rail.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.Railgun,Tier=3},owner.transform,railMuzzle,float.MaxValue);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=railMuzzle.position+Vector3.forward*5;
+        var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(500,false);Physics.SyncTransforms();
+        Assert.That(rail.Fire(),Is.True);
+        var railShot=Object.FindObjectsByType<RoboRougelike.WeaponIntegration.RRLRailPenetration>(FindObjectsSortMode.None).Single();
+        railShot.Step(.1f);
+        float until=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<until&&hp.CurrentHp>=500)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.LessThan(500),"The rail projectile must deal damage instead of passing an infinite value to HP.");
+        R1EncounterManager.ClearTransientObjects();Object.Destroy(owner);Object.Destroy(target);
+    }
     [UnityTest] public IEnumerator WeaponCategoryBonusAffectsWeaponHitsButNotDrones()
     {
         Assert.That(System.Enum.GetNames(typeof(R1BonusScope)),Does.Contain("Weapons"));

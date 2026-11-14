@@ -50,6 +50,14 @@ namespace RoboRougelike.R3
         public float ShieldDurabilityMultiplier {get;private set;}=1;
         public float RepairEfficiencyMultiplier {get;private set;}=1;
 
+        // Saturation is only the representable numeric limit, not a balance cap.
+        public static float SafeDamageProduct(float amount,float multiplier)
+        {
+            if(float.IsNaN(amount)||float.IsInfinity(amount)||amount<=0||
+               float.IsNaN(multiplier)||float.IsInfinity(multiplier)||multiplier<=0)return 0;
+            return (float)System.Math.Min(float.MaxValue,(double)amount*multiplier);
+        }
+
         // Resolve global and matching category bonuses for owned deployables;
         // weapon-specific bonuses remain on the weapon path.
         public static float ScaleOwnedDamage(Transform owner,float amount,R1BonusScope category=R1BonusScope.Global,bool blast=false)
@@ -60,7 +68,7 @@ namespace RoboRougelike.R3
                 R1BonusScope.Drones=>effects.DroneDamageMultiplier,R1BonusScope.Turrets=>effects.TurretDamageMultiplier,
                 R1BonusScope.Traps=>blast?effects.BlastTrapDamageMultiplier:effects.TrapDamageMultiplier,
                 _=>blast?effects.BlastDamageMultiplier:effects.EffectiveStats?.Damage??1f};
-            return (float)System.Math.Min(float.MaxValue,(double)amount*factor);
+            return SafeDamageProduct(amount,factor);
         }
 
         public void SetOverdriveIncrease(float increase)

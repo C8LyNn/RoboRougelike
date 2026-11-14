@@ -44,24 +44,25 @@ namespace RoboRougelike.WeaponIntegration
                 if(blocked&&shieldDistance<=hit.distance)
                 {
                     energy=RailgunRules.AfterTravel(energy,shieldDistance-previous,shot.Spec.EnergyLossPerMeter);
-                    shield.Absorb(Mathf.Min(shot.Spec.MaxDamagePerPart,energy*shot.Spec.DamagePerEnergy)*damageScale,position+direction*shieldDistance,direction);Stop();return;
+                    shield.Absorb(R3MountedBonusEffects.SafeDamageProduct(Mathf.Min(shot.Spec.MaxDamagePerPart,energy*shot.Spec.DamagePerEnergy),damageScale),position+direction*shieldDistance,direction);Stop();return;
                 }
                 energy=RailgunRules.AfterTravel(energy,hit.distance-previous,shot.Spec.EnergyLossPerMeter);previous=hit.distance;
-                if(hp==null){RRLHitRouter.Apply(c,Mathf.Min(shot.Spec.MaxDamagePerPart,energy*shot.Spec.DamagePerEnergy)*damageScale,hit.point,direction,shot.OwnerRoot.transform);Stop();return;}
+                if(hp==null){RRLHitRouter.Apply(c,R3MountedBonusEffects.SafeDamageProduct(Mathf.Min(shot.Spec.MaxDamagePerPart,energy*shot.Spec.DamagePerEnergy),damageScale),hit.point,direction,shot.OwnerRoot.transform);Stop();return;}
                 visited.Add(hp.GetInstanceID());
                 // Chassis resistance is integration tuning, read from existing physical HP.
                 var impact=RailgunRules.Evaluate(energy,Mathf.Clamp(hp.MaxHp*.2f,5,60),shot.Spec.DamagePerEnergy,shot.Spec.MaxDamagePerPart,visited.Count-1,shot.Spec.MaxDistinctParts,shot.Spec.MinEnergyToContinue,true);
-                float requested=impact.Damage*damageScale;
+                float requested=R3MountedBonusEffects.SafeDamageProduct(impact.Damage,damageScale);
                 float settled=hp.ApplyDamageResolvedTyped(requested,hit.point,direction,
                     RoboRougelike.R3.R3DamagePropagation.DamageKind.Piercing);
                 float absorbed=Mathf.Max(0,requested-settled);
-                energy=Mathf.Max(0,impact.RemainingEnergy-absorbed/Mathf.Max(.001f,shot.Spec.DamagePerEnergy*damageScale));
+                double energyPerDamage=System.Math.Max(.001d,(double)shot.Spec.DamagePerEnergy*damageScale);
+                energy=(float)System.Math.Max(0d,impact.RemainingEnergy-absorbed/energyPerDamage);
                 if(!impact.Continues||settled<=0||energy<=shot.Spec.MinEnergyToContinue){Stop();return;}
             }
             if(blocked)
             {
                 energy=RailgunRules.AfterTravel(energy,shieldDistance-previous,shot.Spec.EnergyLossPerMeter);
-                shield.Absorb(Mathf.Min(shot.Spec.MaxDamagePerPart,energy*shot.Spec.DamagePerEnergy)*damageScale,position+direction*shieldDistance,direction);Stop();return;
+                shield.Absorb(R3MountedBonusEffects.SafeDamageProduct(Mathf.Min(shot.Spec.MaxDamagePerPart,energy*shot.Spec.DamagePerEnergy),damageScale),position+direction*shieldDistance,direction);Stop();return;
             }
             energy=RailgunRules.AfterTravel(energy,move-previous,shot.Spec.EnergyLossPerMeter);travelled+=move;position+=direction*move;
             body.MovePosition(position);
