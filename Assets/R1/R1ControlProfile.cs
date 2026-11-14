@@ -78,6 +78,7 @@ namespace RoboRougelike.R1
             "UpArrow","DownArrow","LeftArrow","RightArrow","F4","F8","F10"}.Contains(binding);
         public static string Display(string binding)=>binding=="MouseLeft"?"LPM":binding=="MouseRight"?"PPM":
             binding=="MouseMiddle"?"ŚPM":binding=="MouseForward"?"Mysz 4":binding=="MouseBack"?"Mysz 5":
+            binding=="Comma"?",":binding=="Period"?".":
             binding!=null&&binding.StartsWith("Digit",StringComparison.Ordinal)?binding.Substring(5):binding??"—";
         public static string FromEvent(Event e)
         {

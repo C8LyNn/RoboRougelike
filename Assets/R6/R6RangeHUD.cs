@@ -41,6 +41,15 @@ namespace RoboRougelike.R1
         }
         private static int WeaponStatusPageCount(int count)=>Mathf.Max(1,(Mathf.Max(0,count)+1)/2);
         private static int WeaponStatusPageStart(int count,int page)=>Mathf.Clamp(page,0,WeaponStatusPageCount(count)-1)*2;
+        static string RangeControlsHint()
+        {
+            var profile=R1ControlProfile.Current;
+            string Names(params string[] actions)=>string.Join("/",actions.Select(a=>R1ControlProfile.Display(profile.Binding(a))));
+            return Names("MoveForward","MoveBackward","TurnLeft","TurnRight")+" — napęd • "+
+                Names("SteeringLeft","SteeringRight")+" — osie • "+Names("Weapon1","Weapon2","Weapon3","Weapon4")+" — broń • "+
+                Names("Active1","Active2","Active3","Active4")+" — moduły • "+Names("Deploy1","Deploy2","Deploy3","Deploy4")+" — urządzenia • "+
+                Names("ResetRange")+" — reset • Esc — pauza";
+        }
         private void AdvanceWeaponStatusPage(int count)
         {int pages=WeaponStatusPageCount(count);weaponStatusPage=(Mathf.Clamp(weaponStatusPage,0,pages-1)+1)%pages;}
         void DrawTestRange(R1RunController run)
@@ -125,7 +134,7 @@ namespace RoboRougelike.R1
             GUI.enabled=true;
             if(run.EmergencyRescueNotice!=null||run.EmergencyRescueActive)GUI.Label(new Rect(665,602,570,25),
                 run.EmergencyRescueNotice??"Ratunek: niewrażliwość; atak wstrzymany.",small);
-            GUI.Label(new Rect(34,635,1200,60),$"WASD — napęd • ,/. — osie • LPM/PPM/Q/E — broń • 1–4 — moduły • Z/X/C/V — urządzenia • {R1ControlProfile.Display(R1ControlProfile.Current.Binding("ResetRange"))} — reset • Esc — pauza"+
+            GUI.Label(new Rect(34,635,1200,60),RangeControlsHint()+
                 (run.CreativeWorkshop?" i przeciwnicy":"")+
                 "\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Zawieszenie: porównaj OFF/Assist/Full na torze x≈12 • Cele na północy",small);
             TryRangeMouseReset(run);

@@ -385,3 +385,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Reset kopii testowej można przypisać w ustawieniach, domyślnie pozostaje R. Działa podczas jazdy i pauzy, a przy otwartym panelu sterowania nie uruchamia się w tle. Wskazówki poligonu i przycisk pauzy pokazują aktualne przypisanie. Dla przypisania do myszy obsługa następuje po przyciskach interfejsu, by otrzymywały kliknięcie jako pierwsze. Poprzednie profile i blueprinty dostają domyślne R dla nowej akcji.
 - Unity 6000.3.14f1: **11 PASS, 0 FAIL**, exit 0 (`range-reset-bind-final.xml`, `.log` w `Prototypy`). Obejmuje rzeczywiste zdarzenia Unity Input System: nowe przypisanie podczas jazdy i pauzy, brak reakcji na stary klawisz po zmianie, domyślne R oraz ochronę otwartego panelu ustawień, a także zgodność poprzednich formatów. Dodatkowa kontrola pośrednich wersji profilu: **2 PASS, 0 FAIL**, exit 0 (`range-reset-legacy.xml`, `.log`). Próba przed zmianą **1 FAIL** (`range-reset-bind-red.xml`): brak opcji przypisania. Obsługa przycisku myszy w rzeczywistym oknie i czytelność podpowiedzi: **NOT RUN**.
+
+#### 06. Aktualne wskazówki sterowania na poligonie
+
+- Podpowiedź na poligonie korzysta z profilu sterowania dla napędu, osi, czterech broni, modułów, urządzeń i resetu. Kropka oraz przecinek są wyświetlane jako znaki na klawiaturze zamiast nazw `Period` i `Comma`.
+- Unity 6000.3.14f1: **3 PASS, 0 FAIL**, exit 0 (`range-hints-release.xml`, `.log` w `Prototypy`): zmienione przypisania w tekście, symbole i rzeczywisty reset nowym klawiszem. Przed zmianą osobne próby **FAIL** (`range-hints-red.xml`, `controls-symbols-red.xml`) potwierdziły brak dynamicznej wskazówki i nieczytelne nazwy znaków. Wygląd, zawijanie tekstu i interakcja myszy w Windows Playerze: **NOT RUN**.

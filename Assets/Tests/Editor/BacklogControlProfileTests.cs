@@ -11,6 +11,11 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [Test] public void PunctuationBindingsUsePlayerFacingSymbols()
+    {
+        Assert.That(R1ControlProfile.Display("Comma"),Is.EqualTo(","));
+        Assert.That(R1ControlProfile.Display("Period"),Is.EqualTo("."));
+    }
     [Serializable] sealed class LegacyControlData { public int version=1; public string[] actions,bindings; }
     [Test] public void LegacyProfilesAndBlueprintBindingsGainConfigurableSteeringMode()
     {

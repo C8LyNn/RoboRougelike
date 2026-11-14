@@ -125,4 +125,21 @@ public sealed class CompactCombatHUDTests
         }
         finally{profile.ResetDefaults();Object.DestroyImmediate(go);}
     }
+    [Test] public void RangeHintsShowConfiguredControls()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("MoveForward","K"),Is.True);
+            Assert.That(profile.TryBind("Weapon3","B"),Is.True);
+            Assert.That(profile.TryBind("Deploy1","H"),Is.True);
+            Assert.That(profile.TryBind("SteeringLeft","J"),Is.True);
+            Assert.That(profile.TryBind("ResetRange","P"),Is.True);
+            var method=typeof(R1RunHUD).GetMethod("RangeControlsHint",BindingFlags.Static|BindingFlags.NonPublic);
+            Assert.That(method,Is.Not.Null);string hint=(string)method.Invoke(null,null);
+            Assert.That(hint,Does.Contain("K/S/A/D").And.Contain("B").And.Contain("H/X/C/V").And.Contain("J/.").And.Contain("P — reset"));
+            Assert.That(hint,Does.Not.Contain("WASD").And.Not.Contain("R — reset"));
+        }
+        finally{profile.ResetDefaults();}
+    }
 }
