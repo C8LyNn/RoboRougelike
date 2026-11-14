@@ -21,7 +21,7 @@ namespace RoboRougelike.PackageIntegration
             // Profile from the supplied PR4 production bridge, not the package24m/75deg default.
             var energy=owner.GetComponent<VehicleEnergyBank>();
             var config=owner.GetComponent<R3VehicleAssembly>()?.Model?.Economy??new R3GarageEconomy();
-            Scanner.Configure(new StructuralScanSettings{rangeMeters=config.StructuralScanRange,fullConeDegrees=85,cooldownSeconds=config.StructuralScanCooldown,activationEnergy=energy!=null?config.StructuralScanEnergy:0f});
+            Scanner.Configure(new StructuralScanSettings{rangeMeters=config.StructuralScanRange,fullConeDegrees=85,cooldownSeconds=config.StructuralScanCooldown,activationEnergy=energy!=null?config.StructuralScanEnergy:0f,maxRevealedParts=config.StructuralScanMaxParts});
             Scanner.Bind(transform,owner,owner.GetInstanceID(),RRLHitRouter.Team(owner),registry,energy);
             Scanner.RestoreCooldown(state.DeviceReadyAt-Time.time);Device.Damageable.Died+=RefreshAvailability;RefreshAvailability();
         }
@@ -39,7 +39,7 @@ namespace RoboRougelike.PackageIntegration
         {
             RefreshAvailability();if(Device==null||!Device.Available||Scanner==null||!Scanner.IsReady)return false;
             var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
-            Scanner.Configure(new StructuralScanSettings{rangeMeters=StructuralScanSettings.CombinedRange(config.StructuralScanRange,units),fullConeDegrees=85,cooldownSeconds=config.StructuralScanCooldown,activationEnergy=energy!=null?config.StructuralScanEnergy*costMultiplier:0f});
+            Scanner.Configure(new StructuralScanSettings{rangeMeters=StructuralScanSettings.CombinedRange(config.StructuralScanRange,units),fullConeDegrees=85,cooldownSeconds=config.StructuralScanCooldown,activationEnergy=energy!=null?config.StructuralScanEnergy*costMultiplier:0f,maxRevealedParts=config.StructuralScanMaxParts});
             RRLScanWorld.Register(registry,R1RunController.Instance);
             if(!Scanner.TryScan())return false;
             Device.State.DeviceReadyAt=Time.time+Scanner.CooldownLeft;return true;
@@ -47,7 +47,7 @@ namespace RoboRougelike.PackageIntegration
         internal void RestoreCombinedCooldown(float seconds)
         {
             var config=Device.Owner.GetComponent<R3VehicleAssembly>().Model.Economy;
-            Scanner.Configure(new StructuralScanSettings{rangeMeters=config.StructuralScanRange,fullConeDegrees=85,cooldownSeconds=config.StructuralScanCooldown,activationEnergy=config.StructuralScanEnergy});
+            Scanner.Configure(new StructuralScanSettings{rangeMeters=config.StructuralScanRange,fullConeDegrees=85,cooldownSeconds=config.StructuralScanCooldown,activationEnergy=config.StructuralScanEnergy,maxRevealedParts=config.StructuralScanMaxParts});
             Scanner.RestoreCooldown(seconds);
         }
         void OnEnable(){if(Scanner!=null&&Device?.State!=null)Scanner.RestoreCooldown(Device.State.DeviceReadyAt-Time.time);RefreshAvailability();}

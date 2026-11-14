@@ -36,6 +36,17 @@ public class RRLW8StructuralScanTests
         Assert.That(binding,Is.Not.Null,"Original scan controller must be connected to the shared physical capability boundary");
         return (bool)binding.GetType().GetMethod("TryActivate").Invoke(binding,null);
     }
+    [UnityTest] public IEnumerator ConfiguredResultCountReachesPhysicalScannerAndSurvivesModelCopy()
+    {
+        Assert.That(Resources.Load<R1RunDefinition>("R1/Run").GaragePrices.StructuralScanMaxParts,Is.EqualTo(16));
+        run.VehicleModel.Economy.StructuralScanMaxParts=256;
+        Assert.That(run.VehicleModel.DeepCopy().Economy.StructuralScanMaxParts,Is.EqualTo(256));
+        Assert.That(Activate(),Is.True);
+        var settings=(StructuralScanSettings)typeof(StructuralScanController)
+            .GetField("settings",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(scanner);
+        Assert.That(settings.maxRevealedParts,Is.EqualTo(256));
+        yield return null;
+    }
     [UnityTest] public IEnumerator ActualRangeModuleScansForeignVisiblePartsWithoutChangingHpOrPhysics()
     {
         Assert.That(module,Is.Not.Null,"COM must be an owned physical garage module, not a free root component");

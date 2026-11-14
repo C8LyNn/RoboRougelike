@@ -26,7 +26,8 @@ namespace RoboRougelike.Mechanics.StructuralScan.Tests.EditMode
         [Test] public void SettingsRetainsLongFiniteRange() { var s = new StructuralScanSettings { rangeMeters = 1500 }; s.Validate(); Assert.AreEqual(1500, s.rangeMeters); }
         [Test] public void CombinedRangeSaturatesInsteadOfOverflowing() { Assert.AreEqual(float.MaxValue,StructuralScanSettings.CombinedRange(float.MaxValue,2)); Assert.AreEqual(0,StructuralScanSettings.CombinedRange(float.NaN,2)); }
         [Test] public void SettingsRepairsInfinityTime() { var s = new StructuralScanSettings { displaySeconds = float.PositiveInfinity }; s.Validate(); Assert.AreEqual(5, s.displaySeconds); }
-        [Test] public void SettingsClampsResultsCount() { var s = new StructuralScanSettings { maxRevealedParts = 10000 }; s.Validate(); Assert.AreEqual(128, s.maxRevealedParts); }
+        [Test] public void SettingsKeepsAtLeastOneResult() { var s = new StructuralScanSettings { maxRevealedParts = -4 }; s.Validate(); Assert.AreEqual(1, s.maxRevealedParts); }
+        [Test] public void ConfiguredLargeResultCountIsNotSilentlyClipped() { var s = new StructuralScanSettings { maxRevealedParts = 256 }; s.Validate(); Assert.AreEqual(256,s.maxRevealedParts); }
         [Test] public void SettingsClampsRegisteredCount() { var s = new StructuralScanSettings { maxRegisteredParts = -4 }; s.Validate(); Assert.AreEqual(1, s.maxRegisteredParts); }
 
         [Test] public void RegistryRejectsDuplicateIdentity()

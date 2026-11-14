@@ -11,7 +11,7 @@ namespace RoboRougelike.Mechanics.StructuralScan
         [Min(0f)] public float cooldownSeconds = 8f;
         [Min(0.01f)] public float displaySeconds = 5f;
         [Min(0f)] public float activationEnergy = 0f;
-        [Range(1, 128)] public int maxRevealedParts = 16;
+        [Min(1)] public int maxRevealedParts = 16;
         // Retained only for old serialized settings; it no longer blocks scanning.
         [HideInInspector] public int maxRegisteredParts = 512;
         public LayerMask obstructionMask = ~0;
@@ -23,7 +23,7 @@ namespace RoboRougelike.Mechanics.StructuralScan
             cooldownSeconds = Mathf.Clamp(Safe(cooldownSeconds, 8f), 0f, 3600f);
             displaySeconds = Mathf.Clamp(Safe(displaySeconds, 5f), 0.01f, 3600f);
             activationEnergy = Mathf.Max(Safe(activationEnergy, 0f), 0f);
-            maxRevealedParts = Mathf.Clamp(maxRevealedParts, 1, 128);
+            maxRevealedParts = Mathf.Max(maxRevealedParts, 1);
             maxRegisteredParts = Mathf.Clamp(maxRegisteredParts, 1, 4096);
         }
 

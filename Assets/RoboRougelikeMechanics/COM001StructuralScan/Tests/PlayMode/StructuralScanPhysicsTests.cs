@@ -71,6 +71,18 @@ namespace RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode
             Assert.IsTrue(scanner.TryScan()); Assert.AreEqual(1, scanner.Contacts.Count); Assert.AreEqual(2, scanner.SelectedTargetOwner);
             yield return null;
         }
+        [UnityTest] public IEnumerator ConfiguredScanCanReturnMoreThan128VisibleParts()
+        {
+            settings.maxRevealedParts=140;scanner.Configure(settings);
+            for(int i=0;i<140;i++)
+            {
+                var part=Target("visible-part-"+i,new Vector3((i%14-6.5f)*.4f,1+(i/14-4.5f)*.4f,18),id:i+1);
+                part.GetComponent<BoxCollider>().size=Vector3.one*.18f;
+            }
+            Physics.SyncTransforms();
+            Assert.IsTrue(scanner.TryScan());Assert.AreEqual(140,scanner.Contacts.Count);
+            yield return null;
+        }
         [UnityTest] public IEnumerator VisibleEnemyCanBeScannedWithMoreThan512RegisteredParts()
         {
             Target("visible",new Vector3(0,1,8));
