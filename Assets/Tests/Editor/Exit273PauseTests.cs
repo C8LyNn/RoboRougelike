@@ -101,6 +101,7 @@ public sealed class Exit273PauseTests
         var profile=R1ControlProfile.Current;profile.ResetDefaults();
         try
         {
+            Assert.That(profile.TryBind("DefenseStatusPage","F6"),Is.True);
             Assert.That(profile.TryBind("ResetRange","P"),Is.True);
             Assert.That(run.EnterTestRange(),Is.True);float deadline=Time.realtimeSinceStartup+20;
             while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;

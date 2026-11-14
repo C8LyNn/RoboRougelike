@@ -399,6 +399,7 @@ namespace RoboRougelike.R1
                     DrawFeedback();
                     // Give HUD buttons the first chance to consume pointer input;
                     // a mouse-bound shortcut only handles unclaimed clicks.
+                    UpdateCombatPaging(Event.current);
                     UpdateCombatDetails(Event.current);
                     return;
                 }

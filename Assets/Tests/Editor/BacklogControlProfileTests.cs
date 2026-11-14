@@ -17,6 +17,28 @@ public sealed class BacklogControlProfileTests
         Assert.That(R1ControlProfile.Display("Period"),Is.EqualTo("."));
     }
     [Serializable] sealed class LegacyControlData { public int version=1; public string[] actions,bindings; }
+    [Test] public void LegacyPagingDefaultsDoNotOverrideExistingPOrTabBindings()
+    {
+        Assert.That(R1ControlProfile.Actions,Does.Contain("WeaponStatusPage"));
+        Assert.That(R1ControlProfile.Actions,Does.Contain("DefenseStatusPage"));
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-paging-legacy-"+Guid.NewGuid()+".json");
+        try
+        {
+            var profile=new R1ControlProfile(path);var actions=R1ControlProfile.Actions.Take(23).ToArray();
+            var bindings=actions.Select(profile.Binding).ToArray();bindings[Array.IndexOf(actions,"SteeringMode")]="P";
+            bindings[Array.IndexOf(actions,"CombatDetails")]="Tab";
+            var data=new LegacyControlData{actions=actions,bindings=bindings};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            var loaded=new R1ControlProfile(path);Assert.That(loaded.Error,Is.Null);
+            Assert.That(loaded.Binding("SteeringMode"),Is.EqualTo("P"));Assert.That(loaded.Binding("CombatDetails"),Is.EqualTo("Tab"));
+            Assert.That(loaded.Binding("WeaponStatusPage"),Is.Not.EqualTo("Tab"));Assert.That(loaded.Binding("DefenseStatusPage"),Is.Not.EqualTo("P"));
+            Assert.That(loaded.Snapshot().Distinct(StringComparer.OrdinalIgnoreCase).Count(),Is.EqualTo(R1ControlProfile.Actions.Length));
+            Assert.That(R1ControlProfile.ValidSnapshot(bindings),Is.True,"Older blueprint bindings must remain valid despite new defaults.");
+            Assert.That(loaded.TryRestoreSnapshot(bindings,out _),Is.True);
+            Assert.That(new R1ControlProfile(path).Binding("SteeringMode"),Is.EqualTo("P"));
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [Test] public void LegacyProfilesAndBlueprintBindingsGainConfigurableSteeringMode()
     {
         string path=Path.Combine(Path.GetTempPath(),"RRL-controls-legacy-"+Guid.NewGuid()+".json");
@@ -30,6 +52,7 @@ public sealed class BacklogControlProfileTests
             Assert.That(loaded.Binding("MoveForward"),Is.EqualTo("K"));Assert.That(loaded.Binding("SteeringMode"),Is.EqualTo("M"));
             Assert.That(loaded.Binding("CombatDetails"),Is.EqualTo("I"));
             Assert.That(R1ControlProfile.ValidSnapshot(bindings),Is.True,"Existing blueprints keep valid bindings.");
+            Assert.That(loaded.TryBind("DefenseStatusPage","F6"),Is.True);
             Assert.That(loaded.TryBind("SteeringMode","P"),Is.True);loaded.Save();
             Assert.That(new R1ControlProfile(path).Binding("SteeringMode"),Is.EqualTo("P"));
             Assert.That(loaded.TryRestoreSnapshot(bindings,out _),Is.True);
@@ -63,7 +86,8 @@ public sealed class BacklogControlProfileTests
         string path=Path.Combine(Path.GetTempPath(),"RRL-controls-v21-"+Guid.NewGuid()+".json");
         try
         {
-            var profile=new R1ControlProfile(path);Assert.That(profile.TryBind("SteeringMode","P"),Is.True);
+            var profile=new R1ControlProfile(path);Assert.That(profile.TryBind("DefenseStatusPage","F6"),Is.True);
+            Assert.That(profile.TryBind("SteeringMode","P"),Is.True);
             var old=profile.Snapshot().Take(R1ControlProfile.Actions.Length-1).ToArray();
             var earlier=profile.Snapshot().Take(21).ToArray();
             profile.ResetDefaults();Assert.That(profile.TryRestoreSnapshot(old,out _),Is.True);

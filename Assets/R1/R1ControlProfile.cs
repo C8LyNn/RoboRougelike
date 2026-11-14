@@ -14,9 +14,9 @@ namespace RoboRougelike.R1
     {
         public static readonly string[] Actions={"MoveForward","MoveBackward","TurnLeft","TurnRight",
             "Weapon1","Weapon2","Weapon3","Weapon4","Active1","Active2","Active3","Active4",
-            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails","ResetRange"};
+            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails","ResetRange","WeaponStatusPage","DefenseStatusPage"};
         static readonly string[] Defaults={"W","S","A","D","MouseLeft","MouseRight","Q","E",
-            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I","R"};
+            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I","R","Tab","P"};
         const int OriginalActionCount=20;
         readonly Dictionary<string,string> bindings=new Dictionary<string,string>();
         readonly string path;
@@ -40,9 +40,10 @@ namespace RoboRougelike.R1
                     data.actions.Any(a=>!Actions.Contains(a))||
                     Actions.Take(OriginalActionCount).Any(a=>!data.actions.Contains(a)))
                     throw new InvalidDataException("Niepoprawne przypisania sterowania.");
-                var merged=Actions.Select((a,i)=>{int at=Array.IndexOf(data.actions,a);return at<0?Defaults[i]:data.bindings[at];}).ToArray();
+                var merged=Actions.Select(a=>{int at=Array.IndexOf(data.actions,a);return at<0?null:data.bindings[at];}).ToArray();
+                var missing=Actions.Select(a=>!data.actions.Contains(a)).ToArray();FillMissing(merged,missing);
                 if(!ValidSnapshot(merged))throw new InvalidDataException("Niepoprawne przypisania sterowania.");
-                for(int i=0;i<data.actions.Length;i++)bindings[data.actions[i]]=data.bindings[i];
+                for(int i=0;i<Actions.Length;i++)bindings[Actions[i]]=merged[i];
             }
             catch(Exception e){unreadable=true;Error="Nie odczytano ustawień; plik pozostawiono bez zmian: "+e.Message;}
         }
@@ -50,8 +51,24 @@ namespace RoboRougelike.R1
         internal void RestoreValues(string[] values){var full=NormalizeSnapshot(values);for(int i=0;i<Actions.Length;i++)bindings[Actions[i]]=full[i];}
         public string Binding(string action)=>bindings.TryGetValue(action,out var binding)?binding:null;
         public string[] Snapshot()=>Actions.Select(Binding).ToArray();
-        static string[] NormalizeSnapshot(string[] values)=>values!=null&&values.Length>=OriginalActionCount&&values.Length<Actions.Length?
-            values.Concat(Defaults.Skip(values.Length)).ToArray():values;
+        static string[] NormalizeSnapshot(string[] values)
+        {
+            if(values==null||values.Length<OriginalActionCount||values.Length>=Actions.Length)return values;
+            var full=new string[Actions.Length];Array.Copy(values,full,values.Length);
+            var missing=Enumerable.Range(0,Actions.Length).Select(i=>i>=values.Length).ToArray();
+            FillMissing(full,missing);return full;
+        }
+        static void FillMissing(string[] values,bool[] missing)
+        {
+            var used=new HashSet<string>(values.Where((v,i)=>!missing[i]&&v!=null),StringComparer.OrdinalIgnoreCase);
+            for(int i=0;i<values.Length;i++)
+            {
+                if(!missing[i])continue;
+                var candidates=new[]{Defaults[i],"F5","F6","F7","F9","F11","F12"}.Concat(Enum.GetNames(typeof(Key)));
+                string chosen=candidates.FirstOrDefault(key=>ValidBinding(key)&&!Reserved(key)&&!used.Contains(key));
+                values[i]=chosen;if(chosen!=null)used.Add(chosen);
+            }
+        }
         public static bool ValidSnapshot(string[] values)
         {
             var full=NormalizeSnapshot(values);
@@ -111,7 +128,8 @@ namespace RoboRougelike.R1
             switch(action){case "MoveForward":return "Jazda do przodu";case "MoveBackward":return "Jazda do tyłu";
                 case "TurnLeft":return "Skręt w lewo";case "TurnRight":return "Skręt w prawo";
                 case "Gyro":return "Żyroskop";case "Reload":return "Przeładowanie";
-                case "SteeringLeft":return "Obrót w lewo";case "SteeringRight":return "Obrót w prawo";case "SteeringMode":return "Tryb skrętu";case "CombatDetails":return "Szczegóły w walce";case "ResetRange":return "Reset poligonu";}
+                case "SteeringLeft":return "Obrót w lewo";case "SteeringRight":return "Obrót w prawo";case "SteeringMode":return "Tryb skrętu";case "CombatDetails":return "Szczegóły w walce";case "ResetRange":return "Reset poligonu";
+                case "WeaponStatusPage":return "Następna strona uzbrojenia";case "DefenseStatusPage":return "Następna strona obrony";}
             if(action.StartsWith("Weapon"))return "Broń "+action.Substring(6);
             if(action.StartsWith("Active"))return "Moduł "+action.Substring(6);
             if(action.StartsWith("Deploy"))return "Urządzenie "+action.Substring(6);

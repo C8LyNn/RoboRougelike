@@ -69,6 +69,26 @@ public sealed class UI943WeaponStatusTests
         }
         finally{Object.DestroyImmediate(go);}
     }
+    [Test] public void WeaponAndDefensePagingUseConfiguredKeys()
+    {
+        var go=new GameObject("Rebound HUD paging");var profile=R1ControlProfile.Current;
+        try
+        {
+            profile.ResetDefaults();Assert.That(profile.TryBind("WeaponStatusPage","K"),Is.True);
+            Assert.That(profile.TryBind("DefenseStatusPage","L"),Is.True);
+            var hud=go.AddComponent<R1RunHUD>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+            var weapon=typeof(R1RunHUD).GetMethod("UpdateWeaponPaging",flags);var defense=typeof(R1RunHUD).GetMethod("UpdateDefensePaging",flags);
+            Assert.That(weapon,Is.Not.Null);Assert.That(defense,Is.Not.Null);
+            var weaponPage=typeof(R1RunHUD).GetField("weaponStatusPage",flags);var defensePage=typeof(R1RunHUD).GetField("defenseStatusPage",flags);
+            weapon.Invoke(hud,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.Tab},3});
+            defense.Invoke(hud,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.P},10});
+            Assert.That((int)weaponPage.GetValue(hud),Is.Zero);Assert.That((int)defensePage.GetValue(hud),Is.Zero);
+            weapon.Invoke(hud,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.K},3});
+            defense.Invoke(hud,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.L},10});
+            Assert.That((int)weaponPage.GetValue(hud),Is.EqualTo(1));Assert.That((int)defensePage.GetValue(hud),Is.EqualTo(1));
+        }
+        finally{profile.ResetDefaults();Object.DestroyImmediate(go);}
+    }
     [UnityTest] public IEnumerator DefenseRowsUseActualMountedDevicesInOrderAcrossPages()
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();

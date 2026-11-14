@@ -8,6 +8,7 @@ namespace RoboRougelike.R1
     {
         GUIStyle aimCrossStyle,aimCaptionStyle,weaponMarkerStyle;
         int weaponStatusPage;
+        int hudWeaponCount,hudDefenseCount;
         bool creativeEnemyMenu;
         string creativeEnemyMessage;
         internal bool CreativeEnemyMenuOpen=>creativeEnemyMenu;
@@ -41,6 +42,8 @@ namespace RoboRougelike.R1
         }
         private static int WeaponStatusPageCount(int count)=>Mathf.Max(1,(Mathf.Max(0,count)+1)/2);
         private static int WeaponStatusPageStart(int count,int page)=>Mathf.Clamp(page,0,WeaponStatusPageCount(count)-1)*2;
+        private static string WeaponSlotInputLabel(int slot)=>slot>=0&&slot<4?
+            $"{(char)('A'+slot)} / {R1ControlProfile.Display(R1ControlProfile.Current.Binding("Weapon"+(slot+1)))}":"—";
         static string RangeControlsHint()
         {
             var profile=R1ControlProfile.Current;
@@ -52,6 +55,14 @@ namespace RoboRougelike.R1
         }
         private void AdvanceWeaponStatusPage(int count)
         {int pages=WeaponStatusPageCount(count);weaponStatusPage=(Mathf.Clamp(weaponStatusPage,0,pages-1)+1)%pages;}
+        private void UpdateWeaponPaging(Event input,int count)
+        {
+            weaponStatusPage=Mathf.Clamp(weaponStatusPage,0,WeaponStatusPageCount(count)-1);
+            if(WeaponStatusPageCount(count)>1&&input!=null&&R1ControlProfile.Current.MatchesEvent("WeaponStatusPage",input))
+            {AdvanceWeaponStatusPage(count);input.Use();}
+        }
+        private void UpdateCombatPaging(Event input)
+        {UpdateWeaponPaging(input,hudWeaponCount);UpdateDefensePaging(input,hudDefenseCount);}
         void DrawTestRange(R1RunController run)
         {
             if(run.MapEditorTesting){DrawMapTest(run);return;}
@@ -138,6 +149,7 @@ namespace RoboRougelike.R1
                 (run.CreativeWorkshop?" i przeciwnicy":"")+
                 "\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Zawieszenie: porównaj OFF/Assist/Full na torze x≈12 • Cele na północy",small);
             TryRangeMouseReset(run);
+            UpdateCombatPaging(Event.current);
         }
         static void TryRangeMouseReset(R1RunController run)
         {
@@ -201,7 +213,7 @@ namespace RoboRougelike.R1
         private void UpdateDefensePaging(Event evt,int count)
         {
             int pages=DefensePageCount(count);defenseStatusPage=Mathf.Clamp(defenseStatusPage,0,pages-1);
-            if(pages>1&&evt!=null&&evt.type==EventType.KeyDown&&evt.keyCode==KeyCode.P)
+            if(pages>1&&evt!=null&&R1ControlProfile.Current.MatchesEvent("DefenseStatusPage",evt))
             {defenseStatusPage=(defenseStatusPage+1)%pages;evt.Use();}
         }
         private static string[] DefensePageRows(RoboRougelike.WeaponIntegration.RRLShieldBinding[] shields,
@@ -246,20 +258,19 @@ namespace RoboRougelike.R1
                 CombatPanel(weaponPanel,new Color(.28f,.76f,.75f));
                 GUI.Label(new Rect(940,195,305,30),"UZBROJENIE",heading);
                 int pages=WeaponStatusPageCount(totalGuns);
+                hudWeaponCount=totalGuns;
                 weaponStatusPage=Mathf.Clamp(weaponStatusPage,0,pages-1);
                 if(pages>1)
                 {
-                    if(Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.Tab)
-                    {AdvanceWeaponStatusPage(totalGuns);Event.current.Use();}
-                    GUI.Label(new Rect(1112,199,130,25),$"Tab: {weaponStatusPage+1}/{pages}",small);
+                    GUI.Label(new Rect(1112,199,130,25),$"{R1ControlProfile.Display(R1ControlProfile.Current.Binding("WeaponStatusPage"))}: {weaponStatusPage+1}/{pages}",small);
                 }
-                GUI.Label(new Rect(940,228,305,24),$"A / LPM: {WeaponGroupName(a)} ({counts[0]})",small);
+                GUI.Label(new Rect(940,228,305,24),$"{WeaponSlotInputLabel(0)}: {WeaponGroupName(a)} ({counts[0]})",small);
                 string extra=run.CreativeWorkshop&&run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>4?" + inne":"";
-                GUI.Label(new Rect(940,252,305,24),$"B / PPM: {WeaponGroupName(b)}{extra} ({counts[1]})",small);
+                GUI.Label(new Rect(940,252,305,24),$"{WeaponSlotInputLabel(1)}: {WeaponGroupName(b)}{extra} ({counts[1]})",small);
                 if(extraRows>0)
                 {
-                    GUI.Label(new Rect(940,276,305,24),$"C / Q: {WeaponGroupName(slots[2])} ({counts[2]})",small);
-                    GUI.Label(new Rect(940,300,305,24),$"D / E: {WeaponGroupName(slots[3])} ({counts[3]})",small);
+                    GUI.Label(new Rect(940,276,305,24),$"{WeaponSlotInputLabel(2)}: {WeaponGroupName(slots[2])} ({counts[2]})",small);
+                    GUI.Label(new Rect(940,300,305,24),$"{WeaponSlotInputLabel(3)}: {WeaponGroupName(slots[3])} ({counts[3]})",small);
                 }
                 int row=0,index=0,start=WeaponStatusPageStart(totalGuns,weaponStatusPage);
                 foreach(var gun in assembly.Parts)
@@ -284,13 +295,13 @@ namespace RoboRougelike.R1
                 var defenses=run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();
                 var shields=run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>();
                 int defenseCount=defenses.Length+shields.Length;
-                UpdateDefensePaging(Event.current,defenseCount);
+                hudDefenseCount=defenseCount;defenseStatusPage=Mathf.Clamp(defenseStatusPage,0,DefensePageCount(defenseCount)-1);
                 if(defenseCount>0)
                 {
                     var defensePanel=DefensePanelRect(defenseCount);
                     Panel(defensePanel);GUI.Label(DefenseTitleRect(),"OBRONA",heading);
                     if(DefensePageCount(defenseCount)>1)
-                        GUI.Label(new Rect(435,211,175,25),$"P: zmień {defenseStatusPage+1}/{DefensePageCount(defenseCount)}",small);
+                        GUI.Label(new Rect(435,211,175,25),$"{R1ControlProfile.Display(R1ControlProfile.Current.Binding("DefenseStatusPage"))}: zmień {defenseStatusPage+1}/{DefensePageCount(defenseCount)}",small);
                     var rows=DefensePageRows(shields,defenses,defenseStatusPage);
                     for(int defenseRow=0;defenseRow<rows.Length;defenseRow++)GUI.Label(DefenseRowRect(defenseRow),rows[defenseRow],small);
                 }

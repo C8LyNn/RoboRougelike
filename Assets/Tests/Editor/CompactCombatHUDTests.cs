@@ -116,6 +116,7 @@ public sealed class CompactCombatHUDTests
         var profile=R1ControlProfile.Current;profile.ResetDefaults();var go=new GameObject("HUD remap test");
         try
         {
+            Assert.That(profile.TryBind("DefenseStatusPage","F6"),Is.True);
             Assert.That(profile.TryBind("CombatDetails","P"),Is.True);
             var hud=go.AddComponent<R1RunHUD>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;
             var toggle=typeof(R1RunHUD).GetMethod("UpdateCombatDetails",flags);var open=typeof(R1RunHUD).GetField("combatDetailsOpen",flags);
@@ -134,11 +135,26 @@ public sealed class CompactCombatHUDTests
             Assert.That(profile.TryBind("Weapon3","B"),Is.True);
             Assert.That(profile.TryBind("Deploy1","H"),Is.True);
             Assert.That(profile.TryBind("SteeringLeft","J"),Is.True);
+            Assert.That(profile.TryBind("DefenseStatusPage","F6"),Is.True);
             Assert.That(profile.TryBind("ResetRange","P"),Is.True);
             var method=typeof(R1RunHUD).GetMethod("RangeControlsHint",BindingFlags.Static|BindingFlags.NonPublic);
             Assert.That(method,Is.Not.Null);string hint=(string)method.Invoke(null,null);
             Assert.That(hint,Does.Contain("K/S/A/D").And.Contain("B").And.Contain("H/X/C/V").And.Contain("J/.").And.Contain("P — reset"));
             Assert.That(hint,Does.Not.Contain("WASD").And.Not.Contain("R — reset"));
+        }
+        finally{profile.ResetDefaults();}
+    }
+    [Test] public void WeaponStatusLabelsUseConfiguredSlots()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("Weapon1","MouseMiddle"),Is.True);
+            Assert.That(profile.TryBind("Weapon3","B"),Is.True);
+            var method=typeof(R1RunHUD).GetMethod("WeaponSlotInputLabel",BindingFlags.Static|BindingFlags.NonPublic);
+            Assert.That(method,Is.Not.Null);
+            Assert.That((string)method.Invoke(null,new object[]{0}),Is.EqualTo("A / ŚPM"));
+            Assert.That((string)method.Invoke(null,new object[]{2}),Is.EqualTo("C / B"));
         }
         finally{profile.ResetDefaults();}
     }

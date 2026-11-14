@@ -459,6 +459,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Ekran jazdy na mapie z edytora korzysta ze wspólnej wskazówki odczytującej aktualny profil sterowania, zamiast zawsze pokazywać WASD i LPM.
 - Unity 6000.3.14f1: **4 PASS, 0 FAIL**, exit 0 (`map-test-hints-final.xml`, `.log` w `Prototypy`), obejmujące przejście menu → edytor → garaż → test → powrót oraz kontrolę profilu. Są to testy sterowane kodem; wygląd i czytelność podpowiedzi w Windows Playerze: **NOT RUN**.
 
+#### 06. Konfigurowanie stron HUD i etykiet broni
+
+- Przewijanie stron uzbrojenia i obrony ma własne pozycje w ustawieniach sterowania; domyślnie pozostają `Tab` i `P`. Wykrywanie konfliktów obejmuje teraz także te akcje, a HUD pokazuje bieżące przypisania oraz aktualne klawisze wszystkich czterech grup broni. Przyciski interfejsu otrzymują zdarzenia myszy przed skrótami stron.
+- Migracja starych profili i blueprintów zachowuje wcześniejsze klawisze gracza. Jeśli `Tab` lub `P` były już przypisane, brakująca nowa akcja otrzymuje inny wolny klawisz zamiast odrzucać cały profil. Profile bez konfliktów zachowują domyślne skróty.
+- Unity 6000.3.14f1: **50 PASS, 0 FAIL**, exit 0 (`C:\Users\kubap\Desktop\Prototypy\hud-paging-bindings-final.xml`, `.log`): profile, konflikty, migracja starych danych, blueprint, reset poligonu i tryb skrętu. Po dodaniu dynamicznych etykiet broni osobny zestaw **26 PASS, 0 FAIL** (`weapon-label-bindings-final.xml`, `.log`). Przed zmianą `hud-paging-bindings-red.xml`: **2 FAIL**, a `weapon-label-bindings-red.xml`: **1 FAIL**. Zdarzenia klawiatury są symulowane w testach; ręczna kontrola interakcji myszy z przyciskami w Windows Playerze: **NOT RUN**. Pozostałe niekonfigurowalne skróty nadal wymagają przeglądu.
+
 #### 30, 36. Fizyczny odzysk pancerza przeciwników
 
 - Zwykły pancerz wroga może wypaść po odstrzeleniu albo po zniszczeniu rdzenia, według istniejącej konfigurowalnej szansy łupu. Podniesienie lub odpłatne odzyskanie jednego łupu przyznaje konfigurowany pakiet, domyślnie pięć oddzielnych części o zachowanym stanie. Operacja wymaga miejsca na cały pakiet; niepowodzenie zwraca opłatę. Fizyczny łup i istniejące koszyki korzystają ze wspólnego rejestru i nie przyznają tej samej części dwukrotnie.

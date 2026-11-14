@@ -199,6 +199,7 @@ public class RRLW8SteeringTests
         InputSystem.settings=settings;var keyboard=InputSystem.AddDevice<Keyboard>();var mouse=InputSystem.AddDevice<Mouse>();
         try
         {
+            Assert.That(profile.TryBind("DefenseStatusPage","F6"),Is.True);
             Assert.That(profile.TryBind("SteeringMode","P"),Is.True);
             Assert.That(Enum.TryParse("IndependentSteering",out kind),Is.True);yield return Build();
             Assert.That(Gui(new Event{type=EventType.KeyDown,keyCode=KeyCode.M}),Is.False);
