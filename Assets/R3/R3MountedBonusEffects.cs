@@ -49,6 +49,7 @@ namespace RoboRougelike.R3
         public float WeaponDamageMultiplier {get;private set;}=1;
         public float ShieldDurabilityMultiplier {get;private set;}=1;
         public float RepairEfficiencyMultiplier {get;private set;}=1;
+        public float ConstructionHullMultiplier {get;private set;}=1;
 
         // Saturation is only the representable numeric limit, not a balance cap.
         public static float SafeDamageProduct(float amount,float multiplier)
@@ -122,7 +123,7 @@ namespace RoboRougelike.R3
             var damage=new R1ModifierGroup();var basicDamage=new R1ModifierGroup();var basicBlastDamage=new R1ModifierGroup();var droneDamage=new R1ModifierGroup();
             var turretDamage=new R1ModifierGroup();var trapDamage=new R1ModifierGroup();var blastDamage=new R1ModifierGroup();
             var blastTrapDamage=new R1ModifierGroup();var piercingDamage=new R1ModifierGroup();var kineticDamage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
-            var core=new R1ModifierGroup();var reload=new R1ModifierGroup();var shieldDurability=new R1ModifierGroup();var weaponDamage=new R1ModifierGroup();var repairEfficiency=new R1ModifierGroup();
+            var core=new R1ModifierGroup();var reload=new R1ModifierGroup();var shieldDurability=new R1ModifierGroup();var weaponDamage=new R1ModifierGroup();var repairEfficiency=new R1ModifierGroup();var constructionHull=new R1ModifierGroup();
             damage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             weaponDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             basicDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
@@ -165,7 +166,11 @@ namespace RoboRougelike.R3
                 else if(module.UpgradeEffect==R1UpgradeEffect.Mobility)
                     mobility.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 else if(module.UpgradeEffect==R1UpgradeEffect.Hull)
-                    hull.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                {
+                    if(module.UpgradeScope==R1BonusScope.Global)hull.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Construction)
+                        constructionHull.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                }
                 else if(module.UpgradeEffect==R1UpgradeEffect.Core)
                     core.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 else if(module.UpgradeEffect==R1UpgradeEffect.Reload)
@@ -188,7 +193,8 @@ namespace RoboRougelike.R3
             WeaponDamageMultiplier=weaponDamage.Apply(baseStats.Damage);
             ShieldDurabilityMultiplier=shieldDurability.Apply(1);
             RepairEfficiencyMultiplier=repairEfficiency.Apply(1);
-            player.Apply(stats);
+            ConstructionHullMultiplier=constructionHull.Apply(baseStats.Hull);
+            player.Apply(stats,ConstructionHullMultiplier);
             player.Controller.SetBasicDamageProfile(basicDamage.Apply(baseStats.Damage),basicBlastDamage.Apply(baseStats.Damage),(float)System.Math.Min(1d,hybridShare));
         }
         private void ApplyRepairPulse()

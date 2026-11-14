@@ -332,7 +332,7 @@ namespace RoboRougelike.R1
             yield return null;
             yield return null;
             // Preserve only modifiers from currently mounted, operational bonus modules.
-            Player.Apply(ActiveStats??Progress.Stats);
+            Player.Apply(ActiveStats??Progress.Stats,Player.GetComponent<R3MountedBonusEffects>()?.ConstructionHullMultiplier);
             ResetRecoveryForEncounter();TechnologyMessage=Technology?.Error;Salvage=new R4SalvageLedger(3);
             if(raceRequested)BeginCheckpointRace();
             else if(roadRequested)BeginRoadChallenge();

@@ -383,7 +383,7 @@ namespace RoboRougelike.R1
             if(item.UpgradeEffect==R1UpgradeEffect.Repair)return "Regeneracja 2,5% HP/s";
             if(item.UpgradeEffect==R1UpgradeEffect.HybridBlastRounds)return $"Amunicja działa: {Mathf.Min(1,item.UpgradeAmount)*100:0.#}% wybuchowa";
             string name=item.UpgradeEffect switch {
-                R1UpgradeEffect.Hull=>"Wytrzymałość",R1UpgradeEffect.Damage=>DamageBonusName(item),
+                R1UpgradeEffect.Hull=>item.UpgradeScope==R1BonusScope.Construction?"Wytrzymałość klocków":"Wytrzymałość",R1UpgradeEffect.Damage=>DamageBonusName(item),
                 R1UpgradeEffect.Reload=>"Czas przeładowania",R1UpgradeEffect.Mobility=>"Mobilność",
                 R1UpgradeEffect.Core=>"Rdzeń",R1UpgradeEffect.EnergyCapacity=>"Pojemność energii",R1UpgradeEffect.EnergyRegeneration=>"Regeneracja energii",R1UpgradeEffect.ShieldDurability=>"Wytrzymałość kopuły",R1UpgradeEffect.RepairEfficiency=>"Skuteczność napraw",_=>"Bonus"
             };
@@ -416,7 +416,7 @@ namespace RoboRougelike.R1
             string name;double percent;bool reduction=false;
             switch(item.UpgradeEffect)
             {
-                case R1UpgradeEffect.Hull:name="Wytrzymałość";percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.Hull:name=item.UpgradeScope==R1BonusScope.Construction?"Wytrzymałość klocków":"Wytrzymałość";percent=(double)item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.Damage:name=DamageBonusName(item);percent=(double)item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.Reload:name="Czas przeładowania";percent=System.Math.Min(100d,(double)item.UpgradeAmount*units*100);reduction=true;break;
                 case R1UpgradeEffect.Mobility:name="Mobilność";percent=(double)item.UpgradeAmount*units*100;break;

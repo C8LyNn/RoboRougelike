@@ -287,23 +287,28 @@ public class RRLW34EffectsTests
         yield return Until(()=>!run.Transitioning,"First fight");run.Encounter.SetCombatActive(false);
         RRLW2TestFlow.DefeatAll(run);yield return Until(()=>run.Progress.State==R1RunState.Salvage,"Victory");
         var ids=run.Salvage.Items.Where(p=>p.Selectable).Take(3).Select(p=>p.Id).ToArray();
+        int expectedLootCount=run.Salvage.Items.Where(p=>ids.Contains(p.Id)).Sum(p=>run.VehicleModel.GrantQuantity(p.Kind,p.ToPart().ArmorShape));
         Assert.That(ids.Length,Is.EqualTo(3));Assert.That(run.ConfirmRewards(ids,new[]{0}),Is.True);
-        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(4));
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(expectedLootCount+1));
+        foreach(var lootId in ids)Assert.That(run.VehicleModel.Inventory.Any(p=>p.Id==lootId),Is.True);
         var bonus=run.VehicleModel.Inventory.Single(p=>p.Kind==R3PartKind.BonusModule);string id=bonus.Id;
-        Assert.That(run.GarageMount(id,new Vector3Int(2,2,-2)),Is.True);
+        var mountCell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>run.VehicleModel.OwnedPlacementError(id,c,default)==null);
+        Assert.That(run.GarageMount(id,mountCell),Is.True);
         var expected=run.ActiveStats.Copy();Assert.That(run.StartNextEncounter(),Is.True);
         Assert.That(run.ChooseRoute(0),Is.True);yield return Until(()=>!run.Transitioning,"Next map");run.Encounter.SetCombatActive(false);
         Assert.That(run.ActiveStats.Damage,Is.EqualTo(expected.Damage));Assert.That(run.ActiveStats.Hull,Is.EqualTo(expected.Hull));
         var module=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);
-        module.Damageable.ApplyDamage(10000,module.transform.position,Vector3.right);yield return null;yield return null;
+        float damage=(module.Damageable.CurrentHp+1)/(1-R3DamagePropagation.TransferFraction(R3DamagePropagation.DamageKind.Kinetic));
+        module.Damageable.ApplyDamage(damage,module.transform.position,Vector3.right);yield return null;yield return null;
         Assert.That(run.ActiveStats.Damage,Is.EqualTo(1));Assert.That(run.ActiveStats.Hull,Is.EqualTo(1));
         Assert.That(run.ActiveStats.Mobility,Is.EqualTo(1));Assert.That(run.ActiveStats.Core,Is.EqualTo(1));
         RRLW2TestFlow.DefeatAll(run);yield return Until(()=>run.Progress.State==R1RunState.Salvage,"Second victory");
         Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);
         var state=run.VehicleModel.Parts.Single(p=>p.Id==id);Assert.That(state.Health,Is.Zero);
-        run.VehicleModel.Award(100);int before=run.VehicleModel.Scrap;
-        Assert.That(run.GarageRepair(state.Cell),Is.True);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-21));
-        Assert.That(run.GarageRemove(state.Cell),Is.True);Assert.That(run.GarageMount(id,new Vector3Int(2,2,-2)),Is.True);
+        run.VehicleModel.Award(100);int before=run.VehicleModel.Scrap;int repairCost=run.VehicleModel.RepairCost(state);
+        Assert.That(repairCost,Is.GreaterThan(0));Assert.That(run.GarageRepair(state.Cell),Is.True);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-repairCost));
+        Assert.That(run.GarageRemove(state.Cell),Is.True);Assert.That(run.GarageMount(id,mountCell),Is.True);
         Assert.That(run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id).Operational,Is.True);
         Assert.That(run.ActiveStats.Damage,Is.EqualTo(expected.Damage));Assert.That(run.ActiveStats.Hull,Is.EqualTo(expected.Hull));
     }

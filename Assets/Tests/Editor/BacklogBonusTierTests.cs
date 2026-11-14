@@ -193,6 +193,7 @@ public sealed class BacklogBonusTierTests
     [TestCase("damage_blast","BlastDamage","wybuchowe")]
     [TestCase("damage_piercing","PiercingDamage","przebijające")]
     [TestCase("damage_kinetic","KineticDamage","kinetyczne")]
+    [TestCase("hull_construction","Construction","klocków")]
     public void DeployableCategoryRewardsSurviveSaveAndShowScope(string id,string scope,string label)
     {
         var run=Resources.Load<R1RunDefinition>("R1/Run");var reward=run.Upgrades.SingleOrDefault(p=>p!=null&&p.Id==id);
@@ -276,6 +277,70 @@ public sealed class BacklogBonusTierTests
 
 public sealed class BacklogBonusTierGameplayTests
 {
+    [UnityTest] public IEnumerator ConstructionHullBonusSurvivesActualNextEncounter()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.StartRun(),Is.True);
+        Assert.That(run.ChooseRoute(0),Is.True);
+        float deadline=Time.realtimeSinceStartup+30;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Transitioning,Is.False);run.Encounter.SetCombatActive(false);RRLW2TestFlow.DefeatAll(run);
+        deadline=Time.realtimeSinceStartup+30;while(run.Progress.State!=R1RunState.Salvage&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        Assert.That(run.ConfirmRewards(System.Array.Empty<string>(),new[]{0}),Is.True);
+        var reward=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.Single(p=>p!=null&&p.Id=="hull_construction");
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        string id=model.Inventory.Last(p=>p.UpgradeId==reward.Id).Id;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var armor=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor);
+        string armorId=armor.Id;float baseHp=armor.Damageable.MaxHp;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(id,c,default)==null);
+        Assert.That(run.GarageMount(id,cell),Is.True);
+        assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        Assert.That(assembly.Parts.Single(p=>p.Id==armorId).Damageable.MaxHp,Is.EqualTo(baseHp*1.3f).Within(.01f));
+        Assert.That(run.StartNextEncounter()&&run.ChooseRoute(0),Is.True);
+        deadline=Time.realtimeSinceStartup+30;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Transitioning,Is.False);
+        assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        Assert.That(assembly.Parts.Single(p=>p.Id==armorId).Damageable.MaxHp,Is.EqualTo(baseHp*1.3f).Within(.01f));
+    }
+    [UnityTest] public IEnumerator ConstructionHullBonusAffectsOnlyArmorAndStacksWithGlobalHull()
+    {
+        Assert.That(System.Enum.GetNames(typeof(R1BonusScope)),Does.Contain("Construction"));
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var construction=BacklogBonusTierTests.OperationBonus("construction-hull",.3f,"Increased",R1UpgradeEffect.Hull);
+        construction.Scope=(R1BonusScope)System.Enum.Parse(typeof(R1BonusScope),"Construction");
+        var global=BacklogBonusTierTests.OperationBonus("global-hull",.2f,"Increased",R1UpgradeEffect.Hull);
+        var more=BacklogBonusTierTests.OperationBonus("global-hull-more",.5f,"More",R1UpgradeEffect.Hull);
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{construction,global,more}),Is.True);
+        string constructionId=model.Inventory.Single(p=>p.UpgradeId==construction.Id).Id;
+        var original=run.Player.GetComponent<R3VehicleAssembly>();
+        var armorId=original.Parts.First(p=>p.Kind==R3PartKind.Armor).Id;
+        var wheelId=original.Parts.First(p=>p.Kind==R3PartKind.Wheel).Id;
+        var coreId=original.Parts.First(p=>p.Kind==R3PartKind.Core).Id;
+        float OriginalHp(string id)=>original.Parts.Single(p=>p.Id==id).Damageable.MaxHp;
+        float armorHp=OriginalHp(armorId),wheelHp=OriginalHp(wheelId),coreHp=OriginalHp(coreId);
+        foreach(var id in model.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(id,c,default)==null);
+            Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        float Hp(string id)=>assembly.Parts.Single(p=>p.Id==id).Damageable.MaxHp;
+        Assert.That(Hp(armorId),Is.EqualTo(armorHp*2.25f).Within(.01f));
+        Assert.That(Hp(wheelId),Is.EqualTo(wheelHp*1.8f).Within(.01f));
+        Assert.That(Hp(coreId),Is.EqualTo(coreHp*1.8f).Within(.01f));
+        var module=assembly.Parts.Single(p=>p.Id==constructionId);
+        module.gameObject.SetActive(false);yield return null;
+        Assert.That(Hp(armorId),Is.EqualTo(armorHp*1.8f).Within(.01f));
+        Assert.That(Hp(wheelId),Is.EqualTo(wheelHp*1.8f).Within(.01f));
+        module.gameObject.SetActive(true);yield return null;
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        Assert.That(Hp(armorId),Is.EqualTo(armorHp*2.25f).Within(.01f),"The construction modifier must survive leaving the garage.");
+        Assert.That(Hp(wheelId),Is.EqualTo(wheelHp*1.8f).Within(.01f));
+        Object.Destroy(construction);Object.Destroy(global);Object.Destroy(more);
+    }
     [UnityTest] public IEnumerator ExtremeRailgunCooldownRemainsFiniteAndLong()
     { yield return ExtremeCooldownForPackageWeapon(false); }
     [UnityTest] public IEnumerator ExtremeRocketCooldownRemainsFiniteAndLong()
