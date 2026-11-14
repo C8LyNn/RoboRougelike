@@ -121,8 +121,8 @@ namespace RoboRougelike.R3
         void FindTarget()
         {
             target=null;aimCollider=null;float nearest=40*40;
-            var encounter=R1RunController.Instance?.Encounter;if(encounter==null)return;
-            foreach(var enemy in encounter.Enemies)
+            var run=R1RunController.Instance;if(run==null)return;
+            foreach(var enemy in RoboRougelike.PackageIntegration.RRLScanWorld.LiveEnemies(run))
             {
                 if(enemy==null||enemy.IsDefeated||RRLHitRouter.Team(enemy.transform)==TeamId)continue;
                 foreach(var hp in enemy.GetComponentsInChildren<P12PipelineSafeDamageable>())

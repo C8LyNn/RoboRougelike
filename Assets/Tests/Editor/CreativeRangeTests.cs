@@ -62,6 +62,32 @@ public class CreativeRangeTests
         Assert.That((bool)active.GetValue(enemy),Is.True);
     }
 
+    [UnityTest] public IEnumerator SpawnedCreativeEnemyIsVisibleToAutonomousTurretAndScanners()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var range=run.GetComponent<R6TestRange>();var training=range.TrainingTarget;
+        Assert.That(run.SpawnCreativeEnemy(R3EnemyArchetype.Gunner),Is.True);
+        var enemy=range.Layout.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret>().Single(e=>e!=training);
+        enemy.SetCombatActive(false);enemy.GetComponent<Rigidbody>().isKinematic=true;
+        if(training!=null)training.gameObject.SetActive(false);range.SetTrainingTarget(null);Physics.SyncTransforms();
+        Assert.That(RoboRougelike.PackageIntegration.RRLScanWorld.LiveEnemies(run),Does.Contain(enemy),"Enemy spawned from the range menu must be a discoverable target.");
+        var registryObject=new GameObject("Test rejestru skanera");
+        var registry=registryObject.AddComponent<RoboRougelike.Mechanics.StructuralScan.StructuralScanRegistry>();
+        RoboRougelike.PackageIntegration.RRLScanWorld.Register(registry,run);
+        Assert.That(registry.Parts.Any(p=>p.OwnerKey==enemy.GetInstanceID()),Is.True,"The structural scanner must register the spawned enemy's parts.");
+        RoboRougelike.PackageIntegration.RRLPulseSignal.Prepare(run);
+        Assert.That(enemy.GetComponent<RoboRougelike.PackageIntegration.RRLPulseSignal>()?.Tag,Is.Not.Null,"The pulse scanner must prepare an enemy signal.");
+        var turret=GameObject.CreatePrimitive(PrimitiveType.Cube);turret.transform.position=enemy.Core.transform.position+Vector3.up*8;
+        turret.transform.localScale=Vector3.one*.4f;var body=turret.AddComponent<Rigidbody>();body.isKinematic=true;
+        var weapon=turret.AddComponent<R3FlyingDrone>();weapon.ConfigureTurret(run.Player.transform,.2f,1);Physics.SyncTransforms();
+        var nextShot=typeof(R3FlyingDrone).GetField("nextShot",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance);
+        float deadline=Time.time+3;while(Time.time<deadline&&(float)nextShot.GetValue(weapon)<=0)yield return new WaitForFixedUpdate();
+        Assert.That((float)nextShot.GetValue(weapon),Is.GreaterThan(0),"An autonomous turret must fire at the spawned enemy.");
+        run.ClearCreativeEnemies();Assert.That(RoboRougelike.PackageIntegration.RRLScanWorld.LiveEnemies(run).Contains(enemy),Is.False);
+        Object.Destroy(turret);Object.Destroy(registryObject);
+    }
+
     [UnityTest] public IEnumerator CreativeGarageStartsWithCoreAndOffersFreeParts()
     {
         var run=R1RunController.Instance;
