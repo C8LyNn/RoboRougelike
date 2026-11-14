@@ -21,6 +21,16 @@ public sealed class R1RunCheckpointIntegrationTests
         for(int i=0;i<300&&R1RunController.Instance?.Progress==null;i++)yield return null;
         run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
     }
+    [UnityTest] public IEnumerator LargeWalletAndSaturatedRunSummarySurviveRealSaveAndLoad()
+    {
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);Assert.That(run.PrepareUnifiedRun(),Is.True);yield return null;
+        run.VehicleModel.Award(150000);int balance=run.VehicleModel.Scrap;Assert.That(balance,Is.GreaterThan(100000));
+        typeof(R1RunController).GetProperty("EarnedScrap").GetSetMethod(true).Invoke(run,new object[]{int.MaxValue});
+        Assert.That(run.SaveRunCheckpoint(),Is.True,run.RunSaveMessage);var previous=run;run.RestartRun();
+        for(int i=0;i<300&&(R1RunController.Instance==previous||R1RunController.Instance?.Progress==null);i++)yield return null;
+        run=R1RunController.Instance;Assert.That(run.LoadRunCheckpoint(),Is.True,run.RunSaveMessage);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(balance));Assert.That(run.EarnedScrap,Is.EqualTo(int.MaxValue));
+    }
     [UnityTest] public IEnumerator MissingGarageCameraRejectsLoadWithoutPartialRun()
     {
         var savedProgress=new R1RunProgress(6,true);Assert.That(savedProgress.Start()&&savedProgress.PrepareGarage(),Is.True);

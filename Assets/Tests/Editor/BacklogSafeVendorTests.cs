@@ -6,6 +6,16 @@ using UnityEngine;
 
 public sealed class BacklogSafeVendorTests
 {
+    [Test] public void LargeWalletSurvivesCheckpointAndSaturatesOnlyAtIntegerLimit()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        model.Award(150000);Assert.That(model.Scrap,Is.EqualTo(150000));Assert.That(model.PreviewAward(10),Is.EqualTo(10));
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Scrap,Is.EqualTo(150000));Assert.That(restored.TrySpendScrap(1000),Is.True);
+        restored.Award(int.MaxValue);Assert.That(restored.Scrap,Is.EqualTo(int.MaxValue));Assert.That(restored.PreviewAward(1),Is.Zero);
+        Assert.That(restored.TrySpendScrap(10),Is.True);Assert.That(restored.PreviewAward(50),Is.EqualTo(10));
+    }
     [Test] public void DiscountedDrivePacksCannotProfitWhenTheirConfiguredSizeIncreases()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));

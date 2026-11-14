@@ -39,6 +39,7 @@ namespace RoboRougelike.R1
         public R1EncounterDefinition CurrentEncounter { get; private set; }
         public int DefeatedEnemies { get; private set; }
         public int EarnedScrap { get; private set; }
+        void AddEarnedScrap(int amount)=>EarnedScrap=(int)System.Math.Min(int.MaxValue,(long)EarnedScrap+System.Math.Max(0,amount));
         public int RecoveredModules { get; private set; }
         public R5Arena Arena { get; private set; }
         private string runId;
@@ -238,7 +239,7 @@ namespace RoboRougelike.R1
             if(Transitioning||Progress?.State!=R1RunState.Garage||VehicleModel==null)return false;
             int before=VehicleModel.Scrap;
             if(!VehicleModel.Dismantle(id))return false;
-            RefreshInventoryPreview();EarnedScrap+=VehicleModel.Scrap-before;return true;
+            RefreshInventoryPreview();AddEarnedScrap(VehicleModel.Scrap-before);return true;
         }
         public bool ConfirmSalvage(System.Collections.Generic.IEnumerable<string> selected)
             => ConfirmRewards(selected,System.Array.Empty<int>());
@@ -247,7 +248,7 @@ namespace RoboRougelike.R1
             if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null||Salvage.Closed||VehicleModel==null)return false;
             int before=VehicleModel.Scrap;
             if(!VehicleModel.Dismantle(id))return false;
-            EarnedScrap+=VehicleModel.Scrap-before;
+            AddEarnedScrap(VehicleModel.Scrap-before);
             return true;
         }
         public bool ConfirmRewards(System.Collections.Generic.IEnumerable<string> selectedParts,
@@ -256,7 +257,7 @@ namespace RoboRougelike.R1
             if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null||VehicleModel==null)return false;
             var ids=selectedParts?.ToArray();var bonuses=selectedBonuses?.ToArray();
             if(!CommitRecovery(ids,bonuses))return false;
-            RecoveredModules+=ids.Length;EarnedScrap+=Salvage.DismantledScrap;
+            RecoveredModules+=ids.Length;AddEarnedScrap(Salvage.DismantledScrap);
             if(Progress.State==R1RunState.Garage)
             {
                 // No stat bonus is applied here. Only a mounted, live module works.
@@ -394,7 +395,7 @@ namespace RoboRougelike.R1
                 VehicleModel.ApplyCompletedBudgetMilestones(Progress.CompletedEncounters);
                 LastScrapReward=VehicleModel.PreviewAward(Definition.Encounters[Progress.EncounterIndex].ScrapReward);
                 VehicleModel.Award(LastScrapReward);
-                EarnedScrap+=LastScrapReward;DefeatedEnemies+=Encounter.Enemies.Count(enemy=>enemy!=null&&enemy.IsDefeated);
+                AddEarnedScrap(LastScrapReward);DefeatedEnemies+=Encounter.Enemies.Count(enemy=>enemy!=null&&enemy.IsDefeated);
                 Progress.OpenSalvage();pickupGraceDeadline=-1;
                 OpenRecoveryWindow();
                 SetSimulation(false);

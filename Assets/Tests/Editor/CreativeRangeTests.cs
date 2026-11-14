@@ -15,6 +15,16 @@ using UnityEngine.InputSystem.LowLevel;
 
 public class CreativeRangeTests
 {
+    [UnityTest] public IEnumerator EarnedScrapSummaryStaysNonNegativeAfterLargeTotal()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);
+        var wheel=run.VehicleModel.Inventory.First(p=>p.Kind==R3PartKind.Wheel);
+        var property=typeof(R1RunController).GetProperty("EarnedScrap");property.GetSetMethod(true).Invoke(run,new object[]{int.MaxValue-1});
+        Assert.That(run.GarageDismantle(wheel.Id),Is.True);
+        Assert.That(run.EarnedScrap,Is.EqualTo(int.MaxValue),"The summary must not wrap into a negative saved value.");
+        yield return null;
+    }
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");

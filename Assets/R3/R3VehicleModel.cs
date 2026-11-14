@@ -506,7 +506,8 @@ namespace RoboRougelike.R3
             foreach(var preference in deployableSlotPreference)copy.deployableSlotPreference[preference.Key]=preference.Value;
             return copy;
         }
-        public const int MaxScrap=100000;
+        // Currency is stored as an int; its representable maximum is the only cap.
+        public const int MaxScrap=int.MaxValue;
         public int PreviewAward(int amount) => (int)Math.Min(Math.Max(0L,(long)MaxScrap-Scrap),Math.Max(0L,(long)amount));
         public void Award(int amount) { Scrap = (int)Math.Min((long)MaxScrap, Scrap + (long)Math.Max(0, amount)); }
         public bool TrySpendScrap(int amount)

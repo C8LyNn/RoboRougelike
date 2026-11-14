@@ -189,7 +189,7 @@ namespace RoboRougelike.R3
                 data.safeZoneLastCompleted<0||data.safeVendorStage<0||data.safeVendorStage>data.safeZoneLastCompleted||data.safeVendorSoldMask<0||data.safeVendorSoldMask>15||data.safeVendorRevision<0||data.safeVendorRevision>1||
                 (data.safeVendorExtraSold!=null&&(data.safeVendorExtraSold.Any(i=>i<4)||data.safeVendorExtraSold.Distinct().Count()!=data.safeVendorExtraSold.Length||
                   (data.safeVendorStage==0&&data.safeVendorExtraSold.Length>0)))||(data.constructionBudgetVersion==1&&(data.constructionBudgetLimit<0||data.constructionBudgetMilestonesApplied<0))||
-                data.wheels.Length>2000||data.groups.Length>4000||data.scrap<0||data.scrap>100000||
+                data.wheels.Length>2000||data.groups.Length>4000||data.scrap<0||
                 !Enum.IsDefined(typeof(R3DriveKind),data.drive)||!Enum.IsDefined(typeof(ActiveSuspensionSupportMode),data.suspensionMode)||
                 !Finite(data.suspensionHeight)||data.suspensionHeight<-.35f||data.suspensionHeight>.35f||
                 !Finite(data.boosterThrust)||data.boosterThrust<500||data.boosterThrust>6000||
