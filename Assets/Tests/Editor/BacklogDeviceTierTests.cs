@@ -260,6 +260,41 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(peak,Is.LessThan(8),"The pad must not multiply its impulse by the number of vehicle colliders");
         Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator FlyingDroneFollowsAndUsesPhysicalProjectilesAgainstEnemies()
+    {
+        Assert.That(System.Enum.TryParse("FlyingDroneGenerator",out R3PartKind kind),Is.True,"Missing flying drone generator");
+        run.VehicleModel.Award(2500);FuseAndMount(kind);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"drone-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();enemy.ConfigureMovement(0,12,0);var enemyBody=enemy.GetComponent<Rigidbody>();
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.zero;
+        enemyBody.position=new Vector3(112,2,100);enemyBody.isKinematic=true;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();
+        float hp=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        run.VehicleModel.Economy.DroneCooldown=0;
+        Assert.That(service.TryDeploy(kind),Is.True,"Launching a drone must not require driving");
+        var drone=GameObject.Find("Dron latający");Assert.That(drone,Is.Not.Null);
+        Assert.That(drone.GetComponent<Rigidbody>(),Is.Not.Null);Assert.That(drone.GetComponent<Collider>(),Is.Not.Null);
+        var durability=drone.GetComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();Assert.That(durability,Is.Not.Null);
+        Assert.That(service.TryDeploy(kind),Is.True,"Two generator units must allow two drones");
+        var bank=player.GetComponent<VehicleEnergyBank>();float energy=bank.Current;int charges=run.VehicleModel.Charges.Current(R3DeployableService.FlyingDronePool);
+        Assert.That(service.TryDeploy(kind),Is.False,"The active-drone limit must be respected");
+        Assert.That(bank.Current,Is.EqualTo(energy));Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.FlyingDronePool),Is.EqualTo(charges));
+        Assert.That(service.StatusFor(kind),Does.Contain("limit"));
+        float deadline=Time.realtimeSinceStartup+12;
+        while(Time.realtimeSinceStartup<deadline&&enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp)>=hp)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.LessThan(hp),"The drone must actually hit the enemy with its projectile");
+        Vector3 beforePosition=drone.GetComponent<Rigidbody>().position;body.isKinematic=true;body.position=new Vector3(100,2,120);Physics.SyncTransforms();
+        float followUntil=Time.fixedTime+1.5f;while(Time.fixedTime<followUntil)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(drone.GetComponent<Rigidbody>().position.z,Is.GreaterThan(beforePosition.z+1),"The drone must physically follow a distant owner");
+        durability.ApplyDamage(10000,drone.transform.position,Vector3.up);yield return null;
+        Assert.That(drone==null||!drone.activeInHierarchy,Is.True,"The drone can be destroyed");
+        Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator ImmobilizeTrapStopsEnemyDriveWithoutDamageAndExpires()
     {
         Assert.That(System.Enum.TryParse("ImmobilizeTrapDeployer",out R3PartKind kind),Is.True,"Missing immobilize trap");
