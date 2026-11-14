@@ -10,21 +10,24 @@ namespace RoboRougelike.R3
     public sealed class R3FlyingDrone : MonoBehaviour,IRRLTeamMember
     {
         Transform owner;Rigidbody body;Collider ownCollider;float speed,interval,damage,nextShot,nextScan;
-        P12PipelineSafeEnemyTurret target;Collider aimCollider;RoboRougelike.R6.R6VehicleDrive groundDrive;
+        P12PipelineSafeEnemyTurret target;Collider aimCollider;RoboRougelike.R6.R6VehicleDrive groundDrive;bool stationary;
         public bool IsGround=>groundDrive!=null;
+        public bool IsTurret=>stationary;
         public int TeamId=>RRLHitRouter.Team(owner);
         public void Configure(Transform source,float moveSpeed,float fireInterval,float shotDamage)
         {owner=source;speed=moveSpeed;interval=fireInterval;damage=shotDamage;body=GetComponent<Rigidbody>();ownCollider=GetComponent<Collider>();groundDrive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();}
+        public void ConfigureTurret(Transform source,float fireInterval,float shotDamage)
+        {Configure(source,0,fireInterval,shotDamage);stationary=true;}
         void FixedUpdate()
         {
             if(owner==null||body==null){Destroy(gameObject);return;}
             Vector3 delta=owner.position-body.position;Vector3 horizontal=Vector3.ProjectOnPlane(delta,Vector3.up);
-            if(groundDrive!=null)
+            if(!stationary&&groundDrive!=null)
             {
                 if(horizontal.magnitude>6)groundDrive.StepToward(horizontal.normalized,speed,90);
                 else groundDrive.Step(0,0,speed,speed,90);
             }
-            else
+            else if(!stationary)
             {
                 Vector3 desired=horizontal.magnitude>6?horizontal.normalized*speed:Vector3.zero;
                 desired.y=Mathf.Clamp((owner.position.y+3-body.position.y)*2,-speed,speed);

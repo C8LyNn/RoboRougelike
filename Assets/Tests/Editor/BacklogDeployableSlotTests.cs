@@ -5,7 +5,7 @@ using RoboRougelike.R3;
 
 public sealed class BacklogDeployableSlotTests
 {
-    [Test] public void DroneAssignmentsChargesAndCooldownsSurviveCheckpoint()
+    [Test] public void DroneAndTurretAssignmentsChargesAndCooldownsSurviveCheckpoint()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(5000);
         var kind=R3PartKind.FlyingDroneGenerator;Assert.That(model.PurchaseToInventory(kind),Is.True);
@@ -24,6 +24,14 @@ public sealed class BacklogDeployableSlotTests
         Assert.That(model.Charges.EnsurePool(R3DeployableService.GroundDronePool,3),Is.True);
         Assert.That(model.Charges.TrySpend(R3DeployableService.GroundDronePool,2),Is.True);
         typeof(R3VehicleModel).GetProperty("GroundDroneReadyAt").SetValue(model,130f);
+        Assert.That(model.PurchaseToInventory(R3PartKind.OffensiveTurretGenerator),Is.True);
+        var turret=model.Inventory.Last(p=>p.Kind==R3PartKind.OffensiveTurretGenerator);
+        var turretCell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(turret.Id,c,default)==null);
+        Assert.That(model.Mount(turret.Id,turretCell),Is.True);Assert.That(model.AssignDeployableSlot(turret.Kind,1),Is.True);
+        Assert.That(model.Charges.EnsurePool(R3DeployableService.OffensiveTurretPool,3),Is.True);
+        Assert.That(model.Charges.TrySpend(R3DeployableService.OffensiveTurretPool,1),Is.True);
+        typeof(R3VehicleModel).GetProperty("OffensiveTurretReadyAt").SetValue(model,140f);
         var checkpoint=UnityEngine.JsonUtility.FromJson<R3ModelCheckpoint>(UnityEngine.JsonUtility.ToJson(model.MakeCheckpoint(100)));
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,200,out var restored,out var error),Is.True,error);
         Assert.That(restored.GetDeployableSlots()[2],Is.EqualTo(kind));
@@ -32,6 +40,9 @@ public sealed class BacklogDeployableSlotTests
         Assert.That(restored.GetDeployableSlots()[3],Is.EqualTo(ground.Kind));
         Assert.That(restored.Charges.Current(R3DeployableService.GroundDronePool),Is.EqualTo(1));
         Assert.That(restored.GroundDroneReadyAt,Is.EqualTo(230).Within(.001));
+        Assert.That(restored.GetDeployableSlots()[1],Is.EqualTo(turret.Kind));
+        Assert.That(restored.Charges.Current(R3DeployableService.OffensiveTurretPool),Is.EqualTo(2));
+        Assert.That(restored.OffensiveTurretReadyAt,Is.EqualTo(240).Within(.001));
     }
     [Test] public void CheckpointCannotRestoreFiveMountedDeployableTypes()
     {

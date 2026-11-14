@@ -101,6 +101,7 @@ namespace RoboRougelike.R1
                     if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.ImmobilizeTrapDeployer))charges+=$" • Blokada {bank.Current(R3DeployableService.ImmobilizeTrapPool)}/{bank.Maximum(R3DeployableService.ImmobilizeTrapPool)}";
                     if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.FlyingDroneGenerator))charges+=$" • Dron {bank.Current(R3DeployableService.FlyingDronePool)}/{bank.Maximum(R3DeployableService.FlyingDronePool)}";
                     if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.GroundDroneGenerator))charges+=$" • Dron kołowy {bank.Current(R3DeployableService.GroundDronePool)}/{bank.Maximum(R3DeployableService.GroundDronePool)}";
+                    if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.OffensiveTurretGenerator))charges+=$" • Wieżyczka {bank.Current(R3DeployableService.OffensiveTurretPool)}/{bank.Maximum(R3DeployableService.OffensiveTurretPool)}";
                 }
                 GUI.Label(new Rect(34,151,580,22),$"Energia: {energy.Current:0}/{energy.Maximum:0}{charges}",small);
             }

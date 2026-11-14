@@ -288,7 +288,8 @@ namespace RoboRougelike.R1
                 bool hasImmobilizeTrap=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.ImmobilizeTrapDeployer);
                 bool hasFlyingDrone=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.FlyingDroneGenerator);
                 bool hasGroundDrone=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.GroundDroneGenerator);
-                int extraStatusHeight=energy!=null?CombatAbilityExtraHeight((repairPulse!=null?1:0)+(hasOverdrive?1:0)+(hasRapidFire?1:0)+(hasDoubleBoost?1:0)+(hasTargetEmp?1:0)+(hasAreaEmp?1:0)+(recharge!=null?1:0)+(hasRamp?1:0)+(hasWall?1:0)+(hasJumpPad?1:0)+(hasBlastTrap?1:0)+(hasEmpTrap?1:0)+(hasRepelTrap?1:0)+(hasDamageTrap?1:0)+(hasSlowTrap?1:0)+(hasImmobilizeTrap?1:0)+(hasFlyingDrone?1:0)+(hasGroundDrone?1:0)):0;
+                bool hasOffensiveTurret=deploy!=null&&run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.OffensiveTurretGenerator);
+                int extraStatusHeight=energy!=null?CombatAbilityExtraHeight((repairPulse!=null?1:0)+(hasOverdrive?1:0)+(hasRapidFire?1:0)+(hasDoubleBoost?1:0)+(hasTargetEmp?1:0)+(hasAreaEmp?1:0)+(recharge!=null?1:0)+(hasRamp?1:0)+(hasWall?1:0)+(hasJumpPad?1:0)+(hasBlastTrap?1:0)+(hasEmpTrap?1:0)+(hasRepelTrap?1:0)+(hasDamageTrap?1:0)+(hasSlowTrap?1:0)+(hasImmobilizeTrap?1:0)+(hasFlyingDrone?1:0)+(hasGroundDrone?1:0)+(hasOffensiveTurret?1:0)):0;
                 if(!lowCore&&modules!=null&&run.VehicleModel!=null)
                 {
                     var drive=run.VehicleModel.SelectedDrive;
@@ -332,7 +333,8 @@ namespace RoboRougelike.R1
                         if(hasSlowTrap)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.SlowTrapDeployer)} spowolnienie: {deploy.StatusFor(R3PartKind.SlowTrapDeployer)}",small);
                         if(hasImmobilizeTrap)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.ImmobilizeTrapDeployer)} blokada napędu: {deploy.StatusFor(R3PartKind.ImmobilizeTrapDeployer)}",small);
                         if(hasFlyingDrone)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.FlyingDroneGenerator)} dron: {deploy.StatusFor(R3PartKind.FlyingDroneGenerator)}",small);
-                        if(hasGroundDrone)GUI.Label(CombatAbilityStatusRect(statusRow),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.GroundDroneGenerator)} dron naziemny: {deploy.StatusFor(R3PartKind.GroundDroneGenerator)}",small);
+                        if(hasGroundDrone)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.GroundDroneGenerator)} dron naziemny: {deploy.StatusFor(R3PartKind.GroundDroneGenerator)}",small);
+                        if(hasOffensiveTurret)GUI.Label(CombatAbilityStatusRect(statusRow),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.OffensiveTurretGenerator)} wieżyczka: {deploy.StatusFor(R3PartKind.OffensiveTurretGenerator)}",small);
                     }
                     if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?"Mniej [I]":"Szczegóły [I]",compactButton))combatDetailsOpen=!combatDetailsOpen;
                     if(combatDetailsOpen)

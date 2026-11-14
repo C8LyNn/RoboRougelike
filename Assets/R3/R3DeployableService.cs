@@ -48,8 +48,8 @@ namespace RoboRougelike.R3
     public sealed class R3DeployableService : MonoBehaviour
     {
         public const string RampPool="deployable-ramp";
-        public const string WallPool="deployable-wall",JumpPadPool="deployable-jump-pad",BlastTrapPool="deployable-blast-trap",EmpTrapPool="deployable-emp-trap",RepelTrapPool="deployable-repel-trap",DamageTrapPool="deployable-damage-trap",SlowTrapPool="deployable-slow-trap",ImmobilizeTrapPool="deployable-immobilize-trap",FlyingDronePool="deployable-flying-drone",GroundDronePool="deployable-ground-drone";
-        static readonly R3PartKind[] Kinds={R3PartKind.RampDeployer,R3PartKind.WallDeployer,R3PartKind.JumpPadDeployer,R3PartKind.BlastTrapDeployer,R3PartKind.EmpTrapDeployer,R3PartKind.RepelTrapDeployer,R3PartKind.DamageTrapDeployer,R3PartKind.SlowTrapDeployer,R3PartKind.ImmobilizeTrapDeployer,R3PartKind.FlyingDroneGenerator,R3PartKind.GroundDroneGenerator};
+        public const string WallPool="deployable-wall",JumpPadPool="deployable-jump-pad",BlastTrapPool="deployable-blast-trap",EmpTrapPool="deployable-emp-trap",RepelTrapPool="deployable-repel-trap",DamageTrapPool="deployable-damage-trap",SlowTrapPool="deployable-slow-trap",ImmobilizeTrapPool="deployable-immobilize-trap",FlyingDronePool="deployable-flying-drone",GroundDronePool="deployable-ground-drone",OffensiveTurretPool="deployable-offensive-turret";
+        static readonly R3PartKind[] Kinds={R3PartKind.RampDeployer,R3PartKind.WallDeployer,R3PartKind.JumpPadDeployer,R3PartKind.BlastTrapDeployer,R3PartKind.EmpTrapDeployer,R3PartKind.RepelTrapDeployer,R3PartKind.DamageTrapDeployer,R3PartKind.SlowTrapDeployer,R3PartKind.ImmobilizeTrapDeployer,R3PartKind.FlyingDroneGenerator,R3PartKind.GroundDroneGenerator,R3PartKind.OffensiveTurretGenerator};
         R3VehicleAssembly assembly;
         VehicleEnergyBank energy;
         Rigidbody body;
@@ -66,13 +66,13 @@ namespace RoboRougelike.R3
         bool Ready(R3MountedPart part,R3PartKind kind)=>part!=null&&part.Kind==kind&&part.Operational&&
             part.gameObject.activeInHierarchy&&part.transform.IsChildOf(transform)&&!RRLEmpPartState.IsBlocked(part.gameObject);
         static string Pool(R3PartKind kind)=>kind==R3PartKind.RampDeployer?RampPool:kind==R3PartKind.WallDeployer?WallPool:
-            kind==R3PartKind.JumpPadDeployer?JumpPadPool:kind==R3PartKind.BlastTrapDeployer?BlastTrapPool:kind==R3PartKind.EmpTrapDeployer?EmpTrapPool:kind==R3PartKind.RepelTrapDeployer?RepelTrapPool:kind==R3PartKind.DamageTrapDeployer?DamageTrapPool:kind==R3PartKind.SlowTrapDeployer?SlowTrapPool:kind==R3PartKind.ImmobilizeTrapDeployer?ImmobilizeTrapPool:kind==R3PartKind.FlyingDroneGenerator?FlyingDronePool:GroundDronePool;
+            kind==R3PartKind.JumpPadDeployer?JumpPadPool:kind==R3PartKind.BlastTrapDeployer?BlastTrapPool:kind==R3PartKind.EmpTrapDeployer?EmpTrapPool:kind==R3PartKind.RepelTrapDeployer?RepelTrapPool:kind==R3PartKind.DamageTrapDeployer?DamageTrapPool:kind==R3PartKind.SlowTrapDeployer?SlowTrapPool:kind==R3PartKind.ImmobilizeTrapDeployer?ImmobilizeTrapPool:kind==R3PartKind.FlyingDroneGenerator?FlyingDronePool:kind==R3PartKind.GroundDroneGenerator?GroundDronePool:OffensiveTurretPool;
         float ReadyAt(R3PartKind kind)=>kind==R3PartKind.RampDeployer?assembly.Model.RampDeployerReadyAt:
             kind==R3PartKind.WallDeployer?assembly.Model.WallDeployerReadyAt:kind==R3PartKind.JumpPadDeployer?assembly.Model.JumpPadDeployerReadyAt:
-            kind==R3PartKind.BlastTrapDeployer?assembly.Model.BlastTrapDeployerReadyAt:kind==R3PartKind.EmpTrapDeployer?assembly.Model.EmpTrapDeployerReadyAt:kind==R3PartKind.RepelTrapDeployer?assembly.Model.RepelTrapDeployerReadyAt:kind==R3PartKind.DamageTrapDeployer?assembly.Model.DamageTrapDeployerReadyAt:kind==R3PartKind.SlowTrapDeployer?assembly.Model.SlowTrapDeployerReadyAt:kind==R3PartKind.ImmobilizeTrapDeployer?assembly.Model.ImmobilizeTrapDeployerReadyAt:kind==R3PartKind.FlyingDroneGenerator?assembly.Model.FlyingDroneReadyAt:assembly.Model.GroundDroneReadyAt;
+            kind==R3PartKind.BlastTrapDeployer?assembly.Model.BlastTrapDeployerReadyAt:kind==R3PartKind.EmpTrapDeployer?assembly.Model.EmpTrapDeployerReadyAt:kind==R3PartKind.RepelTrapDeployer?assembly.Model.RepelTrapDeployerReadyAt:kind==R3PartKind.DamageTrapDeployer?assembly.Model.DamageTrapDeployerReadyAt:kind==R3PartKind.SlowTrapDeployer?assembly.Model.SlowTrapDeployerReadyAt:kind==R3PartKind.ImmobilizeTrapDeployer?assembly.Model.ImmobilizeTrapDeployerReadyAt:kind==R3PartKind.FlyingDroneGenerator?assembly.Model.FlyingDroneReadyAt:kind==R3PartKind.GroundDroneGenerator?assembly.Model.GroundDroneReadyAt:assembly.Model.OffensiveTurretReadyAt;
         void SetReadyAt(R3PartKind kind,float value)
         {if(kind==R3PartKind.RampDeployer)assembly.Model.RampDeployerReadyAt=value;else if(kind==R3PartKind.WallDeployer)assembly.Model.WallDeployerReadyAt=value;
-         else if(kind==R3PartKind.JumpPadDeployer)assembly.Model.JumpPadDeployerReadyAt=value;else if(kind==R3PartKind.BlastTrapDeployer)assembly.Model.BlastTrapDeployerReadyAt=value;else if(kind==R3PartKind.EmpTrapDeployer)assembly.Model.EmpTrapDeployerReadyAt=value;else if(kind==R3PartKind.RepelTrapDeployer)assembly.Model.RepelTrapDeployerReadyAt=value;else if(kind==R3PartKind.DamageTrapDeployer)assembly.Model.DamageTrapDeployerReadyAt=value;else if(kind==R3PartKind.SlowTrapDeployer)assembly.Model.SlowTrapDeployerReadyAt=value;else if(kind==R3PartKind.ImmobilizeTrapDeployer)assembly.Model.ImmobilizeTrapDeployerReadyAt=value;else if(kind==R3PartKind.FlyingDroneGenerator||kind==R3PartKind.GroundDroneGenerator)assembly.Model.FlyingDroneReadyAt=value;else assembly.Model.GroundDroneReadyAt=value;}
+         else if(kind==R3PartKind.JumpPadDeployer)assembly.Model.JumpPadDeployerReadyAt=value;else if(kind==R3PartKind.BlastTrapDeployer)assembly.Model.BlastTrapDeployerReadyAt=value;else if(kind==R3PartKind.EmpTrapDeployer)assembly.Model.EmpTrapDeployerReadyAt=value;else if(kind==R3PartKind.RepelTrapDeployer)assembly.Model.RepelTrapDeployerReadyAt=value;else if(kind==R3PartKind.DamageTrapDeployer)assembly.Model.DamageTrapDeployerReadyAt=value;else if(kind==R3PartKind.SlowTrapDeployer)assembly.Model.SlowTrapDeployerReadyAt=value;else if(kind==R3PartKind.ImmobilizeTrapDeployer)assembly.Model.ImmobilizeTrapDeployerReadyAt=value;else if(kind==R3PartKind.FlyingDroneGenerator||kind==R3PartKind.GroundDroneGenerator)assembly.Model.FlyingDroneReadyAt=value;else if(kind==R3PartKind.GroundDroneGenerator)assembly.Model.GroundDroneReadyAt=value;else assembly.Model.OffensiveTurretReadyAt=value;}
         void EnsurePools()
         {
             if(poolsInitialized||assembly==null)return;
@@ -103,7 +103,7 @@ namespace RoboRougelike.R3
                 if(kind==R3PartKind.FlyingDroneGenerator||kind==R3PartKind.GroundDroneGenerator)
                 {
                     long units=0;foreach(var part in assembly.Parts)if(Ready(part,kind))units+=R3VehicleModel.TierEffectUnits(part.Tier);
-                    int count=0;foreach(var item in spawned)if(item!=null&&item.TryGetComponent<R3FlyingDrone>(out var d)&&d.IsGround==(kind==R3PartKind.GroundDroneGenerator))count++;
+                    int count=0;foreach(var item in spawned)if(item!=null&&item.TryGetComponent<R3FlyingDrone>(out var d)&&!d.IsTurret&&d.IsGround==(kind==R3PartKind.GroundDroneGenerator))count++;
                     if(count>=units*System.Math.Max(0,assembly.Model.Economy.DroneActivePerUnit))return "limit aktywnych dronów";
                 }
                 float cost=0;foreach(var part in assembly.Parts)if(Ready(part,kind))cost+=EnergyPerCopy(kind)*R3VehicleModel.TierActivationCost(part.Tier);
@@ -111,7 +111,7 @@ namespace RoboRougelike.R3
                 return kind!=R3PartKind.FlyingDroneGenerator&&kind!=R3PartKind.GroundDroneGenerator&&(body==null||body.linearVelocity.sqrMagnitude<.25f)?$"{current}/{maximum} • wymagany ruch":$"gotowy • {current}/{maximum}";
         }
         float EnergyPerCopy(R3PartKind kind)=>kind==R3PartKind.RampDeployer?assembly.Model.Economy.RampEnergyPerCopy:
-            kind==R3PartKind.WallDeployer?assembly.Model.Economy.WallEnergyPerCopy:kind==R3PartKind.JumpPadDeployer?assembly.Model.Economy.JumpPadEnergyPerCopy:(kind==R3PartKind.FlyingDroneGenerator||kind==R3PartKind.GroundDroneGenerator)?assembly.Model.Economy.DroneEnergyPerCopy:assembly.Model.Economy.TrapEnergyPerCopy;
+            kind==R3PartKind.WallDeployer?assembly.Model.Economy.WallEnergyPerCopy:kind==R3PartKind.JumpPadDeployer?assembly.Model.Economy.JumpPadEnergyPerCopy:(kind==R3PartKind.FlyingDroneGenerator||kind==R3PartKind.GroundDroneGenerator)?assembly.Model.Economy.DroneEnergyPerCopy:kind==R3PartKind.OffensiveTurretGenerator?assembly.Model.Economy.TurretEnergyPerCopy:assembly.Model.Economy.TrapEnergyPerCopy;
         float Cooldown(R3PartKind kind)=>kind==R3PartKind.RampDeployer?assembly.Model.Economy.RampCooldown:
             kind==R3PartKind.WallDeployer?assembly.Model.Economy.WallCooldown:kind==R3PartKind.JumpPadDeployer?assembly.Model.Economy.JumpPadCooldown:assembly.Model.Economy.TrapCooldown;
         float Lifetime(R3PartKind kind)=>kind==R3PartKind.RampDeployer?assembly.Model.Economy.RampLifetime:
@@ -121,6 +121,7 @@ namespace RoboRougelike.R3
         {
             if(!R3VehicleModel.IsDeployableSlotPart(kind)||!PlayerCanUse()||Time.time<ReadyAt(kind))return false;
             if(kind==R3PartKind.FlyingDroneGenerator||kind==R3PartKind.GroundDroneGenerator)return TryLaunchDrone(kind);
+            if(kind==R3PartKind.OffensiveTurretGenerator)return TryPlaceOffensiveTurret();
             if(body.linearVelocity.sqrMagnitude<.25f)return false;
             EnsurePools();string pool=Pool(kind);if(assembly.Model.Charges.Current(pool)<1)return false;
             int units=0;float cost=0;R3MountedPart source=null;
@@ -197,6 +198,41 @@ namespace RoboRougelike.R3
             }
             spawned.Add(ramp);if(!trap)Destroy(ramp,lifetime);return true;
         }
+        bool TryPlaceOffensiveTurret()
+        {
+            if(body.linearVelocity.sqrMagnitude<.25f)return false;
+            EnsurePools();if(assembly.Model.Charges.Current(OffensiveTurretPool)<1)return false;
+            int units=0;float cost=0;R3MountedPart source=null;
+            foreach(var part in assembly.Parts)if(Ready(part,R3PartKind.OffensiveTurretGenerator))
+            {source=part;units+=R3VehicleModel.TierEffectUnits(part.Tier);cost+=EnergyPerCopy(part.Kind)*R3VehicleModel.TierActivationCost(part.Tier);}
+            var e=assembly.Model.Economy;
+            if(source==null||units<=0||float.IsNaN(cost)||float.IsInfinity(cost)||cost<0||!energy.CanSpend(cost)||
+                float.IsNaN(e.TurretCooldown)||float.IsInfinity(e.TurretCooldown)||e.TurretCooldown<0||
+                float.IsNaN(e.TurretLifetime)||float.IsInfinity(e.TurretLifetime)||e.TurretLifetime<=0||
+                float.IsNaN(e.TurretFireInterval)||float.IsInfinity(e.TurretFireInterval)||e.TurretFireInterval<=0||
+                float.IsNaN(e.TurretDamage)||float.IsInfinity(e.TurretDamage)||e.TurretDamage<=0||(double)e.TurretDamage*units>float.MaxValue)return false;
+            Vector3 rear=-Vector3.ProjectOnPlane(body.rotation*Vector3.forward,Vector3.up).normalized;
+            if(rear.sqrMagnitude<.5f)return false;float distance=0;
+            foreach(var c in GetComponentsInChildren<Collider>())
+            {
+                if(!c.enabled||c.isTrigger||c.attachedRigidbody!=body)continue;
+                var ext=c.bounds.extents;distance=Mathf.Max(distance,Vector3.Dot(c.bounds.center-body.position,rear)+Mathf.Abs(rear.x)*ext.x+Mathf.Abs(rear.z)*ext.z);
+            }
+            Vector3 point=body.position+rear*(distance+1.1f);var hits=Physics.RaycastAll(point+Vector3.up*20,Vector3.down,60,~0,QueryTriggerInteraction.Ignore);
+            System.Array.Sort(hits,(a,b)=>a.distance.CompareTo(b.distance));bool found=false;
+            foreach(var hit in hits)if(R6WheelContacts.Terrain(hit.collider)&&hit.normal.y>.8f&&hit.point.y<body.position.y+.25f&&hit.point.y>body.position.y-5f)
+            {point=hit.point+Vector3.up*.52f;found=true;break;}
+            if(!found)return false;
+            foreach(var hit in Physics.OverlapBox(point,Vector3.one*.48f,Quaternion.identity,~0,QueryTriggerInteraction.Ignore))if(hit!=null)return false;
+            if(!energy.TrySpend(cost))return false;
+            assembly.Model.Charges.TrySpend(OffensiveTurretPool,1);assembly.Model.OffensiveTurretReadyAt=Time.time+e.TurretCooldown;
+            var turret=GameObject.CreatePrimitive(PrimitiveType.Cube);turret.name="Wieżyczka ofensywna";turret.transform.position=point;
+            var renderer=source.GetComponent<Renderer>();if(renderer!=null)turret.GetComponent<Renderer>().sharedMaterial=renderer.sharedMaterial;
+            var rb=turret.AddComponent<Rigidbody>();rb.isKinematic=true;
+            var hp=turret.AddComponent<P12PipelineSafeDamageable>();hp.Configure(100,false);
+            turret.AddComponent<R3FlyingDrone>().ConfigureTurret(transform,e.TurretFireInterval,e.TurretDamage*units);
+            hp.Died+=()=>{if(turret!=null)Destroy(turret);};spawned.Add(turret);Destroy(turret,e.TurretLifetime);return true;
+        }
         bool TryLaunchDrone(R3PartKind kind)
         {
             EnsurePools();if(assembly.Model.Charges.Current(Pool(kind))<1)return false;
@@ -212,7 +248,7 @@ namespace RoboRougelike.R3
                 float.IsNaN(e.DroneDamage)||float.IsInfinity(e.DroneDamage)||e.DroneDamage<=0)return false;
             spawned.RemoveAll(item=>item==null);
             bool ground=kind==R3PartKind.GroundDroneGenerator;
-            int active=0;foreach(var item in spawned)if(item!=null&&item.TryGetComponent<R3FlyingDrone>(out var existing)&&existing.IsGround==ground)active++;
+            int active=0;foreach(var item in spawned)if(item!=null&&item.TryGetComponent<R3FlyingDrone>(out var existing)&&!existing.IsTurret&&existing.IsGround==ground)active++;
             if(active>=(long)units*e.DroneActivePerUnit)return false;
             Vector3 rear=-Vector3.ProjectOnPlane(body.rotation*Vector3.forward,Vector3.up).normalized;
             if(rear.sqrMagnitude<.5f)return false;

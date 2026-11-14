@@ -260,6 +260,34 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(peak,Is.LessThan(8),"The pad must not multiply its impulse by the number of vehicle colliders");
         Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator OffensiveTurretDeploysBehindMovingVehicleAndFiresRealProjectiles()
+    {
+        Assert.That(System.Enum.TryParse("OffensiveTurretGenerator",out R3PartKind kind),Is.True,"Missing offensive turret generator");
+        run.VehicleModel.Award(2500);FuseAndMount(kind);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.zero;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.zero;
+        var bank=player.GetComponent<VehicleEnergyBank>();float energy=bank.Current;
+        Assert.That(service.TryDeploy(kind),Is.False,"Turrets require movement to deploy behind the vehicle");Assert.That(bank.Current,Is.EqualTo(energy));
+        body.linearVelocity=Vector3.forward*3;Assert.That(service.TryDeploy(kind),Is.True);
+        var turret=GameObject.Find("Wieżyczka ofensywna");Assert.That(turret,Is.Not.Null);
+        Assert.That(turret.transform.position.z,Is.LessThan(body.position.z));var origin=turret.transform.position;
+        var durability=turret.GetComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();Assert.That(durability,Is.Not.Null);
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"turret-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();enemy.ConfigureMovement(0,12,0);var enemyBody=enemy.GetComponent<Rigidbody>();
+        enemyBody.position=origin+new Vector3(12,1,0);enemyBody.isKinematic=true;Physics.SyncTransforms();
+        float hp=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        float deadline=Time.realtimeSinceStartup+12;
+        while(Time.realtimeSinceStartup<deadline&&enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp)>=hp)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.LessThan(hp));
+        Assert.That(Vector3.Distance(turret.transform.position,origin),Is.LessThan(.01),"Turret must remain stationary");
+        durability.ApplyDamage(10000,turret.transform.position,Vector3.up);yield return null;
+        Assert.That(turret==null||!turret.activeInHierarchy,Is.True);Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator GroundDroneUsesRealWheelContactsAndMovesTowardOwner()
     {
         Assert.That(System.Enum.TryParse("GroundDroneGenerator",out R3PartKind kind),Is.True,"Missing ground drone generator");
