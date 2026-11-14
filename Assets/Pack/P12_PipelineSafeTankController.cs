@@ -72,7 +72,7 @@ namespace RogueMachine.P12PipelineSafe
         public void ConfigureChassis(float speed, float turning, float mass)
         {
             forwardSpeed = Mathf.Clamp(speed, 2, 14); reverseSpeed = forwardSpeed * 0.6f;
-            turnSpeed = Mathf.Clamp(turning, 35, 130);
+            turnSpeed = float.IsNaN(turning)||float.IsInfinity(turning)?35f:Mathf.Max(0,turning);
             GetComponent<Rigidbody>().mass = Mathf.Max(50, mass);
         }
 
@@ -89,7 +89,7 @@ namespace RogueMachine.P12PipelineSafe
         public float EffectiveFireInterval => fireInterval * intervalModifier;
         public float EffectiveForwardSpeed => forwardSpeed * mobilityModifier;
         public float EffectiveReverseSpeed => reverseSpeed * mobilityModifier;
-        public float EffectiveTurnSpeed => turnSpeed * mobilityModifier;
+        public float EffectiveTurnSpeed => (float)System.Math.Min(float.MaxValue,(double)turnSpeed*mobilityModifier);
         public bool GameplayInputEnabled => gameplayInputEnabled;
 
         public void SetRunModifiers(float damage, float interval, float mobility)
@@ -250,7 +250,7 @@ public float CurrentForwardSpeed =>
             if (rb.isKinematic) return;
             if(drive==null)drive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();
             RefreshCollisionEnvelope(false);
-            drive.Step(gameplayInputEnabled?moveInput:0,gameplayInputEnabled?turnInput:0,forwardSpeed*mobilityModifier,reverseSpeed*mobilityModifier,turnSpeed*mobilityModifier);
+            drive.Step(gameplayInputEnabled?moveInput:0,gameplayInputEnabled?turnInput:0,forwardSpeed*mobilityModifier,reverseSpeed*mobilityModifier,EffectiveTurnSpeed);
             currentSpeed=drive.ForwardSpeed;
         }
 

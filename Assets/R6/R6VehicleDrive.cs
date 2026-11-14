@@ -120,7 +120,14 @@ namespace RoboRougelike.R6
         void Prepare(){if(Time.time>=nextMassRefresh)RefreshMass();RefreshGroundContact();}
         public void Step(float throttle,float steering,float forwardLimit,float reverseLimit,float turnLimit)
         {
-            if(body.isKinematic)return;Prepare();independentSteering?.RefreshAvailability();
+            if(body.isKinematic)return;
+            if(float.IsNaN(turnLimit)||float.IsInfinity(turnLimit)||turnLimit<0)turnLimit=0;
+            // Keep the old stability allowance for ordinary vehicles, but do
+            // not make it smaller than a stronger build's steering target.
+            // The final bound only keeps squared angular values representable.
+            float safeRadians=(float)System.Math.Min(System.Math.Sqrt(float.MaxValue)*.25d,(double)turnLimit*Mathf.Deg2Rad);
+            body.maxAngularVelocity=Mathf.Max(3f,safeRadians);
+            Prepare();independentSteering?.RefreshAvailability();
             var movement=GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>();
             if(movement!=null&&movement.TryDrive(throttle,steering,forwardLimit,reverseLimit,turnLimit))return;
             if(GroundedWheels==0)return;

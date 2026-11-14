@@ -60,6 +60,21 @@ public sealed class BacklogDrivePowerIntegrationTests
         while(drive.GroundedWheels==0&&Time.realtimeSinceStartup<deadline){yield return new WaitForFixedUpdate();drive.RefreshMass();}
         Assert.That(drive.GroundedWheels,Is.GreaterThan(0));drive.RefreshMass();
         Assert.That(drive.ActivePowerUnits,Is.EqualTo(6));float six=drive.AvailableForce;
+        assembly.TuneChassis();float sixTurn=vehicle.Controller.EffectiveTurnSpeed;float sixMass=vehicle.GetComponent<Rigidbody>().mass;
+        var upgraded=assembly.Parts.First(p=>p.Kind==R3PartKind.DrivePower);upgraded.Tier=2;assembly.TuneChassis();
+        float upgradedMass=vehicle.GetComponent<Rigidbody>().mass;
+        float expected=R3VehicleAssembly.TurnFor(upgradedMass)/R3VehicleAssembly.TurnFor(sixMass)*(1f+.12f*7)/(1f+.12f*6);
+        Assert.That(vehicle.Controller.EffectiveTurnSpeed/sixTurn,Is.EqualTo(expected).Within(.001),
+            "Motor steering must continue beyond five units while accounting for the tier's mass.");
+        vehicle.Controller.ConfigureChassis(7,400,upgradedMass);
+        Assert.That(vehicle.Controller.EffectiveTurnSpeed,Is.EqualTo(400),"The controller must not silently clamp the configured turning target to 130.");
+        drive.Step(0,0,7,4,vehicle.Controller.EffectiveTurnSpeed);
+        Assert.That(vehicle.GetComponent<Rigidbody>().maxAngularVelocity,Is.GreaterThanOrEqualTo(400*Mathf.Deg2Rad),
+            "The rigidbody must allow the steering target instead of silently enforcing 3 radians per second.");
+        vehicle.Controller.SetRunModifiers(1,1,float.MaxValue);
+        Assert.That(float.IsInfinity(vehicle.Controller.EffectiveTurnSpeed),Is.False,"Large finite bonuses must not create an infinite target.");
+        vehicle.Controller.SetRunModifiers(1,1,1);
+        upgraded.Tier=1;assembly.TuneChassis();
         assembly.Parts.First(p=>p.Kind==R3PartKind.DrivePower).gameObject.SetActive(false);drive.RefreshMass();
         Assert.That(drive.ActivePowerUnits,Is.EqualTo(5));
         Assert.That(six,Is.GreaterThan(drive.AvailableForce));

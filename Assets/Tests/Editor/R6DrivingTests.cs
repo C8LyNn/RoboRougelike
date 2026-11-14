@@ -112,9 +112,10 @@ public class R6DrivingTests
     [UnityTest] public IEnumerator HeavyWeaponAndAsymmetricWheelLossChangeMassBalanceAndSteering()
     {
         var assembly=run.Player.GetComponent<R3VehicleAssembly>();var drive=run.Player.GetComponent<R6VehicleDrive>();var body=run.Player.GetComponent<Rigidbody>();
+        yield return Seconds(.3f);
         drive.RefreshMass();float before=body.mass;
         foreach(var wheel in assembly.Parts.Where(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x<0))
-            wheel.Damageable.ApplyDamage(10000,wheel.transform.position,Vector3.left);
+            wheel.Damageable.ApplyDamage(wheel.Damageable.CurrentHp/.75f+.01f,wheel.transform.position,Vector3.left);
         run.Player.Structure.EvaluateStructure();drive.RefreshMass();
         Assert.That(body.mass,Is.LessThan(before));Assert.That(Mathf.Abs(drive.WheelImbalance),Is.GreaterThan(.02f));
         InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.W));yield return Seconds(1);

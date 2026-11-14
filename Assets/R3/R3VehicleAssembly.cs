@@ -48,7 +48,8 @@ namespace RoboRougelike.R3
                    !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
                     power+=R3VehicleModel.TierEffectUnits(part.Tier);
             }
-            controller.ConfigureChassis(SpeedFor(mass,wheels),Mathf.Min(130f,TurnFor(mass)*Mathf.Min(1.6f,1f+.12f*power)),mass);
+            float steering=(float)System.Math.Min(float.MaxValue,TurnFor(mass)*(1d+.12d*power));
+            controller.ConfigureChassis(SpeedFor(mass,wheels),steering,mass);
         }
         public static float SpeedFor(float mass,int wheels)
         {
