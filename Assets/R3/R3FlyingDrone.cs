@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using RoboRougelike.R1;
 using RoboRougelike.WeaponIntegration;
 using RogueMachine.P12PipelineSafe;
@@ -9,13 +10,34 @@ namespace RoboRougelike.R3
     public sealed class R3SupportTurret : MonoBehaviour,IRRLTeamMember
     {
         R3VehicleAssembly owner;Rigidbody ownerBody;VehicleEnergyBank energy;float radius,rate;
+        Collider[] hits=new Collider[64];readonly HashSet<VehicleEnergyBank> recipients=new HashSet<VehicleEnergyBank>();
         public int TeamId=>owner!=null?RRLHitRouter.Team(owner.transform):0;
         public void Configure(R3VehicleAssembly assembly,float range,float energyPerSecond)
         {owner=assembly;ownerBody=assembly!=null?assembly.GetComponent<Rigidbody>():null;energy=assembly!=null?assembly.GetComponent<VehicleEnergyBank>():null;radius=range;rate=energyPerSecond;}
         void FixedUpdate()
         {
             if(owner==null||ownerBody==null||energy==null){Destroy(gameObject);return;}
-            if((ownerBody.position-transform.position).sqrMagnitude<=radius*radius)energy.Recharge(rate*Time.fixedDeltaTime);
+            recipients.Clear();
+            if((ownerBody.position-transform.position).sqrMagnitude<=radius*radius)recipients.Add(energy);
+            int count;
+            while(true)
+            {
+                count=Physics.OverlapSphereNonAlloc(transform.position,radius,hits,~0,QueryTriggerInteraction.Ignore);
+                if(count<hits.Length)break;
+                if(hits.Length>=4096){hits=Physics.OverlapSphere(transform.position,radius,~0,QueryTriggerInteraction.Ignore);count=hits.Length;break;}
+                Array.Resize(ref hits,hits.Length*2);
+            }
+            int team=TeamId;
+            for(int i=0;i<count;i++)
+            {
+                var hit=hits[i];if(hit==null||team==0)continue;
+                var bank=hit.GetComponentInParent<VehicleEnergyBank>();
+                if(bank==null||bank==energy||!bank.gameObject.activeInHierarchy||RRLHitRouter.Team(bank.transform)!=team)continue;
+                var body=bank.GetComponent<Rigidbody>();
+                if(body!=null&&(body.position-transform.position).sqrMagnitude<=radius*radius)recipients.Add(bank);
+            }
+            Array.Clear(hits,0,count);
+            foreach(var recipient in recipients)if(recipient!=null)recipient.Recharge(rate*Time.fixedDeltaTime);
         }
     }
     // Uses the same physical HP as Repair Pulse; never revives destroyed parts.

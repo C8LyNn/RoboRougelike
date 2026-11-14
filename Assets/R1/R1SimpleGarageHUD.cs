@@ -627,7 +627,7 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.GroundDroneGenerator?$"Generator drona naziemnego: wypuszcza kołowego sojusznika. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
                 kind==R3PartKind.OffensiveTurretGenerator?$"Wieżyczka ofensywna: rozstawia się za jadącym robotem i strzela do wrogów. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
                 kind==R3PartKind.HealingTurretGenerator?$"Wieżyczka lecznicza: naprawia twój pojazd i pobliskie sojusznicze urządzenia. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
-                kind==R3PartKind.SupportTurretGenerator?$"Wieżyczka wspierająca: odnawia energię pojazdu w zasięgu. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
+                kind==R3PartKind.SupportTurretGenerator?$"Wieżyczka wspierająca: odnawia energię sojuszniczych pojazdów w zasięgu. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
                 kind==R3PartKind.ShieldTurretGenerator?$"Kopuła osłonowa: zatrzymuje wrogie strzały, a przyjazne mogą wydostać się ze środka. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kliknij, aby zamontować.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kliknij, aby zamontować.":
@@ -665,7 +665,7 @@ namespace RoboRougelike.R1
                     kind==R3PartKind.GroundDroneGenerator?$"Generator drona naziemnego: wypuszcza kołowego sojusznika; 1 ładunek i {run.VehicleModel.Economy.DroneEnergyPerCopy:0} energii. Slot urządzenia.":
                     kind==R3PartKind.OffensiveTurretGenerator?$"Wieżyczka ofensywna: rozstawia się za jadącym robotem; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot urządzenia.":
                     kind==R3PartKind.HealingTurretGenerator?$"Wieżyczka lecznicza: naprawia pojazd i pobliskie urządzenia sojusznicze; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot urządzenia.":
-                    kind==R3PartKind.SupportTurretGenerator?$"Wieżyczka wspierająca: odnawia energię pojazdu w zasięgu; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot urządzenia.":
+                    kind==R3PartKind.SupportTurretGenerator?$"Wieżyczka wspierająca: odnawia energię sojuszniczych pojazdów w zasięgu; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot urządzenia.":
                     kind==R3PartKind.ShieldTurretGenerator?$"Kopuła osłonowa: zatrzymuje nadlatujące wrogie pociski; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy:0} energii. Slot urządzenia.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kup część.":
                     kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kup część.":

@@ -339,6 +339,38 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(bank.Current,Is.EqualTo(afterDestruction).Within(.001),"Destroyed support must stop providing energy");
         bank.enabled=true;Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator SupportTurretRechargesAlliesOnceButNotEnemiesOrDistantVehicles()
+    {
+        run.VehicleModel.Award(2500);FuseAndMount(R3PartKind.SupportTurretGenerator);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var playerBody=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        playerBody.position=new Vector3(100,2,100);playerBody.rotation=Quaternion.identity;playerBody.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();playerBody.linearVelocity=Vector3.forward*3;
+        Assert.That(service.TryDeploy(R3PartKind.SupportTurretGenerator),Is.True);
+        var turret=GameObject.Find("Wieżyczka wspierająca");Assert.That(turret,Is.Not.Null);
+        var palette=run.GetComponent<R3VisualPalette>();
+        R1VehicleState MakeAlly(Vector3 position)
+        {
+            var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+            var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,position,Quaternion.identity);
+            vehicle.GetComponent<Rigidbody>().isKinematic=true;var energy=vehicle.GetComponent<VehicleEnergyBank>();
+            Assert.That(energy.TrySpend(100),Is.True);energy.enabled=false;return vehicle;
+        }
+        playerBody.isKinematic=true;playerBody.position=turret.transform.position+new Vector3(0,2,2);
+        var ownerEnergy=player.GetComponent<VehicleEnergyBank>();Assert.That(ownerEnergy.TrySpend(100),Is.True);ownerEnergy.enabled=false;
+        var ally=MakeAlly(turret.transform.position+new Vector3(3,2,0));var nearby=ally.GetComponent<VehicleEnergyBank>();
+        var far=MakeAlly(turret.transform.position+new Vector3(30,2,0));var distant=far.GetComponent<VehicleEnergyBank>();
+        var enemy=run.GetComponent<R6TestRange>().TrainingTarget;var enemyBody=enemy.GetComponent<Rigidbody>();enemyBody.isKinematic=true;enemyBody.position=turret.transform.position+new Vector3(-3,2,0);
+        var hostile=enemy.GetComponent<VehicleEnergyBank>()??enemy.gameObject.AddComponent<VehicleEnergyBank>();hostile.ConfigureEnemy(enemy.Core);
+        Assert.That(hostile.TrySpend(100),Is.True);hostile.enabled=false;
+        Physics.SyncTransforms();float ownBefore=ownerEnergy.Current,allyBefore=nearby.Current,farBefore=distant.Current,enemyBefore=hostile.Current;
+        for(int i=0;i<15;i++)yield return MOVSeriesDeviceTests.FixedStep();
+        float ownerGain=ownerEnergy.Current-ownBefore,allyGain=nearby.Current-allyBefore;
+        Assert.That(ownerGain,Is.GreaterThan(.1));Assert.That(allyGain,Is.EqualTo(ownerGain).Within(.1),"Many colliders must not multiply recharge.");
+        Assert.That(distant.Current,Is.EqualTo(farBefore).Within(.001));Assert.That(hostile.Current,Is.EqualTo(enemyBefore).Within(.001));
+        ownerEnergy.enabled=true;hostile.enabled=true;Object.Destroy(ally.gameObject);Object.Destroy(far.gameObject);Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator HealingTurretRepairsNearbyOwnedPartsWithoutAttacking()
     {
         Assert.That(System.Enum.TryParse("HealingTurretGenerator",out R3PartKind kind),Is.True,"Missing healing turret generator");
