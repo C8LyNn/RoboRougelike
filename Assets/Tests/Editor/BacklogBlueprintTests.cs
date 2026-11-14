@@ -268,3 +268,40 @@ public sealed class BacklogBlueprintGarageTests
         }
     }
 }
+
+public sealed class BacklogBlueprintDependencyTests
+{
+    R1RunController run;
+    [UnitySetUp] public IEnumerator Setup()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        for(int i=0;i<300&&R1RunController.Instance?.Progress==null;i++)yield return null;
+        run=R1RunController.Instance;Assert.That(run?.OpenCreativeGarage(),Is.True);
+    }
+    [UnityTest] public IEnumerator ReplacingSupportTemporarilyMovesCorrectDependentAndRestoresItsIdentity()
+    {
+        var model=run.VehicleModel;for(int i=0;i<6;i++)Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var inputs=model.Inventory.Where(p=>p.Kind==R3PartKind.Armor&&p.Tier==1).Take(3).Select(p=>p.Id).ToArray();
+        Assert.That(inputs.Length,Is.EqualTo(3));Assert.That(run.GarageFuse(inputs),Is.True);
+        var upgraded=model.Inventory.Single(p=>p.Kind==R3PartKind.Armor&&p.Tier==2);
+        var old=model.Inventory.First(p=>p.Kind==R3PartKind.Armor&&p.Tier==1);
+        var dependent=model.Inventory.First(p=>p.Kind==R3PartKind.Armor&&p.Tier==1&&p.Id!=old.Id);
+        var tip=model.Inventory.First(p=>p.Kind==R3PartKind.Armor&&p.Tier==1&&p.Id!=old.Id&&p.Id!=dependent.Id);
+        var supportCell=Vector3Int.right;var dependentCell=Vector3Int.right*2;var tipCell=Vector3Int.right*3;
+        Assert.That(run.GarageMount(upgraded.Id,supportCell),Is.True);Assert.That(run.GarageMount(dependent.Id,dependentCell),Is.True);Assert.That(run.GarageMount(tip.Id,tipCell),Is.True);
+        var desired=R3BlueprintLibrary.Capture(model,"Zależne części");
+        Assert.That(run.GarageRemove(tipCell),Is.True);Assert.That(run.GarageRemove(dependentCell),Is.True);Assert.That(run.GarageRemove(supportCell),Is.True);
+        Assert.That(run.GarageMount(old.Id,supportCell),Is.True);Assert.That(run.GarageMount(dependent.Id,dependentCell),Is.True);Assert.That(run.GarageMount(tip.Id,tipCell),Is.True);
+        var ids=model.Parts.Concat(model.Inventory).Select(p=>p.Id).OrderBy(x=>x).ToArray();int money=model.Scrap;
+        var plan=R3BlueprintLibrary.Plan(desired,model);Assert.That(plan.Placements.Single(p=>p.Id==dependent.Id).AlreadyPlaced,Is.True);
+        Assert.That(run.StartApplyBlueprint(desired),Is.True);
+        float deadline=Time.realtimeSinceStartup+40;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Transitioning,Is.False);Assert.That(run.BlueprintApplyMessage,Does.Contain("Odtworzono"));
+        Assert.That(run.VehicleModel.At(supportCell).Id,Is.EqualTo(upgraded.Id));
+        Assert.That(run.VehicleModel.At(dependentCell).Id,Is.EqualTo(dependent.Id));
+        Assert.That(run.VehicleModel.At(tipCell).Id,Is.EqualTo(tip.Id));
+        Assert.That(run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory).Select(p=>p.Id).OrderBy(x=>x),Is.EqualTo(ids));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(money));
+    }
+    [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
+}

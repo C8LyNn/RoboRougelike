@@ -62,10 +62,16 @@ namespace RoboRougelike.R1
                     bool removed=false;
                     foreach(var part in working.Parts.Where(p=>p.Kind!=R3PartKind.Core&&!keep.Contains(p.Id)).ToArray())
                         if(working.Remove(part.Cell)){removed=true;break;}
+                    // A correctly placed part may depend on a support that the
+                    // new design replaces. Temporarily move a removable kept
+                    // part, preserving its identity, then mount it again later.
+                    if(!removed)
+                        foreach(var part in working.Parts.Where(p=>p.Kind!=R3PartKind.Core&&keep.Contains(p.Id)).ToArray())
+                            if(working.Remove(part.Cell)){keep.Remove(part.Id);removed=true;break;}
                     if(!removed){BlueprintApplyMessage="Nie można bezpiecznie zdjąć części lub brakuje miejsca w magazynie.";yield break;}
                     stage.gameObject.SetActive(false);Destroy(stage.gameObject);stage=BuildBlueprintStage(working,position,rotation);yield return null;
                 }
-                var pending=plan.Placements.Where(p=>!p.AlreadyPlaced).ToList();
+                var pending=plan.Placements.Where(p=>!working.Parts.Any(part=>part.Id==p.Id)).ToList();
                 while(pending.Count>0)
                 {
                     bool mounted=false;string reason=null;
