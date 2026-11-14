@@ -91,6 +91,31 @@ public sealed class BacklogProjectileTierPhysicsTests
         float end=Time.time+.35f;while(Time.time<end)yield return null;
         Assert.That(500-hp.CurrentHp,Is.InRange(100f,130f));
     }
+    [UnityTest] public IEnumerator RailgunHitsHostileDomeBeforeProtectedTarget()
+    {
+        var gun=Build(R4WeaponKind.Railgun,out var energy);var target=Target(gun,8);
+        var dome=new GameObject("shield rail fixture");dome.transform.position=gun.Muzzle.position+gun.Muzzle.forward*5+gun.Muzzle.up;
+        dome.AddComponent<Rigidbody>().isKinematic=true;dome.AddComponent<SphereCollider>().isTrigger=true;
+        var hp=dome.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);dome.AddComponent<R3ShieldDome>().Configure(2,2);
+        Physics.SyncTransforms();Assert.That(gun.GetComponent<RRLRailgunBinding>().Fire(),Is.True);
+        float end=Time.time+.35f;while(Time.time<end)yield return null;
+        Assert.That(hp.CurrentHp,Is.LessThan(500),"The physical rail shot must damage the boundary");
+        Assert.That(target.CurrentHp,Is.EqualTo(500),"The protected target must remain undamaged");
+        Object.Destroy(dome);
+    }
+    [UnityTest] public IEnumerator RailgunHitsWallBeforeDomeWithoutDamagingIt()
+    {
+        var gun=Build(R4WeaponKind.Railgun,out var energy);var target=Target(gun,8);
+        var dome=new GameObject("shield behind wall");dome.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6+gun.Muzzle.up;
+        dome.AddComponent<Rigidbody>().isKinematic=true;dome.AddComponent<SphereCollider>().isTrigger=true;
+        var hp=dome.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);dome.AddComponent<R3ShieldDome>().Configure(2,1.5f);
+        var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=gun.Muzzle.position+gun.Muzzle.forward*2;
+        wall.transform.localScale=new Vector3(3,3,.2f);var receiver=wall.AddComponent<RailgunWallFixture>();Physics.SyncTransforms();
+        Assert.That(gun.GetComponent<RRLRailgunBinding>().Fire(),Is.True);
+        float end=Time.time+.35f;while(Time.time<end)yield return null;
+        Assert.That(receiver.HitCount,Is.GreaterThan(0));Assert.That(hp.CurrentHp,Is.EqualTo(500));Assert.That(target.CurrentHp,Is.EqualTo(500));
+        Object.Destroy(dome);Object.Destroy(wall);
+    }
     [UnityTest] public IEnumerator DoubleShotDuplicatesRailgunWithoutExtraAmmoOrEnergy()
     {
         var gun=Build(R4WeaponKind.Railgun,out var energy,true);var hp=Target(gun,6);float before=energy.Current;

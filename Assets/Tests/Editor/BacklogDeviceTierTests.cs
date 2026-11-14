@@ -260,6 +260,57 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(peak,Is.LessThan(8),"The pad must not multiply its impulse by the number of vehicle colliders");
         Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator ShieldDomeLetsFriendlyShotsOutAndBlocksEnemyShellAndRocket()
+    {
+        Assert.That(System.Enum.TryParse("ShieldTurretGenerator",out R3PartKind kind),Is.True,"Missing shield turret generator");
+        run.VehicleModel.Award(2500);FuseAndMount(kind);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.forward*3;
+        Assert.That(service.TryDeploy(kind),Is.True);var dome=GameObject.Find("Kopuła osłonowa");Assert.That(dome,Is.Not.Null);
+        var shield=dome.GetComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();var sphere=dome.GetComponent<SphereCollider>();
+        Assert.That(shield,Is.Not.Null);Assert.That(sphere,Is.Not.Null);float radius=sphere.radius*dome.transform.lossyScale.x;
+        body.isKinematic=true;body.position=dome.transform.position+new Vector3(0,2,2);Physics.SyncTransforms();
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"shield-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();enemy.ConfigureMovement(0,12,0);var enemyBody=enemy.GetComponent<Rigidbody>();
+        enemyBody.position=new Vector3(140,2,140);enemyBody.isKinematic=true;Physics.SyncTransforms();
+        GameObject Shell(Vector3 pos,Vector3 velocity,Transform owner)
+        {
+            var item=GameObject.CreatePrimitive(PrimitiveType.Sphere);item.transform.position=pos;item.transform.localScale=Vector3.one*.16f;
+            var rb=item.AddComponent<Rigidbody>();rb.useGravity=false;rb.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;rb.linearVelocity=velocity;
+            item.AddComponent<RogueMachine.P12PipelineSafe.P17PhysicalShell>().Configure(owner,20,4,velocity.normalized,null);return item;
+        }
+        Vector3 center=dome.transform.position;var friendly=Shell(center+Vector3.up*2,Vector3.right*30,player.transform);
+        float deadline=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<deadline&&friendly!=null&&friendly.transform.position.x<center.x+radius+1)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(friendly!=null&&friendly.activeInHierarchy&&friendly.transform.position.x>center.x+radius,Is.True,"Friendly shells must leave the dome");
+        Object.Destroy(friendly);yield return null; // Do not let opposing test projectiles collide with each other outside the shield.
+        // Fly above the parked vehicle: an unprotected enemy shot may otherwise legitimately hit it.
+        float hpInside=shield.CurrentHp;var inside=Shell(center+Vector3.right+Vector3.up*4,Vector3.left*30,enemy.transform);
+        deadline=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<deadline&&inside!=null&&inside.transform.position.x>center.x-radius-1)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(inside!=null&&inside.activeInHierarchy&&inside.transform.position.x<center.x-radius,Is.True,"A hostile shot originating inside must not be mistaken for an incoming shot");
+        Assert.That(shield.CurrentHp,Is.EqualTo(hpInside));Object.Destroy(inside);yield return null;
+        float before=shield.CurrentHp;var hostile=Shell(center+Vector3.right*(radius+2)+Vector3.up*2,Vector3.left*30,enemy.transform);
+        deadline=Time.realtimeSinceStartup+5;while(Time.realtimeSinceStartup<deadline&&shield!=null&&shield.CurrentHp>=before)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(shield.CurrentHp,Is.LessThan(before),"The actual incoming shell must damage shield HP");
+        Assert.That(hostile==null||!hostile.activeInHierarchy,Is.True,"The incoming shell must be stopped");
+        before=shield.CurrentHp;
+        var rocket=GameObject.CreatePrimitive(PrimitiveType.Sphere);rocket.transform.position=center+Vector3.right*(radius+2)+Vector3.up*2;
+        var rocketBody=rocket.AddComponent<Rigidbody>();rocketBody.useGravity=false;
+        var rocketProjectile=rocket.AddComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+        var config=new RoboRougelike.Mechanics.Rockets.RocketConfig{initialSpeed=25,maxSpeed=25,acceleration=0,maxLifetime=4};
+        Assert.That(rocketProjectile.TryInitialize(config.Snapshot(),enemyBody,enemy.transform,enemy.gameObject,null,Vector3.left),Is.True);
+        deadline=Time.realtimeSinceStartup+5;while(Time.realtimeSinceStartup<deadline&&shield!=null&&shield.CurrentHp>=before)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(shield.CurrentHp,Is.LessThan(before),"The actual incoming rocket must damage shield HP");
+        Assert.That(rocketProjectile==null||rocketProjectile.IsResolved,Is.True,"The incoming rocket must be intercepted");
+        shield.ApplyDamage(10000,center,Vector3.up);yield return null;Assert.That(dome==null||!dome.activeInHierarchy,Is.True);
+        if(friendly!=null)Object.Destroy(friendly);Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator SupportTurretRechargesNearbyOwnerWithoutFiring()
     {
         Assert.That(System.Enum.TryParse("SupportTurretGenerator",out R3PartKind kind),Is.True,"Missing support turret generator");

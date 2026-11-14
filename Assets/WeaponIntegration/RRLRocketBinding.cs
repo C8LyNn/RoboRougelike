@@ -25,7 +25,7 @@ namespace RoboRougelike.WeaponIntegration
             muzzle=barrel;damageScale=damageMultiplier;intervalScale=intervalMultiplier;if(state.Ammo<0)state.Ammo=Magazine;
             var template=new GameObject("WPN004 inactive projectile template");template.SetActive(false);template.transform.SetParent(transform,false);
             var rb=template.AddComponent<Rigidbody>();rb.useGravity=false;rb.isKinematic=true;template.AddComponent<SphereCollider>().isTrigger=true;
-            var prefab=template.AddComponent<RocketProjectile>();projectileTemplate=prefab;template.AddComponent<RRLPointDefenseThreat>();
+            var prefab=template.AddComponent<RocketProjectile>();projectileTemplate=prefab;template.AddComponent<RRLPointDefenseThreat>();template.AddComponent<R3ShieldRocketPayload>();
             var visual=GameObject.CreatePrimitive(PrimitiveType.Capsule);visual.name="Rocket visual";visual.transform.SetParent(template.transform,false);
             visual.transform.localRotation=Quaternion.Euler(90,0,0);visual.transform.localScale=new Vector3(.16f,.36f,.16f);
             var col=visual.GetComponent<Collider>();col.enabled=false;Destroy(col);
@@ -58,6 +58,7 @@ namespace RoboRougelike.WeaponIntegration
             // integrated game admits large multi-collider vehicles, so size
             // both bounded buffers for that workload without weakening it.
             Module.SetConfig(new RocketConfig{damageAtCenter=60*(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),cooldown=1.7f*(tank!=null?tank.PackageIntervalScale:intervalScale),maxBlastColliders=1024,maxCastHits=512});
+            projectileTemplate.GetComponent<R3ShieldRocketPayload>().Damage=Module.CurrentSpec.CenterDamage;
             var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
             float cost=VehicleEnergyCosts.Rocket*R3VehicleModel.TierActivationCost(State.Tier);
             if(energy!=null&&!energy.TrySpend(cost))return false;

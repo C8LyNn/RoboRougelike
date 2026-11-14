@@ -216,9 +216,16 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 ## 24. Kopuła osłonowa — zgodność pocisków do rozwiązania
 
 - Wstępne sprawdzenie kodu: pociski `P17PhysicalShell` korzystają z kolizji i `RRLHitRouter`, natomiast rakiety `RocketProjectile` wykonują własne zapytania `SphereCast` ignorujące triggery. Promienie i broń obszarowa mają kolejne ścieżki trafienia. Sama przezroczysta kula z triggerem nie dowodzi ochrony przed wszystkimi typami; pełna kolizja może natomiast blokować przyjazne rakiety wychodzące ze środka.
-- **WYMAGA IMPLEMENTACJI I TESTÓW:** wspólny adapter przechwytywania z własnym HP kopuły, prawidłową drużyną, przejściem przyjaznych pocisków i osobnymi próbami co najmniej dla fizycznego pocisku, rakiety i broni promieniowej. Nie włączono niesprawdzonej kopuły do gry. Ta uwaga jest analizą kodu, nie wynikiem testu Unity; G1 / ręczna gra: NOT RUN.
+- Wymienione wyżej ryzyko było podstawą do późniejszego wdrożenia i testów opisanych poniżej; sama analiza nie stanowiła testu Unity.
 
 ### 22. Poprawka niezależnych cooldownów dronów
 
 - Uruchomienie drona naziemnego błędnie zapisywało cooldown drona latającego, a własnego nie zapisywało. Rozdzielono przypisania bez zmiany czasu odnowienia ani liczby ładunków.
 - Celowany test Unity 6000.3.14f1 EditMode przed poprawką **FAIL**: czas gotowości drona naziemnego pozostawał zerowy (`backlog-drone-cooldown-red.xml`). Po poprawce **1 PASS, 0 FAIL**, exit 0 (`backlog-drone-cooldown-final.xml` i `.log`): test sprawdza niezależne cooldowny, ponowne użycie oraz faktyczny ostrzał przez drona. Kontrola ręczna: NOT RUN.
+
+### 23–24. Prototyp rozstawianej kopuły
+
+- Dodano generator wieżyczki osłonowej do garażu i wspólnej puli Z/X/C/V. Rozstawienie za jadącym robotem używa istniejących kontroli miejsca, energii, ładunków i czasu odnowienia. Osłona ma drużynę, własne HP w istniejącym systemie, ograniczony czas życia i tymczasowy obrys. Promień i HP są konfigurowalne, a kopie wzmacniają HP. Slot, ładunki i cooldown przechodzą przez checkpoint JSON.
+- Granica kopuły nie blokuje fizycznie pojazdów. Przechwytuje nadlatujące z zewnątrz wrogie zwykłe pociski i rakiety; przyjazne strzały oraz strzały powstałe wewnątrz przechodzą. Wiązka i railgun sprawdzają granicę również na ścieżkach wykorzystujących raycast/sweep. Przeszkoda przed kopułą pozostaje pierwszym trafieniem.
+- Unity 6000.3.14f1 EditMode: test przed wdrożeniem FAIL (brak generatora); końcowy zestaw **12 PASS, 0 FAIL**, exit 0 (`backlog-shield-verified.xml` i `.log`). Obejmuje pociski, rakietę, wiązkę z celem i bez, railgun, przeszkodę, zniszczenie osłony i checkpoint. Poprzedni zestaw porównawczy **6/6 PASS** (`backlog-shield-weapons2.xml`). Są to scenariusze sterowane testem, nie ręczna rozgrywka.
+- **Pozostaje do sprawdzenia:** ręczny Windows Player, czytelność obrysu, balans oraz pozostałe rodzaje efektów obszarowych. Nie potwierdzono ochrony przed wybuchem rakiety skonfigurowanej do detonacji po przechwyceniu ani niezależnymi aurami; wbudowana konfiguracja rakiety nie detonuje przy przechwyceniu. Bardzo szybkie pociski korzystające z fizycznych triggerów wymagają osobnej próby. Nie uznawać tego prototypu za pełny odbiór wszystkich rodzajów obrażeń.

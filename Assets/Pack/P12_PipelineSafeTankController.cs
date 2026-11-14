@@ -1352,6 +1352,8 @@ public float CurrentForwardSpeed =>
         private void OnDisable(){activeShells.Remove(this);}
         private Transform ownerRoot;
         public Transform OwnerRoot=>ownerRoot;
+        public float DamageAmount=>damage;
+        public Vector3 LaunchPosition=>launchPosition;
         public bool IsActiveProjectile=>isActiveAndEnabled&&!spent&&ownerRoot!=null;
         public Vector3 FlightVelocity=>railgun!=null?railgun.Velocity:GetComponent<Rigidbody>().linearVelocity;
         public bool Intercept(float amount)
