@@ -121,8 +121,8 @@ namespace RoboRougelike.R1
         }
         private void UpdateCombatDetails(Event input)
         {
-            if(input!=null&&input.type==EventType.KeyDown&&input.keyCode==KeyCode.I)
-            {combatDetailsOpen=!combatDetailsOpen;input.Use();}
+            if(input!=null&&R1ControlProfile.Current.MatchesEvent("CombatDetails",input))
+            {bool keyboard=input.type==EventType.KeyDown;combatDetailsOpen=!combatDetailsOpen;if(keyboard)input.Use();}
         }
         private static float BarFraction(float current,float maximum)
         {
@@ -351,7 +351,8 @@ namespace RoboRougelike.R1
                         if(hasSupportTurret)GUI.Label(CombatAbilityStatusRect(statusRow++),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.SupportTurretGenerator)} wsparcie: {deploy.StatusFor(R3PartKind.SupportTurretGenerator)}",small);
                         if(hasShieldTurret)GUI.Label(CombatAbilityStatusRect(statusRow),$"{run.VehicleModel.DeployableSlotLabel(R3PartKind.ShieldTurretGenerator)} kopuła: {deploy.StatusFor(R3PartKind.ShieldTurretGenerator)}",small);
                     }
-                    if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?"Mniej [I]":"Szczegóły [I]",compactButton))combatDetailsOpen=!combatDetailsOpen;
+                    string detailsKey=R1ControlProfile.Display(R1ControlProfile.Current.Binding("CombatDetails"));
+                    if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?$"Mniej [{detailsKey}]":$"Szczegóły [{detailsKey}]",compactButton))combatDetailsOpen=!combatDetailsOpen;
                     if(combatDetailsOpen)
                     {
                         int plannedGuns=run.VehicleModel.Parts.FindAll(p=>p.Kind==R3PartKind.Gun).Count;

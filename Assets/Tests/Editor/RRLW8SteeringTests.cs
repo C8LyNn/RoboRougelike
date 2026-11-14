@@ -196,7 +196,7 @@ public class RRLW8SteeringTests
         var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
         settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
         settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
-        InputSystem.settings=settings;var keyboard=InputSystem.AddDevice<Keyboard>();
+        InputSystem.settings=settings;var keyboard=InputSystem.AddDevice<Keyboard>();var mouse=InputSystem.AddDevice<Mouse>();
         try
         {
             Assert.That(profile.TryBind("SteeringMode","P"),Is.True);
@@ -206,8 +206,11 @@ public class RRLW8SteeringTests
             Assert.That(source.Mode,Is.EqualTo(SteeringMode.RearOnly));
             yield return null;InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.P));yield return null;yield return null;
             Assert.That(source.Mode,Is.EqualTo(SteeringMode.CounterPhase),"The live Input System update must use the new key too.");
+            Assert.That(profile.TryBind("Weapon1","N"),Is.True);Assert.That(profile.TryBind("SteeringMode","MouseLeft"),Is.True);
+            InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Left));yield return null;yield return null;
+            Assert.That(source.Mode,Is.EqualTo(SteeringMode.Crab),"Mouse binding must still work through Input System.");
         }
-        finally{profile.ResetDefaults();InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
+        finally{profile.ResetDefaults();InputSystem.RemoveDevice(keyboard);InputSystem.RemoveDevice(mouse);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

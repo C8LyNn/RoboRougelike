@@ -17,12 +17,13 @@ public sealed class BacklogControlProfileTests
         string path=Path.Combine(Path.GetTempPath(),"RRL-controls-legacy-"+Guid.NewGuid()+".json");
         try
         {
-            var profile=new R1ControlProfile(path);var actions=R1ControlProfile.Actions.Where(a=>a!="SteeringMode").ToArray();
+            var profile=new R1ControlProfile(path);var actions=R1ControlProfile.Actions.Where(a=>a!="SteeringMode"&&a!="CombatDetails").ToArray();
             var bindings=actions.Select(profile.Binding).ToArray();bindings[0]="K";
             var data=new LegacyControlData{actions=actions,bindings=bindings};
             typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
             var loaded=new R1ControlProfile(path);Assert.That(loaded.Error,Is.Null);
             Assert.That(loaded.Binding("MoveForward"),Is.EqualTo("K"));Assert.That(loaded.Binding("SteeringMode"),Is.EqualTo("M"));
+            Assert.That(loaded.Binding("CombatDetails"),Is.EqualTo("I"));
             Assert.That(R1ControlProfile.ValidSnapshot(bindings),Is.True,"Existing blueprints keep valid bindings.");
             Assert.That(loaded.TryBind("SteeringMode","P"),Is.True);loaded.Save();
             Assert.That(new R1ControlProfile(path).Binding("SteeringMode"),Is.EqualTo("P"));
@@ -49,6 +50,19 @@ public sealed class BacklogControlProfileTests
             Assert.That(key.Invoke(loaded,new object[]{"MoveBackward"}),Is.EqualTo("S"));
             type.GetMethod("ResetDefaults").Invoke(loaded,null);
             Assert.That(key.Invoke(loaded,new object[]{"MoveForward"}),Is.EqualTo("W"));
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
+    [Test] public void IntermediateSnapshotPreservesSteeringAndAddsDefaultDetails()
+    {
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-v21-"+Guid.NewGuid()+".json");
+        try
+        {
+            var profile=new R1ControlProfile(path);Assert.That(profile.TryBind("SteeringMode","P"),Is.True);
+            var old=profile.Snapshot().Take(R1ControlProfile.Actions.Length-1).ToArray();
+            profile.ResetDefaults();Assert.That(profile.TryRestoreSnapshot(old,out _),Is.True);
+            Assert.That(profile.Binding("SteeringMode"),Is.EqualTo("P"));Assert.That(profile.Binding("CombatDetails"),Is.EqualTo("I"));
+            Assert.That(new R1ControlProfile(path).Binding("SteeringMode"),Is.EqualTo("P"));
         }
         finally{if(File.Exists(path))File.Delete(path);}
     }

@@ -111,4 +111,18 @@ public sealed class CompactCombatHUDTests
         }
         finally{Object.DestroyImmediate(go);}
     }
+    [Test] public void CombatDetailsUsesReboundKeyInsteadOfHardcodedI()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();var go=new GameObject("HUD remap test");
+        try
+        {
+            Assert.That(profile.TryBind("CombatDetails","P"),Is.True);
+            var hud=go.AddComponent<R1RunHUD>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+            var toggle=typeof(R1RunHUD).GetMethod("UpdateCombatDetails",flags);var open=typeof(R1RunHUD).GetField("combatDetailsOpen",flags);
+            toggle.Invoke(hud,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.I}});Assert.That((bool)open.GetValue(hud),Is.False);
+            var key=new Event{type=EventType.KeyDown,keyCode=KeyCode.P};toggle.Invoke(hud,new object[]{key});
+            Assert.That((bool)open.GetValue(hud),Is.True);Assert.That(key.type,Is.EqualTo(EventType.Used));
+        }
+        finally{profile.ResetDefaults();Object.DestroyImmediate(go);}
+    }
 }

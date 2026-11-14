@@ -94,7 +94,7 @@ namespace RoboRougelike.PackageIntegration
             if(lastInputFrame==Time.frameCount||!SetMode((SteeringMode)(((int)Controller.Mode+1)%4)))return false;
             lastInputFrame=Time.frameCount;return true;
         }
-        public bool HandleGuiInput(Event input)=>input!=null&&!input.alt&&!input.control&&!input.command&&
+        public bool HandleGuiInput(Event input)=>input!=null&&input.type==EventType.KeyDown&&!input.alt&&!input.control&&!input.command&&
             R1ControlProfile.Current.MatchesEvent("SteeringMode",input)&&CycleMode();
         void Update()
         {
