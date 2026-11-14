@@ -72,8 +72,10 @@ namespace RoboRougelike.R3
             for(int i=0;i<count;i++)
             {
                 var hit=hits[i];if(hit==null||team==0||RRLHitRouter.Team(hit.transform)!=team||hit.transform.IsChildOf(transform))continue;
-                if(hit.GetComponentInParent<R3FlyingDrone>()==null&&hit.GetComponentInParent<R3HealingTurret>()==null&&hit.GetComponentInParent<R3SupportTurret>()==null)continue;
-                var hp=hit.GetComponentInParent<P12PipelineSafeDamageable>();
+                var part=hit.GetComponentInParent<R3MountedPart>();var vehicle=hit.GetComponentInParent<R3VehicleAssembly>();
+                bool vehiclePart=part!=null&&part.Operational&&vehicle!=null&&part.transform.IsChildOf(vehicle.transform);
+                if(!vehiclePart&&hit.GetComponentInParent<R3FlyingDrone>()==null&&hit.GetComponentInParent<R3HealingTurret>()==null&&hit.GetComponentInParent<R3SupportTurret>()==null)continue;
+                var hp=vehiclePart?part.Damageable:hit.GetComponentInParent<P12PipelineSafeDamageable>();
                 if(hp==null||hp.IsDead||hp.MaxHp<=0)continue;
                 float ratio=hp.CurrentHp/hp.MaxHp;if(ratio<weakest-.00001f){weakest=ratio;selected=hp;}
             }

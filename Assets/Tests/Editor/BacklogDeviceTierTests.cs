@@ -371,6 +371,39 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(distant.Current,Is.EqualTo(farBefore).Within(.001));Assert.That(hostile.Current,Is.EqualTo(enemyBefore).Within(.001));
         ownerEnergy.enabled=true;hostile.enabled=true;Object.Destroy(ally.gameObject);Object.Destroy(far.gameObject);Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator HealingTurretRepairsWeakestAlliedVehiclePartButNotEnemyOrDistantPart()
+    {
+        run.VehicleModel.Award(2500);FuseAndMount(R3PartKind.HealingTurretGenerator);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.forward*3;
+        Assert.That(service.TryDeploy(R3PartKind.HealingTurretGenerator),Is.True);
+        var turret=GameObject.Find("Wieżyczka lecznicza");Assert.That(turret,Is.Not.Null);
+        body.isKinematic=true;body.position=turret.transform.position+new Vector3(0,2,2);
+        var palette=run.GetComponent<R3VisualPalette>();
+        R1VehicleState MakeAlly(Vector3 position)
+        {
+            var vehicle=R3VehicleAssembly.Build(new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light)),new R1RunStats(),palette,position,Quaternion.identity);
+            vehicle.GetComponent<Rigidbody>().isKinematic=true;return vehicle;
+        }
+        var ally=MakeAlly(turret.transform.position+new Vector3(3,2,0));
+        var allyParts=ally.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.Armor).Take(2).ToArray();
+        Assert.That(allyParts.Length,Is.EqualTo(2));var weakest=allyParts[0].Damageable;var stronger=allyParts[1].Damageable;
+        weakest.RestoreHealthRatio(.3f);stronger.RestoreHealthRatio(.6f);
+        var far=MakeAlly(turret.transform.position+new Vector3(30,2,0));var distant=far.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Armor).Damageable;
+        distant.RestoreHealthRatio(.1f);
+        var enemy=run.GetComponent<R6TestRange>().TrainingTarget;var enemyBody=enemy.GetComponent<Rigidbody>();enemyBody.isKinematic=true;enemyBody.position=turret.transform.position+new Vector3(-3,2,0);
+        var hostile=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().First(p=>p!=enemy.Core);
+        hostile.RestoreHealthRatio(.2f);Physics.SyncTransforms();
+        float before=weakest.CurrentHp,strongerBefore=stronger.CurrentHp,farBefore=distant.CurrentHp,enemyBefore=hostile.CurrentHp;
+        for(int i=0;i<15;i++)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(weakest.CurrentHp,Is.GreaterThan(before),"The weakest allied vehicle part should be repaired.");
+        Assert.That(stronger.CurrentHp,Is.EqualTo(strongerBefore).Within(.001),"Only the weakest eligible part is repaired.");
+        Assert.That(distant.CurrentHp,Is.EqualTo(farBefore).Within(.001));Assert.That(hostile.CurrentHp,Is.EqualTo(enemyBefore).Within(.001));
+        Object.Destroy(ally.gameObject);Object.Destroy(far.gameObject);Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator HealingTurretRepairsNearbyOwnedPartsWithoutAttacking()
     {
         Assert.That(System.Enum.TryParse("HealingTurretGenerator",out R3PartKind kind),Is.True,"Missing healing turret generator");
