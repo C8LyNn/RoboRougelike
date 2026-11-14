@@ -24,7 +24,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(20,252,250,48),"Zapisz wyprawę",compactButton))run.SaveRunCheckpoint();
             if(!string.IsNullOrEmpty(run.RunSaveMessage))GUI.Label(new Rect(20,305,510,55),run.RunSaveMessage,small);
             GUI.enabled=run.EmergencyRescueCooldownLeft<=0;
-            if(GUI.Button(new Rect(20,365,250,48),"Ratunek",compactButton))run.TryEmergencyRescue();
+            if(GUI.Button(new Rect(20,365,250,48),RescueButtonText(run),compactButton))run.TryEmergencyRescue();
             GUI.enabled=true;
         }
     }

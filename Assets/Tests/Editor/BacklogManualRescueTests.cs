@@ -43,6 +43,47 @@ public sealed class BacklogManualRescueTests
         Assert.That(Vector3.Dot(body.rotation*Vector3.up,Vector3.up),Is.GreaterThan(.99f));
     }
 
+    [UnityTest] public IEnumerator ReassignedKeyboardRescueWorksForUprightVehicleWithoutDamage()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        RC2EditorInputProbe probe=null;
+        try
+        {
+            Assert.That(profile.TryBind("Rescue","K"),Is.True);run.Encounter.SetCombatActive(false);
+            var body=run.Player.GetComponent<Rigidbody>();body.rotation=Quaternion.identity;body.linearVelocity=body.angularVelocity=Vector3.zero;Physics.SyncTransforms();
+            float hp=run.Player.GetComponentsInChildren<P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+            probe=new GameObject("rescue old key probe").AddComponent<RC2EditorInputProbe>();probe.InjectKey=UnityEngine.InputSystem.Key.H;
+            float deadline=Time.realtimeSinceStartup+5;while(!probe.Sent&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(probe.Sent&&probe.PressObserved,Is.True);Object.DestroyImmediate(probe.gameObject);probe=null;yield return null;
+            Assert.That(run.EmergencyRescueActive,Is.False);
+            probe=new GameObject("rescue new key probe").AddComponent<RC2EditorInputProbe>();probe.InjectKey=UnityEngine.InputSystem.Key.K;
+            deadline=Time.realtimeSinceStartup+5;while(!probe.Sent&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(probe.Sent&&probe.PressObserved,Is.True);yield return null;
+            Assert.That(run.EmergencyRescueActive,Is.True);Assert.That(run.EmergencyRescueAttackBlocked,Is.True);
+            Assert.That(run.Player.GetComponentsInChildren<P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.EqualTo(hp).Within(.01f));
+        }
+        finally{if(probe!=null)Object.DestroyImmediate(probe.gameObject);profile.ResetDefaults();}
+        yield return null;
+    }
+
+    [UnityTest] public IEnumerator RescueMouseBindingRespectsUiConsumedEvents()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("Rescue","MouseBack"),Is.True);run.Encounter.SetCombatActive(false);
+            var handler=typeof(R1RunHUD).GetMethod("TryRescueMouse",BindingFlags.Static|BindingFlags.NonPublic);Assert.That(handler,Is.Not.Null);
+            run.TogglePause();handler.Invoke(null,new object[]{run,new Event{type=EventType.MouseDown,button=3}});
+            Assert.That(run.EmergencyRescueActive,Is.False,"Paused input must not activate rescue.");run.TogglePause();
+            var used=new Event{type=EventType.MouseDown,button=3};used.Use();handler.Invoke(null,new object[]{run,used});
+            Assert.That(run.EmergencyRescueActive,Is.False,"Input used by UI must not activate rescue.");
+            var input=new Event{type=EventType.MouseDown,button=3};handler.Invoke(null,new object[]{run,input});
+            Assert.That(run.EmergencyRescueActive,Is.True);Assert.That(run.EmergencyRescueAttackBlocked,Is.True);
+        }
+        finally{profile.ResetDefaults();}
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator CombatRescueHalvesIncomingDamageThenReturnsToNormal()
     {
         run.Encounter.SetCombatActive(false);var player=run.Player;
@@ -222,6 +263,23 @@ public sealed class BacklogManualRescueRangeTests
         Assert.That(core.CurrentHp,Is.EqualTo(hp));
         float end=Time.time+run.EmergencyRescueDurationSeconds+.1f;while(Time.time<end)yield return null;
         core.ApplyDamage(20,core.transform.position,Vector3.up);Assert.That(core.CurrentHp,Is.LessThan(hp));
+    }
+    [UnityTest] public IEnumerator RescueKeyWorksOnTestRangeButNotThroughPause()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();RC2EditorInputProbe probe=null;
+        try
+        {
+            Assert.That(profile.TryBind("Rescue","K"),Is.True);run.TogglePause();Assert.That(run.Paused,Is.True);
+            probe=new GameObject("paused rescue probe").AddComponent<RC2EditorInputProbe>();probe.InjectKey=UnityEngine.InputSystem.Key.K;
+            float deadline=Time.realtimeSinceStartup+5;while(!probe.Sent&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(probe.Sent&&probe.PressObserved,Is.True);Object.DestroyImmediate(probe.gameObject);probe=null;yield return null;
+            Assert.That(run.EmergencyRescueActive,Is.False);run.TogglePause();Assert.That(run.Paused,Is.False);
+            probe=new GameObject("range rescue probe").AddComponent<RC2EditorInputProbe>();probe.InjectKey=UnityEngine.InputSystem.Key.K;
+            deadline=Time.realtimeSinceStartup+5;while(!probe.Sent&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(probe.Sent&&probe.PressObserved,Is.True);yield return null;
+            Assert.That(run.EmergencyRescueActive,Is.True);Assert.That(run.EmergencyRescueAttackBlocked,Is.True);
+        }
+        finally{if(probe!=null)Object.DestroyImmediate(probe.gameObject);profile.ResetDefaults();}
     }
     [UnityTest] public IEnumerator GarageRescueProtectsForBoundedRealTimeEvenWithPausedPhysics()
     {

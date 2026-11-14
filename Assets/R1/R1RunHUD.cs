@@ -186,6 +186,16 @@ namespace RoboRougelike.R1
             var before=GUI.color;GUI.color=accent;
             GUI.DrawTexture(new Rect(rect.x,rect.y,3,rect.height),Texture2D.whiteTexture);GUI.color=before;
         }
+        static string RescueButtonText(R1RunController run)=>run.EmergencyRescueCooldownLeft>0?
+            $"Ratunek {Mathf.CeilToInt(run.EmergencyRescueCooldownLeft)}s":
+            "Ratunek ["+R1ControlProfile.Display(R1ControlProfile.Current.Binding("Rescue"))+"]";
+        static void TryRescueMouse(R1RunController run,Event input)
+        {
+            if(run==null||run.Paused||run.QuitRequested||run.Transitioning||run.MapEditing||run.SafeZoneTrading||run.Error!=null||
+               (run.Progress?.State!=R1RunState.Combat&&run.Progress?.State!=R1RunState.TestDrive&&run.Progress?.State!=R1RunState.SafeZone)||
+               !R1ControlProfile.IsBindingMouseDown(input)||!R1ControlProfile.Current.MatchesEvent("Rescue",input))return;
+            if(run.TryEmergencyRescue())input.Use();
+        }
         private void OnGUI()
         {
             var run = R1RunController.Instance;
@@ -234,6 +244,7 @@ namespace RoboRougelike.R1
             {
                 Draw(run,portraitReady,portraitGarage,portraitRoute,portraitSalvage);
                 if(run.Paused)LightStylePrototype.Instance?.DrawPausePanel();
+                if(!sessionOverlay)TryRescueMouse(run,Event.current);
                 if(quickSearchActive&&!garageSearchKey&&!catalogOpen&&!garageOptionsOpen)
                     HandleQuickGarageKey(run,Event.current,false);
                 quickSearchEditing=quickSearchActive&&!run.Paused&&!catalogOpen&&!garageOptionsOpen&&
@@ -402,7 +413,7 @@ namespace RoboRougelike.R1
                     }
                     if(GUI.Button(new Rect(1130,670,125,35),"Pauza",compactButton))run.TogglePause();
                     GUI.enabled=run.EmergencyRescueCooldownLeft<=0;
-                    if(GUI.Button(new Rect(990,670,130,35),run.EmergencyRescueCooldownLeft>0?$"Ratunek {Mathf.CeilToInt(run.EmergencyRescueCooldownLeft)}s":"Ratunek",compactButton))run.TryEmergencyRescue();
+                    if(GUI.Button(new Rect(990,670,130,35),RescueButtonText(run),compactButton))run.TryEmergencyRescue();
                     GUI.enabled=true;
                     if(run.EmergencyRescueNotice!=null||run.EmergencyRescueActive)GUI.Label(new Rect(660,637,450,30),
                         run.EmergencyRescueNotice??"Ratunek: 50% otrzymywanych obrażeń; atak wstrzymany.",small);

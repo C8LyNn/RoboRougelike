@@ -143,7 +143,7 @@ namespace RoboRougelike.R1
             Panel(new Rect(18,625,1244,78));
             DrawFeedback();
             GUI.enabled=run.EmergencyRescueCooldownLeft<=0;
-            if(GUI.Button(new Rect(1080,635,165,45),run.EmergencyRescueCooldownLeft>0?$"Ratunek {Mathf.CeilToInt(run.EmergencyRescueCooldownLeft)}s":"Ratunek",compactButton))run.TryEmergencyRescue();
+            if(GUI.Button(new Rect(1080,635,165,45),RescueButtonText(run),compactButton))run.TryEmergencyRescue();
             GUI.enabled=true;
             if(run.EmergencyRescueNotice!=null||run.EmergencyRescueActive)GUI.Label(new Rect(665,602,570,25),
                 run.EmergencyRescueNotice??"Ratunek: niewrażliwość; atak wstrzymany.",small);

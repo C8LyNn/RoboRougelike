@@ -11,6 +11,22 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [Test] public void RescueBindingMigratesWithoutTakingExistingKey()
+    {
+        Assert.That(R1ControlProfile.Actions,Does.Contain("Rescue"));
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-rescue-"+Guid.NewGuid()+".json");
+        try
+        {
+            var initial=new R1ControlProfile(path);var actions=R1ControlProfile.Actions.Where(a=>a!="Rescue").ToArray();
+            var values=actions.Select(initial.Binding).ToArray();values[Array.IndexOf(actions,"MoveForward")]="H";
+            var data=new LegacyControlData{actions=actions,bindings=values};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            var profile=new R1ControlProfile(path);Assert.That(profile.Error,Is.Null);
+            Assert.That(profile.Binding("MoveForward"),Is.EqualTo("H"));Assert.That(profile.Binding("Rescue"),Is.Not.EqualTo("H"));
+            Assert.That(profile.TrySaveBinding("Rescue","K",out _),Is.True);Assert.That(new R1ControlProfile(path).Binding("Rescue"),Is.EqualTo("K"));
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [Test] public void GarageRotationBindingsMigrateWithoutStealingExistingGarageKeys()
     {
         string[] rotations={"GarageRotateYLeft","GarageRotateYRight","GarageRotateXPositive","GarageRotateXNegative","GarageRotateZNegative","GarageRotateZPositive"};
