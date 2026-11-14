@@ -65,9 +65,9 @@ namespace RoboRougelike.R1
             structure = tank.GetComponent<P12PipelineSafeVehicleStructure>();
             modules = tank.GetComponent<P12PipelineSafeVehicleModuleSystem>();
         }
-        public void Apply(R1RunStats stats,float? constructionHull=null)
+        public void Apply(R1RunStats stats,float? constructionHull=null,float? driveMobility=null)
         {
-            controller.SetRunModifiers(stats.Damage, stats.FireInterval, stats.Mobility);
+            controller.SetRunModifiers(stats.Damage,stats.FireInterval,driveMobility??stats.Mobility);
             foreach (var part in GetComponentsInChildren<P12PipelineSafeDamageable>())
             {
                 var block = part.GetComponent<P12_PipelineSafePlayerBlock>();

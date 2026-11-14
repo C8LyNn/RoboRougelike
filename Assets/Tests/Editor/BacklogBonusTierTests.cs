@@ -194,6 +194,10 @@ public sealed class BacklogBonusTierTests
     [TestCase("damage_piercing","PiercingDamage","przebijające")]
     [TestCase("damage_kinetic","KineticDamage","kinetyczne")]
     [TestCase("hull_construction","Construction","klocków")]
+    [TestCase("mobility_wheels","WheelDrive","kół")]
+    [TestCase("mobility_tracks","TrackDrive","gąsienic")]
+    [TestCase("mobility_omni","OmniDrive","Omni")]
+    [TestCase("mobility_hover","HoverDrive","zawisu")]
     public void DeployableCategoryRewardsSurviveSaveAndShowScope(string id,string scope,string label)
     {
         var run=Resources.Load<R1RunDefinition>("R1/Run");var reward=run.Upgrades.SingleOrDefault(p=>p!=null&&p.Id==id);
@@ -277,6 +281,78 @@ public sealed class BacklogBonusTierTests
 
 public sealed class BacklogBonusTierGameplayTests
 {
+    [UnityTest] public IEnumerator DriveSpecificMobilitySurvivesActualNextEncounter()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.StartRun(),Is.True);
+        Assert.That(run.ChooseRoute(0),Is.True);
+        float deadline=Time.realtimeSinceStartup+30;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Transitioning,Is.False);run.Encounter.SetCombatActive(false);RRLW2TestFlow.DefeatAll(run);
+        deadline=Time.realtimeSinceStartup+30;while(run.Progress.State!=R1RunState.Salvage&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        Assert.That(run.ConfirmRewards(System.Array.Empty<string>(),new[]{0}),Is.True);
+        var reward=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.Single(p=>p!=null&&p.Id=="mobility_wheels");
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        string id=model.Inventory.Last(p=>p.UpgradeId==reward.Id).Id;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(id,c,default)==null);
+        Assert.That(run.GarageMount(id,cell),Is.True);yield return null;
+        var effects=run.Player.GetComponent<R3MountedBonusEffects>();
+        Assert.That(effects.DriveMobilityMultiplier,Is.EqualTo(1.2f).Within(.001f));
+        float speed=run.Player.Controller.EffectiveForwardSpeed;Assert.That(speed,Is.GreaterThan(0));
+        Assert.That(run.StartNextEncounter()&&run.ChooseRoute(0),Is.True);
+        deadline=Time.realtimeSinceStartup+30;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Transitioning,Is.False);
+        Assert.That(run.Player.Controller.EffectiveForwardSpeed,Is.EqualTo(speed).Within(.01f));
+    }
+    [UnityTest] public IEnumerator DriveSpecificMobilityFollowsSelectedDriveAndStacksWithGlobalBonus()
+    {
+        foreach(string name in new[]{"WheelDrive","TrackDrive","OmniDrive","HoverDrive"})
+            Assert.That(System.Enum.GetNames(typeof(R1BonusScope)),Does.Contain(name));
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var model=run.VehicleModel;
+        var hoverCell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.HoverEngine,false)==null);
+        Assert.That(run.GarageBuy(hoverCell,R3PartKind.HoverEngine),Is.True);
+        var global=BacklogBonusTierTests.OperationBonus("global-move",.2f,"Increased",R1UpgradeEffect.Mobility);
+        var wheel=BacklogBonusTierTests.OperationBonus("wheel-move",.3f,"Increased",R1UpgradeEffect.Mobility);
+        var hover=BacklogBonusTierTests.OperationBonus("hover-move",.5f,"More",R1UpgradeEffect.Mobility);
+        var track=BacklogBonusTierTests.OperationBonus("track-move",.4f,"Increased",R1UpgradeEffect.Mobility);
+        var omni=BacklogBonusTierTests.OperationBonus("omni-move",.1f,"Increased",R1UpgradeEffect.Mobility);
+        wheel.Scope=(R1BonusScope)System.Enum.Parse(typeof(R1BonusScope),"WheelDrive");
+        hover.Scope=(R1BonusScope)System.Enum.Parse(typeof(R1BonusScope),"HoverDrive");
+        track.Scope=(R1BonusScope)System.Enum.Parse(typeof(R1BonusScope),"TrackDrive");
+        omni.Scope=(R1BonusScope)System.Enum.Parse(typeof(R1BonusScope),"OmniDrive");
+        Assert.That(model.ReceiveBonuses(new[]{global,wheel,hover,track,omni}),Is.True);
+        string globalId=model.Inventory.Single(p=>p.UpgradeId==global.Id).Id;
+        string wheelId=model.Inventory.Single(p=>p.UpgradeId==wheel.Id).Id;
+        string hoverId=model.Inventory.Single(p=>p.UpgradeId==hover.Id).Id;
+        string trackId=model.Inventory.Single(p=>p.UpgradeId==track.Id).Id;
+        string omniId=model.Inventory.Single(p=>p.UpgradeId==omni.Id).Id;
+        foreach(var id in new[]{globalId,wheelId,hoverId,trackId,omniId})
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(id,c,default)==null);
+            Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        var pieces=new[]{globalId,wheelId,hoverId,trackId,omniId}.Select(id=>assembly.Parts.Single(p=>p.Id==id)).ToArray();
+        foreach(var part in pieces)part.gameObject.SetActive(false);yield return null;
+        float baseSpeed=run.Player.Controller.EffectiveForwardSpeed;
+        foreach(var part in pieces)part.gameObject.SetActive(true);yield return null;
+        Assert.That(run.Player.Controller.EffectiveForwardSpeed,Is.EqualTo(baseSpeed*1.5f).Within(.01f));
+        Assert.That(run.ConfigureDrive(R3DriveKind.Hover),Is.True);yield return null;
+        Assert.That(run.Player.Controller.EffectiveForwardSpeed,Is.EqualTo(baseSpeed*1.8f).Within(.01f));
+        // Verify the remaining modifier groups independently of hardware placement.
+        model.SelectedDrive=R3DriveKind.Tracks;yield return null;
+        Assert.That(run.Player.Controller.EffectiveForwardSpeed,Is.EqualTo(baseSpeed*1.6f).Within(.01f));
+        model.SelectedDrive=R3DriveKind.Omni;yield return null;
+        Assert.That(run.Player.Controller.EffectiveForwardSpeed,Is.EqualTo(baseSpeed*1.3f).Within(.01f));
+        Assert.That(run.ConfigureDrive(R3DriveKind.Wheels),Is.True);yield return null;
+        Assert.That(run.Player.Controller.EffectiveForwardSpeed,Is.EqualTo(baseSpeed*1.5f).Within(.01f));
+        pieces[1].gameObject.SetActive(false);yield return null;
+        Assert.That(run.Player.Controller.EffectiveForwardSpeed,Is.EqualTo(baseSpeed*1.2f).Within(.01f));
+        Object.Destroy(global);Object.Destroy(wheel);Object.Destroy(hover);Object.Destroy(track);Object.Destroy(omni);
+    }
     [UnityTest] public IEnumerator ConstructionHullBonusSurvivesActualNextEncounter()
     {
         var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.StartRun(),Is.True);

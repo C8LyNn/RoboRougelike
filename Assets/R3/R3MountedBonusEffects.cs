@@ -38,6 +38,7 @@ namespace RoboRougelike.R3
         private float lastRepairPulse;
         private float overdriveIncrease;
         private float rapidFireReduction;
+        private R3DriveKind lastDrive;
         public R1RunStats EffectiveStats {get;private set;}
         public float DroneDamageMultiplier {get;private set;}=1;
         public float TurretDamageMultiplier {get;private set;}=1;
@@ -50,6 +51,7 @@ namespace RoboRougelike.R3
         public float ShieldDurabilityMultiplier {get;private set;}=1;
         public float RepairEfficiencyMultiplier {get;private set;}=1;
         public float ConstructionHullMultiplier {get;private set;}=1;
+        public float DriveMobilityMultiplier {get;private set;}=1;
 
         // Saturation is only the representable numeric limit, not a balance cap.
         public static float SafeDamageProduct(float amount,float multiplier)
@@ -114,16 +116,16 @@ namespace RoboRougelike.R3
                 if(part!=null&&part.gameObject.activeInHierarchy&&part.Kind==R3PartKind.BonusModule&&part.Operational&&part.transform.IsChildOf(assembly.transform))
                     nextActive.Add(part);
             nextActive.Sort(CompareIds);
-            bool unchanged=!force&&snapshot.Count==nextActive.Count;
+            bool unchanged=!force&&lastDrive==assembly.Model.SelectedDrive&&snapshot.Count==nextActive.Count;
             for(int i=0;unchanged&&i<nextActive.Count;i++)unchanged=snapshot[i].Matches(nextActive[i]);
             if(unchanged)return;
-            snapshot.Clear();active.Clear();
+            lastDrive=assembly.Model.SelectedDrive;snapshot.Clear();active.Clear();
             foreach(var part in nextActive){active.Add(part);snapshot.Add(new BonusSnapshot(part));}
             var stats=baseStats.Copy();
             var damage=new R1ModifierGroup();var basicDamage=new R1ModifierGroup();var basicBlastDamage=new R1ModifierGroup();var droneDamage=new R1ModifierGroup();
             var turretDamage=new R1ModifierGroup();var trapDamage=new R1ModifierGroup();var blastDamage=new R1ModifierGroup();
             var blastTrapDamage=new R1ModifierGroup();var piercingDamage=new R1ModifierGroup();var kineticDamage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
-            var core=new R1ModifierGroup();var reload=new R1ModifierGroup();var shieldDurability=new R1ModifierGroup();var weaponDamage=new R1ModifierGroup();var repairEfficiency=new R1ModifierGroup();var constructionHull=new R1ModifierGroup();
+            var core=new R1ModifierGroup();var reload=new R1ModifierGroup();var shieldDurability=new R1ModifierGroup();var weaponDamage=new R1ModifierGroup();var repairEfficiency=new R1ModifierGroup();var constructionHull=new R1ModifierGroup();var driveMobility=new R1ModifierGroup();
             damage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             weaponDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             basicDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
@@ -164,7 +166,11 @@ namespace RoboRougelike.R3
                         kineticDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 }
                 else if(module.UpgradeEffect==R1UpgradeEffect.Mobility)
-                    mobility.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                {
+                    if(module.UpgradeScope==R1BonusScope.Global)mobility.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||MatchesDrive(module.UpgradeScope,lastDrive))
+                        driveMobility.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                }
                 else if(module.UpgradeEffect==R1UpgradeEffect.Hull)
                 {
                     if(module.UpgradeScope==R1BonusScope.Global)hull.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
@@ -194,9 +200,15 @@ namespace RoboRougelike.R3
             ShieldDurabilityMultiplier=shieldDurability.Apply(1);
             RepairEfficiencyMultiplier=repairEfficiency.Apply(1);
             ConstructionHullMultiplier=constructionHull.Apply(baseStats.Hull);
-            player.Apply(stats,ConstructionHullMultiplier);
+            DriveMobilityMultiplier=driveMobility.Apply(baseStats.Mobility);
+            player.Apply(stats,ConstructionHullMultiplier,DriveMobilityMultiplier);
             player.Controller.SetBasicDamageProfile(basicDamage.Apply(baseStats.Damage),basicBlastDamage.Apply(baseStats.Damage),(float)System.Math.Min(1d,hybridShare));
         }
+        private static bool MatchesDrive(R1BonusScope scope,R3DriveKind drive)=>
+            (scope==R1BonusScope.WheelDrive&&drive==R3DriveKind.Wheels)||
+            (scope==R1BonusScope.TrackDrive&&drive==R3DriveKind.Tracks)||
+            (scope==R1BonusScope.OmniDrive&&drive==R3DriveKind.Omni)||
+            (scope==R1BonusScope.HoverDrive&&drive==R3DriveKind.Hover);
         private void ApplyRepairPulse()
         {
             float elapsed=Mathf.Clamp(Time.time-lastRepairPulse,0,0.5f);

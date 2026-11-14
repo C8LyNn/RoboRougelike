@@ -384,7 +384,7 @@ namespace RoboRougelike.R1
             if(item.UpgradeEffect==R1UpgradeEffect.HybridBlastRounds)return $"Amunicja działa: {Mathf.Min(1,item.UpgradeAmount)*100:0.#}% wybuchowa";
             string name=item.UpgradeEffect switch {
                 R1UpgradeEffect.Hull=>item.UpgradeScope==R1BonusScope.Construction?"Wytrzymałość klocków":"Wytrzymałość",R1UpgradeEffect.Damage=>DamageBonusName(item),
-                R1UpgradeEffect.Reload=>"Czas przeładowania",R1UpgradeEffect.Mobility=>"Mobilność",
+                R1UpgradeEffect.Reload=>"Czas przeładowania",R1UpgradeEffect.Mobility=>MobilityBonusName(item),
                 R1UpgradeEffect.Core=>"Rdzeń",R1UpgradeEffect.EnergyCapacity=>"Pojemność energii",R1UpgradeEffect.EnergyRegeneration=>"Regeneracja energii",R1UpgradeEffect.ShieldDurability=>"Wytrzymałość kopuły",R1UpgradeEffect.RepairEfficiency=>"Skuteczność napraw",_=>"Bonus"
             };
             if(item.UpgradeOperation!=R1ModifierOperation.Increased)return OtherBonusOperationText(item,name,1);
@@ -396,6 +396,9 @@ namespace RoboRougelike.R1
             R1BonusScope.Turrets=>"Obrażenia wieżyczek",R1BonusScope.Traps=>"Obrażenia pułapek",
             R1BonusScope.BlastDamage=>"Obrażenia wybuchowe",R1BonusScope.PiercingDamage=>"Obrażenia przebijające",
             R1BonusScope.KineticDamage=>"Obrażenia kinetyczne",R1BonusScope.Weapons=>"Obrażenia broni",_=>"Obrażenia"};
+        private static string MobilityBonusName(R3PartState item)=>item.UpgradeScope switch {
+            R1BonusScope.WheelDrive=>"Mobilność kół",R1BonusScope.TrackDrive=>"Mobilność gąsienic",
+            R1BonusScope.OmniDrive=>"Mobilność Omni",R1BonusScope.HoverDrive=>"Mobilność zawisu",_=>"Mobilność"};
         private static string OtherBonusOperationText(R3PartState item,string name,int units)
         {
             bool inverse=item.UpgradeEffect==R1UpgradeEffect.Reload;
@@ -419,7 +422,7 @@ namespace RoboRougelike.R1
                 case R1UpgradeEffect.Hull:name=item.UpgradeScope==R1BonusScope.Construction?"Wytrzymałość klocków":"Wytrzymałość";percent=(double)item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.Damage:name=DamageBonusName(item);percent=(double)item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.Reload:name="Czas przeładowania";percent=System.Math.Min(100d,(double)item.UpgradeAmount*units*100);reduction=true;break;
-                case R1UpgradeEffect.Mobility:name="Mobilność";percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.Mobility:name=MobilityBonusName(item);percent=(double)item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.Core:name="Rdzeń";percent=(double)item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.EnergyCapacity:name="Pojemność energii";percent=(double)item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.EnergyRegeneration:name="Regeneracja energii";percent=(double)item.UpgradeAmount*units*100;break;
