@@ -274,6 +274,7 @@ public sealed class BacklogDeviceTierGameplayTests
         enemyBody.position=new Vector3(140,2,140);enemyBody.useGravity=false;enemyBody.linearVelocity=Vector3.zero;
         body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
         yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.forward*3;
+        run.VehicleModel.Economy.TrapBlastDamage=0;run.VehicleModel.Economy.TrapEmpDuration=0;
         Assert.That(service.TryDeploy(kind),Is.True);var trap=GameObject.Find("Pułapka odrzucająca");Assert.That(trap,Is.Not.Null);
         Vector3 origin=trap.transform.position;float ownHp=player.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
         float enemyHp=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
@@ -299,7 +300,9 @@ public sealed class BacklogDeviceTierGameplayTests
         enemyBody.position=new Vector3(140,2,140);enemyBody.useGravity=false;enemyBody.linearVelocity=Vector3.zero;
         body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
         yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.forward*3;
+        run.VehicleModel.Economy.TrapEmpDuration=0; // EMP tuning must not block blast traps.
         Assert.That(service.TryDeploy(R3PartKind.BlastTrapDeployer),Is.True);
+        run.VehicleModel.Economy.TrapEmpDuration=3;
         var blast=GameObject.Find("Pułapka wybuchowa");Assert.That(blast,Is.Not.Null);
         var blastSensor=blast.GetComponentInChildren<R3DeployableTrap>();Assert.That(blastSensor.Activated,Is.False);
         float own=player.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
@@ -314,6 +317,7 @@ public sealed class BacklogDeviceTierGameplayTests
         enemyBody.position=new Vector3(140,2,140);enemyBody.linearVelocity=Vector3.zero;
         body.position=new Vector3(120,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
         yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.forward*3;
+        run.VehicleModel.Economy.TrapBlastDamage=0; // Blast tuning must not block EMP traps.
         Assert.That(service.TryDeploy(R3PartKind.EmpTrapDeployer),Is.True);
         var emp=GameObject.Find("Pułapka EMP");Assert.That(emp,Is.Not.Null);
         var empSensor=emp.GetComponentInChildren<R3DeployableTrap>();

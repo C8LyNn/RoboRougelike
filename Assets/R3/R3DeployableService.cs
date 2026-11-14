@@ -152,9 +152,11 @@ namespace RoboRougelike.R3
             if(float.IsNaN(lifetime)||float.IsInfinity(lifetime)||lifetime<=0||float.IsNaN(cooldown)||float.IsInfinity(cooldown)||cooldown<0)return false;
             if(kind==R3PartKind.JumpPadDeployer&&(float.IsNaN(launch)||float.IsInfinity(launch)||launch<=0))return false;
             float radius=assembly.Model.Economy.TrapTriggerRadius,damage=assembly.Model.Economy.TrapBlastDamage,duration=assembly.Model.Economy.TrapEmpDuration;
-            if(trap&&(float.IsNaN(radius)||float.IsInfinity(radius)||radius<=0||float.IsNaN(damage)||float.IsInfinity(damage)||damage<=0||
-                float.IsNaN(duration)||float.IsInfinity(duration)||duration<=0||radius>float.MaxValue/2||
-                (double)damage*units>float.MaxValue||(double)duration*units>float.MaxValue))return false;
+            if(trap&&(float.IsNaN(radius)||float.IsInfinity(radius)||radius<=0))return false;
+            if(kind==R3PartKind.BlastTrapDeployer&&(float.IsNaN(damage)||float.IsInfinity(damage)||damage<=0||
+                (double)damage*units>float.MaxValue))return false;
+            if(kind==R3PartKind.EmpTrapDeployer&&(float.IsNaN(duration)||float.IsInfinity(duration)||duration<=0||
+                radius>float.MaxValue/2||(double)duration*units>float.MaxValue))return false;
             float repel=assembly.Model.Economy.TrapRepelSpeed;
             if(kind==R3PartKind.RepelTrapDeployer&&(float.IsNaN(repel)||float.IsInfinity(repel)||repel<=0||(double)repel*units>float.MaxValue))return false;
             if(!energy.TrySpend(cost))return false;
