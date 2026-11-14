@@ -38,6 +38,26 @@ public sealed class BacklogEmpTierPhysicsTests
         yield return new EnterPlayMode();
     }
 
+    [UnityTest] public IEnumerator DamageableWithoutRendererStillSettlesDamage()
+    {
+        var invisible=new GameObject("Niewidoczny element z HP");
+        var hp=invisible.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(100,false);
+        Assert.That(invisible.GetComponent<Renderer>(),Is.Null);
+        Assert.DoesNotThrow(()=>hp.ApplyDamage(10,invisible.transform.position,Vector3.up));
+        Assert.That(hp.CurrentHp,Is.EqualTo(90).Within(.001));
+        bool died=false;hp.Died+=()=>died=true;
+        Assert.DoesNotThrow(()=>hp.ApplyDamage(100,invisible.transform.position,Vector3.up));
+        Assert.That(hp.IsDead,Is.True);Assert.That(died,Is.True,"Cosmetic feedback must not interrupt death callbacks.");
+        Object.Destroy(invisible);yield return null;
+    }
+    [UnityTest] public IEnumerator MuzzleWithoutRendererStillProducesNoException()
+    {
+        var barrel=new GameObject("Lufa bez renderera");
+        barrel.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Configure(100,false);
+        Assert.DoesNotThrow(()=>RoboRougelike.R6.R6CombatFeedback.Muzzle(barrel.transform,R4WeaponKind.Basic));
+        Object.Destroy(barrel);yield return null;
+    }
+
     [UnityTest] public IEnumerator TierTwoAuraSpendsEnergyAndDamagesAnEnemyCollider()
     {
         var model = new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));

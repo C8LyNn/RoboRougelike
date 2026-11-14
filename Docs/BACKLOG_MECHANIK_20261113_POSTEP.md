@@ -471,3 +471,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Wybuchowa pułapka i aktywne pole obrażeń uwzględniają wrogie kopuły: osłonięta część nie otrzymuje obrażeń, a pierwsza odsłonięta kopuła przyjmuje je raz na wybuch albo raz na krok działania pola. Przyjazna kopuła nie blokuje własnej pułapki. Zwykłe ściany nadal działają według dotychczasowych zasad pułapek.
 - Unity 6000.3.14f1: **13 PASS, 0 FAIL**, exit 0 (`shield-traps-first.xml`, `.log` w `Prototypy`), w tym rzeczywista pułapka wybuchowa i pole przeciw osłoniętemu przeciwnikowi, ratunek, wcześniejsze pułapki, aura i rakiety. Dodatkowo **3 PASS, 0 FAIL** (`shield-traps-final.xml`, `.log`) dla dwóch wrogich osłon oraz przyjaznej osłony. Przed zmianą `shield-traps-red.xml`: **2 FAIL** — kopuła nie otrzymywała obrażeń. Pozostałe efekty pułapek, ręczna gra i wydajność wielu urządzeń: **NOT RUN**.
+
+#### 44. Trafienia elementów bez renderera
+
+- Naprawiono obsługę efektów trafienia i wylotu broni dla fizycznych obiektów bez renderera. Brak grafiki nie przerywa teraz rozliczenia HP ani wywołania zdarzenia zniszczenia. Wykorzystano porównanie obiektów Unity zamiast operatora, który w edytorze błędnie traktował brakujący komponent jak prawidłowy.
+- Unity 6000.3.14f1: **9 PASS, 0 FAIL**, exit 0 (`hit-no-renderer-final.xml`, `.log` w `Prototypy`): obrażenia i zdarzenie zniszczenia bez renderera, wylot broni, aura oraz regresja osłon. Przed zmianą `hit-no-renderer-red.xml` i `muzzle-no-renderer-red2.xml`: **FAIL** z `MissingComponentException`. Wcześniejszy test samej lufy bez fizycznego elementu przechodził; błąd pojawiał się po dodaniu fizycznego komponentu HP. Ręczna gra: **NOT RUN**.
