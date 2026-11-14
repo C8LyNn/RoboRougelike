@@ -32,6 +32,7 @@ namespace RoboRougelike.Mechanics.Rockets
         public static event System.Action<RocketProjectile,Vector3,Vector3> Detonated;
         public bool IsResolved => resolved;
         public bool IsInitialized => initialized;
+        public bool ExplodesWhenIntercepted => initialized&&spec.ExplodeWhenIntercepted;
         public float HitPoints => hitPoints;
         public Transform OwnerRoot => ownerRoot;
         public Vector3 FlightVelocity => forward*speed+inheritedVelocity;
@@ -177,7 +178,7 @@ namespace RoboRougelike.Mechanics.Rockets
             if (dealDamage)
             {
                 RocketBlastResult result = RocketBlastResolver.Resolve(point, normal, spec,
-                    ownerRoot, attacker, blastBuffer, occlusionBuffer);
+                    ownerRoot, attacker, blastBuffer, occlusionBuffer,flightBoundary as IRocketBlastBoundary);
                 if (result.Overflow)
                     Debug.LogWarning("WPN-004: blast overlap overflow; no explosion damage applied.", this);
                 try{Detonated?.Invoke(this,point,normal);}catch(System.Exception error){Debug.LogException(error);}

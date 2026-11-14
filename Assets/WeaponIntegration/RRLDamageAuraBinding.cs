@@ -20,6 +20,9 @@ namespace RoboRougelike.WeaponIntegration
         float enemyDamageScale=1;
         bool previousHeld;
         readonly Dictionary<Transform,Collider> targets=new Dictionary<Transform,Collider>();
+        readonly List<Collider> unblockedTargets=new List<Collider>();
+        readonly List<R3ShieldDome.BlastBoundary> shieldBoundaries=new List<R3ShieldDome.BlastBoundary>();
+        readonly List<R3ShieldDome.BlastBoundary> exposedShields=new List<R3ShieldDome.BlastBoundary>();
         Collider[] overlaps=new Collider[128];
         public void Bind(R3PartState state,Transform owner,float damageScale=1)
         {
@@ -79,8 +82,21 @@ namespace RoboRougelike.WeaponIntegration
             }
             float scale=tank!=null?tank.PackageDamageScale:enemyDamageScale;
             float damage=DamagePerSecond*R3VehicleModel.TierEffectUnits(State.Tier)*scale*step;
+            R3ShieldDome.CollectBlastBoundaries(origin,Radius,Device.Owner,shieldBoundaries);exposedShields.Clear();unblockedTargets.Clear();
+            foreach(var boundary in shieldBoundaries)
+            {
+                if(R3ShieldDome.TryFirstHit(origin,boundary.Point,Device.Owner,out var first,out _)&&first!=boundary.Dome)continue;
+                exposedShields.Add(boundary);
+            }
             foreach(var collider in targets.Values)
+            {
+                if(collider==null)continue;var point=collider.ClosestPoint(origin);
+                if(!R3ShieldDome.TryFirstHit(origin,point,Device.Owner,out _,out _))unblockedTargets.Add(collider);
+            }
+            foreach(var collider in unblockedTargets)
                 if(collider!=null)RRLHitRouter.Apply(collider,damage,collider.ClosestPoint(origin),collider.transform.position-origin,Device.Owner);
+            foreach(var boundary in exposedShields)
+                if(boundary.Dome!=null)boundary.Dome.Absorb(damage,boundary.Point,(boundary.Point-origin).normalized);
         }
         void Stop(){IsActive=false;}
         void OnDisable(){Stop();previousHeld=false;}

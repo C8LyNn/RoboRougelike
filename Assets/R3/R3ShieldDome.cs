@@ -49,6 +49,26 @@ namespace RoboRougelike.R3
         }
         Vector3 Center => boundary.transform.TransformPoint(boundary.center);
         float Radius => boundary.radius * Mathf.Max(Mathf.Abs(transform.lossyScale.x), Mathf.Abs(transform.lossyScale.y), Mathf.Abs(transform.lossyScale.z));
+        public readonly struct BlastBoundary
+        {
+            public readonly R3ShieldDome Dome;
+            public readonly Vector3 Center,Point;
+            public readonly float Radius,Distance;
+            public BlastBoundary(R3ShieldDome dome,Vector3 center,float radius,Vector3 point,float distance)
+            {Dome=dome;Center=center;Radius=radius;Point=point;Distance=distance;}
+        }
+        public static void CollectBlastBoundaries(Vector3 origin,float blastRadius,Transform source,List<BlastBoundary> output)
+        {
+            output.Clear();
+            foreach(var dome in active)
+            {
+                if(dome==null||!dome.Live||!dome.Enemy(source))continue;
+                Vector3 center=dome.Center,offset=origin-center;float radius=dome.Radius,fromCenter=offset.magnitude;
+                if(fromCenter<=radius||fromCenter-radius>blastRadius||fromCenter<=.00001f)continue;
+                float distance=fromCenter-radius;Vector3 point=center+offset*(radius/fromCenter);
+                output.Add(new BlastBoundary(dome,center,radius,point,distance));
+            }
+        }
         void OnTriggerEnter(Collider other)
         {
             if(!Live || other == null) return;
@@ -98,20 +118,64 @@ namespace RoboRougelike.R3
             if(Live && amount > 0 && !float.IsNaN(amount) && !float.IsInfinity(amount)) hp.ApplyDamage(amount,point,direction);
         }
     }
-    public sealed class R3ShieldRocketPayload : MonoBehaviour,IRocketFlightBoundary
+    public sealed class R3ShieldRocketPayload : MonoBehaviour,IRocketFlightBoundary,IRocketBlastBoundary
     {
         public float Damage = 60f;
         public Vector3 LaunchPosition {get;private set;}
+        readonly List<R3ShieldDome.BlastBoundary> blastBoundaries=new List<R3ShieldDome.BlastBoundary>();
+        readonly List<R3ShieldDome.BlastBoundary> visibleBlastBoundaries=new List<R3ShieldDome.BlastBoundary>();
+        Vector3 blastOrigin;RocketSpec blastSpec;
         void OnEnable()=>LaunchPosition=transform.position;
         public bool TryIntercept(RocketProjectile projectile,Vector3 origin,Vector3 direction,float distance)
         {
             if(projectile==null||!projectile.IsInitialized||projectile.IsResolved||projectile.OwnerRoot==null||
                !R3ShieldDome.TryFirstHit(origin,origin+direction*distance,projectile.OwnerRoot,out var shield,out float hitDistance))return false;
-            Vector3 point=origin+direction*hitDistance;var body=projectile.GetComponent<Rigidbody>();
-            if(body!=null)body.position=point;projectile.transform.position=point;
+            Vector3 point=origin+direction*hitDistance,stop=point-direction*.02f;var body=projectile.GetComponent<Rigidbody>();
+            if(body!=null)body.position=stop;projectile.transform.position=stop;
+            bool explodes=projectile.ExplodesWhenIntercepted;
             projectile.ApplyInterceptionDamage(float.MaxValue);
             if(!projectile.IsResolved)return false;
-            shield.Absorb(Damage,point,direction);return true;
+            if(!explodes)shield.Absorb(Damage,point,direction);return true;
+        }
+        public bool PrepareBlast(Vector3 center,RocketSpec spec,Transform ownerRoot,RaycastHit[] rayHits)
+        {
+            blastOrigin=center;blastSpec=spec;visibleBlastBoundaries.Clear();
+            R3ShieldDome.CollectBlastBoundaries(center,spec.Radius,ownerRoot,blastBoundaries);
+            foreach(var boundary in blastBoundaries)
+            {
+                if(BlocksBlastBefore(boundary.Point,boundary.Dome))continue;
+                if(boundary.Distance<=.001f){visibleBlastBoundaries.Add(boundary);continue;}
+                Vector3 direction=(boundary.Point-center)/boundary.Distance;
+                int count=Physics.RaycastNonAlloc(center,direction,rayHits,Mathf.Max(0,boundary.Distance-.001f),spec.OcclusionMask,QueryTriggerInteraction.Ignore);
+                if(count>=rayHits.Length)return false;
+                if(count==0)visibleBlastBoundaries.Add(boundary);
+            }
+            return true;
+        }
+        public bool BlocksBlast(Vector3 targetPoint)=>BlocksBlastBefore(targetPoint,null);
+        bool BlocksBlastBefore(Vector3 targetPoint,R3ShieldDome ignored)
+        {
+            Vector3 delta=targetPoint-blastOrigin;float length=delta.magnitude;if(length<=.00001f)return false;
+            Vector3 direction=delta/length;
+            foreach(var boundary in blastBoundaries)
+            {
+                if(boundary.Dome==ignored)continue;
+                Vector3 offset=blastOrigin-boundary.Center;float c=Vector3.Dot(offset,offset)-boundary.Radius*boundary.Radius;
+                if(c<=0)continue;
+                float b=Vector3.Dot(offset,direction),discriminant=b*b-c;
+                if(discriminant<0)continue;
+                float distance=-b-Mathf.Sqrt(discriminant);
+                if(distance>=0&&distance<length-.001f)return true;
+            }
+            return false;
+        }
+        public void CommitBlast()
+        {
+            foreach(var boundary in visibleBlastBoundaries)
+            {
+                float amount=RocketMath.BlastDamage(boundary.Distance,blastSpec.Radius,blastSpec.CenterDamage,blastSpec.EdgeDamageFraction);
+                boundary.Dome?.Absorb(amount,boundary.Point,(boundary.Point-blastOrigin).normalized);
+            }
         }
     }
 }

@@ -3,6 +3,14 @@ using UnityEngine;
 
 namespace RoboRougelike.Mechanics.Rockets
 {
+    // Optional game-side blast occlusion. Preparation is read-only so overflow
+    // cannot leave a partially settled explosion.
+    public interface IRocketBlastBoundary
+    {
+        bool PrepareBlast(Vector3 center,RocketSpec spec,Transform ownerRoot,RaycastHit[] rayHits);
+        bool BlocksBlast(Vector3 targetPoint);
+        void CommitBlast();
+    }
     public readonly struct RocketBlastResult
     {
         public readonly bool Overflow;
@@ -25,7 +33,7 @@ namespace RoboRougelike.Mechanics.Rockets
         }
 
         public static RocketBlastResult Resolve(Vector3 center, Vector3 surfaceNormal, RocketSpec spec,
-            Transform ownerRoot, GameObject attacker, Collider[] overlaps, RaycastHit[] rayHits)
+            Transform ownerRoot, GameObject attacker, Collider[] overlaps, RaycastHit[] rayHits, IRocketBlastBoundary boundary = null)
         {
             if (overlaps == null || overlaps.Length == 0 || rayHits == null || rayHits.Length == 0)
                 return new RocketBlastResult(true, 0, 0f);
@@ -33,6 +41,8 @@ namespace RoboRougelike.Mechanics.Rockets
                 overlaps, spec.ExplosionMask, QueryTriggerInteraction.Ignore);
             if (count >= overlaps.Length)
                 return new RocketBlastResult(true, 0, 0f); // fail closed, never partially damage
+            if(boundary!=null&&!boundary.PrepareBlast(center,spec,ownerRoot,rayHits))
+                return new RocketBlastResult(true, 0, 0f);
 
             var unique = new Dictionary<IRocketDamageReceiver, Candidate>();
             for (int i = 0; i < count; i++)
@@ -56,6 +66,7 @@ namespace RoboRougelike.Mechanics.Rockets
             {
                 Candidate candidate = pair.Value;
                 if (candidate.Distance > spec.Radius) continue;
+                if(boundary!=null&&boundary.BlocksBlast(candidate.Point))continue;
                 bool overflow;
                 bool hasSight = CanSee(center, candidate, pair.Key, spec, rayHits, out overflow);
                 if (overflow) return new RocketBlastResult(true, 0, 0f);
@@ -75,6 +86,7 @@ namespace RoboRougelike.Mechanics.Rockets
             var impulseSpent = new Dictionary<Rigidbody, float>();
             float total = 0f;
             int damaged = 0;
+            boundary?.CommitBlast();
             foreach (var pair in visible)
             {
                 Candidate c = pair.Value;
