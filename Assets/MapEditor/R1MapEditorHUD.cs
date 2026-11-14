@@ -120,6 +120,11 @@ namespace RoboRougelike.R1
             }
             Panel(new Rect(18,18,560,78));GUI.Label(new Rect(32,27,535,55),run.EditorWorld.Finished?"META OSIĄGNIĘTA • Esc — wróć do edytora":"TEST MAPY • Esc — pauza / powrót do edytora",small);
             DrawAimReticle(run);
+            GUI.enabled=run.EmergencyRescueCooldownLeft<=0;
+            if(GUI.Button(new Rect(1090,665,165,38),run.EmergencyRescueCooldownLeft>0?$"Ratunek {Mathf.CeilToInt(run.EmergencyRescueCooldownLeft)}s":"Ratunek",compactButton))run.TryEmergencyRescue();
+            GUI.enabled=true;
+            if(run.EmergencyRescueNotice!=null||run.EmergencyRescueActive)GUI.Label(new Rect(570,630,680,30),
+                run.EmergencyRescueNotice??"Ratunek: niewrażliwość; atak wstrzymany.",small);
             GUI.Label(new Rect(25,677,1000,25),"WASD — jazda • Mysz — widok i celowanie • LPM — ogień • Esc — pauza",small);
         }
     }

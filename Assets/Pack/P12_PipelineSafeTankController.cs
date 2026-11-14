@@ -285,6 +285,10 @@ public float CurrentForwardSpeed =>
                 modularAssembly,this,aimPoint,LastConsumedAimCollider);
             RoboRougelike.WeaponIntegration.RRLWeaponReticles.Collect(aimCamera,modularAssembly,this,aimPoint,weaponReticles);
 
+            var run=RoboRougelike.R1.R1RunController.Instance;
+            if(run!=null&&run.Player!=null&&run.Player.Controller==this&&run.EmergencyRescueAttackBlocked)
+            {if(modularAssembly!=null)modularAssembly.SetSlotTriggers(false,false,false,false);return;}
+
             if(modularAssembly!=null)
             {
                 modularAssembly.SetSlotTriggers(fireHeld,secondaryFireHeld,thirdFireHeld,fourthFireHeld);

@@ -107,6 +107,7 @@ namespace RoboRougelike.R1
             try{candidate=new R5RunPlan(Definition.RouteStages,RequestedSeed);}
             catch(System.ArgumentException problem){Error=problem.Message;return false;}
             if(!Progress.Start())return false;
+            ResetEmergencyRescue();
             VehicleModel=new R3VehicleModel(R3VehicleCatalog.Create(SelectedVehicle,SelectedVehicleVariant,Definition.GaragePrices),Definition.GaragePrices);
             VehicleModel.Award(R3VehicleCatalog.StartingScrap(SelectedVehicle));
             runId=System.Guid.NewGuid().ToString("N");
@@ -308,6 +309,7 @@ namespace RoboRougelike.R1
         private IEnumerator BeginEncounter()
         {
             Transitioning = true; Paused = false; SetSimulation(false);
+            ResetEmergencyRescue();
             pickupGraceDeadline=-1;
             Encounter.Clear();
             if(ld02Requested)playerSpawn=ActivateLD02Arena();

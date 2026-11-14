@@ -84,6 +84,9 @@ namespace RoboRougelike.R3
             =>SetSlotTriggers(groupA,groupB,false,false);
         public void SetSlotTriggers(bool groupA,bool groupB,bool groupC,bool groupD)
         {
+            var run=RoboRougelike.R1.R1RunController.Instance;
+            if(run!=null&&run.Player!=null&&run.Player.gameObject==gameObject&&run.EmergencyRescueAttackBlocked)
+                groupA=groupB=groupC=groupD=false;
             var pressed=new[]{groupA,groupB,groupC,groupD};var slots=Model.GetWeaponSlots();
             foreach(var part in Parts)
             {
@@ -221,6 +224,8 @@ namespace RoboRougelike.R3
         }
         public void FireSlot(int slot)
         {
+            var run=RoboRougelike.R1.R1RunController.Instance;
+            if(run!=null&&run.Player!=null&&run.Player.gameObject==gameObject&&run.EmergencyRescueAttackBlocked)return;
             var slots=Model.GetWeaponSlots();if(slot<0||slot>=4||!slots[slot].HasValue)return;
             foreach(var part in Parts)
                 if(part!=null && part.Kind==R3PartKind.Gun && R3VehicleModel.MatchesWeaponSlot(part.Weapon,slot,slots,Model.CreativeMode) && part.Operational && part.gameObject.activeInHierarchy && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)

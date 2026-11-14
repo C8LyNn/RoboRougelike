@@ -98,6 +98,15 @@ namespace RogueMachine.P12PipelineSafe
             if (dead || amount<=0 || float.IsNaN(amount) || float.IsInfinity(amount))
                 return 0;
 
+            // Apply once, before impact propagation and device mitigation, to
+            // every damage source routed through the player's canonical HP.
+            var run=RoboRougelike.R1.R1RunController.Instance;
+            if(run!=null&&run.EmergencyRescueActive&&run.Player!=null&&transform.IsChildOf(run.Player.transform))
+            {
+                amount*=run.Progress.State==RoboRougelike.R1.R1RunState.Combat ? .5f : 0f;
+                if(amount<=0)return 0;
+            }
+
             var filter=GetComponentInParent<RoboRougelike.WeaponIntegration.IRRLPreHpFilter>();
             if(filter!=null)
             {

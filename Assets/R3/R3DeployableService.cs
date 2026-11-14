@@ -120,6 +120,9 @@ namespace RoboRougelike.R3
         public bool TryDeploy(R3PartKind kind)
         {
             if(!R3VehicleModel.IsDeployableSlotPart(kind)||!PlayerCanUse()||Time.time<ReadyAt(kind))return false;
+            var run=RoboRougelike.R1.R1RunController.Instance;
+            if(run!=null&&run.EmergencyRescueAttackBlocked&&kind!=R3PartKind.RampDeployer&&kind!=R3PartKind.WallDeployer&&
+                kind!=R3PartKind.JumpPadDeployer&&kind!=R3PartKind.HealingTurretGenerator&&kind!=R3PartKind.SupportTurretGenerator&&kind!=R3PartKind.ShieldTurretGenerator)return false;
             if(kind==R3PartKind.FlyingDroneGenerator||kind==R3PartKind.GroundDroneGenerator)return TryLaunchDrone(kind);
             if(kind==R3PartKind.OffensiveTurretGenerator||kind==R3PartKind.HealingTurretGenerator||kind==R3PartKind.SupportTurretGenerator||kind==R3PartKind.ShieldTurretGenerator)return TryPlaceTurret(kind);
             if(body.linearVelocity.sqrMagnitude<.25f)return false;

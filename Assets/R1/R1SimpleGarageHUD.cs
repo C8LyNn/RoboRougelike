@@ -817,6 +817,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(12,605,245,42),model.CreativeMode?$"Magazyn {model.Inventory.Count} • naprawy":$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
             if(run.SafeVendorAvailable&&GUI.Button(new Rect(284,608,205,36),"Oferty sprzedawcy",compactButton))OpenSimpleGarageOptions(3);
+            if(GUI.Button(new Rect(500,608,165,36),"Ustaw pojazd",compactButton))run.TryEmergencyRescue();
             if(garageShortcutLabel==null)garageShortcutLabel=new GUIStyle(small){fontSize=14,wordWrap=false};
             GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • ŚPM: wybierz typ\nPPM przeciągnij: widok • U: spód\nQ/E R/F Z/X: obrót • Shift: część\nCtrl+LPM: napraw • Home: widok",garageShortcutLabel);
             string garageFeedback=SimpleGarageFeedback(run);
@@ -883,8 +884,9 @@ namespace RoboRougelike.R1
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
             if(GUI.Button(new Rect(458,784,138,40),"Ustawienia",compactButton))OpenSimpleGarageOptions(0);
             if(GUI.Button(new Rect(606,784,138,40),"Aktywności",compactButton))OpenSimpleGarageOptions(1);
-            if(GUI.Button(new Rect(458,831,run.SafeVendorAvailable?138:286,40),"Dopasuj widok",compactButton))garage.FrameVehicle();
-            if(run.SafeVendorAvailable&&GUI.Button(new Rect(606,831,138,40),"Sprzedawca",compactButton))OpenSimpleGarageOptions(3);
+            if(GUI.Button(new Rect(458,831,run.SafeVendorAvailable?90:138,40),"Widok",compactButton))garage.FrameVehicle();
+            if(GUI.Button(new Rect(run.SafeVendorAvailable?552:606,831,run.SafeVendorAvailable?90:138,40),"Ustaw",compactButton))run.TryEmergencyRescue();
+            if(run.SafeVendorAvailable&&GUI.Button(new Rect(646,831,98,40),"Oferty",compactButton))OpenSimpleGarageOptions(3);
             string garageFeedback=SimpleGarageFeedback(run);
             DrawGarageNotice(true,garageFeedback+
                 "\nPPM: zdejmij • ŚPM: wybierz typ • przeciągnij PPM: obrót widoku"+

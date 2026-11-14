@@ -380,6 +380,11 @@ namespace RoboRougelike.R1
                     if(row==0&&run.Encounter.Enemies.Count>0)GUI.Label(new Rect(940,80,305,50),"Wszyscy przeciwnicy pokonani.",small);
                     }
                     if(GUI.Button(new Rect(1130,670,125,35),"Pauza",compactButton))run.TogglePause();
+                    GUI.enabled=run.EmergencyRescueCooldownLeft<=0;
+                    if(GUI.Button(new Rect(990,670,130,35),run.EmergencyRescueCooldownLeft>0?$"Ratunek {Mathf.CeilToInt(run.EmergencyRescueCooldownLeft)}s":"Ratunek",compactButton))run.TryEmergencyRescue();
+                    GUI.enabled=true;
+                    if(run.EmergencyRescueNotice!=null||run.EmergencyRescueActive)GUI.Label(new Rect(660,637,450,30),
+                        run.EmergencyRescueNotice??"Ratunek: 50% otrzymywanych obrażeń; atak wstrzymany.",small);
                     DrawAimReticle(run);
                     GUI.Label(new Rect(24, 676, 900, 26),!combatDetailsOpen?
                         "WASD — ruch • Mysz — celowanie • LPM/PPM/Q/E — broń • 1–4 — moduły • I — szczegóły":

@@ -37,6 +37,8 @@ namespace RoboRougelike.WeaponIntegration
         // Enemies request the aura while in range; repeated requests do not toggle it.
         public bool Fire()
         {
+            var run=R1RunController.Instance;
+            if(run!=null&&run.Player!=null&&Device!=null&&Device.Owner==run.Player.transform&&run.EmergencyRescueAttackBlocked)return false;
             if(Device==null||!Device.Available||energy==null||!energy.CanSpend(EnergyPerSecond*Time.fixedDeltaTime))return false;
             IsActive=true;return true;
         }
@@ -45,6 +47,8 @@ namespace RoboRougelike.WeaponIntegration
         void FixedUpdate()
         {
             if(!IsActive)return;
+            var run=R1RunController.Instance;
+            if(run!=null&&run.Player!=null&&Device!=null&&Device.Owner==run.Player.transform&&run.EmergencyRescueAttackBlocked)return;
             if(Device==null||!Device.HardwareAvailable||energy==null){Stop();return;}
             // Pause and scene transitions must not consume energy or deal damage.
             if(!Device.Available)return;

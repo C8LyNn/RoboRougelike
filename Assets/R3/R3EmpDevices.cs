@@ -40,7 +40,7 @@ namespace RoboRougelike.R3
         bool PlayerCanUse()
         {
             var run=R1RunController.Instance;
-            return assembly!=null&&energy!=null&&run!=null&&run.Player!=null&&run.Player.gameObject==gameObject&&run.CanUseMovement;
+            return assembly!=null&&energy!=null&&run!=null&&run.Player!=null&&run.Player.gameObject==gameObject&&run.CanUseMovement&&!run.EmergencyRescueAttackBlocked;
         }
         int Units(R3PartKind kind,out float cost)
         {
