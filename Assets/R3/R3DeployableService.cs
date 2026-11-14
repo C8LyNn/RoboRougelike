@@ -255,6 +255,7 @@ namespace RoboRougelike.R3
                 !energy.CanSpend(cost)||float.IsNaN(e.DroneSpeed)||float.IsInfinity(e.DroneSpeed)||e.DroneSpeed<=0||
                 float.IsNaN(e.DroneCooldown)||float.IsInfinity(e.DroneCooldown)||e.DroneCooldown<0||
                 float.IsNaN(e.DroneLifetime)||float.IsInfinity(e.DroneLifetime)||e.DroneLifetime<=0||
+                float.IsNaN(e.DroneFollowRadius)||float.IsInfinity(e.DroneFollowRadius)||e.DroneFollowRadius<0||float.IsNaN(e.DroneHoverHeight)||float.IsInfinity(e.DroneHoverHeight)||e.DroneHoverHeight<0||
                 float.IsNaN(e.DroneAttackRange)||float.IsInfinity(e.DroneAttackRange)||e.DroneAttackRange<=0||float.IsNaN(e.DroneFireInterval)||float.IsInfinity(e.DroneFireInterval)||e.DroneFireInterval<=0||
                 (!healing&&!support&&(float.IsNaN(e.DroneDamage)||float.IsInfinity(e.DroneDamage)||e.DroneDamage<=0))||
                 (healing&&(float.IsNaN(e.HealingDroneRadius)||float.IsInfinity(e.HealingDroneRadius)||e.HealingDroneRadius<=0||
@@ -314,7 +315,7 @@ namespace RoboRougelike.R3
                 }
                 drone.AddComponent<R6VehicleDrive>().RefreshParts();
             }
-            var behaviour=drone.AddComponent<R3FlyingDrone>();behaviour.Configure(transform,e.DroneSpeed,e.DroneFireInterval,healing?e.HealingDroneDamage:support?e.SupportDroneDamage:e.DroneDamage,e.DroneAttackRange);behaviour.ConfigureGenerator(kind);if(healing)drone.AddComponent<R3HealingTurret>().Configure(assembly,e.HealingDroneRadius,e.HealingDroneRate);
+            var behaviour=drone.AddComponent<R3FlyingDrone>();behaviour.Configure(transform,e.DroneSpeed,e.DroneFireInterval,healing?e.HealingDroneDamage:support?e.SupportDroneDamage:e.DroneDamage,e.DroneAttackRange,e.DroneFollowRadius,e.DroneHoverHeight);behaviour.ConfigureGenerator(kind);if(healing)drone.AddComponent<R3HealingTurret>().Configure(assembly,e.HealingDroneRadius,e.HealingDroneRate);
             if(support)drone.AddComponent<R3SupportTurret>().Configure(assembly,e.SupportDroneRadius,e.SupportDroneEnergyPerSecond);
             hp.Died+=()=>{if(drone!=null)Destroy(drone);};spawned.Add(drone);Destroy(drone,e.DroneLifetime);return true;
         }

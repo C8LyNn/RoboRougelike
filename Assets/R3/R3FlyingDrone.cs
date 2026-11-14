@@ -89,14 +89,14 @@ namespace RoboRougelike.R3
     // A physical, temporary ally. It follows a loose radius rather than a fixed offset.
     public sealed class R3FlyingDrone : MonoBehaviour,IRRLTeamMember
     {
-        Transform owner;Rigidbody body;Collider ownCollider;float speed,interval,damage,nextShot,nextScan,attackRange=40f;
+        Transform owner;Rigidbody body;Collider ownCollider;float speed,interval,damage,nextShot,nextScan,attackRange=40f,followRadius=6f,hoverHeight=3f;
         P12PipelineSafeEnemyTurret target;Collider aimCollider;RoboRougelike.R6.R6VehicleDrive groundDrive;bool stationary;
         public bool IsGround=>groundDrive!=null;
         public bool IsTurret=>stationary;
         public R3PartKind GeneratorKind {get;private set;}=R3PartKind.FlyingDroneGenerator;
         public int TeamId=>RRLHitRouter.Team(owner);
-        public void Configure(Transform source,float moveSpeed,float fireInterval,float shotDamage,float range=40f)
-        {owner=source;speed=moveSpeed;interval=fireInterval;damage=shotDamage;attackRange=float.IsNaN(range)||float.IsInfinity(range)||range<=0?40f:range;body=GetComponent<Rigidbody>();ownCollider=GetComponent<Collider>();groundDrive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();}
+        public void Configure(Transform source,float moveSpeed,float fireInterval,float shotDamage,float range=40f,float follow=6f,float height=3f)
+        {owner=source;speed=moveSpeed;interval=fireInterval;damage=shotDamage;attackRange=float.IsNaN(range)||float.IsInfinity(range)||range<=0?40f:range;followRadius=float.IsNaN(follow)||float.IsInfinity(follow)||follow<0?6f:follow;hoverHeight=float.IsNaN(height)||float.IsInfinity(height)||height<0?3f:height;body=GetComponent<Rigidbody>();ownCollider=GetComponent<Collider>();groundDrive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();}
         public void ConfigureGenerator(R3PartKind kind){GeneratorKind=kind;}
         public void ConfigureTurret(Transform source,float fireInterval,float shotDamage,float range=40f)
         {Configure(source,0,fireInterval,shotDamage,range);stationary=true;}
@@ -106,13 +106,13 @@ namespace RoboRougelike.R3
             Vector3 delta=owner.position-body.position;Vector3 horizontal=Vector3.ProjectOnPlane(delta,Vector3.up);
             if(!stationary&&groundDrive!=null)
             {
-                if(horizontal.magnitude>6)groundDrive.StepToward(horizontal.normalized,speed,90);
+                if(horizontal.magnitude>followRadius)groundDrive.StepToward(horizontal.normalized,speed,90);
                 else groundDrive.Step(0,0,speed,speed,90);
             }
             else if(!stationary)
             {
-                Vector3 desired=horizontal.magnitude>6?horizontal.normalized*speed:Vector3.zero;
-                desired.y=Mathf.Clamp((owner.position.y+3-body.position.y)*2,-speed,speed);
+                Vector3 desired=horizontal.magnitude>followRadius?horizontal.normalized*speed:Vector3.zero;
+                desired.y=Mathf.Clamp((owner.position.y+hoverHeight-body.position.y)*2,-speed,speed);
                 body.AddForce(Vector3.ClampMagnitude((desired-body.linearVelocity)*3,speed*4),ForceMode.Acceleration);
             }
             var run=R1RunController.Instance;

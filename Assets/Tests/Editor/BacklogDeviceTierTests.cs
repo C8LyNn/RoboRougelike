@@ -18,6 +18,14 @@ public sealed class BacklogDeviceTierTests
         var model=Model();model.Economy.DroneAttackRange=70;model.Economy.TurretAttackRange=90;
         var copy=model.DeepCopy();Assert.That(copy.Economy.DroneAttackRange,Is.EqualTo(70));Assert.That(copy.Economy.TurretAttackRange,Is.EqualTo(90));
     }
+    [Test] public void DroneFollowSettingsHaveDefaultsAndSurviveModelCopy()
+    {
+        var radius=typeof(R3GarageEconomy).GetField("DroneFollowRadius");var height=typeof(R3GarageEconomy).GetField("DroneHoverHeight");
+        Assert.That(radius,Is.Not.Null);Assert.That(height,Is.Not.Null);
+        var model=Model();Assert.That((float)radius.GetValue(model.Economy),Is.EqualTo(6));Assert.That((float)height.GetValue(model.Economy),Is.EqualTo(3));
+        radius.SetValue(model.Economy,20f);height.SetValue(model.Economy,6f);var copy=model.DeepCopy();
+        Assert.That((float)radius.GetValue(copy.Economy),Is.EqualTo(20));Assert.That((float)height.GetValue(copy.Economy),Is.EqualTo(6));
+    }
     [Test] public void HealingDroneSettingsCopyAndOldCheckpointDefaultsAreValid()
     {
         var defaults=Resources.Load<R1RunDefinition>("R1/Run").GaragePrices;
@@ -765,6 +773,36 @@ public sealed class BacklogDeviceTierGameplayTests
     }
     [UnityTest] public IEnumerator DroneConfiguredLongRangeHitsDistantEnemy()=>LongRangeDeployable(false);
     [UnityTest] public IEnumerator TurretConfiguredLongRangeHitsDistantEnemy()=>LongRangeDeployable(true);
+    [UnityTest] public IEnumerator DroneUsesConfiguredFollowRadiusAndHoverHeight()
+    {
+        var radius=typeof(R3GarageEconomy).GetField("DroneFollowRadius");var height=typeof(R3GarageEconomy).GetField("DroneHoverHeight");
+        Assert.That(radius,Is.Not.Null);Assert.That(height,Is.Not.Null);
+        var kind=R3PartKind.FlyingDroneGenerator;Assert.That(run.GaragePurchase(kind),Is.True);
+        var owned=run.VehicleModel.Inventory.Last(p=>p.Kind==kind);
+        var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>run.VehicleModel.OwnedPlacementError(owned.Id,c,default)==null);
+        Assert.That(run.GarageMount(owned.Id,cell),Is.True);
+        radius.SetValue(run.VehicleModel.Economy,20f);height.SetValue(run.VehicleModel.Economy,6f);
+        run.VehicleModel.Economy.DroneActivePerUnit=2;run.VehicleModel.Economy.DroneCooldown=0;
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;Assert.That(run.CanUseMovement,Is.True);
+        var player=run.Player;var owner=player.GetComponent<Rigidbody>();owner.isKinematic=true;owner.position=new Vector3(100,10,100);owner.rotation=Quaternion.identity;
+        player.transform.SetPositionAndRotation(owner.position,owner.rotation);
+        var range=run.GetComponent<R6TestRange>();if(range?.TrainingTarget!=null)range.TrainingTarget.gameObject.SetActive(false);
+        var service=player.GetComponent<R3DeployableService>();Physics.SyncTransforms();Assert.That(service.TryDeploy(kind),Is.True);
+        var first=Object.FindObjectsByType<R3FlyingDrone>(FindObjectsSortMode.None).Single(d=>d.GeneratorKind==kind);
+        var firstBody=first.GetComponent<Rigidbody>();firstBody.position=owner.position+new Vector3(10,6,-3);firstBody.linearVelocity=Vector3.zero;
+        radius.SetValue(run.VehicleModel.Economy,2f);Assert.That(service.TryDeploy(kind),Is.True);
+        var second=Object.FindObjectsByType<R3FlyingDrone>(FindObjectsSortMode.None).Single(d=>d.GeneratorKind==kind&&d!=first);
+        var secondBody=second.GetComponent<Rigidbody>();secondBody.position=owner.position+new Vector3(10,6,3);secondBody.linearVelocity=Vector3.zero;Physics.SyncTransforms();
+        var settingsFlags=BindingFlags.Instance|BindingFlags.NonPublic;
+        Assert.That((float)typeof(R3FlyingDrone).GetField("followRadius",settingsFlags).GetValue(first),Is.EqualTo(20));
+        Assert.That((float)typeof(R3FlyingDrone).GetField("followRadius",settingsFlags).GetValue(second),Is.EqualTo(2));
+        Assert.That((float)typeof(R3FlyingDrone).GetField("hoverHeight",settingsFlags).GetValue(first),Is.EqualTo(6));
+        for(int i=0;i<12;i++)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(Mathf.Abs(firstBody.linearVelocity.x),Is.LessThan(.05f),"Inside the configured radius the drone should not chase the owner.");
+        Assert.That(Mathf.Abs(firstBody.linearVelocity.y),Is.LessThan(.05f),"At its configured height the drone should not climb or descend.");
+        Assert.That(secondBody.linearVelocity.x,Is.LessThan(-.5f),"A drone outside the smaller follow radius should move toward its owner.");
+    }
     [UnityTest] public IEnumerator InvalidDeployableRangesDoNotSpendEnergyOrCharges()
     {
         foreach(var kind in new[]{R3PartKind.FlyingDroneGenerator,R3PartKind.OffensiveTurretGenerator})
@@ -784,6 +822,10 @@ public sealed class BacklogDeviceTierGameplayTests
         run.Player.GetComponent<Rigidbody>().linearVelocity=Vector3.forward*3;
         Assert.That(service.TryDeploy(R3PartKind.FlyingDroneGenerator),Is.False);
         Assert.That(service.TryDeploy(R3PartKind.OffensiveTurretGenerator),Is.False);
+        run.VehicleModel.Economy.DroneAttackRange=40;run.VehicleModel.Economy.DroneFollowRadius=float.NaN;
+        Assert.That(service.TryDeploy(R3PartKind.FlyingDroneGenerator),Is.False);
+        run.VehicleModel.Economy.DroneFollowRadius=6;run.VehicleModel.Economy.DroneHoverHeight=-1;
+        Assert.That(service.TryDeploy(R3PartKind.FlyingDroneGenerator),Is.False);
         Assert.That(bank.Current,Is.EqualTo(energy));
         Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.FlyingDronePool),Is.EqualTo(drone));
         Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.OffensiveTurretPool),Is.EqualTo(turret));
