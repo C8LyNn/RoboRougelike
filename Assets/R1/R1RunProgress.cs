@@ -18,6 +18,7 @@ namespace RoboRougelike.R1
     internal sealed class R1ModifierGroup
     {
         double additive,multiplier=1d;
+        public void Reset(){additive=0;multiplier=1d;}
         public void Add(R1ModifierOperation operation,float amount,int copies,bool inverse=false)
         {
             if(float.IsNaN(amount)||float.IsInfinity(amount)||amount<0||copies<=0)return;

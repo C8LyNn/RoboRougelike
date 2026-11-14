@@ -500,6 +500,14 @@ namespace RoboRougelike.R3
         public void RefreshEnergyLayout()
         {
             var alive=Parts.Where(p=>p.Health>0).ToArray();
+            var capacity=new R1ModifierGroup();var regeneration=new R1ModifierGroup();
+            foreach(var part in alive)
+            {
+                if(part.Kind!=R3PartKind.BonusModule)continue;
+                if(part.UpgradeEffect==R1UpgradeEffect.EnergyCapacity)capacity.Add(part.UpgradeOperation,part.UpgradeAmount,TierEffectUnits(part.Tier));
+                if(part.UpgradeEffect==R1UpgradeEffect.EnergyRegeneration)regeneration.Add(part.UpgradeOperation,part.UpgradeAmount,TierEffectUnits(part.Tier));
+            }
+            Energy.SetResourceMultipliers(capacity.Apply(1),regeneration.Apply(1));
             Energy.SetAdditionalPassiveReservation(alive.Where(p=>IsPassiveEnergyPart(p.Kind)).Sum(p=>TierPassiveExtra(p.Tier)));
             Energy.Refresh(alive.Where(p=>p.Kind==R3PartKind.Battery).Sum(p=>TierEffectUnits(p.Tier)),
                 alive.Count(p=>IsPassiveEnergyPart(p.Kind)),alive.Any(p=>p.Kind==R3PartKind.Core));
