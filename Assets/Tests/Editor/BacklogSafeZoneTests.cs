@@ -41,6 +41,22 @@ public sealed class BacklogSafeZoneTests
         checkpoint.scannerPulseRemaining=float.NaN;
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,200,out _,out _),Is.False);
     }
+    [Test] public void StructuralScannerCooldownSurvivesSaveCopyAndSafeZone()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        typeof(R3VehicleModel).GetProperty("StructuralScannerReadyAt").SetValue(model,105f);
+        var checkpoint=model.MakeCheckpoint(100);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,200,out var restored,out var error),Is.True,error);
+        Assert.That(restored.StructuralScannerReadyAt,Is.EqualTo(205).Within(.001));
+        Assert.That(restored.DeepCopy().StructuralScannerReadyAt,Is.EqualTo(205).Within(.001));
+        Assert.That(restored.TryEnterSafeZone(2),Is.True);Assert.That(restored.StructuralScannerReadyAt,Is.Zero);
+        string legacy=System.Text.RegularExpressions.Regex.Replace(JsonUtility.ToJson(checkpoint),",\"structuralScannerRemaining\":[^,}]+","");
+        var oldCheckpoint=JsonUtility.FromJson<R3ModelCheckpoint>(legacy);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(oldCheckpoint,R3VehicleKind.Light,model.Economy,200,out var old,out error),Is.True,error);
+        Assert.That(old.StructuralScannerReadyAt,Is.Zero);
+        checkpoint.structuralScannerRemaining=float.NaN;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,200,out _,out _),Is.False);
+    }
     [Test] public void SafeZoneRestoresResourcesAndPartiallyRepairsOnlyOnceAcrossCheckpoint()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));

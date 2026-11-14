@@ -20,9 +20,25 @@ namespace RoboRougelike.PackageIntegration
         {
             if(!PlayerScope||R1RunController.Instance.Paused)return false;if(scanners==null)Cache();
             if(kind==RRLScanKind.Pulse)return ActivatePulseGroup();
+            if(kind==RRLScanKind.Structural)return ActivateStructuralGroup();
             foreach(var scanner in scanners)
                 if(scanner is MonoBehaviour component&&component!=null&&scanner.Kind==kind&&scanner.TryActivate())return true;
             return false;
+        }
+        bool ActivateStructuralGroup()
+        {
+            var model=R1RunController.Instance.VehicleModel;
+            var group=scanners.OfType<RRLStructuralScannerBinding>().Where(s=>s!=null&&s.Device!=null&&s.Device.Available&&s.Scanner!=null).ToArray();
+            if(group.Length==0||model.StructuralScannerReadyAt>Time.time||
+               model.Parts.Any(p=>p.Kind==RoboRougelike.R3.R3PartKind.StructuralScanner&&p.DeviceReadyAt>Time.time)||
+               group.Any(s=>!s.Scanner.IsReady))return false;
+            int units=group.Sum(s=>RoboRougelike.R3.R3VehicleModel.TierEffectUnits(s.Device.State.Tier));
+            float cost=group.Sum(s=>RoboRougelike.R3.R3VehicleModel.TierActivationCost(s.Device.State.Tier));
+            var source=group.FirstOrDefault(s=>s.ActivateCombined(units,cost));if(source==null)return false;
+            model.StructuralScannerReadyAt=Time.time+RRLStructuralScannerBinding.CooldownSeconds;
+            foreach(var state in model.Parts.Where(p=>p.Kind==RoboRougelike.R3.R3PartKind.StructuralScanner))state.DeviceReadyAt=model.StructuralScannerReadyAt;
+            foreach(var scanner in group.Where(s=>s!=source))scanner.Scanner.RestoreCooldown(RRLStructuralScannerBinding.CooldownSeconds);
+            return true;
         }
         bool ActivatePulseGroup()
         {
@@ -62,14 +78,18 @@ namespace RoboRougelike.PackageIntegration
             try
             {
                 float top=188;
-                foreach(var scanner in scanners.OfType<RRLStructuralScannerBinding>())
+                var structural=scanners.OfType<RRLStructuralScannerBinding>().Where(s=>s!=null&&s.Device!=null&&s.Scanner!=null).ToArray();
+                foreach(var scanner in structural.OrderByDescending(s=>s.Scanner.Contacts.Count).ThenByDescending(s=>s.Device.HardwareAvailable).Take(1))
                 {
                     if(scanner==null||scanner.Device==null||scanner.Scanner==null)continue;
                     var source=scanner.Scanner;int rows=Mathf.Min(3,source.Contacts.Count);
                     GUI.Box(new Rect(20,top,410,58+rows*22),GUIContent.none);
-                    string readiness=!scanner.Device.HardwareAvailable?"Moduł niesprawny":
-                        scanner.CooldownLeft>0?$"Odnowienie {scanner.CooldownLeft:0.0} s":"Gotowy • wymaga widocznego celu";
-                    GUI.Label(new Rect(30,top+5,390,46),$"{R1RunController.Instance.VehicleModel.ActiveSlotLabel(RoboRougelike.R3.R3PartKind.StructuralScanner)} • Skan struktury • 60 m / 85° • {source.Contacts.Count} części\n{readiness}",label);
+                    int active=structural.Count(s=>s.Device.Available);
+                    int units=structural.Where(s=>s.Device.Available).Sum(s=>RoboRougelike.R3.R3VehicleModel.TierEffectUnits(s.Device.State.Tier));
+                    float cooldown=Mathf.Max(scanner.CooldownLeft,R1RunController.Instance.VehicleModel.StructuralScannerReadyAt-Time.time);
+                    string readiness=active==0?"Moduły niesprawne":
+                        cooldown>0?$"Odnowienie {cooldown:0.0} s":"Gotowy • wymaga widocznego celu";
+                    GUI.Label(new Rect(30,top+5,390,46),$"{R1RunController.Instance.VehicleModel.ActiveSlotLabel(RoboRougelike.R3.R3PartKind.StructuralScanner)} • Skan struktury • {Mathf.Min(1000f,RRLStructuralScannerBinding.BaseRange*units):0} m / 85° • {source.Contacts.Count} części\n{readiness}",label);
                     int row=0;foreach(var contact in source.Contacts.Take(3))
                         GUI.Label(new Rect(30,top+52+22*row++,390,22),$"{PartLabel(contact.Type)} • HP {contact.HealthFraction*100:0}% • {(contact.Functional?"sprawny":"niesprawny")} • odczyt {source.DisplayLeft:0.0}s",label);
                     top+=66+rows*22;

@@ -9,6 +9,7 @@ namespace RoboRougelike.PackageIntegration
     [DisallowMultipleComponent]
     public sealed class RRLStructuralScannerBinding : MonoBehaviour,IRRLScanDevice,IRRLDeviceLifecycle
     {
+        public const float BaseRange=60f,CooldownSeconds=8f,EnergyPerCopy=5f;
         public RRLDeviceBinding Device {get;private set;}
         public StructuralScanController Scanner {get;private set;}
         public RRLScanKind Kind=>RRLScanKind.Structural;
@@ -20,7 +21,7 @@ namespace RoboRougelike.PackageIntegration
             registry=gameObject.AddComponent<StructuralScanRegistry>();Scanner=gameObject.AddComponent<StructuralScanController>();
             // Profile from the supplied PR4 production bridge, not the package24m/75deg default.
             var energy=owner.GetComponent<VehicleEnergyBank>();
-            Scanner.Configure(new StructuralScanSettings{rangeMeters=60,fullConeDegrees=85,activationEnergy=energy!=null?5f:0f});
+            Scanner.Configure(new StructuralScanSettings{rangeMeters=BaseRange,fullConeDegrees=85,activationEnergy=energy!=null?EnergyPerCopy:0f});
             Scanner.Bind(transform,owner,owner.GetInstanceID(),RRLHitRouter.Team(owner),registry,energy);
             Scanner.RestoreCooldown(state.DeviceReadyAt-Time.time);Device.Damageable.Died+=RefreshAvailability;RefreshAvailability();
         }
@@ -31,7 +32,14 @@ namespace RoboRougelike.PackageIntegration
         }
         public bool TryActivate()
         {
+            var controls=Device?.Owner!=null?Device.Owner.GetComponent<RRLScannerControls>():null;
+            return controls!=null&&controls.Activate(RRLScanKind.Structural);
+        }
+        internal bool ActivateCombined(int units,float costMultiplier)
+        {
             RefreshAvailability();if(Device==null||!Device.Available||Scanner==null||!Scanner.IsReady)return false;
+            var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
+            Scanner.Configure(new StructuralScanSettings{rangeMeters=BaseRange*units,fullConeDegrees=85,activationEnergy=energy!=null?EnergyPerCopy*costMultiplier:0f});
             RRLScanWorld.Register(registry,R1RunController.Instance);
             if(!Scanner.TryScan())return false;
             Device.State.DeviceReadyAt=Time.time+Scanner.CooldownLeft;return true;

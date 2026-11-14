@@ -13,6 +13,7 @@ using RoboRougelike.R6;
 using RoboRougelike.PackageIntegration;
 using RoboRougelike.Mechanics.EMP;
 using RoboRougelike.Mechanics.SEN001;
+using RoboRougelike.Mechanics.StructuralScan;
 using RoboRougelike.Mechanics.HAZ001;
 using RogueMachine.P12PipelineSafe;
 
@@ -46,6 +47,43 @@ public class RRLW8PulseScannerTests
         var binding=(part??module).GetComponents<MonoBehaviour>().SingleOrDefault(c=>c.GetType().Name=="RRLPulseScannerBinding");
         Assert.That(binding,Is.Not.Null,"SEN must use the shared physical device boundary");
         return (bool)binding.GetType().GetMethod("TryActivate").Invoke(binding,null);
+    }
+    [UnityTest] public IEnumerator StructuralScannerCopiesUseSharedEnergyAndCooldown()
+    {
+        Assert.That(run.OpenSandboxGarage(),Is.True);MountScanner(R3PartKind.StructuralScanner);MountScanner(R3PartKind.StructuralScanner);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var parts=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.StructuralScanner).ToArray();
+        var controls=run.Player.GetComponent<RRLScannerControls>();Assert.That(parts.Length,Is.EqualTo(2));Physics.SyncTransforms();yield return new WaitForFixedUpdate();
+        run.VehicleModel.Energy.Restore(5);Assert.That(controls.Activate(RRLScanKind.Structural),Is.False,"A group cannot scan when only one of two copies is affordable.");
+        Assert.That(run.VehicleModel.Energy.Current,Is.EqualTo(5).Within(.01));
+        // Position this isolated test above the range so its walls cannot
+        // obscure a target beyond the standard 40 m perimeter.
+        var target=run.GetComponent<R6TestRange>().TrainingTarget;
+        var body=run.Player.GetComponent<Rigidbody>();body.isKinematic=true;var elevated=body.position+Vector3.up*150;body.position=elevated;body.transform.position=elevated;
+        target.transform.position+=Vector3.up*150;Physics.SyncTransforms();
+        parts[0].transform.rotation=Quaternion.LookRotation(Vector3.forward,Vector3.up);
+        var coreOffset=target.Core.transform.position-target.transform.position;
+        target.transform.position=parts[0].transform.position+parts[0].transform.forward*85-coreOffset;Physics.SyncTransforms();
+        run.VehicleModel.Energy.Restore(100);float before=run.VehicleModel.Energy.Current;
+        var delta=target.Core.transform.position-parts[0].transform.position;
+        var hits=Physics.RaycastAll(parts[0].transform.position,delta.normalized,delta.magnitude+1).OrderBy(h=>h.distance).Select(h=>h.collider.name+":"+h.distance.ToString("0.0"));
+        Assert.That(controls.Activate(RRLScanKind.Structural),Is.True,$"Target distance {delta.magnitude:0.0}; angle {Vector3.Angle(parts[0].transform.forward,delta):0.0}; hits {string.Join(", ",hits)}");Assert.That(before-run.VehicleModel.Energy.Current,Is.EqualTo(10).Within(.01));
+        Assert.That(parts.Select(p=>p.GetComponent<StructuralScanController>()).Any(s=>s.Contacts.Any(c=>c.OwnerKey==target.GetInstanceID())),Is.True,"Two scanners must reveal the real visible target beyond the one-copy range.");
+        Assert.That(parts.Select(p=>p.GetComponent<StructuralScanController>()).All(s=>s.CooldownLeft>0),Is.True);
+        Assert.That(controls.Activate(RRLScanKind.Structural),Is.False);
+        foreach(var part in parts){part.GetComponent<StructuralScanController>().RestoreCooldown(0);part.GetComponent<RRLStructuralScannerBinding>().Device.State.DeviceReadyAt=0;}
+        Assert.That(controls.Activate(RRLScanKind.Structural),Is.False,"Newly installed copies must not bypass the vehicle-wide cooldown.");
+    }
+    [UnityTest] public IEnumerator DestroyedStructuralScannerCopyDoesNotChargeEnergy()
+    {
+        Assert.That(run.OpenSandboxGarage(),Is.True);MountScanner(R3PartKind.StructuralScanner);MountScanner(R3PartKind.StructuralScanner);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var parts=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.StructuralScanner).ToArray();
+        var damaged=parts[0];damaged.Damageable.ApplyDamageResolvedTyped(damaged.Damageable.CurrentHp/.75f+.01f,damaged.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Kinetic);
+        Assert.That(damaged.Operational,Is.False);Assert.That(parts[1].Operational,Is.True);Physics.SyncTransforms();yield return new WaitForFixedUpdate();
+        run.VehicleModel.Energy.Restore(100);float before=run.VehicleModel.Energy.Current;
+        Assert.That(run.Player.GetComponent<RRLScannerControls>().Activate(RRLScanKind.Structural),Is.True);
+        Assert.That(before-run.VehicleModel.Energy.Current,Is.EqualTo(5).Within(.01));
     }
     [UnityTest] public IEnumerator PulseCopiesUseOneRangeCostAndCooldown()
     {
