@@ -11,6 +11,27 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [Test] public void GarageRotationBindingsMigrateWithoutStealingExistingGarageKeys()
+    {
+        string[] rotations={"GarageRotateYLeft","GarageRotateYRight","GarageRotateXPositive","GarageRotateXNegative","GarageRotateZNegative","GarageRotateZPositive"};
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-rotations-"+Guid.NewGuid()+".json");
+        try
+        {
+            foreach(var action in rotations)Assert.That(R1ControlProfile.Actions,Does.Contain(action));
+            var initial=new R1ControlProfile(path);var actions=R1ControlProfile.Actions.Where(a=>!rotations.Contains(a)).ToArray();
+            var data=new LegacyControlData{actions=actions,bindings=actions.Select(initial.Binding).ToArray()};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            var profile=new R1ControlProfile(path);Assert.That(profile.Error,Is.Null);
+            Assert.That(profile.Binding("GarageRotateYRight"),Is.EqualTo("E"));Assert.That(profile.Binding("Weapon4"),Is.EqualTo("E"));
+            Assert.That(profile.TryBind("GarageRotateYRight","K"),Is.True);
+            Assert.That(profile.TryBind("GarageToolRepair","K"),Is.False);Assert.That(profile.TryBind("Weapon1","K"),Is.True);
+            Assert.That(profile.TrySaveBinding("GarageRotateYRight","LeftShift",out var message),Is.False);
+            Assert.That(message,Does.Contain("Shift"));Assert.That(profile.TryBind("MoveForward","LeftShift"),Is.True);
+            profile.Save();var restored=new R1ControlProfile(path);Assert.That(restored.Error,Is.Null);
+            Assert.That(restored.Binding("GarageRotateYRight"),Is.EqualTo("K"));
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [Test] public void GarageToolKeysMayBeSharedWithCombatButNotOtherGarageActions()
     {
         string path=Path.Combine(Path.GetTempPath(),"RRL-controls-tools-"+Guid.NewGuid()+".json");
@@ -112,7 +133,7 @@ public sealed class BacklogControlProfileTests
         var profile=new R1ControlProfile(Path.Combine(Path.GetTempPath(),"RRL-controls-garage-keys-"+Guid.NewGuid()+".json"));
         Assert.That(profile.TryBind("Weapon3","K"),Is.True);
         Assert.That(profile.TrySaveBinding("GarageFrame","Q",out var message),Is.False);
-        Assert.That(message,Does.Contain("garażu"));
+        Assert.That(message,Does.Contain("obrót"));
         Assert.That(profile.TryBind("GarageFrame","Digit1"),Is.False,"Two garage actions cannot use one key.");
         Assert.That(profile.TryBind("GarageFrame","Slash"),Is.False,"Search already uses this key in the garage.");
         Assert.That(profile.TryBind("GarageFrame","Numpad1"),Is.True,"A keypad alias yields to an explicitly assigned garage action.");

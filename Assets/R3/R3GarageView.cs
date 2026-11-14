@@ -32,19 +32,17 @@ namespace RoboRougelike.R3
 
     public static class R3GarageRotationInput
     {
-        public static bool TryStep(KeyCode key,out Vector3Int step)
+        static readonly string[] Actions={"GarageRotateYLeft","GarageRotateYRight","GarageRotateXPositive","GarageRotateXNegative","GarageRotateZNegative","GarageRotateZPositive"};
+        static readonly Vector3Int[] Steps={new Vector3Int(0,-1,0),new Vector3Int(0,1,0),new Vector3Int(1,0,0),
+            new Vector3Int(-1,0,0),new Vector3Int(0,0,-1),new Vector3Int(0,0,1)};
+        public static bool TryStepForProfile(Event input,R1ControlProfile profile,out Vector3Int step)
         {
-            switch(key)
-            {
-                case KeyCode.Q:step=new Vector3Int(0,-1,0);return true;
-                case KeyCode.E:step=new Vector3Int(0,1,0);return true;
-                case KeyCode.R:step=new Vector3Int(1,0,0);return true;
-                case KeyCode.F:step=new Vector3Int(-1,0,0);return true;
-                case KeyCode.Z:step=new Vector3Int(0,0,-1);return true;
-                case KeyCode.X:step=new Vector3Int(0,0,1);return true;
-                default:step=default;return false;
-            }
+            step=default;if(input==null||profile==null||input.control||input.alt||input.command)return false;
+            for(int i=0;i<Actions.Length;i++)if(profile.MatchesEvent(Actions[i],input)){step=Steps[i];return true;}
+            return false;
         }
+        public static string Describe(R1ControlProfile profile)=>string.Join(" ",Enumerable.Range(0,3).Select(i=>
+            R1ControlProfile.Display(profile.Binding(Actions[i*2]))+"/"+R1ControlProfile.Display(profile.Binding(Actions[i*2+1]))));
     }
 
     public sealed class R3GarageView : MonoBehaviour
@@ -751,9 +749,9 @@ namespace RoboRougelike.R3
             if((current.type==EventType.KeyDown||(inside&&R1ControlProfile.IsBindingMouseDown(current)))&&
                !current.shift&&R1ControlProfile.Current.MatchesEvent("GarageFrame",current))
             {FrameVehicle();Message="Dopasowano widok pojazdu.";current.Use();return;}
-            if(current.type==EventType.KeyDown&&(Tool==R41GarageTool.Mount||current.shift))
+            if((current.type==EventType.KeyDown||(inside&&R1ControlProfile.IsBindingMouseDown(current)))&&(Tool==R41GarageTool.Mount||current.shift))
             {
-                if(R3GarageRotationInput.TryStep(current.keyCode,out var turns))
+                if(R3GarageRotationInput.TryStepForProfile(current,R1ControlProfile.Current,out var turns))
                 {
                     if(current.shift&&inside)RotatePointed(view.ScreenPointToRay(screen),turns);
                     else if(!current.shift&&Tool==R41GarageTool.Mount)

@@ -7,6 +7,17 @@ using UnityEngine;
 
 public sealed class UI943PortraitGarageTests
 {
+    [Test] public void GarageRotationInputUsesConfiguredKeysAndAllowsShift()
+    {
+        var method=typeof(R3GarageRotationInput).GetMethod("TryStepForProfile",BindingFlags.Static|BindingFlags.Public);
+        Assert.That(method,Is.Not.Null);
+        var profile=new R1ControlProfile(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"RRL-garage-rotation-"+System.Guid.NewGuid()+".json"));
+        Assert.That(profile.TryBind("GarageRotateYRight","K"),Is.True);
+        var args=new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.K,shift=true},profile,default(Vector3Int)};
+        Assert.That((bool)method.Invoke(null,args),Is.True);Assert.That((Vector3Int)args[2],Is.EqualTo(new Vector3Int(0,1,0)));
+        args[0]=new Event{type=EventType.KeyDown,keyCode=KeyCode.E,shift=true};Assert.That((bool)method.Invoke(null,args),Is.False);
+        args[0]=new Event{type=EventType.KeyDown,keyCode=KeyCode.K,control=true};Assert.That((bool)method.Invoke(null,args),Is.False);
+    }
     [Test] public void GarageToolShortcutUsesProfileAndRespectsAssignedKeypadKeys()
     {
         var method=typeof(R3GarageView).GetMethod("ToolShortcutForProfile",BindingFlags.Static|BindingFlags.NonPublic);

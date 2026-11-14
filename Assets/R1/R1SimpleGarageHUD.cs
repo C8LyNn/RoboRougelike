@@ -646,7 +646,7 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.ShieldTurretGenerator?$"Kopuła osłonowa: zatrzymuje wrogie strzały, a przyjazne mogą wydostać się ze środka. Slot urządzenia; 1 ładunek i {run.VehicleModel.Economy.TurretEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier):0} energii.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.Basic?"Działo podstawowe strzela bez zużycia energii. Kliknij, aby zamontować.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kliknij, aby zamontować.":
-                kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
+                kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj "+R3GarageRotationInput.Describe(R1ControlProfile.Current)+".":
                 kind==R3PartKind.Wheel?GarageWheelSelection(part):"Kliknij pojazd, aby zamontować część.";}
             else {garage.SelectedInventoryId=null;garage.SetTool(R41GarageTool.Mount);
                 garage.Message=run.CreativeWorkshop?"Ta część jest obecnie niedostępna w poligonie.":
@@ -846,7 +846,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(675,608,175,36),"Projekty",compactButton))OpenBlueprintLibrary();
             if(run.SafeVendorAvailable&&GUI.Button(new Rect(860,608,200,36),"Bezpieczna strefa",compactButton))run.EnterSafeZone();
             if(garageShortcutLabel==null)garageShortcutLabel=new GUIStyle(small){fontSize=14,wordWrap=false};
-            GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • ŚPM: wybierz typ\nPPM przeciągnij: widok • "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageUnderside"))+": spód\nQ/E R/F Z/X: obrót • Shift: część\nCtrl+LPM: napraw • "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageFrame"))+": widok",garageShortcutLabel);
+            GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • ŚPM: wybierz typ\nPPM przeciągnij: widok • "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageUnderside"))+": spód\n"+R3GarageRotationInput.Describe(R1ControlProfile.Current)+": obrót • Shift: część\nCtrl+LPM: napraw • "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageFrame"))+": widok",garageShortcutLabel);
             string garageFeedback=SimpleGarageFeedback(run);
             DrawGarageNotice(false,garageFeedback,!run.MapEditorSession&&garageFeedback.Contains("Start zablokowany:"));
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);
@@ -918,7 +918,7 @@ namespace RoboRougelike.R1
             string garageFeedback=SimpleGarageFeedback(run);
             DrawGarageNotice(true,garageFeedback+
                 "\nPPM: zdejmij • ŚPM: wybierz typ • przeciągnij PPM: obrót widoku"+
-                "\nQ/E R/F Z/X: obrót • Shift: część • Ctrl+LPM: napraw • "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageFrame"))+": widok",!run.MapEditorSession&&garageFeedback.Contains("Start zablokowany:"));
+                "\n"+R3GarageRotationInput.Describe(R1ControlProfile.Current)+": obrót • Shift: część • Ctrl+LPM: napraw • "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageFrame"))+": widok",!run.MapEditorSession&&garageFeedback.Contains("Start zablokowany:"));
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);
             if(run.MapEditorSession){if(GUI.Button(new Rect(24,960,350,44),"Wróć do edytora",compactButton))run.ReturnToMapEditorFromGarage();}
             else if(GUI.Button(new Rect(24,960,350,44),"Testuj pojazd",run.SandboxWorkshop?GaragePrimaryButton():compactButton))run.EnterTestRange();

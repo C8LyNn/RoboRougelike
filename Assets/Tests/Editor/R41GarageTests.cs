@@ -227,6 +227,33 @@ public class R41GarageTests
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(before));Assert.That(garage.Tool,Is.EqualTo(R41GarageTool.Inspect));
         yield return null;
     }
+    [UnityTest] public IEnumerator ReassignedRotationKeyTurnsGhostAndPointedWheel()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("GarageRotateYRight","K"),Is.True);
+            var garage=Run.Garage;Run.VehicleModel.Award(100);
+            var existing=Run.VehicleModel.Inventory.Select(part=>part.Id).ToArray();Assert.That(Run.GaragePurchase(R3PartKind.Armor),Is.True);
+            string armor=Run.VehicleModel.Inventory.First(part=>part.Kind==R3PartKind.Armor&&!existing.Contains(part.Id)).Id;garage.ChooseInventory(armor);
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K},Vector2.zero);
+            Assert.That(garage.SelectedRotation.y,Is.EqualTo(1));
+            var camera=Camera.main;garage.SetTool(R41GarageTool.Inspect);R3MountedPart pointed=null;Vector3 screen=default;
+            foreach(var part in Run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p!=null&&p.Kind==R3PartKind.Wheel))
+            {
+                var at=camera.WorldToScreenPoint(part.transform.position);
+                if(at.z<=0||!R3GarageView.InBuildArea(at,Screen.width,Screen.height))continue;
+                if(!garage.Point(camera.ScreenPointToRay(at))||garage.Cell!=part.Cell)continue;
+                pointed=part;screen=at;break;
+            }
+            Assert.That(pointed,Is.Not.Null);var cell=pointed.Cell;string id=pointed.Id;int wallet=Run.VehicleModel.Scrap;
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K,shift=true},new Vector2(screen.x,Screen.height-screen.y));
+            Assert.That(Run.VehicleModel.At(cell).Id,Is.EqualTo(id));Assert.That(Run.VehicleModel.At(cell).RotationQuarterTurns.y,Is.EqualTo(2));
+            Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(wallet));
+        }
+        finally{profile.ResetDefaults();}
+        yield return null;
+    }
     [UnityTest] public IEnumerator GhostColorTracksBlockedAndAllowedPlacementAfterReappearing()
     {
         var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
