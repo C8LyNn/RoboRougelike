@@ -424,11 +424,16 @@ namespace RoboRougelike.R3
             ConstructionBudgetMilestonesApplied=target;
             return ConstructionBudgetLimit-previous;
         }
-        public bool TryEnterSafeZone(int completedEncounters)
+        public bool CanEnterSafeZone(int completedEncounters)
         {
             int interval=Economy.SafeZoneInterval;float repair=Economy.SafeZoneRepairFraction;
-            if(CreativeMode||interval<=0||completedEncounters<=0||completedEncounters%interval!=0||
-               completedEncounters<=SafeZoneLastCompleted||float.IsNaN(repair)||float.IsInfinity(repair)||repair<0||repair>1)return false;
+            return !CreativeMode&&interval>0&&completedEncounters>0&&completedEncounters%interval==0&&
+               completedEncounters>SafeZoneLastCompleted&&!float.IsNaN(repair)&&!float.IsInfinity(repair)&&repair>=0&&repair<=1;
+        }
+        public bool TryEnterSafeZone(int completedEncounters)
+        {
+            if(!CanEnterSafeZone(completedEncounters))return false;
+            float repair=Economy.SafeZoneRepairFraction;
             foreach(var part in Parts)if(part.Health>0&&part.Health<1)part.Health=Math.Min(1,part.Health+repair);
             var shieldBonus=new R1ModifierGroup();
             foreach(var bonus in Parts)
@@ -437,17 +442,13 @@ namespace RoboRougelike.R3
             float shieldMultiplier=shieldBonus.Apply(1);
             foreach(var part in Parts.Concat(inventory))
             {
-                // Finishing a reload must also refill it; simply clearing the timer
-                // would interrupt an empty magazine and leave the weapon unusable.
-                if(part.ReloadReadyAt>0)
-                {
-                    int capacity=part.Kind==R3PartKind.PointDefense?40:
-                        part.Kind!=R3PartKind.Gun?0:
-                        part.Weapon==R4WeaponKind.Shotgun?RoboRougelike.WeaponIntegration.RRLShotgunBinding.MagazineSalvos:
-                        part.Weapon==R4WeaponKind.Railgun?RoboRougelike.WeaponIntegration.RRLRailgunBinding.Magazine:
-                        part.Weapon==R4WeaponKind.RocketLauncher?RoboRougelike.WeaponIntegration.RRLRocketBinding.Magazine:0;
-                    if(capacity>0)part.Ammo=capacity;
-                }
+                // Refill partial magazines as well as finishing pending reloads.
+                int capacity=part.Kind==R3PartKind.PointDefense?40:
+                    part.Kind!=R3PartKind.Gun?0:
+                    part.Weapon==R4WeaponKind.Shotgun?RoboRougelike.WeaponIntegration.RRLShotgunBinding.MagazineSalvos:
+                    part.Weapon==R4WeaponKind.Railgun?RoboRougelike.WeaponIntegration.RRLRailgunBinding.Magazine:
+                    part.Weapon==R4WeaponKind.RocketLauncher?RoboRougelike.WeaponIntegration.RRLRocketBinding.Magazine:0;
+                if(capacity>0)part.Ammo=capacity;
                 if(part.Kind==R3PartKind.DirectionalShield)
                 {
                     part.DefenseCharge=(float)Math.Min(float.MaxValue,(double)RoboRougelike.WeaponIntegration.RRLShieldBinding.BaseCapacity*TierEffectUnits(part.Tier)*shieldMultiplier);

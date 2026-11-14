@@ -259,7 +259,11 @@ namespace RoboRougelike.R1
             if(Progress.State==R1RunState.Garage)
             {
                 // No stat bonus is applied here. Only a mounted, live module works.
-                bool safeZone=VehicleModel.TryEnterSafeZone(Progress.CompletedEncounters);
+                // Device OnDisable handlers capture the old live state. Do this
+                // before the one-time refill so they cannot overwrite it.
+                bool safeZone=VehicleModel.CanEnterSafeZone(Progress.CompletedEncounters);
+                if(safeZone&&Player!=null)Player.gameObject.SetActive(false);
+                if(safeZone)safeZone=VehicleModel.TryEnterSafeZone(Progress.CompletedEncounters);
                 if(safeZone)
                 {
                     VehicleModel.PrepareSafeZoneVendor(unchecked(Seed*397+Progress.CompletedEncounters));

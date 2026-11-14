@@ -9,6 +9,20 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogSafeZoneTests
 {
+    [Test] public void SafeZoneRefillsPartialMagazinesEvenWhenNotReloading()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var shotgun=model.Parts.First(p=>p.Kind==R3PartKind.Gun);shotgun.Weapon=RoboRougelike.R4.R4WeaponKind.Shotgun;shotgun.Ammo=3;
+        var rail=new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.Railgun,Ammo=4};
+        var rocket=new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.RocketLauncher,Ammo=5};
+        var defense=new R3PartState(default,R3PartKind.PointDefense,0){Ammo=7};
+        Assert.That(model.ReceiveSalvage(new[]{rail,rocket,defense}),Is.True);
+        Assert.That(model.TryEnterSafeZone(2),Is.True);
+        Assert.That(shotgun.Ammo,Is.EqualTo(RoboRougelike.WeaponIntegration.RRLShotgunBinding.MagazineSalvos));
+        Assert.That(model.Inventory.Single(p=>p.Id==rail.Id).Ammo,Is.EqualTo(RoboRougelike.WeaponIntegration.RRLRailgunBinding.Magazine));
+        Assert.That(model.Inventory.Single(p=>p.Id==rocket.Id).Ammo,Is.EqualTo(RoboRougelike.WeaponIntegration.RRLRocketBinding.Magazine));
+        var storedDefense=model.Inventory.Single(p=>p.Id==defense.Id);Assert.That(storedDefense.Ammo,Is.EqualTo(40));Assert.That(storedDefense.Health,Is.Zero);
+    }
     [Test] public void SafeZoneRefillsShieldChargeAtItsTierWithoutRevivingWrecks()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
@@ -132,7 +146,7 @@ public sealed class BacklogSafeZoneGameplayTests
     }
     [UnityTest] public IEnumerator SecondVictoryOpensGarageWithRefilledVehicleAndPartialRepair()
     {
-        string damagedId=null,shieldId=null;
+        string damagedId=null,shieldId=null,defenseId=null;
         for(int stage=1;stage<=2;stage++)
         {
             Assert.That(run,Is.Not.Null);Assert.That(run.Progress,Is.Not.Null);Assert.That(run.Encounter,Is.Not.Null);Assert.That(run.Encounter.Enemies,Is.Not.Null);
@@ -145,6 +159,8 @@ public sealed class BacklogSafeZoneGameplayTests
                 var bank=run.Player.GetComponent<VehicleEnergyBank>();Assert.That(bank.TrySpend(100),Is.True);
                 var shield=assembly.Parts.Single(p=>p.Id==shieldId).GetComponent<RoboRougelike.Defenses.DirectionalShield.DirectionalShieldGenerator>();
                 Assert.That(shield.Capacity,Is.EqualTo(200).Within(.001));shield.RestoreState(17,0);
+                var defense=assembly.Parts.Single(p=>p.Id==defenseId).GetComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();
+                defense.Controller.RestoreState(7,4);defense.CaptureState();
                 Assert.That(run.VehicleModel.Charges.EnsurePool("safe-test",3),Is.True);
                 Assert.That(run.VehicleModel.Charges.TrySpend("safe-test",2),Is.True);
                 typeof(R3VehicleModel).GetProperty("RepairPulseReadyAt").SetValue(run.VehicleModel,Time.time+100);
@@ -169,6 +185,11 @@ public sealed class BacklogSafeZoneGameplayTests
                 var shieldCell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
                     .First(c=>run.VehicleModel.OwnedPlacementError(shield.Id,c,default)==null);
                 Assert.That(run.GarageMount(shield.Id,shieldCell),Is.True);
+                var defense=new R3PartState(default,R3PartKind.PointDefense);defenseId=defense.Id;
+                Assert.That(run.VehicleModel.ReceiveSalvage(new[]{defense}),Is.True);
+                var defenseCell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                    .First(c=>run.VehicleModel.OwnedPlacementError(defense.Id,c,default)==null);
+                Assert.That(run.GarageMount(defense.Id,defenseCell),Is.True);
                 Assert.That(run.StartNextEncounter()&&run.ChooseRoute(0),Is.True);
                 for(int i=0;i<300&&run.Transitioning;i++)yield return null;
                 yield return null;
@@ -182,6 +203,10 @@ public sealed class BacklogSafeZoneGameplayTests
         var restoredShield=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==shieldId)
             .GetComponent<RoboRougelike.Defenses.DirectionalShield.DirectionalShieldGenerator>();
         Assert.That(restoredShield.Charge,Is.EqualTo(200).Within(.001));
+        var restoredDefense=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==defenseId)
+            .GetComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();
+        Assert.That(restoredDefense.Controller.Ammunition,Is.EqualTo(40));
+        Assert.That(restoredDefense.Controller.CooldownRemaining,Is.Zero);
         Assert.That(physical.Damageable.CurrentHp/physical.Damageable.MaxHp,Is.EqualTo(.65f).Within(.001));
         Assert.That(run.Garage.Message,Does.Contain("Bezpieczna strefa"));
         Assert.That(run.SafeVendorAvailable,Is.True);run.VehicleModel.Award(1000);
