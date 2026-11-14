@@ -16,7 +16,6 @@ namespace RoboRougelike.MOVSeries
         Transform jumpProbe;
         void ConfigureDevices()
         {
-            int gyroCount=Mathf.Max(1,Model.Parts.Count(p=>p.Kind==R3PartKind.Gyroscope));
             jumpProbe=new GameObject("Jump ground probe").transform;jumpProbe.SetParent(transform,false);
             foreach(var part in assembly.Parts)
             {
@@ -37,7 +36,8 @@ namespace RoboRougelike.MOVSeries
                         jump.SetAvailabilityFilter(()=>Available(part));jump.SetGroundFilter(IsTerrain);jumps.Add(jump);break;
                     case R3PartKind.Gyroscope:
                         var gyro=part.gameObject.AddComponent<GyroStabilizer>();gyro.BindToVehicle(body);
-                        gyro.Configure(15f/gyroCount,6.5f/gyroCount,8f/gyroCount);gyro.SetAvailabilityFilter(()=>Available(part));gyros.Add(gyro);break;
+                        int gyroUnits=R3VehicleModel.TierEffectUnits(part.Tier);
+                        gyro.Configure(15f*gyroUnits,6.5f*gyroUnits,8f*gyroUnits);gyro.SetAvailabilityFilter(()=>Available(part));gyros.Add(gyro);break;
                 }
             }
         }

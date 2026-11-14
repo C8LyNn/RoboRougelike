@@ -297,6 +297,26 @@ public class MOVSeriesDeviceTests
         Assert.That(Action(v,"ToggleGyro"),Is.True);yield return FixedStep();
         Assert.That(v.GetComponentInChildren<GyroStabilizer>().LastAngularAcceleration,Is.EqualTo(Vector3.zero));
     }
+    [UnityTest] public IEnumerator GyroscopeCopiesAndTierProvideFullPhysicalCorrection()
+    {
+        var one=BuildTieredMovement(R3PartKind.Gyroscope,1,-25);
+        var two=Build(R3VehicleKind.Light,0,R3PartKind.Gyroscope,R3PartKind.Gyroscope);
+        var three=BuildTieredMovement(R3PartKind.Gyroscope,3,25);yield return Seconds(.3f);
+        foreach(var vehicle in new[]{one,two,three})
+        {
+            vehicle.Controller.enabled=false;var body=vehicle.GetComponent<Rigidbody>();
+            body.useGravity=false;body.position+=Vector3.up*8;body.rotation=Quaternion.Euler(0,0,30);body.angularVelocity=Vector3.zero;
+        }
+        Physics.SyncTransforms();yield return FixedStep();
+        float Correction(R1VehicleState v)=>v.GetComponentsInChildren<GyroStabilizer>().Sum(g=>g.LastAngularAcceleration.magnitude);
+        float first=Correction(one),second=Correction(two),third=Correction(three);
+        Assert.That(first,Is.GreaterThan(.1f));
+        Assert.That(second,Is.EqualTo(first*2).Within(first*.1f),"Copies must contribute fully rather than divide a fixed correction.");
+        Assert.That(third,Is.EqualTo(first*4).Within(first*.2f),"Tier 3 must improve real corrective acceleration.");
+        var copy=two.GetComponentsInChildren<GyroStabilizer>()[1];copy.SetOperational(false);
+        var rb=two.GetComponent<Rigidbody>();rb.rotation=Quaternion.Euler(0,0,30);rb.angularVelocity=Vector3.zero;Physics.SyncTransforms();
+        yield return FixedStep();Assert.That(Correction(two),Is.EqualTo(first).Within(first*.1f));
+    }
     [UnityTest] public IEnumerator SameTickDetachDeathAndRebuildUseRealPartHealth()
     {
         var v=Build(R3VehicleKind.Light,0,R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Gyroscope);Adapter(v);
