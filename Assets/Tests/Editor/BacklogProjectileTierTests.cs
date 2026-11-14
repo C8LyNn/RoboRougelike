@@ -46,10 +46,16 @@ public sealed class BacklogProjectileTierPhysicsTests
         run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
         while(run.Transitioning)yield return null;run.Encounter.SetCombatActive(false);
     }
-    R3MountedPart Build(R4WeaponKind weapon,out VehicleEnergyBank bank,bool doubleShot=false)
+    R3MountedPart Build(R4WeaponKind weapon,out VehicleEnergyBank bank,bool doubleShot=false,R1UpgradeDefinition bonus=null)
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
         var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=weapon;state.Tier=2;
+        if(bonus!=null)
+        {
+            Assert.That(model.ReceiveBonuses(new[]{bonus}),Is.True);var id=model.Inventory.Single().Id;
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct().First(c=>model.OwnedPlacementError(id,c,default)==null);
+            Assert.That(model.Mount(id,cell),Is.True);
+        }
         if(doubleShot)
         {
             model.Economy.DoubleShotChancePerUnit=1;model.Award(1000);
@@ -381,6 +387,20 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(energy.Current,Is.EqualTo(before-9f).Within(.001));Assert.That(binding.State.Ammo,Is.EqualTo(9));
         float end=Time.time+.8f;while(Time.time<end)yield return null;
         Assert.That(500-hp.CurrentHp,Is.InRange(100f,120f));
+    }
+    [UnityTest] public IEnumerator BlastScopedBonusReachesActualRocketExplosion()
+    {
+        Assert.That(System.Enum.GetNames(typeof(R1BonusScope)),Does.Contain("BlastDamage"));
+        var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="rocket-blast";bonus.Effect=R1UpgradeEffect.Damage;
+        bonus.Scope=(R1BonusScope)System.Enum.Parse(typeof(R1BonusScope),"BlastDamage");bonus.Amount=.4f;
+        var ordinary=Build(R4WeaponKind.RocketLauncher,out _);var stronger=Build(R4WeaponKind.RocketLauncher,out _,bonus:bonus);
+        var strongRoot=stronger.GetComponentInParent<R3VehicleAssembly>();strongRoot.transform.position+=Vector3.right*20;Physics.SyncTransforms();
+        var target1=Target(ordinary,6,2);var target2=Target(stronger,6,2);
+        Assert.That(ordinary.GetComponent<RRLRocketBinding>().Fire(),Is.True);Assert.That(stronger.GetComponent<RRLRocketBinding>().Fire(),Is.True);
+        float deadline=Time.time+1;while(Time.time<deadline)yield return null;
+        float baseline=500-target1.CurrentHp,boosted=500-target2.CurrentHp;
+        Assert.That(baseline,Is.GreaterThan(0));Assert.That(boosted,Is.EqualTo(baseline*1.4f).Within(.2f),"Only the explosion receives the blast bonus.");
+        Object.Destroy(bonus);Object.Destroy(target1.gameObject);Object.Destroy(target2.gameObject);
     }
     [UnityTest] public IEnumerator DoubleShotDuplicatesRocketWithoutExtraAmmoOrEnergy()
     {

@@ -79,6 +79,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Dodano oddzielne fizyczne premie do obrażeń wieżyczek ofensywnych i pułapek; współdziałają z premiami ogólnymi, ale nie wzmacniają innych kategorii. Dwie nowe nagrody pokazują swój zakres, przechodzą przez zapis i blueprinty. Wstępne wartości +40% i +50%, jak również wpływ większej puli nagród na losowanie, wymagają playtestu.
 - Unity 6000.3.14f1: **17 PASS, 0 FAIL**, exit 0 (`C:\Users\kubap\Desktop\Prototypy\bonus-deployable-scopes-final.xml`, `.log`): fizyczny strzał wieżyczki i drona, wybuch pułapki na kopule, zakres działa i wcześniejsze premie, zapis nowych nagród oraz regresja osłon. Przed zmianą `bonus-deployable-scopes-red.xml`: **1 FAIL** — brak kategorii. Strzały urządzeń wyzwolono bezpośrednio z testu; ręczny playtest, inne statystyki kategorii, rodzaje obrażeń i hybrydy: **NOT RUN / nadal do zrobienia**.
 
+#### 13. Pierwszy rodzaj obrażeń: wybuchowe
+
+- Dodano oddzielną premię do obrażeń wybuchowych rzeczywistych rakiet i pułapek wybuchowych. Sumuje się ona z odpowiednimi premiami ogólnymi i premią pułapek przed osobnymi mnożnikami; nie wzmacnia zwykłego działa ani niewybuchowego pola obrażeń. Nagroda z tymczasową wartością +40% jest opisana w interfejsie i zachowuje zakres w zapisach i blueprintach. Jej siła i wpływ na pulę nagród wymagają playtestu.
+- Unity 6000.3.14f1: **20 PASS, 0 FAIL**, exit 0 (`C:\Users\kubap\Desktop\Prototypy\bonus-blast-scope-final.xml`, `.log`), w tym porównanie rzeczywistych wybuchów dwóch rakiet, pułapka z jednoczesną premią ogólną, kategorii i rodzaju, wyłączenie wpływu na działo i pole obrażeń, zapisy, osłony i wcześniejsze premie. Dodatkowo **1 PASS** (`bonus-blast-shield-final.xml`) dla przechwycenia wybuchającej rakiety przez kopułę. Przed zmianą `bonus-blast-scope-red.xml`: **2 FAIL** z powodu braku rodzaju. Inne rodzaje, składowe hybrydowe, inne źródła wybuchów i ręczna gra: **NOT RUN / nadal do realizacji**.
+
 ## 16–19. Wspólny aktywny impuls naprawczy — częściowo
 
 - Sprawne kopie Repair Pulse wyzwalają jeden wspólny impuls; ich wkłady tierów sumują tempo naprawy wybranego celu. Utrata lub zakłócenie kopii w trakcie działania zmniejsza jego siłę. Aktywacja pobiera łączny koszt atomowo: przy braku energii na całą grupę nie uruchamia się żadna część.

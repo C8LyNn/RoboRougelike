@@ -57,7 +57,7 @@ namespace RoboRougelike.WeaponIntegration
             // The package fails closed on an incomplete physics query. The
             // integrated game admits large multi-collider vehicles, so size
             // both bounded buffers for that workload without weakening it.
-            Module.SetConfig(new RocketConfig{damageAtCenter=60*(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),cooldown=1.7f*(tank!=null?tank.PackageIntervalScale:intervalScale),maxBlastColliders=1024,maxCastHits=512});
+            Module.SetConfig(new RocketConfig{damageAtCenter=60*(tank!=null?tank.PackageBlastDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),cooldown=1.7f*(tank!=null?tank.PackageIntervalScale:intervalScale),maxBlastColliders=1024,maxCastHits=512});
             projectileTemplate.GetComponent<R3ShieldRocketPayload>().Damage=Module.CurrentSpec.CenterDamage;
             var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
             float cost=VehicleEnergyCosts.Rocket*R3VehicleModel.TierActivationCost(State.Tier);

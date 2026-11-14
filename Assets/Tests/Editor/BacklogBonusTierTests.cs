@@ -92,6 +92,7 @@ public sealed class BacklogBonusTierTests
     }
     [TestCase("damage_turrets","Turrets","wieżyczek")]
     [TestCase("damage_traps","Traps","pułapek")]
+    [TestCase("damage_blast","BlastDamage","wybuchowe")]
     public void DeployableCategoryRewardsSurviveSaveAndShowScope(string id,string scope,string label)
     {
         var run=Resources.Load<R1RunDefinition>("R1/Run");var reward=run.Upgrades.SingleOrDefault(p=>p!=null&&p.Id==id);
@@ -385,6 +386,37 @@ public sealed class BacklogBonusTierGameplayTests
         Physics.SyncTransforms();float end=Time.time+2;while(Time.time<end&&shield.CurrentHp>=500)yield return new WaitForFixedUpdate();
         Assert.That(shield.CurrentHp,Is.EqualTo(470).Within(.02),"The trap receives only its own +50%.");
         if(root!=null)Object.Destroy(root);Object.Destroy(dome);Object.Destroy(turret);Object.Destroy(trapBonus);
+    }
+    [UnityTest] public IEnumerator BlastBonusStacksWithGlobalAndTrapBonusesWithoutBuffingKineticShots()
+    {
+        Assert.That(System.Enum.GetNames(typeof(R1BonusScope)),Does.Contain("BlastDamage"),"Blast damage needs its own modifier scope.");
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var global=BacklogBonusTierTests.OperationBonus("blast-global",.25f,"Increased");
+        var more=BacklogBonusTierTests.OperationBonus("blast-more",.5f,"More");
+        var blast=BacklogBonusTierTests.OperationBonus("blast-only",.4f,"Increased");blast.Scope=(R1BonusScope)System.Enum.Parse(typeof(R1BonusScope),"BlastDamage");
+        var trapBonus=BacklogBonusTierTests.OperationBonus("blast-trap",.3f,"Increased");trapBonus.Scope=R1BonusScope.Traps;
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{global,more,blast,trapBonus}),Is.True);
+        foreach(var id in model.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            var cell=cells.First(c=>model.OwnedPlacementError(id,c,default)==null);Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        Assert.That(run.Player.Controller.EffectiveDamage,Is.EqualTo(40*1.875f).Within(.01),"Kinetic cannon shots do not get blast damage.");
+        var effects=run.Player.GetComponent<R3MountedBonusEffects>();
+        Assert.That(effects.TrapDamageMultiplier,Is.EqualTo(2.325f).Within(.001),"A kinetic damage field receives the trap but not the blast modifier.");
+        Assert.That(effects.BlastDamageMultiplier,Is.EqualTo(2.475f).Within(.001),"A rocket receives blast but not trap category modifiers.");
+        var enemy=run.GetComponent<RoboRougelike.R6.R6TestRange>().TrainingTarget;
+        enemy.GetComponent<Rigidbody>().isKinematic=true;enemy.transform.position=new Vector3(1000,1000,1000);Physics.SyncTransforms();
+        var dome=GameObject.CreatePrimitive(PrimitiveType.Cube);dome.GetComponent<Collider>().enabled=false;dome.transform.position=enemy.Core.transform.position;
+        var boundary=dome.AddComponent<SphereCollider>();boundary.isTrigger=true;
+        var shield=dome.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();shield.Configure(500,false);dome.AddComponent<R3ShieldDome>().Configure(2,6);
+        var root=new GameObject("Blast type bonus trap");root.transform.position=dome.transform.position+Vector3.forward*8;
+        var sensor=root.AddComponent<SphereCollider>();sensor.isTrigger=true;sensor.radius=10;
+        var trap=root.AddComponent<R3DeployableTrap>();trap.Configure(root.transform,run.Player.transform,R3PartKind.BlastTrapDeployer,10,20,3,6,12,5,15,.5f,2);
+        Physics.SyncTransforms();float end=Time.time+2;while(Time.time<end&&shield.CurrentHp>=500)yield return new WaitForFixedUpdate();
+        Assert.That(shield.CurrentHp,Is.EqualTo(441.5f).Within(.02),"20 × (1 + global .25 + trap .3 + blast .4) × 1.5");
+        if(root!=null)Object.Destroy(root);Object.Destroy(dome);Object.Destroy(global);Object.Destroy(more);Object.Destroy(blast);Object.Destroy(trapBonus);
     }
     [UnityTest] public IEnumerator OperationsReachHullCoreMobilityAndReload()
     {
