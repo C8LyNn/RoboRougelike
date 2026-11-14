@@ -212,7 +212,7 @@ namespace RoboRougelike.R3
             ((effect!=R1UpgradeEffect.Repair&&effect!=R1UpgradeEffect.HybridBlastRounds)||operation==R1ModifierOperation.Increased);
         public static bool ValidBonusScope(R1UpgradeEffect effect,R1BonusScope scope)=>
             Enum.IsDefined(typeof(R1BonusScope),scope)&&(scope==R1BonusScope.Global||effect==R1UpgradeEffect.Damage);
-        public static bool SupportsFusion(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||kind==R3PartKind.OmniDrive||kind==R3PartKind.HoverEngine||kind==R3PartKind.CrawlerTrack||kind==R3PartKind.Booster||kind==R3PartKind.MagneticGrapple||kind==R3PartKind.JumpDrive||kind==R3PartKind.Blink||kind==R3PartKind.Gyroscope||kind==R3PartKind.ScannerPulse||kind==R3PartKind.StructuralScanner||
+        public static bool SupportsFusion(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||kind==R3PartKind.OmniDrive||kind==R3PartKind.HoverEngine||kind==R3PartKind.CrawlerTrack||kind==R3PartKind.DirectionalShield||kind==R3PartKind.Booster||kind==R3PartKind.MagneticGrapple||kind==R3PartKind.JumpDrive||kind==R3PartKind.Blink||kind==R3PartKind.Gyroscope||kind==R3PartKind.ScannerPulse||kind==R3PartKind.StructuralScanner||
             kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.SalvageOptimizer||kind==R3PartKind.Overdrive||kind==R3PartKind.RapidFire||kind==R3PartKind.DoubleShot||kind==R3PartKind.DoubleShotOverdrive||kind==R3PartKind.TargetedEmp||kind==R3PartKind.AreaEmp||kind==R3PartKind.ChargeCapacity||kind==R3PartKind.ChargeRegenerator||kind==R3PartKind.RechargePulse||kind==R3PartKind.RampDeployer||kind==R3PartKind.WallDeployer||kind==R3PartKind.JumpPadDeployer||kind==R3PartKind.BlastTrapDeployer||kind==R3PartKind.EmpTrapDeployer||kind==R3PartKind.RepelTrapDeployer||kind==R3PartKind.DamageTrapDeployer||kind==R3PartKind.SlowTrapDeployer||kind==R3PartKind.ImmobilizeTrapDeployer||kind==R3PartKind.FlyingDroneGenerator||kind==R3PartKind.GroundDroneGenerator||kind==R3PartKind.OffensiveTurretGenerator||kind==R3PartKind.HealingTurretGenerator||kind==R3PartKind.SupportTurretGenerator||kind==R3PartKind.ShieldTurretGenerator||kind==R3PartKind.BonusModule||kind==R3PartKind.PointDefense||
             (kind==R3PartKind.Gun&&weapon>=R4WeaponKind.Basic&&weapon<=R4WeaponKind.EmpEmitter);
         public R3VehicleDesign Design { get; }
@@ -880,6 +880,8 @@ namespace RoboRougelike.R3
                 float.IsNaN(p.ReloadReadyAt)||float.IsInfinity(p.ReloadReadyAt)||p.ReloadReadyAt<0||
                 float.IsNaN(p.DisruptionRemaining)||float.IsInfinity(p.DisruptionRemaining)||p.DisruptionRemaining<0||
                 float.IsNaN(p.ThermalHeat)||float.IsInfinity(p.ThermalHeat)||p.ThermalHeat<0))return false;
+            if(parts[0].Kind==R3PartKind.DirectionalShield&&parts.Any(p=>float.IsNaN(p.DefenseCharge)||float.IsInfinity(p.DefenseCharge)||
+                float.IsNaN(p.DefenseRechargeAge)||float.IsNegativeInfinity(p.DefenseRechargeAge)||p.DefenseRechargeAge<0))return false;
             int tier=NormalizedTier(parts[0].Tier);
             if(tier>=3||parts.Any(p=>!SameFusionType(parts[0],p)))return false;
             // A new physical item represents all three inputs. Preserve average
@@ -896,6 +898,17 @@ namespace RoboRougelike.R3
             result.DeviceReadyAt=parts.Max(p=>p.DeviceReadyAt);result.ReloadReadyAt=parts.Max(p=>p.ReloadReadyAt);
             result.DisruptionRemaining=parts.Max(p=>p.DisruptionRemaining);
             result.ThermalHeat=parts.Max(p=>p.ThermalHeat);result.ThermalLocked=parts.Any(p=>p.ThermalLocked);
+            if(result.Kind==R3PartKind.DirectionalShield)
+            {
+                float oldCapacity=RoboRougelike.WeaponIntegration.RRLShieldBinding.BaseCapacity*TierEffectUnits(tier);
+                if(parts.Any(p=>p.DefenseCharge>=0))
+                {
+                    float fraction=parts.Average(p=>p.DefenseCharge<0?1f:Mathf.Clamp01(p.DefenseCharge/oldCapacity));
+                    result.DefenseCharge=RoboRougelike.WeaponIntegration.RRLShieldBinding.BaseCapacity*TierEffectUnits(result.Tier)*fraction;
+                }
+                else result.DefenseCharge=-1;
+                result.DefenseRechargeAge=parts.Min(p=>p.DefenseRechargeAge);
+            }
             if(result.Kind==R3PartKind.Gun)
             {
                 int capacity=result.Weapon==R4WeaponKind.Shotgun?RoboRougelike.WeaponIntegration.RRLShotgunBinding.MagazineSalvos:

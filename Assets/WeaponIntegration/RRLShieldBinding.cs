@@ -7,6 +7,7 @@ namespace RoboRougelike.WeaponIntegration
     [DisallowMultipleComponent]
     public sealed class RRLShieldBinding : MonoBehaviour,IRRLDeviceLifecycle
     {
+        public const float BaseCapacity=100f,BaseRegenerationPerSecond=12f;
         public void RefreshAvailability(){RefreshOperational();}
         public RRLDeviceBinding Device {get;private set;}
         public DirectionalShieldGenerator Generator {get;private set;}
@@ -17,6 +18,8 @@ namespace RoboRougelike.WeaponIntegration
             Device.Bind(state,owner);
             Generator=gameObject.AddComponent<DirectionalShieldGenerator>();
             Generator.Bind(Device.Body,transform);Generator.SetAutomaticSimulation(false);
+            int units=R3VehicleModel.TierEffectUnits(state.Tier);
+            Generator.Configure(BaseCapacity*units,BaseCapacity*units,BaseRegenerationPerSecond*units,3,60,9);
             if(state.DefenseCharge>=0)Generator.RestoreState(state.DefenseCharge,state.DefenseRechargeAge);
             filter=owner.GetComponent<RRLShieldDamageFilter>();
             if(filter==null)filter=owner.gameObject.AddComponent<RRLShieldDamageFilter>();

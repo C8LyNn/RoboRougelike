@@ -224,7 +224,7 @@ namespace RoboRougelike.R1
             foreach(var shield in shields)
             {
                 if(index>=start&&rows.Count<DefensePageSize)
-                    rows.Add($"DEF-001 • {shield.Generator.Charge:0}/100 • "+(shield.Generator.Operational?"ON":"OFF"));
+                    rows.Add($"DEF-001 • {shield.Generator.Charge:0}/{shield.Generator.Capacity:0} • "+(shield.Generator.Operational?"ON":"OFF"));
                 index++;
             }
             foreach(var defense in defenses)
