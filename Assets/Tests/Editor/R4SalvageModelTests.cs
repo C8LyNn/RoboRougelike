@@ -6,6 +6,48 @@ using RoboRougelike.R4;
 
 public class R4SalvageModelTests
 {
+    [Test] public void PhysicalArmorPickupGivesFiveUniquePartsWithoutAddingArmorToBaskets()
+    {
+        var model=Model();var ledger=new R4SalvageLedger(2);
+        var armor=new R4SalvageItem(new R3PartState(default,R3PartKind.Armor,.4f){Id="physical-armor",Source="enemy/armor"},.4f);
+        Assert.That(ledger.RecordDroppedPart("enemy",armor),Is.True);
+        Assert.That(ledger.MarkPhysicalDrop(armor.Id),Is.True);
+        Assert.That(ledger.TryCollectPhysical(model,armor.Id),Is.True);
+        var acquired=model.Inventory.Where(p=>p.Kind==R3PartKind.Armor).ToArray();
+        Assert.That(acquired.Length,Is.EqualTo(5));Assert.That(acquired.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(5));
+        Assert.That(acquired.Single(p=>p.Id==armor.Id).Health,Is.EqualTo(.4f).Within(.001));
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Standard,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Inventory.Where(p=>p.Kind==R3PartKind.Armor).Select(p=>p.Id),Is.EquivalentTo(acquired.Select(p=>p.Id)));
+        Assert.That(restored.Inventory.Where(p=>p.Kind==R3PartKind.Armor).All(p=>Mathf.Abs(p.Health-.4f)<.001f),Is.True);
+        Assert.That(ledger.TryCollectPhysical(model,armor.Id),Is.False);
+        var gun=Item("separate-gun",1);Assert.That(ledger.Record("enemy",new[]{gun},R3EnemyArchetype.Scout),Is.True);
+        Assert.That(ledger.CreateBasketOffers(1,0).SelectMany(b=>b.Items).Any(p=>p.Kind==R3PartKind.Armor),Is.False);
+        Assert.That(ledger.Items.Any(p=>p.Id==armor.Id),Is.False);
+    }
+    [Test] public void MissedArmorCanBeRecoveredForItsSinglePriceOnlyOnce()
+    {
+        var model=Model();model.Award(100);var ledger=new R4SalvageLedger(2);
+        var armor=new R4SalvageItem(new R3PartState(default,R3PartKind.Armor,.8f){Id="missed-armor",Source="enemy/armor"},.8f);
+        Assert.That(ledger.RecordDroppedPart("enemy",armor),Is.True);Assert.That(ledger.MarkPhysicalDrop(armor.Id),Is.True);
+        int before=model.Scrap;Assert.That(ledger.TryRecoverMissed(model,armor.Id),Is.True);
+        Assert.That(model.Scrap,Is.EqualTo(before-model.Economy.MissedLootRecoveryCost));
+        Assert.That(model.Inventory.Count(p=>p.Kind==R3PartKind.Armor),Is.EqualTo(5));
+        Assert.That(ledger.TryRecoverMissed(model,armor.Id),Is.False);
+    }
+    [Test] public void ArmorPackageNeedsFiveFreeSlotsAndFailedPaidRecoveryRefundsMoney()
+    {
+        var model=Model();model.Award(100);
+        var filler=Enumerable.Range(0,model.AvailableInventoryCapacity-4).Select(_=>new R3PartState(default,R3PartKind.Battery)).ToArray();
+        Assert.That(model.ReceiveSalvage(filler),Is.True);var ledger=new R4SalvageLedger();
+        var armor=new R4SalvageItem(new R3PartState(default,R3PartKind.Armor,.6f){Id="armor-capacity",Source="enemy/armor"},.6f);
+        Assert.That(ledger.RecordDroppedPart("enemy",armor),Is.True);Assert.That(ledger.MarkPhysicalDrop(armor.Id),Is.True);
+        int money=model.Scrap,count=model.Inventory.Count;Assert.That(ledger.TryRecoverMissed(model,armor.Id),Is.False);
+        Assert.That(model.Scrap,Is.EqualTo(money));Assert.That(model.Inventory.Count,Is.EqualTo(count));
+        Assert.That(ledger.MissedPhysicalItems.Any(p=>p.Id==armor.Id),Is.True);
+        Assert.That(model.Dismantle(model.Inventory[0].Id),Is.True);Assert.That(ledger.TryCollectPhysical(model,armor.Id),Is.True);
+        Assert.That(model.Inventory.Count(p=>p.Kind==R3PartKind.Armor),Is.EqualTo(5));
+    }
     private R3VehicleModel Model()=>new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
     private R4SalvageItem Item(string id,float hp=1)=>new R4SalvageItem(id,"run/1/scout/gun",R3PartKind.Gun,R4WeaponKind.Automatic,hp);
     [Test] public void MissedPhysicalLootRequiresPaymentAndCannotAlsoBecomeAFreeReward()

@@ -770,12 +770,14 @@ namespace RoboRougelike.R3
             }
             finally {if(!accepted){part.RotationQuarterTurns=oldRotation;part.ContactMask=oldContacts;}}
         }
-        public bool ReceiveSalvage(IEnumerable<R3PartState> recovered)
+        public bool ReceiveSalvage(IEnumerable<R3PartState> recovered)=>ReceiveSalvageCore(recovered,false);
+        internal bool ReceivePhysicalSalvage(IEnumerable<R3PartState> recovered)=>ReceiveSalvageCore(recovered,true);
+        bool ReceiveSalvageCore(IEnumerable<R3PartState> recovered,bool allowArmor)
         {
             if(recovered==null)return false;
             var batch=recovered.ToArray();
             if((long)inventory.Count+batch.Length>AvailableInventoryCapacity)return false;
-            if(batch.Any(p=>!ValidEconomicPart(p)||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
+            if(batch.Any(p=>!ValidEconomicPart(p)||(!allowArmor&&p.Kind==R3PartKind.Armor)||p.Kind==R3PartKind.Core||
                 (p.Kind==R3PartKind.BonusModule&&(string.IsNullOrWhiteSpace(p.UpgradeId)||
                     !Enum.IsDefined(typeof(R1UpgradeEffect),p.UpgradeEffect)||float.IsNaN(p.UpgradeAmount)||
                     float.IsInfinity(p.UpgradeAmount)||p.UpgradeAmount<0||p.UpgradeAmount>1))||

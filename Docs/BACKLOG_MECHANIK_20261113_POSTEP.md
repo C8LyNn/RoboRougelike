@@ -415,3 +415,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Ekran jazdy na mapie z edytora korzysta ze wspólnej wskazówki odczytującej aktualny profil sterowania, zamiast zawsze pokazywać WASD i LPM.
 - Unity 6000.3.14f1: **4 PASS, 0 FAIL**, exit 0 (`map-test-hints-final.xml`, `.log` w `Prototypy`), obejmujące przejście menu → edytor → garaż → test → powrót oraz kontrolę profilu. Są to testy sterowane kodem; wygląd i czytelność podpowiedzi w Windows Playerze: **NOT RUN**.
+
+#### 30, 36. Fizyczny odzysk pancerza przeciwników
+
+- Zwykły pancerz wroga może wypaść po odstrzeleniu albo po zniszczeniu rdzenia, według istniejącej konfigurowalnej szansy łupu. Podniesienie lub odpłatne odzyskanie jednego łupu przyznaje konfigurowany pakiet, domyślnie pięć oddzielnych części o zachowanym stanie. Operacja wymaga miejsca na cały pakiet; niepowodzenie zwraca opłatę. Fizyczny łup i istniejące koszyki korzystają ze wspólnego rejestru i nie przyznają tej samej części dwukrotnie.
+- Unity 6000.3.14f1: **21 PASS, 0 FAIL**, exit 0 (`armor-loot-release.xml`, `.log` w `Prototypy`). Sprawdzono rzeczywisty odbiór pancerza, łup po zniszczeniu rdzenia, brak duplikatu, zerową szansę, wcześniejszą ścieżkę nagród, odpłatny odzysk, brak miejsca oraz zapis i odczyt tożsamości części. Próby przed poprawkami ujawniły brak wpisu i odrzucanie pancerza przez odbiór magazynu. Ręczna rozgrywka, balans liczby łupów i wydajność przy dużej liczbie klocków: **NOT RUN**. Punkty 30 i 36 pozostają częściowo otwarte w innych źródłach i scenariuszach.

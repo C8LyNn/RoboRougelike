@@ -75,7 +75,7 @@ public sealed class BacklogProjectileTierPhysicsTests
         enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
         var drops=Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None);
         Assert.That(drops.Length,Is.GreaterThan(0),"Defeating the real enemy must spawn an owned ledger drop");
-        Assert.That(drops.Length,Is.EqualTo(run.Salvage.Items.Count(p=>p.Selectable)),"100% must create one pickup per eligible physical item");
+        Assert.That(drops.Length,Is.EqualTo(run.Salvage.Items.Count(p=>p.PhysicalLootEligible)),"100% must create one pickup per eligible physical item");
         string id=drops[0].ItemId;Assert.That(run.Salvage.Items.Any(p=>p.Id==id),Is.True);
         for(int i=1;i<drops.Length;i++)drops[i].transform.position+=Vector3.right*(20+i*2);
         var player=run.Player.GetComponent<Rigidbody>();player.isKinematic=true;player.position=drops[0].transform.position;
@@ -144,6 +144,53 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Any(p=>p.ItemId==id),Is.False,"Wreck capture must not spawn a second pickup for an early drop");
         Assert.That(run.VehicleModel.Inventory.Count(p=>p.Id==id),Is.EqualTo(1));
         Assert.That(run.Salvage.Items.Count,Is.GreaterThan(0),"Remaining enemy parts must still be recorded");
+    }
+    [UnityTest] public IEnumerator DestroyedEnemyArmorDropsCollectibleFivePiecePackBeforeVictory()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        var enemy=run.Encounter.Enemies.First();var body=enemy.GetComponent<Rigidbody>();body.isKinematic=true;
+        body.position=new Vector3(100,5,100);run.Encounter.SetCombatActive(true);Physics.SyncTransforms();
+        var baseRoot=enemy.transform.Find("Base");Assert.That(baseRoot,Is.Not.Null);
+        var armor=baseRoot.GetComponentsInChildren<P12PipelineSafeDamageable>()
+            .Where(p=>p.name=="P12_EnemyBlock"&&p!=enemy.Core).OrderByDescending(p=>(p.transform.position-enemy.Core.transform.position).sqrMagnitude).First();
+        armor.ApplyDamageResolvedTyped(armor.CurrentHp/.75f+.1f,armor.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Kinetic);
+        Assert.That(enemy.IsDefeated,Is.False,"The armor drop must be available before core defeat.");
+        var item=run.Salvage.Items.FirstOrDefault(p=>p.Kind==R3PartKind.Armor);Assert.That(item,Is.Not.Null,"Destroyed enemy armor must enter the canonical loot ledger.");
+        var drop=Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).FirstOrDefault(p=>p.ItemId==item.Id);Assert.That(drop,Is.Not.Null);
+        var player=run.Player.GetComponent<Rigidbody>();player.isKinematic=true;player.position=drop.transform.position;Physics.SyncTransforms();
+        float deadline=Time.realtimeSinceStartup+5;while(Time.realtimeSinceStartup<deadline&&!run.VehicleModel.Owns(item.Id))yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(run.VehicleModel.Owns(item.Id),Is.True);
+        Assert.That(run.VehicleModel.Inventory.Count(p=>p.Kind==R3PartKind.Armor&&p.Source==item.Source),Is.EqualTo(5));
+        enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        Assert.That(run.Salvage.Items.Any(p=>p.Id==item.Id),Is.False,"Victory cannot duplicate collected armor.");
+    }
+    [UnityTest] public IEnumerator SurvivingEnemyArmorCanDropWhenCoreIsDefeated()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        var enemy=run.Encounter.Enemies.First();var body=enemy.GetComponent<Rigidbody>();body.isKinematic=true;
+        body.position=new Vector3(100,5,100);run.Encounter.SetCombatActive(true);Physics.SyncTransforms();
+        enemy.Core.ApplyDamageResolvedTyped(enemy.Core.CurrentHp/.75f+.1f,enemy.Core.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Kinetic);
+        Assert.That(enemy.IsDefeated,Is.True);
+        var armor=run.Salvage.Items.Where(p=>p.Kind==R3PartKind.Armor&&p.Health>0).ToArray();
+        Assert.That(armor,Is.Not.Empty,"Surviving armor should be eligible for a physical drop when the core dies.");
+        var drops=Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None);
+        Assert.That(armor.All(p=>drops.Count(d=>d.ItemId==p.Id)==1),Is.True,"Each dropped block has a single world object.");
+        Assert.That(run.Salvage.CreateBasketOffers(1,0).SelectMany(b=>b.Items).Any(p=>p.Kind==R3PartKind.Armor),Is.False);
+        yield return null;
+    }
+    [UnityTest] public IEnumerator UncollectedEarlyArmorDropIsNotDuplicatedAtCoreDefeat()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        var enemy=run.Encounter.Enemies.First();var body=enemy.GetComponent<Rigidbody>();body.isKinematic=true;
+        body.position=new Vector3(100,5,100);run.Encounter.SetCombatActive(true);Physics.SyncTransforms();
+        var armor=enemy.transform.Find("Base").GetComponentsInChildren<P12PipelineSafeDamageable>()
+            .Where(p=>p.name=="P12_EnemyBlock"&&p!=enemy.Core).OrderByDescending(p=>(p.transform.position-enemy.Core.transform.position).sqrMagnitude).First();
+        armor.ApplyDamageResolvedTyped(armor.CurrentHp/.75f+.1f,armor.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Kinetic);
+        var item=run.Salvage.Items.First(p=>p.Kind==R3PartKind.Armor);string id=item.Id;
+        enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        Assert.That(Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Count(p=>p.ItemId==id),Is.EqualTo(1));
+        Assert.That(run.Salvage.Items.Count(p=>p.Id==id),Is.EqualTo(1));
+        yield return null;
     }
     [UnityTest] public IEnumerator UncollectedEarlyDropIsNotSpawnedAgainWhenEnemyDies()
     {

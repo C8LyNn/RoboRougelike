@@ -30,6 +30,7 @@ namespace RoboRougelike.R4
         public bool Recoverable => Health>0;
         // Wrecks are selectable too; selected enemy parts arrive in working condition.
         public bool Selectable => Kind!=R3PartKind.Armor&&Kind!=R3PartKind.Core;
+        public bool PhysicalLootEligible => Kind!=R3PartKind.Core;
         public R4SalvageItem(string id,string source,R3PartKind kind,R4WeaponKind weapon,float health,int ammo=-1,
             float defenseCharge=-1,float defenseAge=float.PositiveInfinity,Vector3Int rotation=default,int contacts=R3MountingGrid.AllFaces,float thermalHeat=0,bool thermalLocked=false)
         { Id=id;Source=source;Kind=kind;Weapon=weapon;Ammo=ammo;DefenseCharge=defenseCharge;DefenseRechargeAge=defenseAge;
@@ -69,13 +70,13 @@ namespace RoboRougelike.R4
         public bool RecordDroppedPart(string enemyId,R4SalvageItem item)
         {
             if(Closed||string.IsNullOrWhiteSpace(enemyId)||enemies.Contains(enemyId)||item==null||
-               string.IsNullOrWhiteSpace(item.Id)||!item.Selectable||ids.Contains(item.Id)||!R3VehicleModel.ValidEconomicPart(item.ToPart()))return false;
+               string.IsNullOrWhiteSpace(item.Id)||!item.PhysicalLootEligible||ids.Contains(item.Id)||!R3VehicleModel.ValidEconomicPart(item.ToPart()))return false;
             ids.Add(item.Id);items.Add(item);earlyOwners.Add(item.Id,enemyId);earlyItems.Add(item.Id,item);return true;
         }
         public bool HasEarlyDrop(string id)=>!string.IsNullOrWhiteSpace(id)&&earlyOwners.ContainsKey(id);
         public bool MarkPhysicalDrop(string id)
         {
-            if(Closed||string.IsNullOrWhiteSpace(id)||!items.Any(p=>p.Id==id&&p.Selectable))return false;
+            if(Closed||string.IsNullOrWhiteSpace(id)||!items.Any(p=>p.Id==id&&p.PhysicalLootEligible))return false;
             return physicalDrops.Add(id);
         }
         public bool TryRecoverMissed(R3VehicleModel model,string id)
@@ -92,12 +93,12 @@ namespace RoboRougelike.R4
         {
             if(Closed||model==null||string.IsNullOrWhiteSpace(id)||collected.Contains(id))return false;
             var item=items.FirstOrDefault(p=>p.Id==id);
-            if(item==null||!item.Selectable||model.Owns(id)||!R3VehicleModel.ValidEconomicPart(item.ToPart()))return false;
+            if(item==null||!item.PhysicalLootEligible||model.Owns(id)||!R3VehicleModel.ValidEconomicPart(item.ToPart()))return false;
             var part=item.ToPart();int count=model.GrantQuantity(part.Kind,part.ArmorShape);
             if(count<=0||(long)model.Inventory.Count+count>model.AvailableInventoryCapacity)return false;
             var batch=new List<R3PartState>{part};
             for(int i=1;i<count;i++){var copy=part.Copy();copy.Id=Guid.NewGuid().ToString("N");batch.Add(copy);}
-            if(!model.ReceiveSalvage(batch))return false;
+            if(!model.ReceivePhysicalSalvage(batch))return false;
             collected.Add(id);items.Remove(item);return true;
         }
         private bool RecordCore(string enemyId,IEnumerable<R4SalvageItem> equipment,R3EnemyArchetype? archetype)
