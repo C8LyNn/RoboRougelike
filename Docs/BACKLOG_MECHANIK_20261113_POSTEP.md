@@ -312,3 +312,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Uzupełniono również podpowiedzi żyroskopu i przeładowania tak, aby pokazywały aktualne przypisania.
 - Unity 6000.3.14f1: końcowe celowane testy EditMode z wejściem do PlayMode **4 PASS, 0 FAIL**, exit 0 (`pause-controls-release.xml`, `.log` w `Prototypy`). Obejmują wejście do panelu przez nawigację pauzy, zamknięcie panelu przed wznowieniem, ochronę przed resetem pod R oraz zachowanie resetu i nawigacji po jego zamknięciu. Przed zmianą test wejścia do panelu zakończył się oczekiwanym **FAIL** (`pause-controls-red.xml`). Są to testy sterowane kodem; ręczny Windows Player i obsługa samej listy przypisań kontrolerem: **NOT RUN**.
 - Punkt 06 nadal pozostaje częściowy: nie wszystkie skróty są konfigurowalne, a samej listy ustawień nie zweryfikowano na kontrolerze. Trzy błędy starszych testów garażu wymienione powyżej nie zostały w tej paczce rozwiązane.
+
+#### 06. Ustawienia w menu głównym
+
+- Panel sterowania jest dostępny także przed wyborem pojazdu, w układzie poziomym i pionowym. Gdy jest otwarty, klawisze menu głównego nie rozpoczynają wyprawy w tle. Esc zamyka panel bez uruchamiania gry.
+- Unity 6000.3.14f1: **3 PASS, 0 FAIL**, exit 0 (`main-controls-check.xml`, `.log` w `Prototypy`): test sterowany wejściem Unity sprawdził Enter przy otwartym panelu i zamknięcie przez Esc, a dwa pozostałe potwierdziły wcześniejsze zachowanie pauzy i poligonu. Przed zmianą test wejścia do ustawień w menu głównym zakończył się oczekiwanym **FAIL** (`main-controls-red.xml`). Ręczny Windows Player, rozkład elementów i nawigacja po samej liście ustawień kontrolerem: **NOT RUN**. Pozostałe skróty i trzy starsze niezaliczone testy garażu nadal wymagają pracy.

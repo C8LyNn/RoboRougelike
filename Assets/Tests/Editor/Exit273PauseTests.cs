@@ -177,3 +177,27 @@ public sealed class Exit273PauseTests
         if (Application.isPlaying) { Time.timeScale = 1; yield return new ExitPlayMode(); }
     }
 }
+
+public sealed class MainMenuControlsTests
+{
+    RC2EditorInputProbe probe;
+    [UnityTest] public IEnumerator MainMenuControlsBlockStartingRunAndCloseOnEscape()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;var hud=run.GetComponent<R1RunHUD>();
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var open=typeof(R1RunHUD).GetMethod("OpenMainControls",flags);
+        Assert.That(open,Is.Not.Null,"The main menu needs a controls screen.");open.Invoke(hud,null);
+        var property=typeof(R1RunHUD).GetProperty("MainControlsOpen",flags);
+        Assert.That(property.GetValue(hud),Is.True);
+        probe=new GameObject("main controls input").AddComponent<RC2EditorInputProbe>();probe.InjectKey=Key.Enter;
+        float deadline=Time.realtimeSinceStartup+5;
+        while(!probe.Sent&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(probe.PressObserved,Is.True);yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Ready));
+        Object.DestroyImmediate(probe.gameObject);probe=null;yield return null;
+        run.HandleEscape();Assert.That(property.GetValue(hud),Is.False);Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Ready));
+    }
+    [UnityTearDown] public IEnumerator Cleanup(){if(probe!=null)Object.DestroyImmediate(probe.gameObject);if(Application.isPlaying)yield return new ExitPlayMode();}
+}

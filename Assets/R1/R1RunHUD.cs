@@ -248,6 +248,7 @@ namespace RoboRougelike.R1
         {
             if (run.QuitRequested)
             { Panel(new Rect(0,0,1280,720)); GUI.Label(new Rect(350,300,650,80),"Zamykanie gry…",title); return; }
+            if(run.Progress?.State==R1RunState.Ready&&MainControlsOpen){DrawMainControls(portraitReady);return;}
             if(run.Paused&&PauseControlsOpen){DrawPauseControls();return;}
             if (run.Paused && run.Progress?.State != R1RunState.TestDrive)
             { DrawSessionPause(run); return; }
@@ -408,6 +409,7 @@ namespace RoboRougelike.R1
             {
                 if(portraitReady){DrawPortraitReady(run);return;}
                 GUI.Label(new Rect(90, 55, 1100, 60), "ROBOROGUELIKE • PEŁNA INTEGRACJA", title);
+                if(GUI.Button(new Rect(1010,55,180,45),"Sterowanie",compactButton))OpenMainControls();
                 GUI.Label(new Rect(90, 125, 1100, 45), "Wybierz jeden z trzech wylosowanych pojazdów", heading);
                 GUI.Label(new Rect(90,173,1100,28),"Jeden pojazd, wspólny garaż i nagrody. Aktywność wybierzesz po przygotowaniu.",small);
                 for(int i=0;i<3;i++)
@@ -463,6 +465,7 @@ namespace RoboRougelike.R1
         private void DrawPortraitReady(R1RunController run)
         {
             GUI.Label(new Rect(24,20,720,48),"ROBOROGUELIKE",title);
+            if(GUI.Button(new Rect(540,20,200,45),"Sterowanie",compactButton))OpenMainControls();
             GUI.Label(new Rect(24,74,720,38),"Wybierz jeden z trzech pojazdów",heading);
             GUI.Label(new Rect(24,113,720,28),"Jeden pojazd, wspólny garaż i nagrody.",small);
             for(int i=0;i<3;i++)
