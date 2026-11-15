@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 05, 10 i 44. Wybór części po demontażu w magazynie
+
+- Po potwierdzeniu rozmontowania egzemplarza wybranego do montażu garaż wybiera najzdrowszą sprawną pozostałą część tego samego wariantu i poziomu oraz zachowuje obrót podglądu. Jeśli nie ma takiej części, czyści wybór zamiast podmieniać go na inny poziom lub zniszczony egzemplarz. Demontaż innego wiersza i nieudana operacja nie zmieniają wyboru; podczas inspekcji nie następuje przełączenie na montaż. Komunikat informuje o wybraniu kolejnej części albo potrzebie nowego wyboru. Potwierdzenie demontażu i zasady wypłaty pozostają zachowane.
+- Unity 6000.3.14f1: `dismantle_selection_final.xml` i `.log`: **5 PASS, 0 FAIL** dla zamiennika, obrotu, innych poziomów i uszkodzeń, anulowania, potwierdzenia oraz rzeczywistego rozliczenia złomu po walce. `dismantle_selection_before2.xml`: **1 FAIL** przed poprawką, bo wybór nadal wskazywał usuniętą część. Pierwsza próba testu nie skompilowała się z powodu bezpośredniego ustawiania właściwości obrotu; scenariusz poprawiono, korzystając z publicznej akcji obrotu. Ręczne klikanie w Windows Playerze: **NOT RUN**.
+
 ### 12–13 i 44. Kopiowanie wariantów premii w kreatywnym garażu
 
 - Kopia zamontowanego bonusu zachowuje jego rodzaj, siłę, operację, zakres, poziom i mocowania, a otrzymuje nową tożsamość. Wcześniej utworzenie kopii z definicji znalezionej po samym identyfikatorze mogło podmienić `more/less` lub zakres. Kreatywny katalog pokazuje też sprawne zamontowane warianty, których nie ma w aktualnych definicjach nagród, i pozwala dodać ich kopię. Gdy dwie definicje mają ten sam identyfikator, dodawana jest faktycznie wybrana definicja. Bezpłatne kopiowanie nadal działa wyłącznie na poligonie kreatywnym.

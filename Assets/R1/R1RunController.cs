@@ -245,8 +245,20 @@ namespace RoboRougelike.R1
         public bool GarageDismantle(string id)
         {
             if(Transitioning||Progress?.State!=R1RunState.Garage||VehicleModel==null)return false;
+            bool selected=Garage!=null&&Garage.SelectedInventoryId==id;
+            bool mounting=selected&&Garage.Tool==RoboRougelike.R4_1.R41GarageTool.Mount;
+            var previous=selected?VehicleModel.Inventory.FirstOrDefault(part=>part.Id==id):null;
+            var rotation=mounting?Garage.SelectedRotation:default;
             int before=VehicleModel.Scrap;
             if(!VehicleModel.Dismantle(id))return false;
+            if(selected)
+            {
+                var replacement=mounting&&previous!=null?VehicleModel.Inventory.Where(part=>part.Health>0&&
+                    R3VehicleModel.ValidEconomicPart(part)&&R3VehicleModel.SameMountVariant(previous,part))
+                    .OrderByDescending(part=>part.Health).FirstOrDefault():null;
+                if(replacement!=null)Garage.ChooseInventoryKeepingRotation(replacement.Id,rotation);
+                else Garage.SelectedInventoryId=null;
+            }
             RefreshInventoryPreview();AddEarnedScrap(VehicleModel.Scrap-before);return true;
         }
         public bool ConfirmSalvage(System.Collections.Generic.IEnumerable<string> selected)

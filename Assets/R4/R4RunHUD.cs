@@ -735,10 +735,13 @@ namespace RoboRougelike.R1
                 return false;
             }
             dismantleConfirmation=null;
+            bool selectedForMounting=run.Garage!=null&&run.Garage.Tool==R41GarageTool.Mount&&run.Garage.SelectedInventoryId==id;
             int before=run.VehicleModel.Scrap;
             bool done=run.GarageDismantle(id);
             int credited=run.VehicleModel.Scrap-before;
             catalogFeedback=done?$"Rozmontowano część • +{credited} Z.":"Nie udało się rozmontować części.";
+            if(done&&selectedForMounting)catalogFeedback+=string.IsNullOrEmpty(run.Garage.SelectedInventoryId)?
+                " Wybierz część do montażu.":" Wybrano kolejną taką samą część.";
             return done;
         }
     }

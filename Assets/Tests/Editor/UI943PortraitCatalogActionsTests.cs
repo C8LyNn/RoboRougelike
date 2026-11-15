@@ -528,6 +528,40 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That((string)Field(hud,"catalogFeedback"),Does.Contain("Rozmontowano").And.Contain(value+" Z"));
     }
 
+    [UnityTest] public IEnumerator DismantlingSelectedItemKeepsOnlyAnEquivalentUsableReplacement()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var items=run.VehicleModel.Inventory.Where(p=>p.Kind==R3PartKind.Armor).TakeLast(5).ToArray();Assert.That(items.Length,Is.EqualTo(5));
+        var removed=items[0];var replacement=items[1];replacement.Health=.8f;
+        var lower=items[2];lower.Health=.3f;var differentTier=items[3];differentTier.Tier=2;var wreck=items[4];wreck.Health=0;
+        var hud=run.GetComponent<R1RunHUD>();Field(hud,"catalogOpen",true);Invoke(hud,"SelectCatalogDetails",run,removed.Id);
+        var rotation=new Vector3Int(0,1,0);run.Garage.RotateSelected(1,1);Assert.That(run.Garage.SelectedRotation,Is.EqualTo(rotation));
+        int before=run.VehicleModel.Scrap,credit=run.VehicleModel.DismantleValue(removed);
+        Assert.That((bool)Invoke(hud,"DismantleCatalogItem",run,removed.Id),Is.False);
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(removed.Id),"The confirmation must not change selection.");
+        Assert.That((bool)Invoke(hud,"DismantleCatalogItem",run,removed.Id),Is.True);
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(replacement.Id),"Prefer the healthiest usable part of the exact same variant.");
+        Assert.That(run.Garage.SelectedRotation,Is.EqualTo(rotation));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before+credit));
+        Assert.That((string)Field(hud,"catalogFeedback"),Does.Contain("kolejn"));
+        Assert.That(run.GarageDismantle("missing-item"),Is.False);
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(replacement.Id),"A failed action must leave the selection intact.");
+        Assert.That((bool)Invoke(hud,"DismantleCatalogItem",run,lower.Id),Is.False);
+        Assert.That((bool)Invoke(hud,"DismantleCatalogItem",run,lower.Id),Is.True);
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(replacement.Id),"Dismantling another row must not replace the selection.");
+        Assert.That((bool)Invoke(hud,"DismantleCatalogItem",run,replacement.Id),Is.False);
+        Assert.That((bool)Invoke(hud,"DismantleCatalogItem",run,replacement.Id),Is.True);
+        Assert.That(run.Garage.SelectedInventoryId,Is.Null,"A different tier or destroyed part must never be silently selected.");
+        Assert.That(ContainsId(run.VehicleModel,differentTier.Id),Is.True);Assert.That(ContainsId(run.VehicleModel,wreck.Id),Is.True);
+        run.Garage.ChooseInventory(differentTier.Id);run.Garage.SelectTool(R41GarageTool.Inspect);
+        Assert.That(run.GarageDismantle(differentTier.Id),Is.True);
+        Assert.That(run.Garage.Tool,Is.EqualTo(R41GarageTool.Inspect),"Inventory cleanup must not switch an inspection tool back to mounting.");
+        Assert.That(run.Garage.SelectedInventoryId,Is.Null);
+        yield return new ExitPlayMode();
+    }
+
     [UnityTest] public IEnumerator DismantleCanBeCancelledWithoutLosingPartOrClosingCatalog()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();

@@ -298,6 +298,10 @@ namespace RoboRougelike.R3
                 SelectedRotation=part.RotationQuarterTurns;}
             SetTool(R41GarageTool.Mount);
         }
+        internal void ChooseInventoryKeepingRotation(string id,Vector3Int rotation)
+        {
+            ChooseInventory(id);SelectedRotation=R3MountingGrid.Normalize(rotation);RefreshMarker();
+        }
         public void CopyMountedRotation(R3PartState source)
         {
             if(source==null||Owned==null||source.Kind!=Owned.Kind)return;
