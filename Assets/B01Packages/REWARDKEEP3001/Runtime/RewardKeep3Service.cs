@@ -26,6 +26,12 @@ namespace RoboRougelike.B01.Rewards
         bool TryCommitSalvageAtomically(string encounterEventId,
             IReadOnlyList<RewardCandidate> selected,out string error);
     }
+    // Optional trusted host catalog. Standalone package users retain the
+    // original explicit list; the R3 integration can follow its live enum.
+    public interface IAuthoritativeRewardKindCatalog
+    {
+        bool IsKnownRewardKind(string exactName);
+    }
     [Serializable] public sealed class RewardWindowSave
     {
         public int Version=1;
@@ -48,8 +54,8 @@ namespace RoboRougelike.B01.Rewards
         public RewardKeep3Service(IAuthoritativeRewardPort authoritative) {
             host=authoritative??throw new ArgumentNullException(nameof(authoritative));
         }
-        // Exact canonical R3PartKind names from verified OBJ #210. No casing aliases:
-        // an offered "armor" must never be reinterpreted as lootable equipment.
+        // Standalone fallback catalog. Integrated hosts can supply their current
+        // authoritative catalog without allowing casing or numeric aliases.
         private static readonly HashSet<string> KnownKinds=new HashSet<string>(StringComparer.Ordinal)
         {
             "Armor","Wheel","Gun","Core","Suspension","Booster","JumpDrive","Blink",
@@ -73,9 +79,11 @@ namespace RoboRougelike.B01.Rewards
         private bool ValidateOffer(RewardCandidate[] choices,out string error) {
             if(choices==null){error="INVALID_OFFER";return false;}
             var seen=new HashSet<string>(StringComparer.Ordinal);
+            var catalog=host as IAuthoritativeRewardKindCatalog;
             foreach(var c in choices) {
                 if(c==null||!ValidGuid(c.InstanceId)||!seen.Add(c.InstanceId)||
-                   string.IsNullOrWhiteSpace(c.PartKind) || !KnownKinds.Contains(c.PartKind) || c.PartKind=="Core" ||
+                   string.IsNullOrWhiteSpace(c.PartKind) || c.PartKind=="Core" ||
+                   !(catalog!=null?catalog.IsKnownRewardKind(c.PartKind):KnownKinds.Contains(c.PartKind)) ||
                    float.IsNaN(c.Health)||float.IsInfinity(c.Health)||c.Health<0||c.Health>1) {
                     error="INVALID_OR_DUPLICATE_OFFER";return false;
                 }

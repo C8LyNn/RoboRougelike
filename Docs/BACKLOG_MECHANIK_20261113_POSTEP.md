@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 30, 36, 41 i 44. Katalog części w autoryzowanym odzysku
+
+- Naprawiono niezgodność między aktualnym `R3PartKind` a starszą listą rodzajów w usłudze nagród: nowy moduł w łupie mógł wcześniej zablokować otwarcie całego okna po zwycięstwie. Zaufany adapter R3 sprawdza teraz dokładne, istniejące nazwy aktualnego katalogu, natomiast samodzielny pakiet bez adaptera zachowuje swój dotychczasowy zamknięty zestaw. Rdzeń, nieznane i niekanoniczne nazwy, duplikaty ID oraz nieautoryzowane transakcje nadal są odrzucane.
+- Unity 6000.3.14f1: `recovery_catalog_before.xml` — **2 FAIL**, z odrzuceniem aktualnego katalogu oraz błędem otwarcia okna po zwycięstwie. `recovery_catalog_final2.xml` — **9 PASS** dla wszystkich obecnych rodzajów, zapisu/odczytu okna, odrzucenia nieprawidłowych nazw, autoryzacji, limitu wyborów, paczek, ponownej wypłaty i odbioru przez rzeczywisty rejestr starcia. `recovery_catalog_final3.xml` — **3 PASS** po doprecyzowaniu danych: test sprawdza przyjęcie wszystkich wybieralnych syntetycznych części do magazynu, dopisuje je przed walką do rejestru i po zwycięstwie odzyskuje oryginalne ID modułu EMP, drona i radaru.
+- Wcześniejsze `recovery_catalog_after.xml` oraz `recovery_catalog_final.xml` miały po **8 PASS, 1 FAIL**: starszy test zakładał odpowiednio pojedyncze koła i niezmienione dawne maski ich mocowania. Dostosowano go do faktycznych pakietów oraz normalizacji osi, zachowując sprawdzenie liczby, unikalności i pozostałego stanu części. Ręczny playtest pozostaje **NOT RUN**, więc punkt 44 jest otwarty.
+
 ### 30–32 i 44. Reroll powtarzających się koszyków
 
 - Porównanie ofert uwzględnia teraz różne wybieralne zestawy, a nie liczbę powtórzonych kart. Jeśli losowanie tylko zmienia proporcję duplikatów, gra wyszukuje rzeczywiście inny zestaw; gdy takiego nie ma, zachowuje walutę, poprzedni wybór i wybrany bonus. Istniejący generator, ceny i tożsamości fizycznych części pozostały bez zmian.

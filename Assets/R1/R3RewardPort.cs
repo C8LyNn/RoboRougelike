@@ -15,13 +15,16 @@ public interface IAtomicR3RewardHooks
     bool CommitVerifiedSalvageBatch(string encounterId,IReadOnlyList<RewardCandidate> selection,
         out string reason);
 }
-public sealed class R3RewardPort : IAuthoritativeRewardPort
+public sealed class R3RewardPort : IAuthoritativeRewardPort, IAuthoritativeRewardKindCatalog
 {
     private readonly R3VehicleModel model;private readonly IAtomicR3RewardHooks hooks;
     public R3RewardPort(R3VehicleModel liveR3,IAtomicR3RewardHooks authoritativeHooks)
     {model=liveR3??throw new ArgumentNullException(nameof(liveR3));hooks=authoritativeHooks;}
     public bool IsVerifiedVictory(string eventId) => hooks!=null&&hooks.IsAuthenticVictory(eventId);
     public bool WasCommitRecorded(string eventId) => hooks!=null&&hooks.WasAlreadyCommitted(eventId);
+    public bool IsKnownRewardKind(string name)=>
+        Enum.TryParse(name,false,out R3PartKind kind)&&Enum.IsDefined(typeof(R3PartKind),kind)&&
+        string.Equals(Enum.GetName(typeof(R3PartKind),kind),name,StringComparison.Ordinal);
     public IReadOnlyCollection<string> ExistingPhysicalIds {
         get {
             var self=model.Parts.Concat(model.Inventory).Select(p=>p.Id);
