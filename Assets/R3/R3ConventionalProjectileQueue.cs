@@ -81,6 +81,9 @@ namespace RoboRougelike.R3
         sealed class Batch
         {
             public BigInteger Remaining;
+            public bool IsCadence;
+            public BigInteger CadenceExtras;
+            public R3VehicleAssembly.DoubleShotRoll CadenceRoll;
             public P17PhysicalShell.ConventionalSnapshot Shot;
             public bool IsRailgun;
             public RailgunShot RailShot;
@@ -107,6 +110,15 @@ namespace RoboRougelike.R3
             var batch=new Batch{Remaining=count,Shot=primary.CaptureConventional()};
             var collider=primary.GetComponent<Collider>();
             if(collider!=null)batch.Siblings.Add(new Sibling(collider,primary));
+            batches.Enqueue(batch);Drain();
+        }
+        internal void EnqueueCadence(P17PhysicalShell primary,BigInteger count,BigInteger initialExtras,R3VehicleAssembly.DoubleShotRoll roll)
+        {
+            if(count<0||initialExtras<0)throw new ArgumentOutOfRangeException();
+            if(count.IsZero&&initialExtras.IsZero)return;
+            if(primary==null)throw new ArgumentNullException(nameof(primary));
+            var batch=new Batch{Remaining=count,CadenceExtras=initialExtras,Shot=primary.CaptureConventional(),IsCadence=true,CadenceRoll=roll};
+            var collider=primary.GetComponent<Collider>();if(collider!=null)batch.Siblings.Add(new Sibling(collider,primary));
             batches.Enqueue(batch);Drain();
         }
         internal void EnqueueRailgun(RailgunShot shot,int count,float damageScale,Material material,string partId)
@@ -192,6 +204,12 @@ namespace RoboRougelike.R3
                 }
                 bool finished;
                 if(batch.IsShotgun)finished=batch.ShotgunRemaining.IsZero;
+                else if(batch.IsCadence)
+                {
+                    if(batch.Remaining>0){batch.Remaining--;batch.CadenceExtras+=batch.CadenceRoll.RollExact();}
+                    else batch.CadenceExtras--;
+                    finished=batch.Remaining.IsZero&&batch.CadenceExtras.IsZero;
+                }
                 else{batch.Remaining--;finished=batch.Remaining==0;}
                 batches.Dequeue();
                 if(!finished)batches.Enqueue(batch);

@@ -131,6 +131,7 @@ namespace RoboRougelike.R3
                    !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
                     for(int slot=0;slot<4;slot++)
                         if(pressed[slot]&&R3VehicleModel.MatchesWeaponSlot(part.Weapon,slot,slots,Model.CreativeMode)){held=true;break;}
+                if(!held&&part.Weapon==R4WeaponKind.Basic)part.StopBasicCadence();
                 part.GetComponent<RoboRougelike.WeaponIntegration.RRLBeamBinding>()?.SetTriggerHeld(held);
                 part.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>()?.SetMotorRequested(held);
             }
@@ -323,6 +324,8 @@ namespace RoboRougelike.R3
             public RoboRougelike.WeaponIntegration.RRLRailgunBinding Rail;
             public RoboRougelike.WeaponIntegration.RRLShotgunBinding Shotgun;
             public System.Numerics.BigInteger Requested;
+            public System.Numerics.BigInteger CadenceShots;
+            public DoubleShotRoll CadenceRoll;
         }
         struct PendingRocketShot
         {
@@ -385,7 +388,7 @@ namespace RoboRougelike.R3
                     if(part.Weapon==R4WeaponKind.EmpEmitter)continue; // toggled by the slot's press edge
                     if(part.Weapon==R4WeaponKind.BeamCutter||part.Weapon==R4WeaponKind.RotarySaw)continue;
                     if((part.Weapon<=R4WeaponKind.Railgun||part.Weapon==R4WeaponKind.RocketLauncher)
-                       &&!ClearProjectilePath(part))continue;
+                       &&!ClearProjectilePath(part)){if(part.Weapon==R4WeaponKind.Basic)part.StopBasicCadence();continue;}
                     if(part.Weapon==R4WeaponKind.Shotgun)
                     {
                         var binding=part.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
@@ -432,18 +435,29 @@ namespace RoboRougelike.R3
                     }
                     float interval=controller.WeaponInterval(part.Weapon);
                     if(Time.time+interval<=Time.time&&part.LastConventionalShotTime==Time.time)continue;
+                    var cadence=part.Weapon==R4WeaponKind.Basic?part.BasicCadence:null;
+                    if(cadence!=null)
+                    {
+                        if(float.IsNaN(interval)||float.IsInfinity(interval)||interval<0){part.StopBasicCadence();continue;}
+                        cadence.Observe(Time.time,interval,true);
+                        if(cadence.PendingShots.IsZero)continue;
+                    }
                     var energy=GetComponent<VehicleEnergyBank>();
                     if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(part.Weapon)*R3VehicleModel.TierActivationCost(part.Tier)))continue;
-                    part.NextFireTime=Time.time+interval;part.LastConventionalShotTime=Time.time;
+                    if(cadence==null)part.NextFireTime=Time.time+interval;
+                    part.LastConventionalShotTime=Time.time;
                     var firedMuzzle=part.Muzzle;
                     var primary=controller.FirePrimaryFrom(firedMuzzle,part.Weapon,part.Id);
                     if(primary!=null)
                     {
-                        var requested=RollDoubleShotExtrasExact();
-                        if(requested>0)
+                        var roll=CaptureDoubleShotRoll();var requested=roll.RollExact();
+                        var due=cadence!=null?cadence.TakeAll():System.Numerics.BigInteger.One;
+                        if(cadence!=null)part.NextFireTime=cadence.NextFireTime;
+                        var additionalPrimaries=due-System.Numerics.BigInteger.One;
+                        if(requested>0||additionalPrimaries>0)
                         {
                             if(pending==null)pending=new List<PendingConventionalShot>();
-                            pending.Add(new PendingConventionalShot{Muzzle=firedMuzzle,Kind=part.Weapon,PartId=part.Id,Primary=primary,Requested=requested});
+                            pending.Add(new PendingConventionalShot{Muzzle=firedMuzzle,Kind=part.Weapon,PartId=part.Id,Primary=primary,Requested=requested,CadenceShots=additionalPrimaries,CadenceRoll=roll});
                         }
                     }
                     var art=part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>();
@@ -456,7 +470,15 @@ namespace RoboRougelike.R3
                 if(shot.Shotgun!=null)shot.Shotgun.FireAdditional();
                 else if(shot.Rail!=null)shot.Rail.FireAdditionalExact(shot.Requested);
                 else
-                    controller.FireAdditionalExact(shot.Muzzle,shot.Kind,shot.PartId,shot.Primary,shot.Requested);
+                {
+                    if(shot.CadenceShots>0&&shot.Primary!=null)
+                    {
+                        var queue=GetComponent<R3ConventionalProjectileQueue>();
+                        if(queue==null)queue=gameObject.AddComponent<R3ConventionalProjectileQueue>();
+                        queue.EnqueueCadence(shot.Primary.GetComponent<P17PhysicalShell>(),shot.CadenceShots,shot.Requested,shot.CadenceRoll);
+                    }
+                    else controller.FireAdditionalExact(shot.Muzzle,shot.Kind,shot.PartId,shot.Primary,shot.Requested);
+                }
         }
 
         public static R1VehicleState Build(R3VehicleModel model, R1RunStats stats, R3VisualPalette palette,

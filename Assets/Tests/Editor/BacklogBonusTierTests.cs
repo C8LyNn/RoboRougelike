@@ -481,6 +481,111 @@ public sealed class BacklogBonusTierTests
 
 public sealed class BacklogBonusTierGameplayTests
 {
+    [UnityTest] public IEnumerator ConventionalGunProducesAllShotsDueDuringHeldTrigger()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var tank=run.Player.Controller;
+        var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun&&p.Weapon==RoboRougelike.R4.R4WeaponKind.Basic&&p.Operational);
+        int slot=System.Array.FindIndex(run.VehicleModel.GetWeaponSlots(),weapon=>weapon==RoboRougelike.R4.R4WeaponKind.Basic);
+        Assert.That(slot,Is.GreaterThanOrEqualTo(0));
+        assembly.AimGuns(run.Player.transform.position+run.Player.transform.forward*100+Vector3.up*20);
+        Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(gun),Is.True);
+        R1EncounterManager.ClearTransientObjects();tank.SetRunModifiers(1,.01f,1);gun.NextFireTime=0;tank.enabled=false;
+        float interval=tank.WeaponInterval(gun.Weapon);Assert.That(interval,Is.GreaterThan(0));
+        int Shots()=>Object.FindObjectsByType<RogueMachine.P12PipelineSafe.P17PhysicalShell>(FindObjectsSortMode.None)
+            .Count(p=>p.OwnerRoot==run.Player.transform&&p.IsActiveProjectile&&p.GetComponent<RoboRougelike.R4.R4ProjectileOrigin>().PartId==gun.Id);
+        void Hold()=>assembly.SetSlotTriggers(slot==0,slot==1,slot==2,slot==3);
+        Hold();assembly.FireSlot(slot);float start=Time.time;Assert.That(Shots(),Is.EqualTo(1));
+        yield return new WaitForFixedUpdate();
+        float elapsed=Time.time-start;Assert.That(elapsed,Is.GreaterThan(interval*2),"The test needs several due firing intervals.");
+        Hold();assembly.FireSlot(slot);int expected=1+Mathf.FloorToInt(elapsed/interval);
+        for(int i=0;i<8&&Shots()<expected;i++)yield return null;
+        Assert.That(Shots(),Is.EqualTo(expected),"A held trigger must not lose shots merely because several cooldowns fit in one frame.");
+        R1EncounterManager.ClearTransientObjects();
+    }
+    [UnityTest] public IEnumerator BasicGunDoesNotAccumulateShotsWhileTriggerIsReleased()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var tank=run.Player.Controller;
+        var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun&&p.Weapon==RoboRougelike.R4.R4WeaponKind.Basic&&p.Operational);
+        int slot=System.Array.FindIndex(run.VehicleModel.GetWeaponSlots(),weapon=>weapon==RoboRougelike.R4.R4WeaponKind.Basic);
+        assembly.AimGuns(run.Player.transform.position+run.Player.transform.forward*100+Vector3.up*20);
+        Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(gun),Is.True);
+        R1EncounterManager.ClearTransientObjects();tank.SetRunModifiers(1,.01f,1);gun.NextFireTime=0;tank.enabled=false;
+        void Hold(bool held)=>assembly.SetSlotTriggers(held&&slot==0,held&&slot==1,held&&slot==2,held&&slot==3);
+        int Shots()=>Object.FindObjectsByType<RogueMachine.P12PipelineSafe.P17PhysicalShell>(FindObjectsSortMode.None)
+            .Count(p=>p.OwnerRoot==run.Player.transform&&p.IsActiveProjectile&&p.GetComponent<RoboRougelike.R4.R4ProjectileOrigin>().PartId==gun.Id);
+        Hold(true);assembly.FireSlot(slot);Assert.That(Shots(),Is.EqualTo(1));Hold(false);
+        for(int i=0;i<3;i++)yield return new WaitForFixedUpdate();
+        Hold(true);assembly.FireSlot(slot);Assert.That(Shots(),Is.EqualTo(2),"Released time must not be converted into a backlog.");
+        R1EncounterManager.ClearTransientObjects();
+    }
+    [UnityTest] public IEnumerator BasicCadenceRollsDoubleShotForEveryPrimaryWithoutExtraEnergy()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var model=run.VehicleModel;Assert.That(run.GaragePurchase(R3PartKind.DoubleShot),Is.True);
+        var bonus=model.Inventory.Last(p=>p.Kind==R3PartKind.DoubleShot);model.Economy.DoubleShotChancePerUnit=1f;
+        var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+        Assert.That(run.GarageMount(bonus.Id,cells.First(c=>model.OwnedPlacementError(bonus.Id,c,default)==null)),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var tank=run.Player.Controller;
+        var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun&&p.Weapon==RoboRougelike.R4.R4WeaponKind.Basic&&p.Operational);
+        int slot=System.Array.FindIndex(model.GetWeaponSlots(),weapon=>weapon==RoboRougelike.R4.R4WeaponKind.Basic);
+        assembly.AimGuns(run.Player.transform.position+run.Player.transform.forward*100+Vector3.up*20);
+        Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(gun),Is.True);
+        R1EncounterManager.ClearTransientObjects();tank.SetRunModifiers(1,.01f,1);gun.NextFireTime=0;tank.enabled=false;
+        var bank=run.Player.GetComponent<VehicleEnergyBank>();Assert.That(bank.TrySpend(50),Is.True);
+        void Hold()=>assembly.SetSlotTriggers(slot==0,slot==1,slot==2,slot==3);
+        int Shots()=>Object.FindObjectsByType<RogueMachine.P12PipelineSafe.P17PhysicalShell>(FindObjectsSortMode.None)
+            .Count(p=>p.OwnerRoot==run.Player.transform&&p.IsActiveProjectile&&p.GetComponent<RoboRougelike.R4.R4ProjectileOrigin>().PartId==gun.Id);
+        float before=bank.Current;Hold();assembly.FireSlot(slot);float start=Time.time;
+        Assert.That(bank.Current,Is.EqualTo(before));
+        yield return new WaitForFixedUpdate();
+        float elapsed=Time.time-start;Assert.That(elapsed,Is.GreaterThan(tank.WeaponInterval(gun.Weapon)*2));
+        R1EncounterManager.ClearTransientObjects();
+        var queue=run.Player.GetComponent<R3ConventionalProjectileQueue>();
+        typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).SetValue(queue,1000d);
+        before=bank.Current;Hold();assembly.FireSlot(slot);Assert.That(bank.Current,Is.EqualTo(before));
+        int expected=2*Mathf.FloorToInt(elapsed/tank.WeaponInterval(gun.Weapon));
+        for(int i=0;i<30&&Shots()<expected;i++)yield return null;
+        Assert.That(Shots(),Is.EqualTo(expected),"Each basic shot needs its own non-recursive extra projectile.");
+        var shots=Object.FindObjectsByType<RogueMachine.P12PipelineSafe.P17PhysicalShell>(FindObjectsSortMode.None)
+            .Where(p=>p.OwnerRoot==run.Player.transform&&p.IsActiveProjectile&&p.GetComponent<RoboRougelike.R4.R4ProjectileOrigin>().PartId==gun.Id).ToArray();
+        for(int i=0;i<shots.Length;i++)for(int j=i+1;j<shots.Length;j++)
+            Assert.That(Physics.GetIgnoreCollision(shots[i].GetComponent<Collider>(),shots[j].GetComponent<Collider>()),Is.True,"Shots emitted from the same cadence sample must not collide with each other.");
+        R1EncounterManager.ClearTransientObjects();
+    }
+    [UnityTest] public IEnumerator BasicCadenceShotsRemainIndependentAndDamageTheTarget()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var tank=run.Player.Controller;
+        var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun&&p.Weapon==RoboRougelike.R4.R4WeaponKind.Basic&&p.Operational);
+        int slot=System.Array.FindIndex(run.VehicleModel.GetWeaponSlots(),weapon=>weapon==RoboRougelike.R4.R4WeaponKind.Basic);
+        run.Player.GetComponent<Rigidbody>().isKinematic=true;
+        assembly.AimGuns(run.Player.transform.position+run.Player.transform.forward*100+Vector3.up*20);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        target.transform.SetPositionAndRotation(gun.Muzzle.position+gun.Muzzle.forward*6,Quaternion.LookRotation(gun.Muzzle.forward));
+        target.transform.localScale=new Vector3(3,3,.5f);
+        var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(10000,false);
+        Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(gun),Is.True);
+        R1EncounterManager.ClearTransientObjects();tank.SetRunModifiers(1,.01f,1);gun.NextFireTime=0;tank.enabled=false;
+        void Hold()=>assembly.SetSlotTriggers(slot==0,slot==1,slot==2,slot==3);
+        try
+        {
+            Hold();assembly.FireSlot(slot);float start=Time.time;
+            yield return new WaitForFixedUpdate();
+            float elapsed=Time.time-start,interval=tank.WeaponInterval(gun.Weapon);
+            Assert.That(elapsed,Is.GreaterThan(interval*2));Hold();assembly.FireSlot(slot);
+            int expected=1+Mathf.FloorToInt(elapsed/interval);
+            float deadline=Time.realtimeSinceStartup+4;
+            while(hp.CurrentHp>10000-40*expected+.1f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+            Assert.That(hp.CurrentHp,Is.EqualTo(10000-40*expected).Within(.1f),"Each due projectile must deliver its own physical hit.");
+        }
+        finally{Object.Destroy(target);R1EncounterManager.ClearTransientObjects();}
+    }
     [UnityTest] public IEnumerator UnrelatedBonusChangesDoNotDamageLowHealthArmor()
     {
         var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);

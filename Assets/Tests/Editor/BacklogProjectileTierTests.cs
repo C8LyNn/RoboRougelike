@@ -358,6 +358,47 @@ public sealed class BacklogProjectileTierPhysicsTests
         finally{foreach(var target in targets)if(target!=null)Object.Destroy(target.gameObject);foreach(var dummy in dummies)if(dummy!=null){dummy.SetActive(false);Object.Destroy(dummy);}if(vehicle!=null)Object.Destroy(vehicle.gameObject);}
         yield return null;
     }
+    [UnityTest] public IEnumerator TwoBasicGunsKeepSeparateRapidCadences()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(2000);
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.Gun,false,R4WeaponKind.Basic)==null);
+        Assert.That(model.Buy(cell,R3PartKind.Gun,R4WeaponKind.Basic),Is.True);
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;var assembly=vehicle.GetComponent<R3VehicleAssembly>();
+        var controller=vehicle.GetComponent<P12PipelineSafeTankController>();controller.SetRunModifiers(1,.01f,1);controller.enabled=false;
+        var guns=assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Basic).ToArray();Assert.That(guns.Length,Is.EqualTo(2));
+        var muzzles=new Transform[guns.Length];
+        for(int i=0;i<guns.Length;i++)
+        {
+            var muzzle=new GameObject("Independent cadence muzzle").transform;muzzle.SetParent(guns[i].transform,false);
+            muzzle.position=new Vector3(1000+i*3,1000,1000);muzzle.rotation=Quaternion.identity;guns[i].GunPivot=muzzle;guns[i].Muzzle=muzzle;
+            muzzles[i]=muzzle;
+        }
+        Physics.SyncTransforms();Assert.That(guns.All(assembly.ClearProjectilePath),Is.True);
+        int slot=System.Array.FindIndex(model.GetWeaponSlots(),w=>w==R4WeaponKind.Basic);
+        void Hold()=>assembly.SetSlotTriggers(slot==0,slot==1,slot==2,slot==3);
+        int Count(R3MountedPart gun)=>Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId==gun.Id);
+        try
+        {
+            float interval=controller.WeaponInterval(R4WeaponKind.Basic);
+            Hold();assembly.FireSlot(slot);float start=Time.time;Assert.That(guns.All(g=>Count(g)==1),Is.True);
+            yield return new WaitForFixedUpdate();
+            for(int i=0;i<guns.Length;i++)guns[i].Muzzle=muzzles[i];
+            Assert.That(controller.WeaponInterval(R4WeaponKind.Basic),Is.EqualTo(interval),"The fixture must retain the selected interval.");
+            float elapsed=Time.time-start;
+            Assert.That(elapsed,Is.GreaterThan(interval*2));Hold();assembly.FireSlot(slot);
+            int expected=1+Mathf.FloorToInt(elapsed/interval);
+            for(int i=0;i<30&&guns.Any(g=>Count(g)<expected);i++)yield return null;
+            foreach(var gun in guns)Assert.That(Count(gun),Is.EqualTo(expected),"Each physical copy retains its own due shots.");
+        }
+        finally
+        {
+            foreach(var origin in Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>guns.Any(g=>g.Id==p.PartId)))
+                if(origin!=null){origin.gameObject.SetActive(false);Object.Destroy(origin.gameObject);}
+            Object.Destroy(vehicle.gameObject);
+        }
+    }
     [UnityTest] public IEnumerator ConventionalWeaponCopiesFireBeforeExtraShotsConsumeRemainingSlots()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(2000);

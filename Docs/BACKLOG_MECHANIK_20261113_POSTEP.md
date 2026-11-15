@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 44. Szybki ostrzał działa podstawowego
+
+- Działo podstawowe podczas przytrzymania spustu zachowuje wszystkie strzały przypadające między kolejnymi krokami czasu. Każda zamontowana kopia prowadzi własny harmonogram. Nadmiar jest tworzony stopniowo przez istniejącą kolejkę, a dla każdego podstawowego pocisku osobno naliczany jest nierekurencyjny Double Shot. Działo podstawowe nadal nie zużywa energii. Zwolnienie spustu nie gromadzi kolejnych strzałów; wspólnie zlecone pociski są zabezpieczone przed wzajemnymi kolizjami.
+- Unity 6000.3.14f1: przed zmianą `weapon_cadence_before.xml` pokazał **1 FAIL** (powstawały 2 strzały zamiast 11). W trakcie pracy `weapon_basic_cadence_retry.xml` — **4 PASS, 1 FAIL**: w próbie z Double Shot brakowało jednego aktywnego pocisku. Dodatkowa próba `weapon_basic_cadence_pairs_before.xml` — **1 FAIL**, ujawniła brak wyłączenia kolizji między pociskami z tej samej porcji. Po połączeniu ich w jedną grupę `weapon_basic_cadence_pairs_after.xml` — **10 PASS, 0 FAIL**, obejmujące dwie fizyczne bronie, fizyczne trafienia, zwolnienie spustu, Double Shot, koszt energii i harmonogram czasu. Testy sterują spustem i czasem w kontrolowanej scenie; nie są ręczną rozgrywką.
+- Zmiana obejmuje tylko darmowe działo podstawowe: inne bronie nadal wymagają obsługi zaległych strzałów z właściwym kosztem i amunicją. Przeciążona kolejka opóźnia powstanie pocisków; korzystają one z zapisanej pozycji i kierunku, więc wynik dla ruchomego celu może różnić się od jednoczesnego ostrzału. Nie wykonano pomiarów FPS ani odbioru w Playerze. Limit 64 podstawowych śrucin oraz punkty #02, #14 i #44 pozostają otwarte.
+
 ### 14, 19 i 44. Wybór wielu celów impulsu naprawczego
 
 - W trakcie jednego kroku impulsu kolejne uszkodzone części są wybierane z ponownie używanej listy kandydatów. Każda jest ponownie sprawdzana przed naprawą; po wyczerpaniu listy system ponownie sprawdza konstrukcję, aby uwzględnić nowe uszkodzenia. Typowa naprawa wielu części nie tworzy już nowej tablicy i nie przeszukuje całego pojazdu dla każdego kolejnego celu.
