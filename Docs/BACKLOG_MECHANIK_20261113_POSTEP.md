@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14 i 19. Blink w gęstej scenie
+
+- Gdy istniejący bufor 256 trafień się zapełni, Blink pobiera pełne wyniki sprawdzania miejsca docelowego, drogi i podparcia. Przeszkody nadal uniemożliwiają teleportację, nieuznane podłoże nie daje podparcia, a nieudana próba nie zużywa energii ani czasu odnowienia. To zmiana istniejącego modułu, bez zmiany jego odległości lub zasad wspólnego użycia kopii.
+- Unity 6000.3.14f1: `blink_dense_before.xml` — **3 FAIL**: w scenach z 280 koliderami pełne bufory uniemożliwiały poprawne rozpoznanie przeszkody albo rzeczywistego podłoża. `blink_dense_after.xml` — **20 PASS** w PlayMode, w tym te scenariusze, brak podparcia, zachowanie pozycji i prędkości, wydatek energii oraz cooldown. `blink_dense_integration.xml` — **4 PASS** dla zamontowanych modułów, wszystkich trzech klas, wyższego tieru, kilku kopii i przeszkody. Gęste sceny sprawdzono w izolowanym module, nie na gotowym pojeździe.
+- Zapytania po zapełnieniu bufora są synchroniczne i alokują pamięć. Skrajnej liczby obiektów i płynności w Playerze nie zmierzono; punkty 14 i 44 pozostają otwarte.
+
 ### 14, 25, 27 i 44. EMP w gęstej scenie
 
 - Istniejący obszarowy EMP, używany również przez pułapkę, po zapełnieniu bufora wyszukuje pełny zestaw koliderów i sprawdza pełną linię widzenia. Nie odrzuca już impulsu tylko dlatego, że przekroczono rozmiar bufora, ani nie traktuje nadmiaru własnych części jako ściany. Nadal rozpoznaje prawdziwe przeszkody, usuwa duplikaty odbiorników i pobiera energię oraz cooldown tylko po poprawnej walidacji.

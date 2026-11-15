@@ -73,10 +73,15 @@ namespace RoboRougelike.Mechanics.MOV003Blink
                 return BlinkResult.UnsupportedDestination;
 
             int count = Physics.OverlapBoxNonAlloc(endCenter, half, overlaps, poseRotation, settings.BlockingLayers, QueryTriggerInteraction.Ignore);
-            if (count >= QueryCapacity) return BlinkResult.PhysicsQueryOverflow;
+            Collider[] destinationHits=overlaps;
+            if(count>=overlaps.Length)
+            {
+                destinationHits=Physics.OverlapBox(endCenter,half,poseRotation,settings.BlockingLayers,QueryTriggerInteraction.Ignore);
+                count=destinationHits.Length;
+            }
             for (int i = 0; i < count; i++)
             {
-                Collider hit = overlaps[i];
+                Collider hit = destinationHits[i];
                 if (hit != null && !IsOwnCollider(hit) && !IsFloorLike(hit, destinationFootY))
                     return BlinkResult.DestinationBlocked;
             }
@@ -86,10 +91,16 @@ namespace RoboRougelike.Mechanics.MOV003Blink
                 Vector3 displacement = destination - vehicleBody.position;
                 int swept = Physics.BoxCastNonAlloc(startCenter, half, displacement.normalized,
                     casts, poseRotation, displacement.magnitude, settings.BlockingLayers, QueryTriggerInteraction.Ignore);
-                if (swept >= QueryCapacity) return BlinkResult.PhysicsQueryOverflow;
+                RaycastHit[] pathHits=casts;
+                if(swept>=casts.Length)
+                {
+                    pathHits=Physics.BoxCastAll(startCenter,half,displacement.normalized,poseRotation,
+                        displacement.magnitude,settings.BlockingLayers,QueryTriggerInteraction.Ignore);
+                    swept=pathHits.Length;
+                }
                 for (int i = 0; i < swept; i++)
                 {
-                    Collider hit = casts[i].collider;
+                    Collider hit = pathHits[i].collider;
                     if (hit != null && !IsOwnCollider(hit) &&
                         !IsFloorLike(hit, Mathf.Min(sourceFootY, destinationFootY)))
                         return BlinkResult.PathBlocked;
@@ -165,11 +176,16 @@ namespace RoboRougelike.Mechanics.MOV003Blink
                 float distance = projectedY * 2f + RayStartClearance + settings.MaximumDropMeters;
                 int count = Physics.RaycastNonAlloc(origin, Vector3.down, groundHits, distance,
                     settings.SupportLayers, QueryTriggerInteraction.Ignore);
-                if (count >= QueryCapacity) return false;
+                RaycastHit[] supportHits=groundHits;
+                if(count>=groundHits.Length)
+                {
+                    supportHits=Physics.RaycastAll(origin,Vector3.down,distance,settings.SupportLayers,QueryTriggerInteraction.Ignore);
+                    count=supportHits.Length;
+                }
                 bool found = false;
                 for (int i = 0; i < count; i++)
                 {
-                    RaycastHit hit = groundHits[i];
+                    RaycastHit hit = supportHits[i];
                     if (hit.collider == null || IsOwnCollider(hit.collider)) continue;
                     if(groundFilter!=null&&!groundFilter(hit.collider))continue;
                     if (hit.normal.y < settings.MinimumGroundNormalY) continue;
