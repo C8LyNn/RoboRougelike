@@ -816,8 +816,10 @@ namespace RoboRougelike.R1
                 foreach(var bonus in run.Definition.Upgrades)
                 {
                     var sample=R3VehicleModel.CreateBonusReward(bonus);
-                    if(sample!=null&&CatalogBonusKey(sample)==catalogBonusId)return run.AddCreativeBonus(bonus.Id);
+                    if(sample!=null&&CatalogBonusKey(sample)==catalogBonusId)return run.AddCreativeBonusDefinition(bonus);
                 }
+                var mounted=run.VehicleModel.Parts.FirstOrDefault(part=>part.Kind==R3PartKind.BonusModule&&part.Health>0&&CatalogBonusKey(part)==catalogBonusId);
+                if(mounted!=null)return run.AddCreativeEquivalent(mounted,out _);
                 return false;
             }
             return run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,

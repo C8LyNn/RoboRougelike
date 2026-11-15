@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 12–13 i 44. Kopiowanie wariantów premii w kreatywnym garażu
+
+- Kopia zamontowanego bonusu zachowuje jego rodzaj, siłę, operację, zakres, poziom i mocowania, a otrzymuje nową tożsamość. Wcześniej utworzenie kopii z definicji znalezionej po samym identyfikatorze mogło podmienić `more/less` lub zakres. Kreatywny katalog pokazuje też sprawne zamontowane warianty, których nie ma w aktualnych definicjach nagród, i pozwala dodać ich kopię. Gdy dwie definicje mają ten sam identyfikator, dodawana jest faktycznie wybrana definicja. Bezpłatne kopiowanie nadal działa wyłącznie na poligonie kreatywnym.
+- Unity 6000.3.14f1: `creative_bonus_variants_final.xml` i `.log`: **6 PASS, 0 FAIL** dla rzeczywistego montażu, klonowania, wyboru przez garaż, dodawania z katalogu, wariantów o wspólnym ID oraz istniejącej tożsamości w fuzji, checkpointach i blueprintach. `creative_bonus_clone_before.xml`: **2 FAIL** przed poprawką; `creative_bonus_variants_before.xml`: **1 PASS, 1 FAIL**, ujawniający dodatkowy wybór niewłaściwej definicji. Nie wykonywano ręcznego klikania ani oceny wyglądu w Windows Playerze.
+
 ### 03–06 i 44. Wybór nadmiarowych rodzajów na poligonie
 
 - W kreatywnym garażu panel slotów pozwala teraz przechodzić strzałką przez wszystkie zamontowane rodzaje broni, modułów aktywnych lub urządzeń, które nie mają własnego slotu, i przypisać wybrany rodzaj do czwartego slotu danej puli. Po zamianie pozostałe rodzaje nadal są dostępne. Licznik wskazuje aktualną pozycję na liście; etykieta pokazuje rzeczywisty klawisz z ustawień zamiast stałych E, 4 i V. Dotychczasowe działanie slotów i sterowania nie zostało zmienione.

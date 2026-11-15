@@ -299,6 +299,63 @@ public class CreativeRangeTests
         yield return null;
     }
 
+    R3PartState MountModifiedCreativeBonus(R1RunController run)
+    {
+        var definition=run.Definition.Upgrades.First(item=>item!=null&&item.Effect==R1UpgradeEffect.Damage);
+        Assert.That(run.AddCreativeBonus(definition.Id),Is.True);var part=run.VehicleModel.Inventory.Last();
+        part.UpgradeOperation=R1ModifierOperation.More;part.UpgradeScope=R1BonusScope.AutomaticWeapon;part.Tier=2;
+        Assert.That(run.GarageMount(part.Id,Vector3Int.right,Vector3Int.zero),Is.True);
+        return run.VehicleModel.Parts.Single(p=>p.Id==part.Id);
+    }
+
+    [UnityTest] public IEnumerator CreativeCopiedBonusKeepsOperationScopeTierAndIdentity()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var mounted=MountModifiedCreativeBonus(run);int before=run.VehicleModel.Inventory.Count;
+        Assert.That(run.AddCreativeEquivalent(mounted,out var copy),Is.True);
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(before+1));Assert.That(copy.Id,Is.Not.EqualTo(mounted.Id));
+        Assert.That(copy.UpgradeOperation,Is.EqualTo(mounted.UpgradeOperation));Assert.That(copy.UpgradeScope,Is.EqualTo(mounted.UpgradeScope));
+        Assert.That(copy.Tier,Is.EqualTo(mounted.Tier));Assert.That(R3VehicleModel.SameMountVariant(copy,mounted),Is.True);
+        yield return null;
+    }
+
+    [UnityTest] public IEnumerator CreativeMountedBonusVariantCanBeSelectedAndCopied()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var mounted=MountModifiedCreativeBonus(run);var hud=run.GetComponent<R1RunHUD>();
+        Assert.That(hud.SelectMountedPartForBuilding(run,mounted),Is.True,"A valid mounted variant must be available even if it differs from the base reward definition.");
+        var selected=run.VehicleModel.Inventory.Single(p=>p.Id==run.Garage.SelectedInventoryId);
+        Assert.That(selected.Id,Is.Not.EqualTo(mounted.Id));Assert.That(R3VehicleModel.SameMountVariant(selected,mounted),Is.True);
+        var add=typeof(R1RunHUD).GetMethod("AddSelectedCatalogPart",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That((bool)add.Invoke(hud,new object[]{run,R3PartKind.BonusModule,R4WeaponKind.Basic}),Is.True);
+        Assert.That(R3VehicleModel.SameMountVariant(run.VehicleModel.Inventory.Last(),mounted),Is.True,
+            "The catalog add action must also preserve a mounted variant absent from the reward definitions.");
+        Assert.That(run.VehicleModel.Scrap,Is.Zero);
+        yield return null;
+    }
+
+    [UnityTest] public IEnumerator CreativeCatalogAddsExactBonusVariantWhenDefinitionsShareAnId()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var original=run.Definition.Upgrades;var definition=original.First(item=>item!=null&&item.Effect==R1UpgradeEffect.Damage);
+        var variant=ScriptableObject.CreateInstance<R1UpgradeDefinition>();
+        variant.Id=definition.Id;variant.Title="Testowy wariant";variant.Effect=R1UpgradeEffect.Damage;
+        variant.Operation=R1ModifierOperation.More;variant.Scope=R1BonusScope.AutomaticWeapon;variant.Amount=definition.Amount;
+        try
+        {
+            run.Definition.Upgrades=original.Concat(new[]{variant}).ToArray();var sample=R3VehicleModel.CreateBonusReward(variant);
+            var hud=run.GetComponent<R1RunHUD>();var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+            var key=typeof(R1RunHUD).GetMethod("CatalogBonusKey",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+            typeof(R1RunHUD).GetField("catalogBonusId",flags).SetValue(hud,key.Invoke(null,new object[]{sample}));
+            var add=typeof(R1RunHUD).GetMethod("AddSelectedCatalogPart",flags);
+            Assert.That((bool)add.Invoke(hud,new object[]{run,R3PartKind.BonusModule,R4WeaponKind.Basic}),Is.True);
+            var added=run.VehicleModel.Inventory.Last();Assert.That(R3VehicleModel.SameBonusType(added,sample),Is.True,
+                "The selected scope and operation must win over an earlier definition with the same ID.");
+        }
+        finally{run.Definition.Upgrades=original;Object.Destroy(variant);}
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator UnarmedVehicleCanUseLargeRangeAndSpawnAndClearEnemies()
     {
         var run=R1RunController.Instance;

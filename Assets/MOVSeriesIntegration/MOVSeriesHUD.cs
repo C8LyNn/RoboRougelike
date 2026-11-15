@@ -105,7 +105,9 @@ namespace RoboRougelike.R1
             }
             for(int i=0;i<R4WeaponDefinition.Count;i++)
             {var weapon=(R4WeaponKind)i;result.Add(new CatalogEntry(R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name));}
-            foreach(var item in model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).GroupBy(CatalogBonusKey).Select(g=>g.First()))
+            var bonusParts=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule);
+            if(model.CreativeMode)bonusParts=bonusParts.Concat(model.Parts.Where(p=>p.Kind==R3PartKind.BonusModule&&p.Health>0));
+            foreach(var item in bonusParts.GroupBy(CatalogBonusKey).Select(g=>g.First()))
                 result.Add(new CatalogEntry(R3PartKind.BonusModule,R4WeaponKind.Basic,CatalogBonusKey(item),CatalogBonusGroupName(item)+" • T1: "+BonusText(item)));
             var definition=R1RunController.Instance?.Definition;
             if(model.CreativeMode&&definition?.Upgrades!=null)
