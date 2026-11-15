@@ -9,6 +9,33 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogBonusTierTests
 {
+    [Test] public void NewWeaponBonusesCanAppearInRewardsAndBecomePhysicalInventory()
+    {
+        var ids=new[]{"damage_heavy_weapon","damage_shotgun_weapon","damage_railgun_weapon","damage_rocket_weapon",
+            "damage_beam_weapon","damage_saw_weapon","damage_aura_weapon"};
+        var definition=Resources.Load<R1RunDefinition>("R1/Run");Assert.That(definition,Is.Not.Null);
+        var seen=new System.Collections.Generic.HashSet<string>();
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        for(int seed=0;seed<512&&seen.Count<ids.Length;seed++)
+        {
+            var progress=new R1RunProgress(3);Assert.That(progress.Start(),Is.True);
+            Assert.That(progress.WinEncounter(definition.Upgrades,new System.Random(seed)),Is.True);
+            Assert.That(progress.Offers.Count,Is.EqualTo(3));
+            Assert.That(progress.Offers.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(3));
+            for(int i=0;i<progress.Offers.Count;i++)
+            {
+                var candidate=progress.Offers[i];
+                if(!ids.Contains(candidate.Id)||seen.Contains(candidate.Id))continue;
+                var chosen=progress.ChooseUpgrade(i);Assert.That(chosen,Is.Not.Null);
+                Assert.That(model.ReceiveBonuses(new[]{chosen}),Is.True);
+                var part=model.Inventory.Single(p=>p.UpgradeId==chosen.Id);
+                Assert.That(part.Kind,Is.EqualTo(R3PartKind.BonusModule));
+                Assert.That(part.UpgradeScope,Is.EqualTo(chosen.Scope));
+                seen.Add(chosen.Id);break;
+            }
+        }
+        Assert.That(seen,Is.EquivalentTo(ids),"All new rewards must be reachable through the actual offer selection.");
+    }
     [TestCase(R1BonusScope.HeavyWeapon,"ciężkiego działa")]
     [TestCase(R1BonusScope.ShotgunWeapon,"strzelby")]
     [TestCase(R1BonusScope.RailgunWeapon,"railguna")]
