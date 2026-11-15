@@ -442,10 +442,16 @@ public class R41GarageTests
     [UnityTest] public IEnumerator WeaponGhostGeometryAndOrientationMatchMountedHeavyCannon()
     {
         Run.VehicleModel.Award(100);var garage=Run.Garage;string id=PurchasePart(R3PartKind.Gun,R4WeaponKind.Heavy);garage.ChooseInventory(id);
-        // The current starter has raised front armor at z=3; the former
-        // (2,2,2) placement legitimately intersects it. Mount on top of that
-        // armor instead, and still verify the real physical gate below.
-        Assert.That(garage.Point(TopRay(new Vector3Int(1,2,3))),Is.True);Assert.That(garage.Cell,Is.EqualTo(new Vector3Int(1,3,3)));
+        // Starter silhouettes change over time. Find an actual supported,
+        // ray-selectable cell and still exercise the real physical gate below.
+        bool found=false;
+        foreach(var support in Run.VehicleModel.Parts.Where(p=>p.Health>0))
+        {
+            var desired=support.Cell+Vector3Int.up;
+            if(Run.VehicleModel.OwnedPlacementError(id,desired,Vector3Int.zero)!=null)continue;
+            if(garage.Point(TopRay(support.Cell))&&garage.Cell==desired&&garage.PreviewValid){found=true;break;}
+        }
+        Assert.That(found,Is.True,"The current starter needs a visible legal mounting position: "+garage.PlacementIssue);
         Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
         var ghostBarrel=garage.Preview.Find("Obrót broni/Lufa");var size=ghostBarrel.localScale;var local=ghostBarrel.localPosition;
         var ghostArt=garage.Preview.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4W_Heavy_ROOT");

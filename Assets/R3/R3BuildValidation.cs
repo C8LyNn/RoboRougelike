@@ -32,10 +32,11 @@ namespace RoboRougelike.R3
         readonly List<GameObject> socketFaces=new List<GameObject>();
         List<BuildInstalledPart> reachabilityInput;
         HashSet<string> reachabilityResult;
-        // No per-frame PhysX query arrays; full buffer means blocked, never permitted.
+        // Reuse buffers normally; an ambiguous full query is retried completely.
         const int FunctionalQueryCapacity=256;
-        readonly Collider[] functionalOverlap=new Collider[FunctionalQueryCapacity];
-        readonly RaycastHit[] functionalCast=new RaycastHit[FunctionalQueryCapacity];
+        const int MaxCachedFunctionalQueryCapacity=4096;
+        Collider[] functionalOverlap=new Collider[FunctionalQueryCapacity];
+        RaycastHit[] functionalCast=new RaycastHit[FunctionalQueryCapacity];
         GameObject sockets;
 
         public static void Bind(R3VehicleAssembly actual,R3VehicleModel canonical)
@@ -190,13 +191,10 @@ namespace RoboRougelike.R3
                 var config=RRLSawBinding.Geometry(candidate);
                 float extent=Mathf.Sqrt(config.bladeRadius*config.bladeRadius+
                     config.bladeHalfThickness*config.bladeHalfThickness);
-                int count=Physics.OverlapSphereNonAlloc(muzzle.position,extent,
-                    functionalOverlap,~0,QueryTriggerInteraction.Ignore);
-                if(count>=functionalOverlap.Length)
-                    return "Fioletowa strefa: przepełnienie bufora sprawdzania piły (montaż zablokowany).";
+                var sawHits=FunctionalOverlap(muzzle.position,extent,out int count);
                 for(int i=0;i<count;i++)
                 {
-                    var other=functionalOverlap[i];
+                    var other=sawHits[i];
                     if(other==null||!other.enabled||!other.gameObject.activeInHierarchy||
                         other.transform.IsChildOf(probe.transform)||
                         !other.transform.IsChildOf(transform)||other.GetComponentInParent<R3MountedPart>()?.Id==candidate.Id)continue;
@@ -213,31 +211,47 @@ namespace RoboRougelike.R3
             if(delta.sqrMagnitude<.00001f)return "Nieprawidłowy fizyczny odcinek lufy.";
             // Hard near-barrel clearance only, NOT an infinite shot trajectory.
             const float radius=.035f;
-            int nearCount=Physics.OverlapSphereNonAlloc(pivot.position,radius,
-                functionalOverlap,~0,QueryTriggerInteraction.Ignore);
-            if(nearCount>=functionalOverlap.Length)
-                return "Fioletowa strefa: przepełnienie bufora osi lufy (montaż zablokowany).";
+            var nearHits=FunctionalOverlap(pivot.position,radius,out int nearCount);
             for(int i=0;i<nearCount;i++)
             {
-                var other=functionalOverlap[i];
+                var other=nearHits[i];
                 if(other!=null&&other.enabled&&other.gameObject.activeInHierarchy&&
                     other.transform.IsChildOf(transform)&&
                     !other.transform.IsChildOf(probe.transform)&&other.GetComponentInParent<R3MountedPart>()?.Id!=candidate.Id)
                     return "Fioletowa strefa: oś lufy zaczyna się we własnej części.";
             }
-            int castCount=Physics.SphereCastNonAlloc(pivot.position,radius,delta.normalized,
-                functionalCast,delta.magnitude,~0,QueryTriggerInteraction.Ignore);
-            if(castCount>=functionalCast.Length)
-                return "Fioletowa strefa: przepełnienie bufora lufy (montaż zablokowany).";
+            var castHits=FunctionalCast(pivot.position,radius,delta.normalized,delta.magnitude,out int castCount);
             for(int i=0;i<castCount;i++)
             {
-                var collider=functionalCast[i].collider;
+                var collider=castHits[i].collider;
                 if(collider!=null&&collider.enabled&&
                     collider.transform.IsChildOf(transform)&&
                     !collider.transform.IsChildOf(probe.transform)&&collider.GetComponentInParent<R3MountedPart>()?.Id!=candidate.Id)
                     return "Fioletowa strefa: obracana lufa przecina własną konstrukcję.";
             }
             return null;
+        }
+        Collider[] FunctionalOverlap(Vector3 center,float radius,out int count)
+        {
+            while(true)
+            {
+                count=Physics.OverlapSphereNonAlloc(center,radius,functionalOverlap,~0,QueryTriggerInteraction.Ignore);
+                if(count<functionalOverlap.Length)return functionalOverlap;
+                if(functionalOverlap.Length>=MaxCachedFunctionalQueryCapacity)
+                {var all=Physics.OverlapSphere(center,radius,~0,QueryTriggerInteraction.Ignore);count=all.Length;return all;}
+                System.Array.Resize(ref functionalOverlap,System.Math.Min(functionalOverlap.Length*2,MaxCachedFunctionalQueryCapacity));
+            }
+        }
+        RaycastHit[] FunctionalCast(Vector3 origin,float radius,Vector3 direction,float distance,out int count)
+        {
+            while(true)
+            {
+                count=Physics.SphereCastNonAlloc(origin,radius,direction,functionalCast,distance,~0,QueryTriggerInteraction.Ignore);
+                if(count<functionalCast.Length)return functionalCast;
+                if(functionalCast.Length>=MaxCachedFunctionalQueryCapacity)
+                {var all=Physics.SphereCastAll(origin,radius,direction,distance,~0,QueryTriggerInteraction.Ignore);count=all.Length;return all;}
+                System.Array.Resize(ref functionalCast,System.Math.Min(functionalCast.Length*2,MaxCachedFunctionalQueryCapacity));
+            }
         }
         string ExistingMountedWeaponPlacementIssue(GameObject probe,Collider[] proposed,HashSet<string> ignoredOwnerIds=null)
         {

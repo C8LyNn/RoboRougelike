@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 44. Walidacja montażu broni w gęstej scenie
+
+- Istniejąca walidacja osi lufy, odcinka lufy i piły rozszerza bufor, gdy zapytanie jest pełne, a powyżej rozmiaru pamiętanego bufora pobiera komplet wyników. Dzięki temu obce kolidery nie powodują automatycznego odrzucenia przez samą kontrolę prześwitu; należące do pojazdu przeszkody nadal są wykrywane. Pozostałe kontrole fizycznego montażu i kolizji części nadal obowiązują.
+- Unity 6000.3.14f1: `garage_clearance_dense_before.xml` — **3 FAIL**, po zapełnieniu bufora 256 obcymi koliderami wszystkie trzy kontrole błędnie odrzucały propozycję. `garage_clearance_dense_final.xml` — **6 PASS**, w tym trzy kontrole z 270 koliderami, pełna lista przy 4100 koliderach, prawdziwe strzelanie oraz zamontowanie działa zgodnego z widmem. `garage_clearance_dense_cast_fallback.xml` — **1 PASS** dla zapytania odcinka lufy z 4100 koliderami. Pierwszy przebieg po zmianie `garage_clearance_dense_after.xml` — **5 PASS, 1 FAIL**: stary test garażu wskazywał na sztywno pole nieistniejące w obecnym pojeździe startowym; poprawiony test znajduje istniejące, widoczne i dozwolone miejsce.
+- Gęste sceny badają bezpośrednio istniejącą kontrolę prześwitu; nie są ręczną próbą montażu w Windows Playerze. Bufor jest ponownie wykorzystywany do 4096 trafień, a powyżej tej wartości pobierana jest pełna lista; nie zmierzono FPS ani czasu pracy skrajnej sceny. Punkt 44 pozostaje otwarty.
+
 ### 14 i 19. Blink w gęstej scenie
 
 - Gdy istniejący bufor 256 trafień się zapełni, Blink pobiera pełne wyniki sprawdzania miejsca docelowego, drogi i podparcia. Przeszkody nadal uniemożliwiają teleportację, nieuznane podłoże nie daje podparcia, a nieudana próba nie zużywa energii ani czasu odnowienia. To zmiana istniejącego modułu, bez zmiany jego odległości lub zasad wspólnego użycia kopii.

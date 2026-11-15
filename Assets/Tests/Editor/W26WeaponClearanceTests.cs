@@ -23,6 +23,50 @@ public class W26WeaponClearanceTests
         yield return Until(()=>R1RunController.Instance?.Progress!=null);
     }
     [UnityTearDown] public IEnumerator Cleanup() { if(Application.isPlaying) yield return new ExitPlayMode(); }
+    [UnityTest] public IEnumerator CrowdedPivotIgnoresForeignCollidersButStillRejectsOwnPart()
+    {CheckCrowdedFunctionalPlacement(R4WeaponKind.Basic,false);yield return null;}
+    [UnityTest] public IEnumerator CrowdedBarrelIgnoresForeignCollidersButStillRejectsOwnPart()
+    {CheckCrowdedFunctionalPlacement(R4WeaponKind.Basic,true);yield return null;}
+    [UnityTest] public IEnumerator CrowdedSawIgnoresForeignCollidersButStillRejectsOwnPart()
+    {CheckCrowdedFunctionalPlacement(R4WeaponKind.RotarySaw,false);yield return null;}
+    [UnityTest] public IEnumerator ClearanceBeyondCachedCapacityStillFindsOwnBlocker()
+    {CheckCrowdedFunctionalPlacement(R4WeaponKind.Basic,false,4100);yield return null;}
+    [UnityTest] public IEnumerator BarrelBeyondCachedCapacityStillFindsOwnBlocker()
+    {CheckCrowdedFunctionalPlacement(R4WeaponKind.Basic,true,4100);yield return null;}
+    static void CheckCrowdedFunctionalPlacement(R4WeaponKind weapon,bool barrel,int crowd=270)
+    {
+        var owner=new GameObject("Clearance owner");owner.transform.position=new Vector3(1000,1000,1000);
+        var gate=owner.AddComponent<R3BuildValidation>();var probe=new GameObject("Clearance proposed gun");probe.transform.SetParent(owner.transform,false);
+        var pivot=new GameObject("Obrót broni");pivot.transform.SetParent(probe.transform,false);
+        var muzzle=new GameObject(weapon==R4WeaponKind.RotarySaw?"Środek piły":"Wylot");muzzle.transform.SetParent(pivot.transform,false);muzzle.transform.localPosition=Vector3.forward;
+        var clutter=new GameObject("Foreign clearance clutter");
+        Vector3 point=weapon==R4WeaponKind.RotarySaw?muzzle.transform.position:barrel?Vector3.Lerp(pivot.transform.position,muzzle.transform.position,.5f):pivot.transform.position;
+        try
+        {
+            for(int i=0;i<crowd;i++)
+            {
+                var item=new GameObject("Foreign "+i);item.transform.SetParent(clutter.transform,false);item.transform.position=point;
+                item.AddComponent<SphereCollider>().radius=.01f;
+            }
+            Physics.SyncTransforms();
+            if(barrel)
+                Assert.That(Physics.SphereCastNonAlloc(pivot.transform.position,.035f,Vector3.forward,new RaycastHit[256],1f,~0,QueryTriggerInteraction.Ignore),Is.EqualTo(256));
+            else Assert.That(Physics.OverlapSphereNonAlloc(point,.035f,new Collider[256],~0,QueryTriggerInteraction.Ignore),Is.EqualTo(256));
+            var candidate=new R3PartState(Vector3Int.zero,R3PartKind.Gun){Weapon=weapon};
+            var check=typeof(R3BuildValidation).GetMethod("FunctionalWeaponPlacementIssue",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            Assert.That(check,Is.Not.Null);
+            string result=(string)check.Invoke(gate,new object[]{candidate,probe});
+            Assert.That(result,Is.Null,"Foreign colliders cannot block this owner-only clearance rule.");
+            var buffer=typeof(R3BuildValidation).GetField(barrel?"functionalCast":"functionalOverlap",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var cached=(System.Array)buffer.GetValue(gate);Assert.That(cached.Length,Is.GreaterThan(256));
+            var own=new GameObject("Own physical blocker");own.transform.SetParent(owner.transform,false);own.transform.position=point;
+            own.AddComponent<SphereCollider>().radius=.02f;Physics.SyncTransforms();
+            result=(string)check.Invoke(gate,new object[]{candidate,probe});
+            Assert.That(result,Is.Not.Null,"An owned obstacle must still block placement even beyond the original buffer.");
+            Assert.That(buffer.GetValue(gate),Is.SameAs(cached),"Repeated checks must reuse the grown buffer.");
+        }
+        finally{UnityEngine.Object.DestroyImmediate(clutter);UnityEngine.Object.DestroyImmediate(owner);}
+    }
     [UnityTest] public IEnumerator RealGunDoesNotFireThroughOwnArmorAndResumesWhenClear()
     {
         Assert.That(Run.StartRun(),Is.True);
