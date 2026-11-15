@@ -148,13 +148,24 @@ namespace RoboRougelike.Weapons.RotarySaw.Tests
             Assert.AreEqual(0f,weak.TotalDamage);
             Assert.AreEqual(0f,hard.TotalDamage);
         }
-        [UnityTest] public IEnumerator OverlapOverflowDoesNotPartiallyDamage()
+        [UnityTest] public IEnumerator OverlapOverflowProcessesAllDistinctTargets()
         {
             SetupSaw(); config.maxOverlapHits=4; saw.Configure(config);
-            for(int i=0;i<5;i++) Target(new Vector3(0f,0f,.25f+i*.10f));
+            var targets=new List<RotarySawDemoTarget>();
+            for(int i=0;i<5;i++) targets.Add(Target(new Vector3(0f,0f,.25f+i*.10f)));
             yield return new WaitForFixedUpdate();
             Assert.IsTrue(saw.OverflowedLastTick);
-            Assert.AreEqual(0,saw.DamageEventsLastTick);
+            Assert.AreEqual(5,saw.DamageEventsLastTick);
+            foreach(var target in targets)Assert.Greater(target.TotalDamage,0);
+        }
+        [UnityTest] public IEnumerator OverlapOverflowStillJamsAtomicallyForHardMaterial()
+        {
+            SetupSaw();config.maxOverlapHits=4;saw.Configure(config);
+            var targets=new List<RotarySawDemoTarget>();
+            for(int i=0;i<5;i++)targets.Add(Target(new Vector3(0f,0f,.25f+i*.10f),i==4?10f:1f));
+            yield return new WaitForFixedUpdate();Assert.IsTrue(saw.OverflowedLastTick);
+            Assert.AreEqual(0,saw.DamageEventsLastTick);Assert.Greater(saw.Motor.JamRemaining,0);
+            foreach(var target in targets)Assert.AreEqual(0,target.TotalDamage);
         }
         [UnityTest] public IEnumerator RegisteredExternalOwnerColliderIsIgnored()
         {

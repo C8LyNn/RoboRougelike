@@ -156,22 +156,23 @@ namespace RoboRougelike.Weapons.RotarySaw
 
             Vector3 center = bladeCenter.position;
             Vector3 axle = CurrentAxle(bladeCenter);
-            // Conservative broadphase: if buffer fills, do no damage this physics step.
-            int count = Physics.OverlapSphereNonAlloc(center,
-                Mathf.Sqrt(configuration.bladeRadius * configuration.bladeRadius +
-                           configuration.bladeHalfThickness * configuration.bladeHalfThickness),
+            float queryRadius=Mathf.Sqrt(configuration.bladeRadius * configuration.bladeRadius +
+                           configuration.bladeHalfThickness * configuration.bladeHalfThickness);
+            int count = Physics.OverlapSphereNonAlloc(center,queryRadius,
                 overlapBuffer, configuration.contactLayers, QueryTriggerInteraction.Ignore);
+            Collider[] contacts=overlapBuffer;
             if (count >= overlapBuffer.Length)
             {
                 OverflowedLastTick = true;
-                return;
+                contacts=Physics.OverlapSphere(center,queryRadius,configuration.contactLayers,QueryTriggerInteraction.Ignore);
+                count=contacts.Length;
             }
 
             selected.Clear();
             seenPartIds.Clear();
             for (int i = 0; i < count; i++)
             {
-                Collider collider = overlapBuffer[i];
+                Collider collider = contacts[i];
                 if (IsOwnCollider(collider)) continue;
                 if (!sink.TryResolve(collider, out SawTarget target)) continue;
                 if (target.partId == 0 || seenPartIds.Contains(target.partId)) continue;

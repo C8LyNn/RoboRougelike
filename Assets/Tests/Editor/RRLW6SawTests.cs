@@ -27,7 +27,12 @@ public class RRLW6SawPhysicalTests
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
         var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);
         Assert.That(model.Remove(state.Cell),Is.True);state.Weapon=kind;
-        Assert.That(model.Mount(state.Id,new Vector3Int(0,1,4)),Is.True,"The saw needs a connected exterior mount with clear disc space.");
+        var probe=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(100,4,100),Quaternion.identity);Physics.SyncTransforms();
+        var candidates=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .OrderByDescending(c=>c.z).ThenByDescending(c=>c.y).ToArray();
+        var valid=candidates.Where(c=>model.OwnedPlacementError(state.Id,c,default)==null).ToArray();
+        Assert.That(valid,Is.Not.Empty,"The current starter needs a connected exterior mount with clear disc space.");
+        Assert.That(model.Mount(state.Id,valid[0]),Is.True);probe.gameObject.SetActive(false);UnityEngine.Object.Destroy(probe.gameObject);
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(100,4,100),Quaternion.identity);
         // A static cutting target needs a supported rig; gravity must remain enabled.
         var platform=GameObject.CreatePrimitive(PrimitiveType.Cube);platform.transform.position=new Vector3(100,2.85f,100);platform.transform.localScale=new Vector3(12,1,12);
@@ -48,7 +53,8 @@ public class RRLW6SawPhysicalTests
         var rebuilt=R3VehicleAssembly.Build(model.DeepCopy(),new R1RunStats(),palette,new Vector3(150,4,100),Quaternion.identity);
         var restored=rebuilt.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id).GetComponent<RotarySawModule>();
         Assert.That(restored.Motor.Heat,Is.EqualTo(heat).Within(.001));Assert.That(restored.Motor.JamRemaining,Is.GreaterThan(1));
-        gun.Damageable.ApplyDamage(10000,gun.transform.position,Vector3.up);Assert.That(module.IsOperational,Is.False);
+        // Destroy this part without propagating a huge hit through the entire vehicle.
+        gun.Damageable.ApplyDamage(gun.Damageable.CurrentHp*1.4f,gun.transform.position,Vector3.up);Assert.That(module.IsOperational,Is.False);
         assembly.Capture();model.Award(500);Assert.That(model.Repair(gun.Cell),Is.True);
         var repaired=model.DeepCopy().Parts.Single(p=>p.Id==state.Id);
         Assert.That(repaired.Health,Is.EqualTo(1));Assert.That(repaired.Weapon,Is.EqualTo(kind));
