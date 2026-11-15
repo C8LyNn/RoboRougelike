@@ -23,6 +23,8 @@ namespace RoboRougelike.R3
             public Material Material;
             public Collider[] SourceColliders;
             public readonly List<Collider> Siblings=new List<Collider>();
+            public LinkedList<Collider> GroupMembers;
+            public LinkedListNode<Collider> PruneCursor;
         }
         readonly Queue<Batch> batches=new Queue<Batch>();
         double workBudgetMilliseconds=4d;
@@ -61,21 +63,73 @@ namespace RoboRougelike.R3
                 try
                 {
                     shot=Spawn(batch);
-                    // Device projectiles are destroyed rather than pooled.
-                    // Inactive ones can no longer collide and must not make a
-                    // long-running batch's pair checks grow indefinitely.
-                    for(int i=batch.Siblings.Count-1;i>=0;i--)
-                    {
-                        var sibling=batch.Siblings[i];
-                        if(sibling==null||!sibling.enabled||!sibling.gameObject.activeInHierarchy)
-                            batch.Siblings.RemoveAt(i);
-                        else P17PhysicalShell.IgnoreProjectilePair(shot,sibling);
-                    }
-                    batch.Siblings.Add(shot);
+                    ExcludeSiblings(batch,shot);
                     batch.Remaining-=BigInteger.One;
                     if(batch.Remaining.IsZero)batches.Dequeue();
                 }
                 catch(Exception e){if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}UnityEngine.Debug.LogException(e,this);break;}
+            }
+        }
+        static bool Live(Collider col)=>col!=null&&col.enabled&&col.gameObject.activeInHierarchy;
+        static void ExcludeSiblings(Batch batch,Collider shot)
+        {
+            if(batch.GroupMembers!=null)
+            {
+                // Usually the last shot is still alive and gives O(1) joining.
+                // If it expired, locate another member of the same lease.
+                var member=batch.GroupMembers.Last;
+                while(member!=null)
+                {
+                    var previous=member.Previous;
+                    if(!Live(member.Value))
+                    {
+                        if(ReferenceEquals(batch.PruneCursor,member))batch.PruneCursor=null;
+                        batch.GroupMembers.Remove(member);member=previous;continue;
+                    }
+                    if(P17PhysicalShell.TryJoinDeviceVolley(member.Value,shot))
+                    {
+                        batch.GroupMembers.AddLast(shot);
+                        PruneGroup(batch);return;
+                    }
+                    member=previous;
+                }
+                // If the lease is no longer usable, preserve collisions with
+                // every still-live prior shot using ordinary per-pair ignores.
+                foreach(var old in batch.GroupMembers)if(Live(old))batch.Siblings.Add(old);
+                batch.GroupMembers=null;batch.PruneCursor=null;
+            }
+            for(int i=batch.Siblings.Count-1;i>=0;i--)
+            {
+                var sibling=batch.Siblings[i];
+                if(!Live(sibling))batch.Siblings.RemoveAt(i);
+            }
+            if(batch.Siblings.Count==32)
+            {
+                batch.Siblings.Add(shot);
+                if(P17PhysicalShell.TryGroupDeviceVolleyColliders(batch.Siblings))
+                {
+                    batch.GroupMembers=new LinkedList<Collider>(batch.Siblings);
+                    batch.PruneCursor=batch.GroupMembers.First;batch.Siblings.Clear();return;
+                }
+                batch.Siblings.RemoveAt(batch.Siblings.Count-1);
+            }
+            foreach(var sibling in batch.Siblings)P17PhysicalShell.IgnoreProjectilePair(shot,sibling);
+            batch.Siblings.Add(shot);
+        }
+        static void PruneGroup(Batch batch)
+        {
+            // Bound cleanup work per shot instead of repeatedly scanning every
+            // member of a large in-flight volley.
+            for(int i=0;i<4&&batch.GroupMembers.Count>0;i++)
+            {
+                var current=batch.PruneCursor??batch.GroupMembers.First;
+                var next=current.Next??batch.GroupMembers.First;
+                if(!Live(current.Value))
+                {
+                    if(ReferenceEquals(current,next))next=null;
+                    batch.GroupMembers.Remove(current);
+                }
+                batch.PruneCursor=next;
             }
         }
         static Collider Spawn(Batch shot)

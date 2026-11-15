@@ -116,6 +116,109 @@ public class RRLW34EffectsTests
             Assert.That(Physics.GetIgnoreCollision(shots[i].GetComponent<Collider>(),shots[j].GetComponent<Collider>()),Is.True);
         foreach(var shot in shots){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
     }
+    [UnityTest] public IEnumerator LargeDeviceVolleyUsesSafeGroupingAndEveryShotHits()
+    {
+        var vehicle=Build(Model());yield return null;
+        var emitter=GameObject.CreatePrimitive(PrimitiveType.Cube);emitter.transform.SetParent(fixtures.transform);
+        emitter.transform.position=new Vector3(1000,1000,1000);emitter.AddComponent<Rigidbody>().isKinematic=true;
+        var shooter=emitter.AddComponent<R3FlyingDrone>();shooter.ConfigureTurret(vehicle.transform,.1f,1,120);shooter.enabled=false;
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.SetParent(fixtures.transform);
+        target.transform.position=emitter.transform.position+Vector3.forward*8;
+        target.transform.localScale=new Vector3(3,3,1);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var queue=vehicle.gameObject.AddComponent<R3DeviceProjectileQueue>();
+        typeof(R3DeviceProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,1000d);
+        var batch=typeof(R3FlyingDrone).GetMethod("CaptureShot",flags).Invoke(shooter,new object[]{Vector3.forward});
+        batch.GetType().GetField("Remaining").SetValue(batch,new System.Numerics.BigInteger(40));
+        Physics.SyncTransforms();typeof(R3DeviceProjectileQueue).GetMethod("Enqueue",flags).Invoke(queue,new[]{batch});
+        var shots=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Where(p=>p.name=="P17_DronePhysicalShell"&&p.gameObject.activeInHierarchy).ToArray();
+        Assert.That(shots.Length,Is.EqualTo(40));
+        int layer=shots[0].gameObject.layer;Assert.That(layer,Is.InRange(24,31),"An available safe volley layer should avoid quadratic collision pairs.");
+        foreach(var shot in shots){Assert.That(shot.gameObject.layer,Is.EqualTo(layer));Assert.That((shot.GetComponent<Collider>().excludeLayers.value&(1<<layer)),Is.Not.Zero);}
+        var other=typeof(R3FlyingDrone).GetMethod("CaptureShot",flags).Invoke(shooter,new object[]{Vector3.forward});
+        other.GetType().GetField("Remaining").SetValue(other,System.Numerics.BigInteger.One);
+        typeof(R3DeviceProjectileQueue).GetMethod("Enqueue",flags).Invoke(queue,new[]{other});
+        var separate=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Single(p=>p.name=="P17_DronePhysicalShell"&&p.gameObject.activeInHierarchy&&p.gameObject.layer==0);
+        Assert.That(Physics.GetIgnoreCollision(shots[0].GetComponent<Collider>(),separate.GetComponent<Collider>()),Is.False,"Another volley must retain ordinary projectile collisions.");
+        separate.transform.position+=Vector3.right*20;Physics.SyncTransforms();
+        float deadline=Time.realtimeSinceStartup+6;while(hp.CurrentHp>960&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(hp.CurrentHp,Is.EqualTo(960).Within(.1f),"Every individual projectile must hit the target.");
+        yield return null; // Let the unpooled projectiles finish destruction and release their lease.
+        var reuse=typeof(R3FlyingDrone).GetMethod("CaptureShot",flags).Invoke(shooter,new object[]{Vector3.forward});
+        reuse.GetType().GetField("Remaining").SetValue(reuse,new System.Numerics.BigInteger(33));
+        typeof(R3DeviceProjectileQueue).GetMethod("Enqueue",flags).Invoke(queue,new[]{reuse});
+        var next=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Where(p=>p.name=="P17_DronePhysicalShell"&&p.gameObject.activeInHierarchy&&p!=separate).ToArray();
+        Assert.That(next.Length,Is.EqualTo(33));Assert.That(next.All(p=>p.gameObject.layer==layer),Is.True,"The released device-volley layer must be reusable.");
+        foreach(var shot in next){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+        foreach(var shot in shots)if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+        if(separate!=null){separate.gameObject.SetActive(false);Object.Destroy(separate.gameObject);}
+    }
+    [UnityTest] public IEnumerator DeviceVolleyStillFiresWhenEveryGroupingLayerIsOccupied()
+    {
+        var vehicle=Build(Model());yield return null;
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var staticFlags=System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic;
+        var rent=typeof(P17PhysicalShell).GetMethod("RentConventional",staticFlags);
+        var group=typeof(P17PhysicalShell).GetMethod("TryGroupVolley",staticFlags);
+        var holders=new List<P17PhysicalShell>();
+        try
+        {
+            for(int i=0;i<8;i++)
+            {
+                var pair=new List<GameObject>();
+                for(int j=0;j<2;j++)
+                {
+                    var shell=(P17PhysicalShell)rent.Invoke(null,null);holders.Add(shell);
+                    shell.transform.position=new Vector3(2000+i*4+j,2000,2000);shell.gameObject.SetActive(true);
+                    shell.Configure(vehicle.transform,1,30,Vector3.forward,null);pair.Add(shell.gameObject);
+                }
+                Assert.That((bool)group.Invoke(null,new object[]{pair}),Is.True,"All eight safe layers must be held.");
+            }
+            var emitter=GameObject.CreatePrimitive(PrimitiveType.Cube);emitter.transform.SetParent(fixtures.transform);
+            emitter.transform.position=new Vector3(1000,1000,1000);emitter.AddComponent<Rigidbody>().isKinematic=true;
+            var shooter=emitter.AddComponent<R3FlyingDrone>();shooter.ConfigureTurret(vehicle.transform,.1f,1,120);shooter.enabled=false;
+            var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.SetParent(fixtures.transform);
+            target.transform.position=emitter.transform.position+Vector3.forward*8;target.transform.localScale=new Vector3(3,3,1);
+            var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
+            var queue=vehicle.gameObject.AddComponent<R3DeviceProjectileQueue>();
+            typeof(R3DeviceProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,1000d);
+            var batch=typeof(R3FlyingDrone).GetMethod("CaptureShot",flags).Invoke(shooter,new object[]{Vector3.forward});
+            batch.GetType().GetField("Remaining").SetValue(batch,new System.Numerics.BigInteger(34));
+            Physics.SyncTransforms();typeof(R3DeviceProjectileQueue).GetMethod("Enqueue",flags).Invoke(queue,new[]{batch});
+            var shots=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Where(p=>p.name=="P17_DronePhysicalShell"&&p.gameObject.activeInHierarchy).ToArray();
+            Assert.That(shots.Length,Is.EqualTo(34));Assert.That(shots.All(p=>p.gameObject.layer==0),Is.True);
+            Assert.That(Physics.GetIgnoreCollision(shots[0].GetComponent<Collider>(),shots[33].GetComponent<Collider>()),Is.True);
+            float deadline=Time.realtimeSinceStartup+6;while(hp.CurrentHp>966&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(hp.CurrentHp,Is.EqualTo(966).Within(.1f),"No physical shot may be lost without a free layer.");
+            foreach(var shot in shots)if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+        }
+        finally{foreach(var holder in holders)if(holder!=null)Object.DestroyImmediate(holder.gameObject);}
+    }
+    [UnityTest] public IEnumerator GroupedDeviceVolleyContinuesAfterOldAndNewestShotsDisappear()
+    {
+        var vehicle=Build(Model());yield return null;
+        var emitter=GameObject.CreatePrimitive(PrimitiveType.Cube);emitter.transform.SetParent(fixtures.transform);
+        emitter.transform.position=new Vector3(1000,1000,1000);emitter.AddComponent<Rigidbody>().isKinematic=true;
+        var shooter=emitter.AddComponent<R3FlyingDrone>();shooter.ConfigureTurret(vehicle.transform,.1f,1,120);shooter.enabled=false;
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var queue=vehicle.gameObject.AddComponent<R3DeviceProjectileQueue>();
+        typeof(R3DeviceProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        var batch=typeof(R3FlyingDrone).GetMethod("CaptureShot",flags).Invoke(shooter,new object[]{Vector3.forward});
+        var remaining=batch.GetType().GetField("Remaining");remaining.SetValue(batch,new System.Numerics.BigInteger(35));
+        typeof(R3DeviceProjectileQueue).GetMethod("Enqueue",flags).Invoke(queue,new[]{batch});
+        var drain=typeof(R3DeviceProjectileQueue).GetMethod("FixedUpdate",flags);
+        for(int i=0;i<32;i++)drain.Invoke(queue,null);
+        var members=(LinkedList<Collider>)batch.GetType().GetField("GroupMembers").GetValue(batch);
+        Assert.That(members,Is.Not.Null);Assert.That(members.Count,Is.EqualTo(33));
+        int layer=members.First.Value.gameObject.layer;
+        Object.DestroyImmediate(members.First.Value.gameObject);drain.Invoke(queue,null);
+        Assert.That(members.Count,Is.EqualTo(33),"Incremental cleanup should release the expired old member.");
+        Assert.That(members.Last.Value.gameObject.layer,Is.EqualTo(layer));
+        Object.DestroyImmediate(members.Last.Value.gameObject);drain.Invoke(queue,null);
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.Zero));
+        Assert.That(members.Last.Value.gameObject.layer,Is.EqualTo(layer),"A surviving sibling must keep the lease usable.");
+        foreach(var col in members)if(col!=null){col.gameObject.SetActive(false);Object.Destroy(col.gameObject);}
+    }
     [UnityTest] public IEnumerator DeviceQueueReleasesInactiveSiblingReferencesDuringLargeBatch()
     {
         var vehicle=Build(Model());yield return null;

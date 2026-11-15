@@ -1400,6 +1400,8 @@ public float CurrentForwardSpeed =>
         private VolleyLayerLease volleyLayer;
         private int originalVolleyLayer,originalVolleyExclusions;
         internal static bool TryGroupVolley(System.Collections.Generic.IReadOnlyList<GameObject> shots)
+            =>TryGroupVolleyInternal(shots,false);
+        private static bool TryGroupVolleyInternal(System.Collections.Generic.IReadOnlyList<GameObject> shots,bool allowUnpooled)
         {
             if(shots==null||shots.Count<2)return false;
             var unique=new System.Collections.Generic.HashSet<P17PhysicalShell>();
@@ -1407,7 +1409,7 @@ public float CurrentForwardSpeed =>
             {
                 var shell=shot!=null?shot.GetComponent<P17PhysicalShell>():null;
                 var col=shot!=null?shot.GetComponent<Collider>():null;
-                if(shell==null||!unique.Add(shell)||!shell.cacheableConventional||shell.volleyLayer!=null||!shell.isActiveAndEnabled||shot.layer!=0||col==null||!col.enabled)return false;
+                if(shell==null||!unique.Add(shell)||(!allowUnpooled&&!shell.cacheableConventional)||shell.volleyLayer!=null||!shell.isActiveAndEnabled||shot.layer!=0||col==null||!col.enabled)return false;
             }
             Collider[] sceneColliders=null;
             for(int slot=0;slot<volleyLayers.Length;slot++)
@@ -1449,12 +1451,24 @@ public float CurrentForwardSpeed =>
             {if(colliders[i]==null)return false;shots[i]=colliders[i].gameObject;}
             return TryGroupVolley(shots);
         }
+        internal static bool TryGroupDeviceVolleyColliders(System.Collections.Generic.IReadOnlyList<Collider> colliders)
+        {
+            if(colliders==null)return false;
+            var shots=new GameObject[colliders.Count];
+            for(int i=0;i<colliders.Count;i++)
+            {if(colliders[i]==null)return false;shots[i]=colliders[i].gameObject;}
+            return TryGroupVolleyInternal(shots,true);
+        }
         private static bool DistinguishesLayer(int mask,int layer)=>((mask&1)!=0)!=((mask&(1<<layer))!=0);
         internal static bool TryJoinVolley(Collider sibling,Collider added)
+            =>TryJoinVolleyInternal(sibling,added,false);
+        internal static bool TryJoinDeviceVolley(Collider sibling,Collider added)
+            =>TryJoinVolleyInternal(sibling,added,true);
+        private static bool TryJoinVolleyInternal(Collider sibling,Collider added,bool allowUnpooled)
         {
             if(sibling==null||added==null)return false;
             var first=sibling.GetComponent<P17PhysicalShell>();var next=added.GetComponent<P17PhysicalShell>();
-            if(first==null||first.volleyLayer==null||next==null||!next.cacheableConventional||next.volleyLayer!=null||!next.isActiveAndEnabled||next.gameObject.layer!=0)return false;
+            if(first==null||first.volleyLayer==null||next==null||(!allowUnpooled&&!next.cacheableConventional)||next.volleyLayer!=null||!next.isActiveAndEnabled||next.gameObject.layer!=0)return false;
             next.JoinVolleyLayer(first.volleyLayer);return true;
         }
         private void JoinVolleyLayer(VolleyLayerLease lease)

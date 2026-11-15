@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14 i 44. Grupowanie kolizji dużych salw urządzeń
+
+- Rozszerzono istniejące bezpieczne grupowanie salw na niebuforowane pociski dronów i wieżyczek. Gdy porcja osiągnie 33 aktywne pociski i dostępna warstwa ma zgodne filtry, dalsze pociski mogą dołączać do niej bez dodawania pary wykluczeń do każdego poprzedniego. Niezależna salwa zachowuje zwykłe kolizje. Usuwanie starych odnośników odbywa się porcjami; po utracie ostatniego pocisku grupa zwalnia warstwę. Przy braku bezpiecznej warstwy nadal stosowane są wykluczenia parami i żaden pocisk nie jest pomijany.
+- Unity 6000.3.14f1: `device_volley_group_final.xml` — **6 PASS**, w tym działanie grupy po zniszczeniu starszego i najnowszego pocisku, wcześniejsze przypadki warstw oraz blokada ratunku. `device_volley_group_fallback.xml` — **3 PASS**, w tym 40 niezależnych trafień oraz 34 trafienia, gdy wszystkie osiem warstw jest zajętych. `device_volley_lease_reuse.xml` — **1 PASS**, w tym ponowne użycie warstwy po zniszczeniu wszystkich pocisków grupy. `device_volley_group_before.xml` — **1 FAIL** przed rozszerzeniem grupowania.
+- To weryfikacja zachowania, nie pomiar FPS ani gwarancja płynności. Przy niedostępnych warstwach koszt wykluczeń nadal może rosnąć kwadratowo; wykrywanie odpowiedniej warstwy także może przekroczyć budżet pojedynczej klatki. Pozostałe limity z punktu 14 i odbiór #44 pozostają otwarte.
+
 ### 14 i 44. Cykl życia kolejki pocisków urządzeń
 
 - Wyłączenie właściciela czyści jego niewyemitowaną kolejkę, tak aby jej strzały nie pojawiły się po ponownym włączeniu pojazdu. Zniknięcie samego drona lub wieżyczki nie usuwa już naliczonych strzałów. Podczas emisji długiej porcji ze zbioru wzajemnych wykluczeń usuwane są nieaktywne lub zniszczone pociski; nadal aktywne pociski tej samej porcji nie kolidują ze sobą.
