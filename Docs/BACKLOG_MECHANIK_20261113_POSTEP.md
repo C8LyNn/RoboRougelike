@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 30–31 i 44. Opis stanu części na ekranie trasy
+
+- Ekran wyboru trasy rozróżnia części z koszyka nagród, które trafiają do magazynu z 100% HP, od łupów zebranych na arenie, które zachowują swój stan. Poprzednia ogólna informacja o sprawnych odzyskanych częściach mogła sugerować naprawę także fizycznego łupu. Zmieniono obie orientacje ekranu, bez zmiany zasad odzysku.
+- Porównano komunikat ze ścieżkami `R4SalvageLedger.TryCollectPhysical` i rozliczenia koszyka. To poprawka tekstowa: nie uruchamiano osobnego testu Unity ani ręcznej kontroli zawijania po zmianie. Punkt 44 pozostaje otwarty.
+
 ### 42 i 44. Ratunek i porażka w ręcznej próbie walki
 
 - W widocznym edytorze Unity 6000.3.14f1 rozpoczęto pierwsze starcie pojazdem Młot. Pod ostrzałem wybrano ratunek z pauzy: gra wznowiła walkę, pojawił się komunikat o 50% otrzymywanych obrażeń i wstrzymaniu ataku oraz cooldown. Później przeciwnicy zniszczyli uzbrojenie stojącego pojazdu i pojawił się ekran porażki z przyczyną oraz podsumowaniem. Nie ukończono walki zwycięstwem ani nie zmierzono obrażeń w tej próbie; nie jest to Windows Player. Automatyczne sterowanie myszą w zablokowanym kursorze utrudniało celowanie; pojedyncze próby wysłania H z narzędzia nie potwierdziły aktywacji, więc działanie fizycznej klawiatury w Playerze nadal wymaga ręcznego sprawdzenia.

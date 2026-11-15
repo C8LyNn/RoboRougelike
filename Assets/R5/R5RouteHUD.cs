@@ -38,7 +38,7 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(x+20,320,510,180),$"{R5RunPlan.ArenaName(item.Arena)}\nRyzyko: {item.Risk} • Zagrożenie {R5RunPlan.Threat(item):0.0}\nWrogowie: {item.SpawnCount} • {RouteRewardText(run.VehicleModel,item.ScrapReward)}\nŁupy: {item.Loot}\n{item.Rule}",body);
                 if(GUI.Button(new Rect(x+20,520,510,55),"Wyrusz — "+item.Title,button)){run.ChooseRoute(i);break;}
             }
-            GUI.Label(new Rect(80,630,820,55),"Odebrane części są sprawne; złom za niewybrane zależy od stanu wraków. Wybór jest ostateczny dla tego etapu.",small);
+            GUI.Label(new Rect(80,630,820,55),"Części z koszyka nagród mają 100% HP; łupy z areny zachowują swój stan. Wybór trasy jest ostateczny dla tego etapu.",small);
             if(GUI.Button(new Rect(950,615,250,50),"Wróć do garażu",compactButton))run.ReturnToGarageFromRoute();
         }
     }
