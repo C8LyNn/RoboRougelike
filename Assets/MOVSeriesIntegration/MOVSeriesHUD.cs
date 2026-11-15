@@ -291,12 +291,12 @@ namespace RoboRougelike.R1
         {
             float wait=a.ReadyIn(kind);return float.IsPositiveInfinity(wait)?"niedostępny":wait>.05f?$"{wait:0.0} s":"gotowy";
         }
-        readonly List<string> compactMovementRows=new List<string>(5);
+        readonly List<string> compactMovementRows=new List<string>(6);
         static string CompactMovementPair(string first,string second)=>string.IsNullOrEmpty(first)?second:
             string.IsNullOrEmpty(second)?first:first+" • "+second;
         static Rect CompactMovementPanelRect(int rows)
         {
-            float top=615-Mathf.Clamp(rows,1,5)*24-10;
+            float top=615-Mathf.Clamp(rows,1,6)*21-10;
             return new Rect(18,top,610,615-top);
         }
         void RebuildMovementRows(R1RunController run,MOVSeriesVehicleAdapter a,string steeringStatus)
@@ -314,8 +314,8 @@ namespace RoboRougelike.R1
                 grapple!=null?$"{m.ActiveSlotLabel(R3PartKind.MagneticGrapple)} zaczep: {grapple}":null);
             AddPair(Installed(R3PartKind.Gyroscope)?$"{R1ControlProfile.Display(R1ControlProfile.Current.Binding("Gyro"))} żyroskop: {(a.OperationalCount(R3PartKind.Gyroscope)==0?"niedostępny":m.GyroEnabled?"ON":"OFF")}":null,
                 m.SelectedDrive==R3DriveKind.Hover?$"Hover: {m.HoverHeightMeters:0.0} m":null);
-            string detail=steeringStatus??a.Feedback;
-            if(!string.IsNullOrEmpty(detail))compactMovementRows.Add(detail);
+            if(!string.IsNullOrEmpty(steeringStatus))compactMovementRows.Add(steeringStatus);
+            if(!string.IsNullOrEmpty(a.Feedback))compactMovementRows.Add(a.Feedback);
         }
         void DrawMovementTelemetry(R1RunController run)
         {
@@ -330,7 +330,7 @@ namespace RoboRougelike.R1
             }
             RebuildMovementRows(run,a,steering!=null?steering.Status:null);
             var panel=CompactMovementPanelRect(compactMovementRows.Count);Panel(panel);
-            for(int i=0;i<compactMovementRows.Count;i++)GUI.Label(new Rect(33,panel.y+5+i*24,580,23),compactMovementRows[i],small);
+            for(int i=0;i<compactMovementRows.Count;i++)GUI.Label(new Rect(33,panel.y+5+i*21,580,20),compactMovementRows[i],small);
         }
     }
 }

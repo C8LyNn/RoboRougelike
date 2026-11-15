@@ -236,6 +236,19 @@ public class MOVSeriesDeviceTests
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,.7f,1000),Quaternion.identity);
         vehicle.transform.SetParent(fixtures.transform,true);vehicle.Controller.SetGameplayInputEnabled(true);return vehicle;
     }
+    [UnityTest] public IEnumerator BoosterFeedbackDistinguishesDamageEnergyAndCooldown()
+    {
+        var v=BuildMixedTierBoosters();yield return Seconds(.6f);
+        var adapter=v.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>();var bank=v.GetComponent<VehicleEnergyBank>();
+        var boosters=v.GetComponentsInChildren<VehicleBooster>();
+        foreach(var booster in boosters)booster.SetOperational(false);
+        Assert.That(adapter.TryBoost(),Is.False);Assert.That(adapter.Feedback,Does.Contain("sprawnego"));
+        foreach(var booster in boosters)booster.SetOperational(true);
+        Assert.That(bank.TrySpend(bank.Current),Is.True);
+        Assert.That(adapter.TryBoost(),Is.False);Assert.That(adapter.Feedback,Does.Contain("energii").And.Contain("potrzeba"));
+        bank.Recharge(100);Assert.That(adapter.TryBoost(),Is.True);
+        Assert.That(adapter.TryBoost(),Is.False);Assert.That(adapter.Feedback,Does.Contain("odnowienie"));
+    }
     [UnityTest] public IEnumerator MixedTierBoostersSpendCombinedEnergyAndStopDisabledCopy()
     {
         var v=BuildMixedTierBoosters();yield return Seconds(.6f);

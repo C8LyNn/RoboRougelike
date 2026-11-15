@@ -59,8 +59,10 @@ namespace RoboRougelike.MOVSeries
             {Feedback="Booster: trwa odnowienie";return false;}
             var eligible=boosters.Where(b=>b!=null&&b.isActiveAndEnabled&&b.IsOperational).ToArray();
             var energy=GetComponent<VehicleEnergyBank>();float cost=eligible.Sum(BoosterEnergy);
-            if(eligible.Length==0||eligible.Any(b=>!b.IsReady)||energy==null||!energy.CanSpend(cost))
-            {Feedback="Booster niedostępny / brak energii";return false;}
+            if(eligible.Length==0){Feedback="Booster: brak sprawnego modułu";return false;}
+            if(eligible.Any(b=>!b.IsReady)){Feedback="Booster: trwa odnowienie";return false;}
+            if(energy==null){Feedback="Booster: brak układu energii";return false;}
+            if(!energy.CanSpend(cost)){Feedback=$"Booster: potrzeba {cost:0.##} energii (masz {energy.Current:0.##})";return false;}
             var started=new List<VehicleBooster>();
             foreach(var b in eligible)
             {

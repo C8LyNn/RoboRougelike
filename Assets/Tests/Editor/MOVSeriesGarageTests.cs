@@ -57,6 +57,11 @@ public class MOVSeriesGarageTests
         Assert.That(rows.Any(row=>row.Contains(run.VehicleModel.ActiveSlotLabel(R3PartKind.Booster)+" Booster")&&row.Contains(run.VehicleModel.ActiveSlotLabel(R3PartKind.JumpDrive)+" skok")),Is.True);
         Assert.That(rows.Any(row=>row.Contains("Blink")||row.Contains("zaczep")||row.Contains("żyroskop")||row.Contains("Hover")),Is.False);
         Assert.That(rows.Length,Is.EqualTo(2),"Unused abilities must not reserve a HUD row.");
+        typeof(MOVSeriesVehicleAdapter).GetProperty("Feedback").SetValue(adapter,"Booster: brak energii");
+        build.Invoke(hud,new object[]{run,adapter,"Tryb skrętu"});
+        rows=((System.Collections.Generic.List<string>)rowsField.GetValue(hud)).ToArray();
+        Assert.That(rows.Any(row=>row.Contains("Tryb skrętu")),Is.True);
+        Assert.That(rows.Any(row=>row.Contains("Booster: brak energii")),Is.True,"Steering telemetry must not hide the action's failure reason.");
         yield return null;
     }
     void BuyAvailable(R3PartKind kind,int side=0)

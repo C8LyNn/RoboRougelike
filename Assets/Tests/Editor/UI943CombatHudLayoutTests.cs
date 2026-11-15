@@ -111,7 +111,7 @@ public sealed class UI943CombatHudLayoutTests
         Assert.That(panel.yMin,Is.GreaterThanOrEqualTo(348),"Weapon status must remain unobstructed.");
         Assert.That(panel.yMax,Is.LessThanOrEqualTo(516),"Damage notices must remain unobstructed.");
     }
-    [TestCase(1)][TestCase(2)][TestCase(3)][TestCase(4)][TestCase(5)]
+    [TestCase(1)][TestCase(2)][TestCase(3)][TestCase(4)][TestCase(5)][TestCase(6)]
     public void CompactMovementPanelFitsBetweenDefenseAndRangeInstructions(int rows)
     {
         var flags=BindingFlags.NonPublic|BindingFlags.Static;
@@ -122,7 +122,7 @@ public sealed class UI943CombatHudLayoutTests
         var defensePanel=(Rect)defense.Invoke(null,new object[]{9});
         Assert.That(panel.Overlaps(defensePanel),Is.False);
         Assert.That(panel.yMax,Is.LessThanOrEqualTo(625));
-        Assert.That(panel.height,Is.GreaterThanOrEqualTo(rows*24));
+        Assert.That(panel.height,Is.GreaterThanOrEqualTo(rows*21));
     }
     [TestCase(1)] [TestCase(4)] [TestCase(9)]
     public void DefenseHeadingAndRowsFitInsideTheirPanel(int count)
