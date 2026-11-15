@@ -55,9 +55,10 @@ namespace RoboRougelike.WeaponIntegration
         }
         ShotgunConfig ShotgunSettings(float interval)
         {
-            float range=Owner!=null?Owner.GetComponent<R3VehicleAssembly>()?.Model?.Economy.ShotgunRange??40f:40f;
+            var economy=Owner!=null?Owner.GetComponent<R3VehicleAssembly>()?.Model?.Economy:null;
+            float range=economy?.ShotgunRange??40f;
             double safeRange=float.IsNaN(range)||float.IsInfinity(range)?40d:System.Math.Max(.1d,range);
-            return new ShotgunConfig{cooldownSeconds=R3MountedBonusEffects.SafeIntervalProduct(.85f,interval),maxTravelDistance=range,
+            return new ShotgunConfig{cooldownSeconds=R3MountedBonusEffects.SafeIntervalProduct(.85f,interval),maxTravelDistance=range,damagePerPellet=economy?.ShotgunDamagePerPellet??9f,
                 projectileLifetime=(float)System.Math.Min(float.MaxValue,System.Math.Max(2d,safeRange/58d+1d))};
         }
         public bool Fire()

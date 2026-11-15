@@ -7,9 +7,15 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Wpisy są chronologiczne: wcześniejsze opisy braków mogą zostać uzupełnione przez późniejsze wpisy dotyczące tego samego punktu. Nie traktuj pierwszego nagłówka jako aktualnej oceny całej pozycji.
 - Cargo Uplink oraz radar i minimapa mają tymczasowe działające rozwiązania wybrane zgodnie z późniejszą prośbą właściciela; ich wartości i czytelność wymagają playtestu.
-- **02 i 14 pozostają otwarte:** podstawowe strzały nie są już blokowane przy 96 aktywnych pociskach lub 32 rakietach, ale te progi nadal ograniczają powstawanie dodatkowych pocisków. Ich zastąpienie musi zachować zachowanie każdego pocisku i nie zawieszać gry; samo ukrycie albo podniesienie limitu nie rozwiązuje zadania. Kod dronów i wieżyczek emituje również najwyżej jeden strzał na krok fizyki, więc skrajnie krótkie odstępy nie dają proporcjonalnego tempa. Zniesienie progu dla podstawowych strzałów zwiększa potencjalne obciążenie i wymaga profilowania.
+- **02 i 14 pozostają otwarte:** podstawowe strzały nie są już blokowane przy 96 aktywnych pociskach lub 32 rakietach, ale te progi nadal ograniczają powstawanie dodatkowych pocisków. Osobna konfiguracja pakietu strzelby nadal ogranicza liczbę śrucin w salwie do 64; w obecnej integracji używa ona domyślnie ośmiu. Zastąpienie tych progów musi zachować zachowanie każdego pocisku i nie zawieszać gry; samo ukrycie albo podniesienie limitu nie rozwiązuje zadania. Kod dronów i wieżyczek emituje również najwyżej jeden strzał na krok fizyki, więc skrajnie krótkie odstępy nie dają proporcjonalnego tempa. Zniesienie progu dla podstawowych strzałów zwiększa potencjalne obciążenie i wymaga profilowania.
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
+
+### 14 i 44. Konfiguracja obrażeń śruciny
+
+- Konfiguracja strzelby nie obcina już obrażeń jednej śruciny do 1000. Wartość jest polem ustawień gry i przechodzi przez kopiowanie konfiguracji; domyślnie nadal wynosi **9**, bez zmiany zwykłej salwy. Ujemna wartość daje zero, a niepoprawna przywraca wartość domyślną. To ustawienie projektowe, nie nowe ulepszenie dostępne graczowi.
+- Unity 6000.3.14f1: `shotgun_damage_first.xml` — **6 PASS**, w tym osiem rzeczywistych śrucin po 2000 obrażeń i ponowne użycie standardowych pocisków; `shotgun_damage_package_edit.xml` — **35 PASS** dla konfiguracji i rozrzutu; `shotgun_damage_package_play.xml` — **18 PASS** dla działania modułu. `shotgun_damage_extreme.xml` — **1 PASS** dla wartości granicznej i skończonego wyniku po mnożniku. Przed zmianą `shotgun_damage_before.xml` — **1 FAIL**, ponieważ 2000 było obcinane do 1000.
+- Liczba śrucin w pakiecie nadal jest ograniczona do 64; globalne progi dodatkowych pocisków, tempo urządzeń i odbiór #44 pozostają otwarte. Wysokie obrażenia w walce i balans: **NOT RUN** poza wymienionym testem.
 
 ### 14 i 44. Konfiguracja obrażeń railguna
 

@@ -113,6 +113,7 @@ namespace RoboRougelike.R3
         public float RailgunDamagePerEnergy=.65f;
         public float RailgunMaximumDamagePerPart=75f;
         public float ShotgunRange=40f;
+        public float ShotgunDamagePerPellet=9f;
         public float StructuralScanRange=60f,StructuralScanEnergy=5f,StructuralScanCooldown=8f;
         [Min(1)] public int StructuralScanMaxParts=16;
         public int MissedLootRecoveryCost=10;
@@ -521,6 +522,7 @@ namespace RoboRougelike.R3
             copy.Economy.RailgunDamagePerEnergy=Economy.RailgunDamagePerEnergy;
             copy.Economy.RailgunMaximumDamagePerPart=Economy.RailgunMaximumDamagePerPart;
             copy.Economy.ShotgunRange=Economy.ShotgunRange;
+            copy.Economy.ShotgunDamagePerPellet=Economy.ShotgunDamagePerPellet;
             copy.Economy.CargoPickupRangePerUnit=Economy.CargoPickupRangePerUnit;copy.Economy.CargoUplinkCost=Economy.CargoUplinkCost;
             copy.Economy.BlueprintSlotCount=Economy.BlueprintSlotCount;
             copy.Economy.HealingDroneRadius=Economy.HealingDroneRadius;copy.Economy.HealingDroneRate=Economy.HealingDroneRate;copy.Economy.HealingDroneDamage=Economy.HealingDroneDamage;

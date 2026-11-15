@@ -13,6 +13,20 @@ using RogueMachine.P12PipelineSafe;
 
 public class RRLW6WeaponRegistryTests
 {
+    [Test] public void ShotgunPelletDamageCanExceedOldCapAndConfigurationCopies()
+    {
+        Assert.That(new ShotgunConfig{damagePerPellet=2000}.Snapshot().DamagePerPellet,Is.EqualTo(2000));
+        Assert.That(new ShotgunConfig{damagePerPellet=float.NaN}.Snapshot().DamagePerPellet,Is.EqualTo(9));
+        Assert.That(new ShotgunConfig{damagePerPellet=-1}.Snapshot().DamagePerPellet,Is.Zero);
+        float extreme=new ShotgunConfig{damagePerPellet=float.MaxValue}.Snapshot().DamagePerPellet;
+        Assert.That(extreme,Is.EqualTo(float.MaxValue));
+        Assert.That(R3MountedBonusEffects.SafeDamageProduct(extreme,2),Is.EqualTo(float.MaxValue),"A later multiplier must not turn finite damage into infinity.");
+        var field=typeof(R3GarageEconomy).GetField("ShotgunDamagePerPellet");Assert.That(field,Is.Not.Null);
+        Assert.That(field.GetValue(Resources.Load<R1RunDefinition>("R1/Run").GaragePrices),Is.EqualTo(9f));
+        var economy=new R3GarageEconomy();field.SetValue(economy,2000f);
+        var copy=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light),economy).DeepCopy().Economy;
+        Assert.That(field.GetValue(copy),Is.EqualTo(2000f));
+    }
     [Test] public void ShotgunIsAnExplicitProfileAfterUnchangedLegacyOrdinals()
     {
         Assert.That((int)R4WeaponKind.Basic,Is.EqualTo(0));
@@ -47,6 +61,29 @@ public class RRLW6WeaponRegistryTests
 
 public class RRLW6ShotgunPhysicalTests
 {
+    [UnityTest] public IEnumerator ConfiguredShotgunDealsDamageAboveOldPelletCap()
+    {
+        var field=typeof(R3GarageEconomy).GetField("ShotgunDamagePerPellet");Assert.That(field,Is.Not.Null);
+        var economy=new R3GarageEconomy();field.SetValue(economy,2000f);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard),economy);
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6;
+        target.transform.localScale=new Vector3(4,4,1);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000000,false);
+        Physics.SyncTransforms();
+        try
+        {
+            var binding=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();Assert.That(binding.Fire(),Is.True);
+            Assert.That(binding.Module.CurrentSpec.DamagePerPellet,Is.EqualTo(2000));
+            float deadline=Time.realtimeSinceStartup+5;
+            while(1000000f-hp.CurrentHp<15999f&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(1000000f-hp.CurrentHp,Is.EqualTo(16000f).Within(1f),"All eight independent pellets must retain their configured damage.");
+        }
+        finally{if(target!=null)UnityEngine.Object.Destroy(target);if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
     [Test] public void ShotgunLongRangeSettingsRemainFiniteAndCopy()
     {
         var spec=new RoboRougelike.WPN001Shotgun.ShotgunConfig{maxTravelDistance=1200,projectileLifetime=25}.Snapshot();
