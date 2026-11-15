@@ -112,7 +112,7 @@ public sealed class UI943PortraitRewardsActionsTests
         Call("TrackRewardLedger",single);Call("ChooseRewardBasket",0);int funds=run.VehicleModel.Scrap;
         Assert.That((bool)reroll.Invoke(hud,new object[]{run}),Is.False,"Identical offers must not incur a fee.");
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(funds));Assert.That((int)Field("selectedBasket"),Is.EqualTo(0));
-        Assert.That((string)Field("rewardClaimFeedback"),Does.Contain("Brak innego"));
+        Assert.That((string)Field("rewardClaimFeedback"),Does.Contain("Nie pobrano opłaty"));
     }
     [UnityTest] public IEnumerator EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation()
     {
@@ -394,14 +394,17 @@ public sealed class UI943PortraitRewardsActionsTests
         run.VehicleModel.Award(1000);Call("TrackRewardLedger",ledger);
         Call("PortraitRewardSelectBonus",0);Call("AdvanceBasketPage");Call("AdvanceBasketPage");Call("ChooseRewardBasket",6);
         var old=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");Assert.That(old.Count,Is.EqualTo(12));
+        string Signature(R4SalvageBasket basket)=>basket.Archetype+":"+string.Join(",",basket.Items.Select(p=>p.Id).OrderBy(id=>id));
+        var visibleBefore=old.Skip(6).Take(3).Select(Signature).OrderBy(s=>s).ToArray();
         int before=run.VehicleModel.Scrap;Assert.That((bool)Call("RerollRewardBaskets",run),Is.True);
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-run.Definition.RewardBasketRerollCost));
         Assert.That((int)Field("selectedBonus"),Is.Zero);Assert.That((int)Field("selectedBasket"),Is.EqualTo(-1));
-        var next=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");Assert.That(next.Count,Is.EqualTo(12));
+        var next=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(next.Count,Is.EqualTo(6),"A reroll returns to page one; it must not regenerate every previously visited page.");
+        Assert.That(next.Take(3).Select(Signature).OrderBy(s=>s),Is.Not.EqualTo(visibleBefore),"The player must see different offers immediately after paying.");
         string unavailable=next[0].Items[0].Id;int rerollSeed=(int)Field("rewardBasketSeed");
         Assert.That(ledger.MarkPhysicalDrop(unavailable),Is.True);Call("TrackRewardLedger",ledger);
         next=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
-        string Signature(R4SalvageBasket basket)=>basket.Archetype+":"+string.Join(",",basket.Items.Select(p=>p.Id).OrderBy(id=>id));
         Assert.That(next.Select(Signature),Is.EqualTo(ledger.CreateBasketOffers(rerollSeed,run.Progress.EncounterIndex,6).Select(Signature)));
         Assert.That(next.SelectMany(b=>b.Items).Any(item=>item.Id==unavailable),Is.False);
         Assert.That((int)Field("basketRerollCount"),Is.EqualTo(1));Assert.That((int)Field("selectedBonus"),Is.Zero);

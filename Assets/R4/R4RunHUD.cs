@@ -170,15 +170,19 @@ namespace RoboRougelike.R1
             RewardBasketStream next=null;
             int nextSeed=0;
             int stage=run.Progress.EncounterIndex;
+            // Reroll returns to page one. Compare what the player will see to
+            // the current page, and do not rebuild every page previously read.
+            int currentStart=(int)System.Math.Min(int.MaxValue,(long)basketPage*3);
+            var currentlyVisible=rewardBaskets.Skip(currentStart).Take(3).ToArray();
             for(int attempt=1;attempt<=16;attempt++)
             {
                 int seed=unchecked((run.Seed^(stage*397))+((basketRerollCount*16+attempt)*7919));
                 var candidate=new RewardBasketStream(run.Salvage.EnumerateBasketOffers(seed,stage,run.VehicleModel.RewardBasketOfferCount));
-                candidate.LoadThrough(System.Math.Max(6,rewardBaskets.Count));
-                if(candidate.Items.Count>0&&!SameRewardBaskets(rewardBaskets,candidate.Items)){next=candidate;nextSeed=seed;break;}
+                candidate.LoadThrough(6);
+                if(candidate.Items.Count>0&&!SameRewardBaskets(currentlyVisible,candidate.Items.Take(3).ToArray())){next=candidate;nextSeed=seed;break;}
                 candidate.Dispose();
             }
-            if(next==null){rewardClaimFeedback="Brak innego zestawu na dostępnych stronach.";return false;}
+            if(next==null){rewardClaimFeedback="Nie udało się wylosować innych zestawów. Nie pobrano opłaty.";return false;}
             if(!run.VehicleModel.TrySpendScrap(price)){next.Dispose();return false;}
             rewardBasketStream?.Dispose();rewardBasketStream=next;rewardBasketSeed=nextSeed;displayedBasketRevision=run.Salvage.BasketRevision;
             basketRerollCount++;rewardBaskets=next.Items;basketPage=0;selectedBasket=-1;lootSelection.Clear();
