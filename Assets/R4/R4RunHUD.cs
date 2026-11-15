@@ -258,8 +258,12 @@ namespace RoboRougelike.R1
             (int)System.Math.Min(int.MaxValue,run.Salvage.Items.Where(p=>lootSelection.Contains(p.Id))
                 .Sum(p=>(long)run.VehicleModel.GrantQuantity(p.Kind,p.ToPart().ArmorShape)));
         private static int RewardShortcutIndex(bool first,bool second,bool third)=>first?0:second?1:third?2:-1;
+        static readonly string[] RewardBonusActions={"RewardBonus1","RewardBonus2","RewardBonus3"};
+        static readonly string[] RewardBasketActions={"RewardBasket1","RewardBasket2","RewardBasket3"};
+        static string RewardBinding(string action)=>R1ControlProfile.Display(R1ControlProfile.Current.Binding(action));
+        static string RewardBindings(string[] actions)=>string.Join(" / ",actions.Select(RewardBinding));
         private static string RewardConfirmCaption(int basketCount)=>basketCount==0?
-            "Odbierz bonus [Enter]":"Zatwierdź oba wybory [Enter]";
+            "Odbierz bonus ["+RewardBinding("RewardConfirm")+"]":"Zatwierdź oba wybory ["+RewardBinding("RewardConfirm")+"]";
         private static string RewardBasketSelectionText(int selected,int basketCount,int currentPage,int partCount)
         {
             if(basketCount<=0)return "brak łupów";
@@ -288,6 +292,11 @@ namespace RoboRougelike.R1
             =>bonus>=0&&bonus<bonusCount&&(basketCount==0||(basket>=0&&basket<basketCount))&&
               (long)inventoryCount+lootCount+1<=R3VehicleModel.InventoryCapacity;
 #if ENABLE_INPUT_SYSTEM
+        static bool RewardKeyPressed(Keyboard keyboard,R1ControlProfile profile,string action)
+        {
+            var binding=profile.Binding(action);
+            return keyboard!=null&&System.Enum.TryParse(binding,false,out Key key)&&key!=Key.None&&keyboard[key].wasPressedThisFrame;
+        }
         public void ReadRewardInput(Keyboard keyboard)
         {
             var run=R1RunController.Instance;
@@ -295,16 +304,34 @@ namespace RoboRougelike.R1
             TrackRewardLedger(run.Salvage);
             if(rewardBasketRefreshFrame==Time.frameCount)return;
             if(rewardInventoryOpen||rewardMissedOpen)return;
-            int index=keyboard.digit1Key.wasPressedThisFrame?0:keyboard.digit2Key.wasPressedThisFrame?1:keyboard.digit3Key.wasPressedThisFrame?2:-1;
+            var profile=R1ControlProfile.Current;
+            int index=RewardShortcutIndex(RewardKeyPressed(keyboard,profile,RewardBonusActions[0]),RewardKeyPressed(keyboard,profile,RewardBonusActions[1]),RewardKeyPressed(keyboard,profile,RewardBonusActions[2]));
             if(index>=0&&index<run.Progress.Offers.Count)
             {
                 SelectRewardBonus(index);
             }
-            int basket=RewardShortcutIndex(keyboard.qKey.wasPressedThisFrame,keyboard.wKey.wasPressedThisFrame,keyboard.eKey.wasPressedThisFrame);
+            int basket=RewardShortcutIndex(RewardKeyPressed(keyboard,profile,RewardBasketActions[0]),RewardKeyPressed(keyboard,profile,RewardBasketActions[1]),RewardKeyPressed(keyboard,profile,RewardBasketActions[2]));
             if(basket>=0&&basketPage*3+basket<rewardBaskets.Count)ChooseRewardBasket(basketPage*3+basket);
-            if(keyboard.enterKey.wasPressedThisFrame&&RewardSelectionReady(selectedBonus,run.Progress.Offers.Count,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,SelectedRewardPartCount(run)))ConfirmSelectedRewards(run);
+            if(RewardKeyPressed(keyboard,profile,"RewardConfirm")&&RewardSelectionReady(selectedBonus,run.Progress.Offers.Count,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,SelectedRewardPartCount(run)))ConfirmSelectedRewards(run);
         }
 #endif
+        void TryRewardMouse(R1RunController run,Event input)
+        {
+            if(run?.Progress?.State!=R1RunState.Salvage||run.Transitioning||run.Paused||run.QuitRequested||run.Salvage==null||
+               rewardInventoryOpen||rewardMissedOpen||rewardBasketRefreshFrame==Time.frameCount||!R1ControlProfile.IsBindingMouseDown(input))return;
+            var profile=R1ControlProfile.Current;
+            for(int i=0;i<RewardBonusActions.Length;i++)
+                if(profile.MatchesEvent(RewardBonusActions[i],input))
+                {if(i<run.Progress.Offers.Count)SelectRewardBonus(i);input.Use();return;}
+            for(int i=0;i<RewardBasketActions.Length;i++)
+                if(profile.MatchesEvent(RewardBasketActions[i],input))
+                {if(basketPage*3+i<rewardBaskets.Count)ChooseRewardBasket(basketPage*3+i);input.Use();return;}
+            if(profile.MatchesEvent("RewardConfirm",input))
+            {
+                if(RewardSelectionReady(selectedBonus,run.Progress.Offers.Count,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,SelectedRewardPartCount(run)))ConfirmSelectedRewards(run);
+                input.Use();
+            }
+        }
         private void DrawSalvage(R1RunController run)
         {
             var ledger=run.Salvage;
@@ -315,8 +342,8 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(45,97,1190,50),
                 RewardIntro(rewardBaskets.Count,run.LastScrapReward)+
                 (string.IsNullOrEmpty(run.TechnologyMessage)?"":"\n"+run.TechnologyMessage),body);
-            GUI.Label(new Rect(45,155,355,32),"BONUS • [1 / 2 / 3]",heading);
-            GUI.Label(new Rect(455,155,420,32),"ZESTAW • [Q / W / E]",heading);
+            GUI.Label(new Rect(45,155,355,32),"BONUS • ["+RewardBindings(RewardBonusActions)+"]",heading);
+            GUI.Label(new Rect(455,155,420,32),"ZESTAW • ["+RewardBindings(RewardBasketActions)+"]",heading);
             DrawBasketPager(new Rect(875,155,345,32));
 
             var offers=run.Progress.Offers.ToArray();
@@ -328,7 +355,7 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(55,y+40,243,57),upgrade.Description,small);
                 bool chosen=selectedBonus==i;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
-                if(GUI.Button(new Rect(308,y+25,97,50),chosen?"Wybrano ✓":$"Wybierz [{i+1}]",compactButton))
+                if(GUI.Button(new Rect(308,y+25,97,50),chosen?"Wybrano ✓":$"Wybierz [{RewardBinding(RewardBonusActions[i])}]",compactButton))
                     SelectRewardBonus(i);
                 GUI.enabled=true;GUI.backgroundColor=Color.white;
             }
@@ -346,7 +373,7 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(x+10,y+39,535,54),RewardBasketContentsForModel(basket.Items,run.VehicleModel)+"\nWszystkie części sprawne (100% HP)",small);
                 bool chosen=selectedBasket==basketIndex;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
-                string key=i<3?"QWE"[i].ToString():null;
+                string key=i<3?RewardBinding(RewardBasketActions[i]):null;
                 if(GUI.Button(new Rect(x+570,y+25,180,50),chosen?"Wybrano ✓":key!=null?$"Wybierz [{key}]":"Wybierz",compactButton))ChooseRewardBasket(basketIndex);
                 GUI.backgroundColor=Color.white;
             }
@@ -368,6 +395,7 @@ namespace RoboRougelike.R1
                 ConfirmSelectedRewards(run);
             GUI.enabled=true;
             if(!room||!string.IsNullOrEmpty(rewardClaimFeedback))GUI.Label(new Rect(45,685,1180,30),!room?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. Otwórz magazyn, aby je zwolnić.":rewardClaimFeedback,small);
+            TryRewardMouse(run,Event.current);
         }
         private void DrawMissedLootButton(R1RunController run,Rect rect)
         {

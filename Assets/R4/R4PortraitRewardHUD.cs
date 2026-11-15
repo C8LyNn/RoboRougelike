@@ -43,7 +43,7 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(24,20,720,42),"ZWYCIĘSTWO",title);
             GUI.Label(new Rect(24,68,720,28),$"{(run.LastActivityWasReactor?"Reaktor obroniony":$"Starcie {run.Progress.CompletedEncounters}/{run.Progress.TotalEncounters}")} • +{run.LastScrapReward} Z"+
                 (string.IsNullOrEmpty(run.TechnologyMessage)?" • wybierz nagrody":run.Technology?.Error!=null?" • problem zapisu technologii":" • nowa technologia"),body);
-            GUI.Label(new Rect(24,100,720,28),"BONUS • [1 / 2 / 3]",heading);
+            GUI.Label(new Rect(24,100,720,28),"BONUS • ["+RewardBindings(RewardBonusActions)+"]",heading);
             var offers=run.Progress.Offers.ToArray();
             for(int i=0;i<offers.Length;i++)
             {
@@ -51,11 +51,11 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(card.x+12,card.y+5,530,24),upgrade.Title,body);
                 GUI.Label(new Rect(card.x+12,card.y+30,530,60),upgrade.Description,small);
                 bool chosen=selectedBonus==i;GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
-                if(GUI.Button(new Rect(card.x+555,card.y+22,150,52),chosen?"Wybrano ✓":$"Wybierz [{i+1}]",compactButton))PortraitRewardSelectBonus(i);
+                if(GUI.Button(new Rect(card.x+555,card.y+22,150,52),chosen?"Wybrano ✓":$"Wybierz [{RewardBinding(RewardBonusActions[i])}]",compactButton))PortraitRewardSelectBonus(i);
                 GUI.backgroundColor=Color.white;
             }
             if(offers.Length==0)GUI.Label(new Rect(36,145,680,50),"Brak propozycji modułów bonusowych.",small);
-            GUI.Label(new Rect(24,442,340,30),"ZESTAW • [Q / W / E]",heading);
+            GUI.Label(new Rect(24,442,340,30),"ZESTAW • ["+RewardBindings(RewardBasketActions)+"]",heading);
             DrawBasketPager(new Rect(400,442,344,30));
             for(int i=0;i<3&&basketPage*3+i<rewardBaskets.Count;i++)
             {
@@ -67,7 +67,7 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(info.x,card.y+31,info.width,58),RewardBasketContentsForModel(basket.Items,run.VehicleModel)+"\nOdbiór: 100% HP",small);
                 bool chosen=selectedBasket==basketIndex;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
-                string key=i<3?"QWE"[i].ToString():null;
+                string key=i<3?RewardBinding(RewardBasketActions[i]):null;
                 if(GUI.Button(PortraitRewardBasketButton(i),chosen?"Wybrano ✓":key!=null?$"Wybierz [{key}]":"Wybierz",compactButton))ChooseRewardBasket(basketIndex);
                 GUI.backgroundColor=Color.white;
             }
@@ -87,6 +87,7 @@ namespace RoboRougelike.R1
             GUI.enabled=rewardBasketRefreshFrame!=Time.frameCount&&RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount);
             if(GUI.Button(PortraitRewardConfirm(),RewardActionCaption(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount),button))PortraitRewardConfirm(run);
             GUI.enabled=true;
+            TryRewardMouse(run,Event.current);
         }
 
         private void DrawPortraitRewardInventory(R1RunController run)

@@ -296,6 +296,54 @@ public sealed class UI943PortraitRewardsActionsTests
         }
         finally {if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
     }
+    [UnityTest] public IEnumerator ReboundRewardKeysSelectAndConfirmWithoutOldShortcuts()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Call("TrackRewardLedger",run.Salvage);
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        InputSystem.settings=settings;settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            Assert.That(profile.TryBind("RewardBonus1","K"),Is.True);
+            Assert.That(profile.TryBind("RewardBasket1","L"),Is.True);
+            Assert.That(profile.TryBind("RewardConfirm","J"),Is.True);
+            var caption=typeof(R1RunHUD).GetMethod("RewardConfirmCaption",BindingFlags.Static|BindingFlags.NonPublic);
+            Assert.That((string)caption.Invoke(null,new object[]{1}),Does.Contain("[J]"));
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Digit1,Key.Q,Key.Enter));InputSystem.Update();hud.ReadRewardInput(keyboard);
+            Assert.That((int)Field("selectedBonus"),Is.EqualTo(-1));Assert.That((int)Field("selectedBasket"),Is.EqualTo(-1));Assert.That(run.Salvage.Closed,Is.False);
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.K,Key.L));InputSystem.Update();hud.ReadRewardInput(keyboard);
+            Assert.That((int)Field("selectedBonus"),Is.EqualTo(0));Assert.That((int)Field("selectedBasket"),Is.EqualTo(0));
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.J));InputSystem.Update();hud.ReadRewardInput(keyboard);
+            Assert.That(run.Salvage.Closed,Is.True);
+        }
+        finally{profile.ResetDefaults();if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
+    }
+    [UnityTest] public IEnumerator ReboundRewardMouseRespectsPauseAndConsumedUiEvents()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Call("TrackRewardLedger",run.Salvage);
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("RewardBonus1","MouseBack"),Is.True);
+            var used=new Event{type=EventType.MouseDown,button=3};used.Use();Call("TryRewardMouse",run,used);
+            Assert.That((int)Field("selectedBonus"),Is.EqualTo(-1));
+            run.TogglePause();Call("TryRewardMouse",run,new Event{type=EventType.MouseDown,button=3});
+            Assert.That((int)Field("selectedBonus"),Is.EqualTo(-1));run.TogglePause();
+            Field("rewardInventoryOpen",true);Call("TryRewardMouse",run,new Event{type=EventType.MouseDown,button=3});
+            Assert.That((int)Field("selectedBonus"),Is.EqualTo(-1));Field("rewardInventoryOpen",false);
+            Call("TryRewardMouse",run,new Event{type=EventType.MouseDown,button=3});
+            Assert.That((int)Field("selectedBonus"),Is.EqualTo(0));
+        }
+        finally{profile.ResetDefaults();}
+    }
     [UnityTest] public IEnumerator ExtraBasketPageKeysSelectThatPageAndOnlyOneBasket()
     {
         foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);

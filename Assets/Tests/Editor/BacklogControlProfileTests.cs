@@ -11,6 +11,31 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [Test] public void RewardBindingsMigratePersistAndHaveTheirOwnContext()
+    {
+        string[] names={"RewardBonus1","RewardBonus2","RewardBonus3","RewardBasket1","RewardBasket2","RewardBasket3","RewardConfirm"};
+        foreach(var name in names)Assert.That(R1ControlProfile.Actions,Does.Contain(name));
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-reward-"+Guid.NewGuid()+".json");
+        try
+        {
+            var initial=new R1ControlProfile(path);
+            var old=R1ControlProfile.Actions.Where(a=>!names.Contains(a)).ToArray();
+            var data=new LegacyControlData{actions=old,bindings=old.Select(initial.Binding).ToArray()};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            var profile=new R1ControlProfile(path);Assert.That(profile.Error,Is.Null);
+            Assert.That(names.Select(profile.Binding),Is.EqualTo(new[]{"Digit1","Digit2","Digit3","Q","W","E","Enter"}));
+            Assert.That(R1ControlProfile.ValidSnapshot(profile.Snapshot()),Is.True);
+            Assert.That(profile.TrySaveBinding("RewardBonus1","MouseLeft",out _),Is.True,"A combat binding can be reused in reward context.");
+            Assert.That(profile.TryBind("RewardBasket1","MouseLeft"),Is.False,"Two actions on the reward screen cannot share a binding.");
+            Assert.That(profile.TrySaveBinding("RewardConfirm","K",out _),Is.True);
+            var restored=new R1ControlProfile(path);Assert.That(restored.Error,Is.Null);
+            Assert.That(restored.Binding("RewardBonus1"),Is.EqualTo("MouseLeft"));Assert.That(restored.Binding("RewardConfirm"),Is.EqualTo("K"));
+            Assert.That(restored.Binding("Weapon1"),Is.EqualTo("MouseLeft"));
+            Assert.That(restored.TrySaveBinding("RewardBonus1","Enter",out _),Is.True,"Once confirmation uses another key, Enter is available on the reward screen.");
+            Assert.That(restored.TrySaveBinding("RewardBonus1","NumpadEnter",out _),Is.True);
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [Test] public void PickupSkipBindingMigratesAndCanBeChanged()
     {
         Assert.That(R1ControlProfile.Actions,Does.Contain("SkipPickup"));

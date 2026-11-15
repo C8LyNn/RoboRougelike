@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 06, 31 i 44. Przypisania wyboru nagród
+
+- Trzy wybory bonusu, trzy widoczne zestawy oraz potwierdzenie można przypisać w ustawieniach do klawiszy lub obsługiwanych przycisków myszy. Ekran pokazuje aktualne przypisania; domyślne 1–3, Q/W/E i Enter pozostają. Nagrody mają własny kontekst konfliktów, więc mogą korzystać z klawiszy jazdy i garażu, ale dwie akcje nagród nie mogą otrzymać tego samego przycisku. Po zmianie potwierdzenia Enter i Num Enter można przypisać innym akcjom nagród. Stare profile i blueprinty otrzymują brakujące pola bez usuwania pozostałych ustawień.
+- Unity 6000.3.14f1: `reward_controls_before.xml` — **2 FAIL**, brak przypisań. `reward_controls_after.xml` — **45 PASS, 1 FAIL**: pierwszy wariant migracji mylił Enter nagród z Enter pominięcia zbierania; poprawiono rozdzielenie kontekstów. `reward_controls_final.xml` — **75 PASS**, w tym migracje i konflikty profili, faktyczny wybór i zatwierdzenie w stanie nagród przy zmienionych klawiszach, pauza, kolejna strona zestawów oraz syntetyczne zdarzenie myszy z ochroną magazynu i już użytych zdarzeń. `reward_controls_enter_final.xml` — **4 PASS** po dopuszczeniu Enter i Num Enter w tym kontekście.
+- Wprowadzono obsługę myszy po przyciskach interfejsu, ale fizycznego kliknięcia w Windows Player i zawijania długich nazw przypisań w obu układach **nie sprawdzono ręcznie**. Inne stałe skróty sesji pozostają do przeglądu; punkty 06 i 44 nie są jeszcze zamknięte.
+
 ### 02, 14 i 44. Wybór kolejnych bonusowych śrucin
 
 - Kolejka bonusowych śrucin utrzymuje kolejność round-robin tylko dla kierunków, które nadal mają oczekujące pociski. Wybranie i rozliczenie następnej śruciny nie wymaga ponownego przeglądania całej tablicy pustych kierunków. Licznik zmniejsza się dopiero po utworzeniu pocisku; zapis kierunku, własności, kolizji i limit pracy między klatkami pozostają.
