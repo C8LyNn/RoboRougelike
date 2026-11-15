@@ -98,7 +98,7 @@ public sealed class CompactCombatHUDTests
         Assert.That(affected,Is.Not.Null);
         bool Limited(RoboRougelike.R4.R4WeaponKind kind)=>(bool)affected.Invoke(null,new object[]{kind});
         Assert.That(Limited(RoboRougelike.R4.R4WeaponKind.Shotgun),Is.True);
-        Assert.That(Limited(RoboRougelike.R4.R4WeaponKind.Railgun),Is.True);
+        Assert.That(Limited(RoboRougelike.R4.R4WeaponKind.Railgun),Is.False);
         Assert.That(Limited(RoboRougelike.R4.R4WeaponKind.Automatic),Is.False);
         Assert.That(Limited(RoboRougelike.R4.R4WeaponKind.Basic),Is.False);
         Assert.That(Limited(RoboRougelike.R4.R4WeaponKind.RocketLauncher),Is.False);

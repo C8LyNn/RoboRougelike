@@ -250,7 +250,7 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(model.Buy(cell,R3PartKind.Gun,R4WeaponKind.Railgun),Is.True);
         cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
             .First(c=>model.PlacementError(c,R3PartKind.DoubleShot)==null);
-        Assert.That(model.Buy(cell,R3PartKind.DoubleShot),Is.True);model.Economy.DoubleShotChancePerUnit=100;
+        Assert.That(model.Buy(cell,R3PartKind.DoubleShot),Is.True);model.Economy.DoubleShotChancePerUnit=1;
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
         var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=true;var assembly=vehicle.GetComponent<R3VehicleAssembly>();
         var guns=assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Railgun).ToArray();Assert.That(guns.Length,Is.EqualTo(2));
@@ -1447,6 +1447,93 @@ public sealed class BacklogProjectileTierPhysicsTests
         float end=Time.time+.35f;while(Time.time<end)yield return null;
         Assert.That(receiver.HitCount,Is.GreaterThan(0));Assert.That(hp.CurrentHp,Is.EqualTo(500));Assert.That(target.CurrentHp,Is.EqualTo(500));
         Object.Destroy(dome);Object.Destroy(wall);
+    }
+    [UnityTest] public IEnumerator PrimaryAndQueuedRailShotIndependentlyPenetrateTwoParts()
+    {
+        var gun=Build(R4WeaponKind.Railgun,out _,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.Model.Economy.RailgunInitialPenetrationEnergy=1000;assembly.Model.Economy.RailgunMaximumDamagePerPart=50;
+        var first=Target(gun,6);var second=Target(gun,8);Physics.SyncTransforms();
+        Assert.That(gun.GetComponent<RRLRailgunBinding>().Fire(),Is.True);
+        var shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==gun.Id).ToArray();
+        Assert.That(shots.Length,Is.EqualTo(2));
+        float deadline=Time.realtimeSinceStartup+5;
+        while((first.CurrentHp>300.1f||second.CurrentHp>300.1f)&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(first.CurrentHp,Is.EqualTo(300).Within(.2),"Each shot must independently hit the first part.");
+        Assert.That(second.CurrentHp,Is.EqualTo(300).Within(.2),"Each shot must retain enough penetration to hit the second part.");
+        Object.Destroy(first.gameObject);Object.Destroy(second.gameObject);Object.Destroy(assembly.gameObject);
+    }
+    [UnityTest] public IEnumerator MoreThanNinetySixRailBonusShotsAreEventuallySpawned()
+    {
+        var gun=Build(R4WeaponKind.Railgun,out var energy,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.Model.Economy.DoubleShotChancePerUnit=100;assembly.Model.Economy.RailgunRange=10000;assembly.Model.Economy.RailgunInitialPenetrationEnergy=10000;
+        var muzzle=new GameObject("Unblocked queued rail muzzle").transform;muzzle.SetParent(gun.transform,false);
+        muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;gun.GunPivot=muzzle;gun.Muzzle=muzzle;
+        var binding=gun.GetComponent<RRLRailgunBinding>();var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        typeof(RRLRailgunBinding).GetField("muzzle",flags).SetValue(binding,muzzle);binding.Module.Bind(assembly.GetComponent<Rigidbody>(),muzzle,assembly.gameObject);
+        var queue=assembly.gameObject.AddComponent<R3ConventionalProjectileQueue>();
+        typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        float before=energy.Current;Physics.SyncTransforms();Assert.That(binding.Fire(),Is.True);
+        Assert.That(binding.State.Ammo,Is.EqualTo(11));Assert.That(energy.Current,Is.EqualTo(before-10.8f).Within(.001));
+        float deadline=Time.realtimeSinceStartup+8;R4ProjectileOrigin[] shots;
+        do
+        {
+            shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==gun.Id).ToArray();
+            if(shots.Length>=101)break;
+            yield return null;
+        }while(Time.realtimeSinceStartup<deadline);
+        Assert.That(shots.Length,Is.EqualTo(101),"The primary and all 100 separate rail bonuses must be emitted.");
+        Assert.That(shots.Select(p=>p.GetComponent<P17PhysicalShell>().LaunchSequence).Distinct().Count(),Is.EqualTo(101));
+        Assert.That(shots.All(p=>p.GetComponent<RRLRailPenetration>()!=null),Is.True);
+        Assert.That(binding.State.Ammo,Is.EqualTo(11),"The queued shots must not spend more ammunition.");
+        foreach(var shot in shots)if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}Object.Destroy(assembly.gameObject);
+    }
+    [UnityTest] public IEnumerator QueuedRailShotsKeepIndependentPenetrationAfterGunIsDestroyed()
+    {
+        var gun=Build(R4WeaponKind.Railgun,out var energy,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.Model.Economy.DoubleShotChancePerUnit=3;var body=assembly.GetComponent<Rigidbody>();
+        body.isKinematic=false;body.useGravity=false;body.linearVelocity=Vector3.right*7;
+        var queue=assembly.gameObject.AddComponent<R3ConventionalProjectileQueue>();
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        string id=gun.Id;var binding=gun.GetComponent<RRLRailgunBinding>();float before=energy.Current;
+        Assert.That(binding.Fire(),Is.True);Assert.That(binding.State.Ammo,Is.EqualTo(11));
+        var initial=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==id).ToArray();
+        Assert.That(initial.Length,Is.EqualTo(2));
+        var shotField=typeof(RRLRailPenetration).GetField("shot",flags);var energyField=typeof(RRLRailPenetration).GetField("energy",flags);
+        var visitedField=typeof(RRLRailPenetration).GetField("visited",flags);
+        var first=initial[0].GetComponent<RRLRailPenetration>();
+        var expected=(RoboRougelike.WPN002Railgun.RailgunShot)shotField.GetValue(first);float expectedEnergy=(float)energyField.GetValue(first);
+        body.linearVelocity=Vector3.left*13;body.position+=Vector3.right*20;Object.DestroyImmediate(gun.gameObject);
+        var drain=typeof(R3ConventionalProjectileQueue).GetMethod("FixedUpdate",flags);drain.Invoke(queue,null);drain.Invoke(queue,null);
+        var shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==id).Select(p=>p.GetComponent<RRLRailPenetration>()).ToArray();
+        Assert.That(shots.Length,Is.EqualTo(4));Assert.That(energy.Current,Is.EqualTo(before-10.8f).Within(.001));
+        var visited=new System.Collections.Generic.HashSet<object>();
+        foreach(var rail in shots)
+        {
+            var shot=(RoboRougelike.WPN002Railgun.RailgunShot)shotField.GetValue(rail);
+            Assert.That(shot.OwnerRoot,Is.SameAs(assembly.gameObject));Assert.That(shot.Origin,Is.EqualTo(expected.Origin));
+            Assert.That(shot.InitialVelocity,Is.EqualTo(expected.InitialVelocity));Assert.That((float)energyField.GetValue(rail),Is.EqualTo(expectedEnergy));
+            Assert.That(visited.Add(visitedField.GetValue(rail)),Is.True,"Each rail shot needs its own visited-target state.");
+        }
+        foreach(var rail in shots)Object.Destroy(rail.gameObject);Object.Destroy(assembly.gameObject);yield return null;
+    }
+    [UnityTest] public IEnumerator RailgunBonusIsNotLostWhenOldShellBudgetIsFull()
+    {
+        var gun=Build(R4WeaponKind.Railgun,out var energy,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var hp=Target(gun,6);var binding=gun.GetComponent<RRLRailgunBinding>();var dummies=new System.Collections.Generic.List<GameObject>();
+        try
+        {
+            while(P17PhysicalShell.AvailableSlots>0)
+            {var dummy=new GameObject("Rail capacity fixture");dummies.Add(dummy);dummy.AddComponent<P17PhysicalShell>();Assert.That(dummies.Count,Is.LessThan(110));}
+            float before=energy.Current;int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),w=>w==R4WeaponKind.Railgun);
+            assembly.FireSlot(slot);
+            Assert.That(energy.Current,Is.EqualTo(before-10.8f).Within(.001));Assert.That(binding.State.Ammo,Is.EqualTo(11));
+            var shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==gun.Id).ToArray();
+            Assert.That(shots.Length,Is.EqualTo(2),"The primary and its independent bonus must both exist above the old threshold.");
+            float deadline=Time.realtimeSinceStartup+5;while(500-hp.CurrentHp<200&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(500-hp.CurrentHp,Is.InRange(200f,260f),"Both physical rail projectiles must penetrate and hit.");
+        }
+        finally{foreach(var dummy in dummies)if(dummy!=null)Object.Destroy(dummy);if(hp!=null)Object.Destroy(hp.gameObject);if(assembly!=null)Object.Destroy(assembly.gameObject);}
     }
     [UnityTest] public IEnumerator DoubleShotDuplicatesRailgunWithoutExtraAmmoOrEnergy()
     {

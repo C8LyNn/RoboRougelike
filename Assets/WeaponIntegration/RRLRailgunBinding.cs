@@ -65,12 +65,12 @@ namespace RoboRougelike.WeaponIntegration
             var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>(),shot.InitialVelocity,shot.Spec.Range,shot.Spec.Radius))return false;
             var created=new System.Collections.Generic.List<GameObject>();
-            int extras=!deferExtras&&assembly!=null?assembly.RollDoubleShotExtras(Mathf.Max(0,P17PhysicalShell.AvailableSlots-1)):0;
+            int extras=!deferExtras&&assembly!=null?assembly.RollDoubleShotExtras(int.MaxValue):0;
             try
             {
-                for(int i=0;i<=extras;i++)
-                    CreateShot(shot,created);
+                CreateShot(shot,created);
                 if(deferExtras)deferredShot=shot;
+                else if(extras>0)QueueAdditional(shot,extras);
                 State.DeviceReadyAt=Time.time+shot.Spec.Cooldown;debitPending=false;
                 RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.Railgun);return true;
             }
@@ -79,10 +79,15 @@ namespace RoboRougelike.WeaponIntegration
         internal void FireAdditional(int count)
         {
             if(!Device.Available||deferredShot.OwnerRoot==null)return;
-            int amount=Mathf.Min(Mathf.Max(0,count),P17PhysicalShell.AvailableSlots);
-            var created=new System.Collections.Generic.List<GameObject>();
-            try{for(int i=0;i<amount;i++)CreateShot(deferredShot,created);}
-            catch{foreach(var shell in created)if(shell!=null){shell.SetActive(false);Destroy(shell);}}
+            if(count>0)QueueAdditional(deferredShot,count);
+        }
+        void QueueAdditional(RailgunShot shot,int count)
+        {
+            var queue=Device.Owner.GetComponent<R3ConventionalProjectileQueue>();
+            if(queue==null)queue=Device.Owner.gameObject.AddComponent<R3ConventionalProjectileQueue>();
+            float scale=R3MountedBonusEffects.SafeDamageProduct(tank!=null?tank.PackageRailgunDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier));
+            var renderer=GetComponent<Renderer>();
+            queue.EnqueueRailgun(shot,count,scale,renderer!=null?renderer.sharedMaterial:null,State.Id);
         }
         void CreateShot(RailgunShot shot,System.Collections.Generic.List<GameObject> created)
         {

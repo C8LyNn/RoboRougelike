@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using RoboRougelike.R1;
 using RoboRougelike.R4;
+using RoboRougelike.WPN002Railgun;
 using RogueMachine.P12PipelineSafe;
 using UnityEngine;
 using Object=UnityEngine.Object;
@@ -31,6 +32,11 @@ namespace RoboRougelike.R3
         {
             public int Remaining;
             public P17PhysicalShell.ConventionalSnapshot Shot;
+            public bool IsRailgun;
+            public RailgunShot RailShot;
+            public float RailDamageScale;
+            public Material RailMaterial;
+            public string RailPartId;
             public readonly List<Sibling> Siblings=new List<Sibling>();
             public LinkedList<Sibling> Group;
             public LinkedListNode<Sibling> Cursor;
@@ -49,6 +55,13 @@ namespace RoboRougelike.R3
             if(collider!=null)batch.Siblings.Add(new Sibling(collider,primary));
             batches.Enqueue(batch);Drain();
         }
+        internal void EnqueueRailgun(RailgunShot shot,int count,float damageScale,Material material,string partId)
+        {
+            if(count<=0)return;
+            if(shot.OwnerRoot==null||shot.OwnerBody==null)throw new ArgumentException("A rail volley needs an owner and body.",nameof(shot));
+            batches.Enqueue(new Batch{Remaining=count,IsRailgun=true,RailShot=shot,RailDamageScale=damageScale,RailMaterial=material,RailPartId=partId});
+            Drain();
+        }
         void FixedUpdate(){if(Time.timeScale>0)Drain();}
         void OnDisable(){if(!gameObject.activeInHierarchy)batches.Clear();}
         void Drain()
@@ -61,15 +74,37 @@ namespace RoboRougelike.R3
             while(batches.Count>0&&(!attempted||(Stopwatch.GetTimestamp()-budgetStart)*1000d/Stopwatch.Frequency<workBudgetMilliseconds))
             {
                 var batch=batches.Peek();
-                if(batch.Shot.Owner==null||!batch.Shot.Owner.gameObject.activeInHierarchy){batches.Dequeue();continue;}
+                var owner=batch.IsRailgun?(batch.RailShot.OwnerRoot!=null?batch.RailShot.OwnerRoot.transform:null):batch.Shot.Owner;
+                if(owner==null||!owner.gameObject.activeInHierarchy){batches.Dequeue();continue;}
                 attempted=true;P17PhysicalShell shot=null;
                 try
                 {
-                    shot=Spawn(batch.Shot);ExcludeSiblings(batch,shot);
+                    if(batch.IsRailgun)shot=SpawnRailgun(batch);
+                    else{shot=Spawn(batch.Shot);ExcludeSiblings(batch,shot);}
                     batch.Remaining--;if(batch.Remaining==0)batches.Dequeue();
                 }
                 catch(Exception e){if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}UnityEngine.Debug.LogException(e,this);break;}
             }
+        }
+        static P17PhysicalShell SpawnRailgun(Batch batch)
+        {
+            P17PhysicalShell projectile=null;var shot=batch.RailShot;
+            try
+            {
+                projectile=P17PhysicalShell.RentConventional();var shell=projectile.gameObject;shell.name="WPN002 physical rail";
+                shell.transform.SetPositionAndRotation(shot.Origin,Quaternion.LookRotation(shot.Direction));shell.transform.localScale=Vector3.one*shot.Spec.Radius*2;
+                var collider=shell.GetComponent<Collider>();collider.enabled=true;collider.isTrigger=true;
+                var renderer=shell.GetComponent<Renderer>();if(renderer!=null)renderer.sharedMaterial=batch.RailMaterial!=null?batch.RailMaterial:projectile.DefaultMaterial;
+                var body=shell.GetComponent<Rigidbody>();body.useGravity=false;body.collisionDetectionMode=CollisionDetectionMode.Discrete;
+                if(!body.isKinematic){body.linearVelocity=Vector3.zero;body.angularVelocity=Vector3.zero;}
+                body.isKinematic=true;body.interpolation=RigidbodyInterpolation.Interpolate;
+                var origin=shell.GetComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.Railgun;origin.PartId=batch.RailPartId;
+                double speed=shot.InitialVelocity.magnitude;
+                double lifetime=speed>0&&!double.IsInfinity(speed)&&!double.IsNaN(speed)?Math.Max(30d,(double)shot.Spec.Range/speed+1d):30d;
+                shell.SetActive(true);projectile.Configure(shot.OwnerRoot.transform,0,(float)Math.Min(float.MaxValue,lifetime),shot.Direction,null,shot.Spec.Range);
+                projectile.ConfigureRailgun(shot,batch.RailDamageScale);return projectile;
+            }
+            catch{if(projectile!=null){projectile.gameObject.SetActive(false);Object.Destroy(projectile.gameObject);}throw;}
         }
         static P17PhysicalShell Spawn(P17PhysicalShell.ConventionalSnapshot data)
         {

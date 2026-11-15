@@ -156,6 +156,27 @@ public sealed class BacklogManualRescueTests
         float end=Time.time+run.EmergencyRescueDurationSeconds+.1f;while(Time.time<end)yield return null;
         energy=bank.Current;tick.Invoke(aura,null);Assert.That(bank.Current,Is.LessThan(energy),"Aura resumes after protection ends");
     }
+    [UnityTest] public IEnumerator QueuedRailShotsWaitUntilRescueEnds()
+    {
+        run.Encounter.SetCombatActive(false);run.EmergencyRescueDurationSeconds=.3f;
+        var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+        var queue=run.Player.gameObject.AddComponent<R3ConventionalProjectileQueue>();
+        typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        var origin=run.Player.transform.position+Vector3.up*4;
+        var shot=new RoboRougelike.WPN002Railgun.RailgunShot(0,origin,Vector3.forward,Vector3.forward*30,
+            new RoboRougelike.WPN002Railgun.RailgunConfig().Snapshot(),run.Player.GetComponent<Rigidbody>(),run.Player.gameObject);
+        typeof(R3ConventionalProjectileQueue).GetMethod("EnqueueRailgun",flags).Invoke(queue,new object[]{shot,2,1f,null,"queued-rescue-rail"});
+        var batches=(System.Collections.IEnumerable)typeof(R3ConventionalProjectileQueue).GetField("batches",flags).GetValue(queue);
+        var iterator=batches.GetEnumerator();Assert.That(iterator.MoveNext(),Is.True);var batch=iterator.Current;
+        var remaining=batch.GetType().GetField("Remaining");Assert.That((int)remaining.GetValue(batch),Is.EqualTo(1));
+        Assert.That(run.TryEmergencyRescue(),Is.True);
+        var drain=typeof(R3ConventionalProjectileQueue).GetMethod("FixedUpdate",flags);drain.Invoke(queue,null);
+        Assert.That((int)remaining.GetValue(batch),Is.EqualTo(1),"Queued rail shots must wait during rescue.");
+        float deadline=Time.realtimeSinceStartup+5;while(run.EmergencyRescueAttackBlocked&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.EmergencyRescueAttackBlocked,Is.False);drain.Invoke(queue,null);Assert.That((int)remaining.GetValue(batch),Is.Zero);
+        foreach(var tag in Object.FindObjectsByType<RoboRougelike.R4.R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId=="queued-rescue-rail"))
+        {tag.gameObject.SetActive(false);Object.Destroy(tag.gameObject);}
+    }
     [UnityTest] public IEnumerator QueuedConventionalShotsWaitUntilRescueEnds()
     {
         run.Encounter.SetCombatActive(false);run.EmergencyRescueDurationSeconds=.3f;

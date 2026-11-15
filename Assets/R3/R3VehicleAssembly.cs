@@ -346,14 +346,11 @@ namespace RoboRougelike.R3
                         if(rail!=null&&rail.FirePrimary())
                         {
                             part.NextFireTime=rail.State.DeviceReadyAt;
-                            if(P17PhysicalShell.AvailableSlots>0)
+                            int requested=RollDoubleShotExtras(int.MaxValue);
+                            if(requested>0)
                             {
-                                int requested=RollDoubleShotExtras(int.MaxValue);
-                                if(requested>0)
-                                {
-                                    if(pending==null)pending=new List<PendingConventionalShot>();
-                                    pending.Add(new PendingConventionalShot{Rail=rail,Requested=requested});
-                                }
+                                if(pending==null)pending=new List<PendingConventionalShot>();
+                                pending.Add(new PendingConventionalShot{Rail=rail,Requested=requested});
                             }
                         }
                         continue;
@@ -381,19 +378,19 @@ namespace RoboRougelike.R3
                 foreach(var shot in pendingRockets)shot.Binding.FireAdditional(shot.Requested);
             if(pending==null)return;
             foreach(var shot in pending)
-                if(shot.Shotgun==null&&shot.Rail==null)
+                if(shot.Rail!=null)shot.Rail.FireAdditional(shot.Requested);
+                else if(shot.Shotgun==null)
                     controller.FireAdditionalFrom(shot.Muzzle,shot.Kind,shot.PartId,shot.Primary,shot.Requested);
             if(P17PhysicalShell.AvailableSlots<=0)
             {foreach(var shot in pending)if(shot.Shotgun!=null)shot.Shotgun.ClearDeferred();return;}
             var requests=new int[pending.Count];
-            for(int i=0;i<pending.Count;i++)requests[i]=pending[i].Shotgun!=null||pending[i].Rail!=null?pending[i].Requested:0;
+            for(int i=0;i<pending.Count;i++)requests[i]=pending[i].Shotgun!=null?pending[i].Requested:0;
             var allocated=AllocateBonusShots(requests,P17PhysicalShell.AvailableSlots);
             for(int i=0;i<pending.Count;i++)
                 if(allocated[i]>0)
                 {
                     var shot=pending[i];
                     if(shot.Shotgun!=null)shot.Shotgun.FireAdditional(allocated[i]);
-                    else if(shot.Rail!=null)shot.Rail.FireAdditional(allocated[i]);
                 }
                 else if(pending[i].Shotgun!=null)pending[i].Shotgun.ClearDeferred();
         }
