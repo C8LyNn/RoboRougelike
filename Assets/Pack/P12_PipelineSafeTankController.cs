@@ -435,6 +435,9 @@ public float CurrentForwardSpeed =>
         readonly List<RoboRougelike.WeaponIntegration.RRLWeaponReticles.Marker> weaponReticles = new List<RoboRougelike.WeaponIntegration.RRLWeaponReticles.Marker>(4);
         public IReadOnlyList<RoboRougelike.WeaponIntegration.RRLWeaponReticles.Marker> WeaponReticles=>weaponReticles;
         public float PhysicalShellLifetime => projectileLifetime;
+        private RaycastHit[] aimHits = new RaycastHit[32];
+        private static readonly IComparer<RaycastHit> AimHitDistanceComparer =
+            Comparer<RaycastHit>.Create((a,b)=>a.distance.CompareTo(b.distance));
         private Vector3 FindAimPoint(bool consumed=false)
         {
             Ray ray =
@@ -446,25 +449,27 @@ public float CurrentForwardSpeed =>
                     )
                 );
 
-            RaycastHit[] hits =
-                Physics.RaycastAll(
-                    ray.origin,
-                    ray.direction,
-                    aimRange,
-                    ~0,
-                    QueryTriggerInteraction.Ignore
-                );
-
-            Array.Sort(
-                hits,
-                (a, b) =>
-                    a.distance.CompareTo(
-                        b.distance
-                    )
-            );
-
-            foreach (RaycastHit hit in hits)
+            RaycastHit[] hits = aimHits;
+            int count;
+            while(true)
             {
+                count=Physics.RaycastNonAlloc(ray.origin,ray.direction,hits,aimRange,~0,QueryTriggerInteraction.Ignore);
+                if(count<hits.Length)break;
+                if(hits.Length>=1024)
+                {
+                    // A full buffer may have omitted the closest target. Keep correctness
+                    // even in unusually dense scenes instead of imposing a hit limit.
+                    hits=Physics.RaycastAll(ray.origin,ray.direction,aimRange,~0,QueryTriggerInteraction.Ignore);
+                    count=hits.Length;
+                    break;
+                }
+                hits=aimHits=new RaycastHit[hits.Length*2];
+            }
+            Array.Sort(hits,0,count,AimHitDistanceComparer);
+
+            for(int i=0;i<count;i++)
+            {
+                RaycastHit hit=hits[i];
                 if (hit.collider == null)
                     continue;
 

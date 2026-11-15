@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 44. Mniejszy koszt celowania w gęstej scenie
+
+- Celownik używa ponownie tablicy wyników fizyki, zwiększa ją w razie potrzeby, a przy ponad 1024 trafieniach korzysta z pełnego zapytania. Nadal wybiera najbliższy obiekt poza własnym pojazdem i pociskami; próg pamięci nie ogranicza liczby wykrywanych obiektów.
+- Unity 6000.3.14f1: `aim_query_after.xml` i `.log`: **2 PASS, 0 FAIL**, w tym cel oddalony o 100 m, najbliższy z dwóch celów, brak celu oraz ponad 1024 kolizje własnej konstrukcji. Pomiar edytora dla 50 zapytań przy 80 własnych częściach: około 180 KB przed zmianą (`aim_query_before2.xml`, test wykazał nadmiar alokacji), około 7 KB po zmianie; pomiar kontrolny wykrył alokację 1 MB.
+- To nie jest pomiar FPS w Windows Player. Limity dodatkowych pocisków oraz pełna regresja i ręczny playtest nadal pozostają otwarte.
+
 ## 10–11. Fuzja części — częściowo sprawdzone i uzupełnione
 
 - Istniały operacja fuzji trzech fizycznych części oraz przycisk w katalogu garażu. Nowa część otrzymuje średnią procentową stanu wejść, także dla wejścia z 0 HP.
