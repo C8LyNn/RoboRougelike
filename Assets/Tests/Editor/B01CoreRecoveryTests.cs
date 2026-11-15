@@ -42,6 +42,22 @@ public class B01CoreRecoveryTests
         body.transform.SetPositionAndRotation(new Vector3(1000,1.55f,1000),Quaternion.Euler(0,0,180));body.position=new Vector3(1000,1.55f,1000);
         body.rotation=Quaternion.Euler(0,0,180);body.linearVelocity=body.angularVelocity=Vector3.zero;Physics.SyncTransforms();
     }
+    [UnityTest] public IEnumerator DenseSupportQueryStillFindsActualGround()
+    {
+        Require();var contact=vehicle.Core.GetComponent<Collider>();Assert.That(contact,Is.Not.Null);
+        var point=contact.bounds.center;var support=Solid(point-Vector3.up*.05f,new Vector3(2,.1f,2));
+        var clutter=new GameObject("Dense recovery contact");clutter.transform.SetParent(fixtures.transform);clutter.transform.position=point+Vector3.up*.02f;
+        for(int i=0;i<70;i++)clutter.AddComponent<BoxCollider>().size=Vector3.one*.005f;
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        recovery.GetType().GetField("support",flags).SetValue(recovery,support);
+        recovery.GetType().GetField("contactPart",flags).SetValue(recovery,contact);
+        recovery.GetType().GetField("localContact",flags).SetValue(recovery,Quaternion.Inverse(body.rotation)*(point-body.position));
+        Physics.SyncTransforms();
+        var hits=Physics.RaycastAll(point+Vector3.up*.04f,Vector3.down,.09f,~0,QueryTriggerInteraction.Ignore);
+        Assert.That(hits.Length,Is.GreaterThan(64));Assert.That(hits.Any(h=>h.collider==support),Is.True);
+        Assert.That((bool)recovery.GetType().GetMethod("StillSupported",flags).Invoke(recovery,null),Is.True,"A full query must not hide the actual support.");
+        yield return null;
+    }
     [UnityTest] public IEnumerator PHY_CORE_01_SustainedPhysicalInversionRequiresConfirmationBeforeOneAttempt()
     {
         Require();PoseRoof();yield return MOVSeriesDeviceTests.Seconds(.6f);Assert.That(Attempts,Is.Zero);

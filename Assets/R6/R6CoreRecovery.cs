@@ -66,8 +66,10 @@ namespace RoboRougelike.R6
             var point=body.position+body.rotation*localContact;var bounds=contactPart.bounds;bounds.Expand(.1f);
             if(!bounds.Contains(point))return false;
             int count=Physics.RaycastNonAlloc(point+Vector3.up*.04f,Vector3.down,supportHits,.09f,~0,QueryTriggerInteraction.Ignore);
-            if(count==supportHits.Length)return false;
-            for(int i=0;i<count;i++)if(supportHits[i].collider==support&&supportHits[i].normal.y>.5f)return true;
+            RaycastHit[] hits=supportHits;
+            if(count>=supportHits.Length)
+            {hits=Physics.RaycastAll(point+Vector3.up*.04f,Vector3.down,.09f,~0,QueryTriggerInteraction.Ignore);count=hits.Length;}
+            for(int i=0;i<count;i++)if(hits[i].collider==support&&hits[i].normal.y>.5f)return true;
             return false;
         }
         static float Limit(float value,float fallback,float min,float max)=>float.IsNaN(value)||float.IsInfinity(value)?fallback:Mathf.Clamp(value,min,max);
