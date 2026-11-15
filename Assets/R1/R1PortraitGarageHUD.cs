@@ -110,7 +110,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(24,846,110,40),"Zoom +",compactButton))garage.Zoom(-1);
             if(GUI.Button(new Rect(141,846,110,40),"Zoom −",compactButton))garage.Zoom(1);
             if(GUI.Button(new Rect(258,846,116,40),"Dopasuj",compactButton))garage.FrameVehicle();
-            GUI.Label(new Rect(394,612,350,76),$"Komórka: {garage.Cell} • {PartName(selected?.Kind??garage.SelectedPart)}\n"+(selected==null?"Wybierz część.":$"HP: {selected.Health*100:0}% • naprawa {model.RepairCost(selected)} Z"),small);
+            GUI.Label(new Rect(394,612,350,76),$"Komórka: {garage.Cell} • {PartName(selected?.Kind??garage.SelectedPart)}\n"+(selected==null?"Wybierz część.":$"HP: {PartHealthText(selected.Health)} • naprawa {model.RepairCost(selected)} Z"),small);
             GUI.enabled=selected!=null&&model.RepairCost(selected)>0&&model.Scrap>=model.RepairCost(selected);
             if(GUI.Button(new Rect(394,686,350,42),"Napraw wybraną część",compactButton))garage.RepairPartAt(garage.Cell);
             GUI.enabled=selected!=null;

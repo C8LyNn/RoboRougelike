@@ -661,7 +661,7 @@ namespace RoboRougelike.R1
             else {
             GUI.Label(new Rect(970,70,280,65),$"Komórka: {garage.Cell}\n{PartName(selected?.Kind??garage.SelectedPart)} {(selected==null?"— nowa część":"")}",body);
             GUI.Label(new Rect(970,140,280,65),selected==null?(garage.SelectedInventoryId!=null?"Wybrano egzemplarz z magazynu.":"Wybierz egzemplarz z katalogu części."):
-                $"{(selected.Health<=0?"Utracony plan":selected.Health<0.999f?"Zamontowana • uszkodzona":"Zamontowana • sprawna")} • HP: {selected.Health*100:0}%\n{(selected.Health<=0?"Odtworzenie":"Naprawa")}: {model.RepairCost(selected)} Złomu",small);
+                $"{(selected.Health<=0?"Utracony plan":selected.Health<1f?"Zamontowana • uszkodzona":"Zamontowana • sprawna")} • HP: {PartHealthText(selected.Health)}\n{(selected.Health<=0?"Odtworzenie":"Naprawa")}: {model.RepairCost(selected)} Złomu",small);
             string error=garage.PlacementIssue;
             GUI.enabled=garage.Tool==R41GarageTool.Mount&&error==null;
             GUI.Label(new Rect(970,216,280,48),"Montaż: wybierz egzemplarz i kliknij pojazd.",small);
