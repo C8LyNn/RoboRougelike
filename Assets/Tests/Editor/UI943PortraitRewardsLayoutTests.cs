@@ -71,6 +71,17 @@ public sealed class UI943PortraitRewardsLayoutTests
         var reordered=offers.Skip(1).Concat(offers.Take(1)).ToArray();
         Assert.That((bool)Method("SameRewardBaskets").Invoke(null,new object[]{offers,reordered}),Is.True);
     }
+    [Test] public void DifferentDuplicateCountsDoNotCreateANewChoice()
+    {
+        var ledger=new R4SalvageLedger(3);
+        Assert.That(ledger.Record("a",new[]{new R4SalvageItem("gun","test",R3PartKind.Gun,R4WeaponKind.Basic,1)},R3EnemyArchetype.Scout),Is.True);
+        Assert.That(ledger.Record("b",new[]{new R4SalvageItem("wheel","test",R3PartKind.Wheel,R4WeaponKind.Basic,1)},R3EnemyArchetype.Bruiser),Is.True);
+        var unique=ledger.CreateBasketOffers(7,0).GroupBy(b=>b.Archetype).Select(g=>g.First()).ToArray();
+        Assert.That(unique.Length,Is.EqualTo(2));
+        var a=new[]{unique[0],unique[0],unique[1]};var b=new[]{unique[0],unique[1],unique[1]};
+        Assert.That((bool)Method("SameRewardBaskets").Invoke(null,new object[]{a,b}),Is.True,"Changing repetitions adds no selectable basket.");
+        Assert.That((bool)Method("SameRewardBaskets").Invoke(null,new object[]{a,new[]{unique[0],unique[0]}}),Is.False,"A missing choice still changes the set.");
+    }
     [Test] public void SevenCandidatesFindAnAlternativeWheneverOneExistsInSmallWrecks()
     {
         for(int size=1;size<=8;size++)

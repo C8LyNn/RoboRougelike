@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 30–32 i 44. Reroll powtarzających się koszyków
+
+- Porównanie ofert uwzględnia teraz różne wybieralne zestawy, a nie liczbę powtórzonych kart. Jeśli losowanie tylko zmienia proporcję duplikatów, gra wyszukuje rzeczywiście inny zestaw; gdy takiego nie ma, zachowuje walutę, poprzedni wybór i wybrany bonus. Istniejący generator, ceny i tożsamości fizycznych części pozostały bez zmian.
+- Unity 6000.3.14f1: `reroll_duplicate_before.xml` — **2 FAIL**, w tym rzeczywiste pobranie opłaty za te same dwa wybory w innych proporcjach. `reroll_duplicate_final.xml` — **8 PASS**: brak opłaty bez alternatywy, znalezienie i jednorazowy odbiór alternatywy przez autoryzowany rejestr walki, zachowanie bonusu, duża liczba stron oraz wcześniejsze przypadki. Oferty nowych scenariuszy pochodzą z testowych części dopisanych do rejestru przed zwycięstwem; nie jest to ręczny playtest.
+- Pierwszy przebieg po zmianie `reroll_duplicate_after.xml` miał **7 PASS, 1 FAIL**, ponieważ test próbował odebrać części z podmienionego, nieautoryzowanego rejestru. `reroll_duplicate_real.xml` miał **2 FAIL** po użyciu niepoprawnych testowych ID; po zastosowaniu poprawnych GUID i oryginalnego rejestru `reroll_duplicate_real2.xml` miał **2 PASS**. Ręczna obsługa interfejsu i wydajność skrajnej liczby ofert pozostają **NOT RUN**; punkt 44 jest otwarty.
+
 ### 02, 14 i 44. Walidacja montażu broni w gęstej scenie
 
 - Istniejąca walidacja osi lufy, odcinka lufy i piły rozszerza bufor, gdy zapytanie jest pełne, a powyżej rozmiaru pamiętanego bufora pobiera komplet wyników. Dzięki temu obce kolidery nie powodują automatycznego odrzucenia przez samą kontrolę prześwitu; należące do pojazdu przeszkody nadal są wykrywane. Pozostałe kontrole fizycznego montażu i kolizji części nadal obowiązują.

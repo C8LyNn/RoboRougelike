@@ -157,11 +157,11 @@ namespace RoboRougelike.R1
             .OrderBy(id=>id,System.StringComparer.Ordinal).Select(id=>id.Length+":"+id));
         private static bool SameRewardBaskets(IReadOnlyList<R4SalvageBasket> a,IReadOnlyList<R4SalvageBasket> b)
         {
-            if(a==null||b==null||a.Count!=b.Count)return false;
-            var counts=new Dictionary<string,int>(System.StringComparer.Ordinal);
-            foreach(var basket in a){string key=RewardBasketKey(basket);counts.TryGetValue(key,out int count);counts[key]=count+1;}
-            foreach(var basket in b){string key=RewardBasketKey(basket);if(!counts.TryGetValue(key,out int count)||count==0)return false;counts[key]=count-1;}
-            return true;
+            if(a==null||b==null)return false;
+            // Repeating an existing card a different number of times adds no
+            // choice, so it cannot justify spending scrap on a reroll.
+            var choices=new HashSet<string>(a.Select(RewardBasketKey),System.StringComparer.Ordinal);
+            return choices.SetEquals(b.Select(RewardBasketKey));
         }
         private static IEnumerable<R4SalvageBasket> PrioritizedRewardBaskets(R4SalvageLedger ledger,int seed,int stage,int offerCount,string preferredKey)
         {

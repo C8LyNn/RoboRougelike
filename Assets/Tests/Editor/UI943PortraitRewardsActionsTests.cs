@@ -25,6 +25,27 @@ public sealed class UI943PortraitRewardsActionsTests
     void Field(string name,object value)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).SetValue(hud,value);
     static R4SalvageItem[] Choices(R1RunController r)=>r.Salvage.Items.Where(p=>p.Selectable).ToArray();
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
+    static string BasketSignature(R4SalvageBasket basket)=>string.Join(",",basket.Items.Select(item=>item.Id).OrderBy(id=>id));
+    static bool FindDuplicateCountSeeds(R4SalvageLedger ledger,int stage,int runSeed,out int oldSeed,out int rerolls)
+    {
+        oldSeed=0;rerolls=0;
+        for(int n=0;n<128;n++)
+        {
+            int nextSeed=unchecked((runSeed^(stage*397))+((n*16+1)*7919));
+            var next=ledger.CreateBasketOffers(nextSeed,stage,3);
+            var nextChoices=new HashSet<string>(next.Select(BasketSignature));
+            if(nextChoices.Count!=2)continue;
+            string nextMultiset=string.Join("|",next.Select(BasketSignature).OrderBy(s=>s));
+            for(int previous=0;previous<128;previous++)
+            {
+                var old=ledger.CreateBasketOffers(previous,stage,3);
+                if(nextChoices.SetEquals(old.Select(BasketSignature))&&
+                    string.Join("|",old.Select(BasketSignature).OrderBy(s=>s))!=nextMultiset)
+                {oldSeed=previous;rerolls=n;return true;}
+            }
+        }
+        return false;
+    }
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
@@ -416,6 +437,55 @@ public sealed class UI943PortraitRewardsActionsTests
         Assert.That(expected.All(id=>run.VehicleModel.Inventory.Any(part=>part.Id==id)),Is.True);
         Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.False,"The chosen parts must not be granted twice.");
         yield return null;
+    }
+    [UnityTest] public IEnumerator RerollDoesNotChargeWhenOnlyDuplicateCountsChange()
+    {
+        var ledger=run.Salvage;
+        string first=Guid.NewGuid().ToString("N"),second=Guid.NewGuid().ToString("N");
+        Assert.That(ledger.Record("fixture-a",new[]{new R4SalvageItem(first,"a",R3PartKind.Gun,R4WeaponKind.Basic,1)},R3EnemyArchetype.Scout),Is.True);
+        Assert.That(ledger.Record("fixture-b",new[]{new R4SalvageItem(second,"b",R3PartKind.Gun,R4WeaponKind.Basic,1)},R3EnemyArchetype.Scout),Is.True);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        foreach(var other in ledger.Items.Where(p=>p.Id!=first&&p.Id!=second&&p.PhysicalLootEligible).ToArray())ledger.MarkPhysicalDrop(other.Id);
+        Call("TrackRewardLedger",ledger);yield return null;run.VehicleModel.Award(100);
+        int stage=run.Progress.EncounterIndex;
+        Assert.That(FindDuplicateCountSeeds(ledger,stage,run.Seed,out int oldSeed,out int rerolls),Is.True,
+            "The fixture must produce the same two choices with different repetitions.");
+        Field("basketRerollCount",rerolls);Field("rewardBasketSeed",oldSeed);
+        Call("RebuildRewardBasketStream",ledger,run,oldSeed);Call("PortraitRewardSelectBonus",0);Call("ChooseRewardBasket",0);
+        var previousOffers=Field("rewardBaskets");int before=run.VehicleModel.Scrap;
+        Assert.That((bool)Call("RerollRewardBaskets",run),Is.False,"A duplicate reshuffle cannot cost scrap when no new choice exists.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before));Assert.That(Field("rewardBaskets"),Is.SameAs(previousOffers));
+        Assert.That((int)Field("selectedBasket"),Is.EqualTo(0));Assert.That((int)Field("selectedBonus"),Is.EqualTo(0));
+        Assert.That((string)Field("rewardClaimFeedback"),Does.Contain("Nie pobrano opłaty"));
+    }
+    [UnityTest] public IEnumerator RerollFindsAnAlternativeWhenOnlyDuplicateCountsChange()
+    {
+        var ledger=run.Salvage;
+        string first=Guid.NewGuid().ToString("N"),second=Guid.NewGuid().ToString("N");
+        var parts=new[]{new R4SalvageItem(first,"a",R3PartKind.Gun,R4WeaponKind.Basic,1),new R4SalvageItem(second,"b",R3PartKind.Gun,R4WeaponKind.Basic,1)};
+        Assert.That(ledger.Record("fixture-enemy",parts,R3EnemyArchetype.Scout),Is.True);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        foreach(var other in ledger.Items.Where(p=>p.Id!=first&&p.Id!=second&&p.PhysicalLootEligible).ToArray())ledger.MarkPhysicalDrop(other.Id);
+        Call("TrackRewardLedger",ledger);yield return null;run.VehicleModel.Award(100);
+        int stage=run.Progress.EncounterIndex;
+        Assert.That(FindDuplicateCountSeeds(ledger,stage,run.Seed,out int oldSeed,out int rerolls),Is.True);
+        Field("basketRerollCount",rerolls);Field("rewardBasketSeed",oldSeed);
+        Call("RebuildRewardBasketStream",ledger,run,oldSeed);Call("PortraitRewardSelectBonus",0);Call("ChooseRewardBasket",0);
+        var old=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");var previous=new HashSet<string>(old.Take(3).Select(BasketSignature));
+        int before=run.VehicleModel.Scrap;
+        Assert.That((bool)Call("RerollRewardBaskets",run),Is.True,"The third actual combination must be offered when it exists.");
+        var next=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(previous.Contains(BasketSignature(next[0])),Is.False);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-run.Definition.RewardBasketRerollCost));
+        Assert.That((int)Field("selectedBonus"),Is.Zero);Assert.That((int)Field("selectedBasket"),Is.EqualTo(-1));
+        var selected=next[0].Items.Select(p=>p.Id).ToArray();Call("ChooseRewardBasket",0);
+        Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.True);
+        Assert.That(selected.All(id=>run.VehicleModel.Inventory.Any(p=>p.Id==id)),Is.True);
+        Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.False,"Recovered parts cannot be granted twice.");
     }
     [UnityTest] public IEnumerator LargeBasketRerollAndLaterPageCanBeClaimedOnce()
     {
