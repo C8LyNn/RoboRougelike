@@ -29,14 +29,14 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - RRSalvo0
+  - RRSalvo1
+  - RRSalvo2
+  - RRSalvo3
+  - RRSalvo4
+  - RRSalvo5
+  - RRSalvo6
+  - RRSalvo7
   m_SortingLayers:
   - name: Default
     uniqueID: 0

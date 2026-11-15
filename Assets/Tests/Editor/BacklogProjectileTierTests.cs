@@ -39,6 +39,13 @@ public sealed class BacklogProjectileTierTests
 public sealed class BacklogProjectileTierPhysicsTests
 {
     R1RunController run;
+    static int ExplicitSiblingPairs(R4ProjectileOrigin[] shots)
+    {
+        var colliders=shots.Select(origin=>origin.GetComponent<Collider>()).ToHashSet();
+        var field=typeof(P17PhysicalShell).GetField("ignoredForFlight",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(field,Is.Not.Null);
+        return shots.Sum(origin=>((System.Collections.Generic.List<Collider>)field.GetValue(origin.GetComponent<P17PhysicalShell>())).Count(colliders.Contains))/2;
+    }
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
@@ -909,6 +916,178 @@ public sealed class BacklogProjectileTierPhysicsTests
             Assert.That(hp.CurrentHp,Is.LessThan(500),"The scoped shot must actually hit.");
             Object.Destroy(gun.GetComponentInParent<R3VehicleAssembly>().gameObject);Object.Destroy(hp.gameObject);Object.Destroy(bonus);yield return null;
         }
+    }
+    [UnityTest] public IEnumerator LargeShotgunSalvoKeepsIndividualImpactsWithGroupedCollisionFiltering()
+    {
+        var gun=Build(R4WeaponKind.Shotgun,out _,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.Model.Economy.DoubleShotChancePerUnit=5;
+        var core=assembly.GetComponent<R1VehicleState>().Core;float coreHp=core.CurrentHp;
+        var hp=Target(gun,6);hp.Configure(2000,false);
+        Assert.That(gun.GetComponent<RRLShotgunBinding>().Fire(),Is.True);
+        var shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(origin=>origin.PartId==gun.Id)
+            .OrderBy(origin=>origin.GetComponent<P17PhysicalShell>().LaunchSequence).ToArray();
+        Assert.That(shots.Length,Is.EqualTo(48),"Eight primary pellets and five extra copies of each must exist separately.");
+        int layer=shots[0].gameObject.layer;
+        Assert.That(layer,Is.InRange(24,31),"A large salvo should use a reserved group layer.");
+        Assert.That(shots.All(origin=>origin.gameObject.layer==layer&&(origin.GetComponent<Collider>().excludeLayers.value&(1<<layer))!=0),Is.True);
+        Assert.That(shots.All(origin=>Physics.GetIgnoreCollision(origin.GetComponent<Collider>(),core.GetComponent<Collider>())),Is.True,
+            "Changing the salvo layer must preserve every projectile's owner filter.");
+        Assert.That(Physics.GetIgnoreCollision(shots[0].GetComponent<Collider>(),shots[shots.Length-1].GetComponent<Collider>()),Is.False,
+            "The group must avoid a separate physics pair for every extra pellet.");
+        Assert.That(ExplicitSiblingPairs(shots),Is.EqualTo(496),"Only the first 32 pellets should need explicit pair filters.");
+        Assert.That(shots[0].GetComponent<RRLPointDefenseThreat>().TryIntercept(1),Is.True,"One real pellet must remain independently interceptable.");
+        float deadline=Time.realtimeSinceStartup+5;
+        while(hp.CurrentHp>1154.1f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(1154).Within(.5),"Every surviving pellet must deal its own physical hit.");
+        Assert.That(core.CurrentHp,Is.EqualTo(coreHp),"The firing vehicle must not damage itself.");
+        Object.Destroy(assembly.gameObject);Object.Destroy(hp.gameObject);
+    }
+    [UnityTest] public IEnumerator LargeShotgunSalvoFallsBackWhenExistingFilterDistinguishesDefaultLayer()=>LargeShotgunSalvoFilterFallback(false);
+    [UnityTest] public IEnumerator LargeShotgunSalvoFallsBackForInactiveConflictingCollider()=>LargeShotgunSalvoFilterFallback(true);
+    IEnumerator LargeShotgunSalvoFilterFallback(bool inactive)
+    {
+        var blocker=new GameObject("Layer compatibility fixture");blocker.transform.position=new Vector3(3000,3000,3000);
+        blocker.AddComponent<BoxCollider>().excludeLayers=1;
+        if(inactive)blocker.SetActive(false);
+        var gun=Build(R4WeaponKind.Shotgun,out _,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.Model.Economy.DoubleShotChancePerUnit=5;var hp=Target(gun,6);hp.Configure(2000,false);Physics.SyncTransforms();
+        try
+        {
+            Assert.That(gun.GetComponent<RRLShotgunBinding>().Fire(),Is.True);
+            var shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(origin=>origin.PartId==gun.Id)
+                .OrderBy(origin=>origin.GetComponent<P17PhysicalShell>().LaunchSequence).ToArray();
+            Assert.That(shots.Length,Is.EqualTo(48));Assert.That(shots.All(origin=>origin.gameObject.layer==0),Is.True);
+            Assert.That(Physics.GetIgnoreCollision(shots[0].GetComponent<Collider>(),shots[shots.Length-1].GetComponent<Collider>()),Is.True,
+                "When a scene filter differs, keep the existing pairwise behavior.");
+            Assert.That(ExplicitSiblingPairs(shots),Is.EqualTo(1128),"Fallback keeps every original pair filter.");
+            float deadline=Time.realtimeSinceStartup+5;
+            while(hp.CurrentHp>1136.1f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+            Assert.That(hp.CurrentHp,Is.EqualTo(1136).Within(.5),"All 48 pellets must still land independently.");
+        }
+        finally{Object.Destroy(blocker);Object.Destroy(assembly.gameObject);Object.Destroy(hp.gameObject);}
+    }
+    [UnityTest] public IEnumerator GroupedShotgunPelletsDamageHostileDomeIndividually()
+    {
+        var gun=Build(R4WeaponKind.Shotgun,out _,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.Model.Economy.DoubleShotChancePerUnit=5;var target=Target(gun,6);
+        var dome=new GameObject("Grouped salvo shield");dome.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6;
+        dome.AddComponent<SphereCollider>().isTrigger=true;var shield=dome.AddComponent<P12PipelineSafeDamageable>();shield.Configure(2000,false);
+        dome.AddComponent<R3ShieldDome>().Configure(2,2);Physics.SyncTransforms();
+        try
+        {
+            Assert.That(gun.GetComponent<RRLShotgunBinding>().Fire(),Is.True);
+            var shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(origin=>origin.PartId==gun.Id).ToArray();
+            Assert.That(shots.Length,Is.EqualTo(48));Assert.That(shots.All(origin=>origin.gameObject.layer>=24),Is.True);
+            float deadline=Time.realtimeSinceStartup+5;
+            while(shield.CurrentHp>1136.1f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+            Assert.That(shield.CurrentHp,Is.EqualTo(1136).Within(.5),"Every pellet must hit the hostile shield exactly once.");
+            Assert.That(target.CurrentHp,Is.EqualTo(500).Within(.01),"The shield must protect the target behind it.");
+        }
+        finally{Object.Destroy(dome);Object.Destroy(target.gameObject);Object.Destroy(assembly.gameObject);}
+    }
+    [UnityTest] public IEnumerator VolleyLayerIsHeldUntilLastShotAndRestoredBeforeReuse()
+    {
+        var gun=Build(R4WeaponKind.Shotgun,out _,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.Model.Economy.DoubleShotChancePerUnit=5;var hp=Target(gun,6);var binding=gun.GetComponent<RRLShotgunBinding>();
+        yield return null; // Allow temporary wheel-visual colliders to be destroyed before testing the cache.
+        R4ProjectileOrigin[] ActiveShots()=>Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(origin=>origin.PartId==gun.Id).ToArray();
+        try
+        {
+            Assert.That(binding.Fire(),Is.True);var first=ActiveShots();Assert.That(first.Length,Is.EqualTo(48));
+            var held=first[0];int firstLayer=held.gameObject.layer;held.GetComponent<Rigidbody>().linearVelocity=Vector3.zero;
+            foreach(var origin in first.Skip(1))Assert.That(origin.GetComponent<RRLPointDefenseThreat>().TryIntercept(1),Is.True);
+            while(Time.time<binding.State.DeviceReadyAt+.02f)yield return null;
+            Assert.That(held!=null&&held.gameObject.activeInHierarchy,Is.True);
+            Assert.That(binding.Fire(),Is.True);
+            var second=ActiveShots().Where(origin=>origin!=held).ToArray();Assert.That(second.Length,Is.EqualTo(48));
+            int secondLayer=second[0].gameObject.layer;Assert.That(secondLayer,Is.Not.EqualTo(firstLayer),"A live shot retains its group's layer.");
+            var heldObject=held.gameObject;Assert.That(held.GetComponent<RRLPointDefenseThreat>().TryIntercept(1),Is.True);
+            Assert.That(heldObject.layer,Is.Zero);Assert.That(heldObject.GetComponent<Collider>().excludeLayers.value&(1<<firstLayer),Is.Zero);
+            foreach(var origin in second)Assert.That(origin.GetComponent<RRLPointDefenseThreat>().TryIntercept(1),Is.True);
+            while(Time.time<binding.State.DeviceReadyAt+.02f)yield return null;
+            Assert.That(binding.Fire(),Is.True);var third=ActiveShots();Assert.That(third.Length,Is.EqualTo(48));
+            Assert.That(third.All(origin=>origin.gameObject.layer==firstLayer),Is.True,"The released layer must become reusable.");
+            foreach(var origin in third)origin.GetComponent<RRLPointDefenseThreat>().TryIntercept(1);
+        }
+        finally{Object.Destroy(assembly.gameObject);Object.Destroy(hp.gameObject);}
+    }
+    [UnityTest] public IEnumerator ExhaustedVolleyLayersFallBackWithoutLimitingProjectiles()
+    {
+        var rent=typeof(P17PhysicalShell).GetMethod("RentConventional",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        var group=typeof(P17PhysicalShell).GetMethod("TryGroupVolley",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        var ignore=typeof(P17PhysicalShell).GetMethod("IgnoreProjectilePair",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(rent,Is.Not.Null);Assert.That(group,Is.Not.Null);Assert.That(ignore,Is.Not.Null);
+        var owner=new GameObject("Volley layer exhaustion owner");var all=new System.Collections.Generic.List<P17PhysicalShell>();
+        System.Collections.Generic.List<GameObject> Pair(int index)
+        {
+            var pair=new System.Collections.Generic.List<GameObject>();
+            for(int i=0;i<2;i++)
+            {
+                var shell=(P17PhysicalShell)rent.Invoke(null,null);all.Add(shell);
+                shell.transform.position=new Vector3(2000+index*4+i,2000,2000);shell.gameObject.SetActive(true);
+                shell.Configure(owner.transform,1,30,Vector3.forward,null);pair.Add(shell.gameObject);
+            }
+            return pair;
+        }
+        try
+        {
+            var groups=new System.Collections.Generic.List<System.Collections.Generic.List<GameObject>>();
+            for(int i=0;i<8;i++)
+            {
+                var pair=Pair(i);Assert.That((bool)group.Invoke(null,new object[]{pair}),Is.True);
+                Assert.That(pair[0].layer,Is.EqualTo(24+i));groups.Add(pair);
+            }
+            var overflow=Pair(8);Assert.That((bool)group.Invoke(null,new object[]{overflow}),Is.False);
+            Assert.That(overflow.All(shot=>shot.layer==0&&shot.activeInHierarchy),Is.True,"A missing optimization layer must not suppress shots.");
+            ignore.Invoke(null,new object[]{overflow[0].GetComponent<Collider>(),overflow[1].GetComponent<Collider>()});
+            Assert.That(Physics.GetIgnoreCollision(overflow[0].GetComponent<Collider>(),overflow[1].GetComponent<Collider>()),Is.True);
+            Assert.That(groups[0][0].GetComponent<RRLPointDefenseThreat>().TryIntercept(1),Is.True);
+            Assert.That((bool)group.Invoke(null,new object[]{overflow}),Is.False,"A group remains leased while one shot survives.");
+            Assert.That(groups[0][1].GetComponent<RRLPointDefenseThreat>().TryIntercept(1),Is.True);
+            Assert.That((bool)group.Invoke(null,new object[]{overflow}),Is.True,"The released optimization layer must be reusable.");
+            Assert.That(overflow.All(shot=>shot.layer==24),Is.True);
+        }
+        finally
+        {
+            foreach(var shell in all)if(shell!=null&&shell.IsActiveProjectile)shell.Intercept(1);
+            Object.Destroy(owner);
+        }
+        yield return null;
+    }
+    [UnityTest] public IEnumerator VolleyLeaseSurvivesTemporaryDisableAndReleasesOnDestroy()
+    {
+        var rent=typeof(P17PhysicalShell).GetMethod("RentConventional",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        var group=typeof(P17PhysicalShell).GetMethod("TryGroupVolley",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        var owner=new GameObject("Volley disable and destroy owner");var all=new System.Collections.Generic.List<P17PhysicalShell>();
+        System.Collections.Generic.List<GameObject> Pair(int index)
+        {
+            var pair=new System.Collections.Generic.List<GameObject>();
+            for(int i=0;i<2;i++)
+            {
+                var shell=(P17PhysicalShell)rent.Invoke(null,null);all.Add(shell);
+                shell.transform.position=new Vector3(2200+index*4+i,2000,2000);shell.gameObject.SetActive(true);
+                shell.Configure(owner.transform,1,30,Vector3.forward,null);pair.Add(shell.gameObject);
+            }
+            return pair;
+        }
+        try
+        {
+            var first=Pair(0);Assert.That((bool)group.Invoke(null,new object[]{first}),Is.True);
+            int firstLayer=first[0].layer;first[0].SetActive(false);
+            var second=Pair(1);Assert.That((bool)group.Invoke(null,new object[]{second}),Is.True);
+            Assert.That(second[0].layer,Is.Not.EqualTo(firstLayer),"Temporarily disabled shots still own their layer.");
+            first[0].SetActive(true);Assert.That(first[0].layer,Is.EqualTo(firstLayer));
+            Assert.That((first[0].GetComponent<Collider>().excludeLayers.value&(1<<firstLayer))!=0,Is.True);
+            Object.Destroy(first[0]);Object.Destroy(first[1]);yield return null;
+            var third=Pair(2);Assert.That((bool)group.Invoke(null,new object[]{third}),Is.True);
+            Assert.That(third[0].layer,Is.EqualTo(firstLayer),"Destroying the last member must release the layer.");
+        }
+        finally
+        {
+            foreach(var shell in all)if(shell!=null&&shell.IsActiveProjectile)shell.Intercept(1);
+            Object.Destroy(owner);
+        }
+        yield return null;
     }
     [UnityTest] public IEnumerator ShotgunTierTwoConsumesSixEnergyAndDamagesWithRealPellets()
     {

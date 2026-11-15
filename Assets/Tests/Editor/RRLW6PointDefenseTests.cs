@@ -24,9 +24,10 @@ public class RRLW6PointDefenseTests
     {yield return InterceptActualRocket(1);}
     [UnityTest] public IEnumerator TierTwoPointDefenseInterceptsActualRocket()
     {yield return InterceptActualRocket(2);}
-    [UnityTest] public IEnumerator MountedDefenseInterceptsOneOfTwoOverlappingPairIgnoredShells()=>InterceptOverlappingShells(false);
-    [UnityTest] public IEnumerator MountedDefenseInterceptsOneOfTwoOverlappingLayerFilteredShells()=>InterceptOverlappingShells(true);
-    IEnumerator InterceptOverlappingShells(bool layerFilter)
+    [UnityTest] public IEnumerator MountedDefenseInterceptsOneOfTwoOverlappingPairIgnoredShells()=>InterceptOverlappingShells(0);
+    [UnityTest] public IEnumerator MountedDefenseInterceptsOneOfTwoOverlappingLayerFilteredShells()=>InterceptOverlappingShells(1);
+    [UnityTest] public IEnumerator MountedDefenseInterceptsOneRealGroupedShell()=>InterceptOverlappingShells(2);
+    IEnumerator InterceptOverlappingShells(int mode)
     {
         var run=R1RunController.Instance;var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.Award(1000);
         Vector3Int? mount=null;
@@ -45,13 +46,30 @@ public class RRLW6PointDefenseTests
             Vector3 direction=(vehicle.transform.position+Vector3.up-origin).normalized;
             for(int i=0;i<2;i++)
             {
-                var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);shells.Add(shell);
+                GameObject shell;
+                if(mode==2)
+                {
+                    var rent=typeof(RogueMachine.P12PipelineSafe.P17PhysicalShell).GetMethod("RentConventional",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+                    shell=((RogueMachine.P12PipelineSafe.P17PhysicalShell)rent.Invoke(null,null)).gameObject;
+                }
+                else shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                shells.Add(shell);
                 shell.transform.position=origin;shell.transform.localScale=Vector3.one*.16f;
-                if(layerFilter){shell.layer=29;shell.GetComponent<Collider>().excludeLayers=1<<29;}
-                var rb=shell.AddComponent<Rigidbody>();rb.useGravity=false;rb.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;rb.linearVelocity=direction*6;
-                shell.AddComponent<RogueMachine.P12PipelineSafe.P17PhysicalShell>().Configure(enemy.transform,20,6,direction,null);
+                shell.GetComponent<Collider>().enabled=true;shell.GetComponent<Collider>().isTrigger=false;
+                if(mode==1){shell.layer=29;shell.GetComponent<Collider>().excludeLayers=1<<29;}
+                var rb=shell.GetComponent<Rigidbody>();if(rb==null)rb=shell.AddComponent<Rigidbody>();
+                rb.useGravity=false;rb.isKinematic=false;rb.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;
+                if(!shell.activeSelf)shell.SetActive(true);rb.linearVelocity=direction*6;
+                var projectile=shell.GetComponent<RogueMachine.P12PipelineSafe.P17PhysicalShell>();
+                if(projectile==null)projectile=shell.AddComponent<RogueMachine.P12PipelineSafe.P17PhysicalShell>();
+                projectile.Configure(enemy.transform,20,6,direction,null);
             }
-            if(!layerFilter)Physics.IgnoreCollision(shells[0].GetComponent<Collider>(),shells[1].GetComponent<Collider>());
+            if(mode==0)Physics.IgnoreCollision(shells[0].GetComponent<Collider>(),shells[1].GetComponent<Collider>());
+            if(mode==2)
+            {
+                var group=typeof(RogueMachine.P12PipelineSafe.P17PhysicalShell).GetMethod("TryGroupVolley",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+                Assert.That((bool)group.Invoke(null,new object[]{shells}),Is.True,"The actual group lease must be used.");
+            }
             shells[1].GetComponent<Rigidbody>().position=origin+Vector3.right*50;
             Physics.SyncTransforms();controller.ScanNow();
             Assert.That(controller.CurrentTarget,Is.Not.Null,"A single incoming projectile must be acquired by the fixture.");

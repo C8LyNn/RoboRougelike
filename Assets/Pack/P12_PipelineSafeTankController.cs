@@ -1380,6 +1380,79 @@ public float CurrentForwardSpeed =>
         public ulong LaunchSequence {get;private set;}
         private System.Collections.Generic.List<Collider> ignoredForFlight;
         internal Material DefaultMaterial {get;private set;}
+        // A few reserved layers avoid quadratic pair filters for unusually
+        // large single-gun volleys. Exhaustion falls back to ordinary pairs;
+        // these leases never limit how many shots can be created.
+        private sealed class VolleyLayerLease
+        {
+            internal readonly int Slot,Layer;
+            internal int Members;
+            internal VolleyLayerLease(int slot,int layer){Slot=slot;Layer=layer;}
+        }
+        private static readonly VolleyLayerLease[] volleyLayers=new VolleyLayerLease[8];
+        private VolleyLayerLease volleyLayer;
+        private int originalVolleyLayer,originalVolleyExclusions;
+        internal static bool TryGroupVolley(System.Collections.Generic.IReadOnlyList<GameObject> shots)
+        {
+            if(shots==null||shots.Count<2)return false;
+            foreach(var shot in shots)
+            {
+                var shell=shot!=null?shot.GetComponent<P17PhysicalShell>():null;
+                var col=shot!=null?shot.GetComponent<Collider>():null;
+                if(shell==null||!shell.cacheableConventional||shell.volleyLayer!=null||!shell.isActiveAndEnabled||shot.layer!=0||col==null||!col.enabled)return false;
+            }
+            Collider[] sceneColliders=null;
+            for(int slot=0;slot<volleyLayers.Length;slot++)
+            {
+                int layer=24+slot;
+                if(volleyLayers[slot]!=null||LayerMask.NameToLayer("RRSalvo"+slot)!=layer)continue;
+                // Preserve every global collision-matrix decision the normal
+                // projectile layer would have made against other objects.
+                bool compatible=true;
+                for(int other=0;other<32;other++)
+                    if(Physics.GetIgnoreLayerCollision(layer,other)!=Physics.GetIgnoreLayerCollision(0,other)){compatible=false;break;}
+                if(compatible)
+                {
+                    if(sceneColliders==null)sceneColliders=UnityEngine.Object.FindObjectsByType<Collider>(FindObjectsInactive.Include,FindObjectsSortMode.None);
+                    foreach(var existing in sceneColliders)
+                    {
+                        if(existing==null)continue;
+                        // Do not claim a layer in use, or change how an
+                        // existing collider's custom filters see the shot.
+                        if(existing.gameObject.layer==layer||DistinguishesLayer(existing.includeLayers.value,layer)||DistinguishesLayer(existing.excludeLayers.value,layer))
+                        {compatible=false;break;}
+                        var body=existing.attachedRigidbody;
+                        if(body!=null&&(DistinguishesLayer(body.includeLayers.value,layer)||DistinguishesLayer(body.excludeLayers.value,layer)))
+                        {compatible=false;break;}
+                    }
+                }
+                if(!compatible)continue;
+                var lease=new VolleyLayerLease(slot,layer);volleyLayers[slot]=lease;
+                foreach(var shot in shots)shot.GetComponent<P17PhysicalShell>().JoinVolleyLayer(lease);
+                return true;
+            }
+            return false;
+        }
+        private static bool DistinguishesLayer(int mask,int layer)=>((mask&1)!=0)!=((mask&(1<<layer))!=0);
+        internal static bool TryJoinVolley(Collider sibling,Collider added)
+        {
+            if(sibling==null||added==null)return false;
+            var first=sibling.GetComponent<P17PhysicalShell>();var next=added.GetComponent<P17PhysicalShell>();
+            if(first==null||first.volleyLayer==null||next==null||!next.cacheableConventional||next.volleyLayer!=null||!next.isActiveAndEnabled||next.gameObject.layer!=0)return false;
+            next.JoinVolleyLayer(first.volleyLayer);return true;
+        }
+        private void JoinVolleyLayer(VolleyLayerLease lease)
+        {
+            var col=GetComponent<Collider>();originalVolleyLayer=gameObject.layer;originalVolleyExclusions=col.excludeLayers.value;
+            volleyLayer=lease;lease.Members++;col.excludeLayers=originalVolleyExclusions|(1<<lease.Layer);gameObject.layer=lease.Layer;
+        }
+        private void ReleaseVolleyLayer()
+        {
+            var lease=volleyLayer;if(lease==null)return;volleyLayer=null;
+            var col=GetComponent<Collider>();if(col!=null)col.excludeLayers=originalVolleyExclusions;
+            gameObject.layer=originalVolleyLayer;
+            lease.Members--;if(lease.Members==0&&ReferenceEquals(volleyLayers[lease.Slot],lease))volleyLayers[lease.Slot]=null;
+        }
         internal static void IgnoreProjectilePair(Collider first,Collider second)
         {
             if(first==null||second==null)return;
@@ -1451,6 +1524,7 @@ public float CurrentForwardSpeed =>
                 ignoredForFlight.Clear();
             }
             gameObject.SetActive(false);
+            ReleaseVolleyLayer();
             if(reusable&&conventionalCache.Count<MaxCachedConventionalShells)
                 conventionalCache.Enqueue(new CachedConventionalShell{Shell=this,ReleasedFrame=Time.frameCount});
             else Destroy(gameObject);
@@ -1470,6 +1544,7 @@ public float CurrentForwardSpeed =>
             if(GetComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseThreat>()==null)gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseThreat>();
         }
         private void OnDisable(){activeShells.Remove(this);}
+        private void OnDestroy(){ReleaseVolleyLayer();}
         private Transform ownerRoot;
         private bool ownerWasAssigned;
         public Transform OwnerRoot=>ownerRoot;

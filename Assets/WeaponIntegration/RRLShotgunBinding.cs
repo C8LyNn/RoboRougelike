@@ -181,8 +181,11 @@ namespace RoboRougelike.WeaponIntegration
             var rb=shell.GetComponent<Rigidbody>();rb.mass=.2f;rb.useGravity=false;rb.isKinematic=false;
             rb.interpolation=RigidbodyInterpolation.Interpolate;rb.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;
             shell.SetActive(true);rb.angularVelocity=Vector3.zero;
-            for(int i=0;i<created.Count-1;i++)if(created[i]!=null)
-                P17PhysicalShell.IgnoreProjectilePair(pelletCollider,created[i].GetComponent<Collider>());
+            bool grouped=created.Count>1&&created[0]!=null&&P17PhysicalShell.TryJoinVolley(created[0].GetComponent<Collider>(),pelletCollider);
+            if(!grouped&&created.Count==33)grouped=P17PhysicalShell.TryGroupVolley(created);
+            if(!grouped)
+                for(int i=0;i<created.Count-1;i++)if(created[i]!=null)
+                    P17PhysicalShell.IgnoreProjectilePair(pelletCollider,created[i].GetComponent<Collider>());
             rb.linearVelocity=pellet.Direction*pellet.ProjectileSpeed+pellet.InheritedVelocity;
             float pelletDamage=R3MountedBonusEffects.SafeDamageProduct(pellet.Damage,tank!=null?tank.PackageShotgunDamageScale:damageScale);
             pelletDamage=R3MountedBonusEffects.SafeDamageProduct(pelletDamage,R3VehicleModel.TierEffectUnits(State.Tier));
