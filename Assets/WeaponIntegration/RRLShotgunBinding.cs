@@ -121,9 +121,10 @@ namespace RoboRougelike.WeaponIntegration
             {
                 foreach(var pellet in pellets)CreatePellet(pellet,created);
                 var requests=new List<int>(pellets.Count);bool any=false;
+                var doubleShot=assembly!=null?assembly.CaptureDoubleShotRoll():default;
                 for(int i=0;i<pellets.Count;i++)
                 {
-                    int requested=assembly!=null?assembly.RollDoubleShotExtras(int.MaxValue):0;
+                    int requested=doubleShot.Roll(int.MaxValue);
                     requests.Add(requested);any|=requested>0;
                 }
                 if(deferExtras)

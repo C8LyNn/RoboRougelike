@@ -33,6 +33,39 @@ public sealed class BacklogWeaponTierTests
 public sealed class BacklogWeaponTierPhysicsTests
 {
     [UnitySetUp] public IEnumerator Setup(){EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();}
+    [UnityTest] public IEnumerator DoubleShotVolleySnapshotKeepsIndependentRollsAndModuleStateAtFireTime()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(1000);
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.DoubleShot)==null);
+        Assert.That(model.Buy(cell,R3PartKind.DoubleShot),Is.True);model.Economy.DoubleShotChancePerUnit=.35f;
+        var paletteObject=new GameObject("Snapshot palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
+        for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
+        var assembly=vehicle.GetComponent<R3VehicleAssembly>();var passive=assembly.Parts.Single(p=>p.Kind==R3PartKind.DoubleShot);passive.Tier=2;
+        var capture=typeof(R3VehicleAssembly).GetMethod("CaptureDoubleShotRoll",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(capture,Is.Not.Null,"A volley must capture its bonuses once, then sample each pellet independently.");
+        var snapshot=capture.Invoke(assembly,null);var roll=snapshot.GetType().GetMethod("Roll");Assert.That(roll,Is.Not.Null);
+        var original=Random.state;
+        try
+        {
+            Random.InitState(913);var expected=new int[64];
+            for(int i=0;i<expected.Length;i++)expected[i]=assembly.RollDoubleShotExtras(int.MaxValue);
+            Random.InitState(913);var actual=new int[64];
+            for(int i=0;i<actual.Length;i++)actual[i]=(int)roll.Invoke(snapshot,new object[]{int.MaxValue});
+            Assert.That(actual,Is.EqualTo(expected));Assert.That(actual.Distinct().Count(),Is.EqualTo(2),"Fractional chance is rolled independently per pellet.");
+            passive.gameObject.SetActive(false);
+            var inactive=capture.Invoke(assembly,null);Assert.That((int)roll.Invoke(inactive,new object[]{int.MaxValue}),Is.Zero);
+            model.Economy.DoubleShotChancePerUnit=1f;
+            Random.InitState(913);
+            for(int i=0;i<expected.Length;i++)
+                Assert.That((int)roll.Invoke(snapshot,new object[]{int.MaxValue}),Is.EqualTo(expected[i]),"The captured chance must survive later vehicle changes.");
+        }
+        finally{Random.state=original;Object.Destroy(vehicle.gameObject);Object.Destroy(paletteObject);Object.Destroy(material);}
+        yield return null;
+    }
     [UnityTest] public IEnumerator AlreadyQueuedWeaponBatchesShareEmissionWithoutLosingShots()
     {
         var owner=new GameObject("Fair bonus queue owner");owner.AddComponent<Rigidbody>().isKinematic=true;

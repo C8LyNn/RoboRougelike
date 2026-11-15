@@ -249,25 +249,37 @@ namespace RoboRougelike.R3
             public RoboRougelike.WeaponIntegration.RRLRocketBinding Binding;
             public int Requested;
         }
-        public int RollDoubleShotExtras(int available)
+        internal readonly struct DoubleShotRoll
         {
-            if(available<=0||Model==null)return 0;
-            int active=Mathf.Min(available,GetComponent<R3OffensiveDevices>()?.AdditionalProjectileUnits??0);
-            available-=active;if(available<=0)return active;
+            readonly int active;
+            readonly double chance;
+            public DoubleShotRoll(int activeUnits,double passiveChance){active=activeUnits;chance=passiveChance;}
+            public int Roll(int available)
+            {
+                if(available<=0)return 0;
+                int extra=Mathf.Min(available,active);available-=extra;
+                if(available<=0||chance<=0)return extra;
+                double whole=System.Math.Floor(chance);
+                int guaranteed=(int)System.Math.Min(available,whole);
+                double fractional=chance-whole;
+                if(guaranteed<available&&fractional>0&&UnityEngine.Random.value<fractional)guaranteed++;
+                return extra+guaranteed;
+            }
+        }
+        internal DoubleShotRoll CaptureDoubleShotRoll()
+        {
+            if(Model==null)return default;
+            int active=GetComponent<R3OffensiveDevices>()?.AdditionalProjectileUnits??0;
             float configured=Model.Economy.DoubleShotChancePerUnit;
-            if(float.IsNaN(configured)||float.IsInfinity(configured)||configured<=0)return active;
-            int units=0;
+            if(float.IsNaN(configured)||float.IsInfinity(configured)||configured<=0)return new DoubleShotRoll(active,0);
+            long units=0;
             foreach(var part in Parts)
                 if(part!=null&&part.Kind==R3PartKind.DoubleShot&&part.Operational&&part.gameObject.activeInHierarchy&&
                    part.transform.IsChildOf(transform)&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
                     units+=R3VehicleModel.TierEffectUnits(part.Tier);
-            if(units==0)return active;
-            double chance=(double)configured*units;
-            int guaranteed=(int)System.Math.Min(available,System.Math.Floor(chance));
-            double fractional=chance-System.Math.Floor(chance);
-            if(guaranteed<available&&fractional>0&&UnityEngine.Random.value<fractional)guaranteed++;
-            return active+guaranteed;
+            return new DoubleShotRoll(active,(double)configured*units);
         }
+        public int RollDoubleShotExtras(int available)=>available<=0?0:CaptureDoubleShotRoll().Roll(available);
         public void FireSlot(int slot)
         {
             var run=RoboRougelike.R1.R1RunController.Instance;

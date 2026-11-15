@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14 i 20. Wspólne przygotowanie losowań bonusów salwy
+
+- Strzelba zbiera stan aktywnego Double Shot Overdrive oraz szansę żywych modułów Double Shot raz dla salwy, zamiast ponawiać przegląd części dla każdej śruciny. Nadal losuje każdą podstawową śrucinę osobno, nie losuje ponownie bonusów i nie pobiera za nie dodatkowej amunicji ani energii. Ujęty stan można zachować po późniejszej zmianie wyposażenia; sumowanie jednostek pasywnych wykorzystuje `long`.
+- Unity 6000.3.14f1: `double_shot_snapshot_before.xml` — **1 FAIL** z powodu braku odrębnego przygotowania salwy. `double_shot_snapshot_after.xml` — **8 PASS**, w tym porównanie 64 losowań z poprzednią metodą przy tym samym ziarnie, stan po wyłączeniu modułu, rzeczywiste trafienia i koszt oraz działanie innych rodzin broni. `double_shot_snapshot_overdrive_actual.xml` — **1 PASS** dla połączenia aktywnej i pasywnej premii; pierwszy plik `double_shot_snapshot_overdrive.xml` nie wykonał testów przez błędny filtr.
+- Zmiana ogranicza powtarzane przeglądanie modułów; nie jest pomiarem FPS ani zniesieniem limitu 64 podstawowych śrucin. Testy nie potwierdzają zachowania przy dowolnie dużej konstrukcji; punkt 14 i odbiór #44 pozostają otwarte.
+
 ### 02, 14 i 44. Niezależny opis każdej salwy strzelby
 
 - Opis kierunków i parametrów salwy jest teraz osobnym, niezmiennym widokiem dla każdego strzału. Nie tworzy tablicy proporcjonalnej do liczby śrucin, a następny strzał ani zmiana ustawień nie nadpisują zachowanego opisu poprzedniego. To przygotowanie do porcjowania podstawowych śrucin; aktualny odbiornik nadal tworzy salwę synchronicznie i zachowuje dotychczasowy kontrakt transakcji.
