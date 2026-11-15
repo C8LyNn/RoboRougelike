@@ -193,22 +193,23 @@ public float CurrentForwardSpeed =>
 #if ENABLE_INPUT_SYSTEM
             Keyboard keyboard = Keyboard.current;
             var controls=RoboRougelike.R1.R1ControlProfile.Current;
+            // Keep the historical arrow aliases for the default WASD profile,
+            // unless an arrow is explicitly assigned to another gameplay action.
+            bool HeldDirection(string action,string original,Key arrow)=>controls.Pressed(action)||
+                keyboard!=null&&keyboard[arrow].isPressed&&controls.Binding(action)==original&&
+                controls.Conflict(action,arrow.ToString())==null;
 
             {
-                if (controls.Pressed("MoveForward") ||
-                    (keyboard!=null&&keyboard.upArrowKey.isPressed))
+                if (HeldDirection("MoveForward","W",Key.UpArrow))
                     moveInput += 1f;
 
-                if (controls.Pressed("MoveBackward") ||
-                    (keyboard!=null&&keyboard.downArrowKey.isPressed))
+                if (HeldDirection("MoveBackward","S",Key.DownArrow))
                     moveInput -= 1f;
 
-                if (controls.Pressed("TurnRight") ||
-                    (keyboard!=null&&keyboard.rightArrowKey.isPressed))
+                if (HeldDirection("TurnRight","D",Key.RightArrow))
                     turnInput += 1f;
 
-                if (controls.Pressed("TurnLeft") ||
-                    (keyboard!=null&&keyboard.leftArrowKey.isPressed))
+                if (HeldDirection("TurnLeft","A",Key.LeftArrow))
                     turnInput -= 1f;
             }
 

@@ -11,6 +11,78 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [TestCase("MoveForward","UpArrow")]
+    [TestCase("MoveBackward","DownArrow")]
+    [TestCase("TurnLeft","LeftArrow")]
+    [TestCase("TurnRight","RightArrow")]
+    public void MovementCanSaveArrowBindingsWithoutConflictingWithPause(string action,string key)
+    {
+        string path=Path.Combine(Path.GetTempPath(),"RRL-arrow-binding-"+Guid.NewGuid()+".json");
+        try
+        {
+            var profile=new R1ControlProfile(path);
+            Assert.That(profile.TrySaveBinding(action,key,out var error),Is.True,error);
+            var loaded=new R1ControlProfile(path);Assert.That(loaded.Error,Is.Null);
+            Assert.That(loaded.Binding(action),Is.EqualTo(key));
+            Assert.That(R1ControlProfile.ValidSnapshot(loaded.Snapshot()),Is.True);
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
+    [Test] public void ArrowAssignedToWeaponDoesNotAlsoDriveTheVehicle()
+    {
+        var keyboard=InputSystem.AddDevice<Keyboard>();var vehicle=new GameObject("Arrow weapon player");
+        var profile=R1ControlProfile.Current;
+        try
+        {
+            profile.ResetDefaults();Assert.That(profile.TryBind("Weapon3","UpArrow"),Is.True);
+            var controller=vehicle.AddComponent<P12PipelineSafeTankController>();
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.UpArrow));InputSystem.Update();
+            const BindingFlags flags=BindingFlags.NonPublic|BindingFlags.Instance;
+            typeof(P12PipelineSafeTankController).GetMethod("Update",flags).Invoke(controller,null);
+            Assert.That((float)typeof(P12PipelineSafeTankController).GetField("moveInput",flags).GetValue(controller),Is.Zero);
+            Assert.That((bool)typeof(P12PipelineSafeTankController).GetField("thirdFireHeld",flags).GetValue(controller),Is.True);
+        }
+        finally{profile.ResetDefaults();UnityEngine.Object.DestroyImmediate(vehicle);InputSystem.RemoveDevice(keyboard);}
+    }
+    [Test] public void ExplicitArrowBindingsDriveAndReplaceTheOldKeys()
+    {
+        var keyboard=InputSystem.AddDevice<Keyboard>();var vehicle=new GameObject("Explicit arrow movement player");
+        var profile=R1ControlProfile.Current;
+        try
+        {
+            profile.ResetDefaults();Assert.That(profile.TryBind("MoveForward","UpArrow"),Is.True);
+            Assert.That(profile.TryBind("TurnRight","RightArrow"),Is.True);
+            var controller=vehicle.AddComponent<P12PipelineSafeTankController>();
+            const BindingFlags flags=BindingFlags.NonPublic|BindingFlags.Instance;
+            var update=typeof(P12PipelineSafeTankController).GetMethod("Update",flags);
+            var move=typeof(P12PipelineSafeTankController).GetField("moveInput",flags);
+            var turn=typeof(P12PipelineSafeTankController).GetField("turnInput",flags);
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.UpArrow,Key.RightArrow));InputSystem.Update();update.Invoke(controller,null);
+            Assert.That((float)move.GetValue(controller),Is.EqualTo(1));Assert.That((float)turn.GetValue(controller),Is.EqualTo(1));
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.W,Key.D));InputSystem.Update();update.Invoke(controller,null);
+            Assert.That((float)move.GetValue(controller),Is.Zero);Assert.That((float)turn.GetValue(controller),Is.Zero);
+        }
+        finally{profile.ResetDefaults();UnityEngine.Object.DestroyImmediate(vehicle);InputSystem.RemoveDevice(keyboard);}
+    }
+    [Test] public void DefaultArrowMovementStopsBeingAnAliasAfterChangingThatDirection()
+    {
+        var keyboard=InputSystem.AddDevice<Keyboard>();var vehicle=new GameObject("Arrow movement player");
+        var profile=R1ControlProfile.Current;
+        try
+        {
+            profile.ResetDefaults();var controller=vehicle.AddComponent<P12PipelineSafeTankController>();
+            const BindingFlags flags=BindingFlags.NonPublic|BindingFlags.Instance;
+            var update=typeof(P12PipelineSafeTankController).GetMethod("Update",flags);
+            var move=typeof(P12PipelineSafeTankController).GetField("moveInput",flags);
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.UpArrow));InputSystem.Update();update.Invoke(controller,null);
+            Assert.That((float)move.GetValue(controller),Is.EqualTo(1),"The default arrow remains an alternate control.");
+            Assert.That(profile.TryBind("MoveForward","K"),Is.True);
+            update.Invoke(controller,null);Assert.That((float)move.GetValue(controller),Is.Zero,"A replaced binding must not retain a hidden arrow.");
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.K));InputSystem.Update();update.Invoke(controller,null);
+            Assert.That((float)move.GetValue(controller),Is.EqualTo(1));
+        }
+        finally{profile.ResetDefaults();UnityEngine.Object.DestroyImmediate(vehicle);InputSystem.RemoveDevice(keyboard);}
+    }
     [TestCase(KeyCode.BackQuote,"Backquote",Key.Backquote,false)]
     [TestCase(KeyCode.LeftControl,"LeftCtrl",Key.LeftCtrl,true)]
     [TestCase(KeyCode.RightControl,"RightCtrl",Key.RightCtrl,true)]

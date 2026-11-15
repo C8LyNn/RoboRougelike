@@ -233,6 +233,22 @@ public sealed class Exit273PauseTests
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
         Assert.That(run.Paused,Is.False);
     }
+    [UnityTest] public IEnumerator ArrowAssignedToWeaponStillNavigatesThePauseMenu()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("Weapon3","DownArrow"),Is.True);
+            Assert.That(run.EnterTestRange(),Is.True);
+            float deadline=Time.realtimeSinceStartup+15;
+            while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(run.Transitioning,Is.False);run.TogglePause();
+            yield return PressRangeKey(Key.DownArrow);
+            Assert.That(run.Paused,Is.True);
+            Assert.That(run.PauseSelection,Is.EqualTo(1),"Pause navigation keeps its own context.");
+        }
+        finally{profile.ResetDefaults();}
+    }
     [UnityTest] public IEnumerator ReassignedPauseNavigationUsesNewKeysAndRespectsControlsOverlay()
     {
         var profile=R1ControlProfile.Current;profile.ResetDefaults();

@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 06 i 44. Konfigurowanie strzałek
+
+- Strzałki można przypisać do jazdy, broni i innych akcji zgodnie z ich kontekstem. Dotychczas działająca alternatywa dla WASD pozostaje przy domyślnych przypisaniach, lecz przestaje sterować danym kierunkiem po zmianie jego klawisza albo po przypisaniu tej strzałki innej akcji rozgrywki. Nawigacja pauzy ma osobny kontekst i nadal może używać tych samych strzałek.
+- Unity 6000.3.14f1: `arrow_bindings_before.xml` — **6 FAIL**: strzałki były zablokowane w ustawieniach, a zastąpiona jazda zachowywała ukrytą strzałkę. `arrow_bindings_after.xml` — **50 PASS**, obejmujące pełny profil sterowania i dotychczasową pauzę. `arrow_bindings_final.xml` — **10 PASS**, w tym zapisy i odczyty czterech kierunków, rzeczywisty komponent sterowania, broń bez jednoczesnej jazdy i nawigację w pauzie przy wspólnym klawiszu.
+- Testy używają wirtualnej klawiatury Unity i kontrolowanej sceny; fizyczna klawiatura oraz Windows Player **NOT RUN**. Pozostałe zarezerwowane klawisze i pełny odbiór sterowania nie są objęte tą poprawką; punkty 06 i 44 pozostają otwarte.
+
 ### 18 i 44. Pojemność ładunków przed impulsem i w statusach
 
 - Impuls ładowania przed sprawdzeniem dostępnego miejsca przelicza aktualną pojemność urządzeń. Jeśli utrata modułu sprawiła, że pule są pełne lub mają nadmiar, impuls nie zużywa energii ani cooldownu; po przywróceniu modułu może od razu użyć zwiększonego limitu. Status impulsu, EMP i generatorów pokazuje stan po przeliczeniu pojemności, a nie wynik poprzedniego kroku fizyki.

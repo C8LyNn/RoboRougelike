@@ -116,7 +116,7 @@ namespace RoboRougelike.R1
         }
         // Fixed session/UI shortcuts remain reserved until they too are configurable.
         public static bool Reserved(string binding)=>new[]{"Escape","Enter","NumpadEnter",
-            "UpArrow","DownArrow","LeftArrow","RightArrow","F4","F8","F10"}.Contains(binding);
+            "F4","F8","F10"}.Contains(binding);
         static bool AllowedActionBinding(string action,string binding)=>action=="Pause"&&binding=="Escape"||
             action=="SkipPickup"&&binding=="Enter"||(RewardAction(action)||MenuAction(action))&&(binding=="Enter"||binding=="NumpadEnter")||
             PauseNavigation(action)&&PauseNavigationReserved(binding)||ValidBinding(binding)&&!Reserved(binding);
