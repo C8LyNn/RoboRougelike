@@ -893,6 +893,75 @@ public sealed class BacklogProjectileTierPhysicsTests
         R1EncounterManager.ClearTransientObjects();yield return null;
         Assert.That(Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None),Is.Empty,"Uncollected world objects must be removed on encounter cleanup");
     }
+    [UnityTest] public IEnumerator DetachedSurvivingEnemyArmorDropsWithItsActualHealthAndIdentity()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        var enemy=run.Encounter.Enemies.First();run.Encounter.SetCombatActive(true);
+        var armor=enemy.transform.Find("Base").GetComponentsInChildren<P12PipelineSafeDamageable>()
+            .Where(p=>p.name=="P12_EnemyBlock"&&p!=enemy.Core).OrderByDescending(p=>(p.transform.position-enemy.Core.transform.position).sqrMagnitude).First();
+        armor.RestoreHealthRatio(.6f);
+        var block=armor.GetComponent<P12_PipelineSafePlayerBlock>();Assert.That(block,Is.Not.Null);
+        var structure=enemy.GetComponent<P12PipelineSafeVehicleStructure>();Assert.That(structure,Is.Not.Null);
+        var detach=typeof(P12PipelineSafeVehicleStructure).GetMethod("DetachAsChunk",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(detach,Is.Not.Null);
+        detach.Invoke(structure,new object[]{new System.Collections.Generic.List<P12_PipelineSafePlayerBlock>{block},false});
+        Assert.That(block.DetachedFromVehicle,Is.True);Assert.That(enemy.Core.IsDead,Is.False);
+        var drops=Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None);
+        Assert.That(drops.Length,Is.EqualTo(1),"Surviving disconnected armor needs the same configured drop chance.");
+        string id=drops[0].ItemId;var item=run.Salvage.Items.Single(p=>p.Id==id);
+        Assert.That(item.Kind,Is.EqualTo(R3PartKind.Armor));Assert.That(item.Health,Is.EqualTo(.6f).Within(.001f));
+        armor.ApplyDamage(100000,armor.transform.position,Vector3.up);
+        Assert.That(run.Salvage.Items.Count(p=>p.Id==id),Is.EqualTo(1));
+        Assert.That(Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Count(p=>p.ItemId==id),Is.EqualTo(1),"Destroying the detached wreck must not duplicate its loot.");
+        var player=run.Player.GetComponent<Rigidbody>();player.isKinematic=true;player.position=drops[0].transform.position;
+        Physics.SyncTransforms();float deadline=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<deadline&&!run.VehicleModel.Owns(id))yield return MOVSeriesDeviceTests.FixedStep();
+        var recovered=run.VehicleModel.Inventory.Single(p=>p.Id==id);
+        Assert.That(recovered.Health,Is.EqualTo(.6f).Within(.001f));
+        Assert.That(run.VehicleModel.Inventory.Count(p=>p.Source==item.Source),Is.EqualTo(5));
+        enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        Assert.That(run.VehicleModel.Inventory.Count(p=>p.Id==id),Is.EqualTo(1));
+        Assert.That(run.Salvage.RewardItems.Any(p=>p.Id==id),Is.False,"The same part cannot become a reward after collection.");
+    }
+    [UnityTest] public IEnumerator DisconnectedArmorCanStillDropWhenDestroyedAfterAnUnsuccessfulDrop()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=0;
+        var enemy=run.Encounter.Enemies.First();run.Encounter.SetCombatActive(true);
+        var armor=enemy.transform.Find("Base").GetComponentsInChildren<P12PipelineSafeDamageable>()
+            .Where(p=>p.name=="P12_EnemyBlock"&&p!=enemy.Core).OrderByDescending(p=>(p.transform.position-enemy.Core.transform.position).sqrMagnitude).First();
+        var block=armor.GetComponent<P12_PipelineSafePlayerBlock>();Assert.That(block,Is.Not.Null);
+        var structure=enemy.GetComponent<P12PipelineSafeVehicleStructure>();Assert.That(structure,Is.Not.Null);
+        structure.RebuildNow();block.ForceLogicalGrid(new Vector3Int(900,0,0));structure.EvaluateStructure();
+        Assert.That(block.DetachedFromVehicle,Is.True,"The structural graph must detach the isolated block.");
+        Assert.That(run.Salvage.Items.Any(p=>p.Kind==R3PartKind.Armor),Is.False,"A zero drop chance must not create loot.");
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        armor.ApplyDamage(100000,armor.transform.position,Vector3.up);
+        Assert.That(enemy.Core.IsDead,Is.False);
+        var item=run.Salvage.Items.Single(p=>p.Kind==R3PartKind.Armor);
+        Assert.That(item.Health,Is.Zero);Assert.That(Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Count(p=>p.ItemId==item.Id),Is.EqualTo(1));
+        yield return null;
+    }
+    [UnityTest] public IEnumerator DetachedAdditionalEnemyGunKeepsItsWeaponTypeAndHealth()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        var enemy=run.Encounter.Enemies.First();run.Encounter.SetCombatActive(true);
+        Assert.That(enemy.AdditionalWeapons,Is.Not.Empty,"This encounter needs its actual additional weapon.");
+        var weapon=enemy.AdditionalWeapons.First();var hp=weapon.Block;hp.RestoreHealthRatio(.45f);
+        var block=hp.GetComponent<P12_PipelineSafePlayerBlock>();Assert.That(block,Is.Not.Null);
+        var detach=typeof(P12PipelineSafeVehicleStructure).GetMethod("DetachAsChunk",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        detach.Invoke(enemy.GetComponent<P12PipelineSafeVehicleStructure>(),new object[]{new System.Collections.Generic.List<P12_PipelineSafePlayerBlock>{block},false});
+        Assert.That(enemy.Core.IsDead,Is.False);Assert.That(block.DetachedFromVehicle,Is.True);
+        var item=run.Salvage.Items.Single(p=>p.Kind==R3PartKind.Gun);
+        Assert.That(item.Weapon,Is.EqualTo(weapon.Kind));Assert.That(item.Health,Is.EqualTo(.45f).Within(.001f));
+        var drop=Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Single(p=>p.ItemId==item.Id);
+        var player=run.Player.GetComponent<Rigidbody>();player.isKinematic=true;player.position=drop.transform.position;Physics.SyncTransforms();
+        float deadline=Time.realtimeSinceStartup+5;while(Time.realtimeSinceStartup<deadline&&!run.VehicleModel.Owns(item.Id))yield return MOVSeriesDeviceTests.FixedStep();
+        var recovered=run.VehicleModel.Inventory.Single(p=>p.Id==item.Id);
+        Assert.That(recovered.Weapon,Is.EqualTo(weapon.Kind));Assert.That(recovered.Health,Is.EqualTo(.45f).Within(.001f));
+        enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        Assert.That(run.VehicleModel.Inventory.Count(p=>p.Id==item.Id),Is.EqualTo(1));
+        Assert.That(run.Salvage.RewardItems.Any(p=>p.Id==item.Id),Is.False);
+    }
     [UnityTest] public IEnumerator ZeroDropChanceKeepsExistingRewardLedgerWithoutWorldLoot()
     {
         run.VehicleModel.Economy.PhysicalLootDropChance=0;

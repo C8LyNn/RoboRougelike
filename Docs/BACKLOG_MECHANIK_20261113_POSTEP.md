@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 30, 36 i 44. Łup z odłączonych, niezniszczonych części przeciwnika
+
+- Element przeciwnika objęty istniejącym rejestrem łupu może teraz wypaść już przy odłączeniu od konstrukcji, także gdy ma dodatnie HP. Przedmiot zachowuje faktyczny stan i identyfikator, a odbiór używa dotychczasowych pakietów i limitu magazynu. Jeśli taki łup już powstał, późniejsze zniszczenie wraku nie tworzy duplikatu; jeśli przy odłączeniu nic nie wypadło, istniejąca próba przy zniszczeniu nadal działa.
+- Unity 6000.3.14f1: `detached_armor_loot_before.xml` — **1 FAIL**, odłączenie żywego pancerza nie dawało łupu przy 100% szansy. `detached_armor_loot_after.xml` — **29 PASS** we wcześniejszym wariancie poprawki. `detached_armor_loot_final.xml` — **9 PASS, 1 FAIL**: scenariusz grafu resetował ręcznie nadaną współrzędną przed jego sprawdzeniem. Po poprawieniu przygotowania `detached_armor_loot_verified.xml` — **4 PASS**, a po dodaniu dodatkowej broni `detached_gun_loot_final.xml` — **3 PASS**. Testy obejmują rzeczywistego przeciwnika, pakiet pancerza, typ i HP broni, odbiór i brak duplikacji. Odłączenie wywoływano kontrolowanie przez metodę struktury albo przez graf z celowo odizolowaną współrzędną; nie jest to ręczna walka ani potwierdzenie wszystkich kształtów pojazdu.
+- Pierwsza próba scenariusza `detached_loot_before.xml` zakończyła się błędem przygotowania: podstawowe działo testowego przeciwnika nie miało własnego bloku grafu. Nie jest dowodem błędu gry. Ręczny Windows Player i balans szansy **NOT RUN**; pełny odbiór #44 pozostaje otwarty.
+
 ### 02, 14 i 44. Pamięć selektora dodatkowych śrucin
 
 - Selektor kolejnych dodatkowych śrucin przechowuje teraz wpisy tylko dla kierunków mających oczekujące pociski. Zachowuje pierwotny indeks i kolejność round-robin, również dla bardzo dużych liczników; nie zmienia liczby tworzonych pocisków.

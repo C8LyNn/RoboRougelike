@@ -266,7 +266,8 @@ namespace RogueMachine.P12PipelineSafe
         private string salvageId;
         private Material weaponMaterial;
         private bool snapshotTaken;
-        readonly List<(P12PipelineSafeDamageable Part,System.Action Handler)> physicalDropHooks=new List<(P12PipelineSafeDamageable,System.Action)>();
+        readonly List<(P12PipelineSafeDamageable Part,System.Action Death,P12_PipelineSafePlayerBlock Block,System.Action Detached)> physicalDropHooks=new List<(P12PipelineSafeDamageable,System.Action,P12_PipelineSafePlayerBlock,System.Action)>();
+        readonly HashSet<P12PipelineSafeDamageable> detachedDropsRecorded=new HashSet<P12PipelineSafeDamageable>();
         readonly List<P12PipelineSafeDamageable> salvageArmor=new List<P12PipelineSafeDamageable>();
         public P12PipelineSafeDamageable WeaponBlock => variantGuns.Count>0?variantGuns[0].Block:weaponBlock;
         readonly Dictionary<string,string> equipmentIds=new Dictionary<string,string>();
@@ -522,8 +523,10 @@ namespace RogueMachine.P12PipelineSafe
         private void OnDestroy()
         {
             if(core!=null)core.Died-=HandleCoreDeath;
-            foreach(var hook in physicalDropHooks)if(hook.Part!=null)hook.Part.Died-=hook.Handler;
+            foreach(var hook in physicalDropHooks)
+            {if(hook.Part!=null)hook.Part.Died-=hook.Death;if(hook.Block!=null)hook.Block.Detached-=hook.Detached;}
             physicalDropHooks.Clear();
+            detachedDropsRecorded.Clear();
             foreach(var owned in variantMaterials)if(owned!=null)Destroy(owned);
             if(weaponMaterial!=null)Destroy(weaponMaterial);
             if (runtimeProjectileMaterial != null)
@@ -554,13 +557,19 @@ namespace RogueMachine.P12PipelineSafe
         private void HookPhysicalDrop(P12PipelineSafeDamageable part,string slot,R3PartKind kind,R4WeaponKind weapon)
         {
             if(part==null||physicalDropHooks.Any(h=>h.Part==part))return;
-            System.Action handler=()=>DropDestroyedEquipment(part,slot,kind,weapon);
-            physicalDropHooks.Add((part,handler));part.Died+=handler;
+            var block=part.GetComponent<P12_PipelineSafePlayerBlock>();
+            System.Action death=()=>DropEquipment(part,slot,kind,weapon,false);
+            System.Action detached=()=>DropEquipment(part,slot,kind,weapon,true);
+            physicalDropHooks.Add((part,death,block,detached));part.Died+=death;
+            if(block!=null)block.Detached+=detached;
         }
-        private void DropDestroyedEquipment(P12PipelineSafeDamageable part,string slot,R3PartKind kind,R4WeaponKind weapon)
+        private void DropEquipment(P12PipelineSafeDamageable part,string slot,R3PartKind kind,R4WeaponKind weapon,bool detached)
         {
             var run=RoboRougelike.R1.R1RunController.Instance;
             if(!combatActive||IsDefeated||snapshotTaken||part==null||salvage==null||run==null||run.Progress?.State!=RoboRougelike.R1.R1RunState.Combat||run.Salvage!=salvage||run.VehicleModel==null)return;
+            // If a surviving disconnected part already produced loot, later
+            // destruction of that wreck must not register the same item again.
+            if(detached&&part.IsDead||detachedDropsRecorded.Contains(part))return;
             float chance=run.VehicleModel.Economy.PhysicalLootDropChance;
             if(float.IsNaN(chance)||float.IsInfinity(chance)||chance<=0||(chance<1f&&UnityEngine.Random.value>=chance))return;
             if(slot=="gun"){if(packageSaw!=null)packageSaw.CaptureState();if(packageBeam!=null)packageBeam.CaptureState();}
@@ -571,8 +580,9 @@ namespace RogueMachine.P12PipelineSafe
             var state=(device!=null?device.State:null)??saved??(slot=="gun"?packageWeaponState:slot=="battery"?packageBatteryState:slot=="shield"?packageShieldState:slot=="point-defense"?packagePointDefenseState:null)??
                 new R3PartState(default,kind){Id=EquipmentInstanceId(slot),Source=name+(kind==R3PartKind.Armor?" / "+slot:" / część"),Weapon=weapon};
             state.DisruptionRemaining=SalvageDisruption(part);
-            var item=new R4SalvageItem(state,0);
-            if(salvage.RecordDroppedPart(salvageId,item))RoboRougelike.R3.R3PhysicalLoot.Spawn(part.transform.position,salvage,item.Id);
+            var item=new R4SalvageItem(state,detached?Condition(part):0);
+            if(salvage.RecordDroppedPart(salvageId,item))
+            {if(detached)detachedDropsRecorded.Add(part);RoboRougelike.R3.R3PhysicalLoot.Spawn(part.transform.position,salvage,item.Id);}
         }
         private void HandleCoreDeath(){CaptureSalvage();if(combatActive&&playerRoot!=null)RoboRougelike.R3.EnergyPickup.Spawn(core.transform.position);DropTurret();}
         private void CaptureSurvivingArmorDrops()

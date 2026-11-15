@@ -22,6 +22,8 @@ namespace RogueMachine.P12PipelineSafe
         public bool DetachedFromVehicle =>
             detachedFromVehicle;
 
+        public event System.Action Detached;
+
         private void Awake()
         {
             EnsureStructureSystem();
@@ -68,11 +70,14 @@ namespace RogueMachine.P12PipelineSafe
 
         public void MarkDetached()
         {
+            if(detachedFromVehicle)return;
             detachedFromVehicle =
                 true;
 
             isCore =
                 false;
+            try { Detached?.Invoke(); }
+            catch(System.Exception error) { Debug.LogException(error,this); }
         }
 
         private void EnsureStructureSystem()
