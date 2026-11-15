@@ -240,6 +240,7 @@ namespace RoboRougelike.R3
             public R4WeaponKind Kind;
             public string PartId;
             public Collider Primary;
+            public RoboRougelike.WeaponIntegration.RRLRailgunBinding Rail;
             public int Requested;
         }
         struct PendingRocketShot
@@ -309,7 +310,19 @@ namespace RoboRougelike.R3
                     if(part.Weapon==R4WeaponKind.Railgun)
                     {
                         var rail=part.GetComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
-                        if(rail!=null&&rail.Fire())part.NextFireTime=rail.State.DeviceReadyAt;
+                        if(rail!=null&&rail.FirePrimary())
+                        {
+                            part.NextFireTime=rail.State.DeviceReadyAt;
+                            if(P17PhysicalShell.AvailableSlots>0)
+                            {
+                                int requested=RollDoubleShotExtras(int.MaxValue);
+                                if(requested>0)
+                                {
+                                    if(pending==null)pending=new List<PendingConventionalShot>();
+                                    pending.Add(new PendingConventionalShot{Rail=rail,Requested=requested});
+                                }
+                            }
+                        }
                         continue;
                     }
                     // Until the shared physical-projectile budget is replaced,
@@ -359,7 +372,9 @@ namespace RoboRougelike.R3
             for(int i=0;i<pending.Count;i++)
                 if(allocated[i]>0)
                 {
-                    var shot=pending[i];controller.FireAdditionalFrom(shot.Muzzle,shot.Kind,shot.PartId,shot.Primary,allocated[i]);
+                    var shot=pending[i];
+                    if(shot.Rail!=null)shot.Rail.FireAdditional(allocated[i]);
+                    else controller.FireAdditionalFrom(shot.Muzzle,shot.Kind,shot.PartId,shot.Primary,allocated[i]);
                 }
         }
 

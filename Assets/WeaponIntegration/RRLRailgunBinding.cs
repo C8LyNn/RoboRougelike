@@ -19,6 +19,8 @@ namespace RoboRougelike.WeaponIntegration
         P12PipelineSafeEnemyTurret enemy;
         float damageScale=1,intervalScale=1;
         bool debitPending;
+        bool deferExtras;
+        RailgunShot deferredShot;
         public void Bind(R3PartState state,Transform owner,Transform barrel,float damageMultiplier=1,float intervalMultiplier=1)
         {
             Device=GetComponent<RRLDeviceBinding>();if(Device==null)Device=gameObject.AddComponent<RRLDeviceBinding>();Device.Bind(state,owner);
@@ -45,6 +47,8 @@ namespace RoboRougelike.WeaponIntegration
             if(energy!=null&&!energy.TrySpend(cost))return false;
             bool fired=Module.TryFire();if(!fired&&energy!=null)energy.Refund(cost);
             return fired;}
+        internal bool FirePrimary()
+        {deferExtras=true;try{return Fire();}finally{deferExtras=false;}}
         public bool BeginReload()
         {Refresh();if(!Device.Available||State.Ammo>=Magazine||State.ReloadReadyAt>0)return false;State.ReloadReadyAt=Time.time+2;return true;}
         void Update(){Refresh();if(enemy!=null&&Device.Available&&State.Ammo==0)BeginReload();}
@@ -60,26 +64,37 @@ namespace RoboRougelike.WeaponIntegration
             var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>(),shot.InitialVelocity,shot.Spec.Range,shot.Spec.Radius))return false;
             var created=new System.Collections.Generic.List<GameObject>();
-            int extras=assembly!=null?assembly.RollDoubleShotExtras(Mathf.Max(0,P17PhysicalShell.AvailableSlots-1)):0;
+            int extras=!deferExtras&&assembly!=null?assembly.RollDoubleShotExtras(Mathf.Max(0,P17PhysicalShell.AvailableSlots-1)):0;
             try
             {
                 for(int i=0;i<=extras;i++)
-                {
-                    var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);created.Add(shell);shell.name="WPN002 physical rail";
-                    shell.transform.SetPositionAndRotation(shot.Origin,Quaternion.LookRotation(shot.Direction));shell.transform.localScale=Vector3.one*shot.Spec.Radius*2;
-                    shell.GetComponent<Collider>().isTrigger=true;
-                    shell.GetComponent<Renderer>().sharedMaterial=GetComponent<Renderer>().sharedMaterial;
-                    var rb=shell.AddComponent<Rigidbody>();rb.useGravity=false;rb.isKinematic=true;rb.interpolation=RigidbodyInterpolation.Interpolate;
-                    var origin=shell.AddComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.Railgun;origin.PartId=State.Id;
-                    double speed=shot.InitialVelocity.magnitude;
-                    double lifetime=speed>0&&!double.IsInfinity(speed)&&!double.IsNaN(speed)?System.Math.Max(30d,(double)shot.Spec.Range/speed+1d):30d;
-                    var projectile=shell.AddComponent<P17PhysicalShell>();projectile.Configure(Device.Owner,0,(float)System.Math.Min(float.MaxValue,lifetime),shot.Direction,null,shot.Spec.Range);
-                    projectile.ConfigureRailgun(shot,R3MountedBonusEffects.SafeDamageProduct(tank!=null?tank.PackagePiercingDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier)));
-                }
+                    CreateShot(shot,created);
+                if(deferExtras)deferredShot=shot;
                 State.DeviceReadyAt=Time.time+shot.Spec.Cooldown;debitPending=false;
                 RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.Railgun);return true;
             }
             catch{foreach(var shell in created)if(shell!=null){shell.SetActive(false);Destroy(shell);}return false;}
+        }
+        internal void FireAdditional(int count)
+        {
+            if(!Device.Available||deferredShot.OwnerRoot==null)return;
+            int amount=Mathf.Min(Mathf.Max(0,count),P17PhysicalShell.AvailableSlots);
+            var created=new System.Collections.Generic.List<GameObject>();
+            try{for(int i=0;i<amount;i++)CreateShot(deferredShot,created);}
+            catch{foreach(var shell in created)if(shell!=null){shell.SetActive(false);Destroy(shell);}}
+        }
+        void CreateShot(RailgunShot shot,System.Collections.Generic.List<GameObject> created)
+        {
+            var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);created.Add(shell);shell.name="WPN002 physical rail";
+            shell.transform.SetPositionAndRotation(shot.Origin,Quaternion.LookRotation(shot.Direction));shell.transform.localScale=Vector3.one*shot.Spec.Radius*2;
+            shell.GetComponent<Collider>().isTrigger=true;
+            shell.GetComponent<Renderer>().sharedMaterial=GetComponent<Renderer>().sharedMaterial;
+            var rb=shell.AddComponent<Rigidbody>();rb.useGravity=false;rb.isKinematic=true;rb.interpolation=RigidbodyInterpolation.Interpolate;
+            var origin=shell.AddComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.Railgun;origin.PartId=State.Id;
+            double speed=shot.InitialVelocity.magnitude;
+            double lifetime=speed>0&&!double.IsInfinity(speed)&&!double.IsNaN(speed)?System.Math.Max(30d,(double)shot.Spec.Range/speed+1d):30d;
+            var projectile=shell.AddComponent<P17PhysicalShell>();projectile.Configure(Device.Owner,0,(float)System.Math.Min(float.MaxValue,lifetime),shot.Direction,null,shot.Spec.Range);
+            projectile.ConfigureRailgun(shot,R3MountedBonusEffects.SafeDamageProduct(tank!=null?tank.PackagePiercingDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier)));
         }
         void Stop(){if(Module!=null)Module.SetOperational(false);}
         void OnDisable()=>Stop();
