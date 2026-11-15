@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 10–11 i 44. Fuzja a punkty mocowania
+
+- Dobór składników fuzji i interfejs używają teraz również rzeczywistych styków dostępnych po montażu: nie można zużyć trzech części różniących się mocowaniem i przypadkowo odziedziczyć tylko maski pierwszej. Takie nieudane połączenie zachowuje wszystkie części i walutę. Dla kół bocznych porównanie uwzględnia obie powierzchnie osi dostępne w magazynie, więc egzemplarze zdjęte z lewej i prawej strony nadal pasują do siebie. Istniejące uśrednianie procentowego HP pozostało bez zmian.
+- Unity 6000.3.14f1: `fusion_contacts_before.xml` — **1 FAIL**, porównanie uznawało baterie o różnych stykach za identyczne. `fusion_contacts_after.xml` — **43 PASS**, w tym odrzucenie niezgodnych egzemplarzy bez konsumpcji, faktyczna fuzja kół z przeciwnych stron z zachowaniem średniego HP, poprzednie przypadki fuzji, ceny vendora, broń oraz blueprinty. Ręczna obsługa garażu **NOT RUN**; odbiór punktu 44 pozostaje otwarty.
+
 ### 39–40 i 44. Odtwarzanie blueprintu z właściwymi stykami
 
 - Plan odtwarzania wybiera posiadany egzemplarz, którego punkty mocowania można faktycznie odtworzyć, zamiast pierwszej części tego samego rodzaju. Gdy dostępne części mają niezgodne styki, podgląd wskazuje brak i jego przyczynę. Koła boczne zachowują obsługę dwóch powierzchni osiowych w magazynie; część już poprawnie zamontowana w starszym projekcie nie jest niepotrzebnie zdejmowana.

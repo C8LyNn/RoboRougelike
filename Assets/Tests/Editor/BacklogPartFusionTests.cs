@@ -120,6 +120,35 @@ public sealed class BacklogPartFusionTests
         Assert.That(model.Inventory.Select(p=>p.Id),Is.EqualTo(before));
     }
     [Test]
+    public void FusionRejectsDifferentMountContactsWithoutConsumingAnyPart()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var a=new R3PartState(default,R3PartKind.Battery){ContactMask=R3MountingGrid.AllFaces};
+        var b=new R3PartState(default,R3PartKind.Battery){ContactMask=R3MountingGrid.AllFaces};
+        var c=new R3PartState(default,R3PartKind.Battery){ContactMask=R3MountingGrid.FaceBit(Vector3Int.down)};
+        Assert.That(model.ReceiveSalvage(new[]{a,b,c}),Is.True);
+        var before=model.Inventory.Select(p=>p.Id).ToArray();int scrap=model.Scrap;
+        Assert.That(R3VehicleModel.SameFusionType(a,c),Is.False);
+        Assert.That(model.FuseInventory(before),Is.False);
+        Assert.That(model.Inventory.Select(p=>p.Id),Is.EqualTo(before));Assert.That(model.Scrap,Is.EqualTo(scrap));
+        Assert.That(model.Inventory.Single(p=>p.Id==c.Id).ContactMask,Is.EqualTo(c.ContactMask));
+    }
+    [Test]
+    public void SideWheelsFromOppositeSidesCanFuseAfterStorageNormalization()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var left=new R3PartState(default,R3PartKind.Wheel){ContactMask=R3MountingGrid.FaceBit(Vector3Int.left),Health=.5f};
+        var right=new R3PartState(default,R3PartKind.Wheel){ContactMask=R3MountingGrid.FaceBit(Vector3Int.right),Health=0};
+        var third=new R3PartState(default,R3PartKind.Wheel){ContactMask=R3MountingGrid.FaceBit(Vector3Int.left),Health=1};
+        Assert.That(model.ReceiveSalvage(new[]{left,right,third}),Is.True);
+        var originals=model.Inventory.Select(p=>p.Id).ToArray();
+        Assert.That(model.FuseInventory(originals),Is.True);
+        var fused=model.Inventory.Single();
+        Assert.That(fused.Tier,Is.EqualTo(2));Assert.That(fused.Health,Is.EqualTo(.5f).Within(.001));
+        Assert.That(originals,Does.Not.Contain(fused.Id));
+        Assert.That(fused.ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.left)|R3MountingGrid.FaceBit(Vector3Int.right)));
+    }
+    [Test]
     public void LegacyTierZeroLoadsAsTierOneAndNewTierSurvivesCheckpoint()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
