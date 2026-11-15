@@ -10,7 +10,10 @@ namespace RoboRougelike.WeaponIntegration
     public sealed class RRLRailPenetration : MonoBehaviour
     {
         const int MaxHitBuffer=4096;
-        RaycastHit[] hits=new RaycastHit[128];
+        // Physics and damage resolution run on Unity's main thread. Reuse one
+        // query buffer across projectiles, but isolate a nested damage callback.
+        static RaycastHit[] sharedHits=new RaycastHit[128];
+        static bool sharedHitsInUse;
         sealed class HitDistanceComparer : IComparer<RaycastHit>
         { public int Compare(RaycastHit a,RaycastHit b)=>a.distance.CompareTo(b.distance); }
         static readonly IComparer<RaycastHit> HitDistance=new HitDistanceComparer();
@@ -19,6 +22,18 @@ namespace RoboRougelike.WeaponIntegration
         public Vector3 Velocity=>shot.InitialVelocity;
         public void Bind(RailgunShot value,float scale){shot=value;position=value.Origin;energy=value.Spec.InitialEnergy;damageScale=scale;body=GetComponent<Rigidbody>();}
         public void Step(float dt)
+        {
+            if(sharedHitsInUse)
+            {
+                var nestedHits=new RaycastHit[128];
+                StepCore(dt,ref nestedHits);
+                return;
+            }
+            sharedHitsInUse=true;var hits=sharedHits;
+            try{StepCore(dt,ref hits);}
+            finally{sharedHits=hits;sharedHitsInUse=false;}
+        }
+        void StepCore(float dt,ref RaycastHit[] hits)
         {
             // The owner can disappear during scene transitions or after destruction.
             // Without it team ownership and self-collision filtering are no longer valid.

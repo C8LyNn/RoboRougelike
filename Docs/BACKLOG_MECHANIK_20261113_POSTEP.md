@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 44. Wspólny bufor zapytania railguna
+
+- Pociski railguna korzystają ze współdzielonego bufora zapytania fizyki zamiast tworzyć osobną dużą tablicę na każdy pocisk. Zagnieżdżone rozliczenie obrażeń dostaje osobny bufor; przy przepełnieniu nadal następuje pełne zapytanie, bez limitowania wykrywanych przeszkód.
+- Unity 6000.3.14f1: `rail_scratch_after.xml` i `.log`: **7 PASS, 0 FAIL**, w tym zagnieżdżony strzał podczas śmierci celu, ściana, kopuła, Double Shot oraz ponad 4096 colliderów. Pomiar edytora dla utworzenia 100 komponentów: około 596 KB przed zmianą (`rail_scratch_before.xml`: **1 FAIL**), około 35 KB po zmianie; kontrola wykryła 1 MB.
+- Jest to przygotowanie wydajnościowe, a nie usunięcie limitu bonusowych pocisków ani pomiar FPS w Windows Player. Ręczny playtest: **NOT RUN**.
+
 ### 02, 14 i 44. Mniejszy koszt celowania w gęstej scenie
 
 - Celownik używa ponownie tablicy wyników fizyki, zwiększa ją w razie potrzeby, a przy ponad 1024 trafieniach korzysta z pełnego zapytania. Nadal wybiera najbliższy obiekt poza własnym pojazdem i pociskami; próg pamięci nie ogranicza liczby wykrywanych obiektów.
