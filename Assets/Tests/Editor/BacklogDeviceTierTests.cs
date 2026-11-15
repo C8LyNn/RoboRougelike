@@ -536,6 +536,32 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(service.TryDeploy(R3PartKind.OffensiveTurretGenerator),Is.True);var turret=GameObject.Find("Wieżyczka ofensywna");
         Assert.That(Vector3.Dot(turret.transform.position-body.position,Vector3.back),Is.LessThan(0));Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator RampFindsTheFloorUnderAnOverheadRoof()
+    {
+        run.VehicleModel.Award(2000);FuseAndMount(R3PartKind.RampDeployer);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(80,1,80);
+        var roof=GameObject.CreatePrimitive(PrimitiveType.Cube);roof.transform.position=new Vector3(100,6,100);roof.transform.localScale=new Vector3(80,1,80);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        Assert.That(service.TryDeployRamp(),Is.True,"A roof above the robot must not hide the safe floor below it.");
+        var ramp=GameObject.Find("Rozstawiona rampa");Assert.That(ramp,Is.Not.Null);
+        Assert.That(ramp.transform.position.y,Is.LessThan(2));Assert.That(ramp.transform.position.z,Is.LessThan(body.position.z));
+        Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.RampPool),Is.EqualTo(2));
+        Object.Destroy(floor);Object.Destroy(roof);
+    }
+    [UnityTest] public IEnumerator RampWithoutNearbyGroundDoesNotSpendResources()
+    {
+        run.VehicleModel.Award(2000);FuseAndMount(R3PartKind.RampDeployer);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var platform=GameObject.CreatePrimitive(PrimitiveType.Cube);platform.transform.position=new Vector3(1500,-.5f,1500);platform.transform.localScale=new Vector3(8,1,2);
+        body.position=new Vector3(1500,2,1500);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        var bank=player.GetComponent<VehicleEnergyBank>();float before=bank.Current;
+        Assert.That(service.TryDeployRamp(),Is.False,"A platform under the robot does not support a ramp across a drop.");
+        Assert.That(bank.Current,Is.EqualTo(before));Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.RampPool),Is.EqualTo(3));
+        Assert.That(run.VehicleModel.RampDeployerReadyAt,Is.LessThanOrEqualTo(Time.time));Object.Destroy(platform);
+    }
     [UnityTest] public IEnumerator WallAndJumpPadUseIndependentChargesAndLaunchARealVehicle()
     {
         run.VehicleModel.Award(2000);FuseAndMount(R3PartKind.WallDeployer);FuseAndMount(R3PartKind.JumpPadDeployer);

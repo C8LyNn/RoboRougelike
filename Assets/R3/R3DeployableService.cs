@@ -159,10 +159,12 @@ namespace RoboRougelike.R3
             var groundHits=Physics.RaycastAll(at+Vector3.up*20,Vector3.down,60,~0,QueryTriggerInteraction.Ignore);
             System.Array.Sort(groundHits,(a,b)=>a.distance.CompareTo(b.distance));
             Collider ground=null;Vector3 groundPoint=default;
-            foreach(var hit in groundHits)if(R6WheelContacts.Terrain(hit.collider)&&hit.normal.y>.8f)
+            // Skip roofs above the vehicle before choosing a supporting surface.
+            foreach(var hit in groundHits)if(R6WheelContacts.Terrain(hit.collider)&&hit.normal.y>.8f&&
+                hit.point.y<=body.position.y+.25f&&hit.point.y>=body.position.y-5f)
             {ground=hit.collider;groundPoint=hit.point;break;}
-            // Do not put a ramp on a roof above the vehicle or across a deep drop.
-            if(ground==null||groundPoint.y>body.position.y+.25f||groundPoint.y<body.position.y-5f)return false;
+            // Do not put a ramp across a deep drop.
+            if(ground==null)return false;
             Quaternion rotation=Quaternion.LookRotation(forward,Vector3.up)*Quaternion.Euler(angle,0,0);
             float lift=(length*Mathf.Sin(angle*Mathf.Deg2Rad)+thickness*Mathf.Cos(angle*Mathf.Deg2Rad))*.5f;
             Vector3 center=groundPoint+Vector3.up*(lift+.02f);
