@@ -9,6 +9,26 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogBonusTierTests
 {
+    [TestCase(R1BonusScope.HeavyWeapon,"ciężkiego działa")]
+    [TestCase(R1BonusScope.ShotgunWeapon,"strzelby")]
+    [TestCase(R1BonusScope.RailgunWeapon,"railguna")]
+    [TestCase(R1BonusScope.RocketWeapon,"wyrzutni rakiet")]
+    public void NewWeaponScopeSurvivesFusionAndHasSpecificDescription(R1BonusScope scope,string expectedName)
+    {
+        Assert.That(R3VehicleModel.ValidBonusScope(R1UpgradeEffect.Damage,scope),Is.True);
+        Assert.That(R3VehicleModel.ValidBonusScope(R1UpgradeEffect.Mobility,scope),Is.False);
+        var bonus=OperationBonus("fusion-"+scope,.3f,"Increased");bonus.Scope=scope;
+        try
+        {
+            var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+            Assert.That(model.ReceiveBonuses(new[]{bonus,bonus,bonus}),Is.True);
+            Assert.That(model.FuseInventory(model.Inventory.Select(p=>p.Id).ToArray()),Is.True);
+            var fused=model.Inventory.Single();Assert.That(fused.UpgradeScope,Is.EqualTo(scope));Assert.That(fused.Tier,Is.EqualTo(2));
+            var caption=typeof(R1RunHUD).GetMethod("BonusText",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+            Assert.That((string)caption.Invoke(null,new object[]{fused}),Does.Contain(expectedName));
+        }
+        finally{Object.DestroyImmediate(bonus);}
+    }
     [Test] public void LargeSingleBonusSurvivesRewardFusionBlueprintAndCheckpoint()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
@@ -738,6 +758,35 @@ public sealed class BacklogBonusTierGameplayTests
         deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
         Assert.That(hp.CurrentHp,Is.EqualTo(1000-40*1.8f).Within(.02),"Disabling the scoped module removes only its contribution.");
         Object.Destroy(muzzle.gameObject);Object.Destroy(target);Object.Destroy(global);Object.Destroy(more);Object.Destroy(basic);
+    }
+    [UnityTest] public IEnumerator ProjectileScopesCombineGlobalWeaponTypeAndMoreWithoutCrossBuffing()
+    {
+        Assert.That((int)R1BonusScope.EnergyDamage,Is.EqualTo(15),"Existing saved enum values must stay unchanged.");
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var specs=new[]{("global",.2f,R1BonusScope.Global), ("weapons",.1f,R1BonusScope.Weapons),
+            ("kinetic",.15f,R1BonusScope.KineticDamage), ("heavy",.3f,R1BonusScope.HeavyWeapon),
+            ("shotgun",.25f,R1BonusScope.ShotgunWeapon)};
+        var bonuses=specs.Select(s=>{var b=BacklogBonusTierTests.OperationBonus("scope-combo-"+s.Item1,s.Item2,"Increased");b.Scope=s.Item3;return b;}).ToList();
+        bonuses.Add(BacklogBonusTierTests.OperationBonus("scope-combo-more",.5f,"More"));
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(bonuses.ToArray()),Is.True);
+        foreach(var id in model.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            var options=cells.Select(c=>new{Cell=c,Error=model.OwnedPlacementError(id,c,default)}).ToArray();
+            Assert.That(options.Any(o=>o.Error==null),Is.True,"No mount for "+id+": "+string.Join("; ",options.GroupBy(o=>o.Error).Select(g=>$"{g.Key}: {g.Count()}")));
+            var cell=options.First(o=>o.Error==null).Cell;Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var effects=run.Player.GetComponent<R3VehicleAssembly>().GetComponent<R3MountedBonusEffects>();
+        Assert.That(effects.HeavyDamageMultiplier,Is.EqualTo(2.625f).Within(.001));
+        Assert.That(effects.ShotgunDamageMultiplier,Is.EqualTo(2.55f).Within(.001));
+        Assert.That(effects.RailgunDamageMultiplier,Is.EqualTo(1.95f).Within(.001));
+        Assert.That(effects.RocketDamageMultiplier,Is.EqualTo(1.95f).Within(.001));
+        Assert.That(effects.AutomaticDamageMultiplier,Is.EqualTo(2.175f).Within(.001));
+        effects.SetOverdriveIncrease(.1f);
+        Assert.That(effects.HeavyDamageMultiplier,Is.EqualTo(2.775f).Within(.001));
+        Assert.That(effects.RocketDamageMultiplier,Is.EqualTo(2.10f).Within(.001));
+        foreach(var bonus in bonuses)Object.Destroy(bonus);
     }
     [UnityTest] public IEnumerator AutomaticScopedBonusAffectsOnlyAutomaticShotsAndCombinesWithGlobalBonuses()
     {

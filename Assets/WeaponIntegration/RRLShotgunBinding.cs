@@ -184,7 +184,7 @@ namespace RoboRougelike.WeaponIntegration
             for(int i=0;i<created.Count-1;i++)if(created[i]!=null)
                 P17PhysicalShell.IgnoreProjectilePair(pelletCollider,created[i].GetComponent<Collider>());
             rb.linearVelocity=pellet.Direction*pellet.ProjectileSpeed+pellet.InheritedVelocity;
-            float pelletDamage=R3MountedBonusEffects.SafeDamageProduct(pellet.Damage,tank!=null?tank.PackageKineticDamageScale:damageScale);
+            float pelletDamage=R3MountedBonusEffects.SafeDamageProduct(pellet.Damage,tank!=null?tank.PackageShotgunDamageScale:damageScale);
             pelletDamage=R3MountedBonusEffects.SafeDamageProduct(pelletDamage,R3VehicleModel.TierEffectUnits(State.Tier));
             projectile.Configure(Owner,pelletDamage,pellet.Lifetime,pellet.Direction,null,pellet.MaxDistance);
         }

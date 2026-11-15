@@ -70,4 +70,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 23c21cdd4dd8446aa305d8e826eb4f1a, type: 2}
   - {fileID: 11400000, guid: 819346b28e5444598ece54384652537c, type: 2}
   - {fileID: 11400000, guid: c6c35a6c9e754c3b96bf527bd41ba60d, type: 2}
+  - {fileID: 11400000, guid: 8b30a526e7174938942d37721139c76b, type: 2}
+  - {fileID: 11400000, guid: 40c3fd9d58f64936bbc287037c99bf44, type: 2}
+  - {fileID: 11400000, guid: 13fcfe80e86e4fe78e02431b4592bb96, type: 2}
+  - {fileID: 11400000, guid: 24c08cca84304d58b000f35f346fe472, type: 2}
   SalvageLimit: 2

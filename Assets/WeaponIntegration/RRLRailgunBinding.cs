@@ -97,7 +97,7 @@ namespace RoboRougelike.WeaponIntegration
             double lifetime=speed>0&&!double.IsInfinity(speed)&&!double.IsNaN(speed)?System.Math.Max(30d,(double)shot.Spec.Range/speed+1d):30d;
             shell.SetActive(true);
             projectile.Configure(Device.Owner,0,(float)System.Math.Min(float.MaxValue,lifetime),shot.Direction,null,shot.Spec.Range);
-            projectile.ConfigureRailgun(shot,R3MountedBonusEffects.SafeDamageProduct(tank!=null?tank.PackagePiercingDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier)));
+            projectile.ConfigureRailgun(shot,R3MountedBonusEffects.SafeDamageProduct(tank!=null?tank.PackageRailgunDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier)));
         }
         void Stop(){if(Module!=null)Module.SetOperational(false);}
         void OnDisable()=>Stop();

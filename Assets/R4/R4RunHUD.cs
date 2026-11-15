@@ -397,7 +397,9 @@ namespace RoboRougelike.R1
             R1BonusScope.BasicCannon=>"Obrażenia działa podstawowego",R1BonusScope.Drones=>"Obrażenia dronów",
             R1BonusScope.Turrets=>"Obrażenia wieżyczek",R1BonusScope.Traps=>"Obrażenia pułapek",
             R1BonusScope.BlastDamage=>"Obrażenia wybuchowe",R1BonusScope.PiercingDamage=>"Obrażenia przebijające",
-            R1BonusScope.KineticDamage=>"Obrażenia kinetyczne",R1BonusScope.Weapons=>"Obrażenia broni",R1BonusScope.AutomaticWeapon=>"Obrażenia broni automatycznej",R1BonusScope.EnergyDamage=>"Obrażenia energetyczne",_=>"Obrażenia"};
+            R1BonusScope.KineticDamage=>"Obrażenia kinetyczne",R1BonusScope.Weapons=>"Obrażenia broni",R1BonusScope.AutomaticWeapon=>"Obrażenia broni automatycznej",R1BonusScope.EnergyDamage=>"Obrażenia energetyczne",
+            R1BonusScope.HeavyWeapon=>"Obrażenia ciężkiego działa",R1BonusScope.ShotgunWeapon=>"Obrażenia strzelby",
+            R1BonusScope.RailgunWeapon=>"Obrażenia railguna",R1BonusScope.RocketWeapon=>"Obrażenia wyrzutni rakiet",_=>"Obrażenia"};
         private static string MobilityBonusName(R3PartState item)=>item.UpgradeScope switch {
             R1BonusScope.WheelDrive=>"Mobilność kół",R1BonusScope.TrackDrive=>"Mobilność gąsienic",
             R1BonusScope.OmniDrive=>"Mobilność Omni",R1BonusScope.HoverDrive=>"Mobilność zawisu",_=>"Mobilność"};

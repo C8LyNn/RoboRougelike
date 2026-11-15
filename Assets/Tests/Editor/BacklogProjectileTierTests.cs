@@ -800,6 +800,48 @@ public sealed class BacklogProjectileTierPhysicsTests
         float end=Time.time+.35f;while(Time.time<end)yield return null;
         Assert.That(hp.CurrentHp,Is.EqualTo(356).Within(.2),"Eight real pellets each deal 18 damage.");
     }
+    [UnityTest] public IEnumerator ProjectileWeaponScopesAffectOnlyMatchingPhysicalWeaponAndSurviveSave()
+    {
+        var cases=new[]{(R4WeaponKind.Heavy,"HeavyWeapon","damage_heavy_weapon"),
+            (R4WeaponKind.Shotgun,"ShotgunWeapon","damage_shotgun_weapon"),
+            (R4WeaponKind.Railgun,"RailgunWeapon","damage_railgun_weapon"),
+            (R4WeaponKind.RocketLauncher,"RocketWeapon","damage_rocket_weapon")};
+        foreach(var entry in cases)
+        {
+            Assert.That(System.Enum.TryParse(entry.Item2,out R1BonusScope scope),Is.True,"Missing scope "+entry.Item2);
+            var asset=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.Single(p=>p!=null&&p.Id==entry.Item3);
+            Assert.That(asset.Scope,Is.EqualTo(scope));Assert.That(asset.Amount,Is.EqualTo(.3f));
+            var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="test-"+entry.Item3;
+            bonus.Effect=R1UpgradeEffect.Damage;bonus.Scope=scope;bonus.Amount=.3f;
+            var plain=Build(entry.Item1,out _);var boosted=Build(entry.Item1,out _,bonus:bonus);
+            var plainRoot=plain.GetComponentInParent<R3VehicleAssembly>();var boostedRoot=boosted.GetComponentInParent<R3VehicleAssembly>();
+            boostedRoot.transform.position+=Vector3.right*20;
+            var plainTarget=Target(plain,6);var boostedTarget=Target(boosted,6);Physics.SyncTransforms();
+            var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(boostedRoot.Model.MakeCheckpoint(0)));
+            Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,boostedRoot.Model.Economy,0,out var restored,out var error),Is.True,error);
+            Assert.That(restored.Parts.Any(p=>p.UpgradeScope==scope),Is.True);
+            var effects=boostedRoot.GetComponent<R3MountedBonusEffects>();
+            Assert.That(effects.AutomaticDamageMultiplier,Is.EqualTo(1).Within(.001),"Other weapon categories must not gain this bonus.");
+            bool Fire(R3MountedPart gun)=>entry.Item1==R4WeaponKind.Shotgun?gun.GetComponent<RRLShotgunBinding>().Fire():
+                entry.Item1==R4WeaponKind.Railgun?gun.GetComponent<RRLRailgunBinding>().Fire():
+                entry.Item1==R4WeaponKind.RocketLauncher?gun.GetComponent<RRLRocketBinding>().Fire():
+                gun.GetComponentInParent<P12PipelineSafeTankController>().FirePrimaryFrom(gun.Muzzle,entry.Item1,gun.Id)!=null;
+            Assert.That(Fire(plain),Is.True);Assert.That(Fire(boosted),Is.True);
+            float deadline=Time.realtimeSinceStartup+5;
+            while((plainTarget.CurrentHp>=500||boostedTarget.CurrentHp>=500)&&Time.realtimeSinceStartup<deadline)yield return null;
+            float baseline=500-plainTarget.CurrentHp,enhanced=500-boostedTarget.CurrentHp;
+            Assert.That(baseline,Is.GreaterThan(0),entry.Item2);
+            Assert.That(enhanced,Is.EqualTo(baseline*1.3f).Within(.3f),entry.Item2);
+            var module=boostedRoot.Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeScope==scope);
+            module.gameObject.SetActive(false);yield return null;
+            float nextShot=Time.time+2.6f;while(Time.time<nextShot)yield return null;
+            boostedTarget.RestoreHealthRatio(1);Assert.That(Fire(boosted),Is.True,"Second shot: "+entry.Item2);
+            deadline=Time.realtimeSinceStartup+5;while(boostedTarget.CurrentHp>=500&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(500-boostedTarget.CurrentHp,Is.EqualTo(baseline).Within(.3f),"Disabled "+entry.Item2);
+            Object.Destroy(plainTarget.gameObject);Object.Destroy(boostedTarget.gameObject);Object.Destroy(plainRoot.gameObject);Object.Destroy(boostedRoot.gameObject);Object.Destroy(bonus);
+            yield return null;
+        }
+    }
     [UnityTest] public IEnumerator DoubleShotDuplicatesShotgunPelletsWithoutExtraAmmoOrEnergy()
     {
         var gun=Build(R4WeaponKind.Shotgun,out var energy,true);var hp=Target(gun,6);float before=energy.Current;

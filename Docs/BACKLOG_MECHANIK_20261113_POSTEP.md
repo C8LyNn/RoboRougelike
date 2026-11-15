@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 13. Zakresy premii czterech rodzin broni pociskowej
+
+- Dodano osobne zakresy obrażeń ciężkiego działa, strzelby, railguna i wyrzutni rakiet. Ich premie sumują się z globalnymi, broni oraz właściwym typem obrażeń, a `more/less` pozostają osobnymi mnożnikami. Wyłączenie fizycznego modułu usuwa jego wkład. Każda rodzina otrzymała opisaną, konfigurowalną nagrodę +30%; wartości i wpływ na pulę losowania są prototypowe. Nowe wartości zakresu dopisano po istniejących, bez zmiany numerów w starych zapisach.
+- Unity 6000.3.14f1: `weapon_scopes_release.xml` i `.log`: **10 PASS, 0 FAIL**, w tym rzeczywiste trafienia czterema rodzajami broni, zdjęcie premii, zapis/wczytanie, fuzja, opisy, sumowanie globalne i według typu oraz regresja poprzednich zakresów. Przed zmianą `weapon_scopes_before.xml`: **1 FAIL** z braku zakresu. `weapon_scopes_first.xml`: **6 PASS, 1 FAIL**, bo oczekiwanie testowe nie odczekało cooldownu; `weapon_scopes_combined.xml`: **5 PASS, 1 FAIL** z powodu przekroczenia limitu rodzajów modułów w scenariuszu; po dostosowaniu scenariuszy ponowny przebieg przeszedł.
+- Pozostałe podkategorie oraz ręczny playtest i balans wymagają dalszej pracy; punkt 13 pozostaje otwarty.
+
 ### 02, 14 i 44. Wspólny bufor zapytania railguna
 
 - Pociski railguna korzystają ze współdzielonego bufora zapytania fizyki zamiast tworzyć osobną dużą tablicę na każdy pocisk. Zagnieżdżone rozliczenie obrażeń dostaje osobny bufor; przy przepełnieniu nadal następuje pełne zapytanie, bez limitowania wykrywanych przeszkód.

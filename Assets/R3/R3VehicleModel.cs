@@ -229,7 +229,7 @@ namespace RoboRougelike.R3
         public static bool ValidBonusScope(R1UpgradeEffect effect,R1BonusScope scope)=>
             Enum.IsDefined(typeof(R1BonusScope),scope)&&(scope==R1BonusScope.Global||
                 (effect==R1UpgradeEffect.Damage&&scope>=R1BonusScope.BasicCannon&&scope<=R1BonusScope.Weapons)||
-                (effect==R1UpgradeEffect.Damage&&(scope==R1BonusScope.AutomaticWeapon||scope==R1BonusScope.EnergyDamage))||
+                (effect==R1UpgradeEffect.Damage&&scope>=R1BonusScope.AutomaticWeapon&&scope<=R1BonusScope.RocketWeapon)||
                 (effect==R1UpgradeEffect.Hull&&scope==R1BonusScope.Construction)||
                 (effect==R1UpgradeEffect.Mobility&&scope>=R1BonusScope.WheelDrive&&scope<=R1BonusScope.HoverDrive));
         public static bool ValidBonusAmount(float amount)=>!float.IsNaN(amount)&&!float.IsInfinity(amount)&&amount>=0;

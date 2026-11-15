@@ -622,7 +622,8 @@ public float CurrentForwardSpeed =>
             float tier=mounted!=null&&mounted.Kind==RoboRougelike.R3.R3PartKind.Gun&&mounted.Id==partId?
                 RoboRougelike.R3.R3VehicleModel.TierEffectUnits(mounted.Tier):1f;
             float weaponDamage=kind==RoboRougelike.R4.R4WeaponKind.Basic?basicDamageModifier:
-                kind==RoboRougelike.R4.R4WeaponKind.Automatic?(GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.AutomaticDamageMultiplier??damageModifier):PackageKineticDamageScale;
+                kind==RoboRougelike.R4.R4WeaponKind.Automatic?(GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.AutomaticDamageMultiplier??damageModifier):
+                kind==RoboRougelike.R4.R4WeaponKind.Heavy?(GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.HeavyDamageMultiplier??damageModifier):PackageKineticDamageScale;
             float fraction=kind==RoboRougelike.R4.R4WeaponKind.Basic?basicBlastFraction:0;
             float kinetic=SafeShellDamage(profile.Damage*tier,1-fraction,weaponDamage);
             float blast=SafeShellDamage(profile.Damage*tier,fraction,basicBlastDamageModifier);
@@ -647,6 +648,9 @@ public float CurrentForwardSpeed =>
         public float PackageBlastDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.BlastDamageMultiplier??damageModifier;
         public float PackagePiercingDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.PiercingDamageMultiplier??damageModifier;
         public float PackageKineticDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.KineticDamageMultiplier??damageModifier;
+        public float PackageShotgunDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.ShotgunDamageMultiplier??damageModifier;
+        public float PackageRailgunDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.RailgunDamageMultiplier??damageModifier;
+        public float PackageRocketDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.RocketDamageMultiplier??damageModifier;
         public float PackageEnergyDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.EnergyDamageMultiplier??damageModifier;
         public float PackageIntervalScale => intervalModifier;
         private Collider SpawnPhysicalShell(Transform barrel,float hitDamage,float projectileSpeed,float projectileDiameter,
