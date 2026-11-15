@@ -10,6 +10,24 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogEnergyRegenTests
 {
+    [Test] public void BatteryCapacityScopeStacksWithGlobalWithoutBuffingCore()
+    {
+        Assert.That(Enum.TryParse("BatteryCapacity",out R1BonusScope scope),Is.True);
+        Assert.That(R3VehicleModel.ValidBonusScope(R1UpgradeEffect.EnergyCapacity,scope),Is.True);
+        Assert.That(R3VehicleModel.ValidBonusScope(R1UpgradeEffect.EnergyRegeneration,scope),Is.False);
+        var design=new R3VehicleDesign();design.Parts.Add(new R3PartState(default,R3PartKind.Core));
+        var model=new R3VehicleModel(design);
+        var battery=new R3PartState(default,R3PartKind.Battery){Tier=2};model.Parts.Add(battery);
+        var global=new R3PartState(default,R3PartKind.BonusModule){UpgradeEffect=R1UpgradeEffect.EnergyCapacity,UpgradeAmount=.2f};
+        var specific=new R3PartState(default,R3PartKind.BonusModule){UpgradeEffect=R1UpgradeEffect.EnergyCapacity,UpgradeScope=scope,UpgradeAmount=.3f};
+        var more=new R3PartState(default,R3PartKind.BonusModule){UpgradeEffect=R1UpgradeEffect.EnergyCapacity,UpgradeOperation=R1ModifierOperation.More,UpgradeAmount=.5f};
+        model.Parts.Add(global);model.Parts.Add(specific);model.Parts.Add(more);model.RefreshEnergyLayout();
+        Assert.That(model.Energy.Maximum,Is.EqualTo(500*1.2f*1.5f+200*1.5f*1.5f-75).Within(.001));
+        specific.UpgradeOperation=R1ModifierOperation.More;model.RefreshEnergyLayout();
+        Assert.That(model.Energy.Maximum,Is.EqualTo(500*1.2f*1.5f+200*1.2f*1.5f*1.3f-75).Within(.001));
+        battery.Health=0;model.RefreshEnergyLayout();
+        Assert.That(model.Energy.Maximum,Is.EqualTo(500*1.2f*1.5f-75).Within(.001),"Battery-only bonus cannot increase the core.");
+    }
     [Test] public void PassiveModulesReserveEnergyWhileBatteriesProvideFullCapacity()
     {
         foreach(R3PartKind kind in Enum.GetValues(typeof(R3PartKind)))
@@ -42,6 +60,29 @@ public sealed class BacklogEnergyRegenTests
         var run=Resources.Load<R1RunDefinition>("R1/Run");
         Assert.That(run.Upgrades.Any(u=>u!=null&&u.Id=="energy_capacity"),Is.True);
         Assert.That(run.Upgrades.Any(u=>u!=null&&u.Id=="energy_regeneration"),Is.True);
+    }
+    [Test] public void BatteryBonusRewardKeepsItsScopeInCheckpointBlueprintAndDescription()
+    {
+        Assert.That(Enum.TryParse("BatteryCapacity",out R1BonusScope scope),Is.True);
+        var reward=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.Single(u=>u!=null&&u.Id=="battery_capacity");
+        Assert.That(reward.Scope,Is.EqualTo(scope));Assert.That(reward.Effect,Is.EqualTo(R1UpgradeEffect.EnergyCapacity));
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);var part=model.Inventory.Single();
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Inventory.Single().UpgradeScope,Is.EqualTo(scope));
+        Assert.That(R3BlueprintPart.FromPart(part,Vector3Int.zero).Matches(restored.Inventory.Single()),Is.True);
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(part.Id,c,default)==null);
+        Assert.That(model.Mount(part.Id,cell),Is.True);
+        checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var mounted,out error),Is.True,error);
+        Assert.That(R3BlueprintPart.FromPart(part,Vector3Int.zero).Matches(mounted.Parts.Single(p=>p.Id==part.Id)),Is.True);
+        foreach(var name in new[]{"BonusText","BonusInstanceText"})
+        {
+            var description=typeof(R1RunHUD).GetMethod(name,System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static);
+            Assert.That((string)description.Invoke(null,new object[]{part}),Does.Contain("baterii"));
+        }
     }
     [Test] public void CapacityBonusGroupsAndStoredEnergySurviveCheckpoint()
     {
@@ -154,6 +195,33 @@ public sealed class BacklogEnergyRegenIntegrationTests
 {
     [UnitySetUp] public IEnumerator Setup()
     {EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();}
+
+    [UnityTest] public IEnumerator BatteryScopeMatchesTheLiveVehicleAndStopsOnLoss()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
+        var batteryCell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.Battery,false)==null);
+        Assert.That(model.Buy(batteryCell,R3PartKind.Battery),Is.True);model.RefreshEnergyLayout();float baseline=model.Energy.Maximum;
+        int batteries=model.Parts.Where(p=>p.Kind==R3PartKind.Battery&&p.Health>0).Sum(p=>R3VehicleModel.TierEffectUnits(p.Tier));
+        var reward=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.Single(u=>u!=null&&u.Id=="battery_capacity");
+        Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);string id=model.Inventory.Single().Id;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(id,c,default)==null);
+        Assert.That(model.Mount(id,cell),Is.True);model.RefreshEnergyLayout();
+        float expected=baseline+batteries*100*.3f-25;
+        Assert.That(model.Energy.Maximum,Is.EqualTo(expected).Within(.001));
+        var paletteObject=new GameObject("QA palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
+        for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
+        var bank=vehicle.GetComponent<VehicleEnergyBank>();bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(expected).Within(.001));
+        var bonus=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);
+        bonus.gameObject.SetActive(false);bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(baseline).Within(.001));
+        bonus.gameObject.SetActive(true);bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(expected).Within(.001));
+        UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);
+        yield return null;
+    }
 
     [UnityTest] public IEnumerator LiveResourceBonusDisappearsWithItsPhysicalModule()
     {

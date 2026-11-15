@@ -37,7 +37,7 @@ namespace RoboRougelike.R3
         readonly List<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding> enemyDefenses=new List<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();
         VehicleEnergyState state = new VehicleEnergyState();
         float chargeRegeneration;
-        readonly R1ModifierGroup capacityBonus=new R1ModifierGroup(),regenerationBonus=new R1ModifierGroup();
+        readonly R1ModifierGroup capacityBonus=new R1ModifierGroup(),batteryCapacityBonus=new R1ModifierGroup(),regenerationBonus=new R1ModifierGroup();
         public float Current { get { Refresh(); return state.Current; } }
         public float Maximum { get { Refresh(); return state.Maximum; } }
 
@@ -62,7 +62,7 @@ namespace RoboRougelike.R3
                 // individual disabled parts do not provide or reserve capacity.
                 if(!assembly.gameObject.activeInHierarchy)return;
                 int batteries=0,passive=0,regenerators=0;long chargeCapacity=0,chargeRegenerators=0;float extra=0;bool coreAlive=false;
-                capacityBonus.Reset();regenerationBonus.Reset();
+                capacityBonus.Reset();batteryCapacityBonus.Reset();regenerationBonus.Reset();
                 foreach(var part in assembly.Parts)
                 {
                     if(part==null||!part.gameObject.activeInHierarchy||!part.Operational||!part.transform.IsChildOf(transform))continue;
@@ -71,7 +71,11 @@ namespace RoboRougelike.R3
                     if(part.Kind==R3PartKind.Core)coreAlive=true;
                     if(part.Kind==R3PartKind.BonusModule)
                     {
-                        if(part.UpgradeEffect==R1UpgradeEffect.EnergyCapacity)capacityBonus.Add(part.UpgradeOperation,part.UpgradeAmount,R3VehicleModel.TierEffectUnits(part.Tier));
+                        if(part.UpgradeEffect==R1UpgradeEffect.EnergyCapacity)
+                        {
+                            if(part.UpgradeScope==R1BonusScope.Global)capacityBonus.Add(part.UpgradeOperation,part.UpgradeAmount,R3VehicleModel.TierEffectUnits(part.Tier));
+                            if(part.UpgradeScope==R1BonusScope.Global||part.UpgradeScope==R1BonusScope.BatteryCapacity)batteryCapacityBonus.Add(part.UpgradeOperation,part.UpgradeAmount,R3VehicleModel.TierEffectUnits(part.Tier));
+                        }
                         if(part.UpgradeEffect==R1UpgradeEffect.EnergyRegeneration)regenerationBonus.Add(part.UpgradeOperation,part.UpgradeAmount,R3VehicleModel.TierEffectUnits(part.Tier));
                     }
                     if(part.Kind==R3PartKind.Battery)batteries+=R3VehicleModel.TierEffectUnits(part.Tier);
@@ -84,7 +88,7 @@ namespace RoboRougelike.R3
                         if(part.Kind==R3PartKind.ChargeRegenerator)chargeRegenerators+=R3VehicleModel.TierEffectUnits(part.Tier);
                     }
                 }
-                state.SetResourceMultipliers(capacityBonus.Apply(1),regenerationBonus.Apply(1));
+                state.SetResourceMultipliers(capacityBonus.Apply(1),regenerationBonus.Apply(1),batteryCapacityBonus.Apply(1));
                 state.SetAdditionalPassiveReservation(extra);
                 state.Refresh(batteries,passive,coreAlive);
                 state.SetRegeneratorCount(regenerators);

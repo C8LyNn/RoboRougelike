@@ -14,10 +14,12 @@ namespace RoboRougelike.R3
 
         float fieldRemaining;
         int regeneratorCount;
-        float capacityMultiplier=1f,regenerationMultiplier=1f;
-        public void SetResourceMultipliers(float capacity,float regeneration)
+        float capacityMultiplier=1f,batteryCapacityMultiplier=1f,regenerationMultiplier=1f;
+        public void SetResourceMultipliers(float capacity,float regeneration,float? batteryCapacity=null)
         {
             capacityMultiplier=float.IsNaN(capacity)||float.IsInfinity(capacity)?1f:Math.Max(0,capacity);
+            float battery=batteryCapacity??capacity;
+            batteryCapacityMultiplier=float.IsNaN(battery)||float.IsInfinity(battery)?1f:Math.Max(0,battery);
             regenerationMultiplier=float.IsNaN(regeneration)||float.IsInfinity(regeneration)?1f:Math.Max(0,regeneration);
         }
         float additionalPassiveReservation;
@@ -31,7 +33,7 @@ namespace RoboRougelike.R3
         public void Refresh(int batteries, int passiveModules, bool coreAlive)
         {
             var available = coreAlive
-                ? (CoreCapacity + Math.Max(0, (double)batteries) * BatteryCapacity)*capacityMultiplier
+                ? (double)CoreCapacity*capacityMultiplier + Math.Max(0, (double)batteries) * BatteryCapacity*batteryCapacityMultiplier
                     - Math.Max(0, (double)passiveModules) * PassiveReservation-additionalPassiveReservation
                 : 0d;
             Maximum = (float)Math.Min(float.MaxValue, Math.Max(0d, available));

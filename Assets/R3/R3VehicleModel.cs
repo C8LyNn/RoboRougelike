@@ -232,6 +232,7 @@ namespace RoboRougelike.R3
                 (effect==R1UpgradeEffect.Damage&&scope>=R1BonusScope.AutomaticWeapon&&scope<=R1BonusScope.AuraWeapon)||
                 (effect==R1UpgradeEffect.Reload&&(scope==R1BonusScope.Weapons||scope==R1BonusScope.Drones||scope==R1BonusScope.Turrets||scope==R1BonusScope.BasicCannon||scope==R1BonusScope.AutomaticWeapon||scope==R1BonusScope.HeavyWeapon||scope==R1BonusScope.ShotgunWeapon||scope==R1BonusScope.RailgunWeapon||scope==R1BonusScope.RocketWeapon))||
                 (effect==R1UpgradeEffect.RepairEfficiency&&(scope==R1BonusScope.Drones||scope==R1BonusScope.Turrets))||
+                (effect==R1UpgradeEffect.EnergyCapacity&&scope==R1BonusScope.BatteryCapacity)||
                 (effect==R1UpgradeEffect.Hull&&scope==R1BonusScope.Construction)||
                 (effect==R1UpgradeEffect.Mobility&&scope>=R1BonusScope.WheelDrive&&scope<=R1BonusScope.HoverDrive));
         public static bool ValidBonusAmount(float amount)=>!float.IsNaN(amount)&&!float.IsInfinity(amount)&&amount>=0;
@@ -557,14 +558,18 @@ namespace RoboRougelike.R3
         public void RefreshEnergyLayout()
         {
             var alive=Parts.Where(p=>p.Health>0).ToArray();
-            var capacity=new R1ModifierGroup();var regeneration=new R1ModifierGroup();
+            var capacity=new R1ModifierGroup();var batteryCapacity=new R1ModifierGroup();var regeneration=new R1ModifierGroup();
             foreach(var part in alive)
             {
                 if(part.Kind!=R3PartKind.BonusModule)continue;
-                if(part.UpgradeEffect==R1UpgradeEffect.EnergyCapacity)capacity.Add(part.UpgradeOperation,part.UpgradeAmount,TierEffectUnits(part.Tier));
+                if(part.UpgradeEffect==R1UpgradeEffect.EnergyCapacity)
+                {
+                    if(part.UpgradeScope==R1BonusScope.Global)capacity.Add(part.UpgradeOperation,part.UpgradeAmount,TierEffectUnits(part.Tier));
+                    if(part.UpgradeScope==R1BonusScope.Global||part.UpgradeScope==R1BonusScope.BatteryCapacity)batteryCapacity.Add(part.UpgradeOperation,part.UpgradeAmount,TierEffectUnits(part.Tier));
+                }
                 if(part.UpgradeEffect==R1UpgradeEffect.EnergyRegeneration)regeneration.Add(part.UpgradeOperation,part.UpgradeAmount,TierEffectUnits(part.Tier));
             }
-            Energy.SetResourceMultipliers(capacity.Apply(1),regeneration.Apply(1));
+            Energy.SetResourceMultipliers(capacity.Apply(1),regeneration.Apply(1),batteryCapacity.Apply(1));
             Energy.SetAdditionalPassiveReservation(alive.Where(p=>IsPassiveEnergyPart(p.Kind)).Sum(p=>TierPassiveExtra(p.Tier)));
             Energy.Refresh(alive.Where(p=>p.Kind==R3PartKind.Battery).Sum(p=>TierEffectUnits(p.Tier)),
                 alive.Count(p=>IsPassiveEnergyPart(p.Kind)),alive.Any(p=>p.Kind==R3PartKind.Core));

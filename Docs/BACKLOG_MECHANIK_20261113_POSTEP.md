@@ -11,6 +11,13 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 12–13, 18 i 44. Premia pojemności samych baterii
+
+- Dodano fizyczny moduł premii, który zwiększa wyłącznie energię dostarczaną przez sprawne baterie, bez zwiększania bazowej pojemności rdzenia. Globalne i pasujące do baterii `increased/reduced` sumują się w tej samej grupie, a `more/less` pozostają osobnymi mnożnikami; rezerwacja 25 energii za moduł następuje po naliczeniu pojemności. Utrata modułu lub baterii usuwa ich wkład. Garaż i nagrody rozróżniają premię baterii od globalnej.
+- Nowa nagroda ma prototypowo +30% pojemności baterii; jest zapisana jako osobny zasób i zmienia pulę losowania, dlatego jej wartość oraz wpływ na balans wymagają playtestu. Zakres dopisano po istniejących wartościach bez zmiany numerów starych zapisów.
+- Unity 6000.3.14f1: **17 PASS, 0 FAIL** (`battery_scope_final.xml`, `.log` w katalogu `Prototypy`): sumowanie i mnożenie premii, brak wpływu na rdzeń, usunięcie baterii, rzeczywisty pojazd z zamontowanym modułem i jego wyłączenie/przywrócenie, zgodność z modelem, rezerwacje, regeneracja, zapisy magazynu i zamontowanej części, dopasowanie blueprintu, opisy oraz wcześniejsze odnowienie strefy. `battery_scope_before.xml`: **1 FAIL** przed dodaniem zakresu. Testy nie obejmują ręcznej rozgrywki ani oceny balansu.
+- To część punktu 13; limity dodatkowych pocisków #02/#14 oraz pełny odbiór #44 pozostają otwarte.
+
 ### 18, 35, 37 i 44. Ponowne sprawdzenie bezpiecznej strefy
 
 - Ukryty test wsadowy Unity 6000.3.14f1: **9 PASS, 0 FAIL** (`backlog_safezone_audit_1115.xml`, `.log` w katalogu `Prototypy`). Obejmuje energię, ładunki, odnowienia, częściową jednorazową naprawę, rzeczywisty przejazd po strefie, ratunek, dostęp do sprzedawcy, jednorazowy zakup oraz powrót i zapis/wczytanie. Nie zmieniano zasad jednorazowego odnowienia przy odblokowaniu strefy.
