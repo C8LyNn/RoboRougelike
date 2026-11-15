@@ -6,6 +6,15 @@ using UnityEngine;
 
 public sealed class CompactCombatHUDTests
 {
+    [TestCase(20,12,true,"Brakuje 8 Z")]
+    [TestCase(0,100,true,"Odzysk niedostępny")]
+    [TestCase(20,100,false,"Brak miejsca")]
+    [TestCase(20,100,true,"Odzyskaj • 20 Z")]
+    public void MissedLootRecoveryExplainsActualBlocker(int price,int scrap,bool room,string expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("MissedLootRecoveryCaption",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);Assert.That((string)method.Invoke(null,new object[]{price,scrap,room}),Is.EqualTo(expected));
+    }
     [Test]
     public void RunSummaryDoesNotPromiseOldVehicleOrAssumeFinalBoss()
     {
@@ -133,13 +142,13 @@ public sealed class CompactCombatHUDTests
         {
             Assert.That(profile.TryBind("MoveForward","K"),Is.True);
             Assert.That(profile.TryBind("Weapon3","B"),Is.True);
-            Assert.That(profile.TryBind("Deploy1","H"),Is.True);
+            Assert.That(profile.TryBind("Deploy1","N"),Is.True);
             Assert.That(profile.TryBind("SteeringLeft","J"),Is.True);
             Assert.That(profile.TryBind("DefenseStatusPage","F6"),Is.True);
             Assert.That(profile.TryBind("ResetRange","P"),Is.True);
             var method=typeof(R1RunHUD).GetMethod("RangeControlsHint",BindingFlags.Static|BindingFlags.NonPublic);
             Assert.That(method,Is.Not.Null);string hint=(string)method.Invoke(null,null);
-            Assert.That(hint,Does.Contain("K/S/A/D").And.Contain("B").And.Contain("H/X/C/V").And.Contain("J/.").And.Contain("P — reset"));
+            Assert.That(hint,Does.Contain("K/S/A/D").And.Contain("B").And.Contain("N/X/C/V").And.Contain("J/.").And.Contain("P — reset"));
             Assert.That(hint,Does.Not.Contain("WASD").And.Not.Contain("R — reset"));
         }
         finally{profile.ResetDefaults();}

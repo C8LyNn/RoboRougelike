@@ -433,7 +433,7 @@ namespace RoboRougelike.R1
                      GUI.Label(new Rect(36,noticeY,630,22),resourceWarning,small);GUI.contentColor=before;noticeY+=25;}
                     if(run.PickupGraceRemaining>0)
                     {
-                        GUI.Label(PickupGraceLabelRect(noticeY),$"Części: {run.PickupPartsRemaining} • Energia: {run.PickupEnergyRemaining} • {run.PickupGraceRemaining:0.0} s",small);
+                        GUI.Label(PickupGraceLabelRect(noticeY),$"Części: {run.PickupPartsRemaining} • Kostki energii: {run.PickupEnergyRemaining} • {run.PickupGraceRemaining:0.0} s",small);
                         if(GUI.Button(PickupGraceButtonRect(noticeY),"Pomiń zbieranie [Enter]",compactButton))run.SkipPickupGrace();
                         GUI.Label(new Rect(640,210,285,55),"ZWYCIĘSTWO",title);
                     }

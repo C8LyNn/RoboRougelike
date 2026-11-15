@@ -281,6 +281,8 @@ namespace RoboRougelike.R1
             if(count>0&&GUI.Button(rect,$"Pominięte łupy ({count})",compactButton))
             {rewardMissedOpen=true;rewardMissedPage=0;rewardMissedFeedback=null;}
         }
+        private static string MissedLootRecoveryCaption(int price,int scrap,bool room)=>
+            !room?"Brak miejsca":price<=0?"Odzysk niedostępny":scrap<price?$"Brakuje {(long)price-scrap} Z":$"Odzyskaj • {price} Z";
         private void DrawMissedLoot(R1RunController run,bool portrait)
         {
             var model=run.VehicleModel;var items=run.Salvage.MissedPhysicalItems.ToArray();
@@ -299,7 +301,7 @@ namespace RoboRougelike.R1
                 bool hasRoom=(long)model.Inventory.Count+quantity<=model.AvailableInventoryCapacity;
                 int price=model.Economy.MissedLootRecoveryCost;bool affordable=price>0&&model.Scrap>=price;
                 bool enabled=GUI.enabled;GUI.enabled=enabled&&hasRoom&&affordable;
-                string caption=!hasRoom?"Brak miejsca":!affordable?"Brak środków":$"Odzyskaj • {price} Z";
+                string caption=MissedLootRecoveryCaption(price,model.Scrap,hasRoom);
                 if(GUI.Button(new Rect(left+width-buttonWidth-12,y+(height-48)/2,buttonWidth,48),caption,compactButton))
                 {
                     bool accepted=run.TryRecoverMissedLoot(item.Id);

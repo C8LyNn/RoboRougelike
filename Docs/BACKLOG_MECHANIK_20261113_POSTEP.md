@@ -955,3 +955,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Garaż, szczegóły i odzysk nagród oraz podgląd fuzji pokazują prawie zniszczoną, ale sprawną część jako „<1%”, a nie „0%”, oraz lekko uszkodzoną jako „>99%”, a nie „100%”. Prawdziwe 0% i 100% pozostają jednoznaczne. Zmiana dotyczy prezentacji, nie zdrowia części ani kosztów naprawy.
 - Unity 6000.3.14f1: **46 PASS, 0 FAIL** (`garage_health_final.xml`, `.log`) obejmuje oba skrajne przypadki, faktyczny wybór w garażu, wcześniejsze operacje katalogu, łupy i przewidywanie HP po fuzji. `garage_health_red.xml`: **2 FAIL**, wartości 0,4% i 99,9% były pokazywane jako 0% i 100%. Pierwszy szerszy przebieg miał **31 PASS, 1 FAIL**, gdyż stary test niszczył jedną część, chociaż zakup daje obecnie pakiet pięciu; scenariusz poprawiono, by faktycznie zniszczyć cały badany stos. Wizualny test w Playerze: **NOT RUN**.
+
+#### 30, 44. Czytelniejsze odzyskiwanie pominiętych części
+
+- Przycisk odzysku podaje dokładny brakujący złom albo przyczynę „Brak miejsca” / „Odzysk niedostępny”, zamiast przedstawiać każdą niedostępność jako brak środków. Sam koszt i zasady odzysku nie zostały zmienione. W liczniku po walce doprecyzowano, że wyświetlana liczba dotyczy kostek energii.
+- Unity 6000.3.14f1: **37 PASS, 0 FAIL** (`recovery_caption_release.xml`, `.log`) obejmuje cztery stany przycisku, faktyczny odpłatny odzysk i zapobieganie duplikatom, licznik łupów oraz podpowiedzi sterowania. Wcześniejszy szerszy przebieg miał **36 PASS, 1 FAIL**, ponieważ test próbował przypisać urządzenie do H zajętego obecnie przez ratunek; w teście użyto wolnego N. Wygląd i klikanie w Playerze: **NOT RUN**.
