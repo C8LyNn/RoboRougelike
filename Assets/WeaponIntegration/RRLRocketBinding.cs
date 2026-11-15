@@ -49,7 +49,7 @@ namespace RoboRougelike.WeaponIntegration
         }
         internal static int AvailableRocketSlots
         {
-            get {int live=0;foreach(var rocket in Object.FindObjectsByType<RocketProjectile>(FindObjectsSortMode.None))if(rocket.IsInitialized&&!rocket.IsResolved)live++;return Mathf.Max(0,32-live);}
+            get => Mathf.Max(0,32-RocketProjectile.ActiveFlightCount);
         }
         public bool Fire()=>FireCore(false);
         internal bool FirePrimary()=>FireCore(true);

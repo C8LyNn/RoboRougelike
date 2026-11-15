@@ -12,6 +12,9 @@ namespace RoboRougelike.Mechanics.Rockets
     [DisallowMultipleComponent]
     public sealed class RocketProjectile : MonoBehaviour, IRocketInterceptable
     {
+        private static readonly System.Collections.Generic.HashSet<RocketProjectile> activeFlights =
+            new System.Collections.Generic.HashSet<RocketProjectile>();
+        public static int ActiveFlightCount => activeFlights.Count;
         [SerializeField] private GameObject optionalExplosionVfxPrefab;
         private Rigidbody body;
         private SphereCollider sphere;
@@ -43,6 +46,9 @@ namespace RoboRougelike.Mechanics.Rockets
             body = GetComponent<Rigidbody>();
             sphere = GetComponent<SphereCollider>();
         }
+        private void OnEnable(){if(initialized&&!resolved)activeFlights.Add(this);}
+        private void OnDisable(){activeFlights.Remove(this);}
+        private void OnDestroy(){activeFlights.Remove(this);}
 
         public bool TryInitialize(RocketSpec snapshot, Rigidbody firingBody, Transform owner,
             GameObject attackerSource, Transform target, Vector3 firedDirection)
@@ -76,6 +82,7 @@ namespace RoboRougelike.Mechanics.Rockets
             occlusionBuffer = null;
             flightBoundary = GetComponent<IRocketFlightBoundary>();
             initialized = true;
+            if(isActiveAndEnabled)activeFlights.Add(this);
             return true;
         }
 
@@ -191,6 +198,7 @@ namespace RoboRougelike.Mechanics.Rockets
         {
             if (resolved || RetireLostOwner()) return;
             resolved = true;
+            activeFlights.Remove(this);
             if (dealDamage)
             {
                 if(blastBuffer.Length<spec.MaxBlastColliders)System.Array.Resize(ref blastBuffer,spec.MaxBlastColliders);

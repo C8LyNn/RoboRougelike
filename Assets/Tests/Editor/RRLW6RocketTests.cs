@@ -34,6 +34,28 @@ public class RRLW6RocketPhysicalTests
         var binding=gun.GetComponents<MonoBehaviour>().Single(p=>p.GetType().Name=="RRLRocketBinding");
         return (bool)binding.GetType().GetMethod("Fire").Invoke(binding,null);
     }
+    [UnityTest] public IEnumerator RocketBonusCapacityTracksOnlyActiveUnresolvedFlight()
+    {
+        var property=typeof(RRLRocketBinding).GetProperty("AvailableRocketSlots",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(property,Is.Not.Null);
+        Func<int> slots=()=> (int)property.GetValue(null);
+        var owner=new GameObject("Rocket capacity owner");var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        var item=new GameObject("Rocket capacity fixture");var rocket=item.AddComponent<RocketProjectile>();
+        try
+        {
+            int before=slots();Assert.That(before,Is.GreaterThan(0));
+            Assert.That(rocket.TryInitialize(new RocketConfig().Snapshot(),body,owner.transform,owner,null,Vector3.forward),Is.True);
+            Assert.That(slots(),Is.EqualTo(before-1));
+            rocket.enabled=false;Assert.That(slots(),Is.EqualTo(before),"A disabled rocket cannot occupy the active-flight budget.");
+            rocket.enabled=true;Assert.That(slots(),Is.EqualTo(before-1));
+            item.SetActive(false);Assert.That(slots(),Is.EqualTo(before));
+            item.SetActive(true);Assert.That(slots(),Is.EqualTo(before-1));
+            rocket.ApplyInterceptionDamage(float.MaxValue);Assert.That(rocket.IsResolved,Is.True);
+            Assert.That(slots(),Is.EqualTo(before),"A resolved rocket must free its place immediately, before deferred destruction.");
+        }
+        finally{if(item!=null)UnityEngine.Object.Destroy(item);if(owner!=null)UnityEngine.Object.Destroy(owner);}
+        yield return null;
+    }
     [UnityTest] public IEnumerator InFlightRocketMemoryDoesNotScaleWithRareWorstCaseBuffers()
     {
         const int count=64;
