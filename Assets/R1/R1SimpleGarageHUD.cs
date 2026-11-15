@@ -13,6 +13,7 @@ namespace RoboRougelike.R1
         int vendorOfferPage;
         string garageOptionsFeedback;
         int quickPartCategory;
+        int creativeExtraWeaponIndex,creativeExtraActiveIndex,creativeExtraDeployableIndex;
         bool quickOwnedOnly;
         const string QuickSearchControlName="GarageQuickSearch";
         bool quickSearchEditing,quickSearchReleasePending;
@@ -382,6 +383,32 @@ namespace RoboRougelike.R1
             return R1ControlProfile.Display(control.Binding("Weapon1"))+": "+WeaponGroupName(slots[0])+"  •  "+R1ControlProfile.Display(control.Binding("Weapon2"))+": "+WeaponGroupName(slots[1])+
                 "\n"+R1ControlProfile.Display(control.Binding("Weapon3"))+": "+WeaponGroupName(slots[2])+"  •  "+R1ControlProfile.Display(control.Binding("Weapon4"))+": "+WeaponGroupName(slots[3])+(extra?" + pozostałe":"");
         }
+        static R4WeaponKind[] CreativeExtraWeapons(R3VehicleModel model)
+        {
+            var slots=model.GetWeaponSlots();
+            return model.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct()
+                .Where(kind=>!slots.Contains(kind)).ToArray();
+        }
+        static R3PartKind[] CreativeExtraModules(R3VehicleModel model,bool deployable)
+        {
+            var slots=deployable?model.GetDeployableSlots():model.GetActiveSlots();
+            return model.Parts.Where(p=>deployable?R3VehicleModel.IsDeployableSlotPart(p.Kind):R3VehicleModel.IsActiveSlotPart(p.Kind))
+                .Select(p=>p.Kind).Distinct().Where(kind=>!slots.Contains(kind)).ToArray();
+        }
+        static int CreativeOptionIndex(int index,int count)=>count<=0?0:((index%count)+count)%count;
+        static string CreativeExtraCaption(R1ControlProfile profile,string action,string name,int index,int count)=>
+            $"Do {R1ControlProfile.Display(profile.Binding(action))}: {name}"+(count>1?$"  {index+1}/{count}":"");
+        bool DrawCreativeExtraChoice(Rect rect,R1ControlProfile controls,string action,string[] names,ref int index)
+        {
+            index=CreativeOptionIndex(index,names.Length);
+            if(names.Length==0)return false;
+            float navigationWidth=names.Length>1?38:0;
+            bool selected=GUI.Button(new Rect(rect.x,rect.y,rect.width-navigationWidth,rect.height),
+                CreativeExtraCaption(controls,action,names[index],index,names.Length),compactButton);
+            if(navigationWidth>0&&GUI.Button(new Rect(rect.xMax-navigationWidth,rect.y,navigationWidth,rect.height),"›",compactButton))
+                index=CreativeOptionIndex(index+1,names.Length);
+            return selected;
+        }
         void DrawSlotAssignments(R3VehicleModel model,float x,float y,float width)
         {
             var weapons=model.GetWeaponSlots();var active=model.GetActiveSlots();var deployables=model.GetDeployableSlots();
@@ -410,20 +437,18 @@ namespace RoboRougelike.R1
             GUI.enabled=true;
             if(model.CreativeMode)
             {
-                var extraWeapon=model.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct()
-                    .Where(kind=>!weapons.Contains(kind)).Select(kind=>(R4WeaponKind?)kind).FirstOrDefault();
-                var extraActive=model.Parts.Where(p=>R3VehicleModel.IsActiveSlotPart(p.Kind)).Select(p=>p.Kind).Distinct()
-                    .Where(kind=>!active.Contains(kind)).Select(kind=>(R3PartKind?)kind).FirstOrDefault();
-                var extraDeployable=model.Parts.Where(p=>R3VehicleModel.IsDeployableSlotPart(p.Kind)).Select(p=>p.Kind).Distinct()
-                    .Where(kind=>!deployables.Contains(kind)).Select(kind=>(R3PartKind?)kind).FirstOrDefault();
-                if(extraWeapon.HasValue&&GUI.Button(new Rect(x,y+245,col,44),"Slot E: "+WeaponGroupName(extraWeapon),compactButton))
-                    model.AssignWeaponSlot(extraWeapon.Value,3);
-                if(extraActive.HasValue&&GUI.Button(new Rect(x+col+12,y+245,col,44),"Slot 4: "+R4WeaponDefinition.PartName(extraActive.Value),compactButton))
-                    model.AssignActiveSlot(extraActive.Value,3);
-                if(showDeployables&&extraDeployable.HasValue&&GUI.Button(new Rect(x+2*(col+12),y+245,col,44),"Slot V: "+R4WeaponDefinition.PartName(extraDeployable.Value),compactButton))
-                    model.AssignDeployableSlot(extraDeployable.Value,3);
+                var extraWeapons=CreativeExtraWeapons(model);var extraActive=CreativeExtraModules(model,false);
+                var extraDeployable=CreativeExtraModules(model,true);
+                if(DrawCreativeExtraChoice(new Rect(x,y+245,col,44),controls,"Weapon4",extraWeapons.Select(kind=>WeaponGroupName(kind)).ToArray(),ref creativeExtraWeaponIndex))
+                    model.AssignWeaponSlot(extraWeapons[creativeExtraWeaponIndex],3);
+                if(DrawCreativeExtraChoice(new Rect(x+col+12,y+245,col,44),controls,"Active4",extraActive.Select(kind=>R4WeaponDefinition.PartName(kind)).ToArray(),ref creativeExtraActiveIndex))
+                    model.AssignActiveSlot(extraActive[creativeExtraActiveIndex],3);
+                if(showDeployables&&DrawCreativeExtraChoice(new Rect(x+2*(col+12),y+245,col,44),controls,"Deploy4",extraDeployable.Select(kind=>R4WeaponDefinition.PartName(kind)).ToArray(),ref creativeExtraDeployableIndex))
+                    model.AssignDeployableSlot(extraDeployable[creativeExtraDeployableIndex],3);
             }
-            GUI.Label(new Rect(x,y+296,width,42),"Kliknij rodzaj, aby przenieść go do kolejnego slotu. Zajęte sloty zamienią się miejscami.",small);
+            GUI.Label(new Rect(x,y+296,width,42),model.CreativeMode?
+                "Kliknij rodzaj, aby przenieść go do kolejnego slotu. Strzałką › wybierz pozostałe rodzaje.":
+                "Kliknij rodzaj, aby przenieść go do kolejnego slotu. Zajęte sloty zamienią się miejscami.",small);
         }
 
         internal static string PartHealthText(float health)

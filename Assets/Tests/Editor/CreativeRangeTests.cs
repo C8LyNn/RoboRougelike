@@ -257,6 +257,48 @@ public class CreativeRangeTests
         yield return null;
     }
 
+    [UnityTest] public IEnumerator CreativeSlotPickerReachesEveryUnassignedTypeAndShowsCurrentBinding()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var model=run.VehicleModel.DeepCopy();
+        for(int z=1;z<=60;z++)Assert.That(model.Buy(new Vector3Int(0,0,z),R3PartKind.Armor),Is.True);
+        var weapons=new[]{R4WeaponKind.Basic,R4WeaponKind.Automatic,R4WeaponKind.Heavy,R4WeaponKind.Shotgun,R4WeaponKind.Railgun,R4WeaponKind.RocketLauncher};
+        for(int i=0;i<weapons.Length;i++)Assert.That(model.Buy(new Vector3Int(0,1,3+i*3),R3PartKind.Gun,weapons[i]),Is.True,weapons[i].ToString());
+        var active=new[]{R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Blink,R3PartKind.MagneticGrapple,R3PartKind.RepairPulse,R3PartKind.Overdrive};
+        for(int i=0;i<active.Length;i++)Assert.That(model.Buy(new Vector3Int(0,1,22+i*2),active[i]),Is.True,active[i].ToString());
+        var deploy=new[]{R3PartKind.RampDeployer,R3PartKind.WallDeployer,R3PartKind.JumpPadDeployer,R3PartKind.BlastTrapDeployer,R3PartKind.EmpTrapDeployer,R3PartKind.RepelTrapDeployer};
+        for(int i=0;i<deploy.Length;i++)Assert.That(model.Buy(new Vector3Int(0,1,36+i*2),deploy[i]),Is.True,deploy[i].ToString());
+        var flags=System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic;
+        var weaponOptions=typeof(R1RunHUD).GetMethod("CreativeExtraWeapons",flags);
+        var moduleOptions=typeof(R1RunHUD).GetMethod("CreativeExtraModules",flags);
+        var index=typeof(R1RunHUD).GetMethod("CreativeOptionIndex",flags);
+        var caption=typeof(R1RunHUD).GetMethod("CreativeExtraCaption",flags);
+        Assert.That(weaponOptions,Is.Not.Null);Assert.That(moduleOptions,Is.Not.Null);Assert.That(index,Is.Not.Null);Assert.That(caption,Is.Not.Null);
+        var extraWeapons=(R4WeaponKind[])weaponOptions.Invoke(null,new object[]{model});
+        var extraActive=(R3PartKind[])moduleOptions.Invoke(null,new object[]{model,false});
+        var extraDeploy=(R3PartKind[])moduleOptions.Invoke(null,new object[]{model,true});
+        Assert.That(extraWeapons.Length,Is.EqualTo(2));Assert.That(extraActive.Length,Is.EqualTo(2));Assert.That(extraDeploy.Length,Is.EqualTo(2));
+        Assert.That((int)index.Invoke(null,new object[]{0,2}),Is.EqualTo(0));Assert.That((int)index.Invoke(null,new object[]{1,2}),Is.EqualTo(1));
+        Assert.That((int)index.Invoke(null,new object[]{2,2}),Is.EqualTo(0),"Navigation wraps when the list changes or reaches the end.");
+        Assert.That(model.AssignWeaponSlot(extraWeapons[1],3),Is.True);Assert.That(model.GetWeaponSlots()[3],Is.EqualTo(extraWeapons[1]));
+        Assert.That(model.AssignActiveSlot(extraActive[1],3),Is.True);Assert.That(model.GetActiveSlots()[3],Is.EqualTo(extraActive[1]));
+        Assert.That(model.AssignDeployableSlot(extraDeploy[1],3),Is.True);Assert.That(model.GetDeployableSlots()[3],Is.EqualTo(extraDeploy[1]));
+        Assert.That((R4WeaponKind[])weaponOptions.Invoke(null,new object[]{model}),Does.Contain(extraWeapons[0]));
+        Assert.That((R3PartKind[])moduleOptions.Invoke(null,new object[]{model,false}),Does.Contain(extraActive[0]));
+        Assert.That((R3PartKind[])moduleOptions.Invoke(null,new object[]{model,true}),Does.Contain(extraDeploy[0]));
+        Assert.That(model.AssignWeaponSlot(extraWeapons[0],3),Is.True);
+        Assert.That(model.AssignActiveSlot(extraActive[0],3),Is.True);
+        Assert.That(model.AssignDeployableSlot(extraDeploy[0],3),Is.True);
+        Assert.That((R4WeaponKind[])weaponOptions.Invoke(null,new object[]{model}),Does.Contain(extraWeapons[1]));
+        Assert.That((R3PartKind[])moduleOptions.Invoke(null,new object[]{model,false}),Does.Contain(extraActive[1]));
+        Assert.That((R3PartKind[])moduleOptions.Invoke(null,new object[]{model,true}),Does.Contain(extraDeploy[1]));
+        var profile=new R1ControlProfile(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"RRL-extra-bindings-"+System.Guid.NewGuid()+".json"));
+        Assert.That(profile.TryBind("Weapon4","K"),Is.True);Assert.That(profile.TryBind("Active4","J"),Is.True);Assert.That(profile.TryBind("Deploy4","B"),Is.True);
+        foreach(var pair in new[]{("Weapon4","K"),("Active4","J"),("Deploy4","B")})
+            Assert.That((string)caption.Invoke(null,new object[]{profile,pair.Item1,"Przykład",1,2}),Does.Contain(pair.Item2).And.Contain("2/2"));
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator UnarmedVehicleCanUseLargeRangeAndSpawnAndClearEnemies()
     {
         var run=R1RunController.Instance;

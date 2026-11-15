@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 03–06 i 44. Wybór nadmiarowych rodzajów na poligonie
+
+- W kreatywnym garażu panel slotów pozwala teraz przechodzić strzałką przez wszystkie zamontowane rodzaje broni, modułów aktywnych lub urządzeń, które nie mają własnego slotu, i przypisać wybrany rodzaj do czwartego slotu danej puli. Po zamianie pozostałe rodzaje nadal są dostępne. Licznik wskazuje aktualną pozycję na liście; etykieta pokazuje rzeczywisty klawisz z ustawień zamiast stałych E, 4 i V. Dotychczasowe działanie slotów i sterowania nie zostało zmienione.
+- Unity 6000.3.14f1: `creative_slots_picker_final.xml` i `.log`: **3 PASS, 0 FAIL**. Scenariusz skonstruował po sześć rodzajów w każdej puli, sprawdził przechodzenie po kandydaturach, przypisanie dalszych rodzajów, ponowne zamiany i trzy zmienione klawisze; pozostałe testy objęły istniejący poligon oraz zmianę klawisza widoku. `creative_slots_picker_before.xml`: **1 FAIL** przed dodaniem wyboru. Test sprawdza listy, podpisy i przypisania modelu, nie klikanie i czytelność panelu w Windows Playerze.
+
 ### 02, 14 i 44. Filtrowanie dużych salw zwykłych broni
 
 - Mechanizm pomocniczych warstw salw zastosowano również do fizycznych pocisków działa podstawowego, automatu i ciężkiego działa. Po przekroczeniu 32 strzałów ich obiekty nadal istnieją osobno, lecz późniejsze pociski mogą wspólnie unikać wzajemnych kolizji bez tworzenia oddzielnej pary wykluczeń dla każdego z nich. Przy niedostępności warstwy lub konflikcie filtra zachowano pierwotne filtrowanie parowe. Nie zmieniono limitu dodatkowych pocisków.
