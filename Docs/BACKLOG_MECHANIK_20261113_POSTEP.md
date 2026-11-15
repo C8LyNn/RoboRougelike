@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 44. Filtrowanie dużych salw zwykłych broni
+
+- Mechanizm pomocniczych warstw salw zastosowano również do fizycznych pocisków działa podstawowego, automatu i ciężkiego działa. Po przekroczeniu 32 strzałów ich obiekty nadal istnieją osobno, lecz późniejsze pociski mogą wspólnie unikać wzajemnych kolizji bez tworzenia oddzielnej pary wykluczeń dla każdego z nich. Przy niedostępności warstwy lub konflikcie filtra zachowano pierwotne filtrowanie parowe. Nie zmieniono limitu dodatkowych pocisków.
+- Unity 6000.3.14f1, `automatic_group_regression.xml` i `.log`: **13 PASS, 0 FAIL**. Sprawdzono m.in. dwie fizyczne bronie i dwie niezależne grupy po 48 strzałów, podział dostępnych dodatkowych pocisków, rzeczywiste trafienia, przechwycenie pojedynczego pocisku, trafienia we wrogą kopułę, odzyskanie warstwy, ponowne użycie pocisku oraz tryb zapasowy przy konflikcie filtra. Dla 51 pocisków liczba jawnych wykluczeń parowych wyniosła **496 zamiast 1275** w trybie zapasowym. Próba przydzielenia tego samego pocisku dwa razy jest odrzucana.
+- To ograniczenie liczby par kolizji, a nie pomiar szybkości gry. Nie wykonano profilowania FPS ani ręcznego playtestu. Nadal obowiązują ograniczenia opisane niżej, w tym brak ponownego skanowania niestandardowych filtrów utworzonych lub zmienionych podczas lotu oraz progi 96 aktywnych pocisków i 32 aktywnych rakiet, powyżej których dodatkowe strzały nie powstają; pozycje #02/#14 pozostają otwarte.
+
 ### 02, 14 i 44. Filtrowanie dużych salw strzelby
 
 - Salwa przekraczająca 32 śruciny może korzystać z jednej z ośmiu pomocniczych warstw `RRSalvo0`–`RRSalvo7`, zarezerwowanych w projekcie. Każda śrucina pozostaje osobnym fizycznym pociskiem. Jeśli warstwa jest zajęta, niedostępna lub istniejące filtry sceny odróżniają ją od zwykłej warstwy pocisków, salwa zachowuje dotychczasowe parowe filtrowanie; zajęcie wszystkich warstw nie blokuje strzałów. Warstwa pozostaje przypisana aż do wycofania albo zniszczenia ostatniego pocisku; stan przywracany jest przed ponownym użyciem obiektu. Dostępność sprawdza też nieaktywne collidery już obecne w scenie.

@@ -641,7 +641,14 @@ public float CurrentForwardSpeed =>
             {
                 var extra=SpawnPhysicalShell(barrel,kinetic,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId,blast);
                 if(extra==null)break;
-                foreach(var sibling in siblings)if(sibling!=null)P17PhysicalShell.IgnoreProjectilePair(extra,sibling);
+                bool grouped=siblings.Count>0&&P17PhysicalShell.TryJoinVolley(siblings[0],extra);
+                if(!grouped&&siblings.Count==32)
+                {
+                    siblings.Add(extra);grouped=P17PhysicalShell.TryGroupVolleyColliders(siblings);
+                    if(grouped)continue;
+                    siblings.RemoveAt(siblings.Count-1);
+                }
+                if(!grouped)foreach(var sibling in siblings)if(sibling!=null)P17PhysicalShell.IgnoreProjectilePair(extra,sibling);
                 siblings.Add(extra);
             }
             return first;
@@ -1395,11 +1402,12 @@ public float CurrentForwardSpeed =>
         internal static bool TryGroupVolley(System.Collections.Generic.IReadOnlyList<GameObject> shots)
         {
             if(shots==null||shots.Count<2)return false;
+            var unique=new System.Collections.Generic.HashSet<P17PhysicalShell>();
             foreach(var shot in shots)
             {
                 var shell=shot!=null?shot.GetComponent<P17PhysicalShell>():null;
                 var col=shot!=null?shot.GetComponent<Collider>():null;
-                if(shell==null||!shell.cacheableConventional||shell.volleyLayer!=null||!shell.isActiveAndEnabled||shot.layer!=0||col==null||!col.enabled)return false;
+                if(shell==null||!unique.Add(shell)||!shell.cacheableConventional||shell.volleyLayer!=null||!shell.isActiveAndEnabled||shot.layer!=0||col==null||!col.enabled)return false;
             }
             Collider[] sceneColliders=null;
             for(int slot=0;slot<volleyLayers.Length;slot++)
@@ -1432,6 +1440,14 @@ public float CurrentForwardSpeed =>
                 return true;
             }
             return false;
+        }
+        internal static bool TryGroupVolleyColliders(System.Collections.Generic.IReadOnlyList<Collider> colliders)
+        {
+            if(colliders==null)return false;
+            var shots=new GameObject[colliders.Count];
+            for(int i=0;i<colliders.Count;i++)
+            {if(colliders[i]==null)return false;shots[i]=colliders[i].gameObject;}
+            return TryGroupVolley(shots);
         }
         private static bool DistinguishesLayer(int mask,int layer)=>((mask&1)!=0)!=((mask&(1<<layer))!=0);
         internal static bool TryJoinVolley(Collider sibling,Collider added)

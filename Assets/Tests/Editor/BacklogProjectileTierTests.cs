@@ -917,6 +917,97 @@ public sealed class BacklogProjectileTierPhysicsTests
             Object.Destroy(gun.GetComponentInParent<R3VehicleAssembly>().gameObject);Object.Destroy(hp.gameObject);Object.Destroy(bonus);yield return null;
         }
     }
+    [UnityTest] public IEnumerator TwoLargeAutomaticSalvosRemainIndependentAndShareBonusCapacity()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(2000);
+        model.Parts.First(p=>p.Kind==R3PartKind.Gun).Weapon=R4WeaponKind.Automatic;
+        var gunCell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.Gun,false,R4WeaponKind.Automatic)==null);
+        Assert.That(model.Buy(gunCell,R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
+        var bonusCell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.DoubleShot)==null);
+        Assert.That(model.Buy(bonusCell,R3PartKind.DoubleShot),Is.True);model.Economy.DoubleShotChancePerUnit=100;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;var assembly=vehicle.GetComponent<R3VehicleAssembly>();
+        var guns=assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Automatic).ToArray();Assert.That(guns.Length,Is.EqualTo(2));
+        for(int i=0;i<guns.Length;i++)
+        {var muzzle=new GameObject("Separate grouped muzzle").transform;muzzle.SetParent(guns[i].transform,false);muzzle.position=new Vector3(1000+i*8,1000,1000);muzzle.rotation=Quaternion.identity;guns[i].GunPivot=muzzle;guns[i].Muzzle=muzzle;}
+        var targets=guns.Select(g=>{var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=g.Muzzle.position+Vector3.forward*5;
+            target.transform.localScale=new Vector3(2,2,.5f);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(5000,false);return hp;}).ToArray();
+        try
+        {
+            Physics.SyncTransforms();Assert.That(guns.All(assembly.ClearProjectilePath),Is.True);
+            int slot=System.Array.FindIndex(model.GetWeaponSlots(),w=>w==R4WeaponKind.Automatic);Assert.That(slot,Is.GreaterThanOrEqualTo(0));assembly.FireSlot(slot);
+            var origins=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>guns.Any(g=>g.Id==p.PartId)).ToArray();
+            Assert.That(guns.All(g=>g.NextFireTime>Time.time),Is.True);
+            var groups=guns.Select(g=>origins.Where(p=>p.PartId==g.Id).ToArray()).ToArray();
+            Assert.That(groups.Select(g=>g.Length),Is.EqualTo(new[]{48,48}),"Both primary shots fire and the available bonuses are shared.");
+            Assert.That(groups.All(g=>g[0].gameObject.layer>=24&&g.All(p=>p.gameObject.layer==g[0].gameObject.layer)),Is.True);
+            Assert.That(groups[0][0].gameObject.layer,Is.Not.EqualTo(groups[1][0].gameObject.layer),"Separate guns must retain separate collision groups.");
+            Assert.That(groups.All(g=>ExplicitSiblingPairs(g)==496),Is.True);
+            float expected=5000-48*R4WeaponDefinition.Get(R4WeaponKind.Automatic).Damage;float deadline=Time.realtimeSinceStartup+5;
+            while(Time.realtimeSinceStartup<deadline&&targets.Any(target=>target.CurrentHp>expected+.2f))yield return new WaitForFixedUpdate();
+            foreach(var target in targets)Assert.That(target.CurrentHp,Is.EqualTo(expected).Within(.5),"Each physical shot must reach its own target.");
+        }
+        finally{foreach(var target in targets)if(target!=null)Object.Destroy(target.gameObject);if(vehicle!=null)Object.Destroy(vehicle.gameObject);}
+        yield return null;
+    }
+    [UnityTest] public IEnumerator LargeAutomaticSalvoKeepsIndependentHitsWithGroupedCollisionFiltering()
+    {
+        var gun=Build(R4WeaponKind.Automatic,out _,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.Model.Economy.DoubleShotChancePerUnit=50;var core=assembly.GetComponent<R1VehicleState>().Core;float coreHp=core.CurrentHp;
+        var hp=Target(gun,6);hp.Configure(2000,false);int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),weapon=>weapon==R4WeaponKind.Automatic);
+        Assert.That(slot,Is.GreaterThanOrEqualTo(0));assembly.FireSlot(slot);
+        var shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(origin=>origin.PartId==gun.Id)
+            .OrderBy(origin=>origin.GetComponent<P17PhysicalShell>().LaunchSequence).ToArray();
+        Assert.That(shots.Length,Is.EqualTo(51),"The primary and 50 bonus shots must all exist separately.");
+        int layer=shots[0].gameObject.layer;Assert.That(layer,Is.InRange(24,31));
+        Assert.That(shots.All(origin=>origin.gameObject.layer==layer&&(origin.GetComponent<Collider>().excludeLayers.value&(1<<layer))!=0),Is.True);
+        Assert.That(ExplicitSiblingPairs(shots),Is.EqualTo(496),"Only the first 32 shots need explicit pair filters.");
+        Assert.That(shots.All(origin=>Physics.GetIgnoreCollision(origin.GetComponent<Collider>(),core.GetComponent<Collider>())),Is.True);
+        Assert.That(shots[0].GetComponent<RRLPointDefenseThreat>().TryIntercept(1),Is.True);
+        float deadline=Time.realtimeSinceStartup+5;
+        while(hp.CurrentHp>800.1f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(800).Within(.5),"The 50 surviving shots must each deliver physical damage.");
+        Assert.That(core.CurrentHp,Is.EqualTo(coreHp));
+        Object.Destroy(assembly.gameObject);Object.Destroy(hp.gameObject);
+    }
+    [UnityTest] public IEnumerator LargeAutomaticSalvoFallsBackForConflictingSceneFilter()
+    {
+        var blocker=new GameObject("Automatic layer compatibility fixture");blocker.transform.position=new Vector3(3000,3000,3000);
+        blocker.AddComponent<BoxCollider>().excludeLayers=1;blocker.SetActive(false);
+        var gun=Build(R4WeaponKind.Automatic,out _,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.Model.Economy.DoubleShotChancePerUnit=50;var hp=Target(gun,6);hp.Configure(2000,false);
+        try
+        {
+            int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),weapon=>weapon==R4WeaponKind.Automatic);assembly.FireSlot(slot);
+            var shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(origin=>origin.PartId==gun.Id).ToArray();
+            Assert.That(shots.Length,Is.EqualTo(51));Assert.That(shots.All(origin=>origin.gameObject.layer==0),Is.True);
+            Assert.That(ExplicitSiblingPairs(shots),Is.EqualTo(1275),"Fallback must preserve all original pair filters.");
+            float deadline=Time.realtimeSinceStartup+5;
+            while(hp.CurrentHp>776.1f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+            Assert.That(hp.CurrentHp,Is.EqualTo(776).Within(.5));
+        }
+        finally{Object.Destroy(blocker);Object.Destroy(assembly.gameObject);Object.Destroy(hp.gameObject);}
+    }
+    [UnityTest] public IEnumerator GroupedAutomaticShotsDamageHostileDomeIndividually()
+    {
+        var gun=Build(R4WeaponKind.Automatic,out _,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.Model.Economy.DoubleShotChancePerUnit=50;var target=Target(gun,6);
+        var dome=new GameObject("Grouped automatic shield");dome.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6;
+        dome.AddComponent<SphereCollider>().isTrigger=true;var shield=dome.AddComponent<P12PipelineSafeDamageable>();shield.Configure(2000,false);
+        dome.AddComponent<R3ShieldDome>().Configure(2,2);Physics.SyncTransforms();
+        try
+        {
+            int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),weapon=>weapon==R4WeaponKind.Automatic);assembly.FireSlot(slot);
+            var shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(origin=>origin.PartId==gun.Id).ToArray();
+            Assert.That(shots.Length,Is.EqualTo(51));Assert.That(shots.All(origin=>origin.gameObject.layer>=24),Is.True);
+            float deadline=Time.realtimeSinceStartup+5;
+            while(shield.CurrentHp>776.1f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+            Assert.That(shield.CurrentHp,Is.EqualTo(776).Within(.5));Assert.That(target.CurrentHp,Is.EqualTo(500).Within(.01));
+        }
+        finally{Object.Destroy(dome);Object.Destroy(target.gameObject);Object.Destroy(assembly.gameObject);}
+    }
     [UnityTest] public IEnumerator LargeShotgunSalvoKeepsIndividualImpactsWithGroupedCollisionFiltering()
     {
         var gun=Build(R4WeaponKind.Shotgun,out _,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
@@ -1034,7 +1125,14 @@ public sealed class BacklogProjectileTierPhysicsTests
             var groups=new System.Collections.Generic.List<System.Collections.Generic.List<GameObject>>();
             for(int i=0;i<8;i++)
             {
-                var pair=Pair(i);Assert.That((bool)group.Invoke(null,new object[]{pair}),Is.True);
+                var pair=Pair(i);
+                if(i==0)
+                {
+                    var duplicate=new System.Collections.Generic.List<GameObject>{pair[0],pair[0]};
+                    Assert.That((bool)group.Invoke(null,new object[]{duplicate}),Is.False,"One projectile cannot occupy a lease twice.");
+                    Assert.That(pair[0].layer,Is.EqualTo(0));
+                }
+                Assert.That((bool)group.Invoke(null,new object[]{pair}),Is.True);
                 Assert.That(pair[0].layer,Is.EqualTo(24+i));groups.Add(pair);
             }
             var overflow=Pair(8);Assert.That((bool)group.Invoke(null,new object[]{overflow}),Is.False);
