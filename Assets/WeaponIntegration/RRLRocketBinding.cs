@@ -82,10 +82,6 @@ namespace RoboRougelike.WeaponIntegration
             if(State.ReloadReadyAt>0&&Time.time>=State.ReloadReadyAt){State.Ammo=Magazine;State.ReloadReadyAt=0;}
             Module.SetOperational(Device.Available&&State.ReloadReadyAt<=Time.time);
         }
-        internal static int AvailableRocketSlots
-        {
-            get => Mathf.Max(0,32-RocketProjectile.ActiveFlightCount);
-        }
         public bool Fire()=>FireCore(false);
         internal bool FirePrimary()=>FireCore(true);
         bool FireCore(bool deferExtras)
@@ -93,7 +89,6 @@ namespace RoboRougelike.WeaponIntegration
             Refresh();if(!Device.Available||Time.time<State.DeviceReadyAt)return false;
             var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>()))return false;
-            int available=AvailableRocketSlots;
             // The package fails closed on an incomplete physics query. The
             // integrated game admits large multi-collider vehicles, so size
             // both bounded buffers for that workload without weakening it.
@@ -106,27 +101,17 @@ namespace RoboRougelike.WeaponIntegration
             if(energy!=null&&!energy.TrySpend(cost))return false;
             if(Module.TryFire()!=RocketFireResult.Fired){if(energy!=null)energy.Refund(cost);return false;}
             State.DeviceReadyAt=Module.NextReadyTime;
-            int extras=!deferExtras&&assembly!=null?assembly.RollDoubleShotExtras(available-1):0;
+            int extras=!deferExtras&&assembly!=null?assembly.RollDoubleShotExtras(int.MaxValue):0;
             if(extras>0)FireAdditional(extras);
             RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.RocketLauncher);return true;
         }
         internal void FireAdditional(int count)
         {
-            if(Device?.Owner==null||muzzle==null||projectileTemplate==null||Module==null)return;
-            int extras=Mathf.Min(Mathf.Max(0,count),AvailableRocketSlots);
-            for(int i=0;i<extras;i++)
-            {
-                RocketProjectile extra=null;
-                try
-                {
-                    extra=RentRocket(projectileTemplate,muzzle.position,muzzle.rotation);
-                    if(!extra.TryInitialize(Module.CurrentSpec,Device.Body,Device.Owner,gameObject,null,muzzle.forward))
-                    {Object.Destroy(extra.gameObject);continue;}
-                    if(!extra.gameObject.activeSelf)extra.gameObject.SetActive(true);
-                }
-                catch(System.Exception problem)
-                {if(extra!=null)Object.Destroy(extra.gameObject);Debug.LogException(problem,this);}
-            }
+            if(count<=0||Device?.Owner==null||muzzle==null||projectileTemplate==null||Module==null)return;
+            var queue=Device.Owner.GetComponent<RRLRocketVolleyQueue>();
+            if(queue==null)queue=Device.Owner.gameObject.AddComponent<RRLRocketVolleyQueue>();
+            queue.Enqueue(count,projectileTemplate,Module.CurrentSpec,Device.Body,Device.Owner,gameObject,
+                muzzle.position,muzzle.rotation,muzzle.forward,ReturnRocket);
         }
         public bool BeginReload(){Refresh();if(!Device.Available||State.Ammo>=Magazine||State.ReloadReadyAt>0)return false;State.ReloadReadyAt=Time.time+2.2f;return true;}
         public bool TrySpendAmmo(int units)

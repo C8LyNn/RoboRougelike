@@ -88,6 +88,14 @@ namespace RoboRougelike.Mechanics.Rockets
 
         public bool TryInitialize(RocketSpec snapshot, Rigidbody firingBody, Transform owner,
             GameObject attackerSource, Transform target, Vector3 firedDirection)
+            =>TryInitializeInternal(snapshot,firingBody,owner,attackerSource,target,firedDirection,null);
+
+        public bool TryInitializeWithInheritedVelocity(RocketSpec snapshot,Rigidbody firingBody,Transform owner,
+            GameObject attackerSource,Transform target,Vector3 firedDirection,Vector3 inherited)
+            =>TryInitializeInternal(snapshot,firingBody,owner,attackerSource,target,firedDirection,inherited);
+
+        private bool TryInitializeInternal(RocketSpec snapshot,Rigidbody firingBody,Transform owner,
+            GameObject attackerSource,Transform target,Vector3 firedDirection,Vector3? inherited)
         {
             if (initialized || firingBody == null || owner == null || firedDirection.sqrMagnitude < 1e-8f)
                 return false;
@@ -99,7 +107,7 @@ namespace RoboRougelike.Mechanics.Rockets
             attacker = attackerSource;
             guidedTarget = target;
             forward = firedDirection.normalized;
-            inheritedVelocity = firingBody.GetPointVelocity(transform.position) * spec.InheritedVelocityFraction;
+            inheritedVelocity = inherited ?? firingBody.GetPointVelocity(transform.position) * spec.InheritedVelocityFraction;
             speed = spec.InitialSpeed;
             age = 0f;
             hitPoints = spec.RocketHitPoints;

@@ -331,14 +331,11 @@ namespace RoboRougelike.R3
                         if(rocket!=null&&rocket.FirePrimary())
                         {
                             part.NextFireTime=rocket.State.DeviceReadyAt;
-                            if(RoboRougelike.WeaponIntegration.RRLRocketBinding.AvailableRocketSlots>0)
+                            int requested=RollDoubleShotExtras(int.MaxValue);
+                            if(requested>0)
                             {
-                                int requested=RollDoubleShotExtras(int.MaxValue);
-                                if(requested>0)
-                                {
-                                    if(pendingRockets==null)pendingRockets=new List<PendingRocketShot>();
-                                    pendingRockets.Add(new PendingRocketShot{Binding=rocket,Requested=requested});
-                                }
+                                if(pendingRockets==null)pendingRockets=new List<PendingRocketShot>();
+                                pendingRockets.Add(new PendingRocketShot{Binding=rocket,Requested=requested});
                             }
                         }
                         continue;
@@ -380,13 +377,8 @@ namespace RoboRougelike.R3
                     var art=part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>();
                     if(art!=null){art.AdvanceMuzzle();part.Muzzle=art.Muzzle;}
                 }
-            if(pendingRockets!=null&&RoboRougelike.WeaponIntegration.RRLRocketBinding.AvailableRocketSlots>0)
-            {
-                var rocketRequests=new int[pendingRockets.Count];
-                for(int i=0;i<pendingRockets.Count;i++)rocketRequests[i]=pendingRockets[i].Requested;
-                var rocketAllocation=AllocateBonusShots(rocketRequests,RoboRougelike.WeaponIntegration.RRLRocketBinding.AvailableRocketSlots);
-                for(int i=0;i<pendingRockets.Count;i++)if(rocketAllocation[i]>0)pendingRockets[i].Binding.FireAdditional(rocketAllocation[i]);
-            }
+            if(pendingRockets!=null)
+                foreach(var shot in pendingRockets)shot.Binding.FireAdditional(shot.Requested);
             if(pending==null)return;
             if(P17PhysicalShell.AvailableSlots<=0)
             {foreach(var shot in pending)if(shot.Shotgun!=null)shot.Shotgun.ClearDeferred();return;}

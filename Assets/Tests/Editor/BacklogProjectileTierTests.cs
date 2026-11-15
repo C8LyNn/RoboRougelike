@@ -149,7 +149,7 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(model.Buy(gunCell,R3PartKind.Gun,R4WeaponKind.RocketLauncher),Is.True);
         var bonusCell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
             .First(c=>model.PlacementError(c,R3PartKind.DoubleShot)==null);
-        Assert.That(model.Buy(bonusCell,R3PartKind.DoubleShot),Is.True);model.Economy.DoubleShotChancePerUnit=100;
+        Assert.That(model.Buy(bonusCell,R3PartKind.DoubleShot),Is.True);model.Economy.DoubleShotChancePerUnit=1;
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
         var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=true;var assembly=vehicle.GetComponent<R3VehicleAssembly>();
         var guns=assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.RocketLauncher).ToArray();Assert.That(guns.Length,Is.EqualTo(2));
@@ -1428,6 +1428,89 @@ public sealed class BacklogProjectileTierPhysicsTests
         float baseline=500-target1.CurrentHp,boosted=500-target2.CurrentHp;
         Assert.That(baseline,Is.GreaterThan(0));Assert.That(boosted,Is.EqualTo(baseline*1.4f).Within(.2f),"Every real pellet must receive the kinetic bonus.");
         Object.Destroy(bonus);Object.Destroy(target1.gameObject);Object.Destroy(target2.gameObject);
+    }
+    [UnityTest] public IEnumerator DoubleShotRocketsAreNotLostWhenOldCapacityIsFull()
+    {
+        var gun=Build(R4WeaponKind.RocketLauncher,out var energy,true);var hp=Target(gun,6,2);float before=energy.Current;
+        var binding=gun.GetComponent<RRLRocketBinding>();var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var owner=new GameObject("Active rocket capacity fixture");var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        var dummies=new System.Collections.Generic.List<GameObject>();
+        try
+        {
+            var spec=new RoboRougelike.Mechanics.Rockets.RocketConfig().Snapshot();
+            while(RoboRougelike.Mechanics.Rockets.RocketProjectile.ActiveFlightCount<32)
+            {
+                var dummy=new GameObject("Active rocket capacity fixture");dummies.Add(dummy);dummy.transform.position=new Vector3(2000+dummies.Count*3,2000,2000);
+                var rocket=dummy.AddComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+                Assert.That(rocket.TryInitialize(spec,body,owner.transform,owner,null,Vector3.forward),Is.True);
+                Assert.That(dummies.Count,Is.LessThan(40));
+            }
+            int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),w=>w==R4WeaponKind.RocketLauncher);
+            Assert.That(slot,Is.GreaterThanOrEqualTo(0));assembly.FireSlot(slot);
+            Assert.That(energy.Current,Is.EqualTo(before-9f).Within(.001));Assert.That(binding.State.Ammo,Is.EqualTo(9));
+            Assert.That(Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId==gun.Id),Is.EqualTo(2),"The bonus rocket must still exist even when 32 unrelated rockets are active.");
+            float deadline=Time.realtimeSinceStartup+5;while(500-hp.CurrentHp<200&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(500-hp.CurrentHp,Is.InRange(200f,240f),"Both independent rockets must hit without charging again.");
+        }
+        finally
+        {
+            foreach(var dummy in dummies)if(dummy!=null)Object.Destroy(dummy);
+            if(owner!=null)Object.Destroy(owner);if(hp!=null)Object.Destroy(hp.gameObject);if(assembly!=null)Object.Destroy(assembly.gameObject);
+        }
+    }
+    [UnityTest] public IEnumerator MoreThanThirtyTwoBonusRocketsAreEventuallySpawned()
+    {
+        var gun=Build(R4WeaponKind.RocketLauncher,out var energy,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.Model.Economy.DoubleShotChancePerUnit=40;var body=assembly.GetComponent<Rigidbody>();
+        var muzzle=new GameObject("Unblocked queued rocket muzzle").transform;muzzle.SetParent(gun.transform,false);
+        muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;gun.GunPivot=muzzle;gun.Muzzle=muzzle;
+        var binding=gun.GetComponent<RRLRocketBinding>();var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        typeof(RRLRocketBinding).GetField("muzzle",flags).SetValue(binding,muzzle);binding.Module.Bind(body,assembly.transform,muzzle);
+        var queue=assembly.gameObject.AddComponent<RRLRocketVolleyQueue>();
+        typeof(RRLRocketVolleyQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        float before=energy.Current;Physics.SyncTransforms();Assert.That(binding.Fire(),Is.True);
+        Assert.That(binding.State.Ammo,Is.EqualTo(9));Assert.That(energy.Current,Is.EqualTo(before-9f).Within(.001));
+        float deadline=Time.realtimeSinceStartup+8;R4ProjectileOrigin[] shots;
+        do
+        {
+            shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==gun.Id).ToArray();
+            if(shots.Length>=41)break;
+            yield return null;
+        }while(Time.realtimeSinceStartup<deadline);
+        Assert.That(shots.Length,Is.EqualTo(41),"One primary and all 40 distinct bonus rockets must exist.");
+        Assert.That(shots.All(p=>p.GetComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>().OwnerRoot==assembly.transform),Is.True);
+        Assert.That(binding.State.Ammo,Is.EqualTo(9),"Queued bonuses must not spend additional ammunition.");
+        foreach(var shot in shots)if(shot!=null)Object.Destroy(shot.gameObject);Object.Destroy(assembly.gameObject);
+    }
+    [UnityTest] public IEnumerator QueuedRocketBonusesKeepShotSnapshotAfterLauncherIsDestroyed()
+    {
+        var gun=Build(R4WeaponKind.RocketLauncher,out var energy,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.Model.Economy.DoubleShotChancePerUnit=3;var body=assembly.GetComponent<Rigidbody>();
+        body.isKinematic=false;body.useGravity=false;body.linearVelocity=Vector3.right*7;
+        var queue=assembly.gameObject.AddComponent<RRLRocketVolleyQueue>();
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        typeof(RRLRocketVolleyQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        string id=gun.Id;var binding=gun.GetComponent<RRLRocketBinding>();float before=energy.Current;
+        Assert.That(binding.Fire(),Is.True);Assert.That(binding.State.Ammo,Is.EqualTo(9));
+        var initial=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==id).ToArray();
+        Assert.That(initial.Length,Is.EqualTo(2),"One bonus starts immediately while two remain queued.");
+        var first=initial[0].GetComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+        Vector3 position=first.transform.position,velocity=first.FlightVelocity;
+        body.linearVelocity=Vector3.left*13;body.position+=Vector3.right*20;
+        Object.DestroyImmediate(gun.gameObject);
+        var drain=typeof(RRLRocketVolleyQueue).GetMethod("FixedUpdate",flags);drain.Invoke(queue,null);drain.Invoke(queue,null);
+        var rockets=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==id).Select(p=>p.GetComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>()).ToArray();
+        Assert.That(rockets.Length,Is.EqualTo(4));Assert.That(energy.Current,Is.EqualTo(before-9f).Within(.001));
+        var attackerField=typeof(RoboRougelike.Mechanics.Rockets.RocketProjectile).GetField("attacker",flags);
+        foreach(var queued in rockets.Where(r=>!initial.Any(p=>p.gameObject==r.gameObject)))
+            Assert.That(attackerField.GetValue(queued),Is.SameAs(assembly.gameObject),"A destroyed launcher must not erase queued rockets' owner attribution.");
+        foreach(var rocket in rockets)
+        {
+            Assert.That(rocket.OwnerRoot,Is.SameAs(assembly.transform));
+            Assert.That(Vector3.Distance(rocket.transform.position,position),Is.LessThan(.001f));
+            Assert.That(Vector3.Distance(rocket.FlightVelocity,velocity),Is.LessThan(.001f));
+        }
+        foreach(var rocket in rockets)Object.Destroy(rocket.gameObject);Object.Destroy(assembly.gameObject);yield return null;
     }
     [UnityTest] public IEnumerator DoubleShotDuplicatesRocketWithoutExtraAmmoOrEnergy()
     {

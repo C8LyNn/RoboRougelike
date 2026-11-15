@@ -89,13 +89,11 @@ public sealed class CompactCombatHUDTests
     {
         var method=typeof(R1RunHUD).GetMethod("ProjectileBudgetWarning",BindingFlags.Static|BindingFlags.NonPublic);
         Assert.That(method,Is.Not.Null);
-        string Warning(bool shells,bool rockets,bool bonus,bool shellGun,bool rocketGun)=>(string)method.Invoke(null,new object[]{shells,rockets,bonus,shellGun,rocketGun});
-        Assert.That(Warning(true,true,false,true,true),Is.Null,"A vehicle without a bonus must not get a false warning.");
-        Assert.That(Warning(true,false,true,false,true),Is.Null,"A full shell budget cannot block rocket bonuses.");
-        Assert.That(Warning(false,true,true,true,false),Is.Null,"A full rocket budget cannot block shell bonuses.");
-        Assert.That(Warning(true,false,true,true,false),Does.Contain("bonusowe pociski"));
-        Assert.That(Warning(false,true,true,false,true),Does.Contain("bonusowe rakiety"));
-        Assert.That(Warning(true,true,true,true,true),Does.Contain("bonusowe pociski i rakiety"));
+        string Warning(bool shells,bool bonus,bool shellGun)=>(string)method.Invoke(null,new object[]{shells,bonus,shellGun});
+        Assert.That(Warning(true,false,true),Is.Null,"A vehicle without a bonus must not get a false warning.");
+        Assert.That(Warning(true,true,false),Is.Null,"A full shell budget cannot block rocket bonuses.");
+        Assert.That(Warning(false,true,true),Is.Null,"An available shell budget must not produce a warning.");
+        Assert.That(Warning(true,true,true),Does.Contain("bonusowe pociski"));
     }
     [Test] public void EquipmentWarningsDistinguishLastWheelAndInactiveWeapons()
     {

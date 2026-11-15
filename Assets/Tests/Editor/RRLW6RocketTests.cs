@@ -122,24 +122,22 @@ public class RRLW6RocketPhysicalTests
         }
         yield return null;
     }
-    [UnityTest] public IEnumerator RocketBonusCapacityTracksOnlyActiveUnresolvedFlight()
+    [UnityTest] public IEnumerator RocketRegistryTracksOnlyActiveUnresolvedFlight()
     {
-        var property=typeof(RRLRocketBinding).GetProperty("AvailableRocketSlots",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
-        Assert.That(property,Is.Not.Null);
-        Func<int> slots=()=> (int)property.GetValue(null);
+        Func<int> active=()=>RocketProjectile.ActiveFlightCount;
         var owner=new GameObject("Rocket capacity owner");var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
         var item=new GameObject("Rocket capacity fixture");var rocket=item.AddComponent<RocketProjectile>();
         try
         {
-            int before=slots();Assert.That(before,Is.GreaterThan(0));
+            int before=active();
             Assert.That(rocket.TryInitialize(new RocketConfig().Snapshot(),body,owner.transform,owner,null,Vector3.forward),Is.True);
-            Assert.That(slots(),Is.EqualTo(before-1));
-            rocket.enabled=false;Assert.That(slots(),Is.EqualTo(before),"A disabled rocket cannot occupy the active-flight budget.");
-            rocket.enabled=true;Assert.That(slots(),Is.EqualTo(before-1));
-            item.SetActive(false);Assert.That(slots(),Is.EqualTo(before));
-            item.SetActive(true);Assert.That(slots(),Is.EqualTo(before-1));
+            Assert.That(active(),Is.EqualTo(before+1));
+            rocket.enabled=false;Assert.That(active(),Is.EqualTo(before),"A disabled rocket is not an active flight.");
+            rocket.enabled=true;Assert.That(active(),Is.EqualTo(before+1));
+            item.SetActive(false);Assert.That(active(),Is.EqualTo(before));
+            item.SetActive(true);Assert.That(active(),Is.EqualTo(before+1));
             rocket.ApplyInterceptionDamage(float.MaxValue);Assert.That(rocket.IsResolved,Is.True);
-            Assert.That(slots(),Is.EqualTo(before),"A resolved rocket must free its place immediately, before deferred destruction.");
+            Assert.That(active(),Is.EqualTo(before),"A resolved rocket leaves the active-flight registry immediately.");
         }
         finally{if(item!=null)UnityEngine.Object.Destroy(item);if(owner!=null)UnityEngine.Object.Destroy(owner);}
         yield return null;

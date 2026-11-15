@@ -156,6 +156,30 @@ public sealed class BacklogManualRescueTests
         float end=Time.time+run.EmergencyRescueDurationSeconds+.1f;while(Time.time<end)yield return null;
         energy=bank.Current;tick.Invoke(aura,null);Assert.That(bank.Current,Is.LessThan(energy),"Aura resumes after protection ends");
     }
+    [UnityTest] public IEnumerator QueuedBonusRocketsWaitUntilRescueEnds()
+    {
+        run.Encounter.SetCombatActive(false);run.EmergencyRescueDurationSeconds=.3f;
+        var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+        var template=new GameObject("Queued rocket rescue template");template.SetActive(false);
+        var prefab=template.AddComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+        var queue=run.Player.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRocketVolleyQueue>();
+        typeof(RoboRougelike.WeaponIntegration.RRLRocketVolleyQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        var spec=new RoboRougelike.Mechanics.Rockets.RocketConfig().Snapshot();
+        var enqueue=typeof(RoboRougelike.WeaponIntegration.RRLRocketVolleyQueue).GetMethod("Enqueue",flags);
+        enqueue.Invoke(queue,new object[]{2,prefab,spec,run.Player.GetComponent<Rigidbody>(),run.Player.transform,run.Player.gameObject,
+            run.Player.transform.position+Vector3.up*4,Quaternion.identity,Vector3.forward,null});
+        var batches=(System.Collections.IEnumerable)typeof(RoboRougelike.WeaponIntegration.RRLRocketVolleyQueue).GetField("batches",flags).GetValue(queue);
+        var iterator=batches.GetEnumerator();Assert.That(iterator.MoveNext(),Is.True);var batch=iterator.Current;
+        var remaining=batch.GetType().GetField("Remaining");Assert.That((int)remaining.GetValue(batch),Is.EqualTo(1));
+        Assert.That(run.TryEmergencyRescue(),Is.True);
+        var drain=typeof(RoboRougelike.WeaponIntegration.RRLRocketVolleyQueue).GetMethod("FixedUpdate",flags);drain.Invoke(queue,null);
+        Assert.That((int)remaining.GetValue(batch),Is.EqualTo(1),"Queued offensive rockets must wait during rescue.");
+        float deadline=Time.realtimeSinceStartup+5;while(run.EmergencyRescueAttackBlocked&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.EmergencyRescueAttackBlocked,Is.False);drain.Invoke(queue,null);
+        Assert.That((int)remaining.GetValue(batch),Is.Zero);
+        foreach(var rocket in Object.FindObjectsByType<RoboRougelike.Mechanics.Rockets.RocketProjectile>(FindObjectsSortMode.None).Where(r=>r.OwnerRoot==run.Player.transform))Object.Destroy(rocket.gameObject);
+        Object.Destroy(template);
+    }
     [UnityTest] public IEnumerator QueuedDeviceShotsWaitUntilRescueEnds()
     {
         run.Encounter.SetCombatActive(false);run.EmergencyRescueDurationSeconds=.3f;
