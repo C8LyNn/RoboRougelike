@@ -998,3 +998,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Dawny test oczekiwał, że wybuch rakiety nie zada obrażeń po przekroczeniu początkowego rozmiaru bufora. Zastąpiono to sprawdzeniem pełnego zapytania: przy ponad 1024 colliderach wybuch nadal trafia faktyczny cel. Nie zmieniono kodu gry w tym kroku.
 - Unity 6000.3.14f1: **3 PASS, 0 FAIL** (`rocket_stale_test_final.xml`, `.log`) dla poprawionego scenariusza i dwóch innych faktycznych trafień. Przed aktualizacją `rocket_stale_test_red.xml`: **1 FAIL**, test oczekiwał ostrzeżenia o starym zachowaniu, którego już nie ma.
+
+#### 02, 14, 20, 44. Stan obecnych limitów pocisków
+
+- Celowane testy **5 PASS, 0 FAIL** (`weapon_remaining_audit.xml`, `.log`) potwierdzają obecne zachowanie: po całkowitym zapełnieniu puli zwykła broń nie pobiera energii ani nie rozpoczyna cooldownu, a Double Shot tworzy dodatkowe pociski strzelby, railguna i rakiety bez dodatkowego kosztu w badanych scenariuszach. Test obejmuje też wybuch przy dużej liczbie colliderów.
+- Wynik nie oznacza usunięcia limitów ani gwarancji równoczesnego strzału wszystkich kopii przy ich zapełnieniu. Zastąpienie współdzielonych limitów pozostaje otwarte, podobnie jak ręczna ocena wydajności i rozgrywki.
