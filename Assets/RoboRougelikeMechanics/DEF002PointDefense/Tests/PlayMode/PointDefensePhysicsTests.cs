@@ -117,6 +117,45 @@ namespace RoboRougelike.Mechanics.PointDefense.Tests
             typeof(PointDefenseInterceptor).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(shot,null);
             Assert.AreEqual(0,threat.interceptCalls,"The retry must never make a projectile pass through a wall.");
         }
+        [Test] public void WallOverlappingIgnoredSiblingStillBlocksScanning()
+        {
+            var first=CreateMissile();var second=CreateMissile();
+            Physics.IgnoreCollision(first.GetComponent<Collider>(),second.GetComponent<Collider>());
+            var wall=Track("Wall at target",first.transform.position);wall.AddComponent<SphereCollider>().radius=.45f;
+            Physics.SyncTransforms();defense.ScanNow();
+            Assert.IsNull(defense.CurrentTarget,"An unrelated solid wall must not be treated as a sibling projectile.");
+        }
+        [Test] public void WallOverlappingLockedThreatStillBlocksInterceptor()
+        {
+            var first=CreateMissile(1.1f);var second=CreateMissile(1.1f);
+            Physics.IgnoreCollision(first.GetComponent<Collider>(),second.GetComponent<Collider>());
+            var wall=Track("Wall at interceptor",muzzle.transform.position);wall.AddComponent<SphereCollider>().radius=.1f;
+            var shot=Track("Overlapping interceptor",muzzle.transform.position).AddComponent<PointDefenseInterceptor>();
+            shot.Initialize(first.GetComponent<PointDefenseThreatProxy>(),root.transform,Vector3.forward*18,1,.12f,1);Physics.SyncTransforms();
+            typeof(PointDefenseInterceptor).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(shot,null);
+            Assert.AreEqual(0,first.interceptCalls,"A wall at the same point must prevent interception.");
+            Assert.AreEqual(0,second.interceptCalls);
+        }
+        [Test] public void WallTiedWithLockedThreatStillBlocksSweptInterceptor()
+        {
+            var threat=CreateMissile(1.44f);threat.GetComponent<SphereCollider>().radius=.04f;
+            var wall=Track("Wall tied with target",threat.transform.position);wall.AddComponent<SphereCollider>().radius=.04f;
+            var shot=Track("Tied interceptor",muzzle.transform.position).AddComponent<PointDefenseInterceptor>();
+            shot.Initialize(threat.GetComponent<PointDefenseThreatProxy>(),root.transform,Vector3.forward*18,1,.12f,1);Physics.SyncTransforms();
+            typeof(PointDefenseInterceptor).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(shot,null);
+            Assert.AreEqual(0,threat.interceptCalls,"An equally near wall must win over the locked threat.");
+        }
+        [Test] public void EarlierSiblingStillBlocksSweptInterceptor()
+        {
+            var target=CreateMissile(1.44f);target.GetComponent<SphereCollider>().radius=.04f;
+            var closer=CreateMissile(1.38f);closer.GetComponent<SphereCollider>().radius=.04f;
+            Physics.IgnoreCollision(target.GetComponent<Collider>(),closer.GetComponent<Collider>());
+            var shot=Track("Blocked interceptor",muzzle.transform.position).AddComponent<PointDefenseInterceptor>();
+            shot.Initialize(target.GetComponent<PointDefenseThreatProxy>(),root.transform,Vector3.forward*18,1,.12f,1);Physics.SyncTransforms();
+            typeof(PointDefenseInterceptor).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(shot,null);
+            Assert.AreEqual(0,target.interceptCalls,"An earlier sibling projectile must not be passed through.");
+            Assert.AreEqual(0,closer.interceptCalls,"The interceptor only damages its locked target.");
+        }
         [Test] public void Scanning_SkipsFriendly()
         {
             CreateMissile(faction: 1); defense.ScanNow();

@@ -20,6 +20,20 @@ namespace RoboRougelike.Mechanics.PointDefense
         private float lifetime;
         private bool initialized;
 
+        // A physical salvo can explicitly ignore sibling collision pairs, or
+        // use mutual collider/body layer exclusions. This does not identify
+        // unrelated projectiles or obstacles as siblings.
+        internal static bool MutuallyExcluded(Collider first,Collider second)
+        {
+            if(first==null||second==null)return false;
+            if(Physics.GetIgnoreCollision(first,second))return true;
+            int firstMask=first.excludeLayers.value,secondMask=second.excludeLayers.value;
+            var firstBody=first.attachedRigidbody;var secondBody=second.attachedRigidbody;
+            if(firstBody!=null)firstMask|=firstBody.excludeLayers.value;
+            if(secondBody!=null)secondMask|=secondBody.excludeLayers.value;
+            return (firstMask&(1<<second.gameObject.layer))!=0&&(secondMask&(1<<first.gameObject.layer))!=0;
+        }
+
         public bool IsInitialized { get { return initialized; } }
         public void Initialize(PointDefenseThreatProxy lockedTarget, Transform shooterOwnerRoot,
             Vector3 worldVelocity, float interceptDamage, float hitRadius, float seconds)
@@ -48,18 +62,24 @@ namespace RoboRougelike.Mechanics.PointDefense
                 {overlapHits=Physics.OverlapSphere(transform.position,radius,collisionMask,QueryTriggerInteraction.Collide);overlapCount=overlapHits.Length;break;}
                 System.Array.Resize(ref initialOverlaps,Mathf.Min(initialOverlaps.Length*2,MaxReusableHits));
             }
-            bool touchingLockedTarget = false;
+            Collider lockedOverlap=null;
+            for(int i=0;i<overlapCount;i++)
+            {
+                var col=overlapHits[i];
+                if(col!=null&&col.GetComponentInParent<PointDefenseThreatProxy>()==target){lockedOverlap=col;break;}
+            }
             for (int i = 0; i < overlapCount; i++)
             {
                 Collider col = overlapHits[i];
                 if (col == null || col.transform.IsChildOf(transform)) continue;
                 if (ownerRoot != null && col.transform.IsChildOf(ownerRoot)) continue;
-                if (col.GetComponentInParent<PointDefenseThreatProxy>() == target)
-                { touchingLockedTarget = true; continue; }
+                var proxy=col.GetComponentInParent<PointDefenseThreatProxy>();
+                if (proxy == target) continue;
                 if (col.isTrigger) continue; // ignore unrelated trigger volumes
+                if(lockedOverlap!=null&&proxy!=null&&MutuallyExcluded(lockedOverlap,col))continue;
                 Destroy(gameObject); return; // solid foreign obstacle: never damage through walls
             }
-            if (touchingLockedTarget)
+            if (lockedOverlap!=null)
             {
                 target.Threat.TryIntercept(damage);
                 Destroy(gameObject);
@@ -89,10 +109,21 @@ namespace RoboRougelike.Mechanics.PointDefense
                 if (ownerRoot != null && col.transform.IsChildOf(ownerRoot)) continue;
                 if (col.isTrigger && col.GetComponentInParent<PointDefenseThreatProxy>() != target)
                     continue; // capture trigger-based rockets, not arbitrary trigger areas
-                if (impactHits[i].distance < nearest)
+                float hitDistance=impactHits[i].distance;
+                if (hitDistance < nearest-.00001f)
                 {
-                    nearest = impactHits[i].distance;
+                    nearest = hitDistance;
                     impact = col;
+                }
+                else if(impact!=null&&Mathf.Abs(hitDistance-nearest)<=.00001f)
+                {
+                    var currentProxy=impact.GetComponentInParent<PointDefenseThreatProxy>();
+                    var nextProxy=col.GetComponentInParent<PointDefenseThreatProxy>();
+                    // Only a sibling ignored by the target can be tied with
+                    // it; a wall or different projectile retains precedence.
+                    if(nextProxy==target&&currentProxy!=null&&currentProxy!=target&&MutuallyExcluded(impact,col))impact=col;
+                    else if(currentProxy==target&&nextProxy!=target&&
+                            (nextProxy==null||!MutuallyExcluded(impact,col)))impact=col;
                 }
             }
             if (impact != null)

@@ -201,12 +201,25 @@ namespace RoboRougelike.Mechanics.PointDefense
                 {lineHits=Physics.RaycastAll(origin,displacement/distance,distance,settings.blockerLayerMask,QueryTriggerInteraction.Ignore);count=lineHits.Length;break;}
                 System.Array.Resize(ref sightHits,Mathf.Min(sightHits.Length*2,MaxReusableHits));
             }
+            Collider targetCollider=null;float targetEntry=distance;
+            for(int i=0;i<count;i++)
+            {
+                var col=lineHits[i].collider;
+                if(col!=null&&col.transform.IsChildOf(threat.transform)&&lineHits[i].distance<=targetEntry)
+                {targetCollider=col;targetEntry=lineHits[i].distance;}
+            }
             for (int i = 0; i < count; i++)
             {
                 Collider col = lineHits[i].collider;
                 if (col == null) continue;
                 if (vehicleRoot != null && col.transform.IsChildOf(vehicleRoot)) continue;
                 if (col.transform.IsChildOf(threat.transform)) continue;
+                // Identical shots can occupy the same point while their own
+                // colliders are deliberately excluded from one another. A
+                // sibling at the same entry distance must not hide the target.
+                if(targetCollider!=null&&Mathf.Abs(lineHits[i].distance-targetEntry)<=.005f&&
+                   col.GetComponentInParent<PointDefenseThreatProxy>()!=null&&
+                   PointDefenseInterceptor.MutuallyExcluded(targetCollider,col))continue;
                 if (lineHits[i].distance + 0.005f < distance) return false;
             }
             return true;

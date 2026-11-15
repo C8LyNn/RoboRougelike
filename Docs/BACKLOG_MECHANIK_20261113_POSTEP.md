@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 29. Obrona punktowa wobec nakładających się pocisków
+
+- Dwa wrogie pociski z jednej salwy, które wzajemnie ignorują kolizję, mogły zasłonić się przed zamontowaną obroną punktową. Wykrywanie celu rozpoznaje teraz taki pocisk tylko przy niemal identycznej odległości trafienia. Fizyczny pocisk przechwytujący rozstrzyga jednoczesne trafienia na rzecz swojego celu, ale nadal zatrzymuje się na ścianie, innym zagrożeniu lub wcześniejszym pocisku. Jedno przechwycenie usuwa jeden pocisk, nie całą salwę. Obsłużono zarówno istniejące wykluczenia par, jak i eksperymentalne wzajemne wykluczenia warstw.
+- Unity 6000.3.14f1: przed poprawką `defense_volley_fixture.xml`: **2 FAIL**, mimo że każdy z pocisków był osobno wykrywany. Po poprawce `defense_volley_final.xml` i `.log`: **11 PASS, 0 FAIL** dla rzeczywistego zamontowanego urządzenia, obydwu typów salwy, przechwycenia rakiet oraz przypadków kopuły. Osobny `defense_volley_package.xml`: **33 PASS** PlayMode, w tym ściana w punkcie trafienia, ściana w punkcie początkowym i wcześniej położony pocisk. Nie wykonano ręcznej gry ani pomiaru wydajności w Windows Player.
+- Nie włączono eksperymentalnego grupowania salw w rozgrywce i nie usunięto limitu dodatkowych pocisków; punkty #02/#14 pozostają otwarte.
+
 ### 02, 14 i 24. Kopuła a wzajemnie wykluczone kolizje
 
 - Podczas eksperymentu z filtrowaniem salw wykryto, że zapytanie pocisku o przeszkody przed kopułą traktowało drugi, wzajemnie wykluczony collider jako przeszkodę, mimo że obiekty nie mogły się zderzyć. Zapytanie pomija teraz takie pary również wtedy, gdy wykluczenie ustawiono na colliderze lub Rigidbody. Zwykłe kolizje, fizyczne strzały i istniejące ustawienia warstw pozostają zachowane.
