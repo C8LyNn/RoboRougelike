@@ -71,6 +71,33 @@ public sealed class UI943PortraitRewardsLayoutTests
         var reordered=offers.Skip(1).Concat(offers.Take(1)).ToArray();
         Assert.That((bool)Method("SameRewardBaskets").Invoke(null,new object[]{offers,reordered}),Is.True);
     }
+    [Test] public void SevenCandidatesFindAnAlternativeWheneverOneExistsInSmallWrecks()
+    {
+        for(int size=1;size<=8;size++)
+        {
+            var ledger=new R4SalvageLedger(3);
+            var items=Enumerable.Range(0,size).Select(i=>new R4SalvageItem("candidate-"+i,"fixture",R3PartKind.Gun,R4WeaponKind.Basic,1)).ToArray();
+            Assert.That(ledger.Record("enemy",items,R3EnemyArchetype.Scout),Is.True);
+            for(int stage=0;stage<=5;stage++)
+            {
+                var counts=Enumerable.Range(30+stage*5,31).Select(percent=>System.Math.Min(3,System.Math.Max(1,(size*percent+99)/100))).Distinct().ToArray();
+                var possible=new HashSet<string>();
+                for(int mask=1;mask<(1<<size);mask++)
+                {
+                    var ids=items.Where((item,index)=>(mask&(1<<index))!=0).Select(item=>item.Id).OrderBy(id=>id).ToArray();
+                    if(counts.Contains(ids.Length))possible.Add(string.Join(",",ids));
+                }
+                string Key(R4SalvageBasket basket)=>string.Join(",",basket.Items.Select(item=>item.Id).OrderBy(id=>id));
+                for(int seed=0;seed<32;seed++)
+                {
+                    var visible=ledger.CreateBasketOffers(seed,stage,3).Select(Key).ToHashSet();
+                    bool exists=possible.Any(key=>!visible.Contains(key));
+                    bool found=ledger.CreateBasketOffers(seed,stage,7).Any(basket=>!visible.Contains(Key(basket)));
+                    Assert.That(found,Is.EqualTo(exists),$"size={size} stage={stage} seed={seed}");
+                }
+            }
+        }
+    }
     [Test] public void DamagedRewardInventoryShowsWorstPartsFirstWithoutChangingInventory()
     {
         var model=new R3VehicleModel(new R3VehicleDesign());

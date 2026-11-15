@@ -381,6 +381,42 @@ public sealed class UI943PortraitRewardsActionsTests
         }
         finally{if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
     }
+    [UnityTest] public IEnumerator IdenticalSeedRerollFindsAnotherRealBasketAndChargesOnce()
+    {
+        var ledger=run.Salvage;
+        var items=Enumerable.Range(0,8).Select(i=>new R4SalvageItem(Guid.NewGuid().ToString("N"),"fixture",R3PartKind.Gun,R4WeaponKind.Basic,1)).ToArray();
+        Assert.That(ledger.Record("fallback-enemy",items,R3EnemyArchetype.Scout),Is.True);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        Call("TrackRewardLedger",ledger);
+        int seed=unchecked((run.Seed^(run.Progress.EncounterIndex*397))+7919);
+        Field("rewardBasketSeed",seed);Call("RebuildRewardBasketStream",ledger,run,seed);
+        Call("PortraitRewardSelectBonus",0);Call("ChooseRewardBasket",0);
+        string Signature(R4SalvageBasket basket)=>basket.Archetype+":"+string.Join(",",basket.Items.Select(item=>item.Id).OrderBy(id=>id));
+        var previous=((IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets")).Take(3).Select(Signature).ToArray();
+        int before=run.VehicleModel.Scrap;
+        Assert.That((bool)Call("RerollRewardBaskets",run),Is.True,"An identical first draw must fall back to an actual alternative.");
+        Assert.That((int)Field("rewardBasketSeed"),Is.EqualTo(seed),"The fallback must use the candidate draw, rather than hoping a later seed differs.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-run.Definition.RewardBasketRerollCost));
+        var next=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(next.Count,Is.EqualTo(3),"The fallback must respect the configured offer count.");
+        Assert.That(previous,Does.Not.Contain(Signature(next[0])),"The first new offer must differ from every currently visible offer.");
+        var expected=next[0].Items.Select(item=>item.Id).ToArray();
+        var eligible=ledger.RewardItems.Where(item=>item.Selectable).ToArray();
+        Assert.That(expected.All(id=>eligible.Any(item=>item.Id==id)),Is.True,"The fallback must only use real enemy parts.");
+        string unavailable=eligible.First(item=>!expected.Contains(item.Id)).Id;
+        Assert.That(ledger.MarkPhysicalDrop(unavailable),Is.True);Call("TrackRewardLedger",ledger);
+        next=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(next.SelectMany(basket=>basket.Items).Any(item=>item.Id==unavailable),Is.False,"Refreshing a fallback must discard unavailable parts.");
+        Assert.That((int)Field("rewardBasketSeed"),Is.EqualTo(seed));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-run.Definition.RewardBasketRerollCost));
+        yield return null;expected=next[0].Items.Select(item=>item.Id).ToArray();
+        Call("ChooseRewardBasket",0);Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.True);
+        Assert.That(expected.All(id=>run.VehicleModel.Inventory.Any(part=>part.Id==id)),Is.True);
+        Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.False,"The chosen parts must not be granted twice.");
+        yield return null;
+    }
     [UnityTest] public IEnumerator LargeBasketRerollAndLaterPageCanBeClaimedOnce()
     {
         var ledger=run.Salvage;

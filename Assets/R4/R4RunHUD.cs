@@ -43,6 +43,7 @@ namespace RoboRougelike.R1
         private R4SalvageLedger displayedLedger;
         private long displayedBasketRevision;
         private int rewardBasketSeed;
+        private string rewardBasketPreferredKey;
         private int rewardBasketRefreshFrame=-1;
         private int lootPage,inventoryPage,basketPage;
         private bool inventoryOpen;
@@ -91,6 +92,7 @@ namespace RoboRougelike.R1
             }
             displayedLedger=ledger;lootSelection.Clear();selectedBonus=-1;lootPage=0;basketPage=0;basketRerollCount=0;
             rewardBasketRefreshFrame=-1;
+            rewardBasketPreferredKey=null;
             rewardBasketSeed=(run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397);
             RebuildRewardBasketStream(ledger,run,rewardBasketSeed);
             selectedBasket=-1;
@@ -99,8 +101,8 @@ namespace RoboRougelike.R1
         private void RebuildRewardBasketStream(R4SalvageLedger ledger,R1RunController run,int seed)
         {
             rewardBasketStream?.Dispose();
-            rewardBasketStream=ledger==null?null:new RewardBasketStream(ledger.EnumerateBasketOffers(
-                seed,run?.Progress?.EncounterIndex??0,run?.VehicleModel?.RewardBasketOfferCount??3));
+            rewardBasketStream=ledger==null?null:new RewardBasketStream(PrioritizedRewardBaskets(ledger,
+                seed,run?.Progress?.EncounterIndex??0,run?.VehicleModel?.RewardBasketOfferCount??3,rewardBasketPreferredKey));
             rewardBasketStream?.LoadThrough(6);
             rewardBaskets=rewardBasketStream!=null?rewardBasketStream.Items:System.Array.Empty<R4SalvageBasket>();
             displayedBasketRevision=ledger?.BasketRevision??0;
@@ -151,15 +153,31 @@ namespace RoboRougelike.R1
             int through=(int)System.Math.Min(int.MaxValue,((long)basketPage+2)*3);
             rewardBasketStream?.LoadThrough(through);
         }
+        private static string RewardBasketKey(R4SalvageBasket basket)=>((int)basket.Archetype)+":"+string.Concat(basket.Items.Select(p=>p.Id)
+            .OrderBy(id=>id,System.StringComparer.Ordinal).Select(id=>id.Length+":"+id));
         private static bool SameRewardBaskets(IReadOnlyList<R4SalvageBasket> a,IReadOnlyList<R4SalvageBasket> b)
         {
             if(a==null||b==null||a.Count!=b.Count)return false;
-            string Key(R4SalvageBasket basket)=>((int)basket.Archetype)+":"+string.Concat(basket.Items.Select(p=>p.Id)
-                .OrderBy(id=>id,System.StringComparer.Ordinal).Select(id=>id.Length+":"+id));
             var counts=new Dictionary<string,int>(System.StringComparer.Ordinal);
-            foreach(var basket in a){string key=Key(basket);counts.TryGetValue(key,out int count);counts[key]=count+1;}
-            foreach(var basket in b){string key=Key(basket);if(!counts.TryGetValue(key,out int count)||count==0)return false;counts[key]=count-1;}
+            foreach(var basket in a){string key=RewardBasketKey(basket);counts.TryGetValue(key,out int count);counts[key]=count+1;}
+            foreach(var basket in b){string key=RewardBasketKey(basket);if(!counts.TryGetValue(key,out int count)||count==0)return false;counts[key]=count-1;}
             return true;
+        }
+        private static IEnumerable<R4SalvageBasket> PrioritizedRewardBaskets(R4SalvageLedger ledger,int seed,int stage,int offerCount,string preferredKey)
+        {
+            if(offerCount<=0)yield break;
+            // The first three legacy offers may repeat. Later offers are unique,
+            // so seven candidates suffice to find an alternative to a three-card page.
+            var preferred=preferredKey==null?null:ledger.EnumerateBasketOffers(seed,stage,System.Math.Max(7,offerCount)).Take(7)
+                .FirstOrDefault(basket=>RewardBasketKey(basket)==preferredKey);
+            int emitted=0;bool skipped=false;
+            if(preferred!=null){yield return preferred;emitted++;}
+            foreach(var basket in ledger.EnumerateBasketOffers(seed,stage,offerCount))
+            {
+                if(preferred!=null&&!skipped&&RewardBasketKey(basket)==preferredKey){skipped=true;continue;}
+                if(emitted>=offerCount)yield break;
+                yield return basket;emitted++;
+            }
         }
         private bool RerollRewardBaskets(R1RunController run)
         {
@@ -167,24 +185,33 @@ namespace RoboRougelike.R1
                 run.Salvage==null||run.Salvage!=displayedLedger||run.Salvage.Closed||rewardBaskets.Count==0||rewardBasketRefreshFrame==Time.frameCount)return false;
             int price=Mathf.Max(0,run.Definition.RewardBasketRerollCost);
             if(run.VehicleModel.Scrap<price){rewardClaimFeedback=$"Brakuje {price-run.VehicleModel.Scrap} Z na losowanie.";return false;}
-            RewardBasketStream next=null;
-            int nextSeed=0;
             int stage=run.Progress.EncounterIndex;
             // Reroll returns to page one. Compare what the player will see to
             // the current page, and do not rebuild every page previously read.
             int currentStart=(int)System.Math.Min(int.MaxValue,(long)basketPage*3);
             var currentlyVisible=rewardBaskets.Skip(currentStart).Take(3).ToArray();
-            for(int attempt=1;attempt<=16;attempt++)
+            int nextSeed=unchecked((run.Seed^(stage*397))+((basketRerollCount*16+1)*7919));
+            int offerCount=run.VehicleModel.RewardBasketOfferCount;
+            string preferredKey=null;
+            var next=new RewardBasketStream(run.Salvage.EnumerateBasketOffers(nextSeed,stage,offerCount));
+            next.LoadThrough(6);
+            if(next.Items.Count==0||SameRewardBaskets(currentlyVisible,next.Items.Take(3).ToArray()))
             {
-                int seed=unchecked((run.Seed^(stage*397))+((basketRerollCount*16+attempt)*7919));
-                var candidate=new RewardBasketStream(run.Salvage.EnumerateBasketOffers(seed,stage,run.VehicleModel.RewardBasketOfferCount));
-                candidate.LoadThrough(6);
-                if(candidate.Items.Count>0&&!SameRewardBaskets(currentlyVisible,candidate.Items.Take(3).ToArray())){next=candidate;nextSeed=seed;break;}
-                candidate.Dispose();
+                next.Dispose();next=null;
+                var visibleKeys=new HashSet<string>(currentlyVisible.Select(RewardBasketKey),System.StringComparer.Ordinal);
+                var alternative=run.Salvage.EnumerateBasketOffers(nextSeed,stage,System.Math.Max(7,offerCount)).Take(7)
+                    .FirstOrDefault(basket=>!visibleKeys.Contains(RewardBasketKey(basket)));
+                if(alternative!=null)
+                {
+                    preferredKey=RewardBasketKey(alternative);
+                    next=new RewardBasketStream(PrioritizedRewardBaskets(run.Salvage,nextSeed,stage,offerCount,preferredKey));
+                    next.LoadThrough(6);
+                }
             }
-            if(next==null){rewardClaimFeedback="Nie udało się wylosować innych zestawów. Nie pobrano opłaty.";return false;}
+            if(next==null||next.Items.Count==0||SameRewardBaskets(currentlyVisible,next.Items.Take(3).ToArray()))
+            {next?.Dispose();rewardClaimFeedback="Nie udało się wylosować innych zestawów. Nie pobrano opłaty.";return false;}
             if(!run.VehicleModel.TrySpendScrap(price)){next.Dispose();return false;}
-            rewardBasketStream?.Dispose();rewardBasketStream=next;rewardBasketSeed=nextSeed;displayedBasketRevision=run.Salvage.BasketRevision;
+            rewardBasketStream?.Dispose();rewardBasketStream=next;rewardBasketSeed=nextSeed;rewardBasketPreferredKey=preferredKey;displayedBasketRevision=run.Salvage.BasketRevision;
             basketRerollCount++;rewardBaskets=next.Items;basketPage=0;selectedBasket=-1;lootSelection.Clear();
             rewardClaimFeedback=$"Nowe zestawy • koszt {price} Z. Wybierz zestaw.";return true;
         }
