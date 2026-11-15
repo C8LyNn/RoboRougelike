@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 44. Wspólna część walidacji salwy strzelby
+
+- Sprawdzenie odcinka lufy i otoczenia jej wylotu wykonuje się teraz raz dla całej salwy. Każda śrucina nadal ma osobno sprawdzany swój kierunek, zasięg i pierwszą przeszkodę; zablokowana śrucina odrzuca całą salwę przed stworzeniem pocisków. To ograniczenie powtarzanych zapytań, a nie jeszcze porcjowanie pracy między klatkami.
+- Unity 6000.3.14f1: `shotgun_path_batch_real_before.xml` — **3 PASS** przed zmianą, w tym nowa próba z późniejszą śruciną zablokowaną przez własny pancerz. `shotgun_path_batch_after.xml` — **8 PASS**, obejmujące tę próbę i pełną salwę po usunięciu przeszkody, 8 i 16 rzeczywistych trafień, gęstą scenę, brak kosztu przy blokadzie, Double Shot i ratunek. `shotgun_path_batch_baseline.xml` — **2 PASS, 1 FAIL** przed zmianą: osobny starszy test `ShotgunRejectsSpreadPelletCrossingOwnArmor` zgłosił NullReferenceException; powtórzenie `shotgun_path_batch_baseline_single.xml` zakończyło się tym samym wyjątkiem. Jego przyczyna nie została ustalona; powyższa nowa próba używa rzeczywistej sceny gry i nie jest dowodem naprawienia tamtego testu.
+- Liczba fizycznych sprawdzeń nadal rośnie z liczbą śrucin, tworzenie podstawowej salwy jest synchroniczne, a limit 64 pozostaje. Nie zmierzono czasu klatki ani FPS; punkty 02, 14 i 44 są nadal otwarte.
+
 ### 02 i 14. Konfiguracja liczby śrucin — etap przygotowawczy
 
 - W ustawieniach ekonomii pojazdu dodano `ShotgunPelletCount`: domyślnie 8, kopiowane również do pojazdu poligonowego. Rzeczywista strzelba gracza używa tej wartości, zachowując jeden koszt i jeden nabój za salwę. To ustawienie projektowe, nie nowa premia gracza; przeciwnicy bez konfiguracji pojazdu zachowują poprzednią wartość.

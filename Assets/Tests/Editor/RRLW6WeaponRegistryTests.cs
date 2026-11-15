@@ -61,6 +61,34 @@ public class RRLW6WeaponRegistryTests
 
 public class RRLW6ShotgunPhysicalTests
 {
+    [UnityTest] public IEnumerator BlockedLaterPelletRejectsWholeVolleyAndClearVolleySpawns()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=true;
+        var assembly=vehicle.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.Single(p=>p.Id==state.Id);
+        yield return null;
+        var blockedDirection=Quaternion.AngleAxis(7,gun.Muzzle.up)*gun.Muzzle.forward;
+        var blocker=GameObject.CreatePrimitive(PrimitiveType.Cube);blocker.transform.SetParent(vehicle.transform,true);
+        blocker.transform.position=gun.Muzzle.position+blockedDirection*5f;blocker.transform.localScale=Vector3.one*.25f;
+        Physics.SyncTransforms();
+        var first=new ShotgunPelletSpawn(0,1,gun.Muzzle.position,gun.Muzzle.forward,Vector3.zero,58,9,40,2,body,vehicle.gameObject);
+        var second=new ShotgunPelletSpawn(1,1,gun.Muzzle.position,blockedDirection,Vector3.zero,58,9,40,2,body,vehicle.gameObject);
+        var binding=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
+        try
+        {
+            Assert.That(assembly.ClearProjectilePath(gun,first.Direction,40,.05f),Is.True,"The first pellet is clear.");
+            Assert.That(assembly.ClearProjectilePath(gun,second.Direction,40,.05f),Is.False,"The later pellet is blocked by owned armor.");
+            Assert.That(binding.TrySpawnVolley(new[]{first,second}),Is.False);
+            Assert.That(UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId==state.Id),Is.Zero,"The accepted prefix must not be emitted.");
+            blocker.SetActive(false);Physics.SyncTransforms();
+            Assert.That(binding.TrySpawnVolley(new[]{first,second}),Is.True);
+            Assert.That(UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId==state.Id),Is.EqualTo(2));
+        }
+        finally{if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
     [UnityTest] public IEnumerator ConfiguredPelletCountSurvivesCopyAndFiresPhysicalVolley()
     {
         var field=typeof(R3GarageEconomy).GetField("ShotgunPelletCount");Assert.That(field,Is.Not.Null);

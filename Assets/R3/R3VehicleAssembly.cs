@@ -196,20 +196,32 @@ namespace RoboRougelike.R3
         }
         public bool ClearProjectilePath(R3MountedPart part,Vector3 direction,float range,float radius)
         {
-            if(part==null||part.Muzzle==null||direction.sqrMagnitude<.000001f||
-               range<=0||float.IsNaN(range)||float.IsInfinity(range)||
-               radius<=0||float.IsNaN(radius)||float.IsInfinity(radius))return false;
+            if(!ValidShotDirection(direction,range)||!PrepareShotPath(part,radius,out var origin))return false;
+            return ClearPreparedShotPath(part,origin,direction,range,radius);
+        }
+        // All directions in a volley use the same muzzle and barrel. Keep the
+        // per-pellet cast, but do the shared overlap/barrel checks only once.
+        public bool ClearShotgunVolley(R3MountedPart part,IReadOnlyList<RoboRougelike.WPN001Shotgun.ShotgunPelletSpawn> pellets,float radius)
+        {
+            if(pellets==null||pellets.Count==0||!PrepareShotPath(part,radius,out var origin))return false;
+            for(int i=0;i<pellets.Count;i++)
+            {
+                var pellet=pellets[i];var velocity=pellet.Direction*pellet.ProjectileSpeed+pellet.InheritedVelocity;
+                float range=Mathf.Min(pellet.MaxDistance,velocity.magnitude*pellet.Lifetime);
+                if(!ValidShotDirection(velocity,range)||!ClearPreparedShotPath(part,origin,velocity,range,radius))return false;
+            }
+            return true;
+        }
+        static bool ValidShotDirection(Vector3 direction,float range)=>direction.sqrMagnitude>=.000001f&&
+            range>0&&!float.IsNaN(range)&&!float.IsInfinity(range);
+        bool PrepareShotPath(R3MountedPart part,float radius,out Vector3 origin)
+        {
+            origin=default;
+            if(part==null||part.Muzzle==null||radius<=0||float.IsNaN(radius)||float.IsInfinity(radius))return false;
             if(part.TryGetComponent<RoboRougelike.R4_1.R4WeaponArt>(out var art))art.Sync();
-            var origin=part.Muzzle.position;
+            origin=part.Muzzle.position;
             bool IsGun(Collider c)=>c!=null&&c.transform.IsChildOf(part.transform);
             bool IsOwner(Collider c)=>c!=null&&c.transform.IsChildOf(transform);
-            bool IsOwnProjectile(Collider c)
-            {
-                var shell=FindShotComponent<P17PhysicalShell>(c.transform);
-                if(shell!=null&&shell.OwnerRoot==transform)return true;
-                var rocket=FindShotComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>(c.transform);
-                return rocket!=null&&rocket.OwnerRoot==transform;
-            }
             // The barrel itself can rotate into another part even if its tip
             // is already beyond that part. Inspect the whole muzzle segment.
             if(part.GunPivot==null)return false;
@@ -221,6 +233,19 @@ namespace RoboRougelike.R3
             }
             var overlaps=ShotPathOverlap(origin,radius,out var overlapCount);
             for(int i=0;i<overlapCount;i++)if(IsOwner(overlaps[i])&&!IsGun(overlaps[i]))return false;
+            return true;
+        }
+        bool ClearPreparedShotPath(R3MountedPart part,Vector3 origin,Vector3 direction,float range,float radius)
+        {
+            bool IsGun(Collider c)=>c!=null&&c.transform.IsChildOf(part.transform);
+            bool IsOwner(Collider c)=>c!=null&&c.transform.IsChildOf(transform);
+            bool IsOwnProjectile(Collider c)
+            {
+                var shell=FindShotComponent<P17PhysicalShell>(c.transform);
+                if(shell!=null&&shell.OwnerRoot==transform)return true;
+                var rocket=FindShotComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>(c.transform);
+                return rocket!=null&&rocket.OwnerRoot==transform;
+            }
             float own=float.PositiveInfinity,other=float.PositiveInfinity;
             var hits=ShotPathCast(origin,radius,direction.normalized,range,out var hitCount);
             for(int i=0;i<hitCount;i++)
