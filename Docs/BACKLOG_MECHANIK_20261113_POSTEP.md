@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14 i 44. Cykl życia kolejki pocisków urządzeń
+
+- Wyłączenie właściciela czyści jego niewyemitowaną kolejkę, tak aby jej strzały nie pojawiły się po ponownym włączeniu pojazdu. Zniknięcie samego drona lub wieżyczki nie usuwa już naliczonych strzałów. Podczas emisji długiej porcji ze zbioru wzajemnych wykluczeń usuwane są nieaktywne lub zniszczone pociski; nadal aktywne pociski tej samej porcji nie kolidują ze sobą.
+- Unity 6000.3.14f1: `device_queue_lifecycle_final.xml` — **5 PASS**, w tym osobne trafienia szybkiej salwy, blokada podczas ratunku, zniknięcie urządzenia, wyłączenie właściciela oraz zachowanie par kolizji po usunięciu nieaktywnych pocisków. `device_queue_owner_before.xml` — **1 FAIL**: zaległy strzał powstawał po włączeniu właściciela. `device_queue_prune_before.xml` — **1 PASS, 1 FAIL**: zbiór zawierał sześć zamiast dwóch aktywnych pocisków.
+- Nie jest to pomiar wydajności. Dla wielu jednocześnie aktywnych pocisków tej samej porcji liczba sprawdzeń par nadal rośnie; skrajne obciążenia, opóźnienie kolejki i pozostałe limity z punktu 14 wymagają dalszej pracy.
+
 ### 14, 42 i 44. Kolejkowanie strzałów dronów i wieżyczek
 
 - Drony i wieżyczki naliczają wiele należnych strzałów w jednym kroku fizyki. Kolejka należy do właściciela i zachowuje liczbę, pozycję, kierunek, właściciela, cel i obrażenia salwy także po zniknięciu urządzenia. Każdy wyemitowany pocisk ma własną fizykę; pociski tej samej porcji nie kolidują ze sobą. Poza pierwszym pociskiem kolejka stosuje współdzielony orientacyjny budżet 4 ms na tworzenie w danej klatce; niewykonane strzały pozostają w kolejce. Podczas ratunku gracza kolejka jego ofensywnych urządzeń czeka do końca blokady ataku.

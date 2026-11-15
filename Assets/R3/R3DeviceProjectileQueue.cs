@@ -36,6 +36,12 @@ namespace RoboRougelike.R3
             Drain();
         }
         void FixedUpdate(){if(Time.timeScale>0)Drain();}
+        void OnDisable()
+        {
+            // Active projectiles retire when their owner is deactivated.
+            // Do not resurrect shots still awaiting creation on reactivation.
+            if(!gameObject.activeInHierarchy)batches.Clear();
+        }
         void Drain()
         {
             if(batches.Count==0)return;
@@ -55,7 +61,16 @@ namespace RoboRougelike.R3
                 try
                 {
                     shot=Spawn(batch);
-                    foreach(var sibling in batch.Siblings)if(sibling!=null)P17PhysicalShell.IgnoreProjectilePair(shot,sibling);
+                    // Device projectiles are destroyed rather than pooled.
+                    // Inactive ones can no longer collide and must not make a
+                    // long-running batch's pair checks grow indefinitely.
+                    for(int i=batch.Siblings.Count-1;i>=0;i--)
+                    {
+                        var sibling=batch.Siblings[i];
+                        if(sibling==null||!sibling.enabled||!sibling.gameObject.activeInHierarchy)
+                            batch.Siblings.RemoveAt(i);
+                        else P17PhysicalShell.IgnoreProjectilePair(shot,sibling);
+                    }
                     batch.Siblings.Add(shot);
                     batch.Remaining-=BigInteger.One;
                     if(batch.Remaining.IsZero)batches.Dequeue();

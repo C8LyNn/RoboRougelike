@@ -116,6 +116,50 @@ public class RRLW34EffectsTests
             Assert.That(Physics.GetIgnoreCollision(shots[i].GetComponent<Collider>(),shots[j].GetComponent<Collider>()),Is.True);
         foreach(var shot in shots){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
     }
+    [UnityTest] public IEnumerator DeviceQueueReleasesInactiveSiblingReferencesDuringLargeBatch()
+    {
+        var vehicle=Build(Model());yield return null;
+        var emitter=GameObject.CreatePrimitive(PrimitiveType.Cube);emitter.transform.SetParent(fixtures.transform);
+        emitter.transform.position=new Vector3(1000,1000,1000);emitter.AddComponent<Rigidbody>().isKinematic=true;
+        var shooter=emitter.AddComponent<R3FlyingDrone>();shooter.ConfigureTurret(vehicle.transform,.1f,1,120);shooter.enabled=false;
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var queue=vehicle.gameObject.AddComponent<R3DeviceProjectileQueue>();
+        typeof(R3DeviceProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        var batch=typeof(R3FlyingDrone).GetMethod("CaptureShot",flags).Invoke(shooter,new object[]{Vector3.forward});
+        batch.GetType().GetField("Remaining").SetValue(batch,new System.Numerics.BigInteger(6));
+        typeof(R3DeviceProjectileQueue).GetMethod("Enqueue",flags).Invoke(queue,new[]{batch});
+        var drain=typeof(R3DeviceProjectileQueue).GetMethod("FixedUpdate",flags);
+        for(int i=0;i<4;i++)drain.Invoke(queue,null);
+        var siblings=(System.Collections.IList)batch.GetType().GetField("Siblings").GetValue(batch);
+        Assert.That(siblings.Count,Is.EqualTo(5));
+        var retired=new GameObject[4];
+        for(int i=0;i<4;i++){retired[i]=((Collider)siblings[i]).gameObject;retired[i].SetActive(false);}
+        drain.Invoke(queue,null);
+        Assert.That(siblings.Count,Is.EqualTo(2),"Only the live earlier projectile and the new projectile should remain in the collision set.");
+        Assert.That(Physics.GetIgnoreCollision((Collider)siblings[0],(Collider)siblings[1]),Is.True);
+        foreach(var item in retired)Object.Destroy(item);
+        foreach(var col in siblings)if((Collider)col!=null){((Collider)col).gameObject.SetActive(false);Object.Destroy(((Collider)col).gameObject);}
+    }
+    [UnityTest] public IEnumerator DeviceQueueDoesNotReviveShotsAfterOwnerWasDisabled()
+    {
+        var vehicle=Build(Model());yield return null;
+        var emitter=GameObject.CreatePrimitive(PrimitiveType.Cube);emitter.transform.SetParent(fixtures.transform);
+        emitter.transform.position=new Vector3(1000,1000,1000);emitter.AddComponent<Rigidbody>().isKinematic=true;
+        var shooter=emitter.AddComponent<R3FlyingDrone>();shooter.ConfigureTurret(vehicle.transform,.1f,1,120);shooter.enabled=false;
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var queue=vehicle.gameObject.AddComponent<R3DeviceProjectileQueue>();
+        typeof(R3DeviceProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        var batch=typeof(R3FlyingDrone).GetMethod("CaptureShot",flags).Invoke(shooter,new object[]{Vector3.forward});
+        var remaining=batch.GetType().GetField("Remaining");remaining.SetValue(batch,new System.Numerics.BigInteger(3));
+        typeof(R3DeviceProjectileQueue).GetMethod("Enqueue",flags).Invoke(queue,new[]{batch});
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(new System.Numerics.BigInteger(2)));
+        vehicle.gameObject.SetActive(false);yield return null;vehicle.gameObject.SetActive(true);
+        typeof(R3DeviceProjectileQueue).GetMethod("FixedUpdate",flags).Invoke(queue,null);
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(new System.Numerics.BigInteger(2)),
+            "Shots whose owner was disabled must not appear after the owner becomes active again.");
+        foreach(var shot in Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Where(p=>p.name=="P17_DronePhysicalShell"))
+        {shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+    }
     [UnityTest] public IEnumerator DeviceCadenceDoesNotAccumulatePhysicsStepRounding()
     {
         var vehicle=Build(Model());yield return null;
