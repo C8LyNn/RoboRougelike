@@ -3,6 +3,14 @@
 Źródło: `RoboRougelike_Codex_backlog_mechanik_2026-11-13.md`, dostarczone przez właściciela.
 Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źródłowej checklisty.
 
+## Aktualne uwagi do stanu prac
+
+- Wpisy są chronologiczne: wcześniejsze opisy braków mogą zostać uzupełnione przez późniejsze wpisy dotyczące tego samego punktu. Nie traktuj pierwszego nagłówka jako aktualnej oceny całej pozycji.
+- Cargo Uplink oraz radar i minimapa mają tymczasowe działające rozwiązania wybrane zgodnie z późniejszą prośbą właściciela; ich wartości i czytelność wymagają playtestu.
+- **02 i 14 pozostają otwarte:** współdzielony limit 96 aktywnych pocisków fizycznych i 32 rakiet może powstrzymać część strzałów lub dodatkowych pocisków. Ich zastąpienie musi zachować zachowanie każdego pocisku i nie zawieszać gry; samo ukrycie albo podniesienie limitu nie rozwiązuje zadania.
+- **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
+- **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
+
 ## 10–11. Fuzja części — częściowo sprawdzone i uzupełnione
 
 - Istniały operacja fuzji trzech fizycznych części oraz przycisk w katalogu garażu. Nowa część otrzymuje średnią procentową stanu wejść, także dla wejścia z 0 HP.
