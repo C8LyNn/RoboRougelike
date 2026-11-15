@@ -14,9 +14,9 @@ namespace RoboRougelike.R1
     {
         public static readonly string[] Actions={"MoveForward","MoveBackward","TurnLeft","TurnRight",
             "Weapon1","Weapon2","Weapon3","Weapon4","Active1","Active2","Active3","Active4",
-            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails","ResetRange","WeaponStatusPage","DefenseStatusPage","GarageUnderside","GarageFrame","GarageSearch","GarageBlocks","GarageWheels","GarageWeapons","GarageModules","GarageToolMount","GarageToolInspect","GarageToolRepair","GarageToolRemove","GarageRotateYLeft","GarageRotateYRight","GarageRotateXPositive","GarageRotateXNegative","GarageRotateZNegative","GarageRotateZPositive","Rescue"};
+            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails","ResetRange","WeaponStatusPage","DefenseStatusPage","GarageUnderside","GarageFrame","GarageSearch","GarageBlocks","GarageWheels","GarageWeapons","GarageModules","GarageToolMount","GarageToolInspect","GarageToolRepair","GarageToolRemove","GarageRotateYLeft","GarageRotateYRight","GarageRotateXPositive","GarageRotateXNegative","GarageRotateZNegative","GarageRotateZPositive","Rescue","Interact"};
         static readonly string[] Defaults={"W","S","A","D","MouseLeft","MouseRight","Q","E",
-            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I","R","Tab","P","U","Home","Slash","Digit5","Digit6","Digit7","Digit8","Digit1","Digit2","Digit3","Digit4","Q","E","R","F","Z","X","H"};
+            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I","R","Tab","P","U","Home","Slash","Digit5","Digit6","Digit7","Digit8","Digit1","Digit2","Digit3","Digit4","Q","E","R","F","Z","X","H","F"};
         const int OriginalActionCount=20;
         readonly Dictionary<string,string> bindings=new Dictionary<string,string>();
         readonly string path;
@@ -62,13 +62,14 @@ namespace RoboRougelike.R1
         {
             var used=new HashSet<string>(values.Where((v,i)=>!missing[i]&&v!=null),StringComparer.OrdinalIgnoreCase);
             var garageUsed=new HashSet<string>(values.Where((v,i)=>!missing[i]&&v!=null&&GarageAction(Actions[i])),StringComparer.OrdinalIgnoreCase);
+            var gameplayUsed=new HashSet<string>(values.Where((v,i)=>!missing[i]&&v!=null&&!GarageAction(Actions[i])),StringComparer.OrdinalIgnoreCase);
             for(int i=0;i<values.Length;i++)
             {
                 if(!missing[i])continue;
                 var candidates=new[]{Defaults[i],"F5","F6","F7","F9","F11","F12"}.Concat(Enum.GetNames(typeof(Key)));
                 string chosen=candidates.FirstOrDefault(key=>ValidBinding(key)&&!Reserved(key)&&!GarageModifierReserved(Actions[i],key)&&
-                    !(GarageToolAction(Actions[i])||GarageRotationAction(Actions[i])?garageUsed:used).Contains(key));
-                values[i]=chosen;if(chosen!=null){used.Add(chosen);if(GarageAction(Actions[i]))garageUsed.Add(chosen);}
+                    !(GarageToolAction(Actions[i])||GarageRotationAction(Actions[i])?garageUsed:Actions[i]=="Interact"?gameplayUsed:used).Contains(key));
+                values[i]=chosen;if(chosen!=null){used.Add(chosen);if(GarageAction(Actions[i]))garageUsed.Add(chosen);else gameplayUsed.Add(chosen);}
             }
         }
         public static bool ValidSnapshot(string[] values)
@@ -160,7 +161,7 @@ namespace RoboRougelike.R1
                 case "GarageRotateYLeft":return "Garaż: obrót Y w lewo";case "GarageRotateYRight":return "Garaż: obrót Y w prawo";
                 case "GarageRotateXPositive":return "Garaż: obrót X dodatni";case "GarageRotateXNegative":return "Garaż: obrót X ujemny";
                 case "GarageRotateZNegative":return "Garaż: obrót Z ujemny";case "GarageRotateZPositive":return "Garaż: obrót Z dodatni";
-                case "Rescue":return "Ratunek";}
+                case "Rescue":return "Ratunek";case "Interact":return "Interakcja";}
             if(action.StartsWith("Weapon"))return "Broń "+action.Substring(6);
             if(action.StartsWith("Active"))return "Moduł "+action.Substring(6);
             if(action.StartsWith("Deploy"))return "Urządzenie "+action.Substring(6);

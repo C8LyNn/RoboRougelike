@@ -276,7 +276,21 @@ public sealed class BacklogSafeZoneGameplayTests
         float next=gun.NextFireTime;run.Player.GetComponent<R3VehicleAssembly>().FireSlot(0);
         Assert.That(gun.NextFireTime,Is.EqualTo(next),"Weapons cannot fire in the safe zone even after rescue ends.");
         var body=run.Player.GetComponent<Rigidbody>();body.position=vendor.transform.position+Vector3.back*3;body.linearVelocity=Vector3.zero;Physics.SyncTransforms();
-        Assert.That((bool)open.Invoke(run,null),Is.True);Assert.That(Time.timeScale,Is.Zero);
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();Assert.That(profile.TryBind("Interact","K"),Is.True);
+        run.TogglePause();var probe=new GameObject("paused interaction probe").AddComponent<RC2EditorInputProbe>();probe.InjectKey=UnityEngine.InputSystem.Key.K;
+        float inputDeadline=Time.realtimeSinceStartup+5;while(!probe.Sent&&Time.realtimeSinceStartup<inputDeadline)yield return null;
+        Assert.That(probe.Sent&&probe.PressObserved,Is.True);Object.DestroyImmediate(probe.gameObject);yield return null;
+        Assert.That(run.SafeZoneTrading,Is.False,"A paused session must not open trade in the background.");run.TogglePause();
+        probe=new GameObject("vendor interaction probe").AddComponent<RC2EditorInputProbe>();probe.InjectKey=UnityEngine.InputSystem.Key.K;
+        inputDeadline=Time.realtimeSinceStartup+5;while(!probe.Sent&&Time.realtimeSinceStartup<inputDeadline)yield return null;
+        Assert.That(probe.Sent&&probe.PressObserved,Is.True);yield return null;
+        Assert.That(run.SafeZoneTrading,Is.True,"The configured interaction key must open the real vendor.");Object.DestroyImmediate(probe.gameObject);
+        Assert.That((bool)close.Invoke(run,null),Is.True);Assert.That(profile.TryBind("Interact","MouseBack"),Is.True);
+        var handler=typeof(R1RunHUD).GetMethod("TrySafeZoneInteractMouse",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(handler,Is.Not.Null);var used=new Event{type=EventType.MouseDown,button=3};used.Use();handler.Invoke(null,new object[]{run,used});
+        Assert.That(run.SafeZoneTrading,Is.False,"Input already used by UI must not open trade.");
+        handler.Invoke(null,new object[]{run,new Event{type=EventType.MouseDown,button=3}});
+        Assert.That(run.SafeZoneTrading,Is.True);Assert.That(Time.timeScale,Is.Zero);profile.ResetDefaults();
         Assert.That((bool)enter.Invoke(run,null),Is.False,"The zone cannot be entered again while trading.");
         Assert.That(run.GarageBuyVendorOffer(offer.Index),Is.True);
         Assert.That(model.Inventory.Count,Is.EqualTo(initialCount+model.GrantQuantity(offer.Kind)));
@@ -306,6 +320,7 @@ public sealed class BacklogSafeZoneGameplayTests
     }
     [UnityTearDown] public IEnumerator Cleanup()
     {
+        R1ControlProfile.Current.ResetDefaults();
         if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}
         R1RunCheckpointStorage.TestPath=null;
         if(!string.IsNullOrEmpty(technologyPath)&&System.IO.File.Exists(technologyPath))System.IO.File.Delete(technologyPath);

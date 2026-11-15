@@ -244,7 +244,7 @@ namespace RoboRougelike.R1
             {
                 Draw(run,portraitReady,portraitGarage,portraitRoute,portraitSalvage);
                 if(run.Paused)LightStylePrototype.Instance?.DrawPausePanel();
-                if(!sessionOverlay)TryRescueMouse(run,Event.current);
+                if(!sessionOverlay){TrySafeZoneInteractMouse(run,Event.current);TryRescueMouse(run,Event.current);}
                 if(quickSearchActive&&!garageSearchKey&&!catalogOpen&&!garageOptionsOpen)
                     HandleQuickGarageKey(run,Event.current,false);
                 quickSearchEditing=quickSearchActive&&!run.Paused&&!catalogOpen&&!garageOptionsOpen&&

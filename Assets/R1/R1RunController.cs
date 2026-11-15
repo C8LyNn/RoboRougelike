@@ -412,6 +412,9 @@ namespace RoboRougelike.R1
         {
 #if ENABLE_INPUT_SYSTEM
             var keyboard = Keyboard.current;
+            if(Progress.State==R1RunState.SafeZone&&
+                !R1ControlProfile.Current.Binding("Interact").StartsWith("Mouse",System.StringComparison.Ordinal)&&
+                R1ControlProfile.Current.Pressed("Interact",true)){OpenSafeZoneTrade();return;}
             if((Progress.State==R1RunState.Combat||Progress.State==R1RunState.TestDrive||Progress.State==R1RunState.SafeZone)&&
                 !R1ControlProfile.Current.Binding("Rescue").StartsWith("Mouse",System.StringComparison.Ordinal)&&
                 R1ControlProfile.Current.Pressed("Rescue",true)){TryEmergencyRescue();return;}

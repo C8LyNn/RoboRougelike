@@ -58,6 +58,7 @@ namespace RoboRougelike.R1
         public bool OpenSafeZoneTrade()
         {
             if(Transitioning||Paused||QuitRequested||SafeZoneTrading||!NearSafeZoneVendor)return false;
+            GetComponent<R1RunHUD>()?.PrepareSafeZoneTrade();
             SafeZoneTrading=true;SetSimulation(false);return true;
         }
         public bool CloseSafeZoneTrade()
