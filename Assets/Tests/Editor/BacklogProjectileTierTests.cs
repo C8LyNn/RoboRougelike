@@ -816,6 +816,41 @@ public sealed class BacklogProjectileTierPhysicsTests
         float end=Time.time+.35f;while(Time.time<end)yield return null;
         Assert.That(500-hp.CurrentHp,Is.InRange(100f,130f));
     }
+    [UnityTest] public IEnumerator RailgunCanReuseShotAndLaterBecomeOrdinaryProjectile()
+    {
+        var gun=Build(R4WeaponKind.Railgun,out var energy);var hp=Target(gun,6);
+        yield return null; // Finish deferred destruction of the vehicle's helper colliders.
+        var binding=gun.GetComponent<RRLRailgunBinding>();Assert.That(binding.Fire(),Is.True);
+        var first=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Single(p=>p.PartId==gun.Id);
+        int id=first.gameObject.GetInstanceID();float deadline=Time.realtimeSinceStartup+6;
+        while((hp.CurrentHp>=500||Time.time<binding.State.DeviceReadyAt+.02f)&&Time.realtimeSinceStartup<deadline)yield return null;
+        float afterFirst=hp.CurrentHp;Assert.That(afterFirst,Is.LessThan(500));
+        Assert.That(binding.Fire(),Is.True);
+        var second=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Single(p=>p.PartId==gun.Id);
+        Assert.That(second.gameObject.GetInstanceID(),Is.EqualTo(id),"Retired rail shots should be reusable.");
+        deadline=Time.realtimeSinceStartup+4;while(hp.CurrentHp>=afterFirst&&Time.realtimeSinceStartup<deadline)yield return null;
+        float afterSecond=hp.CurrentHp;
+        Assert.That(afterSecond,Is.LessThan(afterFirst),"A reused rail must clear its list of previously penetrated targets.");
+        deadline=Time.realtimeSinceStartup+5;while(second!=null&&second.gameObject.activeInHierarchy&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(second==null||!second.gameObject.activeInHierarchy,Is.True,"The rail must finish its flight before reuse.");
+        yield return null;
+        var controller=gun.GetComponentInParent<P12PipelineSafeTankController>();
+        var basic=controller.FirePrimaryFrom(gun.Muzzle,R4WeaponKind.Basic,"rail-to-basic fixture");
+        Assert.That(basic,Is.Not.Null);Assert.That(basic.gameObject.GetInstanceID(),Is.EqualTo(id));
+        Assert.That(basic.isTrigger,Is.False);Assert.That(basic.GetComponent<Rigidbody>().isKinematic,Is.False);
+        deadline=Time.realtimeSinceStartup+4;while(hp.CurrentHp>=afterSecond&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(hp.CurrentHp,Is.LessThan(afterSecond),"The recycled conventional shot must still hit.");
+        float afterBasic=hp.CurrentHp;
+        deadline=Time.realtimeSinceStartup+5;
+        while(((basic!=null&&basic.gameObject.activeInHierarchy)||Time.time<binding.State.DeviceReadyAt+.02f)&&Time.realtimeSinceStartup<deadline)yield return null;
+        yield return null;
+        Assert.That(binding.Fire(),Is.True);
+        var third=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Single(p=>p.PartId==gun.Id);
+        Assert.That(third.gameObject.GetInstanceID(),Is.EqualTo(id));
+        Assert.That(third.GetComponent<Collider>().isTrigger,Is.True);Assert.That(third.GetComponent<Rigidbody>().isKinematic,Is.True);
+        deadline=Time.realtimeSinceStartup+4;while(hp.CurrentHp>=afterBasic&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(hp.CurrentHp,Is.LessThan(afterBasic),"The same object must become an effective rail shot again.");
+    }
     [UnityTest] public IEnumerator RailgunHitsHostileDomeBeforeProtectedTarget()
     {
         var gun=Build(R4WeaponKind.Railgun,out var energy);var target=Target(gun,8);

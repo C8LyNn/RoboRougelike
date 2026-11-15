@@ -705,6 +705,8 @@ public float CurrentForwardSpeed =>
             projectileBody.useGravity =
                 false;
 
+            projectileBody.isKinematic = false;
+
             projectileBody.interpolation =
                 RigidbodyInterpolation.Interpolate;
 
@@ -1395,11 +1397,12 @@ public float CurrentForwardSpeed =>
                 if(item!=null)Destroy(item.gameObject);
             }
         }
-        private void Retire()
+        internal void Retire()
         {
             // Mark spent before resetting physics pairs; trigger callbacks
             // caused by a filter change must not process this shot again.
             spent=true;
+            if(railgun!=null){railgun.enabled=false;railgun=null;}
             bool reusable=cacheableConventional;
             if(reusable)
             {
@@ -1493,7 +1496,11 @@ public float CurrentForwardSpeed =>
         private float maxTravelDistance=float.PositiveInfinity;
         private RoboRougelike.WeaponIntegration.RRLRailPenetration railgun;
         public void ConfigureRailgun(RoboRougelike.WPN002Railgun.RailgunShot shot,float damageScale)
-        {railgun=gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRailPenetration>();railgun.Bind(shot,damageScale);}
+        {
+            railgun=GetComponent<RoboRougelike.WeaponIntegration.RRLRailPenetration>();
+            if(railgun==null)railgun=gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRailPenetration>();
+            railgun.enabled=true;railgun.Bind(shot,damageScale);
+        }
         private void FixedUpdate()
         {
             if(RetireLostOwner())return;

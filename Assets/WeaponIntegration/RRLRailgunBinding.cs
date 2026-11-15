@@ -85,15 +85,18 @@ namespace RoboRougelike.WeaponIntegration
         }
         void CreateShot(RailgunShot shot,System.Collections.Generic.List<GameObject> created)
         {
-            var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);created.Add(shell);shell.name="WPN002 physical rail";
+            var projectile=P17PhysicalShell.RentConventional();var shell=projectile.gameObject;created.Add(shell);shell.name="WPN002 physical rail";
             shell.transform.SetPositionAndRotation(shot.Origin,Quaternion.LookRotation(shot.Direction));shell.transform.localScale=Vector3.one*shot.Spec.Radius*2;
-            shell.GetComponent<Collider>().isTrigger=true;
+            var collider=shell.GetComponent<Collider>();collider.enabled=true;collider.isTrigger=true;
             shell.GetComponent<Renderer>().sharedMaterial=GetComponent<Renderer>().sharedMaterial;
-            var rb=shell.AddComponent<Rigidbody>();rb.useGravity=false;rb.isKinematic=true;rb.interpolation=RigidbodyInterpolation.Interpolate;
-            var origin=shell.AddComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.Railgun;origin.PartId=State.Id;
+            var rb=shell.GetComponent<Rigidbody>();rb.useGravity=false;rb.collisionDetectionMode=CollisionDetectionMode.Discrete;
+            if(!rb.isKinematic){rb.linearVelocity=Vector3.zero;rb.angularVelocity=Vector3.zero;}
+            rb.isKinematic=true;rb.interpolation=RigidbodyInterpolation.Interpolate;
+            var origin=shell.GetComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.Railgun;origin.PartId=State.Id;
             double speed=shot.InitialVelocity.magnitude;
             double lifetime=speed>0&&!double.IsInfinity(speed)&&!double.IsNaN(speed)?System.Math.Max(30d,(double)shot.Spec.Range/speed+1d):30d;
-            var projectile=shell.AddComponent<P17PhysicalShell>();projectile.Configure(Device.Owner,0,(float)System.Math.Min(float.MaxValue,lifetime),shot.Direction,null,shot.Spec.Range);
+            shell.SetActive(true);
+            projectile.Configure(Device.Owner,0,(float)System.Math.Min(float.MaxValue,lifetime),shot.Direction,null,shot.Spec.Range);
             projectile.ConfigureRailgun(shot,R3MountedBonusEffects.SafeDamageProduct(tank!=null?tank.PackagePiercingDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier)));
         }
         void Stop(){if(Module!=null)Module.SetOperational(false);}

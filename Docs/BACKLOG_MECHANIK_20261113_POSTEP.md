@@ -17,6 +17,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Unity 6000.3.14f1: `rail_scratch_after.xml` i `.log`: **7 PASS, 0 FAIL**, w tym zagnieżdżony strzał podczas śmierci celu, ściana, kopuła, Double Shot oraz ponad 4096 colliderów. Pomiar edytora dla utworzenia 100 komponentów: około 596 KB przed zmianą (`rail_scratch_before.xml`: **1 FAIL**), około 35 KB po zmianie; kontrola wykryła 1 MB.
 - Jest to przygotowanie wydajnościowe, a nie usunięcie limitu bonusowych pocisków ani pomiar FPS w Windows Player. Ręczny playtest: **NOT RUN**.
 
+### 02, 14 i 44. Ponowne użycie fizycznych pocisków railguna
+
+- Railgun korzysta z istniejącej puli nieaktywnych pocisków. Przy kolejnym strzale czyści historię przebitych celów i dystans; przejście między railgunem a zwykłym pociskiem przywraca odpowiednio tryb kolizji i fizykę. Pula przechowuje ograniczoną liczbę nieaktywnych obiektów, ale nie ogranicza podstawowych strzałów.
+- Unity 6000.3.14f1: `rail_reuse_after.xml` i `.log`: **7 PASS, 0 FAIL**; `rail_reuse_cross_type.xml` i `.log`: **5 PASS, 0 FAIL**. Obejmują kolejno railgun → zwykły pocisk → railgun, trafienia tego samego celu, Double Shot, dwie bronie, ścianę, kopułę, ponad 4096 colliderów, obronę punktową i regresję śrucin. Przed zmianą `rail_reuse_before.xml`: **1 FAIL**, ponieważ pocisk nie był ponownie używany.
+- Nie zmieniono nadal obowiązujących limitów bonusowych pocisków. Pomiar FPS i ręczny playtest Windows: **NOT RUN**.
+
 ### 02, 14 i 44. Mniejszy koszt celowania w gęstej scenie
 
 - Celownik używa ponownie tablicy wyników fizyki, zwiększa ją w razie potrzeby, a przy ponad 1024 trafieniach korzysta z pełnego zapytania. Nadal wybiera najbliższy obiekt poza własnym pojazdem i pociskami; próg pamięci nie ogranicza liczby wykrywanych obiektów.

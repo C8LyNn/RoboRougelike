@@ -20,7 +20,8 @@ namespace RoboRougelike.WeaponIntegration
         readonly HashSet<int> visited=new HashSet<int>();
         RailgunShot shot;Rigidbody body;Vector3 position;float travelled,energy,damageScale;
         public Vector3 Velocity=>shot.InitialVelocity;
-        public void Bind(RailgunShot value,float scale){shot=value;position=value.Origin;energy=value.Spec.InitialEnergy;damageScale=scale;body=GetComponent<Rigidbody>();}
+        public void Bind(RailgunShot value,float scale)
+        {shot=value;position=value.Origin;travelled=0;visited.Clear();energy=value.Spec.InitialEnergy;damageScale=scale;body=GetComponent<Rigidbody>();}
         public void Step(float dt)
         {
             if(sharedHitsInUse)
@@ -86,6 +87,11 @@ namespace RoboRougelike.WeaponIntegration
             body.MovePosition(position);
             if(energy<=shot.Spec.MinEnergyToContinue||travelled>=shot.Spec.Range-.0001f)Stop();
         }
-        void Stop(){gameObject.SetActive(false);Destroy(gameObject);}
+        void Stop()
+        {
+            var projectile=GetComponent<P17PhysicalShell>();
+            if(projectile!=null)projectile.Retire();
+            else{gameObject.SetActive(false);Destroy(gameObject);}
+        }
     }
 }
