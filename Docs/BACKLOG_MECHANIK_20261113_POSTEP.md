@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 44. Pamięć selektora dodatkowych śrucin
+
+- Selektor kolejnych dodatkowych śrucin przechowuje teraz wpisy tylko dla kierunków mających oczekujące pociski. Zachowuje pierwotny indeks i kolejność round-robin, również dla bardzo dużych liczników; nie zmienia liczby tworzonych pocisków.
+- Unity 6000.3.14f1: `shotgun_sparse_schedule_before.xml` — **1 FAIL**, testowe milion kierunków z dwoma aktywnymi pozostawiało dwie tablice po milion pozycji. `shotgun_sparse_schedule_after.xml` — **10 PASS**, obejmujące tę próbę, kolejność i kierunki rzeczywistych pocisków, ponad 96 dodatkowych śrucin, duże liczniki, zniszczenie broni, ratunek oraz koszt Double Shot. Przykład miliona kierunków dotyczy samego selektora w kontrolowanym teście, nie możliwej już teraz salwy w grze.
+- Inicjalizacja selektora nadal synchronicznie przegląda wszystkie żądania, a pozostałe struktury salwy, w tym przechowywanie danych fizycznych pocisków, nadal mogą rosnąć z liczbą kierunków. Test porównuje pojemność przechowywanych kolekcji, nie całkowite bajty ani FPS. Limit 64 i synchroniczna salwa pozostają; punkty 02, 14 i 44 są otwarte.
+
 ### 02, 14 i 44. Wznawianie kontroli kierunków salwy — przygotowanie
 
 - Kontrola torów śrucin ma wewnętrzny stan pozwalający sprawdzać ograniczoną liczbę kolejnych kierunków i wznowić pracę w tym samym miejscu. Wspólne sprawdzenie lufy i jej otoczenia nadal wykonywane jest raz, a napotkanie własnego pancerza kończy kontrolę całej salwy. Istniejąca ścieżka strzału korzysta z tej samej kontroli, ale nadal wykonuje ją synchronicznie.

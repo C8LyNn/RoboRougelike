@@ -43,6 +43,27 @@ public sealed class BacklogShotgunBonusScheduleTests
         for(int i=0;i<20;i++)commit.Invoke(schedule,null);
         Assert.That((int)next.GetValue(schedule),Is.Zero,"A large remaining count must not overflow or disappear.");
     }
+    [Test] public void SparseVolleyKeepsStorageProportionalToDirectionsWithBonuses()
+    {
+        var requests=new int[1000000];requests[3]=2;requests[999999]=1;
+        var type=ScheduleType();var schedule=System.Activator.CreateInstance(type,new object[]{requests});
+        long slots=0;
+        foreach(var field in type.GetFields(System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Public))
+        {
+            var value=field.GetValue(schedule);
+            if(value is System.Array array)slots+=array.LongLength;
+            else if(value is System.Collections.IList list)
+            {
+                var capacity=value.GetType().GetProperty("Capacity");
+                slots+=capacity==null?list.Count:(int)capacity.GetValue(value);
+            }
+        }
+        Assert.That(slots,Is.LessThan(1024),"An almost empty volley must not retain arrays sized to every direction.");
+        var next=type.GetProperty("NextPellet");var commit=type.GetMethod("CommitPellet");
+        foreach(int expected in new[]{3,999999,3})
+        {Assert.That((int)next.GetValue(schedule),Is.EqualTo(expected));commit.Invoke(schedule,null);}
+        Assert.That((int)next.GetValue(schedule),Is.EqualTo(-1));
+    }
 }
 
 public sealed class BacklogProjectileTierTests

@@ -15,33 +15,40 @@ namespace RoboRougelike.R3
     // Peek does not consume a shot: the queue commits only after spawn succeeds.
     internal sealed class ShotgunBonusSchedule
     {
-        readonly int[] remaining,next;
+        struct Entry
+        {
+            public int Pellet,Remaining,Next;
+        }
+        // Only directions with pending shots need a node. Pellet stores the
+        // original index so callers still retrieve the correct physical shot.
+        readonly List<Entry> entries=new List<Entry>();
         int current=-1,previous=-1;
-        public int NextPellet=>current;
+        public int NextPellet=>current<0?-1:entries[current].Pellet;
         public ShotgunBonusSchedule(IReadOnlyList<int> requested)
         {
             if(requested==null)throw new ArgumentNullException(nameof(requested));
-            remaining=new int[requested.Count];next=new int[requested.Count];
-            int first=-1,last=-1;
             for(int i=0;i<requested.Count;i++)
             {
                 int count=requested[i];if(count<0)throw new ArgumentException("A bonus count cannot be negative.",nameof(requested));
-                remaining[i]=count;if(count==0)continue;
-                if(first<0)first=i;else next[last]=i;
-                last=i;
+                if(count==0)continue;
+                entries.Add(new Entry{Pellet=i,Remaining=count,Next=entries.Count+1});
             }
-            if(first>=0){next[last]=first;current=first;previous=last;}
+            if(entries.Count>0)
+            {
+                int last=entries.Count-1;var entry=entries[last];entry.Next=0;entries[last]=entry;
+                current=0;previous=last;
+            }
         }
         public void CommitPellet()
         {
             if(current<0)throw new InvalidOperationException("No shotgun bonus remains.");
-            int after=next[current];
-            if(--remaining[current]==0)
+            var entry=entries[current];int after=entry.Next;
+            if(--entry.Remaining==0)
             {
                 if(after==current){current=previous=-1;return;}
-                next[previous]=after;current=after;
+                var prior=entries[previous];prior.Next=after;entries[previous]=prior;current=after;
             }
-            else{previous=current;current=after;}
+            else{entries[current]=entry;previous=current;current=after;}
         }
     }
     // Bonus shells remain owned by the vehicle even if the physical gun is lost.
