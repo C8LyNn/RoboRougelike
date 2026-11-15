@@ -15,6 +15,29 @@ namespace RoboRougelike.R1
     {
         private readonly HashSet<string> lootSelection=new HashSet<string>();
         private IReadOnlyList<R4SalvageBasket> rewardBaskets=System.Array.Empty<R4SalvageBasket>();
+        private RewardBasketStream rewardBasketStream;
+        // One item of lookahead distinguishes a complete list from another
+        // available page without materializing every possible combination.
+        private sealed class RewardBasketStream:System.IDisposable
+        {
+            readonly IEnumerator<R4SalvageBasket> iterator;
+            R4SalvageBasket pending;
+            bool exhausted;
+            public readonly List<R4SalvageBasket> Items=new List<R4SalvageBasket>();
+            public bool HasMore=>pending!=null;
+            public RewardBasketStream(IEnumerable<R4SalvageBasket> source){iterator=source.GetEnumerator();}
+            public void LoadThrough(int count)
+            {
+                while(Items.Count<count&&!exhausted)
+                {
+                    if(pending!=null){Items.Add(pending);pending=null;continue;}
+                    if(iterator.MoveNext())Items.Add(iterator.Current);else exhausted=true;
+                }
+                if(!exhausted&&pending==null)
+                {if(iterator.MoveNext())pending=iterator.Current;else exhausted=true;}
+            }
+            public void Dispose(){iterator.Dispose();}
+        }
         private int selectedBasket=-1;
         private int selectedBonus=-1;
         private R4SalvageLedger displayedLedger;
@@ -54,8 +77,11 @@ namespace RoboRougelike.R1
             if(displayedLedger==ledger)return;
             displayedLedger=ledger;lootSelection.Clear();selectedBonus=-1;lootPage=0;basketPage=0;basketRerollCount=0;
             var run=R1RunController.Instance;
-            rewardBaskets=ledger?.CreateBasketOffers((run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397),run?.Progress?.EncounterIndex??0,run?.VehicleModel?.RewardBasketOfferCount??3)
-                ??System.Array.Empty<R4SalvageBasket>();
+            rewardBasketStream?.Dispose();
+            rewardBasketStream=ledger==null?null:new RewardBasketStream(ledger.EnumerateBasketOffers(
+                (run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397),run?.Progress?.EncounterIndex??0,run?.VehicleModel?.RewardBasketOfferCount??3));
+            rewardBasketStream?.LoadThrough(6);
+            rewardBaskets=rewardBasketStream!=null?rewardBasketStream.Items:System.Array.Empty<R4SalvageBasket>();
             selectedBasket=-1;
             rewardInventoryOpen=false;rewardMissedOpen=false;rewardMissedPage=0;rewardMissedFeedback=null;rewardInventoryDamagedOnly=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;rewardClaimFeedback=null;
         }
@@ -92,24 +118,27 @@ namespace RoboRougelike.R1
             GUI.enabled=enabled&&basketPage>0;
             if(GUI.Button(new Rect(rect.x,rect.y,54,rect.height),"‹",compactButton))basketPage--;
             GUI.enabled=enabled;
-            GUI.Label(new Rect(rect.x+60,rect.y,rect.width-120,rect.height),$"Zestawy {basketPage+1}/{pages}",small);
+            GUI.Label(new Rect(rect.x+60,rect.y,rect.width-120,rect.height),$"Zestawy {basketPage+1}/{pages}{(rewardBasketStream?.HasMore==true?"+":"")}",small);
             GUI.enabled=enabled&&basketPage<pages-1;
-            if(GUI.Button(new Rect(rect.x+rect.width-54,rect.y,54,rect.height),"›",compactButton))basketPage++;
+            if(GUI.Button(new Rect(rect.x+rect.width-54,rect.y,54,rect.height),"›",compactButton))AdvanceBasketPage();
             GUI.enabled=enabled;
+        }
+        private void AdvanceBasketPage()
+        {
+            int pages=(int)System.Math.Max(1,((long)rewardBaskets.Count+2)/3);
+            if(basketPage>=pages-1)return;
+            basketPage++;
+            int through=(int)System.Math.Min(int.MaxValue,((long)basketPage+2)*3);
+            rewardBasketStream?.LoadThrough(through);
         }
         private static bool SameRewardBaskets(IReadOnlyList<R4SalvageBasket> a,IReadOnlyList<R4SalvageBasket> b)
         {
             if(a==null||b==null||a.Count!=b.Count)return false;
-            var matched=new bool[b.Count];
-            for(int i=0;i<a.Count;i++)
-            {
-                int found=-1;var ids=a[i].Items.Select(p=>p.Id).OrderBy(id=>id,System.StringComparer.Ordinal).ToArray();
-                for(int j=0;j<b.Count;j++)
-                    if(!matched[j]&&a[i].Archetype==b[j].Archetype&&ids.SequenceEqual(
-                        b[j].Items.Select(p=>p.Id).OrderBy(id=>id,System.StringComparer.Ordinal)))
-                    {found=j;break;}
-                if(found<0)return false;matched[found]=true;
-            }
+            string Key(R4SalvageBasket basket)=>((int)basket.Archetype)+":"+string.Concat(basket.Items.Select(p=>p.Id)
+                .OrderBy(id=>id,System.StringComparer.Ordinal).Select(id=>id.Length+":"+id));
+            var counts=new Dictionary<string,int>(System.StringComparer.Ordinal);
+            foreach(var basket in a){string key=Key(basket);counts.TryGetValue(key,out int count);counts[key]=count+1;}
+            foreach(var basket in b){string key=Key(basket);if(!counts.TryGetValue(key,out int count)||count==0)return false;counts[key]=count-1;}
             return true;
         }
         private bool RerollRewardBaskets(R1RunController run)
@@ -118,17 +147,20 @@ namespace RoboRougelike.R1
                 run.Salvage==null||run.Salvage!=displayedLedger||run.Salvage.Closed||rewardBaskets.Count==0)return false;
             int price=Mathf.Max(0,run.Definition.RewardBasketRerollCost);
             if(run.VehicleModel.Scrap<price){rewardClaimFeedback=$"Brakuje {price-run.VehicleModel.Scrap} Z na losowanie.";return false;}
-            IReadOnlyList<R4SalvageBasket> next=null;
+            RewardBasketStream next=null;
             int stage=run.Progress.EncounterIndex;
             for(int attempt=1;attempt<=16;attempt++)
             {
                 int seed=unchecked((run.Seed^(stage*397))+((basketRerollCount*16+attempt)*7919));
-                var candidate=run.Salvage.CreateBasketOffers(seed,stage,run.VehicleModel.RewardBasketOfferCount);
-                if(candidate.Count>0&&!SameRewardBaskets(rewardBaskets,candidate)){next=candidate;break;}
+                var candidate=new RewardBasketStream(run.Salvage.EnumerateBasketOffers(seed,stage,run.VehicleModel.RewardBasketOfferCount));
+                candidate.LoadThrough(System.Math.Max(6,rewardBaskets.Count));
+                if(candidate.Items.Count>0&&!SameRewardBaskets(rewardBaskets,candidate.Items)){next=candidate;break;}
+                candidate.Dispose();
             }
-            if(next==null){rewardClaimFeedback="Brak innego zestawu do wylosowania.";return false;}
-            if(!run.VehicleModel.TrySpendScrap(price))return false;
-            basketRerollCount++;rewardBaskets=next;basketPage=0;selectedBasket=-1;lootSelection.Clear();
+            if(next==null){rewardClaimFeedback="Brak innego zestawu na dostępnych stronach.";return false;}
+            if(!run.VehicleModel.TrySpendScrap(price)){next.Dispose();return false;}
+            rewardBasketStream?.Dispose();rewardBasketStream=next;
+            basketRerollCount++;rewardBaskets=next.Items;basketPage=0;selectedBasket=-1;lootSelection.Clear();
             rewardClaimFeedback=$"Nowe zestawy • koszt {price} Z. Wybierz zestaw.";return true;
         }
         private void DrawRerollRewardButton(R1RunController run,Rect rect)
@@ -144,6 +176,7 @@ namespace RoboRougelike.R1
         private bool ConfirmSelectedRewards(R1RunController run)
         {
             bool accepted=run.ConfirmRewards(lootSelection,selectedBonus>=0?new[]{selectedBonus}:System.Array.Empty<int>());
+            if(accepted){rewardBasketStream?.Dispose();rewardBasketStream=null;}
             rewardClaimFeedback=accepted?null:"Nie udało się odebrać nagród. Spróbuj ponownie.";
             return accepted;
         }

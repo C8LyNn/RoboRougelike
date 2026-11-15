@@ -298,6 +298,54 @@ public sealed class UI943PortraitRewardsActionsTests
         }
         finally {if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
     }
+    [UnityTest] public IEnumerator LargeBasketBonusesLoadPagesOnDemandWithoutChangingSeededOffers()
+    {
+        var advance=typeof(R1RunHUD).GetMethod("AdvanceBasketPage",BindingFlags.Instance|BindingFlags.NonPublic);
+        Assert.That(advance,Is.Not.Null,"Reward paging must not generate a huge offer list up front.");
+        var ledger=new R4SalvageLedger(8);
+        var items=Enumerable.Range(0,40).Select(i=>new R4SalvageItem("page-"+i,"foe",R3PartKind.Gun,R4WeaponKind.Basic,1)).ToArray();
+        Assert.That(ledger.Record("foe",items,R3EnemyArchetype.Scout),Is.True);
+        run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(50,0,0),R3PartKind.SalvageOptimizer){Health=1});
+        run.VehicleModel.Economy.SalvageOptimizerExtraOffersPerUnit=int.MaxValue;
+        Call("TrackRewardLedger",ledger);
+        var baskets=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(baskets.Count,Is.EqualTo(6),"Only the first two pages should be materialized initially.");
+        Call("AdvanceBasketPage");Assert.That((int)Field("basketPage"),Is.EqualTo(1));
+        Assert.That(baskets.Count,Is.EqualTo(9));
+        Call("AdvanceBasketPage");Assert.That((int)Field("basketPage"),Is.EqualTo(2));
+        Assert.That(baskets.Count,Is.EqualTo(12));
+        int stage=run.Progress.EncounterIndex;int seed=run.Seed^(stage*397);
+        string Signature(R4SalvageBasket basket)=>basket.Archetype+":"+string.Join(",",basket.Items.Select(p=>p.Id).OrderBy(id=>id));
+        Assert.That(baskets.Select(Signature),Is.EqualTo(ledger.CreateBasketOffers(seed,stage,12).Select(Signature)));
+        Call("ChooseRewardBasket",6);
+        Assert.That((HashSet<string>)Field("lootSelection"),Is.EquivalentTo(baskets[6].Items.Select(p=>p.Id)));
+        yield return null;
+    }
+    [UnityTest] public IEnumerator LargeBasketRerollAndLaterPageCanBeClaimedOnce()
+    {
+        var ledger=run.Salvage;
+        var items=Enumerable.Range(0,40).Select(i=>new R4SalvageItem(Guid.NewGuid().ToString("N"),"foe",R3PartKind.Gun,R4WeaponKind.Basic,1)).ToArray();
+        Assert.That(ledger.Record("foe",items,R3EnemyArchetype.Scout),Is.True);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(50,0,0),R3PartKind.SalvageOptimizer){Health=1});
+        run.VehicleModel.Economy.SalvageOptimizerExtraOffersPerUnit=int.MaxValue;
+        run.VehicleModel.Award(1000);Call("TrackRewardLedger",ledger);
+        Call("PortraitRewardSelectBonus",0);Call("AdvanceBasketPage");Call("AdvanceBasketPage");Call("ChooseRewardBasket",6);
+        var old=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");Assert.That(old.Count,Is.EqualTo(12));
+        int before=run.VehicleModel.Scrap;Assert.That((bool)Call("RerollRewardBaskets",run),Is.True);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-run.Definition.RewardBasketRerollCost));
+        Assert.That((int)Field("selectedBonus"),Is.Zero);Assert.That((int)Field("selectedBasket"),Is.EqualTo(-1));
+        var next=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");Assert.That(next.Count,Is.EqualTo(12));
+        Call("AdvanceBasketPage");Call("AdvanceBasketPage");Call("ChooseRewardBasket",6);
+        var ids=next[6].Items.Select(item=>item.Id).ToArray();
+        Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.True);
+        Assert.That(ledger.Closed,Is.True);
+        Assert.That(ids.All(id=>run.VehicleModel.Inventory.Count(part=>part.Id==id)==1),Is.True);
+        Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.False);
+        yield return null;
+    }
     [UnityTest] public IEnumerator CollectedFinalPickupDoesNotConsumeRewardConfirmationKey()
     {
         // Defeated enemies only drop energy while combat is active. The shared

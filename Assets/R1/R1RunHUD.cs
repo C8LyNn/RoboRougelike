@@ -152,6 +152,7 @@ namespace RoboRougelike.R1
         }
         private void OnDestroy()
         {
+            rewardBasketStream?.Dispose();
             if(buttonNormal!=null)Destroy(buttonNormal);
             if(buttonHover!=null)Destroy(buttonHover);
             if(buttonPressed!=null)Destroy(buttonPressed);

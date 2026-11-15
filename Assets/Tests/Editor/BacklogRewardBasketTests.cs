@@ -7,6 +7,20 @@ using RoboRougelike.R4;
 
 public sealed class BacklogRewardBasketTests
 {
+    [Test] public void HugeOfferRequestCanProduceAnIdenticalPrefixWithoutBuildingEveryBasket()
+    {
+        var ledger=new R4SalvageLedger(8);
+        var items=Enumerable.Range(0,40).Select(i=>new R4SalvageItem("large-"+i,"foe",R3PartKind.Wheel,R4WeaponKind.Basic,1)).ToArray();
+        Assert.That(ledger.Record("foe",items,R3EnemyArchetype.Scout),Is.True);
+        var enumerate=typeof(R4SalvageLedger).GetMethod("EnumerateBasketOffers",new[]{typeof(int),typeof(int),typeof(int)});
+        Assert.That(enumerate,Is.Not.Null,"The reward interface needs an incremental offer source.");
+        var lazy=(IEnumerable<R4SalvageBasket>)enumerate.Invoke(ledger,new object[]{17,3,int.MaxValue});
+        string Signature(R4SalvageBasket basket)=>basket.Archetype+":"+string.Join(",",basket.Items.Select(p=>p.Id).OrderBy(id=>id));
+        var first=lazy.Take(12).Select(Signature).ToArray();
+        var existing=ledger.CreateBasketOffers(17,3,12).Select(Signature).ToArray();
+        Assert.That(first,Is.EqualTo(existing));
+        Assert.That(first.Skip(3).Distinct().Count(),Is.EqualTo(9));
+    }
     [Test] public void OptimizersAddOffersWithoutChangingTheOneBasketLimit()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));

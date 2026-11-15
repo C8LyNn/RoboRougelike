@@ -121,14 +121,17 @@ namespace RoboRougelike.R4
         }
         public IReadOnlyList<R4SalvageBasket> CreateBasketOffers(int seed,int stage)=>CreateBasketOffers(seed,stage,3);
         public IReadOnlyList<R4SalvageBasket> CreateBasketOffers(int seed,int stage,int offerCount)
+            =>EnumerateBasketOffers(seed,stage,offerCount).ToList().AsReadOnly();
+        // Keep the seeded order and uniqueness rules, but allow the rewards UI
+        // to request only the pages the player can currently see.
+        public IEnumerable<R4SalvageBasket> EnumerateBasketOffers(int seed,int stage,int offerCount)
         {
             // Select among the most common archetypes that actually appeared.
             // Every offer draws from one real defeated robot; armor stays excluded.
             var groups=basketSources.Where(s=>s.Parts.Any(p=>p.Selectable&&!collected.Contains(p.Id)&&!physicalDrops.Contains(p.Id))).GroupBy(s=>s.Type)
                 .OrderByDescending(g=>g.Count()).ThenBy(g=>g.Key).Take(3).ToArray();
-            if(groups.Length==0||Limit==0)return Array.Empty<R4SalvageBasket>();
+            if(groups.Length==0||Limit==0)yield break;
             var random=new System.Random(seed);
-            var result=new List<R4SalvageBasket>();
             var seen=new HashSet<string>(StringComparer.Ordinal);
             for(int i=0;i<Math.Max(0,offerCount);i++)
             {
@@ -137,7 +140,7 @@ namespace RoboRougelike.R4
                 // differ and stop after bounded attempts if loot is scarce.
                 for(int attempt=0;attempt<(i<3?1:16);attempt++)
                 {
-                    var group=groups[(i+attempt)%groups.Length].ToArray();
+                    var group=groups[(int)(((long)i+attempt)%groups.Length)].ToArray();
                     var source=group[random.Next(group.Length)];
                     var pool=source.Parts.Where(p=>p.Selectable&&!collected.Contains(p.Id)&&!physicalDrops.Contains(p.Id)).OrderBy(p=>p.Id,StringComparer.Ordinal).ToArray();
                     int tier=Math.Max(0,Math.Min(5,stage));
@@ -155,15 +158,14 @@ namespace RoboRougelike.R4
                 // deterministically before ending the extra offers.
                 if(chosen==null&&i>=3)
                     for(int offset=0;offset<groups.Length&&chosen==null;offset++)
-                        foreach(var source in groups[(i+offset)%groups.Length])
+                        foreach(var source in groups[(int)(((long)i+offset)%groups.Length)])
                         {
                             chosen=FindUnseenBasket(source.Type,source.Parts,stage,seen);
                             if(chosen!=null)break;
                         }
                 if(chosen==null)break;
-                result.Add(chosen);
+                yield return chosen;
             }
-            return result.AsReadOnly();
         }
         private R4SalvageBasket FindUnseenBasket(R3EnemyArchetype archetype,R4SalvageItem[] source,int stage,HashSet<string> seen)
         {
