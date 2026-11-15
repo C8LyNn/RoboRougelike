@@ -156,6 +156,10 @@ namespace RoboRougelike.R3
             foreach(var hit in hits)
             {
                 if(hit.collider==null||hit.collider==ownCollider||hit.transform.IsChildOf(transform))continue;
+                // A previous friendly projectile is not cover. Treating it as
+                // an obstruction prevents another shot until the first lands.
+                var projectile=hit.collider.GetComponentInParent<P17PhysicalShell>();
+                if(projectile!=null&&projectile.OwnerRoot==owner)continue;
                 if(candidate!=null&&hit.transform.IsChildOf(candidate.transform))
                 {if(hit.collider.GetComponentInParent<P12PipelineSafeDamageable>()!=null)return true;continue;}
                 return false;

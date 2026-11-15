@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 13–14 i 44. Własny pocisk a widoczność celu urządzenia
+
+- Dron lub wieżyczka mogły traktować wcześniej wystrzelony pocisk tego samego właściciela jako zasłonę i nie oddać kolejnego strzału aż do jego trafienia. Sprawdzanie widoczności pomija teraz takie pociski; ściany i pozostałe przeszkody nadal blokują linię ognia. Same pociski i ich kolizje pozostają fizyczne i niezależne.
+- Unity 6000.3.14f1: `device_los_projectile_final.xml` i `.log`: **7 PASS, 0 FAIL**. Kontrolowany scenariusz sprawdził oba typy urządzenia, dwa osobne trafienia oraz ścianę; pozostałe testy objęły autonomiczny wybór widocznego przeciwnika, rzeczywiste strzały na bliższym i dalszym dystansie oraz wcześniej dodane premie. `device_los_projectile_before.xml`: **1 FAIL** przed poprawką. To nie usuwa ograniczenia jednego strzału na krok fizyki ani progów dodatkowych pocisków; ręczny playtest i pomiar wydajności: **NOT RUN**.
+
 ### 12–14 i 44. Zakresy szybkostrzelności dronów i wieżyczek
 
 - Globalna fizyczna premia odstępu między strzałami obejmuje teraz także strzelające drony i wieżyczki ofensywne. Dodano osobne zakresy i dwie nagrody, wstępnie −20% odstępu każda; działają wyłącznie na odpowiednie urządzenia i nie zmieniają czasu ich rozstawienia ani przeładowania magazynków broni. Premie globalne i kategoriowe sumują się w grupie `increased/reduced`, a `more/less` są osobnymi mnożnikami. Już rozstawione urządzenia korzystają z aktualnego zestawu sprawnych modułów przy planowaniu kolejnego strzału. Osobny aktywny Rapid Fire zachowuje dotychczasowy zakres działania.

@@ -17,6 +17,44 @@ using Object=UnityEngine.Object;
 
 public class RRLW34EffectsTests
 {
+    [UnityTest] public IEnumerator APreviousProjectileDoesNotBlindDroneOrTurretAndWallsStillBlock()
+    {
+        var vehicle=Build(Model());yield return null;
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var fire=typeof(R3FlyingDrone).GetMethod("Fire",flags);var tick=typeof(R3FlyingDrone).GetMethod("FixedUpdate",flags);
+        var targetField=typeof(R3FlyingDrone).GetField("target",flags);var aimField=typeof(R3FlyingDrone).GetField("aimCollider",flags);
+        var nextField=typeof(R3FlyingDrone).GetField("nextShot",flags);var scanField=typeof(R3FlyingDrone).GetField("nextScan",flags);
+        for(int i=0;i<2;i++)
+        {
+            var shooterObject=GameObject.CreatePrimitive(PrimitiveType.Cube);shooterObject.transform.SetParent(fixtures.transform);
+            shooterObject.transform.position=new Vector3(1000+i*20,1000,1000);shooterObject.AddComponent<Rigidbody>().useGravity=false;
+            var shooter=shooterObject.AddComponent<R3FlyingDrone>();
+            if(i==0)shooter.Configure(vehicle.transform,0,.1f,10);else shooter.ConfigureTurret(vehicle.transform,.1f,10);
+            shooter.enabled=false;
+            var enemyObject=GameObject.CreatePrimitive(PrimitiveType.Cube);enemyObject.transform.SetParent(fixtures.transform);
+            enemyObject.transform.position=shooterObject.transform.position+Vector3.forward*4;
+            var hp=enemyObject.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
+            var enemy=enemyObject.AddComponent<P12PipelineSafeEnemyTurret>();enemy.enabled=false;
+            enemy.Configure(vehicle.transform,null,null,enemyObject.transform,hp,null);
+            targetField.SetValue(shooter,enemy);aimField.SetValue(shooter,enemyObject.GetComponent<Collider>());
+            scanField.SetValue(shooter,Time.time+100);nextField.SetValue(shooter,0f);
+            fire.Invoke(shooter,new object[]{Vector3.forward});
+            var earlier=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Single(p=>p.name=="P17_DronePhysicalShell"&&p.gameObject.activeInHierarchy);
+            earlier.transform.position=shooterObject.transform.position+Vector3.forward*1.3f;Physics.SyncTransforms();
+            tick.Invoke(shooter,null);
+            var shots=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Where(p=>p.name=="P17_DronePhysicalShell"&&p.gameObject.activeInHierarchy).ToArray();
+            Assert.That(shots.Length,Is.EqualTo(2),i==0?"A drone must see past the projectile it fired earlier.":"A turret must see past the projectile it fired earlier.");
+            float deadline=Time.realtimeSinceStartup+4;
+            while(hp.CurrentHp>980.1f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+            Assert.That(hp.CurrentHp,Is.EqualTo(980).Within(.1),"Both independent physical projectiles must hit.");
+            foreach(var shot in shots)if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+            var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.SetParent(fixtures.transform);
+            wall.transform.position=shooterObject.transform.position+Vector3.forward*2;Physics.SyncTransforms();nextField.SetValue(shooter,0f);
+            tick.Invoke(shooter,null);
+            Assert.That((float)nextField.GetValue(shooter),Is.EqualTo(0),"A wall must still prevent the shot.");
+            Object.Destroy(wall);Object.Destroy(enemyObject);Object.Destroy(shooterObject);yield return null;
+        }
+    }
     [UnityTest] public IEnumerator ScopedFireRateReachesActualDroneAndTurretShots()
     {
         var global=Upgrade(R1UpgradeEffect.Reload,.1f);
