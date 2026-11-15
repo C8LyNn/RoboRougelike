@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 44. Niezależny opis każdej salwy strzelby
+
+- Opis kierunków i parametrów salwy jest teraz osobnym, niezmiennym widokiem dla każdego strzału. Nie tworzy tablicy proporcjonalnej do liczby śrucin, a następny strzał ani zmiana ustawień nie nadpisują zachowanego opisu poprzedniego. To przygotowanie do porcjowania podstawowych śrucin; aktualny odbiornik nadal tworzy salwę synchronicznie i zachowuje dotychczasowy kontrakt transakcji.
+- Unity 6000.3.14f1: `shotgun_snapshot_before.xml` — **1 FAIL**, zachowany opis zmieniał liczbę śrucin z 8 na 3 po następnym strzale. `shotgun_snapshot_after.xml` — **20 PASS** testów modułu w PlayMode, w tym zachowanie pierwotnej pozycji, kierunku, obrażeń i numeru salwy. `shotgun_snapshot_integration.xml` — **4 PASS**, m.in. dwie strzelby, wcześniejszy próg pocisków, ponowne użycie obiektów i blokada strzału przez własny pancerz.
+- Nadal obowiązuje limit 64 podstawowych śrucin. Porcjowanie sprawdzania torów i tworzenia rzeczywistych podstawowych pocisków oraz pomiary wydajności nie są jeszcze wykonane; punktów 02, 14 i 44 nie oznaczono jako zakończonych.
+
 ### 02, 14, 20, 42 i 44. Dodatkowe śruciny strzelby
 
 - Usunięto obcinanie dodatkowych śrucin przy 96 aktywnych pociskach. Bonus jest losowany osobno dla każdej podstawowej śruciny; po utworzeniu podstawowych salw oczekujące pociski powstają porcjami z zapisanym kierunkiem, pozycją i parametrami. Zachowują wzajemne wykluczenia kolizji całej salwy, jeden koszt podstawowego strzału i czekają podczas ratunku. Oczekujące porcje różnych broni otrzymują kolejno możliwość emisji. Usunięto nieaktualne ostrzeżenie HUD o progu.

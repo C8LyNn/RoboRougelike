@@ -28,19 +28,18 @@ namespace RoboRougelike.WPN001Shotgun
         [SerializeField] private ShotgunConfig configuration = new ShotgunConfig();
 
         private readonly ShotgunFireGate gate = new ShotgunFireGate();
-        // The sink must consume this view synchronously, as required by
-        // IShotgunVolleySink. It describes the whole shot without allocating
-        // an array proportional to the configured pellet count.
+        // Each view describes one shot without allocating an array proportional
+        // to pellet count. Later shots cannot change a retained view.
         private sealed class VolleyView : IReadOnlyList<ShotgunPelletSpawn>
         {
-            private ShotgunSpread.IndexedPattern pattern;
-            private ShotgunSpec spec;
-            private uint index;
-            private Vector3 origin,inherited;
-            private Rigidbody body;
-            private GameObject owner;
+            private readonly ShotgunSpread.IndexedPattern pattern;
+            private readonly ShotgunSpec spec;
+            private readonly uint index;
+            private readonly Vector3 origin,inherited;
+            private readonly Rigidbody body;
+            private readonly GameObject owner;
             public int Count => spec.PelletCount;
-            public void Set(ShotgunSpread.IndexedPattern spread,ShotgunSpec shot,uint volleyIndex,
+            public VolleyView(ShotgunSpread.IndexedPattern spread,ShotgunSpec shot,uint volleyIndex,
                 Vector3 shotOrigin,Vector3 inheritedVelocity,Rigidbody ownerBody,GameObject ownerRoot)
             {pattern=spread;spec=shot;index=volleyIndex;origin=shotOrigin;inherited=inheritedVelocity;body=ownerBody;owner=ownerRoot;}
             public ShotgunPelletSpawn this[int pellet] => new ShotgunPelletSpawn(pellet,index,origin,
@@ -50,7 +49,6 @@ namespace RoboRougelike.WPN001Shotgun
             {for(int i=0;i<Count;i++)yield return this[i];}
             IEnumerator IEnumerable.GetEnumerator()=>GetEnumerator();
         }
-        private readonly VolleyView volley = new VolleyView();
         public ShotgunFireFailure LastFailure { get; private set; }
         public ShotgunSpec CurrentSpec => (configuration ?? new ShotgunConfig()).Snapshot();
         public uint SuccessfulVolleys => gate.SuccessfulVolleys;
@@ -115,7 +113,7 @@ namespace RoboRougelike.WPN001Shotgun
             Vector3 inherited = ownerBody != null
                 ? ownerBody.GetPointVelocity(muzzle.position) * spec.InheritedVelocityFactor
                 : Vector3.zero;
-            volley.Set(pattern,spec,gate.SuccessfulVolleys,muzzle.position,inherited,ownerBody,ownerRoot);
+            var volley=new VolleyView(pattern,spec,gate.SuccessfulVolleys,muzzle.position,inherited,ownerBody,ownerRoot);
 
             IShotgunShotResourceBank bank = resourceBankComponent as IShotgunShotResourceBank;
             if (resourceBankComponent != null && (bank == null || !resourceBankComponent.isActiveAndEnabled))
