@@ -42,6 +42,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Unity 6000.3.14f1: `legacy_part_health_labels.xml` i `.log`: **4 PASS, 0 FAIL** dla istniejących kontroli wspólnego formatowania HP w katalogu i inspekcji. Test nie klika ani nie sprawdza wyglądu starszych paneli w Playerze; kompilacja projektu w Unity przeszła.
 - Komunikat po fuzji również używa tego formatu: wynik o HP mniejszym od 100% nie jest przedstawiany jako w pełni sprawny. `fusion_message_after.xml` i `.log`: **7 PASS, 0 FAIL**, w tym fuzja w rzeczywistym garażu, montaż wyniku i podgląd; `fusion_message_before.xml`: **1 FAIL**, komunikat pokazywał 100% mimo uszkodzenia.
 
+### 07, 39–40, 44. Kopia konfiguracji konstrukcji
+
+- Sprawdzono niezależną kopię wszystkich publicznych liczbowych ustawień ekonomii i budżetu konstrukcyjnego, z różnymi wartościami dla każdego pola. Poligon i odtwarzanie blueprintu korzystają z tej metody kopiowania. Nie znaleziono brakującego ustawienia; nie zmieniano mechaniki.
+- Unity 6000.3.14f1: `config_blueprint_copy_audit.xml` i `.log`: **3 PASS, 0 FAIL**, w tym pełna kontrola pól numerycznych oraz odtwarzanie blueprintu i odmowa przy braku części. Test weryfikuje metodę kopiowania i osobne scenariusze blueprintu, nie ręczne ustawianie balansu ani przejazd na poligonie.
+
 ### 42, 44. Czytelniejszy stan ratunku
 
 - Komunikat aktywnej ochrony znika wraz z jej zakończeniem i odpowiednio opisuje 50% obrażeń w walce albo niewrażliwość poza walką. Działa także przy automatycznym ratowaniu; bezpieczna strefa pokazuje informację o ratunku lub przyczynie niepowodzenia. Mechaniki obrażeń i kosztów nie zmieniono.

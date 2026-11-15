@@ -7,6 +7,26 @@ using UnityEngine;
 
 public sealed class BacklogConstructionBudgetTests
 {
+    [Test] public void DeepCopyKeepsNumericEconomyAndConstructionValuesIndependent()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var economyFields=typeof(R3GarageEconomy).GetFields(BindingFlags.Instance|BindingFlags.Public)
+            .Where(field=>field.FieldType==typeof(int)||field.FieldType==typeof(float)).OrderBy(field=>field.Name).ToArray();
+        var budgetFields=typeof(R3ConstructionSettings).GetFields(BindingFlags.Instance|BindingFlags.Public)
+            .Where(field=>field.FieldType==typeof(int)||field.FieldType==typeof(float)).OrderBy(field=>field.Name).ToArray();
+        for(int i=0;i<economyFields.Length;i++)economyFields[i].SetValue(model.Economy,
+            economyFields[i].FieldType==typeof(int)?(object)(i+11):(object)(.25f+i*.013f));
+        for(int i=0;i<budgetFields.Length;i++)budgetFields[i].SetValue(model.Economy.Construction,
+            budgetFields[i].FieldType==typeof(int)?(object)(i+21):(object)(.5f+i*.017f));
+        var copy=model.DeepCopy();
+        Assert.That(copy.Economy,Is.Not.SameAs(model.Economy));
+        Assert.That(copy.Economy.Construction,Is.Not.SameAs(model.Economy.Construction));
+        foreach(var field in economyFields)Assert.That(field.GetValue(copy.Economy),Is.EqualTo(field.GetValue(model.Economy)),field.Name);
+        foreach(var field in budgetFields)Assert.That(field.GetValue(copy.Economy.Construction),Is.EqualTo(field.GetValue(model.Economy.Construction)),field.Name);
+        copy.Economy.ArmorCost++;copy.Economy.Construction.BlockCost++;
+        Assert.That(copy.Economy.ArmorCost,Is.Not.EqualTo(model.Economy.ArmorCost));
+        Assert.That(copy.Economy.Construction.BlockCost,Is.Not.EqualTo(model.Economy.Construction.BlockCost));
+    }
     [Test] public void PhysicalPartsHaveConfigurableWeightedCosts()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
