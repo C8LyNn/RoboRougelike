@@ -17,6 +17,45 @@ using Object=UnityEngine.Object;
 
 public class RRLW34EffectsTests
 {
+    [UnityTest] public IEnumerator DenseFriendlyProjectilesDoNotHideWallsOrTargetsFromDeviceAim()
+    {
+        var owner=new GameObject("Device sight owner");owner.transform.SetParent(fixtures.transform);
+        var shooterObject=GameObject.CreatePrimitive(PrimitiveType.Cube);shooterObject.transform.SetParent(fixtures.transform);
+        shooterObject.transform.position=new Vector3(1000,1000,1000);shooterObject.AddComponent<Rigidbody>().isKinematic=true;
+        var shooter=shooterObject.AddComponent<R3FlyingDrone>();shooter.ConfigureTurret(owner.transform,1,10,30);shooter.enabled=false;
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.SetParent(fixtures.transform);
+        target.transform.position=shooterObject.transform.position+Vector3.forward*10;
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
+        var enemy=target.AddComponent<P12PipelineSafeEnemyTurret>();enemy.enabled=false;enemy.Configure(owner.transform,null,null,target.transform,hp,null);
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var clear=typeof(R3FlyingDrone).GetMethod("ClearShot",flags);
+        var buffer=typeof(R3FlyingDrone).GetField("sightHits",flags);
+        Assert.That(clear,Is.Not.Null);Assert.That(buffer,Is.Not.Null,"Repeated sight queries should reuse storage.");
+        void AddFriendly(int first,int count)
+        {
+            for(int i=first;i<first+count;i++)
+            {
+                var item=new GameObject("Friendly projectile");item.transform.SetParent(fixtures.transform);
+                item.transform.position=shooterObject.transform.position+Vector3.forward*(1+i*.02f);
+                item.transform.localScale=Vector3.one*.012f;item.AddComponent<BoxCollider>();
+                item.AddComponent<P17PhysicalShell>().Configure(owner.transform,1,60,Vector3.forward,null);
+            }
+            Physics.SyncTransforms();
+        }
+        bool Visible()=> (bool)clear.Invoke(shooter,new object[]{Vector3.forward,10f,enemy});
+        AddFriendly(0,100);Assert.That(Visible(),Is.True);
+        var warmed=buffer.GetValue(shooter);Assert.That(Visible(),Is.True);Assert.That(buffer.GetValue(shooter),Is.SameAs(warmed),"A repeated query must reuse its grown buffer.");
+        AddFriendly(100,200);Assert.That(Visible(),Is.True,"A full buffer must not hide a target behind 300 friendly projectiles.");
+        var current=(RaycastHit[])buffer.GetValue(shooter);Assert.That(current.Length,Is.LessThan(300),"The dense scenario must exercise the complete fallback rather than silently truncate.");
+        var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.SetParent(fixtures.transform);
+        wall.transform.position=shooterObject.transform.position+Vector3.forward*8;Physics.SyncTransforms();
+        Assert.That(Visible(),Is.False,"A wall behind the friendly projectiles must still block the shot.");
+        wall.transform.position=shooterObject.transform.position+Vector3.forward*11;Physics.SyncTransforms();
+        Assert.That(Visible(),Is.True,"A wall behind the target must not block it.");
+        wall.transform.position=target.transform.position;Physics.SyncTransforms();
+        Assert.That(Visible(),Is.False,"A wall tied with the target must be treated as cover regardless of hit order.");
+        yield return null;
+    }
     [UnityTest] public IEnumerator DeviceCadenceDoesNotAccumulatePhysicsStepRounding()
     {
         var vehicle=Build(Model());yield return null;

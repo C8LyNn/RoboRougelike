@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 13–14 i 44. Zapytania widoczności urządzeń w gęstej scenie
+
+- Drony i wieżyczki wykorzystują ponownie bufor zapytań widoczności i wybierają najbliższy cel lub przeszkodę bez sortowania całej listy. Gdy bufor jest za mały, wykonują pełne zapytanie, zamiast pomijać dalsze kolizje. Przy tej samej odległości ściany i celu ściana zasłania cel. Jest to ograniczenie pracy nad zapytaniami, a nie usunięcie limitów strzałów.
+- Unity 6000.3.14f1: `device_sight_final.xml` i `.log`: **8 PASS, 0 FAIL** dla 300 własnych pocisków na linii widzenia, ponownego użycia bufora, kompletnego zapytania po jego zapełnieniu, ściany przed celem, za celem oraz na tej samej odległości. Regresja obejmowała rzeczywiste pociski, tempo, premie i autonomiczne wybieranie oraz trafianie przeciwnika. `device_sight_before.xml`: **1 FAIL** przed dodaniem ponownie wykorzystywanego bufora. Nie wykonywano profilowania czasu klatki ani ręcznego playtestu.
+
 ### 14 i 44. Dokładność tempa strzałów urządzeń
 
 - Drony i wieżyczki zachowują teraz ułamkowe opóźnienie wynikające z kroku fizyki, zamiast po każdym strzale zaczynać pełny odstęp od spóźnionego kroku. Przerwanie widoczności, utrata celu, ratunek i wyłączenie urządzenia resetują fazę: urządzenie nie zbiera strzałów za czas, w którym nie mogło strzelać. Zmiana nie usuwa ograniczenia jednego strzału na krok fizyki przy krótszych odstępach ani progów dodatkowych pocisków.

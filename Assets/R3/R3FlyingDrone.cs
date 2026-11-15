@@ -94,6 +94,10 @@ namespace RoboRougelike.R3
     {
         Transform owner;Rigidbody body;Collider ownCollider;float speed,interval,damage,nextShot,nextScan,attackRange=40f,followRadius=6f,hoverHeight=3f;
         bool firingPhase;float phaseDeadline;
+        // A bounded reusable buffer keeps the usual sight query allocation-free.
+        // When it fills, the complete allocating query preserves every obstacle.
+        const int SightBufferRetentionLimit=256;
+        RaycastHit[] sightHits=new RaycastHit[32];
         P12PipelineSafeEnemyTurret target;Collider aimCollider;RoboRougelike.R6.R6VehicleDrive groundDrive;bool stationary;
         public bool IsGround=>groundDrive!=null;
         public bool IsTurret=>stationary;
@@ -161,20 +165,38 @@ namespace RoboRougelike.R3
         }
         bool ClearShot(Vector3 direction,float distance,P12PipelineSafeEnemyTurret candidate)
         {
-            var hits=Physics.RaycastAll(body.position,direction,distance,~0,QueryTriggerInteraction.Ignore);
-            Array.Sort(hits,(a,b)=>a.distance.CompareTo(b.distance));
-            foreach(var hit in hits)
+            RaycastHit[] hits;int count;
+            while(true)
             {
+                count=Physics.RaycastNonAlloc(body.position,direction,sightHits,distance,~0,QueryTriggerInteraction.Ignore);
+                if(count<sightHits.Length){hits=sightHits;break;}
+                if(sightHits.Length>=SightBufferRetentionLimit)
+                {
+                    hits=Physics.RaycastAll(body.position,direction,distance,~0,QueryTriggerInteraction.Ignore);
+                    count=hits.Length;break;
+                }
+                Array.Resize(ref sightHits,Mathf.Min(SightBufferRetentionLimit,sightHits.Length*2));
+            }
+            float nearestTarget=float.PositiveInfinity,nearestObstacle=float.PositiveInfinity;
+            for(int i=0;i<count;i++)
+            {
+                var hit=hits[i];
                 if(hit.collider==null||hit.collider==ownCollider||hit.transform.IsChildOf(transform))continue;
                 // A previous friendly projectile is not cover. Treating it as
                 // an obstruction prevents another shot until the first lands.
                 var projectile=hit.collider.GetComponentInParent<P17PhysicalShell>();
                 if(projectile!=null&&projectile.OwnerRoot==owner)continue;
                 if(candidate!=null&&hit.transform.IsChildOf(candidate.transform))
-                {if(hit.collider.GetComponentInParent<P12PipelineSafeDamageable>()!=null)return true;continue;}
-                return false;
+                {
+                    if(hit.collider.GetComponentInParent<P12PipelineSafeDamageable>()!=null)
+                        nearestTarget=Mathf.Min(nearestTarget,hit.distance);
+                    continue;
+                }
+                nearestObstacle=Mathf.Min(nearestObstacle,hit.distance);
             }
-            return true;
+            Array.Clear(sightHits,0,sightHits.Length);
+            // Equal-distance walls block rather than depending on physics hit order.
+            return float.IsPositiveInfinity(nearestObstacle)||nearestTarget<nearestObstacle;
         }
         void Fire(Vector3 direction)
         {
