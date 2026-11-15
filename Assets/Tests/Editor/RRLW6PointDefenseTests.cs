@@ -27,6 +27,36 @@ public class RRLW6PointDefenseTests
     [UnityTest] public IEnumerator MountedDefenseInterceptsOneOfTwoOverlappingPairIgnoredShells()=>InterceptOverlappingShells(0);
     [UnityTest] public IEnumerator MountedDefenseInterceptsOneOfTwoOverlappingLayerFilteredShells()=>InterceptOverlappingShells(1);
     [UnityTest] public IEnumerator MountedDefenseInterceptsOneRealGroupedShell()=>InterceptOverlappingShells(2);
+    [UnityTest] public IEnumerator MountedDefenseAcquiresSlowPhysicalShellInsideRadius()
+    {
+        var run=R1RunController.Instance;var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.Award(1000);
+        Vector3Int? mount=null;
+        for(int y=3;y>=0&&!mount.HasValue;y--)for(int z=-6;z<=-2&&!mount.HasValue;z++)for(int x=-5;x<=4&&!mount.HasValue;x++)
+        {var cell=new Vector3Int(x,y,z);if(model.PlacementError(cell,R3PartKind.PointDefense)==null)mount=cell;}
+        Assert.That(mount.HasValue,Is.True);Assert.That(model.Buy(mount.Value,R3PartKind.PointDefense),Is.True);
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
+        var body=vehicle.GetComponent<Rigidbody>();body.constraints=RigidbodyConstraints.FreezeAll;
+        var controller=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==R3PartKind.PointDefense).GetComponent<PointDefenseController>();
+        var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        try
+        {
+            yield return MOVSeriesDeviceTests.FixedStep();
+            Vector3 center=body.worldCenterOfMass;Vector3 origin=center+Vector3.up*4.2f;
+            shell.transform.position=origin;shell.transform.localScale=Vector3.one*.16f;
+            var rb=shell.AddComponent<Rigidbody>();rb.useGravity=false;rb.linearVelocity=Vector3.down*.2f;
+            var projectile=shell.AddComponent<RogueMachine.P12PipelineSafe.P17PhysicalShell>();
+            projectile.Configure(run.Encounter.Enemies.First().transform,20,10,Vector3.down,null);Physics.SyncTransforms();
+            controller.ScanNow();Assert.That(controller.CurrentTarget,Is.Not.Null,"A slow physical shot inside the radius must be acquired.");
+            Assert.That(controller.CurrentTarget.Threat.AimTransform,Is.EqualTo(shell.transform));
+            int before=controller.Ammunition;
+            for(int i=0;i<100&&controller.Ammunition==before;i++)controller.Advance(.05f);
+            Assert.That(controller.Ammunition,Is.LessThan(before),"The mounted defense must fire at the threat.");
+            float deadline=Time.realtimeSinceStartup+3;
+            while(Time.realtimeSinceStartup<deadline&&shell!=null&&shell.activeInHierarchy)yield return MOVSeriesDeviceTests.FixedStep();
+            Assert.That(shell==null||!shell.activeInHierarchy,Is.True,"A physical interceptor must remove the shell.");
+        }
+        finally{if(shell!=null)UnityEngine.Object.Destroy(shell);UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
     IEnumerator InterceptOverlappingShells(int mode)
     {
         var run=R1RunController.Instance;var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.Award(1000);

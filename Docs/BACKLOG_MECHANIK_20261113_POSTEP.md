@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 24, 29 i 44. Pocisk już wewnątrz ochrony punktowej
+
+- Obrona punktowa rozpoznaje pocisk, który już znajduje się w chronionym promieniu, także gdy zbliża się powoli i jego najbliższe podejście wypada poza czasem przewidywania. Takie zagrożenie ma czas pilności 0; pociski poza promieniem nadal podlegają dotychczasowym warunkom kierunku, czasu i widoczności.
+- Unity 6000.3.14f1: **24 PASS, 0 FAIL** (`defense_inside_edit.xml`, `.log`) dla matematyki oraz wcześniejszego przechwytywania rakiet i salw; **34 PASS, 0 FAIL** PlayMode (`defense_inside_play.xml`, `.log`) dla fizyki urządzenia, widoczności, przeszkód i nowego przypadku. Dodatkowe **3 PASS** (`defense_inside_mounted.xml`, `.log`) obejmują faktycznie zamontowaną obronę, powolny fizyczny pocisk i przechwycenie. W tym scenariuszu obrót i wystrzelenie wywołano kontrolowanymi krokami, a lot przechwytywacza wykorzystuje fizykę Unity. `defense_inside_before.xml`: **1 FAIL** przed poprawką. Ręczna gra i balans: **NOT RUN**.
+- Ograniczenia dodatkowych pocisków #02/#14 oraz pełny odbiór #44 pozostają otwarte.
+
 ### 12, 14, 19 i 44. Czas działania naprawy polowej
 
 - Pasywna naprawa polowa nalicza cały upływający czas gry również po dłuższej klatce, zamiast ucinać go do 0,5 s. Po ponownym włączeniu komponentu zegar jest resetowany, więc czas jego wyłączenia nie jest później zamieniany na darmową naprawę. Zdrowie części nadal nie przekracza maksimum; normalne zasady działania modułu i aktywnego Repair Pulse nie uległy zmianie.

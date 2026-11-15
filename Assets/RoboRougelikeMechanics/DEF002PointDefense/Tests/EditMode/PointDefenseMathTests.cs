@@ -43,6 +43,13 @@ namespace RoboRougelike.Mechanics.PointDefense.Tests
                 Vector3.zero, Vector3.zero, Vector3.zero, 3, 2, out time));
         }
         [Test]
+        public void SlowApproachingThreatAlreadyInsideProtection_IsImmediate()
+        {
+            Assert.IsTrue(PointDefenseMath.IsThreatApproaching(new Vector3(0,0,3),new Vector3(0,0,-.2f),
+                Vector3.zero,Vector3.zero,10,4,out float time));
+            Assert.That(time,Is.EqualTo(0),"An already-inside threat is urgent even when its closest approach is beyond the horizon.");
+        }
+        [Test]
         public void RelativeMotion_IsConsidered()
         {
             float time;

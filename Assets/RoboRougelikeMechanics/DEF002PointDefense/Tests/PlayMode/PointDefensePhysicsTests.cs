@@ -66,6 +66,13 @@ namespace RoboRougelike.Mechanics.PointDefense.Tests
             defense.ScanNow();
             Assert.AreSame(t.GetComponent<PointDefenseThreatProxy>(), defense.CurrentTarget);
         }
+        [Test] public void ScanningAndFiringRecognizeSlowThreatAlreadyInsideRadius()
+        {
+            var threat=CreateMissile(3f,2,new Vector3(0,0,-.2f));
+            defense.ScanNow();Assert.AreSame(threat.GetComponent<PointDefenseThreatProxy>(),defense.CurrentTarget);
+            int before=defense.Ammunition;defense.Advance(.02f);
+            Assert.Less(defense.Ammunition,before,"The physical defense must launch an interceptor at the nearby threat.");
+        }
         [Test] public void ScanningWorksWithManyOwnCollidersInDetectionArea()
         {
             for(int i=0;i<260;i++)root.AddComponent<BoxCollider>().size=Vector3.one*.1f;

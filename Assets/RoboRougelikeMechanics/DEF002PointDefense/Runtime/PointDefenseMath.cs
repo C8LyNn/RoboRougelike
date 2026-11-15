@@ -16,6 +16,9 @@ namespace RoboRougelike.Mechanics.PointDefense
         {
             secondsToClosest = 0f;
             Vector3 offset = position - defendedPoint;
+            // A threat already in the defended radius is immediate, even if
+            // a slow approach puts its closest point beyond the look-ahead.
+            if (offset.sqrMagnitude <= defendedRadius * defendedRadius) return true;
             Vector3 relativeVelocity = velocity - defendedVelocity;
             float square = relativeVelocity.sqrMagnitude;
             if (square < 0.0001f) return offset.sqrMagnitude <= defendedRadius * defendedRadius;
