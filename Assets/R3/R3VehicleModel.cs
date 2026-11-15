@@ -522,7 +522,7 @@ namespace RoboRougelike.R3
         {if(amount<0||amount>Scrap)return false;Scrap-=amount;return true;}
         public static bool IsPassiveEnergyPart(R3PartKind kind) =>
             kind==R3PartKind.Suspension||kind==R3PartKind.Gyroscope||kind==R3PartKind.BonusModule||
-            kind==R3PartKind.DirectionalShield||kind==R3PartKind.IndependentSteering||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.SalvageOptimizer||kind==R3PartKind.DoubleShot||kind==R3PartKind.ChargeCapacity||kind==R3PartKind.ChargeRegenerator;
+            kind==R3PartKind.DirectionalShield||kind==R3PartKind.PointDefense||kind==R3PartKind.IndependentSteering||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.SalvageOptimizer||kind==R3PartKind.DoubleShot||kind==R3PartKind.ChargeCapacity||kind==R3PartKind.ChargeRegenerator;
         public int RewardBasketOfferCount
         {
             get

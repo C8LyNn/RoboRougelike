@@ -10,6 +10,15 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogEnergyRegenTests
 {
+    [Test] public void PassiveModulesReserveEnergyWhileBatteriesProvideFullCapacity()
+    {
+        foreach(R3PartKind kind in Enum.GetValues(typeof(R3PartKind)))
+        {
+            if(!R3VehicleModel.IsPassiveSlotPart(kind)||kind==R3PartKind.Battery)continue;
+            Assert.That(R3VehicleModel.IsPassiveEnergyPart(kind),Is.True,kind+" is passive but does not reserve energy.");
+        }
+        Assert.That(R3VehicleModel.IsPassiveEnergyPart(R3PartKind.Battery),Is.False,"A T1 battery must provide its full +100 maximum energy.");
+    }
     [Test] public void ResourceBonusesRespectReservationsAndOnlyAffectNaturalRegeneration()
     {
         Assert.That(Enum.TryParse("EnergyCapacity",out R1UpgradeEffect capacity),Is.True);

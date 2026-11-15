@@ -34,6 +34,7 @@ namespace RoboRougelike.R3
         P12PipelineSafeDamageable enemyCore;
         readonly List<VehicleEnergyBattery> enemyBatteries=new List<VehicleEnergyBattery>();
         readonly List<RoboRougelike.WeaponIntegration.RRLShieldBinding> enemyShields=new List<RoboRougelike.WeaponIntegration.RRLShieldBinding>();
+        readonly List<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding> enemyDefenses=new List<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();
         VehicleEnergyState state = new VehicleEnergyState();
         float chargeRegeneration;
         readonly R1ModifierGroup capacityBonus=new R1ModifierGroup(),regenerationBonus=new R1ModifierGroup();
@@ -103,6 +104,10 @@ namespace RoboRougelike.R3
                 foreach(var shield in enemyShields)
                     if(shield!=null&&shield.Device!=null&&shield.Device.HardwarePresent)passive++;
                 enemyShields.Clear();
+                GetComponentsInChildren(false,enemyDefenses);
+                foreach(var defense in enemyDefenses)
+                    if(defense!=null&&defense.Device!=null&&defense.Device.HardwarePresent)passive++;
+                enemyDefenses.Clear();
                 state.SetResourceMultipliers(1,1);state.SetAdditionalPassiveReservation(0);
                 state.Refresh(batteries,passive,!enemyCore.IsDead&&enemyCore.transform.IsChildOf(transform));
                 state.SetRegeneratorCount(0);

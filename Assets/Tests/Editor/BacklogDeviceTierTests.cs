@@ -152,6 +152,27 @@ public sealed class BacklogDeviceTierTests
 
 public sealed class BacklogDeviceTierGameplayTests
 {
+    [UnityTest] public IEnumerator PointDefenseReservesEnergyPerPhysicalPartUntilDestroyed()
+    {
+        float initial=run.VehicleModel.Energy.Maximum;
+        var tierTwo=FuseAndMount(R3PartKind.PointDefense);run.VehicleModel.RefreshEnergyLayout();
+        Assert.That(run.VehicleModel.Energy.Maximum,Is.EqualTo(initial-25).Within(.01),"A T2 passive is still one physical reservation.");
+        Assert.That(run.GaragePurchase(R3PartKind.PointDefense),Is.True);
+        var extra=run.VehicleModel.Inventory.Last(p=>p.Kind==R3PartKind.PointDefense);
+        var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>run.VehicleModel.OwnedPlacementError(extra.Id,c,default)==null);
+        Assert.That(run.GarageMount(extra.Id,cell),Is.True);run.VehicleModel.RefreshEnergyLayout();
+        Assert.That(run.VehicleModel.Energy.Maximum,Is.EqualTo(initial-50).Within(.01));
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);var bank=run.Player.GetComponent<VehicleEnergyBank>();
+        Assert.That(bank.Maximum,Is.EqualTo(initial-50).Within(.01));
+        var mounted=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==tierTwo.Id);
+        mounted.Damageable.RestoreHealthRatio(.01f);bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(initial-50).Within(.01),"A damaged working module still reserves its full amount.");
+        var emp=mounted.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();Assert.That(emp,Is.Not.Null);emp.ApplyEmp(2);
+        bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(initial-50).Within(.01),"Temporary EMP cannot release a mounted passive reservation.");emp.ClearEmp();
+        mounted.Damageable.ApplyDamageResolvedTyped(mounted.Damageable.CurrentHp+1,mounted.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Piercing);
+        bank.Refresh();Assert.That(mounted.Damageable.IsDead,Is.True);Assert.That(bank.Maximum,Is.EqualTo(initial-25).Within(.01));
+    }
     [UnityTest] public IEnumerator ShieldDurabilityAlsoAppliesToExistingDirectionalShieldAndSurvivesRebuild()
     {
         run.VehicleModel.Award(2500);var shieldState=FuseAndMount(R3PartKind.DirectionalShield);
