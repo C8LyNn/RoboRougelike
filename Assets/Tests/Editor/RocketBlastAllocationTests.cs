@@ -1,6 +1,7 @@
 using System.Collections;
 using NUnit.Framework;
 using RoboRougelike.Mechanics.Rockets;
+using RoboRougelike.R3;
 using RoboRougelike.WeaponIntegration;
 using RogueMachine.P12PipelineSafe;
 using UnityEditor.SceneManagement;
@@ -99,6 +100,31 @@ public sealed class RocketBlastAllocationTests
             Assert.That(500-hp.CurrentHp,Is.LessThanOrEqualTo(spec.CenterDamage),"Many colliders cannot multiply damage to the same part.");
         }
         finally{Object.Destroy(owner);Object.Destroy(target);Object.Destroy(rocketObject);}
+        yield return null;
+    }
+
+    [UnityTest] public IEnumerator ExtremeCrowdingDoesNotBypassActualShield()
+    {
+        var owner=new GameObject("Extreme shielded blast owner");owner.transform.position=new Vector3(1000,1000,1000);
+        var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=owner.transform.position+Vector3.forward*2;
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);
+        for(int i=0;i<4100;i++)target.AddComponent<SphereCollider>().radius=.4f;
+        var shield=new GameObject("Extreme crowding shield");shield.transform.position=target.transform.position;
+        shield.AddComponent<SphereCollider>().isTrigger=true;var shieldHp=shield.AddComponent<P12PipelineSafeDamageable>();shieldHp.Configure(500,false);
+        shield.AddComponent<R3ShieldDome>().Configure(2,.8f);
+        var rocketObject=new GameObject("Extreme shielded projectile");rocketObject.transform.position=owner.transform.position;
+        try
+        {
+            rocketObject.AddComponent<R3ShieldRocketPayload>();var rocket=rocketObject.AddComponent<RocketProjectile>();
+            var spec=new RocketConfig{maxBlastColliders=8,maxCastHits=8,explodeWhenIntercepted=true}.Snapshot();
+            Assert.That(rocket.TryInitialize(spec,body,owner.transform,owner,null,Vector3.forward),Is.True);
+            Physics.SyncTransforms();rocket.ApplyInterceptionDamage(100);
+            Assert.That(hp.CurrentHp,Is.EqualTo(500),"Overflow retries must not expose the protected target.");
+            Assert.That(shieldHp.CurrentHp,Is.LessThan(500));
+            Assert.That(500-shieldHp.CurrentHp,Is.LessThanOrEqualTo(spec.CenterDamage),"Retries must not damage the shield twice.");
+        }
+        finally{Object.Destroy(owner);Object.Destroy(target);Object.Destroy(shield);Object.Destroy(rocketObject);}
         yield return null;
     }
 
