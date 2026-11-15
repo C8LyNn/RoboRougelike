@@ -605,6 +605,12 @@ public float CurrentForwardSpeed =>
         public void FireFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId)
         { FireFrom(barrel,kind,partId,0); }
         public void FireFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,int extraShots)
+        { FireFromInternal(barrel,kind,partId,extraShots,null); }
+        public Collider FirePrimaryFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId)
+        { return FireFromInternal(barrel,kind,partId,0,null); }
+        public void FireAdditionalFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,Collider primary,int count)
+        { if(primary!=null&&count>0)FireFromInternal(barrel,kind,partId,count-1,primary); }
+        private Collider FireFromInternal(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,int extraShots,Collider existingSibling)
         {
             var profile=RoboRougelike.R4.R4WeaponDefinition.Get(kind);
             var mounted=barrel!=null?barrel.GetComponentInParent<RoboRougelike.R3.R3MountedPart>():null;
@@ -616,8 +622,11 @@ public float CurrentForwardSpeed =>
             float kinetic=SafeShellDamage(profile.Damage*tier,1-fraction,weaponDamage);
             float blast=SafeShellDamage(profile.Damage*tier,fraction,basicBlastDamageModifier);
             var first=SpawnPhysicalShell(barrel,kinetic,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId,blast);
-            if(first==null||extraShots<=0)return;
+            if(first==null)return null;
+            if(existingSibling!=null)Physics.IgnoreCollision(first,existingSibling,true);
+            if(extraShots<=0)return first;
             var siblings=new System.Collections.Generic.List<Collider>{first};
+            if(existingSibling!=null)siblings.Add(existingSibling);
             int allowed=Mathf.Min(extraShots,P17PhysicalShell.AvailableSlots);
             for(int i=0;i<allowed;i++)
             {
@@ -626,6 +635,7 @@ public float CurrentForwardSpeed =>
                 foreach(var sibling in siblings)if(sibling!=null)Physics.IgnoreCollision(extra,sibling,true);
                 siblings.Add(extra);
             }
+            return first;
         }
         public float WeaponInterval(RoboRougelike.R4.R4WeaponKind kind) => RoboRougelike.R3.R3MountedBonusEffects.SafeIntervalProduct(RoboRougelike.R4.R4WeaponDefinition.Get(kind).Interval,intervalModifier);
         public float PackageDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.WeaponDamageMultiplier??damageModifier;

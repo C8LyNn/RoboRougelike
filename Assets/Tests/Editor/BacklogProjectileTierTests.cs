@@ -46,6 +46,47 @@ public sealed class BacklogProjectileTierPhysicsTests
         run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
         while(run.Transitioning)yield return null;run.Encounter.SetCombatActive(false);
     }
+    [UnityTest] public IEnumerator ConventionalWeaponCopiesFireBeforeExtraShotsConsumeRemainingSlots()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(2000);
+        var firstState=model.Parts.First(p=>p.Kind==R3PartKind.Gun);firstState.Weapon=R4WeaponKind.Automatic;
+        var gunCell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.Gun,false,R4WeaponKind.Automatic)==null);
+        Assert.That(model.Buy(gunCell,R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
+        var bonusCell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.DoubleShot)==null);
+        Assert.That(model.Buy(bonusCell,R3PartKind.DoubleShot),Is.True);model.Economy.DoubleShotChancePerUnit=100;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;var assembly=vehicle.GetComponent<R3VehicleAssembly>();
+        var guns=assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Automatic).ToArray();Assert.That(guns.Length,Is.EqualTo(2));
+        for(int i=0;i<guns.Length;i++)
+        {var muzzle=new GameObject("Unblocked gun muzzle").transform;muzzle.SetParent(guns[i].transform,false);muzzle.position=new Vector3(1000+i*3,1000,1000);muzzle.rotation=Quaternion.identity;guns[i].GunPivot=muzzle;guns[i].Muzzle=muzzle;}
+        var targets=guns.Select(g=>{var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=g.Muzzle.position+Vector3.forward*5;
+            target.transform.localScale=new Vector3(2,2,.5f);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);return hp;}).ToArray();
+        Physics.SyncTransforms();Assert.That(guns.All(assembly.ClearProjectilePath),Is.True);
+        var dummies=new System.Collections.Generic.List<GameObject>();
+        try
+        {
+            while(P17PhysicalShell.AvailableSlots>4){var dummy=new GameObject("Projectile pool fixture");dummies.Add(dummy);dummy.AddComponent<P17PhysicalShell>();Assert.That(dummies.Count,Is.LessThan(200));}
+            Assert.That(P17PhysicalShell.AvailableSlots,Is.EqualTo(4));
+            int slot=System.Array.FindIndex(model.GetWeaponSlots(),w=>w==R4WeaponKind.Automatic);Assert.That(slot,Is.GreaterThanOrEqualTo(0));
+            float before=vehicle.GetComponent<VehicleEnergyBank>().Current;assembly.FireSlot(slot);
+            Assert.That(guns.All(g=>g.NextFireTime>Time.time),Is.True,"Each ready physical gun must fire before bonus shots consume the pool.");
+            Assert.That(before-vehicle.GetComponent<VehicleEnergyBank>().Current,Is.EqualTo(2*VehicleEnergyCosts.ConventionalShot(R4WeaponKind.Automatic)).Within(.001));
+            var origins=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>guns.Any(g=>g.Id==p.PartId)).ToArray();
+            Assert.That(origins.Select(p=>p.PartId).Distinct().Count(),Is.EqualTo(2));
+            foreach(var gun in guns)
+            {
+                var shots=origins.Where(p=>p.PartId==gun.Id).ToArray();Assert.That(shots.Length,Is.EqualTo(2),"Available bonus shots must be shared across physical guns.");
+                Assert.That(Physics.GetIgnoreCollision(shots[0].GetComponent<Collider>(),shots[1].GetComponent<Collider>()),Is.True,"A bonus projectile must not collide with its own primary shot.");
+            }
+            float deadline=Time.realtimeSinceStartup+5;
+            while(Time.realtimeSinceStartup<deadline&&targets.Any(target=>target.CurrentHp>=500))yield return MOVSeriesDeviceTests.FixedStep();
+            foreach(var target in targets)Assert.That(target.CurrentHp,Is.EqualTo(500-2*R4WeaponDefinition.Get(R4WeaponKind.Automatic).Damage).Within(.2f),"Both the primary and bonus projectile must physically reach their target.");
+        }
+        finally{foreach(var target in targets)if(target!=null)Object.Destroy(target.gameObject);foreach(var item in dummies)if(item!=null){item.SetActive(false);Object.Destroy(item);}if(vehicle!=null)Object.Destroy(vehicle.gameObject);}
+        yield return null;
+    }
     [UnityTest] public IEnumerator FullProjectilePoolDoesNotSpendEnergyOrStartCooldown()
     {
         var gun=Build(R4WeaponKind.Automatic,out var bank);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();

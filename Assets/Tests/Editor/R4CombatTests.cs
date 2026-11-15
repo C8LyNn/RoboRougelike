@@ -30,7 +30,7 @@ public class R4CombatTests
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
-        yield return Until(()=>Run?.Progress!=null,"Bootstrap");Run.StartRun();yield return Until(()=>!Run.Transitioning,"Starcie");
+        yield return Until(()=>Run?.Progress!=null,"Bootstrap");Assert.That(Run.SelectVehicle(R3VehicleKind.Standard,0),Is.True);Run.StartRun();yield return Until(()=>!Run.Transitioning,"Starcie");
         Run.Encounter.SetCombatActive(false);
     }
     [UnityTearDown] public IEnumerator Cleanup()
@@ -220,22 +220,40 @@ public class R4CombatTests
     {
         var enemy=Run.Encounter.Enemies.First();enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);RRLW2TestFlow.DefeatAll(Run);
         yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Łupy");RRLW2TestFlow.Claim(Run,Array.Empty<string>());
-        var spareStarterGun=Run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);Assert.That(Run.GarageRemove(spareStarterGun.Cell),Is.True);
-        Run.VehicleModel.Award(100);Assert.That(Run.GarageBuyWeapon(spareStarterGun.Cell,R4WeaponKind.Automatic),Is.True);
-        Assert.That(Run.GarageBuyWeapon(new Vector3Int(0,2,2),R4WeaponKind.Automatic),Is.True);
-        var damage=Run.Definition.Upgrades.Single(p=>p.Effect==R1UpgradeEffect.Damage);
-        var reload=Run.Definition.Upgrades.Single(p=>p.Effect==R1UpgradeEffect.Reload);
+        var starterGuns=Run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray();
+        var basicGun=starterGuns.First(p=>p.Weapon==R4WeaponKind.Basic);
+        foreach(var other in starterGuns.Where(p=>p.Id!=basicGun.Id))Assert.That(Run.GarageRemove(other.Cell),Is.True);
+        Run.VehicleModel.Award(2000);
+        for(int i=0;i<2;i++)
+        {
+            var gunCells=Run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct().ToArray();
+            Assert.That(gunCells.Any(cell=>Run.VehicleModel.PlacementError(cell,R3PartKind.Gun,false,R4WeaponKind.Automatic)==null&&Run.GarageBuyWeapon(cell,R4WeaponKind.Automatic)),Is.True,"Each automatic gun needs an actually valid mounting point.");
+        }
+        var damage=Run.Definition.Upgrades.First(p=>p.Effect==R1UpgradeEffect.Damage&&p.Scope==R1BonusScope.Global&&p.Operation==R1ModifierOperation.Increased);
+        var reload=Run.Definition.Upgrades.First(p=>p.Effect==R1UpgradeEffect.Reload&&p.Scope==R1BonusScope.Global&&p.Operation==R1ModifierOperation.Increased);
         Assert.That(Run.VehicleModel.ReceiveBonuses(new[]{damage,reload}),Is.True);
         string damageId=Run.VehicleModel.Inventory.Last(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeId==damage.Id).Id;
         string reloadId=Run.VehicleModel.Inventory.Last(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeId==reload.Id).Id;
-        Assert.That(Run.GarageMount(damageId,new Vector3Int(1,2,1)),Is.True);
-        Assert.That(Run.GarageMount(reloadId,new Vector3Int(-2,2,-2)),Is.True);
+        bool MountBonus(string id)=>Run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct().ToArray()
+            .Any(cell=>Run.VehicleModel.OwnedPlacementError(id,cell,default)==null&&Run.GarageMount(id,cell));
+        Assert.That(MountBonus(damageId),Is.True);Assert.That(MountBonus(reloadId),Is.True);
         Assert.That(Run.Progress.Stats.Damage,Is.EqualTo(1));Assert.That(Run.ActiveStats.Damage,Is.GreaterThan(1));
         Run.StartNextEncounter();yield return Until(()=>!Run.Transitioning,"Strzelanie");Run.Encounter.SetCombatActive(false);
         var assembly=Run.Player.GetComponent<R3VehicleAssembly>();
+        int index=0;
+        foreach(var part in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))
+        {
+            var art=part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>();if(art!=null)UnityEngine.Object.DestroyImmediate(art);
+            var pivot=new GameObject("Unblocked cadence pivot").transform;pivot.SetParent(part.transform,false);pivot.position=new Vector3(1000+index++*5,1000,1000);
+            var muzzle=new GameObject("Unblocked cadence muzzle").transform;muzzle.SetParent(pivot,false);muzzle.localPosition=Vector3.forward*.2f;
+            part.GunPivot=pivot;part.Muzzle=muzzle;
+        }
         foreach(var part in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))part.GunPivot.rotation=Quaternion.Euler(-30,180,0);
         R1EncounterManager.ClearTransientObjects();assembly.FireGuns();assembly.FireGroup(true);
-        Assert.That(UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Length,Is.EqualTo(3));
+        var gunIds=assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Id).ToHashSet();
+        Assert.That(gunIds.Count,Is.EqualTo(3),"Fixture must contain one basic gun and two automatic guns.");
+        var firstShots=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>gunIds.Contains(p.PartId)).ToArray();
+        Assert.That(firstShots.Length,Is.EqualTo(3),string.Join(", ",firstShots.Select(p=>p.Weapon+":"+p.PartId)));
         float end=Time.time+0.17f;yield return Until(()=>Time.time>=end,"Szybkostrzelność");
         // The real input loop may aim a barrel into our own armor while waiting.
         // Keep the cadence fixture unobstructed without bypassing the firing guard.
@@ -243,7 +261,7 @@ public class R4CombatTests
         Physics.SyncTransforms();
         Assert.That(assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun).All(assembly.ClearProjectilePath),Is.True,"Cadence requires clear physical gun paths.");
         assembly.FireGuns();assembly.FireGroup(true);
-        var shots=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None);
+        var shots=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>gunIds.Contains(p.PartId)).ToArray();
         Assert.That(shots.Count(p=>p.Weapon==R4WeaponKind.Automatic),Is.EqualTo(4));
         Assert.That(shots.Count(p=>p.Weapon==R4WeaponKind.Basic),Is.EqualTo(1));
         foreach(var part in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))

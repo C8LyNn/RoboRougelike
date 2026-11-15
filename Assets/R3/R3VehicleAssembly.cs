@@ -234,6 +234,14 @@ namespace RoboRougelike.R3
         }
         public void FireGroup(bool secondary)
             =>FireSlot(secondary?1:0);
+        struct PendingConventionalShot
+        {
+            public Transform Muzzle;
+            public R4WeaponKind Kind;
+            public string PartId;
+            public Collider Primary;
+            public int Requested;
+        }
         public int RollDoubleShotExtras(int available)
         {
             if(available<=0||Model==null)return 0;
@@ -258,6 +266,7 @@ namespace RoboRougelike.R3
             var run=RoboRougelike.R1.R1RunController.Instance;
             if(run!=null&&run.Player!=null&&run.Player.gameObject==gameObject&&run.EmergencyRescueAttackBlocked)return;
             var slots=Model.GetWeaponSlots();if(slot<0||slot>=4||!slots[slot].HasValue)return;
+            List<PendingConventionalShot> pending=null;
             foreach(var part in Parts)
                 if(part!=null && part.Kind==R3PartKind.Gun && R3VehicleModel.MatchesWeaponSlot(part.Weapon,slot,slots,Model.CreativeMode) && part.Operational && part.gameObject.activeInHierarchy && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
                 {
@@ -293,10 +302,34 @@ namespace RoboRougelike.R3
                     var energy=GetComponent<VehicleEnergyBank>();
                     if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(part.Weapon)*R3VehicleModel.TierActivationCost(part.Tier)))continue;
                     part.NextFireTime=Time.time+interval;part.LastConventionalShotTime=Time.time;
-                    int extras=RollDoubleShotExtras(Mathf.Max(0,P17PhysicalShell.AvailableSlots-1));
-                    controller.FireFrom(part.Muzzle,part.Weapon,part.Id,extras);
+                    var firedMuzzle=part.Muzzle;
+                    var primary=controller.FirePrimaryFrom(firedMuzzle,part.Weapon,part.Id);
+                    if(primary!=null&&P17PhysicalShell.AvailableSlots>0)
+                    {
+                        int requested=RollDoubleShotExtras(int.MaxValue);
+                        if(requested>0)
+                        {
+                            if(pending==null)pending=new List<PendingConventionalShot>();
+                            pending.Add(new PendingConventionalShot{Muzzle=firedMuzzle,Kind=part.Weapon,PartId=part.Id,Primary=primary,Requested=requested});
+                        }
+                    }
                     var art=part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>();
                     if(art!=null){art.AdvanceMuzzle();part.Muzzle=art.Muzzle;}
+                }
+            if(pending==null||P17PhysicalShell.AvailableSlots<=0)return;
+            var allocated=new int[pending.Count];
+            int available=P17PhysicalShell.AvailableSlots;
+            while(available>0)
+            {
+                bool assigned=false;
+                for(int i=0;i<pending.Count&&available>0;i++)
+                    if(allocated[i]<pending[i].Requested){allocated[i]++;available--;assigned=true;}
+                if(!assigned)break;
+            }
+            for(int i=0;i<pending.Count;i++)
+                if(allocated[i]>0)
+                {
+                    var shot=pending[i];controller.FireAdditionalFrom(shot.Muzzle,shot.Kind,shot.PartId,shot.Primary,allocated[i]);
                 }
         }
 
