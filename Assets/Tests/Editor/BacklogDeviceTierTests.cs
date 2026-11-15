@@ -1069,6 +1069,29 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(Mathf.Abs(firstBody.linearVelocity.y),Is.LessThan(.05f),"At its configured height the drone should not climb or descend.");
         Assert.That(secondBody.linearVelocity.x,Is.LessThan(-.5f),"A drone outside the smaller follow radius should move toward its owner.");
     }
+    [UnityTest] public IEnumerator RescueStatusExplainsOffensiveDeviceLockWithoutBlockingSupport()
+    {
+        foreach(var kind in new[]{R3PartKind.FlyingDroneGenerator,R3PartKind.SupportDroneGenerator})
+        {
+            Assert.That(run.GaragePurchase(kind),Is.True);var part=run.VehicleModel.Inventory.Last(p=>p.Kind==kind);
+            var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>run.VehicleModel.OwnedPlacementError(part.Id,c,default)==null);
+            Assert.That(run.GarageMount(part.Id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);yield return null;
+        run.EmergencyRescueDurationSeconds=.25f;Assert.That(run.TryEmergencyRescue(),Is.True);
+        var service=run.Player.GetComponent<R3DeployableService>();var bank=run.Player.GetComponent<VehicleEnergyBank>();
+        float energy=bank.Current;int charges=run.VehicleModel.Charges.Current(R3DeployableService.FlyingDronePool);
+        Assert.That(service.StatusFor(R3PartKind.FlyingDroneGenerator),Does.Contain("atak wstrzymany"));
+        Assert.That(service.TryDeploy(R3PartKind.FlyingDroneGenerator),Is.False);
+        Assert.That(bank.Current,Is.EqualTo(energy));Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.FlyingDronePool),Is.EqualTo(charges));
+        Assert.That(service.StatusFor(R3PartKind.SupportDroneGenerator),Does.Contain("gotowy"));
+        Assert.That(service.TryDeploy(R3PartKind.SupportDroneGenerator),Is.True,"A supportive device may be used while attacking is blocked.");
+        float deadline=Time.realtimeSinceStartup+5;while(run.EmergencyRescueActive&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.EmergencyRescueActive,Is.False);
+        Assert.That(service.StatusFor(R3PartKind.FlyingDroneGenerator),Does.Contain("gotowy"));
+    }
     [UnityTest] public IEnumerator InvalidDeployableRangesDoNotSpendEnergyOrCharges()
     {
         foreach(var kind in new[]{R3PartKind.FlyingDroneGenerator,R3PartKind.OffensiveTurretGenerator})

@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 21–23, 42 i 44. Status urządzeń podczas ratunku
+
+- Status urządzenia ofensywnego pokazuje „atak wstrzymany”, kiedy reguły ratunku lub strefy bez walki blokują jego uruchomienie. Status i faktyczna aktywacja korzystają z tego samego sprawdzenia; urządzenia wspierające zachowują dotychczasowe zasady. Po ustaniu blokady wraca właściwy status zasobów i cooldownu.
+- Unity 6000.3.14f1: `device_rescue_status_before2.xml` — **1 FAIL**, dron pokazywał „gotowy” podczas blokady. `device_rescue_status_after.xml` — **6 PASS**, w tym brak kosztu zablokowanego drona, dostępny dron wspierający, przywrócenie statusu oraz istniejący ostrzał i rozstawianie. Pierwsza próba z błędnym filtrem `device_rescue_status_before.xml` uruchomiła **0 testów**. Ręczny odbiór komunikatu w walce **NOT RUN**.
+
 ### 42 i 44. Ratunek dostępny z menu pauzy
 
 - W aktywnej grze kamera blokuje kursor do celowania, co utrudniało użycie przycisku ratunku na HUD myszą. Ratunek jest teraz dostępny w pauzie walki, poligonu i testu własnej mapy, także przez wybór klawiaturą lub padem. Udana akcja wznawia rozgrywkę; nieudana pozostawia pauzę. Dotychczasowy skrót i zasady obrażeń pozostają zachowane.

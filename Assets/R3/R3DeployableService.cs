@@ -75,6 +75,14 @@ namespace RoboRougelike.R3
             direction=new Vector3((float)(velocity.x/speed),0,(float)(velocity.z/speed));return true;
         }
         static bool IsDrone(R3PartKind kind)=>kind==R3PartKind.FlyingDroneGenerator||kind==R3PartKind.GroundDroneGenerator||kind==R3PartKind.HealingDroneGenerator||kind==R3PartKind.SupportDroneGenerator;
+        static bool NeedsAttackPermission(R3PartKind kind)=>kind!=R3PartKind.RampDeployer&&kind!=R3PartKind.WallDeployer&&
+            kind!=R3PartKind.JumpPadDeployer&&kind!=R3PartKind.HealingDroneGenerator&&kind!=R3PartKind.SupportDroneGenerator&&
+            kind!=R3PartKind.HealingTurretGenerator&&kind!=R3PartKind.SupportTurretGenerator&&kind!=R3PartKind.ShieldTurretGenerator;
+        bool AttackBlocked(R3PartKind kind)
+        {
+            var run=R1RunController.Instance;
+            return run!=null&&run.Player!=null&&run.Player.gameObject==gameObject&&run.EmergencyRescueAttackBlocked&&NeedsAttackPermission(kind);
+        }
         static string Pool(R3PartKind kind)=>kind==R3PartKind.RampDeployer?RampPool:kind==R3PartKind.WallDeployer?WallPool:
             kind==R3PartKind.JumpPadDeployer?JumpPadPool:kind==R3PartKind.BlastTrapDeployer?BlastTrapPool:kind==R3PartKind.EmpTrapDeployer?EmpTrapPool:kind==R3PartKind.RepelTrapDeployer?RepelTrapPool:kind==R3PartKind.DamageTrapDeployer?DamageTrapPool:kind==R3PartKind.SlowTrapDeployer?SlowTrapPool:kind==R3PartKind.ImmobilizeTrapDeployer?ImmobilizeTrapPool:kind==R3PartKind.FlyingDroneGenerator?FlyingDronePool:kind==R3PartKind.GroundDroneGenerator?GroundDronePool:kind==R3PartKind.HealingDroneGenerator?HealingDronePool:kind==R3PartKind.SupportDroneGenerator?SupportDronePool:kind==R3PartKind.OffensiveTurretGenerator?OffensiveTurretPool:kind==R3PartKind.HealingTurretGenerator?HealingTurretPool:kind==R3PartKind.SupportTurretGenerator?SupportTurretPool:ShieldTurretPool;
         float ReadyAt(R3PartKind kind)=>kind==R3PartKind.RampDeployer?assembly.Model.RampDeployerReadyAt:
@@ -105,6 +113,7 @@ namespace RoboRougelike.R3
         {
                 if(assembly==null||!R3VehicleModel.IsDeployableSlotPart(kind)||!HasGenerator(kind))return "niedostępny";
                 if(PlayerCanUse())EnsurePools();
+                if(AttackBlocked(kind))return "atak wstrzymany";
                 float remaining=ReadyAt(kind)-Time.time;
                 if(remaining>0)return $"odnowienie {Mathf.CeilToInt(remaining)} s";
                 string pool=Pool(kind);
@@ -130,9 +139,7 @@ namespace RoboRougelike.R3
         public bool TryDeploy(R3PartKind kind)
         {
             if(!R3VehicleModel.IsDeployableSlotPart(kind)||!PlayerCanUse()||Time.time<ReadyAt(kind))return false;
-            var run=RoboRougelike.R1.R1RunController.Instance;
-            if(run!=null&&run.EmergencyRescueAttackBlocked&&kind!=R3PartKind.RampDeployer&&kind!=R3PartKind.WallDeployer&&
-                kind!=R3PartKind.JumpPadDeployer&&kind!=R3PartKind.HealingDroneGenerator&&kind!=R3PartKind.SupportDroneGenerator&&kind!=R3PartKind.HealingTurretGenerator&&kind!=R3PartKind.SupportTurretGenerator&&kind!=R3PartKind.ShieldTurretGenerator)return false;
+            if(AttackBlocked(kind))return false;
             if(IsDrone(kind))return TryLaunchDrone(kind);
             if(kind==R3PartKind.OffensiveTurretGenerator||kind==R3PartKind.HealingTurretGenerator||kind==R3PartKind.SupportTurretGenerator||kind==R3PartKind.ShieldTurretGenerator)return TryPlaceTurret(kind);
             if(!TryTravelDirection(out var forward))return false;
