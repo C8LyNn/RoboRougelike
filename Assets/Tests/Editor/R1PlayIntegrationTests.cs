@@ -19,6 +19,7 @@ public class R1PlayIntegrationTests
     private Mouse mouse;
     private InputSettings originalInputSettings;
     private InputSettings testInputSettings;
+    private string pilotTechnologyPath;
     private R1RunController Run => R1RunController.Instance;
 
     private static IEnumerator Until(Func<bool> condition, string description, float timeout = 15, bool automaticRewards = true)
@@ -74,11 +75,40 @@ public class R1PlayIntegrationTests
         if (originalInputSettings != null) InputSystem.settings = originalInputSettings;
         if (testInputSettings != null) Object.Destroy(testInputSettings);
         if (Application.isPlaying) { Time.timeScale = 1; yield return new ExitPlayMode(); }
+        if (!string.IsNullOrEmpty(pilotTechnologyPath) && System.IO.File.Exists(pilotTechnologyPath)) System.IO.File.Delete(pilotTechnologyPath);
     }
     private void DefeatAllEnemies()
     {
         foreach (var enemy in Run.Encounter.Enemies)
             enemy.Core.ApplyDamage(100000, enemy.Core.transform.position, Vector3.forward);
+    }
+
+    // Use the same garage transactions as a player between physical fights.
+    // An unmounted reward has no effect, and buying must use earned currency.
+    private void PreparePhysicalPilotVehicle()
+    {
+        var model=Run.VehicleModel;
+        Run.GarageRepairAffordable();
+        if(!model.CanDeploy)Run.GarageEmergencyRepair();
+        foreach(var bonus in model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule&&p.Health>0).ToArray())
+        {
+            var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .OrderBy(c=>c.y).ThenBy(c=>Math.Abs(c.x)+Math.Abs(c.z));
+            foreach(var cell in cells)
+                if(model.OwnedPlacementError(bonus.Id,cell,default)==null&&Run.GarageMount(bonus.Id,cell))break;
+        }
+        // A few independent copies make losing one gun survivable. Never grant
+        // currency, alter damage or bypass technology and mounting rules.
+        while(model.Parts.Count(p=>p.Kind==R3PartKind.Gun&&p.Health>0)<3)
+        {
+            var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .Where(c=>model.PlacementError(c,R3PartKind.Gun,false)==null)
+                .OrderByDescending(c=>c.y).ThenBy(c=>Math.Abs(c.x)+Math.Abs(c.z)).ToArray();
+            bool bought=false;
+            foreach(var cell in cells)if(Run.GarageBuyWeapon(cell,RoboRougelike.R4.R4WeaponKind.Basic)){bought=true;break;}
+            if(!bought)break;
+        }
+        Debug.Log($"[R1_PHYSICAL_PILOT_GARAGE] guns={model.Parts.Count(p=>p.Kind==R3PartKind.Gun&&p.Health>0)} bonuses={model.Parts.Count(p=>p.Kind==R3PartKind.BonusModule&&p.Health>0)} scrap={model.Scrap}");
     }
 
     [UnityTest]
@@ -386,6 +416,9 @@ public class R1PlayIntegrationTests
     [UnityTest,Timeout(720000)]
     public IEnumerator SixEncountersCanBeWonWithActualPlayerGunAndPhysicalHits()
     {
+        // Enemy discovery during this long scenario must not modify the real profile.
+        pilotTechnologyPath=System.IO.Path.Combine(System.IO.Path.GetTempPath(),"robo-pilot-"+Guid.NewGuid().ToString("N")+".json");
+        typeof(R1RunController).GetProperty("Technology").GetSetMethod(true).Invoke(Run,new object[]{new R1TechnologyProgress(pilotTechnologyPath)});
         ConfigureVirtualInput();
         var follow = Object.FindFirstObjectByType<P12PipelineSafeCamera>();
         follow.enabled = false;
@@ -424,7 +457,10 @@ public class R1PlayIntegrationTests
                     Vector3 muzzle = Run.Player.transform.Find("Turret_Yaw/Cannon_Pitch/Muzzle").position;
                     float flight = Vector3.Distance(muzzle, enemy.Core.transform.position) / 34;
                     Vector3 target = enemy.Core.transform.position + velocity * flight;
-                    camera.transform.position = Run.Player.transform.position + new Vector3(0, 3, -6);
+                    // The scripted camera does not run the game's collision
+                    // avoidance. Keep its aim origin above the vehicle so an
+                    // obstacle behind the player cannot falsely occlude a target.
+                    camera.transform.position = Run.Player.transform.position + Vector3.up * 3;
                     camera.transform.rotation = Quaternion.LookRotation(target - camera.transform.position);
 
                     Vector3 away = Vector3.ProjectOnPlane(Run.Player.transform.position - position, Vector3.up);
@@ -462,8 +498,7 @@ public class R1PlayIntegrationTests
                 "Fizyczna broń powinna pozwalać wygrać pojedynek " + (stage + 1));
             if (stage == 5) break;
 
-            Run.GarageRepairAffordable();
-            if(!Run.VehicleModel.CanDeploy)Run.GarageEmergencyRepair();
+            PreparePhysicalPilotVehicle();
             Run.StartNextEncounter();
             yield return Until(() => !Run.Transitioning, "Następny pojedynek po prawdziwym trafieniu.");
             follow.enabled=false;

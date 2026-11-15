@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 38 i 44. Próba sześciu walk fizycznym pilotem
+
+- Automatyczny pilot między walkami korzysta z rzeczywistych operacji garażu: naprawia, montuje zdobyte moduły oraz kupuje działa tylko za posiadany złom i zgodnie z zasadami montażu. Odkrycia technologii zapisuje w osobnym tymczasowym profilu. Kamera w tym scenariuszu jest sterowana przez test i ustawiona nad pojazdem, żeby sztuczne umieszczenie jej za przeszkodą nie zasłaniało celu; test nie weryfikuje kamery gracza.
+- `physical_pilot_garage_first.xml`: **1 FAIL** — pilot wygrał dwa starcia i w trzecim pozostał w walce po limicie; kamera testu widziała halę przed ostatnim wrogiem. `physical_pilot_garage_second.xml`: **1 FAIL** — po zmianie punktu kamery pilot wygrał cztery starcia i w piątym nie objechał hali w limicie. Zestaw broni, pozycje i stan wrogów zapisano w odpowiadających logach.
+- Dodatkowa próba prostego omijania przeszkód `physical_pilot_garage_third.xml`: **1 FAIL**, utrata broni w trzeciej walce; eksperymentalne omijanie wycofano. Losowość i fizyka nie pozwalają przypisać porażki wyłącznie tej zmianie. Test nadal wymaga dopracowania pilota albo osobnej diagnostyki; nie dowodzi niemożności ukończenia gry. Sześć zwycięstw, ręczny playtest, prawdziwa kamera i pełny odbiór punktu 44 pozostają **niepotwierdzone**.
+
 ### 12–13, 18 i 44. Premia pojemności samych baterii
 
 - Dodano fizyczny moduł premii, który zwiększa wyłącznie energię dostarczaną przez sprawne baterie, bez zwiększania bazowej pojemności rdzenia. Globalne i pasujące do baterii `increased/reduced` sumują się w tej samej grupie, a `more/less` pozostają osobnymi mnożnikami; rezerwacja 25 energii za moduł następuje po naliczeniu pojemności. Utrata modułu lub baterii usuwa ich wkład. Garaż i nagrody rozróżniają premię baterii od globalnej.
