@@ -16,6 +16,10 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Podsumowanie nagród w poziomym i pionowym układzie wskazuje stronę, na której nadal zaznaczony jest zestaw, gdy gracz przegląda inną stronę. Brak lub nieaktualny wybór nadal jest opisany jako wymagający wyboru; brak łupów ma osobny komunikat. Nie zmieniono zawartości nagród ani zasad ich przyznawania.
 - Unity 6000.3.14f1: **38 PASS, 0 FAIL** (`reward_selection_final.xml`, `.log`) dla opisów, układu oraz wyboru i odbioru z dalszej strony. Przed zmianą `reward_selection_red.xml`: **6 FAIL** z powodu braku informacji. Rzeczywista czytelność w Playerze: **NOT RUN**.
 
+### 02 i 14. Próba pomiaru zapytań pocisków przed kopułą
+
+- W Unity Editor przygotowano scenariusz fizycznego pocisku, kopuły i 180 colliderów oraz próbę kontrolną `Physics.SphereCastAll`. `shell_dome_alloc_red.xml` wykonał **0 testów** wskutek błędnej nazwy klasy. W późniejszym `shell_dome_alloc_control.xml` próba kontrolna i mierzony kod wykazały po **0 bajtów** według `GC.GetAllocatedBytesForCurrentThread`, mimo że zapytanie zwracało ponad 128 colliderów; test odrzucił ten wynik. To nie jest wiarygodny pomiar kosztu zapytań i nie potwierdza ani nie wyklucza alokacji. Test eksperymentalny usunięto, kod gry nie został zmieniony. Dalsza analiza wymaga innej metody pomiaru; limity #02/#14 pozostają otwarte.
+
 ### 13. Zakresy premii czterech rodzin broni pociskowej
 
 - Dodano osobne zakresy obrażeń ciężkiego działa, strzelby, railguna i wyrzutni rakiet. Ich premie sumują się z globalnymi, broni oraz właściwym typem obrażeń, a `more/less` pozostają osobnymi mnożnikami. Wyłączenie fizycznego modułu usuwa jego wkład. Każda rodzina otrzymała opisaną, konfigurowalną nagrodę +30%; wartości i wpływ na pulę losowania są prototypowe. Nowe wartości zakresu dopisano po istniejących, bez zmiany numerów w starych zapisach.
