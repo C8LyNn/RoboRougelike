@@ -26,9 +26,14 @@ namespace RoboRougelike.R1
         }
         public bool EmergencyRescueAttackBlocked=>EmergencyRescueActive||Progress?.State==R1RunState.SafeZone;
         public string EmergencyRescueMessage {get;private set;}
-        public string EmergencyRescueNotice=>Time.unscaledTime<emergencyRescueMessageUntil?EmergencyRescueMessage:null;
-        void SetRescueNotice(string text){EmergencyRescueMessage=text;emergencyRescueMessageUntil=Time.unscaledTime+3f;}
-        void ResetEmergencyRescue(){emergencyRescueReadyAt=0;emergencyRescueAttackReadyAt=0;emergencyRescueMessageUntil=0;garageRescueUntil=0;EmergencyRescueMessage=null;}
+        bool rescueNoticeWhileActive;
+        public string EmergencyRescueActiveDescription=>Progress?.State==R1RunState.Combat?
+            "Ratunek: 50% otrzymywanych obrażeń; atak wstrzymany.":"Ratunek: niewrażliwość; atak wstrzymany.";
+        public string EmergencyRescueNotice=>Time.unscaledTime>=emergencyRescueMessageUntil||
+            (rescueNoticeWhileActive&&!EmergencyRescueActive)?null:
+            rescueNoticeWhileActive?EmergencyRescueActiveDescription:EmergencyRescueMessage;
+        void SetRescueNotice(string text,bool whileActive=false){EmergencyRescueMessage=text;rescueNoticeWhileActive=whileActive;emergencyRescueMessageUntil=Time.unscaledTime+3f;}
+        void ResetEmergencyRescue(){emergencyRescueReadyAt=0;emergencyRescueAttackReadyAt=0;emergencyRescueMessageUntil=0;garageRescueUntil=0;rescueNoticeWhileActive=false;EmergencyRescueMessage=null;}
 
         public bool TryEmergencyRescue()
         {
@@ -44,13 +49,12 @@ namespace RoboRougelike.R1
             if(body==null||body.isKinematic||core==null||core.IsDead)return false;
             if(!TryFindRescuePose(body,out var position,out var rotation))
             {SetRescueNotice("Brak bezpiecznego miejsca do ratunku.");return false;}
-            bool combat=Progress.State==R1RunState.Combat;
             Player.MoveTo(position,rotation);
             body.linearVelocity=Vector3.zero;body.angularVelocity=Vector3.zero;body.WakeUp();
             Player.Controller.SetGameplayInputEnabled(true);
             emergencyRescueAttackReadyAt=Time.time+Mathf.Max(0,EmergencyRescueDurationSeconds);
             emergencyRescueReadyAt=Time.time+Mathf.Max(0,EmergencyRescueCooldownSeconds);
-            SetRescueNotice(combat?"Ratunek: 50% otrzymywanych obrażeń; atak wstrzymany.":"Ratunek: niewrażliwość; atak wstrzymany.");
+            SetRescueNotice(EmergencyRescueActiveDescription,true);
             return true;
         }
 

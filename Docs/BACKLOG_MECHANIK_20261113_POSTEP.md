@@ -42,6 +42,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Unity 6000.3.14f1: `legacy_part_health_labels.xml` i `.log`: **4 PASS, 0 FAIL** dla istniejących kontroli wspólnego formatowania HP w katalogu i inspekcji. Test nie klika ani nie sprawdza wyglądu starszych paneli w Playerze; kompilacja projektu w Unity przeszła.
 - Komunikat po fuzji również używa tego formatu: wynik o HP mniejszym od 100% nie jest przedstawiany jako w pełni sprawny. `fusion_message_after.xml` i `.log`: **7 PASS, 0 FAIL**, w tym fuzja w rzeczywistym garażu, montaż wyniku i podgląd; `fusion_message_before.xml`: **1 FAIL**, komunikat pokazywał 100% mimo uszkodzenia.
 
+### 42, 44. Czytelniejszy stan ratunku
+
+- Komunikat aktywnej ochrony znika wraz z jej zakończeniem i odpowiednio opisuje 50% obrażeń w walce albo niewrażliwość poza walką. Działa także przy automatycznym ratowaniu; bezpieczna strefa pokazuje informację o ratunku lub przyczynie niepowodzenia. Mechaniki obrażeń i kosztów nie zmieniono.
+- Unity 6000.3.14f1: `rescue_feedback_after.xml` i `.log`: **5 PASS, 0 FAIL** dla końca komunikatu i działania ratunku w walce, na poligonie i w garażu. Przed zmianą `rescue_feedback_before2.xml`: **1 FAIL**, informacja o ochronie pozostawała mimo jej zakończenia. Rzeczywista czytelność i rozmieszczenie komunikatu w Playerze: **NOT RUN**.
+
 ### 02, 14 i 44. Ponowne używanie rakiet wyrzutni
 
 - Rakiety z istniejącej wyrzutni mogą po trafieniu, przechwyceniu lub zakończeniu lotu wrócić do pamięci tej wyrzutni i zostać wykorzystane ponownie od następnej klatki. Nowy lot dostaje bieżącego właściciela, właściwe obrażenia, HP, kierunek i stan przechwytywania; dotychczasowe samodzielne użycie pakietu zachowuje niszczenie obiektu. Do 32 nieaktywnych rakiet na wyrzutnię jest przechowywanych, pozostałe są usuwane; gdy pamięć jest pusta, tworzony jest nowy obiekt. Jest to limit przechowywania, nie liczby wystrzelonych rakiet. Sprzątanie areny i usunięcie wyrzutni opróżnia jej pamięć.

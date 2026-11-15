@@ -163,8 +163,8 @@ namespace RoboRougelike.R1
             GUI.enabled=run.EmergencyRescueCooldownLeft<=0;
             if(GUI.Button(new Rect(1080,635,165,45),RescueButtonText(run),compactButton))run.TryEmergencyRescue();
             GUI.enabled=true;
-            if(run.EmergencyRescueNotice!=null||run.EmergencyRescueActive)GUI.Label(new Rect(665,602,570,25),
-                run.EmergencyRescueNotice??"Ratunek: niewrażliwość; atak wstrzymany.",small);
+            string rescueFeedback=RescueFeedbackText(run);
+            if(rescueFeedback!=null)GUI.Label(new Rect(665,602,570,25),rescueFeedback,small);
             GUI.Label(new Rect(34,635,1200,60),RangeControlsHint()+
                 (run.CreativeWorkshop?" i przeciwnicy":"")+
                 "\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Zawieszenie: porównaj OFF/Assist/Full na torze x≈12 • Cele na północy",small);

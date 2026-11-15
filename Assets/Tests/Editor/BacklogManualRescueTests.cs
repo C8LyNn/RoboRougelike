@@ -43,6 +43,18 @@ public sealed class BacklogManualRescueTests
         Assert.That(Vector3.Dot(body.rotation*Vector3.up,Vector3.up),Is.GreaterThan(.99f));
     }
 
+    [UnityTest] public IEnumerator CombatRescueFeedbackReportsHalfDamageOnlyDuringProtection()
+    {
+        run.Encounter.SetCombatActive(false);run.EmergencyRescueDurationSeconds=.25f;
+        var feedback=typeof(R1RunHUD).GetMethod("RescueFeedbackText",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(feedback,Is.Not.Null);string Text()=>(string)feedback.Invoke(null,new object[]{run});
+        Assert.That(run.TryEmergencyRescue(),Is.True);
+        Assert.That(Text(),Does.Contain("50%").And.Contain("atak wstrzymany"));
+        float deadline=Time.realtimeSinceStartup+5;
+        while(run.EmergencyRescueActive&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.EmergencyRescueActive,Is.False);Assert.That(Text(),Is.Null);
+    }
+
     [UnityTest] public IEnumerator ReassignedKeyboardRescueWorksForUprightVehicleWithoutDamage()
     {
         var profile=R1ControlProfile.Current;profile.ResetDefaults();
@@ -263,6 +275,26 @@ public sealed class BacklogManualRescueRangeTests
         Assert.That(core.CurrentHp,Is.EqualTo(hp));
         float end=Time.time+run.EmergencyRescueDurationSeconds+.1f;while(Time.time<end)yield return null;
         core.ApplyDamage(20,core.transform.position,Vector3.up);Assert.That(core.CurrentHp,Is.LessThan(hp));
+    }
+    [UnityTest] public IEnumerator RescueFeedbackEndsWithProtectionAndDescribesAutomaticRecovery()
+    {
+        run.EmergencyRescueDurationSeconds=.25f;
+        Assert.That(run.TryEmergencyRescue(),Is.True);
+        Assert.That(run.EmergencyRescueNotice,Does.Contain("niewrażliwość").And.Not.Contain("50%"));
+        float deadline=Time.realtimeSinceStartup+5;
+        while(run.EmergencyRescueActive&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.EmergencyRescueActive,Is.False);
+        Assert.That(run.EmergencyRescueNotice,Is.Null,"The protection notice must not linger after protection ends.");
+        var feedback=typeof(R1RunHUD).GetMethod("RescueFeedbackText",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(feedback,Is.Not.Null);
+        string Text()=>(string)feedback.Invoke(null,new object[]{run});
+        Assert.That(Text(),Is.Null,"The protection message must not linger after protection ends.");
+        var recovery=run.Player.GetComponent<RoboRougelike.R6.R6CoreRecovery>();
+        var state=recovery.GetType().GetProperty("IsRecovering").GetSetMethod(true);
+        state.Invoke(recovery,new object[]{true});
+        Assert.That(Text(),Does.Contain("niewrażliwość").And.Not.Contain("50%"));
+        state.Invoke(recovery,new object[]{false});
+        Assert.That(Text(),Is.Null);
     }
     [UnityTest] public IEnumerator RescueKeyWorksOnTestRangeButNotThroughPause()
     {

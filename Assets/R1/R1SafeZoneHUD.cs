@@ -26,6 +26,8 @@ namespace RoboRougelike.R1
             GUI.enabled=run.EmergencyRescueCooldownLeft<=0;
             if(GUI.Button(new Rect(20,365,250,48),RescueButtonText(run),compactButton))run.TryEmergencyRescue();
             GUI.enabled=true;
+            string rescueFeedback=RescueFeedbackText(run);
+            if(rescueFeedback!=null)GUI.Label(new Rect(20,420,600,50),rescueFeedback,small);
         }
         internal void PrepareSafeZoneTrade(){garageOptionsFeedback=null;vendorOfferPage=0;}
         static void TrySafeZoneInteractMouse(R1RunController run,Event input)

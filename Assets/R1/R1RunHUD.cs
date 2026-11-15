@@ -241,6 +241,8 @@ namespace RoboRougelike.R1
         static string RescueButtonText(R1RunController run)=>run.EmergencyRescueCooldownLeft>0?
             $"Ratunek {Mathf.CeilToInt(run.EmergencyRescueCooldownLeft)}s":
             "Ratunek ["+R1ControlProfile.Display(R1ControlProfile.Current.Binding("Rescue"))+"]";
+        static string RescueFeedbackText(R1RunController run)=>run.EmergencyRescueNotice??
+            (run.EmergencyRescueActive?run.EmergencyRescueActiveDescription:null);
         static void TryRescueMouse(R1RunController run,Event input)
         {
             if(run==null||run.Paused||run.QuitRequested||run.Transitioning||run.MapEditing||run.SafeZoneTrading||run.Error!=null||
@@ -498,8 +500,8 @@ namespace RoboRougelike.R1
                     GUI.enabled=run.EmergencyRescueCooldownLeft<=0;
                     if(GUI.Button(new Rect(990,670,130,35),RescueButtonText(run),compactButton))run.TryEmergencyRescue();
                     GUI.enabled=true;
-                    if(run.EmergencyRescueNotice!=null||run.EmergencyRescueActive)GUI.Label(new Rect(660,637,450,30),
-                        run.EmergencyRescueNotice??"Ratunek: 50% otrzymywanych obrażeń; atak wstrzymany.",small);
+                    string rescueFeedback=RescueFeedbackText(run);
+                    if(rescueFeedback!=null)GUI.Label(new Rect(660,637,450,30),rescueFeedback,small);
                     DrawAimReticle(run);
                     GUI.Label(new Rect(24, 676, 900, 26),GameplayControlsHint(),small);
                     DrawFeedback();
