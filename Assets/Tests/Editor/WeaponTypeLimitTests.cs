@@ -61,15 +61,18 @@ public sealed class WeaponTypeLimitTests
     [Test] public void PassiveBonusScopeAndOperationCountAsDifferentTypes()
     {
         var model=Model();MountSevenPassiveKinds(model);
-        var original=Bonus(R1BonusScope.Global);var copy=Bonus(R1BonusScope.Global,amount:.5f);
+        var original=Bonus(R1BonusScope.Global);var copy=Bonus(R1BonusScope.Global,amount:.5f);copy.Tier=2;
         var scope=Bonus(R1BonusScope.BasicCannon);var operation=Bonus(R1BonusScope.Global,R1ModifierOperation.More);
-        Assert.That(model.ReceiveSalvage(new[]{original,copy,scope,operation}),Is.True);
+        var effect=Bonus(R1BonusScope.Global);effect.UpgradeEffect=R1UpgradeEffect.Hull;
+        Assert.That(model.ReceiveSalvage(new[]{original,copy,scope,operation,effect}),Is.True);
         Assert.That(model.Mount(original.Id,Cell(7)),Is.True);
         var scopeError=model.OwnedPlacementError(scope.Id,Cell(8),Vector3Int.zero);
         Assert.That(scopeError,Is.Not.Null);Assert.That(scopeError,Does.Contain("8"));
         Assert.That(model.Mount(scope.Id,Cell(8)),Is.False);
         var operationError=model.OwnedPlacementError(operation.Id,Cell(8),Vector3Int.zero);
         Assert.That(operationError,Is.Not.Null);Assert.That(operationError,Does.Contain("8"));
+        var effectError=model.OwnedPlacementError(effect.Id,Cell(8),Vector3Int.zero);
+        Assert.That(effectError,Is.Not.Null);Assert.That(effectError,Does.Contain("8"));
         Assert.That(model.Mount(copy.Id,Cell(8)),Is.True,"Another amount of the same type remains a copy for the type limit.");
         Assert.That(model.Inventory.Any(p=>p.Id==scope.Id)&&model.Inventory.Any(p=>p.Id==operation.Id),Is.True);
     }
