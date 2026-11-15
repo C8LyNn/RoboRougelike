@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 36 i 44. Potwierdzenie montażu po zakupie pakietu
+
+- Po udanym montażu komunikat o powodzeniu jest widoczny przez krótki czas. Dopiero potem pasek wraca do stanu aktualnego widma; czerwone widmo nadal wskazuje zablokowane miejsce, a kolejna próba może od razu podać przyczynę odmowy. Działa to także przy kolejnych egzemplarzach stosu.
+- Unity 6000.3.14f1: `garage_mount_feedback_before.xml` — **1 FAIL**, po udanym montażu pasek pokazywał blokadę nowego widma. Pierwsza regresja `garage_mount_feedback_after.xml` — **10 PASS, 1 FAIL**: starszy scenariusz wyboru tieru zakładał trzy sztuki po trzech zakupach. Potwierdzono ten sam błąd na poprzednim kodzie (`garage_mount_feedback_fixture_baseline.xml` — **1 FAIL**) i poprawiono dane testowe do pakietów po pięć, zachowując sprawdzenie tieru. `garage_mount_feedback_final.xml` — **11 PASS**, w tym ponowny montaż, zakup pakietu, podgląd i powrót komunikatu o blokadzie.
+- W widocznym edytorze ręcznie wybrano średni pojazd, kupiono pięć klocków za 15 Z i zamontowano jeden: magazyn zmienił się z 5 na 4, a pasek pokazał „Zamontowano”. W osobnej wcześniejszej próbie tego samego przebiegu potwierdzono błąd przed poprawką. Sprawdzono też powrót z poligonu oraz ratunek stojącego prosto pojazdu przez menu pauzy: pojawił się komunikat o niewrażliwości i wstrzymaniu ataku. To nie jest test Windows Player, pełnej walki, obrażeń w trakcie ratunku ani działania odłączonych łupów w ręcznej rozgrywce. Odbiór #44 pozostaje otwarty.
+
 ### 30, 36 i 44. Łup z odłączonych, niezniszczonych części przeciwnika
 
 - Element przeciwnika objęty istniejącym rejestrem łupu może teraz wypaść już przy odłączeniu od konstrukcji, także gdy ma dodatnie HP. Przedmiot zachowuje faktyczny stan i identyfikator, a odbiór używa dotychczasowych pakietów i limitu magazynu. Jeśli taki łup już powstał, późniejsze zniszczenie wraku nie tworzy duplikatu; jeśli przy odłączeniu nic nie wypadło, istniejąca próba przy zniszczeniu nadal działa.

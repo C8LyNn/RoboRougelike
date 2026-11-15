@@ -627,6 +627,9 @@ namespace RoboRougelike.R3
                         next==null&&sameTier.Length==0?ExhaustedStackFeedback(run.CreativeWorkshop,mounted.Kind,run.CanBuyTechnology(mounted.Kind,mounted.Weapon)):
                         MountedStackFeedback(sameTier.Length,next!=null&&next.Health>0);
                 }
+                // A new ghost is evaluated immediately after mounting. Preserve
+                // the outcome briefly so its warning cannot imply this click failed.
+                if(result)ActionMessage(Message);
             }
             else if(Tool==R41GarageTool.Repair)result=RepairPartAt(Cell);
             else if(Tool==R41GarageTool.Remove)result=RemovePartAt(Cell);

@@ -103,6 +103,28 @@ public sealed class UI943PortraitCatalogActionsTests
             "The current placement issue must return after the action feedback expires.");
     }
 
+    [UnityTest] public IEnumerator SuccessfulMountIsConfirmedBeforeTheNextBlockedGhostHint()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var item=run.VehicleModel.Inventory.Last(p=>p.Kind==R3PartKind.Armor);
+        var garage=run.Garage;garage.ChooseInventory(item.Id);
+        var cell=AvailableOwnedMountCell(run.VehicleModel,item);garage.Select(cell);
+        int before=run.VehicleModel.Inventory.Count;
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(before-1));
+        garage.Select(cell);Assert.That(garage.PlacementIssue,Is.Not.Null,"The next ghost is over the now occupied cell.");
+        var hud=run.GetComponent<R1RunHUD>();
+        Assert.That((string)Invoke(hud,"SimpleGarageFeedback",run),Does.Contain("Zamontowano"),
+            "An immediate warning about the next ghost must not make a successful placement look rejected.");
+        yield return new WaitForSecondsRealtime(3.2f);
+        Assert.That((string)Invoke(hud,"SimpleGarageFeedback",run),Does.Contain(garage.PlacementIssue),
+            "The current blocked placement must become visible again after the confirmation.");
+        yield return new ExitPlayMode();
+    }
+
     [UnityTest] public IEnumerator RotationFailureIsVisibleWhileMountingAnotherPart()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
@@ -876,6 +898,9 @@ public sealed class UI943PortraitCatalogActionsTests
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(200);
         for(int i=0;i<3;i++)Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
         int count=run.VehicleModel.Inventory.Count;
+        // Purchases grant five blocks, so keep the unrelated pack members in
+        // another tier; only `same` is an alternative of the mounted tier.
+        foreach(var extra in run.VehicleModel.Inventory.Take(count-3))extra.Tier=3;
         var first=run.VehicleModel.Inventory[count-3];var same=run.VehicleModel.Inventory[count-2];var higher=run.VehicleModel.Inventory[count-1];
         first.Tier=1;same.Tier=1;same.Health=.5f;higher.Tier=2;higher.Health=1;
         var garage=run.Garage;garage.ChooseInventory(first.Id);yield return null;
