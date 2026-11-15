@@ -170,20 +170,23 @@ namespace RoboRougelike.WeaponIntegration
         void CreatePellet(ShotgunPelletSpawn pellet,List<GameObject> created)
         {
             if(pellet.OwnerRoot!=Owner.gameObject||pellet.OwnerBody!=body)throw new System.InvalidOperationException("Wrong projectile owner");
-            var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);created.Add(shell);
+            var projectile=P17PhysicalShell.RentConventional();var shell=projectile.gameObject;created.Add(shell);
             shell.name="WPN001 physical pellet";shell.transform.SetPositionAndRotation(pellet.Origin,Quaternion.LookRotation(pellet.Direction));
             shell.transform.localScale=Vector3.one*.1f;
             var pelletCollider=shell.GetComponent<Collider>();
-            for(int i=0;i<created.Count-1;i++)if(created[i]!=null)
-                Physics.IgnoreCollision(pelletCollider,created[i].GetComponent<Collider>(),true);
-            if(projectileMaterial!=null)shell.GetComponent<Renderer>().sharedMaterial=projectileMaterial;
-            var origin=shell.AddComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.Shotgun;origin.PartId=State.Id;
-            var rb=shell.AddComponent<Rigidbody>();rb.mass=.2f;rb.useGravity=false;
+            pelletCollider.enabled=true;pelletCollider.isTrigger=false;
+            var renderer=shell.GetComponent<Renderer>();
+            if(renderer!=null)renderer.sharedMaterial=projectileMaterial!=null?projectileMaterial:projectile.DefaultMaterial;
+            var origin=shell.GetComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.Shotgun;origin.PartId=State.Id;
+            var rb=shell.GetComponent<Rigidbody>();rb.mass=.2f;rb.useGravity=false;rb.isKinematic=false;
             rb.interpolation=RigidbodyInterpolation.Interpolate;rb.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;
+            shell.SetActive(true);rb.angularVelocity=Vector3.zero;
+            for(int i=0;i<created.Count-1;i++)if(created[i]!=null)
+                P17PhysicalShell.IgnoreProjectilePair(pelletCollider,created[i].GetComponent<Collider>());
             rb.linearVelocity=pellet.Direction*pellet.ProjectileSpeed+pellet.InheritedVelocity;
             float pelletDamage=R3MountedBonusEffects.SafeDamageProduct(pellet.Damage,tank!=null?tank.PackageKineticDamageScale:damageScale);
             pelletDamage=R3MountedBonusEffects.SafeDamageProduct(pelletDamage,R3VehicleModel.TierEffectUnits(State.Tier));
-            shell.AddComponent<P17PhysicalShell>().Configure(Owner,pelletDamage,pellet.Lifetime,pellet.Direction,null,pellet.MaxDistance);
+            projectile.Configure(Owner,pelletDamage,pellet.Lifetime,pellet.Direction,null,pellet.MaxDistance);
         }
         void Stop(){if(Module!=null)Module.SetOperational(false);}
         void OnDisable()=>Stop();

@@ -128,6 +128,33 @@ public class RRLW6ShotgunPhysicalTests
         float deadline=Time.realtimeSinceStartup+5;while(hp.CurrentHp>=500&&Time.realtimeSinceStartup<deadline)yield return null;
         Assert.That(hp.CurrentHp,Is.LessThan(500));if(target!=null)UnityEngine.Object.Destroy(target);if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);yield return null;
     }
+    [UnityTest] public IEnumerator ConsecutiveShotgunVolleysReusePelletsAndBothDamageTarget()
+    {
+        var run=R1RunController.Instance;
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        target.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6;target.transform.localScale=new Vector3(4,4,1);
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);Physics.SyncTransforms();
+        yield return null; // Finish deferred destruction of builder helper colliders.
+        var binding=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
+        Assert.That(binding.Fire(),Is.True);
+        var first=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==state.Id).Select(p=>p.gameObject.GetInstanceID()).ToArray();
+        Assert.That(first.Length,Is.EqualTo(8));
+        float deadline=Time.realtimeSinceStartup+4;
+        while((hp.CurrentHp>428.1f||Time.time<binding.State.DeviceReadyAt+.02f)&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(hp.CurrentHp,Is.EqualTo(428).Within(.1));
+        Assert.That(binding.Fire(),Is.True);
+        var second=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==state.Id).Select(p=>p.gameObject.GetInstanceID()).ToArray();
+        Assert.That(second.Length,Is.EqualTo(8));
+        Assert.That(second.Intersect(first).Count(),Is.GreaterThan(0),"A later real volley can reuse retired pellets.");
+        deadline=Time.realtimeSinceStartup+4;while(hp.CurrentHp>356.1f&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(hp.CurrentHp,Is.EqualTo(356).Within(.1),"Reused pellets must all damage the target.");
+        UnityEngine.Object.Destroy(target);UnityEngine.Object.Destroy(vehicle.gameObject);yield return null;
+    }
     [UnityTearDown] public IEnumerator Cleanup()
     {
         if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}

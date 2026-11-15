@@ -27,6 +27,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Oddzielono energię od liczników ładunków; liczniki mają cztery miejsca w osobnym panelu. Przy większej liczbie rodzajów przycisk przełącza strony, a po usunięciu części bieżąca strona jest dostosowywana do pozostałych.
 - Unity 6000.3.14f1: `range_charges_pages.xml` i `.log`: **3 PASS, 0 FAIL**, w tym sprawdzenie stron, geometrii, przypisań i wejścia na poligon kreatywny ze spawnem przeciwników. Test geometrii nie ocenia czytelności tekstu ani klikania w Windows Player: **NOT RUN**.
 
+### 02, 14 i 44. Ponowne użycie śrucin strzelby
+
+- Śruciny korzystają teraz z istniejącej puli zwykłych pocisków, z resetem danych wystrzału i śledzeniem ignorowanych kolizji także pomiędzy śrucinami. Pula ogranicza wyłącznie liczbę przechowywanych nieaktywnych obiektów, nie liczbę strzałów podstawowych.
+- Unity 6000.3.14f1: `shotgun_reuse_after.xml` i `.log`: **6 PASS, 0 FAIL**, w tym dwie kolejne salwy faktycznie trafiające cel, wykorzystanie zwolnionych obiektów, tier i koszt energii, Double Shot, wiele strzelb oraz blokada strzału przez własny pancerz. Przed zmianą `shotgun_reuse_before.xml`: **1 FAIL** z powodu braku ponownego użycia.
+- To przygotowanie wydajnościowe, bez pomiaru FPS i bez usunięcia ograniczeń dodatkowych pocisków. Ręczna gra Windows: **NOT RUN**.
+
 ## 10–11. Fuzja części — częściowo sprawdzone i uzupełnione
 
 - Istniały operacja fuzji trzech fizycznych części oraz przycisk w katalogu garażu. Nowa część otrzymuje średnią procentową stanu wejść, także dla wejścia z 0 HP.
