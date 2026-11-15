@@ -983,3 +983,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Pocisk, który miał właściciela, kończy działanie po usunięciu lub wyłączeniu jego obiektu. Zapobiega to utracie identyfikacji drużyny i przypadkowemu uszkodzeniu sojusznika; jest to ta sama decyzja o osieroconych pociskach, którą wcześniej zastosowano dla railguna. Pociski utworzone celowo bez właściciela zachowują wcześniejsze działanie.
 - Unity 6000.3.14f1: **12 PASS, 0 FAIL** (`shell_lost_owner_final.xml`, `.log`) obejmuje fizyczne trafienia, wyłączenie i zniszczenie właściciela, dotychczasowe pociski bez właściciela, strzelbę oraz railgun. Przed zmianą `shell_lost_owner_red.xml`: **2 FAIL**, w obu przypadkach sojusznik otrzymywał 25 HP obrażeń. Ręczna walka: **NOT RUN**.
+
+#### 02, 14, 44. Rakiety po utracie właściciela
+
+- Rakieta, której właściciel został usunięty lub wyłączony, kończy lot bez wybuchu i obrażeń. Kontrola obejmuje także zderzenie i przechwycenie, żeby nie straciła informacji o drużynie przed rozliczeniem wybuchu. Żywy właściciel zachowuje dotychczasowe zachowanie rakiety i tarcz.
+- Unity 6000.3.14f1: **14 PASS, 0 FAIL** (`rocket_lost_owner_final.xml`, `.log`) dla obu przypadków utraty właściciela, zwykłych pocisków, wybuchów i osłony; dodatkowo **1 PASS** (`rocket_intercept_owner_final.xml`) dla przechwycenia rakiety z wyłączonym właścicielem oraz **18 PASS** PlayMode (`rocket_owner_package_final.xml`, `.log`) dla pakietu rakiet. Przed zmianą `rocket_lost_owner_red.xml`: **2 FAIL**, sojusznik otrzymywał obrażenia od wybuchu. Ręczna walka: **NOT RUN**.

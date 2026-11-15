@@ -41,6 +41,39 @@ public class RRLW2PhysicsTests
         Assert.That(g.GetComponent<Collider>().enabled,Is.True);Assert.That(child.GetComponent<Collider>().enabled,Is.False);
         Assert.That(b.useGravity,Is.True);Assert.That(b.linearVelocity.y,Is.LessThan(0));
     }
+    [UnityTest] public IEnumerator InterceptingRocketAfterOwnerDisabledDoesNotExplodeOnAlly()
+    {
+        var owner=new GameObject("Rocket owner");objects.Add(owner);owner.AddComponent<RailgunFriendlyFixture>();
+        var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        var ally=Cube(Vector3.forward);ally.AddComponent<RailgunFriendlyFixture>();
+        var hp=ally.AddComponent<P12PipelineSafeDamageable>();hp.Configure(100,false);
+        ally.AddComponent<RoboRougelike.WeaponIntegration.RRLRocketDamageReceiver>();
+        var shot=new GameObject("Intercepted rocket");objects.Add(shot);
+        var rocket=shot.AddComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+        var spec=new RoboRougelike.Mechanics.Rockets.RocketConfig{explodeWhenIntercepted=true}.Snapshot();
+        Assert.That(rocket.TryInitialize(spec,body,owner.transform,owner,null,Vector3.forward),Is.True);
+        owner.SetActive(false);Physics.SyncTransforms();rocket.ApplyInterceptionDamage(float.MaxValue);
+        Assert.That(hp.CurrentHp,Is.EqualTo(100));Assert.That(rocket.IsResolved,Is.True);Assert.That(shot.activeSelf,Is.False);
+        yield return null;
+    }
+    [UnityTest] public IEnumerator DestroyedOwnerRocketDoesNotHitFriendly() => LostOwnerRocketDoesNotHitFriendly(true);
+    [UnityTest] public IEnumerator DisabledOwnerRocketDoesNotHitFriendly() => LostOwnerRocketDoesNotHitFriendly(false);
+    IEnumerator LostOwnerRocketDoesNotHitFriendly(bool destroyOwner)
+    {
+        var owner=new GameObject("Rocket owner");objects.Add(owner);owner.AddComponent<RailgunFriendlyFixture>();
+        var firingBody=owner.AddComponent<Rigidbody>();firingBody.isKinematic=true;
+        var ally=Cube(Vector3.forward*2);ally.AddComponent<RailgunFriendlyFixture>();
+        var hp=ally.AddComponent<P12PipelineSafeDamageable>();hp.Configure(100,false);
+        ally.AddComponent<RoboRougelike.WeaponIntegration.RRLRocketDamageReceiver>();
+        var shot=new GameObject("Rocket");objects.Add(shot);shot.transform.position=Vector3.back*8;
+        var rocket=shot.AddComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+        var spec=new RoboRougelike.Mechanics.Rockets.RocketConfig{initialSpeed=30,maxSpeed=30,acceleration=0}.Snapshot();
+        Assert.That(rocket.TryInitialize(spec,firingBody,owner.transform,owner,null,Vector3.forward),Is.True);
+        if(destroyOwner)Object.Destroy(owner);else owner.SetActive(false);
+        yield return Fixed(.5f);
+        Assert.That(hp.CurrentHp,Is.EqualTo(100).Within(.01f),"A rocket must not lose its team and damage an ally.");
+        Assert.That(shot==null||!shot.activeInHierarchy,Is.True,"An orphaned rocket must be retired safely.");
+    }
     [UnityTest] public IEnumerator DestroyedOwnerProjectileDoesNotHitFriendly() => LostOwnerProjectileDoesNotHitFriendly(true);
     [UnityTest] public IEnumerator DisabledOwnerProjectileDoesNotHitFriendly() => LostOwnerProjectileDoesNotHitFriendly(false);
     IEnumerator LostOwnerProjectileDoesNotHitFriendly(bool destroyOwner)

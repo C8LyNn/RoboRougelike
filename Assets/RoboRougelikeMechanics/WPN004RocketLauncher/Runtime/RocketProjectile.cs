@@ -78,6 +78,7 @@ namespace RoboRougelike.Mechanics.Rockets
         private void FixedUpdate()
         {
             if (!initialized || resolved) return;
+            if (RetireLostOwner()) return;
             float dt = Time.fixedDeltaTime;
             age += dt;
             if (age >= spec.Lifetime)
@@ -159,14 +160,14 @@ namespace RoboRougelike.Mechanics.Rockets
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!initialized || resolved || IgnoreFlyingCollision(other)) return;
+            if (!initialized || resolved || RetireLostOwner() || IgnoreFlyingCollision(other)) return;
             if (((1 << other.gameObject.layer) & spec.ImpactMask) == 0) return;
             Resolve(body.position, forward, true);
         }
 
         public void ApplyInterceptionDamage(float amount)
         {
-            if (!initialized || resolved || amount <= 0f || float.IsNaN(amount)) return;
+            if (!initialized || resolved || RetireLostOwner() || amount <= 0f || float.IsNaN(amount)) return;
             hitPoints -= amount;
             if (hitPoints <= 0f)
                 Resolve(body.position, Vector3.up, spec.ExplodeWhenIntercepted);
@@ -174,7 +175,7 @@ namespace RoboRougelike.Mechanics.Rockets
 
         private void Resolve(Vector3 point, Vector3 normal, bool dealDamage)
         {
-            if (resolved) return;
+            if (resolved || RetireLostOwner()) return;
             resolved = true;
             if (dealDamage)
             {
@@ -195,6 +196,12 @@ namespace RoboRougelike.Mechanics.Rockets
             if (optionalExplosionVfxPrefab != null)
                 Instantiate(optionalExplosionVfxPrefab, point, Quaternion.identity);
             Destroy(gameObject);
+        }
+
+        private bool RetireLostOwner()
+        {
+            if (!initialized || (ownerRoot != null && ownerRoot.gameObject.activeInHierarchy)) return false;
+            resolved = true;gameObject.SetActive(false);Destroy(gameObject);return true;
         }
     }
 }
