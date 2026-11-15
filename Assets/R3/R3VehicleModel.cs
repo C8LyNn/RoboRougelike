@@ -280,6 +280,12 @@ namespace RoboRougelike.R3
             kind==R3PartKind.Battery||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.SalvageOptimizer||kind==R3PartKind.DoubleShot||kind==R3PartKind.ChargeCapacity||kind==R3PartKind.ChargeRegenerator;
         static string ModuleTypeKey(R3PartState part)=>part.Kind==R3PartKind.BonusModule?
             "bonus:"+(part.UpgradeId??string.Empty):"part:"+(int)part.Kind;
+        static bool ModuleTypeLimitsValid(IEnumerable<R3PartState> parts)
+        {
+            var mounted=parts.ToArray();
+            return mounted.Where(p=>IsActiveSlotPart(p.Kind)).Select(ModuleTypeKey).Distinct().Take(5).Count()<=4&&
+                mounted.Where(p=>IsPassiveSlotPart(p.Kind)).Select(ModuleTypeKey).Distinct().Take(9).Count()<=8;
+        }
         bool ExceedsModuleTypeLimit(R3PartState candidate,bool active)
         {
             var types=Parts.Where(p=>active?IsActiveSlotPart(p.Kind):IsPassiveSlotPart(p.Kind))

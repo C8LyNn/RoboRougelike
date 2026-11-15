@@ -51,6 +51,36 @@ public sealed class WeaponTypeLimitTests
         Assert.That(model.PlacementError(Cell(0),R3PartKind.EnergyRegenerator),Does.Contain("8"));
     }
 
+    [TestCase(true)] [TestCase(false)]
+    public void CheckpointsValidateModuleTypeLimitsWithoutDiscardingLegacyDesigns(bool active)
+    {
+        var model=Model();
+        var allowed=active?new[]{R3PartKind.Blink,R3PartKind.MagneticGrapple,R3PartKind.Booster,R3PartKind.RepairPulse}:
+            new[]{R3PartKind.Suspension,R3PartKind.Gyroscope,R3PartKind.DirectionalShield,R3PartKind.PointDefense,
+                R3PartKind.IndependentSteering,R3PartKind.Battery,R3PartKind.DrivePower,R3PartKind.EnergyRegenerator};
+        for(int i=0;i<allowed.Length;i++)Assert.That(model.Buy(Cell(i),allowed[i]),Is.True,"mount "+allowed[i]);
+        Assert.That(model.Buy(Cell(allowed.Length+1),allowed[0]),Is.True,"Copies of an existing type do not use another type slot.");
+        var checkpoint=model.MakeCheckpoint(0);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Standard,model.Economy,0,out _,out var validError),Is.True,validError);
+        var extra=new R3PartState(Cell(allowed.Length),active?R3PartKind.ScannerPulse:R3PartKind.SalvageOptimizer){DefenseRechargeAge=0};
+        checkpoint.mounted=checkpoint.mounted.Concat(new[]{extra}).ToArray();
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Standard,model.Economy,0,out _,out _),Is.False,
+            "A new checkpoint cannot bypass the same type limit as mounting.");
+        var version=typeof(R3ModelCheckpoint).GetField("moduleTypeLimitVersion");
+        Assert.That(version,Is.Not.Null,"New checkpoints need a versioned module limit so older designs can still be recovered.");
+        Assert.That(version.GetValue(checkpoint),Is.EqualTo(1));
+        version.SetValue(checkpoint,0);
+        string oldJson=JsonUtility.ToJson(checkpoint).Replace("\"moduleTypeLimitVersion\":0,","");
+        Assert.That(oldJson,Does.Not.Contain("moduleTypeLimitVersion"));checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(oldJson);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Standard,model.Economy,0,out var legacy,out var error),Is.True,error);
+        Assert.That(legacy.Parts.Any(p=>p.Id==extra.Id),Is.True,"Legacy hardware must not disappear.");
+        var savedAgain=legacy.MakeCheckpoint(0);Assert.That(version.GetValue(savedAgain),Is.EqualTo(0));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(savedAgain,R3VehicleKind.Standard,model.Economy,0,out legacy,out error),Is.True,error);
+        Assert.That(legacy.Remove(extra.Cell),Is.True);
+        var normalized=legacy.MakeCheckpoint(0);Assert.That(version.GetValue(normalized),Is.EqualTo(1));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(normalized,R3VehicleKind.Standard,model.Economy,0,out _,out error),Is.True,error);
+    }
+
     [Test] public void FourTypesCanMountAndFifthIsRejectedWithoutSpending()
     {
         var model=Model();
