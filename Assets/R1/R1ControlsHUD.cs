@@ -45,7 +45,8 @@ namespace RoboRougelike.R1
                 }
             }
             GUI.Label(new Rect(area.x,area.y,area.width,26),"Kliknij akcję i naciśnij nowy klawisz lub przycisk myszy.",small);
-            if(!string.IsNullOrEmpty(profile.Error))GUI.Label(new Rect(area.x,area.y+24,area.width,35),profile.Error,small);
+            string warning=profile.Error??profile.ExistingConflictNotice;
+            if(!string.IsNullOrEmpty(warning))GUI.Label(new Rect(area.x,area.y+24,area.width,35),warning,small);
             float top=area.y+60,height=area.height-150;
             controlScroll=GUI.BeginScrollView(new Rect(area.x,top,area.width,height),controlScroll,
                 new Rect(0,0,area.width-20,R1ControlProfile.Actions.Length*42));

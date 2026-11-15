@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 06 i 44. Konflikt pauzy z wyborem nagrody
+
+- Ustawienia nie pozwalają już przypisać pauzy i dowolnej z siedmiu akcji nagród do tego samego klawisza albo przycisku myszy. Wcześniej pauza mogła przejąć klawisz wyboru nagrody. Istniejące profile i zapisane ustawienia blueprintów z takim konfliktem nadal się wczytują bez automatycznego nadpisywania; panel sterowania wskazuje konflikt, aby gracz zmienił jedno z przypisań. Do czasu jego zmiany konflikt w starym profilu pozostaje, a nagrodę można wybrać przyciskiem interfejsu.
+- Unity 6000.3.14f1: `reward_pause_conflict_before.xml` — **2 FAIL**, ustawienia dopuszczały konflikt i nie pokazywały ostrzeżenia. `reward_pause_conflict_final.xml` — **41 PASS**, w tym wszystkie akcje nagród, konflikt w obu kierunkach, przyciski myszy, odczyt wcześniejszego pliku bez zmiany treści, wybór nagród, pauza i przywracanie blueprintu. Zdarzenia myszy w testach są syntetyczne; wygląd ostrzeżenia i fizyczne wejście w Windows Playerze **NOT RUN**. Punkt 06 oraz odbiór 44 pozostają otwarte.
+
 ### 06, 39–40 i 44. Przypisanie nawigacji w pauzie
 
 - Ustawienia sterowania obejmują poprzednią opcję, następną opcję i zatwierdzenie w menu pauzy; domyślne strzałki i Enter pozostają bez zmian. Podpowiedzi pokazują aktualne przypisania. Można użyć klawiszy lub obsługiwanych przycisków myszy, a ustawienia zapobiegają konfliktom z pauzą, resetem poligonu i innymi akcjami nawigacji. Starsze profile otrzymują brakujące domyślne przypisania; blueprint przywraca je tylko na wyraźną prośbę.

@@ -91,7 +91,22 @@ namespace RoboRougelike.R1
             try{Save();message="Przywrócono przypisania klawiszy.";return true;}
             catch(Exception error){RestoreValues(previous);message="Nie przywrócono klawiszy: "+error.Message;return false;}
         }
-        public string Conflict(string action,string binding)=>bindings.FirstOrDefault(x=>x.Key!=action&&SameContext(x.Key,action)&&
+        // Older profiles could assign pause and a reward action to the same
+        // input. Keep loading those profiles, but prevent new conflicts and
+        // make the existing one visible until the player resolves it.
+        static bool PauseRewardConflict(string left,string right)=>
+            left=="Pause"&&RewardAction(right)||right=="Pause"&&RewardAction(left);
+        public string ExistingConflictNotice
+        {
+            get
+            {
+                var pause=Binding("Pause");
+                var reward=Actions.FirstOrDefault(action=>RewardAction(action)&&
+                    string.Equals(Binding(action),pause,StringComparison.OrdinalIgnoreCase));
+                return reward==null?null:"Konflikt: Pauza / "+ActionName(reward)+". Zmień jedno przypisanie.";
+            }
+        }
+        public string Conflict(string action,string binding)=>bindings.FirstOrDefault(x=>x.Key!=action&&(SameContext(x.Key,action)||PauseRewardConflict(x.Key,action))&&
             string.Equals(x.Value,binding,StringComparison.OrdinalIgnoreCase)).Key;
         public static bool ValidBinding(string binding)
         {

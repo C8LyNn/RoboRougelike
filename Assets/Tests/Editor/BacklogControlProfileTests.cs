@@ -11,6 +11,43 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [Test] public void PauseAndRewardBindingsRejectNewConflictsInEitherOrder()
+    {
+        var profile=new R1ControlProfile(Path.Combine(Path.GetTempPath(),"RRL-reward-pause-"+Guid.NewGuid()+".json"));
+        Assert.That(profile.TryBind("RewardBonus1","K"),Is.True);
+        Assert.That(profile.TrySaveBinding("Pause","K",out var message),Is.False);
+        Assert.That(message,Does.Contain("Nagrody"));
+        profile.ResetDefaults();Assert.That(profile.TryBind("Pause","K"),Is.True);
+        Assert.That(profile.TrySaveBinding("RewardConfirm","K",out message),Is.False);
+        Assert.That(message,Does.Contain("Pauza"));
+        foreach(var action in new[]{"RewardBonus1","RewardBonus2","RewardBonus3","RewardBasket1","RewardBasket2","RewardBasket3","RewardConfirm"})
+        {
+            profile.ResetDefaults();Assert.That(profile.TryBind("Pause","MouseBack"),Is.True);
+            Assert.That(profile.TryBind(action,"MouseBack"),Is.False,action);
+            profile.ResetDefaults();Assert.That(profile.TryBind(action,"MouseBack"),Is.True);
+            Assert.That(profile.TryBind("Pause","MouseBack"),Is.False,action);
+        }
+    }
+    [Test] public void ExistingPauseRewardConflictPreservesBindingsAndReportsConflict()
+    {
+        string path=Path.Combine(Path.GetTempPath(),"RRL-legacy-reward-pause-"+Guid.NewGuid()+".json");
+        try
+        {
+            var initial=new R1ControlProfile(path);var actions=R1ControlProfile.Actions.ToArray();
+            var values=actions.Select(initial.Binding).ToArray();
+            values[Array.IndexOf(actions,"Pause")]="K";values[Array.IndexOf(actions,"RewardBonus1")]="K";
+            var data=new LegacyControlData{actions=actions,bindings=values};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            string original=File.ReadAllText(path);var profile=new R1ControlProfile(path);
+            Assert.That(profile.Error,Is.Null);Assert.That(profile.Binding("Pause"),Is.EqualTo("K"));
+            Assert.That(profile.Binding("RewardBonus1"),Is.EqualTo("K"));Assert.That(File.ReadAllText(path),Is.EqualTo(original));
+            Assert.That(R1ControlProfile.ValidSnapshot(values),Is.True,"Historical blueprint control snapshots remain loadable.");
+            var notice=typeof(R1ControlProfile).GetProperty("ExistingConflictNotice");Assert.That(notice,Is.Not.Null);
+            Assert.That((string)notice.GetValue(profile),Does.Contain("Pauza").And.Contain("bonus 1"));
+            Assert.That(profile.TryBind("RewardBonus1","J"),Is.True);Assert.That(notice.GetValue(profile),Is.Null);
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [Test] public void PauseMenuBindingsMigratePersistAndRejectActiveContextConflicts()
     {
         string[] actions={"PausePrevious","PauseNext","PauseConfirm"};
