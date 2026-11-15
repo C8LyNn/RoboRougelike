@@ -296,18 +296,22 @@ namespace RoboRougelike.R3
             kind==R3PartKind.Suspension||kind==R3PartKind.Gyroscope||kind==R3PartKind.BonusModule||
             kind==R3PartKind.DirectionalShield||kind==R3PartKind.PointDefense||kind==R3PartKind.IndependentSteering||
             kind==R3PartKind.Battery||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.SalvageOptimizer||kind==R3PartKind.DoubleShot||kind==R3PartKind.ChargeCapacity||kind==R3PartKind.ChargeRegenerator||kind==R3PartKind.CargoUplink||kind==R3PartKind.RadarModule||kind==R3PartKind.MinimapModule;
-        static string ModuleTypeKey(R3PartState part)=>part.Kind==R3PartKind.BonusModule?
-            "bonus:"+(part.UpgradeId??string.Empty):"part:"+(int)part.Kind;
-        static bool ModuleTypeLimitsValid(IEnumerable<R3PartState> parts)
+        static (R3PartKind kind,string id,int effect,int operation,int scope) ModuleTypeKey(R3PartState part,bool legacy=false)
+        {
+            if(part.Kind!=R3PartKind.BonusModule)return (part.Kind,string.Empty,0,0,0);
+            return (part.Kind,part.UpgradeId??string.Empty,legacy?0:(int)part.UpgradeEffect,
+                legacy?0:(int)part.UpgradeOperation,legacy?0:(int)part.UpgradeScope);
+        }
+        static bool ModuleTypeLimitsValid(IEnumerable<R3PartState> parts,bool legacy=false)
         {
             var mounted=parts.ToArray();
-            return mounted.Where(p=>IsActiveSlotPart(p.Kind)).Select(ModuleTypeKey).Distinct().Take(5).Count()<=4&&
-                mounted.Where(p=>IsPassiveSlotPart(p.Kind)).Select(ModuleTypeKey).Distinct().Take(9).Count()<=8;
+            return mounted.Where(p=>IsActiveSlotPart(p.Kind)).Select(p=>ModuleTypeKey(p,legacy)).Distinct().Take(5).Count()<=4&&
+                mounted.Where(p=>IsPassiveSlotPart(p.Kind)).Select(p=>ModuleTypeKey(p,legacy)).Distinct().Take(9).Count()<=8;
         }
         bool ExceedsModuleTypeLimit(R3PartState candidate,bool active)
         {
             var types=Parts.Where(p=>active?IsActiveSlotPart(p.Kind):IsPassiveSlotPart(p.Kind))
-                .Select(ModuleTypeKey).Distinct().ToArray();
+                .Select(p=>ModuleTypeKey(p)).Distinct().ToArray();
             return types.Length>=(active?4:8)&&!types.Contains(ModuleTypeKey(candidate));
         }
         public R3PartKind?[] GetActiveSlots()

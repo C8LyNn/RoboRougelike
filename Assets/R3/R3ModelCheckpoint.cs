@@ -55,7 +55,7 @@ namespace RoboRougelike.R3
         public int deployableSlotsVersion;
         public int[] deployableSlots;
         public R3ActiveSlotCheckpoint[] deployablePreferences;
-        // Zero preserves old designs which predate module-kind limits.
+        // Zero predates type limits; one uses the original ID-only bonus rule.
         public int moduleTypeLimitVersion;
         public int constructionBudgetVersion,constructionBudgetLimit,constructionBudgetMilestonesApplied,safeZoneLastCompleted,safeVendorStage,safeVendorSeed,safeVendorSoldMask,safeVendorRevision;
         // Older saves omit this field and retain their four-bit purchase mask.
@@ -151,7 +151,7 @@ namespace RoboRougelike.R3
                 activePreferences=activeSlotPreference.Select(p=>new R3ActiveSlotCheckpoint{kind=(int)p.Key,slot=p.Value}).ToArray(),
                 deployableSlotsVersion=1,deployableSlots=deployableSlots.Select(p=>p.HasValue?(int)p.Value:-1).ToArray(),
                 deployablePreferences=deployableSlotPreference.Select(p=>new R3ActiveSlotCheckpoint{kind=(int)p.Key,slot=p.Value}).ToArray(),
-                moduleTypeLimitVersion=ModuleTypeLimitsValid(Parts)?1:0,
+                moduleTypeLimitVersion=ModuleTypeLimitsValid(Parts)?2:ModuleTypeLimitsValid(Parts,true)?1:0,
                 constructionBudgetVersion=1,constructionBudgetLimit=ConstructionBudgetLimit,constructionBudgetMilestonesApplied=ConstructionBudgetMilestonesApplied,safeZoneLastCompleted=SafeZoneLastCompleted,safeVendorStage=SafeVendorStage,safeVendorSeed=SafeVendorSeed,safeVendorSoldMask=SafeVendorSoldMask,safeVendorRevision=SafeVendorRevision,
                 safeVendorExtraSold=safeVendorExtraSold.OrderBy(index=>index).ToArray(),
                 repairPulseRemaining=Remaining(RepairPulseReadyAt,now),boosterRemaining=Remaining(BoosterReadyAt,now),jumpRemaining=Remaining(JumpReadyAt,now),blinkRemaining=Remaining(BlinkReadyAt,now),overdriveRemaining=Remaining(OverdriveReadyAt,now),rapidFireRemaining=Remaining(RapidFireReadyAt,now),doubleShotOverdriveRemaining=Remaining(DoubleShotOverdriveReadyAt,now),targetedEmpRemaining=Remaining(TargetedEmpReadyAt,now),areaEmpRemaining=Remaining(AreaEmpReadyAt,now),
@@ -188,7 +188,7 @@ namespace RoboRougelike.R3
             model=null;error="Niepoprawny zapis konstrukcji.";
             if(data==null||!Enum.IsDefined(typeof(R3VehicleKind),kind)||variant<0||variant>=4||data.mounted==null||data.inventory==null||
                 data.wheels==null||data.groups==null||data.mounted.Length>2000||data.inventory.Length>InventoryCapacity||
-                data.constructionBudgetVersion<0||data.constructionBudgetVersion>1||data.moduleTypeLimitVersion<0||data.moduleTypeLimitVersion>1||
+                data.constructionBudgetVersion<0||data.constructionBudgetVersion>1||data.moduleTypeLimitVersion<0||data.moduleTypeLimitVersion>2||
                 data.safeZoneLastCompleted<0||data.safeVendorStage<0||data.safeVendorStage>data.safeZoneLastCompleted||data.safeVendorSoldMask<0||data.safeVendorSoldMask>15||data.safeVendorRevision<0||data.safeVendorRevision>1||
                 (data.safeVendorExtraSold!=null&&(data.safeVendorExtraSold.Any(i=>i<4)||data.safeVendorExtraSold.Distinct().Count()!=data.safeVendorExtraSold.Length||
                   (data.safeVendorStage==0&&data.safeVendorExtraSold.Length>0)))||(data.constructionBudgetVersion==1&&(data.constructionBudgetLimit<0||data.constructionBudgetMilestonesApplied<0))||
@@ -206,7 +206,8 @@ namespace RoboRougelike.R3
                 data.mounted.Count(p=>p.Kind==R3PartKind.Core)!=1||data.inventory.Any(p=>p.Kind==R3PartKind.Core)||
                 data.mounted.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>4||
                 data.mounted.Where(p=>IsDeployableSlotPart(p.Kind)).Select(p=>p.Kind).Distinct().Count()>4||
-                (data.moduleTypeLimitVersion==1&&!ModuleTypeLimitsValid(data.mounted))||
+                (data.moduleTypeLimitVersion==1&&!ModuleTypeLimitsValid(data.mounted,true))||
+                (data.moduleTypeLimitVersion==2&&!ModuleTypeLimitsValid(data.mounted))||
                 data.mounted.SelectMany(OccupiedCells).GroupBy(c=>c).Any(g=>g.Count()>1))return false;
             var mounted=data.mounted;var inventory=data.inventory;int migratedCount=0;
             if(!Connected(mounted)||!Connected(mounted.Where(p=>p.Health>0)))

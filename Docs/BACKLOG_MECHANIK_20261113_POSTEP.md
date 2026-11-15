@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 01, 13 i 44. Rodzaje premii a limit modułów
+
+- Limit ośmiu rodzajów pasywnych rozróżnia teraz premie o tym samym identyfikatorze, jeśli różnią się efektem, operacją albo zakresem. Kopie tego samego rodzaju, także o innej wartości lub tierze, nadal nie zajmują nowego rodzaju. Uwzględnia to rozróżnienie istniejące w katalogu i zachowuje osobne fizyczne części.
+- Checkpoint ma nowe oznaczenie reguły. Starszy zapis w wersji 1 jest nadal sprawdzany według dawnej reguły identyfikatora i nie traci części; jeśli zawiera więcej niż osiem rodzajów według nowej reguły, pozostaje w trybie zgodności aż do zmniejszenia liczby rodzajów. Nowe zapisy zgodne z limitem korzystają z wersji 2.
+- Unity 6000.3.14f1: `bonus_type_slots_before.xml` — **2 FAIL**: zakres premii nie powodował błędu montażu, a checkpoint nie przechodził na nową wersję; pierwszy test zgłaszał wyjątek asercji przy nieoczekiwanym `null`. `bonus_type_slots_after.xml` — **70 PASS**, w tym montaż różnych zakresów i operacji, montaż kolejnej kopii, zachowanie starszej konstrukcji i części po wczytaniu, normalizacja po demontażu, testy limitów, blueprintów oraz premii. `bonus_type_slots_json.xml` — **4 PASS** po dodaniu serializacji i odczytu starszego checkpointu. Wersji 2 checkpointu nie sprawdzono w starszym buildzie; ręczny playtest **NOT RUN**.
+
 ### 10–11 i 44. Fuzja a punkty mocowania
 
 - Dobór składników fuzji i interfejs używają teraz również rzeczywistych styków dostępnych po montażu: nie można zużyć trzech części różniących się mocowaniem i przypadkowo odziedziczyć tylko maski pierwszej. Takie nieudane połączenie zachowuje wszystkie części i walutę. Dla kół bocznych porównanie uwzględnia obie powierzchnie osi dostępne w magazynie, więc egzemplarze zdjęte z lewej i prawej strony nadal pasują do siebie. Istniejące uśrednianie procentowego HP pozostało bez zmian.

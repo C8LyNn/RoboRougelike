@@ -50,6 +50,45 @@ public sealed class WeaponTypeLimitTests
         Assert.That(model.PlacementError(Cell(0),R3PartKind.Battery),Is.Null);
         Assert.That(model.PlacementError(Cell(0),R3PartKind.EnergyRegenerator),Does.Contain("8"));
     }
+    static R3PartState Bonus(R1BonusScope scope,R1ModifierOperation operation=R1ModifierOperation.Increased,float amount=.25f)
+        =>new R3PartState(default,R3PartKind.BonusModule){UpgradeId="same-reward-id",UpgradeEffect=R1UpgradeEffect.Damage,UpgradeScope=scope,UpgradeOperation=operation,UpgradeAmount=amount};
+    static void MountSevenPassiveKinds(R3VehicleModel model)
+    {
+        var kinds=new[]{R3PartKind.Suspension,R3PartKind.Gyroscope,R3PartKind.DirectionalShield,R3PartKind.PointDefense,
+            R3PartKind.IndependentSteering,R3PartKind.Battery,R3PartKind.DrivePower};
+        for(int i=0;i<kinds.Length;i++)Assert.That(model.Buy(Cell(i),kinds[i]),Is.True,"mount "+kinds[i]);
+    }
+    [Test] public void PassiveBonusScopeAndOperationCountAsDifferentTypes()
+    {
+        var model=Model();MountSevenPassiveKinds(model);
+        var original=Bonus(R1BonusScope.Global);var copy=Bonus(R1BonusScope.Global,amount:.5f);
+        var scope=Bonus(R1BonusScope.BasicCannon);var operation=Bonus(R1BonusScope.Global,R1ModifierOperation.More);
+        Assert.That(model.ReceiveSalvage(new[]{original,copy,scope,operation}),Is.True);
+        Assert.That(model.Mount(original.Id,Cell(7)),Is.True);
+        var scopeError=model.OwnedPlacementError(scope.Id,Cell(8),Vector3Int.zero);
+        Assert.That(scopeError,Is.Not.Null);Assert.That(scopeError,Does.Contain("8"));
+        Assert.That(model.Mount(scope.Id,Cell(8)),Is.False);
+        var operationError=model.OwnedPlacementError(operation.Id,Cell(8),Vector3Int.zero);
+        Assert.That(operationError,Is.Not.Null);Assert.That(operationError,Does.Contain("8"));
+        Assert.That(model.Mount(copy.Id,Cell(8)),Is.True,"Another amount of the same type remains a copy for the type limit.");
+        Assert.That(model.Inventory.Any(p=>p.Id==scope.Id)&&model.Inventory.Any(p=>p.Id==operation.Id),Is.True);
+    }
+    [Test] public void VersionOneCheckpointKeepsBonusVariantsThatExceedTheNewTypeLimit()
+    {
+        var model=Model();MountSevenPassiveKinds(model);
+        var first=Bonus(R1BonusScope.Global);var second=Bonus(R1BonusScope.BasicCannon);
+        Assert.That(model.ReceiveSalvage(new[]{first}),Is.True);Assert.That(model.Mount(first.Id,Cell(7)),Is.True);
+        second.Cell=Cell(8);model.Parts.Add(second); // A legal design under the older ID-only rule.
+        var data=model.MakeCheckpoint(0);Assert.That(data.moduleTypeLimitVersion,Is.EqualTo(1));
+        data.moduleTypeLimitVersion=2;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,0,out _,out _),Is.False);
+        data.moduleTypeLimitVersion=1;data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(data));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,0,out var loaded,out var error),Is.True,error);
+        Assert.That(loaded.Parts.Any(p=>p.Id==second.Id),Is.True);
+        Assert.That(loaded.MakeCheckpoint(0).moduleTypeLimitVersion,Is.EqualTo(1));
+        Assert.That(loaded.Remove(second.Cell),Is.True);
+        Assert.That(loaded.MakeCheckpoint(0).moduleTypeLimitVersion,Is.EqualTo(2));
+    }
 
     [TestCase(true)] [TestCase(false)]
     public void CheckpointsValidateModuleTypeLimitsWithoutDiscardingLegacyDesigns(bool active)
@@ -68,7 +107,7 @@ public sealed class WeaponTypeLimitTests
             "A new checkpoint cannot bypass the same type limit as mounting.");
         var version=typeof(R3ModelCheckpoint).GetField("moduleTypeLimitVersion");
         Assert.That(version,Is.Not.Null,"New checkpoints need a versioned module limit so older designs can still be recovered.");
-        Assert.That(version.GetValue(checkpoint),Is.EqualTo(1));
+        Assert.That(version.GetValue(checkpoint),Is.EqualTo(2));
         version.SetValue(checkpoint,0);
         string oldJson=JsonUtility.ToJson(checkpoint).Replace("\"moduleTypeLimitVersion\":0,","");
         Assert.That(oldJson,Does.Not.Contain("moduleTypeLimitVersion"));checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(oldJson);
@@ -77,7 +116,7 @@ public sealed class WeaponTypeLimitTests
         var savedAgain=legacy.MakeCheckpoint(0);Assert.That(version.GetValue(savedAgain),Is.EqualTo(0));
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(savedAgain,R3VehicleKind.Standard,model.Economy,0,out legacy,out error),Is.True,error);
         Assert.That(legacy.Remove(extra.Cell),Is.True);
-        var normalized=legacy.MakeCheckpoint(0);Assert.That(version.GetValue(normalized),Is.EqualTo(1));
+        var normalized=legacy.MakeCheckpoint(0);Assert.That(version.GetValue(normalized),Is.EqualTo(2));
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(normalized,R3VehicleKind.Standard,model.Economy,0,out _,out error),Is.True,error);
     }
 
