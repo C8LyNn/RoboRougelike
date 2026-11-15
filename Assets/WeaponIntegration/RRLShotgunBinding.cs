@@ -59,7 +59,7 @@ namespace RoboRougelike.WeaponIntegration
             float speed=economy?.ShotgunProjectileSpeed??58f;
             double safeRange=float.IsNaN(range)||float.IsInfinity(range)?40d:System.Math.Max(.1d,range);
             double safeSpeed=float.IsNaN(speed)||float.IsInfinity(speed)?58d:System.Math.Max(.1d,speed);
-            return new ShotgunConfig{pelletCount=economy?.ShotgunPelletCount??8,cooldownSeconds=R3MountedBonusEffects.SafeIntervalProduct(.85f,interval),maxTravelDistance=range,damagePerPellet=economy?.ShotgunDamagePerPellet??9f,projectileSpeed=speed,
+            return new ShotgunConfig{pelletCount=economy?.ShotgunPelletCount??8,fullConeAngleDegrees=economy?.ShotgunConeAngle??14f,cooldownSeconds=R3MountedBonusEffects.SafeIntervalProduct(.85f,interval),maxTravelDistance=range,damagePerPellet=economy?.ShotgunDamagePerPellet??9f,projectileSpeed=speed,
                 projectileLifetime=(float)System.Math.Min(float.MaxValue,System.Math.Max(2d,safeRange/safeSpeed+1d))};
         }
         public bool Fire()

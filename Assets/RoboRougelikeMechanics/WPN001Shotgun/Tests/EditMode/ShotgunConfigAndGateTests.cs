@@ -8,7 +8,10 @@ namespace RoboRougelike.WPN001Shotgun.Tests.EditMode
         [Test] public void DefaultPelletCountIsEight() => Assert.AreEqual(8, new ShotgunConfig().Snapshot().PelletCount);
         [Test] public void PelletCountClampedAt64() => Assert.AreEqual(64, new ShotgunConfig { pelletCount = 999 }.Snapshot().PelletCount);
         [Test] public void PelletCountClampedAtOne() => Assert.AreEqual(1, new ShotgunConfig { pelletCount = -10 }.Snapshot().PelletCount);
-        [Test] public void ConeAngleClampedTo90() => Assert.AreEqual(90f, new ShotgunConfig { fullConeAngleDegrees = 180f }.Snapshot().FullConeAngleDegrees);
+        [TestCase(120f)][TestCase(180f)][TestCase(360f)]
+        public void WideConeIsPreserved(float angle) => Assert.AreEqual(angle, new ShotgunConfig { fullConeAngleDegrees = angle }.Snapshot().FullConeAngleDegrees);
+        [Test] public void ConeClampsToFullSphere() => Assert.AreEqual(360f, new ShotgunConfig { fullConeAngleDegrees = 900f }.Snapshot().FullConeAngleDegrees);
+        [Test] public void NonFiniteConeUsesDefault() => Assert.AreEqual(14f, new ShotgunConfig { fullConeAngleDegrees = float.NaN }.Snapshot().FullConeAngleDegrees);
         [Test] public void NonFiniteDamageFallsBack() => Assert.AreEqual(9f, new ShotgunConfig { damagePerPellet = float.NaN }.Snapshot().DamagePerPellet);
         [Test] public void ProjectileSpeedAboveOldCeilingIsPreserved() => Assert.AreEqual(500f, new ShotgunConfig { projectileSpeed = 500f }.Snapshot().ProjectileSpeed);
         [Test] public void NonFiniteProjectileSpeedFallsBack() => Assert.AreEqual(58f, new ShotgunConfig { projectileSpeed = float.PositiveInfinity }.Snapshot().ProjectileSpeed);

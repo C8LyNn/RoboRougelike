@@ -114,6 +114,7 @@ namespace RoboRougelike.R3
         public float RailgunMaximumDamagePerPart=75f;
         [Tooltip("Tymczasowo 1–64 śrucin; większe salwy wymagają porcjowania.")]
         [Min(1)] public int ShotgunPelletCount=8;
+        [Range(0f,360f)] public float ShotgunConeAngle=14f;
         public float ShotgunRange=40f;
         public float ShotgunDamagePerPellet=9f;
         public float ShotgunProjectileSpeed=58f;
@@ -529,6 +530,7 @@ namespace RoboRougelike.R3
             copy.Economy.RailgunDamagePerEnergy=Economy.RailgunDamagePerEnergy;
             copy.Economy.RailgunMaximumDamagePerPart=Economy.RailgunMaximumDamagePerPart;
             copy.Economy.ShotgunPelletCount=Economy.ShotgunPelletCount;
+            copy.Economy.ShotgunConeAngle=Economy.ShotgunConeAngle;
             copy.Economy.ShotgunRange=Economy.ShotgunRange;
             copy.Economy.ShotgunDamagePerPellet=Economy.ShotgunDamagePerPellet;
             copy.Economy.ShotgunProjectileSpeed=Economy.ShotgunProjectileSpeed;

@@ -7,7 +7,7 @@ namespace RoboRougelike.WPN001Shotgun
     public sealed class ShotgunConfig
     {
         [Min(1)] public int pelletCount = 8;
-        [Range(0f, 90f)] public float fullConeAngleDegrees = 14f;
+        [Range(0f, 360f)] public float fullConeAngleDegrees = 14f;
         [Min(0.1f)] public float projectileSpeed = 58f;
         [Min(0f)] public float damagePerPellet = 9f;
         [Min(0.1f)] public float maxTravelDistance = 40f;
@@ -44,7 +44,7 @@ namespace RoboRougelike.WPN001Shotgun
             float recoilImpulse, bool recoilAtMuzzle)
         {
             PelletCount = Mathf.Clamp(pelletCount, 1, 64);
-            FullConeAngleDegrees = ClampFinite(fullConeAngleDegrees, 0f, 90f, 14f);
+            FullConeAngleDegrees = ClampFinite(fullConeAngleDegrees, 0f, 360f, 14f);
             ProjectileSpeed = FiniteMinimum(projectileSpeed, 0.1f, 58f);
             DamagePerPellet = FiniteMinimum(damagePerPellet, 0f, 9f);
             MaxTravelDistance = FiniteMinimum(maxTravelDistance, 0.1f, 40f);

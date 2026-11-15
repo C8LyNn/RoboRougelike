@@ -34,6 +34,18 @@ namespace RoboRougelike.WPN001Shotgun.Tests.EditMode
             ShotgunSpread.BuildDirections(axis, count, angle, seed, result);
             return result;
         }
+        [TestCase(120f, 45f)][TestCase(180f, 60f)][TestCase(360f, 120f)]
+        public void WideConeReachesBeyondOldLimitInBothGenerators(float angle, float minimum)
+        {
+            var directions=Make(Vector3.forward,16,angle,17u);
+            var indexed=new ShotgunSpread.IndexedPattern(Vector3.forward,16,angle,17u);
+            Assert.That(Vector3.Angle(Vector3.forward,directions[15]),Is.GreaterThan(minimum));
+            for(int i=0;i<directions.Length;i++)
+            {
+                Assert.That(directions[i].magnitude,Is.EqualTo(1f).Within(.00001f));
+                Assert.That(Vector3.Distance(directions[i],indexed.DirectionAt(i)),Is.LessThan(.000001f));
+            }
+        }
         [Test] public void ExactNumberOfDirections() =>
             Assert.AreEqual(8, ShotgunSpread.BuildDirections(Vector3.forward, 8, 14f, 1u, new Vector3[8]));
         [Test] public void EveryDirectionHasUnitLength()

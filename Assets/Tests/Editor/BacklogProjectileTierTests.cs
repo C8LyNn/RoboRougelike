@@ -87,6 +87,32 @@ public sealed class BacklogProjectileTierTests
 public sealed class BacklogProjectileTierPhysicsTests
 {
     R1RunController run;
+    [UnityTest] public IEnumerator ConfiguredWideShotgunConeReachesPhysicalProjectiles()
+    {
+        var gun=Build(R4WeaponKind.Shotgun,out _);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var field=typeof(R3GarageEconomy).GetField("ShotgunConeAngle");
+        Assert.That(field,Is.Not.Null,"The actual shotgun needs an adjustable cone setting.");
+        Assert.That((float)field.GetValue(run.Definition.GaragePrices),Is.EqualTo(14f),"Existing run assets must retain the previous default spread.");
+        field.SetValue(assembly.Model.Economy,180f);
+        Assert.That((float)field.GetValue(assembly.Model.DeepCopy().Economy),Is.EqualTo(180f));
+        var muzzle=new GameObject("Wide cone test muzzle").transform;muzzle.SetParent(gun.transform,false);
+        muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;
+        gun.GunPivot=muzzle;gun.Muzzle=muzzle;
+        var binding=gun.GetComponent<RRLShotgunBinding>();
+        typeof(RRLShotgunBinding).GetField("muzzle",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).SetValue(binding,muzzle);
+        binding.Module.Bind(assembly.GetComponent<Rigidbody>(),muzzle,assembly.gameObject);Physics.SyncTransforms();
+        try
+        {
+            Assert.That(binding.Fire(),Is.True);
+            var shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(origin=>origin.PartId==gun.Id).ToArray();
+            Assert.That(shots.Length,Is.EqualTo(8));
+            Assert.That(binding.Module.CurrentSpec.FullConeAngleDegrees,Is.EqualTo(180f));
+            Assert.That(shots.Max(origin=>Vector3.Angle(Vector3.forward,origin.GetComponent<Rigidbody>().linearVelocity)),Is.GreaterThan(60f));
+            foreach(var shot in shots)Object.Destroy(shot.gameObject);
+        }
+        finally{Object.Destroy(assembly.gameObject);}
+        yield return null;
+    }
     static void AllowOneFrameForConventionalCollisionFixture(R3VehicleAssembly assembly)
     {
         var queue=assembly.gameObject.AddComponent<R3ConventionalProjectileQueue>();

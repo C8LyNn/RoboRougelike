@@ -23,7 +23,7 @@ namespace RoboRougelike.WPN001Shotgun
                     throw new ArgumentException("forward must be a finite, non-zero vector",nameof(forward));
                 if(!IsFinite(fullConeDegrees))throw new ArgumentException("cone must be finite",nameof(fullConeDegrees));
                 this.count=count;axis=forward.normalized;
-                float halfRadians=Mathf.Clamp(fullConeDegrees,0f,90f)*Mathf.Deg2Rad*.5f;
+                float halfRadians=Mathf.Clamp(fullConeDegrees,0f,360f)*Mathf.Deg2Rad*.5f;
                 direct=count==1||halfRadians<=0f;
                 basis=Quaternion.FromToRotation(Vector3.forward,axis);
                 uint x=seed==0u?0x6D2B79F5u:seed;
@@ -82,7 +82,7 @@ namespace RoboRougelike.WPN001Shotgun
                 for(int i=0;i<count;i++)output[i]=pattern.DirectionAt(i);
                 return count;
             }
-            float halfRadians = Mathf.Clamp(fullConeDegrees, 0f, 90f) * Mathf.Deg2Rad * 0.5f;
+            float halfRadians = Mathf.Clamp(fullConeDegrees, 0f, 360f) * Mathf.Deg2Rad * 0.5f;
             Vector3 axis = forward.normalized;
             if (count == 1 || halfRadians <= 0f)
             {

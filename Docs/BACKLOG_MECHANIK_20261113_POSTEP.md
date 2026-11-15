@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14 i 44. Konfigurowalny kąt rozrzutu strzelby
+
+- Konfiguracja rzeczywistej strzelby pozwala ustawić pełny kąt rozrzutu od 0 do 360 stopni; 360 stopni obejmuje całą sferę kierunków. Dotychczasowa wartość domyślna 14 stopni pozostaje. Parametr jest kopiowany z konfiguracją pojazdu; generatory kierunków i konfiguracja nie ucinają już wartości powyżej 90 stopni. Istniejąca kontrola toru nadal może odrzucić całą salwę, jeśli przecina własną konstrukcję.
+- Unity 6000.3.14f1: `shotgun_cone_before.xml` — **42 PASS, 8 FAIL**, brak ustawienia i obcinanie kąta. `shotgun_cone_after.xml` — **50 PASS, 0 FAIL**, w tym pełna sfera, oba generatory, dotychczasowy rozrzut, domyślny profil runu, kopiowanie konfiguracji oraz osiem fizycznych pocisków przy kącie 180 stopni. Test rzeczywistego wystrzału umieszcza lufę w kontrolowanym, wolnym miejscu.
+- To nie usuwa limitu 64 podstawowych śrucin ani nie rozwiązuje porcjowania salwy. Nie wykonano ręcznej gry ani pomiaru wydajności; #02, #14 i #44 pozostają otwarte.
+
 ### 06 i 44. Konfigurowanie strzałek
 
 - Strzałki można przypisać do jazdy, broni i innych akcji zgodnie z ich kontekstem. Dotychczas działająca alternatywa dla WASD pozostaje przy domyślnych przypisaniach, lecz przestaje sterować danym kierunkiem po zmianie jego klawisza albo po przypisaniu tej strzałki innej akcji rozgrywki. Nawigacja pauzy ma osobny kontekst i nadal może używać tych samych strzałek.
