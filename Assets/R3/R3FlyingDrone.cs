@@ -121,7 +121,6 @@ namespace RoboRougelike.R3
             if(target==null||target.IsDefeated||aimCollider==null||Time.time<nextShot)return;
             Vector3 deltaAim=aimCollider.bounds.center-body.position;float distance=deltaAim.magnitude;
             if(distance<.1f||distance>attackRange||!ClearShot(deltaAim/distance,distance,target))return;
-            if(P17PhysicalShell.AvailableSlots<=0)return;
             Fire(deltaAim/distance);nextShot=Time.time+interval;
         }
         void FindTarget()

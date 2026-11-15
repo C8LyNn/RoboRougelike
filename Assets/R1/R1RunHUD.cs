@@ -378,9 +378,15 @@ namespace RoboRougelike.R1
                 if(resourceWarning==null&&player!=null&&RogueMachine.P12PipelineSafe.P17PhysicalShell.AvailableSlots==0)
                 {
                     var mounted=player.GetComponent<R3VehicleAssembly>();
-                    if(mounted!=null&&mounted.Parts.Any(part=>part!=null&&part.Operational&&part.gameObject.activeInHierarchy&&
+                    bool bonusActive=offensive!=null&&offensive.AdditionalProjectileUnits>0;
+                    float bonusChance=mounted?.Model?.Economy.DoubleShotChancePerUnit??0;
+                    if(mounted!=null&&!bonusActive&&bonusChance>0&&!float.IsInfinity(bonusChance))
+                        bonusActive=mounted.Parts.Any(part=>part!=null&&part.Kind==R3PartKind.DoubleShot&&part.Operational&&
+                            part.gameObject.activeInHierarchy&&part.transform.IsChildOf(mounted.transform)&&
+                            !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject));
+                    if(bonusActive&&mounted!=null&&mounted.Parts.Any(part=>part!=null&&part.Operational&&part.gameObject.activeInHierarchy&&
                         part.Kind==R3PartKind.Gun&&part.Weapon<=R4WeaponKind.Railgun))
-                        resourceWarning="Dużo pocisków w powietrzu — broń chwilowo czeka.";
+                        resourceWarning="Dużo pocisków w powietrzu — bonusowe strzały mogą nie powstać.";
                 }
                 CombatPanel(new Rect(20,18,660,(combatDetailsOpen?180:125)+extraStatusHeight+(resourceWarning!=null?25:0)+(run.PickupGraceRemaining>0?25:0)),
                     lowCore?new Color(1f,.42f,.32f):new Color(.28f,.76f,.75f));

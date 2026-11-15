@@ -334,9 +334,6 @@ namespace RoboRougelike.R3
                         }
                         continue;
                     }
-                    // Until the shared physical-projectile budget is replaced,
-                    // do not charge a conventional shot that cannot be spawned.
-                    if(P17PhysicalShell.AvailableSlots<1)continue;
                     float interval=controller.WeaponInterval(part.Weapon);
                     if(Time.time+interval<=Time.time&&part.LastConventionalShotTime==Time.time)continue;
                     var energy=GetComponent<VehicleEnergyBank>();

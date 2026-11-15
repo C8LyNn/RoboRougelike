@@ -1350,10 +1350,11 @@ public float CurrentForwardSpeed =>
         private static readonly System.Collections.Generic.List<Collider> projectileColliderBuffer =
             new System.Collections.Generic.List<Collider>();
         private static bool projectileColliderBufferInUse;
+        // The temporary budget limits only additional shots; primary shots
+        // must still exist when unrelated projectiles fill this allowance.
         public static int AvailableSlots => Mathf.Max(0,96-activeShells.Count);
         private void OnEnable()
         {
-            if(activeShells.Count>=96){gameObject.SetActive(false);Destroy(gameObject);return;}
             activeShells.Add(this);
             if(GetComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseThreat>()==null)gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseThreat>();
         }

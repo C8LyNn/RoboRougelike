@@ -104,7 +104,7 @@ namespace RoboRougelike.WeaponIntegration
         {if(debitPending&&State!=null){State.Ammo=Mathf.Min(MagazineSalvos,State.Ammo+1);debitPending=false;}}
         public bool TrySpawnVolley(IReadOnlyList<ShotgunPelletSpawn> pellets)
         {
-            if(!Available||pellets==null||pellets.Count==0||P17PhysicalShell.AvailableSlots<pellets.Count)return false;
+            if(!Available||pellets==null||pellets.Count==0)return false;
             var assembly=Owner.GetComponent<R3VehicleAssembly>();
             var part=GetComponent<R3MountedPart>();
             if(assembly!=null)
@@ -115,7 +115,7 @@ namespace RoboRougelike.WeaponIntegration
                     if(!assembly.ClearProjectilePath(part,velocity,range,.05f))return false;
                 }
             var planned=new List<ShotgunPelletSpawn>(pellets);
-            int extraSlots=P17PhysicalShell.AvailableSlots-pellets.Count;
+            int extraSlots=Mathf.Max(0,P17PhysicalShell.AvailableSlots-pellets.Count);
             if(assembly!=null&&!deferExtras)
                 foreach(var pellet in pellets)
                 {

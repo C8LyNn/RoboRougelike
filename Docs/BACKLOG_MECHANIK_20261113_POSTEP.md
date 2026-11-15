@@ -1027,3 +1027,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 #### 14, 20. Opis Double Shot w garażu
 
 - Opisy wybieranej części i oferty wyjaśniają, że każde pełne 100% premii tworzy dodatkowy pocisk, a część ułamkowa jest szansą na kolejny. Informacja o rodzinach broni, rezerwie energii i obecnych limitach pozostaje widoczna. Zmieniono tylko tekst; jego zawijanie i czytelność w Playerze: **NOT RUN**.
+
+#### 02, 14, 20, 44. Podstawowy strzał po przekroczeniu dawnych progów
+
+- Automaty, działa, strzelby, railguny, rakiety oraz strzały dronów nie są już blokowane tylko dlatego, że wcześniej było aktywnych 96 zwykłych pocisków lub 32 rakiety. Pełna podstawowa salwa strzelby również może powstać ponad dawnym progiem. Przy zapełnieniu tymczasowego budżetu nadal nie powstają wszystkie bonusy Double Shot i Overdrive; ten pozostały limit nadal wymaga rozwiązania. HUD ostrzega o ograniczonych bonusach tylko dla aktywnej premii, zamiast informować o zatrzymaniu zwykłej broni.
+- Unity 6000.3.14f1: **9 PASS, 0 FAIL** (`primary_uncap_final.xml`, `.log`) obejmuje fizyczne trafienia automatu, strzelby, railguna i rakiety przy zapełnionym dotychczasowym limicie, koszty i cooldowny, poprzednie scenariusze salw, przeładowanie rakiet, przechwycenie i zwykłe działanie drona. Dodatkowo **22 PASS, 0 FAIL** (`primary_uncap_hud_final.xml`, `.log`) obejmuje HUD oraz równoczesne rzeczywiste trafienia 110 pocisków w 110 celów. Przed zmianą `primary_uncap_red.xml` i `primary_rocket_red.xml` broń nie oddawała podstawowego strzału. Test drona nie zapełniał puli. Pomiar wydajności w Playerze, bardzo duże konstrukcje i ręczna walka: **NOT RUN**; zdjęcie progu dla podstawowych strzałów może zwiększyć obciążenie fizyki i wymaga dalszego profilowania.

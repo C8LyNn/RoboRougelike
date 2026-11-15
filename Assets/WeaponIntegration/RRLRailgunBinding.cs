@@ -60,7 +60,7 @@ namespace RoboRougelike.WeaponIntegration
         public void RefundShot(){if(debitPending){State.Ammo=Mathf.Min(Magazine,State.Ammo+1);debitPending=false;}}
         public bool TrySpawnShot(RailgunShot shot)
         {
-            if(!Device.Available||shot.OwnerBody!=Device.Body||shot.OwnerRoot!=Device.Owner.gameObject||P17PhysicalShell.AvailableSlots<1)return false;
+            if(!Device.Available||shot.OwnerBody!=Device.Body||shot.OwnerRoot!=Device.Owner.gameObject)return false;
             var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>(),shot.InitialVelocity,shot.Spec.Range,shot.Spec.Radius))return false;
             var created=new System.Collections.Generic.List<GameObject>();

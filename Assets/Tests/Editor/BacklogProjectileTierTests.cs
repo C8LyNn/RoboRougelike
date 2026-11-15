@@ -225,12 +225,10 @@ public sealed class BacklogProjectileTierPhysicsTests
         finally{foreach(var target in targets)if(target!=null)Object.Destroy(target.gameObject);foreach(var item in dummies)if(item!=null){item.SetActive(false);Object.Destroy(item);}if(vehicle!=null)Object.Destroy(vehicle.gameObject);}
         yield return null;
     }
-    [UnityTest] public IEnumerator FullProjectilePoolDoesNotSpendEnergyOrStartCooldown()
+    [UnityTest] public IEnumerator PrimaryShotsStillWorkWhenShellBonusBudgetIsFull()
     {
-        var gun=Build(R4WeaponKind.Automatic,out var bank);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
-        var muzzle=new GameObject("Unblocked QA muzzle").transform;muzzle.SetParent(gun.transform,false);muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;gun.Muzzle=muzzle;
-        Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(gun),Is.True);
         var dummies=new System.Collections.Generic.List<GameObject>();
+        R3VehicleAssembly assembly=null;GameObject target=null;
         try
         {
             while(P17PhysicalShell.AvailableSlots>0)
@@ -238,17 +236,110 @@ public sealed class BacklogProjectileTierPhysicsTests
                 var dummy=new GameObject("Projectile pool fixture");dummies.Add(dummy);dummy.AddComponent<P17PhysicalShell>();
                 Assert.That(dummies.Count,Is.LessThan(200));
             }
-            float before=bank.Current;float ready=gun.NextFireTime;
-            int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),w=>w==R4WeaponKind.Automatic);
-            Assert.That(slot,Is.GreaterThanOrEqualTo(0));assembly.FireSlot(slot);
-            Assert.That(bank.Current,Is.EqualTo(before).Within(.001),"A shot that cannot exist must not cost energy.");
-            Assert.That(gun.NextFireTime,Is.EqualTo(ready),"The weapon must remain ready when no projectile is created.");
-            dummies[0].SetActive(false);assembly.FireSlot(slot);
-            Assert.That(bank.Current,Is.LessThan(before));Assert.That(gun.NextFireTime,Is.GreaterThan(ready));
+            foreach(var kind in new[]{R4WeaponKind.Automatic,R4WeaponKind.Shotgun,R4WeaponKind.Railgun})
+            {
+                var gun=Build(kind,out var bank);assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+                var muzzle=new GameObject("Unblocked QA muzzle").transform;muzzle.SetParent(gun.transform,false);
+                muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;gun.GunPivot=muzzle;gun.Muzzle=muzzle;
+                var body=assembly.GetComponent<Rigidbody>();
+                if(kind==R4WeaponKind.Shotgun)
+                {
+                    var binding=gun.GetComponent<RRLShotgunBinding>();
+                    typeof(RRLShotgunBinding).GetField("muzzle",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).SetValue(binding,muzzle);
+                    binding.Module.Bind(body,muzzle,assembly.gameObject);
+                }
+                if(kind==R4WeaponKind.Railgun)
+                {
+                    var binding=gun.GetComponent<RRLRailgunBinding>();
+                    typeof(RRLRailgunBinding).GetField("muzzle",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).SetValue(binding,muzzle);
+                    binding.Module.Bind(body,muzzle,assembly.gameObject);
+                }
+                target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=muzzle.position+Vector3.forward*5;
+                target.transform.localScale=new Vector3(3,3,.5f);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);
+                Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(gun),Is.True);
+                float before=bank.Current;int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),w=>w==kind);
+                Assert.That(slot,Is.GreaterThanOrEqualTo(0));assembly.FireSlot(slot);
+                Assert.That(bank.Current,Is.LessThan(before),$"{kind} must pay for its actual primary shot.");
+                Assert.That(gun.NextFireTime,Is.GreaterThan(Time.time),$"{kind} must start its own cooldown.");
+                int expected=kind==R4WeaponKind.Shotgun?8:1;
+                Assert.That(Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId==gun.Id),Is.EqualTo(expected));
+                float deadline=Time.realtimeSinceStartup+5;
+                while(Time.realtimeSinceStartup<deadline&&hp.CurrentHp>=500)yield return MOVSeriesDeviceTests.FixedStep();
+                Assert.That(hp.CurrentHp,Is.LessThan(500),$"{kind} must physically hit even when the bonus budget is full.");
+                Object.Destroy(target);target=null;Object.Destroy(assembly.gameObject);assembly=null;yield return null;
+            }
         }
         finally
         {
             foreach(var item in dummies)if(item!=null){item.SetActive(false);Object.Destroy(item);}
+            if(target!=null)Object.Destroy(target);
+            if(assembly!=null)Object.Destroy(assembly.gameObject);
+        }
+        yield return null;
+    }
+    [UnityTest] public IEnumerator MoreThanNinetySixRealPrimaryShellsCanHitSeparateTargets()
+    {
+        var gun=Build(R4WeaponKind.Automatic,out _);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var controller=assembly.GetComponent<P12PipelineSafeTankController>();
+        var muzzle=new GameObject("Many projectile muzzle").transform;muzzle.SetParent(gun.transform,false);muzzle.rotation=Quaternion.identity;
+        var targets=new System.Collections.Generic.List<P12PipelineSafeDamageable>();
+        try
+        {
+            for(int i=0;i<110;i++)
+            {
+                muzzle.position=new Vector3(1000+i*2,1000,1000);
+                var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=muzzle.position+Vector3.forward*5;
+                target.transform.localScale=new Vector3(.8f,.8f,.5f);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(100,false);targets.Add(hp);
+                Assert.That(controller.FirePrimaryFrom(muzzle,R4WeaponKind.Automatic,gun.Id),Is.Not.Null);
+            }
+            Physics.SyncTransforms();
+            Assert.That(Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId==gun.Id),Is.EqualTo(110));
+            float deadline=Time.realtimeSinceStartup+8;
+            while(Time.realtimeSinceStartup<deadline&&targets.Any(t=>t.CurrentHp>=100))yield return MOVSeriesDeviceTests.FixedStep();
+            Assert.That(targets.Count(t=>t.CurrentHp<100),Is.EqualTo(110),"All simultaneous real projectiles must reach their targets.");
+        }
+        finally
+        {
+            foreach(var target in targets)if(target!=null)Object.Destroy(target.gameObject);
+            if(assembly!=null)Object.Destroy(assembly.gameObject);
+        }
+        yield return null;
+    }
+    [UnityTest] public IEnumerator PrimaryRocketStillWorksWhenRocketBonusBudgetIsFull()
+    {
+        var gun=Build(R4WeaponKind.RocketLauncher,out var bank);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var muzzle=new GameObject("Unblocked rocket muzzle").transform;muzzle.SetParent(gun.transform,false);
+        muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;gun.GunPivot=muzzle;gun.Muzzle=muzzle;
+        var binding=gun.GetComponent<RRLRocketBinding>();
+        typeof(RRLRocketBinding).GetField("muzzle",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).SetValue(binding,muzzle);
+        binding.Module.Bind(assembly.GetComponent<Rigidbody>(),assembly.transform,muzzle);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=muzzle.position+Vector3.forward*5;
+        target.transform.localScale=new Vector3(2,2,.5f);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);target.AddComponent<RRLRocketDamageReceiver>();
+        var fixtureOwner=new GameObject("Rocket pool fixture owner");var fixtureBody=fixtureOwner.AddComponent<Rigidbody>();fixtureBody.isKinematic=true;
+        var dummies=new System.Collections.Generic.List<GameObject>();
+        try
+        {
+            var spec=new RoboRougelike.Mechanics.Rockets.RocketConfig().Snapshot();
+            for(int i=0;i<32;i++)
+            {
+                var dummy=new GameObject("Rocket pool fixture");dummies.Add(dummy);dummy.transform.position=new Vector3(2000+i*3,2000,2000);
+                var rocket=dummy.AddComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+                Assert.That(rocket.TryInitialize(spec,fixtureBody,fixtureOwner.transform,fixtureOwner,null,Vector3.forward),Is.True);
+            }
+            Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(gun),Is.True);
+            float before=bank.Current;int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),w=>w==R4WeaponKind.RocketLauncher);
+            Assert.That(slot,Is.GreaterThanOrEqualTo(0));assembly.FireSlot(slot);
+            Assert.That(bank.Current,Is.LessThan(before));Assert.That(gun.NextFireTime,Is.GreaterThan(Time.time));
+            Assert.That(binding.State.Ammo,Is.EqualTo(RRLRocketBinding.Magazine-1));
+            Assert.That(Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId==gun.Id),Is.EqualTo(1));
+            float deadline=Time.realtimeSinceStartup+5;
+            while(Time.realtimeSinceStartup<deadline&&hp.CurrentHp>=500)yield return MOVSeriesDeviceTests.FixedStep();
+            Assert.That(hp.CurrentHp,Is.LessThan(500),"The primary rocket must hit even when the bonus budget is full.");
+        }
+        finally
+        {
+            foreach(var dummy in dummies)if(dummy!=null)Object.Destroy(dummy);
+            if(fixtureOwner!=null)Object.Destroy(fixtureOwner);if(target!=null)Object.Destroy(target);
             if(assembly!=null)Object.Destroy(assembly.gameObject);
         }
         yield return null;

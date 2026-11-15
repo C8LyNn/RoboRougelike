@@ -58,7 +58,7 @@ namespace RoboRougelike.WeaponIntegration
             Refresh();if(!Device.Available||Time.time<State.DeviceReadyAt)return false;
             var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>()))return false;
-            int available=AvailableRocketSlots;if(available<=0)return false;
+            int available=AvailableRocketSlots;
             // The package fails closed on an incomplete physics query. The
             // integrated game admits large multi-collider vehicles, so size
             // both bounded buffers for that workload without weakening it.
