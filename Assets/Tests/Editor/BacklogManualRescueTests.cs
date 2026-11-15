@@ -156,6 +156,29 @@ public sealed class BacklogManualRescueTests
         float end=Time.time+run.EmergencyRescueDurationSeconds+.1f;while(Time.time<end)yield return null;
         energy=bank.Current;tick.Invoke(aura,null);Assert.That(bank.Current,Is.LessThan(energy),"Aura resumes after protection ends");
     }
+    [UnityTest] public IEnumerator QueuedDeviceShotsWaitUntilRescueEnds()
+    {
+        run.Encounter.SetCombatActive(false);run.EmergencyRescueDurationSeconds=.3f;
+        var turret=GameObject.CreatePrimitive(PrimitiveType.Cube);turret.transform.position=run.Player.transform.position+Vector3.up*8;
+        turret.AddComponent<Rigidbody>().isKinematic=true;
+        var weapon=turret.AddComponent<R3FlyingDrone>();weapon.ConfigureTurret(run.Player.transform,.1f,1);weapon.enabled=false;
+        var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+        var queue=run.Player.gameObject.AddComponent<R3DeviceProjectileQueue>();
+        typeof(R3DeviceProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        var batch=typeof(R3FlyingDrone).GetMethod("CaptureShot",flags).Invoke(weapon,new object[]{Vector3.forward});
+        var remaining=batch.GetType().GetField("Remaining");remaining.SetValue(batch,new System.Numerics.BigInteger(2));
+        typeof(R3DeviceProjectileQueue).GetMethod("Enqueue",flags).Invoke(queue,new[]{batch});
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.One));
+        Assert.That(run.TryEmergencyRescue(),Is.True);
+        var drain=typeof(R3DeviceProjectileQueue).GetMethod("FixedUpdate",flags);drain.Invoke(queue,null);
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.One),"Rescue must suspend queued offensive fire.");
+        float deadline=Time.realtimeSinceStartup+5;while(run.EmergencyRescueAttackBlocked&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.EmergencyRescueAttackBlocked,Is.False);drain.Invoke(queue,null);
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.Zero));
+        foreach(var shell in Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Where(p=>p.name=="P17_DronePhysicalShell"&&p.OwnerRoot==run.Player.transform))
+        {shell.gameObject.SetActive(false);Object.Destroy(shell.gameObject);}
+        Object.Destroy(turret);
+    }
     [UnityTest] public IEnumerator ExistingOffensiveTurretPausesItsFireDuringRescue()
     {
         run.Encounter.SetCombatActive(false);var enemy=run.Encounter.Enemies.First();

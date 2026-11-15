@@ -56,7 +56,7 @@ public class RRLW34EffectsTests
         Assert.That(Visible(),Is.False,"A wall tied with the target must be treated as cover regardless of hit order.");
         yield return null;
     }
-    [UnityTest, Explicit("Known backlog #14 failure; run directly when implementing sub-step device fire.")]
+    [UnityTest]
     public IEnumerator DeviceCanFireSeveralPhysicalShotsPerPhysicsStep()
     {
         var vehicle=Build(Model());yield return null;
@@ -80,7 +80,41 @@ public class RRLW34EffectsTests
         Assert.That(elapsed,Is.GreaterThan(.3f));
         Assert.That(shots.Length,Is.InRange(expected-5,expected+5),"Each due shot must remain an independent physical projectile.");
         shooter.enabled=false;
+        foreach(var shot in shots){Assert.That(shot.OwnerRoot,Is.SameAs(vehicle.transform));Assert.That(shot.DamageAmount,Is.EqualTo(1));}
+        float deadline=Time.realtimeSinceStartup+8;
+        while(hp.CurrentHp>1000-shots.Length&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(hp.CurrentHp,Is.EqualTo(1000-shots.Length).Within(.1f),"Every separate shot must be able to hit and damage the target.");
         foreach(var shot in shots)if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+    }
+    [UnityTest] public IEnumerator DeferredDeviceShotsKeepTheirSnapshotWhenEmitterDisappears()
+    {
+        var vehicle=Build(Model());yield return null;
+        var emitter=GameObject.CreatePrimitive(PrimitiveType.Cube);emitter.transform.SetParent(fixtures.transform);
+        emitter.transform.position=new Vector3(1000,1000,1000);emitter.AddComponent<Rigidbody>().isKinematic=true;
+        var shooter=emitter.AddComponent<R3FlyingDrone>();shooter.ConfigureTurret(vehicle.transform,.1f,7,120);shooter.enabled=false;
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var queue=vehicle.gameObject.AddComponent<R3DeviceProjectileQueue>();
+        typeof(R3DeviceProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        var batch=typeof(R3FlyingDrone).GetMethod("CaptureShot",flags).Invoke(shooter,new object[]{Vector3.forward});
+        var remaining=batch.GetType().GetField("Remaining");remaining.SetValue(batch,new System.Numerics.BigInteger(5));
+        var expectedOrigin=emitter.transform.position+Vector3.forward*.65f;
+        typeof(R3DeviceProjectileQueue).GetMethod("Enqueue",flags).Invoke(queue,new[]{batch});
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(new System.Numerics.BigInteger(4)),"The zero work budget still makes exactly one initial shot.");
+        emitter.transform.position+=Vector3.right*20;Object.DestroyImmediate(emitter);
+        var drain=typeof(R3DeviceProjectileQueue).GetMethod("FixedUpdate",flags);
+        for(int i=0;i<4;i++)drain.Invoke(queue,null);
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.Zero));
+        var shots=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Where(p=>p.name=="P17_DronePhysicalShell"&&p.gameObject.activeInHierarchy).ToArray();
+        Assert.That(shots.Length,Is.EqualTo(5));
+        foreach(var shot in shots)
+        {
+            Assert.That(shot.OwnerRoot,Is.SameAs(vehicle.transform));Assert.That(shot.DamageAmount,Is.EqualTo(7));
+            Assert.That(Vector3.Distance(shot.LaunchPosition,expectedOrigin),Is.LessThan(.001f));
+            Assert.That(Vector3.Dot(shot.GetComponent<Rigidbody>().linearVelocity.normalized,Vector3.forward),Is.GreaterThan(.999f));
+        }
+        for(int i=0;i<shots.Length;i++)for(int j=i+1;j<shots.Length;j++)
+            Assert.That(Physics.GetIgnoreCollision(shots[i].GetComponent<Collider>(),shots[j].GetComponent<Collider>()),Is.True);
+        foreach(var shot in shots){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
     }
     [UnityTest] public IEnumerator DeviceCadenceDoesNotAccumulatePhysicsStepRounding()
     {

@@ -24,6 +24,7 @@ namespace RoboRougelike.R3
         BigInteger nextDue, lastTime;
         bool active;
         public BigInteger PendingShots { get; private set; }
+        public float NextFireTime => (float)Math.Min(float.MaxValue,(double)nextDue*1.401298464324817e-45d);
 
         public void Observe(float time,float interval,bool canFire)
         {
@@ -49,6 +50,11 @@ namespace RoboRougelike.R3
             if(maximum<0)throw new ArgumentOutOfRangeException(nameof(maximum));
             int taken=(int)BigInteger.Min(PendingShots,new BigInteger(maximum));
             PendingShots-=taken;return taken;
+        }
+
+        public BigInteger TakeAll()
+        {
+            BigInteger taken=PendingShots;PendingShots=BigInteger.Zero;return taken;
         }
 
         static void Validate(float value,string name)

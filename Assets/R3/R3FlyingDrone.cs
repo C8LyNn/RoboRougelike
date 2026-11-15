@@ -94,6 +94,7 @@ namespace RoboRougelike.R3
     {
         Transform owner;Rigidbody body;Collider ownCollider;float speed,interval,damage,nextShot,nextScan,attackRange=40f,followRadius=6f,hoverHeight=3f;
         bool firingPhase;float phaseDeadline;
+        readonly DeviceFireSchedule fireSchedule=new DeviceFireSchedule();
         // A bounded reusable buffer keeps the usual sight query allocation-free.
         // When it fills, the complete allocating query preserves every obstacle.
         const int SightBufferRetentionLimit=256;
@@ -130,16 +131,23 @@ namespace RoboRougelike.R3
             if(Time.time<nextShot)return;
             Vector3 deltaAim=aimCollider.bounds.center-body.position;float distance=deltaAim.magnitude;
             if(distance<.1f||distance>attackRange||!ClearShot(deltaAim/distance,distance,target)){firingPhase=false;return;}
-            // Preserve the fractional part of a cooldown when a fixed step
-            // arrives slightly late. Reacquiring a target or a long delay must
-            // not bank shots that were never fired while aim was unavailable.
             float now=Time.time;
-            float origin=firingPhase&&nextShot==phaseDeadline&&now>=nextShot&&
-                now-nextShot<=Time.fixedDeltaTime*1.5f?nextShot:now;
-            Fire(deltaAim/distance);
             var effects=owner.GetComponentInParent<R3MountedBonusEffects>();
             float scale=effects==null?1f:stationary?effects.TurretFireIntervalScale:effects.DroneFireIntervalScale;
-            nextShot=origin+R3MountedBonusEffects.SafeIntervalProduct(interval,scale);
+            float effectiveInterval=R3MountedBonusEffects.SafeIntervalProduct(interval,scale);
+            if(float.IsNaN(effectiveInterval)||float.IsInfinity(effectiveInterval)||effectiveInterval<0){firingPhase=false;return;}
+            if(!firingPhase||nextShot!=phaseDeadline)fireSchedule.Observe(now,effectiveInterval,false);
+            fireSchedule.Observe(now,effectiveInterval,true);
+            if(fireSchedule.PendingShots>System.Numerics.BigInteger.Zero)
+            {
+                var batch=CaptureShot(deltaAim/distance);
+                batch.Remaining=fireSchedule.PendingShots;
+                var queue=owner.GetComponent<R3DeviceProjectileQueue>();
+                if(queue==null)queue=owner.gameObject.AddComponent<R3DeviceProjectileQueue>();
+                queue.Enqueue(batch);
+                fireSchedule.TakeAll();
+            }
+            nextShot=fireSchedule.NextFireTime;
             phaseDeadline=nextShot;firingPhase=true;
         }
         void OnDisable(){firingPhase=false;}
@@ -200,14 +208,17 @@ namespace RoboRougelike.R3
         }
         void Fire(Vector3 direction)
         {
-            var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);shell.name="P17_DronePhysicalShell";
-            shell.transform.position=body.position+direction*.65f;shell.transform.localScale=Vector3.one*.16f;
-            var renderer=GetComponent<Renderer>();if(renderer!=null)shell.GetComponent<Renderer>().sharedMaterial=renderer.sharedMaterial;
-            var shellCollider=shell.GetComponent<Collider>();foreach(var c in GetComponentsInChildren<Collider>())if(c!=null)Physics.IgnoreCollision(shellCollider,c,true);
-            var rb=shell.AddComponent<Rigidbody>();rb.mass=1;rb.useGravity=false;rb.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;rb.linearVelocity=direction*38;
-            float projectileRange=(float)Math.Min(float.MaxValue,Math.Max(45d,(double)attackRange+5d));
-            float lifetime=(float)Math.Min(float.MaxValue,Math.Max(3d,projectileRange/38d+1d));
-            shell.AddComponent<P17PhysicalShell>().Configure(owner,R3MountedBonusEffects.ScaleOwnedDamage(owner,damage,stationary?R1BonusScope.Turrets:R1BonusScope.Drones),lifetime,direction,target!=null?target.transform:null,projectileRange);
+            var batch=CaptureShot(direction);batch.Remaining=System.Numerics.BigInteger.One;
+            var queue=owner.GetComponent<R3DeviceProjectileQueue>();if(queue==null)queue=owner.gameObject.AddComponent<R3DeviceProjectileQueue>();
+            queue.Enqueue(batch);
+        }
+        R3DeviceProjectileQueue.Batch CaptureShot(Vector3 direction)
+        {
+            var renderer=GetComponent<Renderer>();
+            return new R3DeviceProjectileQueue.Batch{Owner=owner,Target=target!=null?target.transform:null,
+                Origin=body.position+direction*.65f,Direction=direction,Range=attackRange,
+                Damage=R3MountedBonusEffects.ScaleOwnedDamage(owner,damage,stationary?R1BonusScope.Turrets:R1BonusScope.Drones),
+                Material=renderer!=null?renderer.sharedMaterial:null,SourceColliders=GetComponentsInChildren<Collider>()};
         }
     }
 }
