@@ -13,6 +13,26 @@ using RogueMachine.P12PipelineSafe;
 
 public class RRLW6RailgunModelTests
 {
+    [Test] public void RailgunDamageConfigurationKeepsLargeFiniteValuesAndCopiesThem()
+    {
+        var spec=new RailgunConfig{damagePerEnergy=200f,maximumDamagePerPart=25000f}.Snapshot();
+        Assert.That(spec.DamagePerEnergy,Is.EqualTo(200f));
+        Assert.That(spec.MaxDamagePerPart,Is.EqualTo(25000f));
+        var factor=typeof(R3GarageEconomy).GetField("RailgunDamagePerEnergy");
+        var ceiling=typeof(R3GarageEconomy).GetField("RailgunMaximumDamagePerPart");
+        Assert.That(factor,Is.Not.Null);Assert.That(ceiling,Is.Not.Null);
+        var defaults=Resources.Load<R1RunDefinition>("R1/Run").GaragePrices;
+        Assert.That(factor.GetValue(defaults),Is.EqualTo(.65f));Assert.That(ceiling.GetValue(defaults),Is.EqualTo(75f));
+        var economy=new R3GarageEconomy();factor.SetValue(economy,200f);ceiling.SetValue(economy,25000f);
+        var copy=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light),economy).DeepCopy().Economy;
+        Assert.That(factor.GetValue(copy),Is.EqualTo(200f));Assert.That(ceiling.GetValue(copy),Is.EqualTo(25000f));
+        var zero=new RailgunConfig{damagePerEnergy=0,maximumDamagePerPart=0}.Snapshot();
+        Assert.That(zero.DamagePerEnergy,Is.Zero);Assert.That(zero.MaxDamagePerPart,Is.Zero);
+        var invalid=new RailgunConfig{damagePerEnergy=float.NaN,maximumDamagePerPart=float.PositiveInfinity}.Snapshot();
+        Assert.That(invalid.DamagePerEnergy,Is.EqualTo(.65f));Assert.That(invalid.MaxDamagePerPart,Is.EqualTo(75f));
+        var extreme=RailgunRules.Evaluate(1e30f,1,1e30f,float.MaxValue,0,6,0,true);
+        Assert.That(extreme.Damage,Is.EqualTo(float.MaxValue),"Large finite inputs must never generate infinite applied damage.");
+    }
     [Test] public void RailgunPenetrationSettingHasNoArtificialTwentyFourPartCeiling()
     {
         var config=new RailgunConfig{maximumDistinctParts=60};Assert.That(config.Snapshot().MaxDistinctParts,Is.EqualTo(60));
@@ -51,6 +71,35 @@ public class RRLW6RailgunModelTests
 }
 public class RRLW6RailgunPhysicalTests
 {
+    [UnityTest] public IEnumerator ConfiguredMountedRailgunCanDamageBeyondOldLimit()
+    {
+        var economy=new R3GarageEconomy{RailgunInitialPenetrationEnergy=1000000f};
+        var factor=typeof(R3GarageEconomy).GetField("RailgunDamagePerEnergy");
+        var ceiling=typeof(R3GarageEconomy).GetField("RailgunMaximumDamagePerPart");
+        Assert.That(factor,Is.Not.Null);Assert.That(ceiling,Is.Not.Null);
+        factor.SetValue(economy,200f);ceiling.SetValue(economy,25000f);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard),economy);
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Railgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Id==state.Id);
+        var item=GameObject.CreatePrimitive(PrimitiveType.Cube);item.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6;
+        item.transform.localScale=new Vector3(2,2,.5f);var target=item.AddComponent<P12PipelineSafeDamageable>();target.Configure(1000000f,false);
+        Physics.SyncTransforms();
+        try
+        {
+            var binding=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
+            Assert.That(binding.Fire(),Is.True);
+            Assert.That(binding.Module.CurrentSpec.DamagePerEnergy,Is.EqualTo(200f));
+            Assert.That(binding.Module.CurrentSpec.MaxDamagePerPart,Is.EqualTo(25000f));
+            var projectile=UnityEngine.Object.FindObjectsByType<RoboRougelike.WeaponIntegration.RRLRailPenetration>(FindObjectsSortMode.None).Single();
+            projectile.Step(.2f);
+            Assert.That(1000000f-target.CurrentHp,Is.EqualTo(25000f).Within(1f),"The real impact must respect the configured value instead of the old implicit ceiling.");
+        }
+        finally{if(item!=null)UnityEngine.Object.Destroy(item);if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+        yield return null;
+    }
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();

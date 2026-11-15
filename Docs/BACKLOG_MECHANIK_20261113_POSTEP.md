@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14 i 44. Konfiguracja obrażeń railguna
+
+- Usunięto nieuzgodnione progi 100 dla współczynnika obrażeń na jednostkę energii i 5000 dla konfigurowanego maksimum obrażeń jednej części. Obie wartości są teraz polami ustawień gry i są zachowywane przy kopiowaniu konfiguracji; dotychczasowe domyślne wartości **0,65 i 75** pozostają bez zmian. Wartość maksimum nadal jest jawnym parametrem zachowania broni, ale można ją ustawić powyżej poprzedniego ograniczenia. Wartości niepoprawne mają bezpieczne domyślne, a zero jest dozwolone.
+- Unity 6000.3.14f1: `rail_damage_config_first.xml` — **7 PASS, 0 FAIL**, w tym rzeczywiste trafienie za 25 000 HP, konfiguracja 200 obrażeń na jednostkę energii, domyślne wartości zasobu, kopiowanie, wartości skrajne i penetracja 30 części. `rail_damage_config_package_edit.xml` — **45 PASS**, `rail_damage_config_package_play.xml` — **22 PASS** dla reguł i fizyki pakietu. Przed zmianą `rail_damage_config_before.xml` — **1 FAIL**: wartość 200 była obcinana do 100.
+- To ustawienia konfiguracyjne, a nie nowe ulepszenia dostępne graczowi; balans i ręczna walka nie były sprawdzane. Limity dodatkowych pocisków i szybkostrzelności urządzeń oraz odbiór #44 pozostają otwarte.
+
 ### 38 i 44. Sześć starć z automatycznym pilotem
 
 - Pilot testowy może wyznaczyć drogę wokół prostokątnej przeszkody i wykorzystuje wyłącznie sterowanie wirtualne. Między walkami korzysta z prawdziwych operacji garażu, naprawia, montuje nagrody i kupuje do sześciu dział za zdobyty złom, w granicach budżetu i reguł montażu. Test wymaga obserwacji aktywnego fizycznego pocisku lub rakiety należącej do gracza w każdym starciu oraz zakończenia sześciu walk zwycięstwem.

@@ -11,8 +11,8 @@ namespace RoboRougelike.WPN002Railgun
         [Min(0.005f)] public float projectileRadius = 0.075f;
         [Min(0.1f)] public float initialPenetrationEnergy = 100f;
         [Min(0f)] public float energyLossPerMeter = 0.4f;
-        [Min(0.01f)] public float damagePerEnergy = 0.65f;
-        [Min(1f)] public float maximumDamagePerPart = 75f;
+        [Min(0f)] public float damagePerEnergy = 0.65f;
+        [Min(0f)] public float maximumDamagePerPart = 75f;
         [Min(1)] public int maximumDistinctParts = 6;
         [Min(0f)] public float minimumEnergyToContinue = 2f;
         [Min(0f)] public float cooldownSeconds = 2.4f;
@@ -26,8 +26,8 @@ namespace RoboRougelike.WPN002Railgun
             RailgunRules.ClampFinite(projectileRadius, 0.005f, 1f, 0.075f),
             RailgunRules.Finite(initialPenetrationEnergy)?Mathf.Max(1f,initialPenetrationEnergy):100f,
             RailgunRules.ClampFinite(energyLossPerMeter, 0f, 100f, 0.4f),
-            RailgunRules.ClampFinite(damagePerEnergy, 0.001f, 100f, 0.65f),
-            RailgunRules.ClampFinite(maximumDamagePerPart, 0.01f, 5000f, 75f),
+            RailgunRules.Finite(damagePerEnergy)?Mathf.Max(0f,damagePerEnergy):0.65f,
+            RailgunRules.Finite(maximumDamagePerPart)?Mathf.Max(0f,maximumDamagePerPart):75f,
             Mathf.Max(1,maximumDistinctParts),
             RailgunRules.ClampFinite(minimumEnergyToContinue, 0f, 9999f, 2f),
             RailgunRules.NonNegativeCooldown(cooldownSeconds, 2.4f),

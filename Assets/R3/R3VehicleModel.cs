@@ -110,6 +110,8 @@ namespace RoboRougelike.R3
         public int RailgunMaxPenetratedParts=6;
         public float RailgunInitialPenetrationEnergy=100f;
         public float RailgunRange=120f;
+        public float RailgunDamagePerEnergy=.65f;
+        public float RailgunMaximumDamagePerPart=75f;
         public float ShotgunRange=40f;
         public float StructuralScanRange=60f,StructuralScanEnergy=5f,StructuralScanCooldown=8f;
         [Min(1)] public int StructuralScanMaxParts=16;
@@ -516,6 +518,8 @@ namespace RoboRougelike.R3
             copy.Economy.RadarRangePerUnit=Economy.RadarRangePerUnit;copy.Economy.MinimapRangePerUnit=Economy.MinimapRangePerUnit;copy.Economy.RadarModuleCost=Economy.RadarModuleCost;copy.Economy.MinimapModuleCost=Economy.MinimapModuleCost;
             copy.Economy.RailgunMaxPenetratedParts=Economy.RailgunMaxPenetratedParts;copy.Economy.RailgunInitialPenetrationEnergy=Economy.RailgunInitialPenetrationEnergy;
             copy.Economy.RailgunRange=Economy.RailgunRange;
+            copy.Economy.RailgunDamagePerEnergy=Economy.RailgunDamagePerEnergy;
+            copy.Economy.RailgunMaximumDamagePerPart=Economy.RailgunMaximumDamagePerPart;
             copy.Economy.ShotgunRange=Economy.ShotgunRange;
             copy.Economy.CargoPickupRangePerUnit=Economy.CargoPickupRangePerUnit;copy.Economy.CargoUplinkCost=Economy.CargoUplinkCost;
             copy.Economy.BlueprintSlotCount=Economy.BlueprintSlotCount;
