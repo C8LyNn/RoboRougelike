@@ -124,6 +124,9 @@ public sealed class BacklogProjectileTierPhysicsTests
         var cargo=assembly.Parts.Single(p=>p.Id==owned.Id);
         var radius=typeof(R3VehicleAssembly).GetProperty("CargoPickupRadius");Assert.That(radius,Is.Not.Null);
         Assert.That((float)radius.GetValue(assembly),Is.EqualTo(2.1f).Within(.01));
+        var cargoEmp=cargo.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();Assert.That(cargoEmp,Is.Not.Null);
+        cargoEmp.ApplyEmp(3);Assert.That((float)radius.GetValue(assembly),Is.EqualTo(1.1f).Within(.01));
+        cargoEmp.ClearEmp();Assert.That((float)radius.GetValue(assembly),Is.EqualTo(2.1f).Within(.01));
         var item=new R4SalvageItem("cargo-test-part","enemy",R3PartKind.Gun,R4WeaponKind.Basic,.6f);
         Assert.That(run.Salvage.Record("cargo-test-enemy",new[]{item}),Is.True);
         Physics.SyncTransforms();var edge=player.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger)
@@ -138,6 +141,43 @@ public sealed class BacklogProjectileTierPhysicsTests
         while(Time.realtimeSinceStartup<deadline&&!model.Owns(item.Id))yield return MOVSeriesDeviceTests.FixedStep();
         Assert.That(model.Owns(item.Id),Is.True,"The physical loot is collected when the module extends the range.");
         Assert.That(model.Inventory.Count(p=>p.Id==item.Id),Is.EqualTo(1));Assert.That(run.Salvage.Items.Any(p=>p.Id==item.Id),Is.False);
+    }
+    [UnityTest] public IEnumerator PhysicalRadarAndMinimapDetectOnlyInRangeAndStopOnLoss()
+    {
+        var model=run.VehicleModel;
+        typeof(R3VehicleModel).GetMethod("SetInstallationGate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic)
+            .Invoke(model,new object[]{null});
+        model.Award(1000);
+        foreach(var kind in new[]{R3PartKind.RadarModule,R3PartKind.MinimapModule})
+        {
+            Assert.That(model.PurchaseToInventory(kind),Is.True);var part=model.Inventory.Last(p=>p.Kind==kind);
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(part.Id,c,default)==null);
+            Assert.That(model.Mount(part.Id,cell),Is.True);
+        }
+        var previous=run.Player;previous.gameObject.SetActive(false);
+        var player=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        player.GetComponent<Rigidbody>().isKinematic=true;
+        var assembly=player.GetComponent<R3VehicleAssembly>();var radar=assembly.Parts.Single(p=>p.Kind==R3PartKind.RadarModule);
+        var map=assembly.Parts.Single(p=>p.Kind==R3PartKind.MinimapModule);
+        Assert.That(assembly.PassiveDetectionRange(R3PartKind.RadarModule),Is.EqualTo(50));
+        Assert.That(assembly.PassiveDetectionRange(R3PartKind.MinimapModule),Is.EqualTo(50));
+        foreach(var e in run.Encounter.Enemies)e.gameObject.SetActive(false);
+        var enemy=run.Encounter.Enemies.First();enemy.gameObject.SetActive(true);var enemyBody=enemy.GetComponent<Rigidbody>();enemyBody.isKinematic=true;
+        enemyBody.position=player.transform.position+Vector3.forward*40;enemy.transform.position=enemyBody.position;Physics.SyncTransforms();
+        var contacts=new System.Collections.Generic.List<Vector3>();R3PassiveRadar.Collect(run,assembly,contacts);
+        Assert.That(contacts.Count,Is.EqualTo(1));Assert.That(R3PassiveRadar.MapOffset(player.transform.position,Vector3.forward,contacts[0],50).y,Is.LessThan(0));
+        enemyBody.position=player.transform.position+Vector3.forward*60;enemy.transform.position=enemyBody.position;Physics.SyncTransforms();
+        R3PassiveRadar.Collect(run,assembly,contacts);Assert.That(contacts,Is.Empty);
+        radar.Tier=2;Assert.That(assembly.PassiveDetectionRange(R3PartKind.RadarModule),Is.EqualTo(100));
+        R3PassiveRadar.Collect(run,assembly,contacts);Assert.That(contacts.Count,Is.EqualTo(1));
+        var receiver=radar.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();Assert.That(receiver,Is.Not.Null);
+        receiver.ApplyEmp(3);R3PassiveRadar.Collect(run,assembly,contacts);Assert.That(contacts,Is.Empty);
+        receiver.ClearEmp();R3PassiveRadar.Collect(run,assembly,contacts);Assert.That(contacts.Count,Is.EqualTo(1));
+        radar.gameObject.SetActive(false);R3PassiveRadar.Collect(run,assembly,contacts);Assert.That(contacts,Is.Empty);
+        Assert.That(assembly.PassiveDetectionRange(R3PartKind.MinimapModule),Is.EqualTo(50));
+        map.gameObject.SetActive(false);Assert.That(assembly.PassiveDetectionRange(R3PartKind.MinimapModule),Is.Zero);
+        yield return null;
     }
     [UnityTest] public IEnumerator DefeatedEnemyDropsPhysicalPartThatPlayerActuallyCollects()
     {

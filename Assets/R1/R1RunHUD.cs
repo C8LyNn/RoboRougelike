@@ -13,6 +13,36 @@ namespace RoboRougelike.R1
         private static Rect CombatAbilityStatusRect(int row)=>new Rect(340,90+22*row,190,22);
         private Texture2D buttonNormal,buttonHover,buttonPressed;
         private bool combatDetailsOpen;
+        private readonly System.Collections.Generic.List<Vector3> passiveRadarContacts=new System.Collections.Generic.List<Vector3>();
+        private R3VehicleAssembly passiveRadarOwner;
+        private float passiveRadarNextScan,passiveRadarPreviousRange;
+        private void DrawPassiveRadar(R1RunController run)
+        {
+            if(Event.current.type!=EventType.Repaint||run.Paused||run.QuitRequested||run.Transitioning||run.Error!=null||
+               run.MapEditing||(run.Progress?.State!=R1RunState.Combat&&run.Progress?.State!=R1RunState.TestDrive))return;
+            var vehicle=run.Player!=null?run.Player.GetComponent<R3VehicleAssembly>():null;if(vehicle==null)return;
+            float radar=vehicle.PassiveDetectionRange(R3PartKind.RadarModule),map=vehicle.PassiveDetectionRange(R3PartKind.MinimapModule);
+            if(radar<=0&&map<=0){passiveRadarContacts.Clear();return;}
+            if(vehicle!=passiveRadarOwner||radar!=passiveRadarPreviousRange||Time.unscaledTime>=passiveRadarNextScan)
+            {
+                R3PassiveRadar.Collect(run,vehicle,passiveRadarContacts);passiveRadarOwner=vehicle;
+                passiveRadarPreviousRange=radar;passiveRadarNextScan=Time.unscaledTime+.25f;
+            }
+            var panel=new Rect(1090,466,165,map>0?166:46);Panel(panel);
+            GUI.Label(new Rect(panel.x+8,panel.y+5,150,22),radar>0?$"Radar: {passiveRadarContacts.Count}":"Minimapa • brak radaru",small);
+            if(map<=0)return;
+            var square=new Rect(panel.x+25,panel.y+31,115,115);var color=GUI.color;
+            GUI.color=new Color(.12f,.22f,.28f,.9f);GUI.DrawTexture(square,Texture2D.whiteTexture);
+            var center=square.center;GUI.color=new Color(.2f,.95f,1f);GUI.DrawTexture(new Rect(center.x-3,center.y-3,6,6),Texture2D.whiteTexture);
+            GUI.color=new Color(1f,.35f,.3f);
+            foreach(var contact in passiveRadarContacts)
+            {
+                Vector2 offset=R3PassiveRadar.MapOffset(vehicle.transform.position,vehicle.transform.forward,contact,map);
+                if(offset.sqrMagnitude>1)continue;
+                var point=center+offset*(square.width*.5f-5);GUI.DrawTexture(new Rect(point.x-3,point.y-3,6,6),Texture2D.whiteTexture);
+            }
+            GUI.color=color;
+        }
         static string GameplayControlsHint()
         {
             var profile=R1ControlProfile.Current;
@@ -250,6 +280,7 @@ namespace RoboRougelike.R1
             try
             {
                 Draw(run,portraitReady,portraitGarage,portraitRoute,portraitSalvage);
+                DrawPassiveRadar(run);
                 if(run.Paused)LightStylePrototype.Instance?.DrawPausePanel();
                 TryPauseMouse(run,Event.current);
                 if(!sessionOverlay){TrySafeZoneInteractMouse(run,Event.current);TryRescueMouse(run,Event.current);}

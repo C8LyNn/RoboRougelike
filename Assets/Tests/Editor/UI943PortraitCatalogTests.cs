@@ -81,6 +81,8 @@ public sealed class UI943PortraitCatalogTests
         var support=entries.Single(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.SupportDroneGenerator);
         Assert.That(Field(support,"Name"),Is.EqualTo("Generator drona energetycznego"));
         Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.ShieldTurretGenerator),Is.EqualTo(1));
+        foreach(var kind in new[]{R3PartKind.CargoUplink,R3PartKind.RadarModule,R3PartKind.MinimapModule})
+            Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==kind),Is.EqualTo(1),$"Missing or duplicated {kind} catalog entry");
         Assert.That(entries.Select(e=>(Field(e,"Kind"),Field(e,"Weapon"),Field(e,"Group"))).Distinct().Count(),Is.EqualTo(entries.Length));
     }
     [Test] public void DifferentBonusEffectsWithTheSameIdDoNotShareAStack()
