@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 18, 35, 37 i 44. Ponowne sprawdzenie bezpiecznej strefy
+
+- Ukryty test wsadowy Unity 6000.3.14f1: **9 PASS, 0 FAIL** (`backlog_safezone_audit_1115.xml`, `.log` w katalogu `Prototypy`). Obejmuje energię, ładunki, odnowienia, częściową jednorazową naprawę, rzeczywisty przejazd po strefie, ratunek, dostęp do sprzedawcy, jednorazowy zakup oraz powrót i zapis/wczytanie. Nie zmieniano zasad jednorazowego odnowienia przy odblokowaniu strefy.
+- Wykonano testy automatyczne w edytorze, bez sterowania komputerem; ręczny playtest i pomiar wydajności: **NOT RUN**. Pozostałe ograniczenia #02/#14 i odbiór #44 pozostają otwarte.
+
 ### 13–14 i 44. Zapytania widoczności urządzeń w gęstej scenie
 
 - Drony i wieżyczki wykorzystują ponownie bufor zapytań widoczności i wybierają najbliższy cel lub przeszkodę bez sortowania całej listy. Gdy bufor jest za mały, wykonują pełne zapytanie, zamiast pomijać dalsze kolizje. Przy tej samej odległości ściany i celu ściana zasłania cel. Jest to ograniczenie pracy nad zapytaniami, a nie usunięcie limitów strzałów.
