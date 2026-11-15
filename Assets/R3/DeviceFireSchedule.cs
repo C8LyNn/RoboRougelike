@@ -62,7 +62,7 @@ namespace RoboRougelike.R3
             if(float.IsNaN(value)||float.IsInfinity(value)||value<0)
                 throw new ArgumentOutOfRangeException(name,"Time and interval must be finite and non-negative.");
         }
-        static BigInteger Ticks(float value)
+        internal static BigInteger Ticks(float value)
         {
             uint bits=new FloatBits{Value=value}.Bits & 0x7fffffffu;
             int exponent=(int)((bits>>23)&0xffu);

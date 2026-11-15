@@ -48,6 +48,18 @@ namespace RoboRougelike.R3
             return true;
         }
 
+        internal System.Numerics.BigInteger SpendUpTo(float unitCost,System.Numerics.BigInteger requested)
+        {
+            if(requested<=0||float.IsNaN(unitCost)||float.IsInfinity(unitCost)||unitCost<0)return System.Numerics.BigInteger.Zero;
+            if(unitCost==0)return requested;
+            var available=DeviceFireSchedule.Ticks(Current);
+            var cost=DeviceFireSchedule.Ticks(unitCost);
+            var count=System.Numerics.BigInteger.Min(requested,available/cost);
+            var remainder=available-count*cost;
+            Current=(float)((double)remainder*1.401298464324817e-45d);
+            return count;
+        }
+
         public void Advance(float seconds) => AdvanceWithMotion(seconds, false);
 
         public void AdvanceWithMotion(float seconds, bool stationary)

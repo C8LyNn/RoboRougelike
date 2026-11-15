@@ -19,17 +19,17 @@ namespace RoboRougelike.R3
         public float NextFireTime;
         // Guards a zero or sub-clock interval without changing normal cooldowns.
         internal float LastConventionalShotTime=float.NegativeInfinity;
-        DeviceFireSchedule basicCadence;
-        internal DeviceFireSchedule BasicCadence=>basicCadence??=new DeviceFireSchedule();
-        internal void StopBasicCadence()
-        {if(basicCadence!=null){basicCadence.Observe(Time.time,0,false);basicCadence.TakeAll();}}
+        DeviceFireSchedule conventionalCadence;
+        internal DeviceFireSchedule ConventionalCadence=>conventionalCadence??=new DeviceFireSchedule();
+        internal void StopConventionalCadence()
+        {if(conventionalCadence!=null){conventionalCadence.Observe(Time.time,0,false);conventionalCadence.TakeAll();}}
         public P12PipelineSafeDamageable Damageable;
         public P12_PipelineSafePlayerBlock Block;
         public Transform GunPivot, Muzzle;
         public bool Operational => Damageable != null && !Damageable.IsDead && Block != null && !Block.DetachedFromVehicle;
         internal event System.Action EligibilityChanged;
         void OnEnable()=>EligibilityChanged?.Invoke();
-        void OnDisable(){StopBasicCadence();EligibilityChanged?.Invoke();}
+        void OnDisable(){StopConventionalCadence();EligibilityChanged?.Invoke();}
         void OnTransformParentChanged()=>EligibilityChanged?.Invoke();
     }
 }

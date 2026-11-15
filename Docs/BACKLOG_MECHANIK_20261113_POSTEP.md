@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 44. Szybki ostrzał płatnych dział
+
+- Wspólny harmonogram strzałów obejmuje również karabin automatyczny i ciężką armatę. Każdy zlecony podstawowy strzał zużywa energię zgodnie z tierem; gdy energii brakuje, system opłaca tylko dostępną liczbę, a czas bez energii nie tworzy salwy na później. Double Shot nie pobiera drugiej opłaty. Najpierw szansę na pierwszy strzał otrzymuje każda gotowa kopia broni; późniejsze strzały są rozliczane w kolejności kopii.
+- Unity 6000.3.14f1: `weapon_paid_cadence_before.xml` — **2 FAIL**, obie bronie przy energii na trzy strzały oddawały jeden. `weapon_paid_cadence_after.xml` — **12 PASS** po zmianie. Dodatkowy przebieg `weapon_paid_cadence_final.xml` — **10 PASS, 1 FAIL** wskutek asercji NUnit porównującej `BigInteger` z zerem innego typu; poprawiono asercję. `weapon_paid_cadence_verified.xml` — **11 PASS, 0 FAIL**, w tym fizyczna broń automatyczna i ciężka, koszt i brak gromadzenia strzałów bez energii, Double Shot oraz obliczenie bardzo dużej liczby opłaconych strzałów bez tworzenia ich wszystkich.
+- Testy używają kontrolowanych wywołań i sceny Unity, nie są ręcznym playtestem ani pomiarem FPS. Rozliczenie dalszych strzałów po pierwszej salwie może preferować wcześniejszą kopię przy niedoborze energii. Stan energii nadal jest przechowywany jako `float`, co przy skrajnych wartościach ogranicza precyzję. Strzelba, railgun i wyrzutnia rakiet nadal wymagają osobnego rozliczenia salw, magazynków i zaległego czasu; #02, #14 i #44 pozostają otwarte.
+
 ### 02, 14 i 44. Szybki ostrzał działa podstawowego
 
 - Działo podstawowe podczas przytrzymania spustu zachowuje wszystkie strzały przypadające między kolejnymi krokami czasu. Każda zamontowana kopia prowadzi własny harmonogram. Nadmiar jest tworzony stopniowo przez istniejącą kolejkę, a dla każdego podstawowego pocisku osobno naliczany jest nierekurencyjny Double Shot. Działo podstawowe nadal nie zużywa energii. Zwolnienie spustu nie gromadzi kolejnych strzałów; wspólnie zlecone pociski są zabezpieczone przed wzajemnymi kolizjami.

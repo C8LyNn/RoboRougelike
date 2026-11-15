@@ -121,6 +121,8 @@ namespace RoboRougelike.R3
         void FixedUpdate(){Refresh();var body=GetComponent<Rigidbody>();bool stopped=assembly!=null&&body!=null&&body.linearVelocity.sqrMagnitude<.0025f&&body.angularVelocity.sqrMagnitude<.01f;state.AdvanceWithMotion(Time.fixedDeltaTime,stopped);if(assembly!=null)assembly.Model.Charges.Advance(Time.fixedDeltaTime,chargeRegeneration);}
         public bool CanSpend(float amount){Refresh();return !float.IsNaN(amount)&&!float.IsInfinity(amount)&&amount>=0&&amount<=state.Current;}
         public bool TrySpend(float amount){Refresh();return state.TrySpend(amount);}
+        internal System.Numerics.BigInteger SpendUpTo(float unitCost,System.Numerics.BigInteger requested)
+        {Refresh();return state.SpendUpTo(unitCost,requested);}
         public bool TryConsume(float amount)=>TrySpend(amount);
         public bool TryConsumeEnergy(float amount)=>TrySpend(amount);
         public bool TrySpendEnergy(float amount)=>TrySpend(amount);

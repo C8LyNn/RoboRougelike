@@ -358,6 +358,51 @@ public sealed class BacklogProjectileTierPhysicsTests
         finally{foreach(var target in targets)if(target!=null)Object.Destroy(target.gameObject);foreach(var dummy in dummies)if(dummy!=null){dummy.SetActive(false);Object.Destroy(dummy);}if(vehicle!=null)Object.Destroy(vehicle.gameObject);}
         yield return null;
     }
+    [UnityTest] public IEnumerator RapidAutomaticChargesEveryAffordableShot()=>RapidPaidConventional(R4WeaponKind.Automatic);
+    [UnityTest] public IEnumerator RapidHeavyChargesEveryAffordableShot()=>RapidPaidConventional(R4WeaponKind.Heavy);
+    [UnityTest] public IEnumerator RapidAutomaticDoubleShotCostsOnlyForPrimaries()=>RapidPaidConventional(R4WeaponKind.Automatic,true);
+    IEnumerator RapidPaidConventional(R4WeaponKind weapon,bool doubleShot=false)
+    {
+        var gun=Build(weapon,out var bank,doubleShot);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var controller=assembly.GetComponent<P12PipelineSafeTankController>();controller.SetRunModifiers(1,.01f,1);controller.enabled=false;
+        var muzzle=new GameObject("Paid cadence muzzle").transform;muzzle.SetParent(gun.transform,false);
+        muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;gun.GunPivot=muzzle;gun.Muzzle=muzzle;
+        AllowOneFrameForConventionalCollisionFixture(assembly);Physics.SyncTransforms();
+        int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),w=>w==weapon);Assert.That(slot,Is.GreaterThanOrEqualTo(0));
+        void Hold()=>assembly.SetSlotTriggers(slot==0,slot==1,slot==2,slot==3);
+        R4ProjectileOrigin[] Shots()=>Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==gun.Id).ToArray();
+        try
+        {
+            Assert.That(assembly.ClearProjectilePath(gun),Is.True);float interval=controller.WeaponInterval(weapon);
+            Hold();assembly.FireSlot(slot);float start=Time.time;Assert.That(Shots().Length,Is.EqualTo(doubleShot?2:1));
+            foreach(var shot in Shots()){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+            yield return new WaitForFixedUpdate();gun.Muzzle=muzzle;
+            Assert.That(Time.time-start,Is.GreaterThan(interval*4));
+            float cost=VehicleEnergyCosts.ConventionalShot(weapon)*R3VehicleModel.TierActivationCost(gun.Tier);
+            assembly.Model.Energy.Restore(cost*3);Hold();assembly.FireSlot(slot);
+            int expected=doubleShot?6:3;
+            for(int i=0;i<20&&Shots().Length<expected;i++)yield return null;
+            Assert.That(Shots().Length,Is.EqualTo(expected),"All affordable elapsed shots must be produced without exceeding available energy.");
+            Assert.That(bank.Current,Is.EqualTo(0).Within(.001),"Every primary shot must pay its own cost.");
+            if(weapon==R4WeaponKind.Automatic&&!doubleShot)
+            {
+                foreach(var shot in Shots()){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+                for(int i=0;i<2;i++)
+                {
+                    yield return new WaitForFixedUpdate();gun.Muzzle=muzzle;assembly.Model.Energy.Restore(0);
+                    Hold();assembly.FireSlot(slot);Assert.That(Shots().Length,Is.Zero,"An empty bank cannot fire.");
+                }
+                assembly.Model.Energy.Restore(cost*2);Hold();assembly.FireSlot(slot);
+                Assert.That(Shots().Length,Is.EqualTo(1),"Time spent without energy must not be banked for later.");
+                Assert.That(bank.Current,Is.EqualTo(cost).Within(.001));
+            }
+        }
+        finally
+        {
+            foreach(var shot in Shots())if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+            Object.Destroy(assembly.gameObject);
+        }
+    }
     [UnityTest] public IEnumerator TwoBasicGunsKeepSeparateRapidCadences()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(2000);

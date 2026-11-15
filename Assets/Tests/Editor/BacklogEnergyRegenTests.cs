@@ -10,6 +10,19 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogEnergyRegenTests
 {
+    [Test] public void BulkShotCostHandlesExactEnergyAndExtremelyLargeCounts()
+    {
+        var state=new VehicleEnergyState();
+        var method=typeof(VehicleEnergyState).GetMethod("SpendUpTo",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        System.Numerics.BigInteger Spend(float cost,System.Numerics.BigInteger count)=>(System.Numerics.BigInteger)method.Invoke(state,new object[]{cost,count});
+        state.Restore(8);Assert.That(Spend(2.5f,10),Is.EqualTo(new System.Numerics.BigInteger(3)));
+        Assert.That(state.Current,Is.EqualTo(.5f));Assert.That(Spend(2.5f,10),Is.EqualTo(System.Numerics.BigInteger.Zero));
+        Assert.That(Spend(0,10),Is.EqualTo(new System.Numerics.BigInteger(10)));Assert.That(state.Current,Is.EqualTo(.5f));
+        state.SetResourceMultipliers(float.MaxValue,1);state.Refresh(0,0,true);state.Fill();
+        var available=((System.Numerics.BigInteger.One<<24)-1)<<253;
+        Assert.That(Spend(float.Epsilon,available+10),Is.EqualTo(available));Assert.That(state.Current,Is.Zero);
+    }
     [Test] public void OpposingLargeAdditiveBonusesDoNotEraseSmallerBonus()
     {
         var design=new R3VehicleDesign();design.Parts.Add(new R3PartState(default,R3PartKind.Core));
