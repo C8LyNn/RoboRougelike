@@ -23,6 +23,7 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Unity 6000.3.14f1: `continuous_scopes_first.xml` i `.log`: **11 PASS, 0 FAIL** dla nowych zakresów, fuzji i wcześniejszych premii; `continuous_scopes_combined.xml`: **4 PASS** dla łączenia z premią energetyczną, globalną i `more`; `continuous_scopes_shields.xml`: **6 PASS** dla broni ciągłych i ochrony kopułą. Przed zmianą `continuous_scopes_before.xml`: **1 FAIL** z braku zakresu. Scenariusz nowych premii wywołuje istniejące metody trafienia wiązki i piły oraz krok aury w kontrolowanej scenie; nie jest ręcznym celowaniem ani playtestem.
 - Prototypowe wartości i wpływ trzech nowych nagród na losowanie wymagają oceny w grze. Punkt 13 pozostaje otwarty do pełnej weryfikacji wszystkich wymaganych zakresów.
 - `weapon_rewards_flow.xml` i `.log`: **3 PASS, 0 FAIL**. Wszystkie siedem nowych nagród pojawiło się w osobnych symulacjach rzeczywistego wyboru trzech ofert i można je było zamienić na fizyczne moduły z właściwym zakresem; sprawdzono również istniejące ponowne losowanie koszyków. Test tworzy oferty i magazyn przez API, nie rozgrywa siedmiu pełnych wypraw.
+- `weapon_scope_run_save.xml` i `.log`: **2 PASS, 0 FAIL**. Rzeczywisty zapis i wczytanie wyprawy w izolowanym pliku testowym zachowały siedem nowych modułów, ich identyfikatory, zakresy, tiery i HP; zamontowana premia ciężkiego działa działała po wczytaniu. Test przygotował moduły przez API i nie obejmuje ręcznej rozgrywki.
 
 ### 10–13, 30–31 i 44. Rozróżnianie stosów premii
 
