@@ -3,6 +3,7 @@ using System.Collections;
 using System.Reflection;
 using NUnit.Framework;
 using RoboRougelike.R3;
+using RoboRougelike.R4;
 using RoboRougelike.R1;
 using RoboRougelike.R6;
 using UnityEditor.SceneManagement;
@@ -1700,6 +1701,30 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(devices.TryActivate(),Is.EqualTo(2));Assert.That(devices.TryActivateRapidFire(),Is.EqualTo(2));
         Assert.That(effects.EffectiveStats.Damage==float.MaxValue&&effects.EffectiveStats.FireInterval==0,Is.True,
             $"Damage={effects.EffectiveStats.Damage}; interval={effects.EffectiveStats.FireInterval}.");
+    }
+    [UnityTest] public IEnumerator LargeDoubleShotOverdriveContributionReachesActualProjectileQueue()
+    {
+        Assert.That(run.GaragePurchase(R3PartKind.DoubleShotOverdrive),Is.True);
+        var part=run.VehicleModel.Inventory.Last(p=>p.Kind==R3PartKind.DoubleShotOverdrive);part.Tier=2;
+        var cells=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+        Assert.That(run.GarageMount(part.Id,cells.First(c=>run.VehicleModel.OwnedPlacementError(part.Id,c,default)==null)),Is.True);
+        run.VehicleModel.Economy.DoubleShotOverdriveExtraPerUnit=int.MaxValue;
+        run.VehicleModel.Economy.DoubleShotChancePerUnit=0;
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        Assert.That(run.Player.GetComponent<R3OffensiveDevices>().TryActivateDoubleShotOverdrive(),Is.EqualTo(1));
+        var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Basic);
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var queue=assembly.gameObject.AddComponent<R3ConventionalProjectileQueue>();
+        typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(gun),Is.True);
+        assembly.FireSlot(System.Array.FindIndex(assembly.Model.GetWeaponSlots(),w=>w==R4WeaponKind.Basic));
+        var batches=(System.Collections.IEnumerable)typeof(R3ConventionalProjectileQueue).GetField("batches",flags).GetValue(queue);
+        var iterator=batches.GetEnumerator();Assert.That(iterator.MoveNext(),Is.True);
+        var remaining=(System.Numerics.BigInteger)iterator.Current.GetType().GetField("Remaining").GetValue(iterator.Current);
+        Assert.That(remaining,Is.EqualTo((System.Numerics.BigInteger)int.MaxValue*2-1));
+        yield return null;
     }
     [UnityTest] public IEnumerator DoubleShotOverdriveAddsOneProjectileToPassiveShotWithoutRecursion()
     {

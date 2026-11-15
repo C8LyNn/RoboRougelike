@@ -65,7 +65,7 @@ namespace RoboRougelike.WeaponIntegration
             var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>(),shot.InitialVelocity,shot.Spec.Range,shot.Spec.Radius))return false;
             var created=new System.Collections.Generic.List<GameObject>();
-            int extras=!deferExtras&&assembly!=null?assembly.RollDoubleShotExtras(int.MaxValue):0;
+            var extras=!deferExtras&&assembly!=null?assembly.RollDoubleShotExtrasExact():System.Numerics.BigInteger.Zero;
             try
             {
                 CreateShot(shot,created);
@@ -77,17 +77,19 @@ namespace RoboRougelike.WeaponIntegration
             catch{foreach(var shell in created)if(shell!=null){shell.SetActive(false);Destroy(shell);}return false;}
         }
         internal void FireAdditional(int count)
+            =>FireAdditionalExact(count);
+        internal void FireAdditionalExact(System.Numerics.BigInteger count)
         {
             if(!Device.Available||deferredShot.OwnerRoot==null)return;
             if(count>0)QueueAdditional(deferredShot,count);
         }
-        void QueueAdditional(RailgunShot shot,int count)
+        void QueueAdditional(RailgunShot shot,System.Numerics.BigInteger count)
         {
             var queue=Device.Owner.GetComponent<R3ConventionalProjectileQueue>();
             if(queue==null)queue=Device.Owner.gameObject.AddComponent<R3ConventionalProjectileQueue>();
             float scale=R3MountedBonusEffects.SafeDamageProduct(tank!=null?tank.PackageRailgunDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier));
             var renderer=GetComponent<Renderer>();
-            queue.EnqueueRailgun(shot,count,scale,renderer!=null?renderer.sharedMaterial:null,State.Id);
+            queue.EnqueueRailgunExact(shot,count,scale,renderer!=null?renderer.sharedMaterial:null,State.Id);
         }
         void CreateShot(RailgunShot shot,System.Collections.Generic.List<GameObject> created)
         {

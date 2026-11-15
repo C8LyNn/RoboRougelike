@@ -26,12 +26,14 @@ namespace RoboRougelike.R3
         public string RapidFireStatus=>Status(rapidFire);
         public string DoubleShotOverdriveStatus=>Status(projectileBoost);
         public int AdditionalProjectileUnits
+            =>(int)System.Numerics.BigInteger.Min(int.MaxValue,AdditionalProjectileUnitsExact);
+        internal System.Numerics.BigInteger AdditionalProjectileUnitsExact
         {
             get
             {
                 if(assembly==null||projectileBoost.Copies.Count==0||Time.time>=projectileBoost.EndsAt)return 0;
                 long units=0;foreach(var part in projectileBoost.Copies)if(Ready(part,projectileBoost.Kind))units+=R3VehicleModel.TierEffectUnits(part.Tier);
-                return (int)System.Math.Min(int.MaxValue,units*System.Math.Max(0,assembly.Model.Economy.DoubleShotOverdriveExtraPerUnit));
+                return (System.Numerics.BigInteger)units*System.Math.Max(0,assembly.Model.Economy.DoubleShotOverdriveExtraPerUnit);
             }
         }
 

@@ -617,12 +617,14 @@ public float CurrentForwardSpeed =>
         public Collider FirePrimaryFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId)
         { return FireFromInternal(barrel,kind,partId,0,null); }
         public void FireAdditionalFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,Collider primary,int count)
+            =>FireAdditionalExact(barrel,kind,partId,primary,count);
+        internal void FireAdditionalExact(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,Collider primary,System.Numerics.BigInteger count)
         {
             if(primary==null||count<=0)return;
             var shell=primary.GetComponent<P17PhysicalShell>();if(shell==null||!shell.IsActiveProjectile)return;
             var queue=GetComponent<RoboRougelike.R3.R3ConventionalProjectileQueue>();
             if(queue==null)queue=gameObject.AddComponent<RoboRougelike.R3.R3ConventionalProjectileQueue>();
-            queue.Enqueue(shell,count);
+            queue.EnqueueExact(shell,count);
         }
         private Collider FireFromInternal(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,int extraShots,Collider existingSibling)
         {

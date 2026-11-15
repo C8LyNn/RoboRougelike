@@ -56,6 +56,10 @@ public sealed class BacklogWeaponTierPhysicsTests
             Random.InitState(913);var actual=new int[64];
             for(int i=0;i<actual.Length;i++)actual[i]=(int)roll.Invoke(snapshot,new object[]{int.MaxValue});
             Assert.That(actual,Is.EqualTo(expected));Assert.That(actual.Distinct().Count(),Is.EqualTo(2),"Fractional chance is rolled independently per pellet.");
+            var exact=snapshot.GetType().GetMethod("RollExact");Assert.That(exact,Is.Not.Null);
+            Random.InitState(913);
+            for(int i=0;i<expected.Length;i++)
+                Assert.That((System.Numerics.BigInteger)exact.Invoke(snapshot,null),Is.EqualTo(new System.Numerics.BigInteger(expected[i])),"The unbounded production roll must preserve ordinary random results.");
             passive.gameObject.SetActive(false);
             var inactive=capture.Invoke(assembly,null);Assert.That((int)roll.Invoke(inactive,new object[]{int.MaxValue}),Is.Zero);
             model.Economy.DoubleShotChancePerUnit=1f;
@@ -91,6 +95,40 @@ public sealed class BacklogWeaponTierPhysicsTests
         foreach(var tag in Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId=="fair-A"||p.PartId=="fair-B"))
         {tag.gameObject.SetActive(false);Object.Destroy(tag.gameObject);}
         Object.Destroy(owner);yield return null;
+    }
+    [UnityTest] public IEnumerator QueuedRocketBatchesShareEmissionWithoutStarvation()
+    {
+        var owner=new GameObject("Fair rocket queue owner");var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var templates=new GameObject[2];
+        for(int i=0;i<2;i++)
+        {
+            templates[i]=new GameObject("Fair rocket template");templates[i].SetActive(false);
+            templates[i].AddComponent<R4ProjectileOrigin>().PartId="fair-rocket-"+i;
+            templates[i].AddComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+        }
+        var queue=owner.AddComponent<RoboRougelike.WeaponIntegration.RRLRocketVolleyQueue>();
+        queue.GetType().GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        var enqueue=queue.GetType().GetMethod("Enqueue",flags);var drain=queue.GetType().GetMethod("FixedUpdate",flags);
+        var spec=new RoboRougelike.Mechanics.Rockets.RocketConfig().Snapshot();
+        int Count(int i)=>Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId=="fair-rocket-"+i);
+        try
+        {
+            for(int i=0;i<2;i++)enqueue.Invoke(queue,new object[]{i==0?4:2,templates[i].GetComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>(),spec,body,owner.transform,owner,
+                new Vector3(1000+i*5,1000,1000),Quaternion.identity,Vector3.forward,null});
+            Assert.That(Count(0),Is.EqualTo(2));Assert.That(Count(1),Is.Zero);
+            drain.Invoke(queue,null);
+            Assert.That(Count(1),Is.EqualTo(1),"A later launcher must receive a turn before a large earlier batch finishes.");
+            for(int i=0;i<3;i++)drain.Invoke(queue,null);
+            Assert.That(Count(0),Is.EqualTo(4));Assert.That(Count(1),Is.EqualTo(2));
+        }
+        finally
+        {
+            foreach(var shot in Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId!=null&&p.PartId.StartsWith("fair-rocket-")))
+                if(shot!=null)Object.Destroy(shot.gameObject);
+            foreach(var template in templates)Object.Destroy(template);Object.Destroy(owner);
+        }
+        yield return null;
     }
     [UnityTest] public IEnumerator UnevenShotgunBonusesEmitInOrderWithoutLosingDirections()
     {

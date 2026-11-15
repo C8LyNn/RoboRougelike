@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14, 20, 42 i 44. Liczba bonusowych pocisków i kolejność wyrzutni
+
+- Wyliczenie dodatkowych pocisków Double Shot i Overdrive oraz liczniki oczekujących salw obsługują wartości powyżej zakresu `int`. Dotyczy to dział, strzelb, railgunów i rakiet, w tym osobnych liczników bonusów każdej śruciny. Zwykłe losowanie ułamkowej szansy, koszt pojedynczego strzału i stopniowe tworzenie fizycznych pocisków pozostają. Kolejka rakiet daje teraz kolejnym oczekującym wyrzutniom tury, zamiast czekać na pełne opróżnienie pierwszej salwy. Starsze ograniczone metody pozostają dla zgodności wywołań, ale właściwa ścieżka broni używa pełnego licznika.
+- Unity 6000.3.14f1: `exact_bonus_before.xml` — **4 FAIL**, wartości powyżej `int.MaxValue` były obcinane w czterech rodzajach broni. `rocket_fair_before.xml` — **1 FAIL**, kolejna wyrzutnia czekała na zakończenie pierwszej salwy. `exact_bonus_first.xml` — **10 PASS**: liczniki czterech rodzajów, kolejność śrucin i poprzedni przydział; `exact_bonus_regression.xml` — **11 PASS**: kolejność wyrzutni, aktywny bonus, zwykłe trafienia, amunicja, energia i kolejki podczas ratunku; `exact_bonus_multigun.xml` — **6 PASS**: kopie broni, zwykłe losowanie, śruciny w porcjach i rakiety po utracie wyrzutni.
+- Skrajne wartości sprawdzono przez stan kolejki i pierwsze faktycznie utworzone pociski, nie przez stworzenie miliardów obiektów. Nie mierzono FPS ani zużycia pamięci przy długotrwałym przeciążeniu; duże kolejki mogą pozostawać aktywne bardzo długo, a przy usunięciu właściciela są czyszczone. Pociski z opóźnionej salwy mogą inaczej trafić ruchomy cel. Limit 64 **podstawowych** śrucin nadal obowiązuje; #02, #14 i odbiór #44 pozostają otwarte.
+
 ### 14 i 44. Długi czas skanera struktury
 
 - Ustawiony skończony czas odnowienia i wyświetlania wyników skanera nie jest już skracany do 3600 sekund. Wewnętrzny zegar zbiera upływ czasu osobno, dzięki czemu małe kroki klatek nie giną przy odejmowaniu od dużej wartości. Ujemne i niepoprawne wartości nadal przechodzą przez wcześniejsze zabezpieczenia. Domyślne parametry pozostają takie same.

@@ -303,22 +303,22 @@ namespace RoboRougelike.R3
             public Collider Primary;
             public RoboRougelike.WeaponIntegration.RRLRailgunBinding Rail;
             public RoboRougelike.WeaponIntegration.RRLShotgunBinding Shotgun;
-            public int Requested;
+            public System.Numerics.BigInteger Requested;
         }
         struct PendingRocketShot
         {
             public RoboRougelike.WeaponIntegration.RRLRocketBinding Binding;
-            public int Requested;
+            public System.Numerics.BigInteger Requested;
         }
         internal readonly struct DoubleShotRoll
         {
-            readonly int active;
+            readonly System.Numerics.BigInteger active;
             readonly double chance;
-            public DoubleShotRoll(int activeUnits,double passiveChance){active=activeUnits;chance=passiveChance;}
+            public DoubleShotRoll(System.Numerics.BigInteger activeUnits,double passiveChance){active=activeUnits;chance=passiveChance;}
             public int Roll(int available)
             {
                 if(available<=0)return 0;
-                int extra=Mathf.Min(available,active);available-=extra;
+                int extra=(int)System.Numerics.BigInteger.Min(available,active);available-=extra;
                 if(available<=0||chance<=0)return extra;
                 double whole=System.Math.Floor(chance);
                 int guaranteed=(int)System.Math.Min(available,whole);
@@ -326,11 +326,20 @@ namespace RoboRougelike.R3
                 if(guaranteed<available&&fractional>0&&UnityEngine.Random.value<fractional)guaranteed++;
                 return extra+guaranteed;
             }
+            public System.Numerics.BigInteger RollExact()
+            {
+                if(chance<=0)return active;
+                double whole=System.Math.Floor(chance);
+                var extra=active+new System.Numerics.BigInteger(whole);
+                double fractional=chance-whole;
+                if(fractional>0&&UnityEngine.Random.value<fractional)extra+=System.Numerics.BigInteger.One;
+                return extra;
+            }
         }
         internal DoubleShotRoll CaptureDoubleShotRoll()
         {
             if(Model==null)return default;
-            int active=GetComponent<R3OffensiveDevices>()?.AdditionalProjectileUnits??0;
+            var active=GetComponent<R3OffensiveDevices>()?.AdditionalProjectileUnitsExact??System.Numerics.BigInteger.Zero;
             float configured=Model.Economy.DoubleShotChancePerUnit;
             if(float.IsNaN(configured)||float.IsInfinity(configured)||configured<=0)return new DoubleShotRoll(active,0);
             long units=0;
@@ -341,6 +350,7 @@ namespace RoboRougelike.R3
             return new DoubleShotRoll(active,(double)configured*units);
         }
         public int RollDoubleShotExtras(int available)=>available<=0?0:CaptureDoubleShotRoll().Roll(available);
+        internal System.Numerics.BigInteger RollDoubleShotExtrasExact()=>CaptureDoubleShotRoll().RollExact();
         public void FireSlot(int slot)
         {
             var run=RoboRougelike.R1.R1RunController.Instance;
@@ -377,7 +387,7 @@ namespace RoboRougelike.R3
                         if(rocket!=null&&rocket.FirePrimary())
                         {
                             part.NextFireTime=rocket.State.DeviceReadyAt;
-                            int requested=RollDoubleShotExtras(int.MaxValue);
+                            var requested=RollDoubleShotExtrasExact();
                             if(requested>0)
                             {
                                 if(pendingRockets==null)pendingRockets=new List<PendingRocketShot>();
@@ -392,7 +402,7 @@ namespace RoboRougelike.R3
                         if(rail!=null&&rail.FirePrimary())
                         {
                             part.NextFireTime=rail.State.DeviceReadyAt;
-                            int requested=RollDoubleShotExtras(int.MaxValue);
+                            var requested=RollDoubleShotExtrasExact();
                             if(requested>0)
                             {
                                 if(pending==null)pending=new List<PendingConventionalShot>();
@@ -410,7 +420,7 @@ namespace RoboRougelike.R3
                     var primary=controller.FirePrimaryFrom(firedMuzzle,part.Weapon,part.Id);
                     if(primary!=null)
                     {
-                        int requested=RollDoubleShotExtras(int.MaxValue);
+                        var requested=RollDoubleShotExtrasExact();
                         if(requested>0)
                         {
                             if(pending==null)pending=new List<PendingConventionalShot>();
@@ -421,13 +431,13 @@ namespace RoboRougelike.R3
                     if(art!=null){art.AdvanceMuzzle();part.Muzzle=art.Muzzle;}
                 }
             if(pendingRockets!=null)
-                foreach(var shot in pendingRockets)shot.Binding.FireAdditional(shot.Requested);
+                foreach(var shot in pendingRockets)shot.Binding.FireAdditionalExact(shot.Requested);
             if(pending==null)return;
             foreach(var shot in pending)
                 if(shot.Shotgun!=null)shot.Shotgun.FireAdditional();
-                else if(shot.Rail!=null)shot.Rail.FireAdditional(shot.Requested);
+                else if(shot.Rail!=null)shot.Rail.FireAdditionalExact(shot.Requested);
                 else
-                    controller.FireAdditionalFrom(shot.Muzzle,shot.Kind,shot.PartId,shot.Primary,shot.Requested);
+                    controller.FireAdditionalExact(shot.Muzzle,shot.Kind,shot.PartId,shot.Primary,shot.Requested);
         }
 
         public static R1VehicleState Build(R3VehicleModel model, R1RunStats stats, R3VisualPalette palette,

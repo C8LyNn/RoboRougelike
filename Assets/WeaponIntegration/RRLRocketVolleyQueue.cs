@@ -14,7 +14,7 @@ namespace RoboRougelike.WeaponIntegration
     {
         sealed class Batch
         {
-            public int Remaining;
+            public System.Numerics.BigInteger Remaining;
             public RocketProjectile Template;
             public RocketSpec Spec;
             public Rigidbody Body;
@@ -30,6 +30,9 @@ namespace RoboRougelike.WeaponIntegration
         static long budgetStart;
 
         internal void Enqueue(int count,RocketProjectile template,RocketSpec spec,Rigidbody body,Transform owner,
+            GameObject attacker,Vector3 position,Quaternion rotation,Vector3 direction,Action<RocketProjectile> retirement)
+            =>EnqueueExact(count,template,spec,body,owner,attacker,position,rotation,direction,retirement);
+        internal void EnqueueExact(System.Numerics.BigInteger count,RocketProjectile template,RocketSpec spec,Rigidbody body,Transform owner,
             GameObject attacker,Vector3 position,Quaternion rotation,Vector3 direction,Action<RocketProjectile> retirement)
         {
             if(count<=0)return;
@@ -67,7 +70,9 @@ namespace RoboRougelike.WeaponIntegration
                         throw new InvalidOperationException("A queued rocket could not be initialized.");
                     if(!rocket.gameObject.activeSelf)rocket.gameObject.SetActive(true);
                     batch.Remaining--;
-                    if(batch.Remaining==0){batches.Dequeue();Object.Destroy(batch.Template.gameObject);}
+                    batches.Dequeue();
+                    if(batch.Remaining==0)Object.Destroy(batch.Template.gameObject);
+                    else batches.Enqueue(batch); // Give other launchers a turn.
                 }
                 catch(Exception e){if(rocket!=null)Object.Destroy(rocket.gameObject);UnityEngine.Debug.LogException(e,this);break;}
             }

@@ -17,7 +17,8 @@ namespace RoboRougelike.R3
     {
         struct Entry
         {
-            public int Pellet,Remaining,Next;
+            public int Pellet,Next;
+            public BigInteger Remaining;
         }
         // Only directions with pending shots need a node. Pellet stores the
         // original index so callers still retrieve the correct physical shot.
@@ -27,11 +28,20 @@ namespace RoboRougelike.R3
         public ShotgunBonusSchedule(IReadOnlyList<int> requested)
         {
             if(requested==null)throw new ArgumentNullException(nameof(requested));
-            for(int i=0;i<requested.Count;i++)
+            Initialize(requested.Count,i=>requested[i]);
+        }
+        public ShotgunBonusSchedule(IReadOnlyList<BigInteger> requested)
+        {
+            if(requested==null)throw new ArgumentNullException(nameof(requested));
+            Initialize(requested.Count,i=>requested[i]);
+        }
+        void Initialize(int count,Func<int,BigInteger> get)
+        {
+            for(int i=0;i<count;i++)
             {
-                int count=requested[i];if(count<0)throw new ArgumentException("A bonus count cannot be negative.",nameof(requested));
-                if(count==0)continue;
-                entries.Add(new Entry{Pellet=i,Remaining=count,Next=entries.Count+1});
+                var remaining=get(i);if(remaining<0)throw new ArgumentException("A bonus count cannot be negative.");
+                if(remaining.IsZero)continue;
+                entries.Add(new Entry{Pellet=i,Remaining=remaining,Next=entries.Count+1});
             }
             if(entries.Count>0)
             {
@@ -71,7 +81,7 @@ namespace RoboRougelike.R3
         }
         sealed class Batch
         {
-            public int Remaining;
+            public BigInteger Remaining;
             public P17PhysicalShell.ConventionalSnapshot Shot;
             public bool IsRailgun;
             public RailgunShot RailShot;
@@ -92,6 +102,8 @@ namespace RoboRougelike.R3
         static long budgetStart;
 
         internal void Enqueue(P17PhysicalShell primary,int count)
+            =>EnqueueExact(primary,count);
+        internal void EnqueueExact(P17PhysicalShell primary,BigInteger count)
         {
             if(count<=0)return;
             if(primary==null)throw new ArgumentNullException(nameof(primary));
@@ -101,6 +113,8 @@ namespace RoboRougelike.R3
             batches.Enqueue(batch);Drain();
         }
         internal void EnqueueRailgun(RailgunShot shot,int count,float damageScale,Material material,string partId)
+            =>EnqueueRailgunExact(shot,count,damageScale,material,partId);
+        internal void EnqueueRailgunExact(RailgunShot shot,BigInteger count,float damageScale,Material material,string partId)
         {
             if(count<=0)return;
             if(shot.OwnerRoot==null||shot.OwnerBody==null)throw new ArgumentException("A rail volley needs an owner and body.",nameof(shot));
@@ -108,6 +122,12 @@ namespace RoboRougelike.R3
             Drain();
         }
         internal void EnqueueShotgun(IReadOnlyList<GameObject> primaries,IReadOnlyList<int> requested)
+        {
+            if(requested==null)throw new ArgumentNullException(nameof(requested));
+            var exact=new BigInteger[requested.Count];for(int i=0;i<exact.Length;i++)exact[i]=requested[i];
+            EnqueueShotgunExact(primaries,exact);
+        }
+        internal void EnqueueShotgunExact(IReadOnlyList<GameObject> primaries,IReadOnlyList<BigInteger> requested)
         {
             if(primaries==null||requested==null||primaries.Count==0||primaries.Count!=requested.Count)
                 throw new ArgumentException("Shotgun pellets and bonus requests must match.");

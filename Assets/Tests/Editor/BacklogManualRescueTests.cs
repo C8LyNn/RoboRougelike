@@ -228,12 +228,12 @@ public sealed class BacklogManualRescueTests
         typeof(R3ConventionalProjectileQueue).GetMethod("EnqueueRailgun",flags).Invoke(queue,new object[]{shot,2,1f,null,"queued-rescue-rail"});
         var batches=(System.Collections.IEnumerable)typeof(R3ConventionalProjectileQueue).GetField("batches",flags).GetValue(queue);
         var iterator=batches.GetEnumerator();Assert.That(iterator.MoveNext(),Is.True);var batch=iterator.Current;
-        var remaining=batch.GetType().GetField("Remaining");Assert.That((int)remaining.GetValue(batch),Is.EqualTo(1));
+        var remaining=batch.GetType().GetField("Remaining");Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.One));
         Assert.That(run.TryEmergencyRescue(),Is.True);
         var drain=typeof(R3ConventionalProjectileQueue).GetMethod("FixedUpdate",flags);drain.Invoke(queue,null);
-        Assert.That((int)remaining.GetValue(batch),Is.EqualTo(1),"Queued rail shots must wait during rescue.");
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.One),"Queued rail shots must wait during rescue.");
         float deadline=Time.realtimeSinceStartup+5;while(run.EmergencyRescueAttackBlocked&&Time.realtimeSinceStartup<deadline)yield return null;
-        Assert.That(run.EmergencyRescueAttackBlocked,Is.False);drain.Invoke(queue,null);Assert.That((int)remaining.GetValue(batch),Is.Zero);
+        Assert.That(run.EmergencyRescueAttackBlocked,Is.False);drain.Invoke(queue,null);Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.Zero));
         foreach(var tag in Object.FindObjectsByType<RoboRougelike.R4.R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId=="queued-rescue-rail"))
         {tag.gameObject.SetActive(false);Object.Destroy(tag.gameObject);}
     }
@@ -251,13 +251,13 @@ public sealed class BacklogManualRescueTests
         typeof(R3ConventionalProjectileQueue).GetMethod("Enqueue",flags).Invoke(queue,new object[]{primary,2});
         var batches=(System.Collections.IEnumerable)typeof(R3ConventionalProjectileQueue).GetField("batches",flags).GetValue(queue);
         var iterator=batches.GetEnumerator();Assert.That(iterator.MoveNext(),Is.True);var batch=iterator.Current;
-        var remaining=batch.GetType().GetField("Remaining");Assert.That((int)remaining.GetValue(batch),Is.EqualTo(1));
+        var remaining=batch.GetType().GetField("Remaining");Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.One));
         Assert.That(run.TryEmergencyRescue(),Is.True);
         var drain=typeof(R3ConventionalProjectileQueue).GetMethod("FixedUpdate",flags);drain.Invoke(queue,null);
-        Assert.That((int)remaining.GetValue(batch),Is.EqualTo(1),"Queued offensive shells must wait during rescue.");
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.One),"Queued offensive shells must wait during rescue.");
         float deadline=Time.realtimeSinceStartup+5;while(run.EmergencyRescueAttackBlocked&&Time.realtimeSinceStartup<deadline)yield return null;
         Assert.That(run.EmergencyRescueAttackBlocked,Is.False);drain.Invoke(queue,null);
-        Assert.That((int)remaining.GetValue(batch),Is.Zero);
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.Zero));
         foreach(var origin in Object.FindObjectsByType<RoboRougelike.R4.R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId=="queued-rescue-shell"))
         {origin.gameObject.SetActive(false);Object.Destroy(origin.gameObject);}
     }
@@ -275,13 +275,13 @@ public sealed class BacklogManualRescueTests
             run.Player.transform.position+Vector3.up*4,Quaternion.identity,Vector3.forward,null});
         var batches=(System.Collections.IEnumerable)typeof(RoboRougelike.WeaponIntegration.RRLRocketVolleyQueue).GetField("batches",flags).GetValue(queue);
         var iterator=batches.GetEnumerator();Assert.That(iterator.MoveNext(),Is.True);var batch=iterator.Current;
-        var remaining=batch.GetType().GetField("Remaining");Assert.That((int)remaining.GetValue(batch),Is.EqualTo(1));
+        var remaining=batch.GetType().GetField("Remaining");Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.One));
         Assert.That(run.TryEmergencyRescue(),Is.True);
         var drain=typeof(RoboRougelike.WeaponIntegration.RRLRocketVolleyQueue).GetMethod("FixedUpdate",flags);drain.Invoke(queue,null);
-        Assert.That((int)remaining.GetValue(batch),Is.EqualTo(1),"Queued offensive rockets must wait during rescue.");
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.One),"Queued offensive rockets must wait during rescue.");
         float deadline=Time.realtimeSinceStartup+5;while(run.EmergencyRescueAttackBlocked&&Time.realtimeSinceStartup<deadline)yield return null;
         Assert.That(run.EmergencyRescueAttackBlocked,Is.False);drain.Invoke(queue,null);
-        Assert.That((int)remaining.GetValue(batch),Is.Zero);
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.Zero));
         foreach(var rocket in Object.FindObjectsByType<RoboRougelike.Mechanics.Rockets.RocketProjectile>(FindObjectsSortMode.None).Where(r=>r.OwnerRoot==run.Player.transform))Object.Destroy(rocket.gameObject);
         Object.Destroy(template);
     }

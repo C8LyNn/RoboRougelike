@@ -101,16 +101,18 @@ namespace RoboRougelike.WeaponIntegration
             if(energy!=null&&!energy.TrySpend(cost))return false;
             if(Module.TryFire()!=RocketFireResult.Fired){if(energy!=null)energy.Refund(cost);return false;}
             State.DeviceReadyAt=Module.NextReadyTime;
-            int extras=!deferExtras&&assembly!=null?assembly.RollDoubleShotExtras(int.MaxValue):0;
-            if(extras>0)FireAdditional(extras);
+            var extras=!deferExtras&&assembly!=null?assembly.RollDoubleShotExtrasExact():System.Numerics.BigInteger.Zero;
+            if(extras>0)FireAdditionalExact(extras);
             RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.RocketLauncher);return true;
         }
         internal void FireAdditional(int count)
+            =>FireAdditionalExact(count);
+        internal void FireAdditionalExact(System.Numerics.BigInteger count)
         {
             if(count<=0||Device?.Owner==null||muzzle==null||projectileTemplate==null||Module==null)return;
             var queue=Device.Owner.GetComponent<RRLRocketVolleyQueue>();
             if(queue==null)queue=Device.Owner.gameObject.AddComponent<RRLRocketVolleyQueue>();
-            queue.Enqueue(count,projectileTemplate,Module.CurrentSpec,Device.Body,Device.Owner,gameObject,
+            queue.EnqueueExact(count,projectileTemplate,Module.CurrentSpec,Device.Body,Device.Owner,gameObject,
                 muzzle.position,muzzle.rotation,muzzle.forward,ReturnRocket);
         }
         public bool BeginReload(){Refresh();if(!Device.Available||State.Ammo>=Magazine||State.ReloadReadyAt>0)return false;State.ReloadReadyAt=Time.time+2.2f;return true;}

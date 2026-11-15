@@ -25,7 +25,7 @@ namespace RoboRougelike.WeaponIntegration
         P12PipelineSafeEnemyTurret enemy;
         bool debitPending;
         bool deferExtras;
-        List<int> deferredRequests;
+        List<System.Numerics.BigInteger> deferredRequests;
         List<GameObject> deferredCreated;
         internal bool HasAdditionalRequested { get; private set; }
         float damageScale=1,intervalScale=1;
@@ -114,11 +114,11 @@ namespace RoboRougelike.WeaponIntegration
             try
             {
                 foreach(var pellet in pellets)CreatePellet(pellet,created);
-                var requests=new List<int>(pellets.Count);bool any=false;
+                var requests=new List<System.Numerics.BigInteger>(pellets.Count);bool any=false;
                 var doubleShot=assembly!=null?assembly.CaptureDoubleShotRoll():default;
                 for(int i=0;i<pellets.Count;i++)
                 {
-                    int requested=doubleShot.Roll(int.MaxValue);
+                    var requested=doubleShot.RollExact();
                     requests.Add(requested);any|=requested>0;
                 }
                 if(deferExtras)
@@ -142,11 +142,11 @@ namespace RoboRougelike.WeaponIntegration
             if(Owner==null||deferredRequests==null||deferredCreated==null){ClearDeferred();return;}
             try{QueueAdditional(deferredCreated,deferredRequests);}finally{ClearDeferred();}
         }
-        void QueueAdditional(IReadOnlyList<GameObject> created,IReadOnlyList<int> requested)
+        void QueueAdditional(IReadOnlyList<GameObject> created,IReadOnlyList<System.Numerics.BigInteger> requested)
         {
             var queue=Owner.GetComponent<R3ConventionalProjectileQueue>();
             if(queue==null)queue=Owner.gameObject.AddComponent<R3ConventionalProjectileQueue>();
-            queue.EnqueueShotgun(created,requested);
+            queue.EnqueueShotgunExact(created,requested);
         }
         internal void ClearDeferred(){deferredRequests=null;deferredCreated=null;HasAdditionalRequested=false;}
         void CreatePellet(ShotgunPelletSpawn pellet,List<GameObject> created)

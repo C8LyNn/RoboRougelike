@@ -789,6 +789,47 @@ public sealed class BacklogProjectileTierPhysicsTests
         vehicle.GetComponent<Rigidbody>().isKinematic=true;bank=vehicle.GetComponent<VehicleEnergyBank>();
         return vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
     }
+    [UnityTest] public IEnumerator LargeConventionalBonusIsNotTruncatedBeforeQueue()=>LargeBonusIsNotTruncated(R4WeaponKind.Basic);
+    [UnityTest] public IEnumerator LargeShotgunBonusIsNotTruncatedBeforeQueue()=>LargeBonusIsNotTruncated(R4WeaponKind.Shotgun);
+    [UnityTest] public IEnumerator LargeRailgunBonusIsNotTruncatedBeforeQueue()=>LargeBonusIsNotTruncated(R4WeaponKind.Railgun);
+    [UnityTest] public IEnumerator LargeRocketBonusIsNotTruncatedBeforeQueue()=>LargeBonusIsNotTruncated(R4WeaponKind.RocketLauncher);
+    IEnumerator LargeBonusIsNotTruncated(R4WeaponKind weapon)
+    {
+        var gun=Build(weapon,out var energy,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        const float configured=2147487744f;
+        var expectedPerShot=new System.Numerics.BigInteger(configured);
+        assembly.Model.Economy.DoubleShotChancePerUnit=configured;
+        MonoBehaviour queue;
+        if(weapon==R4WeaponKind.RocketLauncher)queue=assembly.gameObject.AddComponent<RRLRocketVolleyQueue>();
+        else queue=assembly.gameObject.AddComponent<R3ConventionalProjectileQueue>();
+        queue.GetType().GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        string id=gun.Id;Physics.SyncTransforms();
+        try
+        {
+            Assert.That(assembly.ClearProjectilePath(gun),Is.True);
+            if(weapon==R4WeaponKind.Basic)assembly.FireSlot(System.Array.FindIndex(assembly.Model.GetWeaponSlots(),w=>w==weapon));
+            else if(weapon==R4WeaponKind.Shotgun)Assert.That(gun.GetComponent<RRLShotgunBinding>().Fire(),Is.True);
+            else if(weapon==R4WeaponKind.Railgun)Assert.That(gun.GetComponent<RRLRailgunBinding>().Fire(),Is.True);
+            else Assert.That(gun.GetComponent<RRLRocketBinding>().Fire(),Is.True);
+            var shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId==id);
+            int primaries=weapon==R4WeaponKind.Shotgun?8:1;
+            Assert.That(shots,Is.GreaterThanOrEqualTo(primaries));
+            var batches=(System.Collections.IEnumerable)queue.GetType().GetField("batches",flags).GetValue(queue);
+            var iterator=batches.GetEnumerator();Assert.That(iterator.MoveNext(),Is.True);
+            var batch=iterator.Current;string field=weapon==R4WeaponKind.Shotgun?"ShotgunRemaining":"Remaining";
+            var raw=batch.GetType().GetField(field).GetValue(batch);
+            var remaining=raw is int n?new System.Numerics.BigInteger(n):(System.Numerics.BigInteger)raw;
+            Assert.That(remaining,Is.EqualTo(expectedPerShot*primaries-(shots-primaries)),"Every earned extra must remain queued after emitted shots are counted.");
+        }
+        finally
+        {
+            foreach(var shot in Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==id))
+                if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+            if(assembly!=null)Object.Destroy(assembly.gameObject);
+        }
+        yield return null;
+    }
     P12PipelineSafeDamageable Target(R3MountedPart gun,float distance,float width=4)
     {
         var item=GameObject.CreatePrimitive(PrimitiveType.Cube);item.transform.position=gun.Muzzle.position+gun.Muzzle.forward*distance;
