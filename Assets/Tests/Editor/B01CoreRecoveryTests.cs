@@ -56,6 +56,10 @@ public class B01CoreRecoveryTests
         var hits=Physics.RaycastAll(point+Vector3.up*.04f,Vector3.down,.09f,~0,QueryTriggerInteraction.Ignore);
         Assert.That(hits.Length,Is.GreaterThan(64));Assert.That(hits.Any(h=>h.collider==support),Is.True);
         Assert.That((bool)recovery.GetType().GetMethod("StillSupported",flags).Invoke(recovery,null),Is.True,"A full query must not hide the actual support.");
+        var bufferField=recovery.GetType().GetField("supportHits",flags);var buffer=(RaycastHit[])bufferField.GetValue(recovery);
+        Assert.That(buffer.Length,Is.GreaterThan(64));
+        Assert.That((bool)recovery.GetType().GetMethod("StillSupported",flags).Invoke(recovery,null),Is.True);
+        Assert.That(bufferField.GetValue(recovery),Is.SameAs(buffer));
         yield return null;
     }
     [UnityTest] public IEnumerator PHY_CORE_01_SustainedPhysicalInversionRequiresConfirmationBeforeOneAttempt()

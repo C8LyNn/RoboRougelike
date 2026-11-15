@@ -71,6 +71,8 @@ namespace RoboRougelike.Mechanics.PointDefense.Tests
             for(int i=0;i<260;i++)root.AddComponent<BoxCollider>().size=Vector3.one*.1f;
             var threat=CreateMissile();Physics.SyncTransforms();defense.ScanNow();
             Assert.AreSame(threat.GetComponent<PointDefenseThreatProxy>(),defense.CurrentTarget);
+            var field=typeof(PointDefenseController).GetField("nearby",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var buffer=(Collider[])field.GetValue(defense);Assert.Greater(buffer.Length,256);defense.ScanNow();Assert.AreSame(buffer,field.GetValue(defense));
         }
         [Test] public void ScanningWorksThroughManyOwnCollidersButStillRespectsWall()
         {
@@ -78,8 +80,10 @@ namespace RoboRougelike.Mechanics.PointDefense.Tests
             for(int i=0;i<100;i++)own.AddComponent<BoxCollider>().size=Vector3.one*.1f;
             var threat=CreateMissile();Physics.SyncTransforms();defense.ScanNow();
             Assert.AreSame(threat.GetComponent<PointDefenseThreatProxy>(),defense.CurrentTarget);
+            var field=typeof(PointDefenseController).GetField("sightHits",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var buffer=(RaycastHit[])field.GetValue(defense);Assert.Greater(buffer.Length,96);
             var wall=Track("Wall",new Vector3(0,0,6));wall.AddComponent<BoxCollider>().size=new Vector3(5,5,1);
-            Physics.SyncTransforms();defense.ScanNow();Assert.IsNull(defense.CurrentTarget);
+            Physics.SyncTransforms();defense.ScanNow();Assert.IsNull(defense.CurrentTarget);Assert.AreSame(buffer,field.GetValue(defense));
         }
         [Test] public void ScanningWorksWithManyOwnCollidersAtMuzzle()
         {
@@ -87,6 +91,8 @@ namespace RoboRougelike.Mechanics.PointDefense.Tests
             for(int i=0;i<50;i++)own.AddComponent<BoxCollider>().size=Vector3.one*.1f;
             var threat=CreateMissile();Physics.SyncTransforms();defense.ScanNow();
             Assert.AreSame(threat.GetComponent<PointDefenseThreatProxy>(),defense.CurrentTarget);
+            var field=typeof(PointDefenseController).GetField("muzzleOverlaps",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var buffer=(Collider[])field.GetValue(defense);Assert.Greater(buffer.Length,48);defense.ScanNow();Assert.AreSame(buffer,field.GetValue(defense));
         }
         [TestCase(true)][TestCase(false)] public void InterceptorIgnoresDenseOwnGeometryAtStartOrAlongFlight(bool overlap)
         {
@@ -97,6 +103,8 @@ namespace RoboRougelike.Mechanics.PointDefense.Tests
             shot.Initialize(threat.GetComponent<PointDefenseThreatProxy>(),root.transform,Vector3.forward*18,1,.12f,1);Physics.SyncTransforms();
             typeof(PointDefenseInterceptor).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(shot,null);
             Assert.AreEqual(1,threat.interceptCalls);
+            var field=typeof(PointDefenseInterceptor).GetField(overlap?"initialOverlaps":"hits",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            Assert.Greater(((System.Array)field.GetValue(shot)).Length,overlap?48:96);
         }
         [Test] public void DenseInterceptorSweepStillStopsAtForeignWall()
         {

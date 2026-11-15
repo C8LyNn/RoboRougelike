@@ -23,7 +23,8 @@ namespace RoboRougelike.R6
         public R6CoreRecoverySettings Tuning=new R6CoreRecoverySettings();
         Rigidbody body;R1VehicleState vehicle;P12PipelineSafeDamageable core;R3PartState state;
         Collider support,contactPart;Vector3 localContact;float confirmation,activeUntil,recoveryLever;
-        readonly RaycastHit[] supportHits=new RaycastHit[64];
+        const int MaxReusableSupportHits=4096;
+        RaycastHit[] supportHits=new RaycastHit[64];
         public int AttemptsStarted {get;private set;}
         public bool IsRecovering {get;private set;}
         public float LastLiftImpulse {get;private set;}
@@ -65,10 +66,15 @@ namespace RoboRougelike.R6
             if(!R6WheelContacts.Terrain(support)||contactPart==null||!contactPart.enabled||contactPart.isTrigger||contactPart.attachedRigidbody!=body)return false;
             var point=body.position+body.rotation*localContact;var bounds=contactPart.bounds;bounds.Expand(.1f);
             if(!bounds.Contains(point))return false;
-            int count=Physics.RaycastNonAlloc(point+Vector3.up*.04f,Vector3.down,supportHits,.09f,~0,QueryTriggerInteraction.Ignore);
-            RaycastHit[] hits=supportHits;
-            if(count>=supportHits.Length)
-            {hits=Physics.RaycastAll(point+Vector3.up*.04f,Vector3.down,.09f,~0,QueryTriggerInteraction.Ignore);count=hits.Length;}
+            int count;RaycastHit[] hits;
+            while(true)
+            {
+                count=Physics.RaycastNonAlloc(point+Vector3.up*.04f,Vector3.down,supportHits,.09f,~0,QueryTriggerInteraction.Ignore);
+                if(count<supportHits.Length){hits=supportHits;break;}
+                if(supportHits.Length>=MaxReusableSupportHits)
+                {hits=Physics.RaycastAll(point+Vector3.up*.04f,Vector3.down,.09f,~0,QueryTriggerInteraction.Ignore);count=hits.Length;break;}
+                Array.Resize(ref supportHits,Mathf.Min(supportHits.Length*2,MaxReusableSupportHits));
+            }
             for(int i=0;i<count;i++)if(hits[i].collider==support&&hits[i].normal.y>.5f)return true;
             return false;
         }

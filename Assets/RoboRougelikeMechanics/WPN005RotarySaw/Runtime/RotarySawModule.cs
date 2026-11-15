@@ -6,6 +6,7 @@ namespace RoboRougelike.Weapons.RotarySaw
     [DisallowMultipleComponent]
     public sealed class RotarySawModule : MonoBehaviour
     {
+        const int MaxReusableContacts=4096;
         [SerializeField] private RotarySawConfiguration configuration = new RotarySawConfiguration();
         [SerializeField] private Transform bladeCenter;
         [SerializeField] private Rigidbody ownerRigidbody;
@@ -158,14 +159,15 @@ namespace RoboRougelike.Weapons.RotarySaw
             Vector3 axle = CurrentAxle(bladeCenter);
             float queryRadius=Mathf.Sqrt(configuration.bladeRadius * configuration.bladeRadius +
                            configuration.bladeHalfThickness * configuration.bladeHalfThickness);
-            int count = Physics.OverlapSphereNonAlloc(center,queryRadius,
-                overlapBuffer, configuration.contactLayers, QueryTriggerInteraction.Ignore);
-            Collider[] contacts=overlapBuffer;
-            if (count >= overlapBuffer.Length)
+            int count;Collider[] contacts;
+            while(true)
             {
+                count=Physics.OverlapSphereNonAlloc(center,queryRadius,overlapBuffer,configuration.contactLayers,QueryTriggerInteraction.Ignore);
+                if(count<overlapBuffer.Length){contacts=overlapBuffer;break;}
                 OverflowedLastTick = true;
-                contacts=Physics.OverlapSphere(center,queryRadius,configuration.contactLayers,QueryTriggerInteraction.Ignore);
-                count=contacts.Length;
+                if(overlapBuffer.Length>=MaxReusableContacts)
+                {contacts=Physics.OverlapSphere(center,queryRadius,configuration.contactLayers,QueryTriggerInteraction.Ignore);count=contacts.Length;break;}
+                System.Array.Resize(ref overlapBuffer,Mathf.Min(overlapBuffer.Length*2,MaxReusableContacts));
             }
 
             selected.Clear();

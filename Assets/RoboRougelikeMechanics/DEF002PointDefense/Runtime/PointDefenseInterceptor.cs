@@ -9,8 +9,9 @@ namespace RoboRougelike.Mechanics.PointDefense
     public sealed class PointDefenseInterceptor : MonoBehaviour
     {
         [SerializeField] private LayerMask collisionMask = ~0;
-        private readonly RaycastHit[] hits = new RaycastHit[96];
-        private readonly Collider[] initialOverlaps = new Collider[48];
+        private const int MaxReusableHits=4096;
+        private RaycastHit[] hits = new RaycastHit[96];
+        private Collider[] initialOverlaps = new Collider[48];
         private PointDefenseThreatProxy target;
         private Transform ownerRoot;
         private Vector3 velocity;
@@ -38,11 +39,15 @@ namespace RoboRougelike.Mechanics.PointDefense
             { Destroy(gameObject); return; }
             // SphereCast may not report a collider overlapping its origin.
             // Explicitly reject a muzzle or flight step embedded in foreign geometry.
-            int overlapCount = Physics.OverlapSphereNonAlloc(transform.position, radius,
-                initialOverlaps, collisionMask, QueryTriggerInteraction.Collide);
-            Collider[] overlapHits=initialOverlaps;
-            if(overlapCount>=initialOverlaps.Length)
-            {overlapHits=Physics.OverlapSphere(transform.position,radius,collisionMask,QueryTriggerInteraction.Collide);overlapCount=overlapHits.Length;}
+            int overlapCount;Collider[] overlapHits;
+            while(true)
+            {
+                overlapCount=Physics.OverlapSphereNonAlloc(transform.position,radius,initialOverlaps,collisionMask,QueryTriggerInteraction.Collide);
+                if(overlapCount<initialOverlaps.Length){overlapHits=initialOverlaps;break;}
+                if(initialOverlaps.Length>=MaxReusableHits)
+                {overlapHits=Physics.OverlapSphere(transform.position,radius,collisionMask,QueryTriggerInteraction.Collide);overlapCount=overlapHits.Length;break;}
+                System.Array.Resize(ref initialOverlaps,Mathf.Min(initialOverlaps.Length*2,MaxReusableHits));
+            }
             bool touchingLockedTarget = false;
             for (int i = 0; i < overlapCount; i++)
             {
@@ -66,11 +71,15 @@ namespace RoboRougelike.Mechanics.PointDefense
             Vector3 displacement = velocity * dt;
             float distance = displacement.magnitude;
             if (distance < 0.00001f) return;
-            int count = Physics.SphereCastNonAlloc(transform.position, radius, displacement / distance,
-                hits, distance, collisionMask, QueryTriggerInteraction.Collide);
-            RaycastHit[] impactHits=hits;
-            if(count>=hits.Length)
-            {impactHits=Physics.SphereCastAll(transform.position,radius,displacement/distance,distance,collisionMask,QueryTriggerInteraction.Collide);count=impactHits.Length;}
+            int count;RaycastHit[] impactHits;
+            while(true)
+            {
+                count=Physics.SphereCastNonAlloc(transform.position,radius,displacement/distance,hits,distance,collisionMask,QueryTriggerInteraction.Collide);
+                if(count<hits.Length){impactHits=hits;break;}
+                if(hits.Length>=MaxReusableHits)
+                {impactHits=Physics.SphereCastAll(transform.position,radius,displacement/distance,distance,collisionMask,QueryTriggerInteraction.Collide);count=impactHits.Length;break;}
+                System.Array.Resize(ref hits,Mathf.Min(hits.Length*2,MaxReusableHits));
+            }
             float nearest = float.PositiveInfinity;
             Collider impact = null;
             for (int i = 0; i < count; i++)

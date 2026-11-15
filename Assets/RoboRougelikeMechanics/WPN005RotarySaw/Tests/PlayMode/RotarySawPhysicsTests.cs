@@ -157,6 +157,9 @@ namespace RoboRougelike.Weapons.RotarySaw.Tests
             Assert.IsTrue(saw.OverflowedLastTick);
             Assert.AreEqual(5,saw.DamageEventsLastTick);
             foreach(var target in targets)Assert.Greater(target.TotalDamage,0);
+            var field=typeof(RotarySawModule).GetField("overlapBuffer",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var buffer=(Collider[])field.GetValue(saw);Assert.Greater(buffer.Length,4);
+            yield return new WaitForFixedUpdate();Assert.AreSame(buffer,field.GetValue(saw));Assert.IsFalse(saw.OverflowedLastTick);
         }
         [UnityTest] public IEnumerator OverlapOverflowStillJamsAtomicallyForHardMaterial()
         {

@@ -13,6 +13,8 @@ namespace RoboRougelike.Mechanics.BeamCutter
     {
         private const int MaxRayHits = 128;
         private const int MaxMuzzleOverlaps = 64;
+        // Scratch-buffer threshold only; still query every hit above this size.
+        private const int MaxReusableHits = 4096;
 
         [SerializeField] private BeamCutterSettings settings = new BeamCutterSettings();
         [SerializeField] private Transform muzzle;
@@ -24,8 +26,8 @@ namespace RoboRougelike.Mechanics.BeamCutter
         [SerializeField] private LineRenderer beamLine;
         [SerializeField] private bool automaticFixedUpdate = true;
 
-        private readonly RaycastHit[] _hits = new RaycastHit[MaxRayHits];
-        private readonly Collider[] _muzzleOverlaps = new Collider[MaxMuzzleOverlaps];
+        private RaycastHit[] _hits = new RaycastHit[MaxRayHits];
+        private Collider[] _muzzleOverlaps = new Collider[MaxMuzzleOverlaps];
         private BeamCutterSettings _runtimeSettings;
         private BeamThermalState _thermal;
         private IBeamDamageSink _sink;
@@ -208,10 +210,15 @@ namespace RoboRougelike.Mechanics.BeamCutter
 
         private bool IsMuzzleInsideNonSelfCollider(Vector3 origin, LayerMask layers)
         {
-            int count = Physics.OverlapSphereNonAlloc(origin, 0.01f, _muzzleOverlaps, layers, QueryTriggerInteraction.Ignore);
-            Collider[] overlaps=_muzzleOverlaps;
-            if(count>=_muzzleOverlaps.Length)
-            {overlaps=Physics.OverlapSphere(origin,.01f,layers,QueryTriggerInteraction.Ignore);count=overlaps.Length;}
+            int count;Collider[] overlaps;
+            while(true)
+            {
+                count=Physics.OverlapSphereNonAlloc(origin,.01f,_muzzleOverlaps,layers,QueryTriggerInteraction.Ignore);
+                if(count<_muzzleOverlaps.Length){overlaps=_muzzleOverlaps;break;}
+                if(_muzzleOverlaps.Length>=MaxReusableHits)
+                {overlaps=Physics.OverlapSphere(origin,.01f,layers,QueryTriggerInteraction.Ignore);count=overlaps.Length;break;}
+                Array.Resize(ref _muzzleOverlaps,Mathf.Min(_muzzleOverlaps.Length*2,MaxReusableHits));
+            }
             for (int i = 0; i < count; i++)
             {
                 Collider collider = overlaps[i];
@@ -224,10 +231,15 @@ namespace RoboRougelike.Mechanics.BeamCutter
             LayerMask layers, out RaycastHit closest)
         {
             closest = default;
-            int count = Physics.RaycastNonAlloc(origin, direction, _hits, distance, layers, QueryTriggerInteraction.Ignore);
-            RaycastHit[] hits=_hits;
-            if(count>=_hits.Length)
-            {hits=Physics.RaycastAll(origin,direction,distance,layers,QueryTriggerInteraction.Ignore);count=hits.Length;}
+            int count;RaycastHit[] hits;
+            while(true)
+            {
+                count=Physics.RaycastNonAlloc(origin,direction,_hits,distance,layers,QueryTriggerInteraction.Ignore);
+                if(count<_hits.Length){hits=_hits;break;}
+                if(_hits.Length>=MaxReusableHits)
+                {hits=Physics.RaycastAll(origin,direction,distance,layers,QueryTriggerInteraction.Ignore);count=hits.Length;break;}
+                Array.Resize(ref _hits,Mathf.Min(_hits.Length*2,MaxReusableHits));
+            }
             float nearest = float.PositiveInfinity;
             for (int i = 0; i < count; i++)
             {
