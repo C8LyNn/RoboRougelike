@@ -20,8 +20,8 @@ namespace RoboRougelike.Mechanics.StructuralScan
         {
             rangeMeters = Mathf.Max(Safe(rangeMeters, 24f), 0.1f);
             fullConeDegrees = Mathf.Clamp(Safe(fullConeDegrees, 75f), 1f, 180f);
-            cooldownSeconds = Mathf.Clamp(Safe(cooldownSeconds, 8f), 0f, 3600f);
-            displaySeconds = Mathf.Clamp(Safe(displaySeconds, 5f), 0.01f, 3600f);
+            cooldownSeconds = Mathf.Max(Safe(cooldownSeconds, 8f), 0f);
+            displaySeconds = Mathf.Max(Safe(displaySeconds, 5f), 0.01f);
             activationEnergy = Mathf.Max(Safe(activationEnergy, 0f), 0f);
             maxRevealedParts = Mathf.Max(maxRevealedParts, 1);
             maxRegisteredParts = Mathf.Clamp(maxRegisteredParts, 1, 4096);

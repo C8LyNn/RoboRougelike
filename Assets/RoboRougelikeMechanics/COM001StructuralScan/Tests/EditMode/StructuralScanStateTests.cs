@@ -21,6 +21,10 @@ namespace RoboRougelike.Mechanics.StructuralScan.Tests.EditMode
         [Test] public void ClearVisibilityPreservesCooldown() { var c = new StructuralScanClock(); c.Start(5, 3); c.ClearVisibility(); Assert.AreEqual(5, c.CooldownLeft); Assert.IsFalse(c.Visible); }
         [Test] public void ResetClearsBoth() { var c = new StructuralScanClock(); c.Start(5, 3); c.Reset(); Assert.IsTrue(c.Ready); Assert.IsFalse(c.Visible); }
         [Test] public void SettingsClampsNegativeCooldown() { var s = new StructuralScanSettings { cooldownSeconds = -3 }; s.Validate(); Assert.AreEqual(0, s.cooldownSeconds); }
+        [Test] public void SettingsPreserveLongFiniteCooldownAndVisibility()
+        { var s=new StructuralScanSettings { cooldownSeconds=7200,displaySeconds=5400 };s.Validate();Assert.AreEqual(7200,s.cooldownSeconds);Assert.AreEqual(5400,s.displaySeconds); }
+        [Test] public void LongCooldownAccumulatesSmallFrameTimes()
+        { var c=new StructuralScanClock();c.Start(1048576,1048576);for(int i=0;i<8;i++)c.Advance(.03125f);Assert.AreEqual(1048575.75f,c.CooldownLeft);Assert.AreEqual(1048575.75f,c.VisibleLeft); }
         [Test] public void SettingsClampsNegativeEnergy() { var s = new StructuralScanSettings { activationEnergy = -100 }; s.Validate(); Assert.AreEqual(0, s.activationEnergy); }
         [Test] public void SettingsRepairsNaNRange() { var s = new StructuralScanSettings { rangeMeters = float.NaN }; s.Validate(); Assert.AreEqual(24, s.rangeMeters); }
         [Test] public void SettingsRetainsLongFiniteRange() { var s = new StructuralScanSettings { rangeMeters = 1500 }; s.Validate(); Assert.AreEqual(1500, s.rangeMeters); }

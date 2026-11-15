@@ -36,6 +36,22 @@ public class RRLW8StructuralScanTests
         Assert.That(binding,Is.Not.Null,"Original scan controller must be connected to the shared physical capability boundary");
         return (bool)binding.GetType().GetMethod("TryActivate").Invoke(binding,null);
     }
+    [UnityTest] public IEnumerator LongConfiguredCooldownSurvivesScannerRebuild()
+    {
+        run.VehicleModel.Economy.StructuralScanCooldown=7200;
+        Assert.That(Activate(),Is.True);
+        Assert.That(scanner.CooldownLeft,Is.InRange(7199f,7200f));
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var model=assembly.Model;
+        var state=model.Parts.Single(p=>p.Id==module.Id);float readyAt=state.DeviceReadyAt;
+        Assert.That(readyAt-Time.time,Is.InRange(7199f,7200.1f));
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(Time.time)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,Time.time,out var copy,out var error),Is.True,error);
+        Assert.That(copy.StructuralScannerReadyAt-Time.time,Is.InRange(7199f,7200.1f));
+        var rig=R3VehicleAssembly.Build(copy,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
+        var restored=rig.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id).GetComponent<StructuralScanController>();
+        Assert.That(restored.CooldownLeft,Is.InRange(7199f,7200.1f));
+        Assert.That(restored.IsReady,Is.False);UnityEngine.Object.Destroy(rig);yield return null;
+    }
     [UnityTest] public IEnumerator ConfiguredResultCountReachesPhysicalScannerAndSurvivesModelCopy()
     {
         Assert.That(Resources.Load<R1RunDefinition>("R1/Run").GaragePrices.StructuralScanMaxParts,Is.EqualTo(16));

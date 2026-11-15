@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14 i 44. Długi czas skanera struktury
+
+- Ustawiony skończony czas odnowienia i wyświetlania wyników skanera nie jest już skracany do 3600 sekund. Wewnętrzny zegar zbiera upływ czasu osobno, dzięki czemu małe kroki klatek nie giną przy odejmowaniu od dużej wartości. Ujemne i niepoprawne wartości nadal przechodzą przez wcześniejsze zabezpieczenia. Domyślne parametry pozostają takie same.
+- Unity 6000.3.14f1: `scanner_long_cooldown_before.xml` — **3 FAIL**: 7200 sekund skracano do 3600, a licznik 1 048 576 sekund nie reagował na krótkie kroki. `scanner_long_cooldown_final.xml` — **37 PASS**, obejmujące ustawienia, krótkie kroki zegara, rzeczywisty skan z czasem 7200 s, serializację JSON modelu, odtworzenie modułu, pauzę, EMP i poprzednie scenariusze skanera.
+- Test symuluje małe kroki czasu oraz zapis i odtworzenie, nie czeka dwóch godzin ani nie mierzy wydajności Playera. Zapisany termin i publiczny odczyt nadal używają `float`, więc ekstremalne wartości mają ograniczoną dokładność. Limit 64 śrucin i odbiór punktu 44 pozostają otwarte.
+
 ### 06 i 44. Konflikt pauzy z wyborem nagrody
 
 - Ustawienia nie pozwalają już przypisać pauzy i dowolnej z siedmiu akcji nagród do tego samego klawisza albo przycisku myszy. Wcześniej pauza mogła przejąć klawisz wyboru nagrody. Istniejące profile i zapisane ustawienia blueprintów z takim konfliktem nadal się wczytują bez automatycznego nadpisywania; panel sterowania wskazuje konflikt, aby gracz zmienił jedno z przypisań. Do czasu jego zmiany konflikt w starym profilu pozostaje, a nagrodę można wybrać przyciskiem interfejsu.
