@@ -161,6 +161,42 @@ public sealed class BacklogBonusTierTests
         sg.Reset();rg.Reset();Assert.That(sg.RegisterSuccessfulVolley(3600,.00001f),Is.True);Assert.That(rg.Commit(3600,.00001f),Is.True);
         Assert.That(sg.CanFire(3600),Is.False);Assert.That(rg.CanFire(3600),Is.False);
     }
+    [Test] public void ScopedDeviceRateRewardsCanBeChosenFromActualOffers()
+    {
+        var ids=new[]{"rate_drone","rate_turret"};var seen=new System.Collections.Generic.HashSet<string>();
+        var definition=Resources.Load<R1RunDefinition>("R1/Run");var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        for(int seed=0;seed<512&&seen.Count<ids.Length;seed++)
+        {
+            var progress=new R1RunProgress(3);Assert.That(progress.Start(),Is.True);
+            Assert.That(progress.WinEncounter(definition.Upgrades,new System.Random(seed)),Is.True);
+            for(int i=0;i<progress.Offers.Count;i++)
+            {
+                var candidate=progress.Offers[i];if(!ids.Contains(candidate.Id)||seen.Contains(candidate.Id))continue;
+                var chosen=progress.ChooseUpgrade(i);Assert.That(model.ReceiveBonuses(new[]{chosen}),Is.True);
+                Assert.That(model.Inventory.Last().UpgradeScope,Is.EqualTo(chosen.Scope));seen.Add(chosen.Id);break;
+            }
+        }
+        Assert.That(seen,Is.EquivalentTo(ids));
+    }
+
+    [TestCase("rate_drone",R1BonusScope.Drones,"dronów")]
+    [TestCase("rate_turret",R1BonusScope.Turrets,"wieżyczek")]
+    public void ScopedDeviceRateRewardKeepsItsScopeThroughMountedCheckpoint(string id,R1BonusScope scope,string expected)
+    {
+        var reward=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.SingleOrDefault(u=>u!=null&&u.Id==id);
+        Assert.That(reward,Is.Not.Null);Assert.That(reward.Effect,Is.EqualTo(R1UpgradeEffect.Reload));Assert.That(reward.Scope,Is.EqualTo(scope));
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        var part=model.Inventory.Single();var blueprint=R3BlueprintPart.FromPart(part,Vector3Int.zero);
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(part.Id,c,default)==null);
+        Assert.That(model.Mount(part.Id,cell),Is.True);
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(blueprint.Matches(restored.Parts.Single(p=>p.Id==part.Id)),Is.True);
+        foreach(var name in new[]{"BonusText","BonusInstanceText"})
+        {var method=typeof(R1RunHUD).GetMethod(name,System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);Assert.That((string)method.Invoke(null,new object[]{part}),Does.Contain(expected));}
+    }
+
     [Test] public void ScopedRepairRewardsCanBeChosenFromActualOffers()
     {
         var ids=new[]{"repair_drone","repair_turret"};var seen=new System.Collections.Generic.HashSet<string>();

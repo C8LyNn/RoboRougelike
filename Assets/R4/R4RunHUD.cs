@@ -501,10 +501,10 @@ namespace RoboRougelike.R1
             R1BonusScope.WheelDrive=>"Mobilność kół",R1BonusScope.TrackDrive=>"Mobilność gąsienic",
             R1BonusScope.OmniDrive=>"Mobilność Omni",R1BonusScope.HoverDrive=>"Mobilność zawisu",_=>"Mobilność"};
         private static string ReloadBonusName(R3PartState item)=>item.UpgradeScope switch {
-            R1BonusScope.Weapons=>"Odstęp strzałów broni",R1BonusScope.BasicCannon=>"Odstęp strzałów działa podstawowego",
+            R1BonusScope.Weapons=>"Odstęp strzałów broni",R1BonusScope.Drones=>"Odstęp strzałów dronów",R1BonusScope.Turrets=>"Odstęp strzałów wieżyczek",R1BonusScope.BasicCannon=>"Odstęp strzałów działa podstawowego",
             R1BonusScope.AutomaticWeapon=>"Odstęp strzałów automatu",R1BonusScope.HeavyWeapon=>"Odstęp strzałów ciężkiego działa",
             R1BonusScope.ShotgunWeapon=>"Odstęp salw strzelby",R1BonusScope.RailgunWeapon=>"Odstęp strzałów railguna",
-            R1BonusScope.RocketWeapon=>"Odstęp strzałów wyrzutni",_=>"Czas przeładowania"};
+            R1BonusScope.RocketWeapon=>"Odstęp strzałów wyrzutni",_=>"Odstęp strzałów"};
         private static string OtherBonusOperationText(R3PartState item,string name,int units)
         {
             bool inverse=item.UpgradeEffect==R1UpgradeEffect.Reload;

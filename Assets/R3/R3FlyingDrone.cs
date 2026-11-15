@@ -124,7 +124,10 @@ namespace RoboRougelike.R3
             if(target==null||target.IsDefeated||aimCollider==null||Time.time<nextShot)return;
             Vector3 deltaAim=aimCollider.bounds.center-body.position;float distance=deltaAim.magnitude;
             if(distance<.1f||distance>attackRange||!ClearShot(deltaAim/distance,distance,target))return;
-            Fire(deltaAim/distance);nextShot=Time.time+interval;
+            Fire(deltaAim/distance);
+            var effects=owner.GetComponentInParent<R3MountedBonusEffects>();
+            float scale=effects==null?1f:stationary?effects.TurretFireIntervalScale:effects.DroneFireIntervalScale;
+            nextShot=Time.time+R3MountedBonusEffects.SafeIntervalProduct(interval,scale);
         }
         void FindTarget()
         {

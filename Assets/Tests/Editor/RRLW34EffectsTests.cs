@@ -17,6 +17,52 @@ using Object=UnityEngine.Object;
 
 public class RRLW34EffectsTests
 {
+    [UnityTest] public IEnumerator ScopedFireRateReachesActualDroneAndTurretShots()
+    {
+        var global=Upgrade(R1UpgradeEffect.Reload,.1f);
+        var droneBonus=Upgrade(R1UpgradeEffect.Reload,.2f);droneBonus.Scope=R1BonusScope.Drones;
+        var turretBonus=Upgrade(R1UpgradeEffect.Reload,.25f);turretBonus.Scope=R1BonusScope.Turrets;turretBonus.Operation=R1ModifierOperation.More;
+        var vehicle=Build(Model(global,droneBonus,turretBonus));yield return null;
+        var assembly=vehicle.GetComponent<R3VehicleAssembly>();
+        Assert.That(vehicle.Controller.WeaponInterval(R4WeaponKind.Basic),Is.EqualTo(R4WeaponDefinition.Get(R4WeaponKind.Basic).Interval*.9f).Within(.001),"Category bonuses must not change the mounted weapon's interval.");
+        var globalPart=assembly.Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeEffect==R1UpgradeEffect.Reload&&p.UpgradeScope==R1BonusScope.Global);
+        var dronePart=assembly.Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeEffect==R1UpgradeEffect.Reload&&p.UpgradeScope==R1BonusScope.Drones);
+        var turretPart=assembly.Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeEffect==R1UpgradeEffect.Reload&&p.UpgradeScope==R1BonusScope.Turrets);
+        var enemyObject=GameObject.CreatePrimitive(PrimitiveType.Cube);enemyObject.transform.SetParent(fixtures.transform);
+        var hp=enemyObject.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
+        var enemy=enemyObject.AddComponent<P12PipelineSafeEnemyTurret>();enemy.enabled=false;
+        enemy.Configure(vehicle.transform,null,null,enemyObject.transform,hp,null);
+        R3FlyingDrone Shooter(float x,bool turret)
+        {
+            var item=GameObject.CreatePrimitive(PrimitiveType.Cube);item.transform.SetParent(fixtures.transform);
+            item.transform.position=new Vector3(x,1000,1000);item.AddComponent<Rigidbody>().useGravity=false;
+            var shooter=item.AddComponent<R3FlyingDrone>();
+            if(turret)shooter.ConfigureTurret(vehicle.transform,2,10);else shooter.Configure(vehicle.transform,0,2,10);
+            shooter.enabled=false;return shooter;
+        }
+        var drone=Shooter(1000,false);var turret=Shooter(1020,true);
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var target=typeof(R3FlyingDrone).GetField("target",flags);var aim=typeof(R3FlyingDrone).GetField("aimCollider",flags);
+        var next=typeof(R3FlyingDrone).GetField("nextShot",flags);var scan=typeof(R3FlyingDrone).GetField("nextScan",flags);
+        var tick=typeof(R3FlyingDrone).GetMethod("FixedUpdate",flags);
+        void FireAndCheck(R3FlyingDrone shooter,float expected)
+        {
+            enemyObject.transform.position=shooter.transform.position+Vector3.forward*4;Physics.SyncTransforms();
+            target.SetValue(shooter,enemy);aim.SetValue(shooter,enemyObject.GetComponent<Collider>());
+            next.SetValue(shooter,0f);scan.SetValue(shooter,Time.time+100);float firedAt=Time.time;tick.Invoke(shooter,null);
+            Assert.That((float)next.GetValue(shooter)-firedAt,Is.EqualTo(expected).Within(.001),"The real device must schedule its own next physical shot.");
+            var shots=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Where(p=>p.name=="P17_DronePhysicalShell"&&p.gameObject.activeInHierarchy).ToArray();
+            Assert.That(shots.Length,Is.EqualTo(1),"Each check must create a real projectile.");
+            shots[0].gameObject.SetActive(false);Object.Destroy(shots[0].gameObject);
+        }
+        FireAndCheck(drone,1.4f);FireAndCheck(turret,1.35f);
+        dronePart.gameObject.SetActive(false);yield return null;
+        FireAndCheck(drone,1.8f);FireAndCheck(turret,1.35f);
+        turretPart.gameObject.SetActive(false);yield return null;
+        FireAndCheck(turret,1.8f);
+        globalPart.gameObject.SetActive(false);yield return null;
+        FireAndCheck(drone,2f);FireAndCheck(turret,2f);
+    }
     [UnityTest] public IEnumerator RepairEfficiencyMultipliesFieldRepairAndStopsAfterLoss()
     {
         Assert.That(Enum.TryParse("RepairEfficiency",out R1UpgradeEffect efficiency),Is.True);
