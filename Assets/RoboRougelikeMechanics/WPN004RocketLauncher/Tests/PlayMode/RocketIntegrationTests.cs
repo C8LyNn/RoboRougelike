@@ -222,6 +222,17 @@ namespace RoboRougelike.WPN004.Tests.PlayMode
             finally{Object.DestroyImmediate(root);Object.DestroyImmediate(other);}
         }
         [Test]
+        public void ExplosionAfterReceiverExceptionDoesNotReuseStaleTargets()
+        {
+            var failing=CreateTarget(Vector3.forward);failing.OnHit=()=>throw new System.InvalidOperationException("test receiver");
+            Physics.SyncTransforms();
+            Assert.Throws<System.InvalidOperationException>(()=>RocketBlastResolver.Resolve(Vector3.zero,Vector3.up,config.Snapshot(),null,owner,new Collider[64],new RaycastHit[64]));
+            Object.DestroyImmediate(failing.gameObject);
+            var next=CreateTarget(Vector3.left);Physics.SyncTransforms();
+            var result=RocketBlastResolver.Resolve(Vector3.zero,Vector3.up,config.Snapshot(),null,owner,new Collider[64],new RaycastHit[64]);
+            Assert.IsFalse(result.Overflow);Assert.AreEqual(1,result.DamagedParts);Assert.AreEqual(1,next.Hits);
+        }
+        [Test]
         public void NestedExplosionDoesNotLoseEitherExplosionsTargets()
         {
             var first=CreateTarget(Vector3.forward);var second=CreateTarget(Vector3.left);
