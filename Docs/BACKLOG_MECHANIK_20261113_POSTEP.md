@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 42 i 44. Ratunek i porażka w ręcznej próbie walki
+
+- W widocznym edytorze Unity 6000.3.14f1 rozpoczęto pierwsze starcie pojazdem Młot. Pod ostrzałem wybrano ratunek z pauzy: gra wznowiła walkę, pojawił się komunikat o 50% otrzymywanych obrażeń i wstrzymaniu ataku oraz cooldown. Później przeciwnicy zniszczyli uzbrojenie stojącego pojazdu i pojawił się ekran porażki z przyczyną oraz podsumowaniem. Nie ukończono walki zwycięstwem ani nie zmierzono obrażeń w tej próbie; nie jest to Windows Player. Automatyczne sterowanie myszą w zablokowanym kursorze utrudniało celowanie; pojedyncze próby wysłania H z narzędzia nie potwierdziły aktywacji, więc działanie fizycznej klawiatury w Playerze nadal wymaga ręcznego sprawdzenia.
+- `manual_combat_targeted_edit_20261115.xml`: **6 PASS** EditMode, w tym test z wirtualną klawiaturą po zmianie przypisania, ratunek z pauzy, mnożnik obrażeń przed i po ochronie, blokada strzelania oraz sterowanie i odłączenie części w rzeczywistej scenie. Są to kontrolowane scenariusze w edytorze, nie pomiar ręcznych obrażeń. Pierwszy filtr uruchomiony jako PlayMode (`manual_combat_targeted_20261115.xml`) znalazł **0 testów** i nie jest wynikiem pozytywnym. Punkt 44 pozostaje otwarty.
+
 ### 36 i 44. Potwierdzenie montażu po zakupie pakietu
 
 - Po udanym montażu komunikat o powodzeniu jest widoczny przez krótki czas. Dopiero potem pasek wraca do stanu aktualnego widma; czerwone widmo nadal wskazuje zablokowane miejsce, a kolejna próba może od razu podać przyczynę odmowy. Działa to także przy kolejnych egzemplarzach stosu.
