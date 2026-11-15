@@ -93,14 +93,20 @@ public class RRLW6PointDefenseTests
     [UnityTest] public IEnumerator EnemyDefenseLosesRealArmorMountAndRemainsRepairableSalvage()
     {
         var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
+        // Exercise post-defeat salvage deterministically; physical detached drops
+        // are covered separately and preserve the condition at the earlier drop.
+        run.VehicleModel.Economy.PhysicalLootDropChance=0;
         Assert.That(enemy.EquipPointDefense(),Is.True);
         var binding=enemy.GetComponentInChildren<RRLPointDefenseBinding>();
         var support=binding.transform.parent.GetComponentInParent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();
         Assert.That(support,Is.Not.Null,"Device must be parented to actual physical armor");
         Assert.That(binding.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Length,Is.EqualTo(1));
         binding.Controller.RestoreState(7,.2f);binding.CaptureState();string id=binding.State.Id;float ready=binding.State.DeviceReadyAt;
-        support.ApplyDamage(10000,support.transform.position,Vector3.up);
+        // Keep the enemy alive long enough to observe detachment before its
+        // final salvage snapshot; a huge hit propagates into and kills the core.
+        support.ApplyDamage(support.CurrentHp*1.4f,support.transform.position,Vector3.up);
         Assert.That(binding.Controller.IsOperational,Is.False,"Losing the real mounting armor detaches the device immediately");
+        Assert.That(enemy.IsDefeated,Is.False,"The mounting hit must not also defeat the enemy.");
         enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
         var salvage=run.Salvage.Items.Single(p=>p.Id==id);Assert.That(salvage.Selectable,Is.True);Assert.That(salvage.Health,Is.Zero);
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.Award(1000);

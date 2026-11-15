@@ -66,6 +66,49 @@ namespace RoboRougelike.Mechanics.PointDefense.Tests
             defense.ScanNow();
             Assert.AreSame(t.GetComponent<PointDefenseThreatProxy>(), defense.CurrentTarget);
         }
+        [Test] public void ScanningWorksWithManyOwnCollidersInDetectionArea()
+        {
+            for(int i=0;i<260;i++)root.AddComponent<BoxCollider>().size=Vector3.one*.1f;
+            var threat=CreateMissile();Physics.SyncTransforms();defense.ScanNow();
+            Assert.AreSame(threat.GetComponent<PointDefenseThreatProxy>(),defense.CurrentTarget);
+        }
+        [Test] public void ScanningWorksThroughManyOwnCollidersButStillRespectsWall()
+        {
+            var own=Track("OwnDenseSight",new Vector3(0,0,3));own.transform.SetParent(root.transform,true);
+            for(int i=0;i<100;i++)own.AddComponent<BoxCollider>().size=Vector3.one*.1f;
+            var threat=CreateMissile();Physics.SyncTransforms();defense.ScanNow();
+            Assert.AreSame(threat.GetComponent<PointDefenseThreatProxy>(),defense.CurrentTarget);
+            var wall=Track("Wall",new Vector3(0,0,6));wall.AddComponent<BoxCollider>().size=new Vector3(5,5,1);
+            Physics.SyncTransforms();defense.ScanNow();Assert.IsNull(defense.CurrentTarget);
+        }
+        [Test] public void ScanningWorksWithManyOwnCollidersAtMuzzle()
+        {
+            var own=Track("OwnDenseMuzzle",muzzle.transform.position);own.transform.SetParent(root.transform,true);
+            for(int i=0;i<50;i++)own.AddComponent<BoxCollider>().size=Vector3.one*.1f;
+            var threat=CreateMissile();Physics.SyncTransforms();defense.ScanNow();
+            Assert.AreSame(threat.GetComponent<PointDefenseThreatProxy>(),defense.CurrentTarget);
+        }
+        [TestCase(true)][TestCase(false)] public void InterceptorIgnoresDenseOwnGeometryAtStartOrAlongFlight(bool overlap)
+        {
+            var threat=CreateMissile(1.44f);threat.GetComponent<SphereCollider>().radius=.04f;
+            var own=Track("OwnDenseInterceptor",muzzle.transform.position+(overlap?Vector3.zero:Vector3.forward*.2f));own.transform.SetParent(root.transform,true);
+            for(int i=0;i<(overlap?50:100);i++)own.AddComponent<BoxCollider>().size=Vector3.one*.05f;
+            var shot=Track("Dense interceptor",muzzle.transform.position).AddComponent<PointDefenseInterceptor>();
+            shot.Initialize(threat.GetComponent<PointDefenseThreatProxy>(),root.transform,Vector3.forward*18,1,.12f,1);Physics.SyncTransforms();
+            typeof(PointDefenseInterceptor).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(shot,null);
+            Assert.AreEqual(1,threat.interceptCalls);
+        }
+        [Test] public void DenseInterceptorSweepStillStopsAtForeignWall()
+        {
+            var threat=CreateMissile(1.44f);threat.GetComponent<SphereCollider>().radius=.04f;
+            var own=Track("OwnDenseInterceptor",muzzle.transform.position+Vector3.forward*.2f);own.transform.SetParent(root.transform,true);
+            for(int i=0;i<100;i++)own.AddComponent<BoxCollider>().size=Vector3.one*.05f;
+            var wall=Track("Wall",muzzle.transform.position+Vector3.forward*.26f);wall.AddComponent<BoxCollider>().size=Vector3.one*.03f;
+            var shot=Track("Dense interceptor",muzzle.transform.position).AddComponent<PointDefenseInterceptor>();
+            shot.Initialize(threat.GetComponent<PointDefenseThreatProxy>(),root.transform,Vector3.forward*18,1,.12f,1);Physics.SyncTransforms();
+            typeof(PointDefenseInterceptor).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(shot,null);
+            Assert.AreEqual(0,threat.interceptCalls,"The retry must never make a projectile pass through a wall.");
+        }
         [Test] public void Scanning_SkipsFriendly()
         {
             CreateMissile(faction: 1); defense.ScanNow();

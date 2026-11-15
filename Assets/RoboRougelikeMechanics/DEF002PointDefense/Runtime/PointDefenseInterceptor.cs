@@ -40,11 +40,13 @@ namespace RoboRougelike.Mechanics.PointDefense
             // Explicitly reject a muzzle or flight step embedded in foreign geometry.
             int overlapCount = Physics.OverlapSphereNonAlloc(transform.position, radius,
                 initialOverlaps, collisionMask, QueryTriggerInteraction.Collide);
-            if (overlapCount >= initialOverlaps.Length) { Destroy(gameObject); return; }
+            Collider[] overlapHits=initialOverlaps;
+            if(overlapCount>=initialOverlaps.Length)
+            {overlapHits=Physics.OverlapSphere(transform.position,radius,collisionMask,QueryTriggerInteraction.Collide);overlapCount=overlapHits.Length;}
             bool touchingLockedTarget = false;
             for (int i = 0; i < overlapCount; i++)
             {
-                Collider col = initialOverlaps[i];
+                Collider col = overlapHits[i];
                 if (col == null || col.transform.IsChildOf(transform)) continue;
                 if (ownerRoot != null && col.transform.IsChildOf(ownerRoot)) continue;
                 if (col.GetComponentInParent<PointDefenseThreatProxy>() == target)
@@ -66,20 +68,21 @@ namespace RoboRougelike.Mechanics.PointDefense
             if (distance < 0.00001f) return;
             int count = Physics.SphereCastNonAlloc(transform.position, radius, displacement / distance,
                 hits, distance, collisionMask, QueryTriggerInteraction.Collide);
-            // A full buffer makes sorting/visibility ambiguous: fail closed.
-            if (count >= hits.Length) { Destroy(gameObject); return; }
+            RaycastHit[] impactHits=hits;
+            if(count>=hits.Length)
+            {impactHits=Physics.SphereCastAll(transform.position,radius,displacement/distance,distance,collisionMask,QueryTriggerInteraction.Collide);count=impactHits.Length;}
             float nearest = float.PositiveInfinity;
             Collider impact = null;
             for (int i = 0; i < count; i++)
             {
-                Collider col = hits[i].collider;
+                Collider col = impactHits[i].collider;
                 if (col == null || col.transform.IsChildOf(transform)) continue;
                 if (ownerRoot != null && col.transform.IsChildOf(ownerRoot)) continue;
                 if (col.isTrigger && col.GetComponentInParent<PointDefenseThreatProxy>() != target)
                     continue; // capture trigger-based rockets, not arbitrary trigger areas
-                if (hits[i].distance < nearest)
+                if (impactHits[i].distance < nearest)
                 {
-                    nearest = hits[i].distance;
+                    nearest = impactHits[i].distance;
                     impact = col;
                 }
             }

@@ -134,7 +134,9 @@ namespace RoboRougelike.Mechanics.PointDefense
             Vector3 center = vehicleBody.worldCenterOfMass;
             int count = Physics.OverlapSphereNonAlloc(center, settings.detectionRadius, nearby,
                 settings.threatLayerMask, QueryTriggerInteraction.Collide);
-            if (count >= nearby.Length) return null; // overflow => no shot, not incomplete targeting
+            Collider[] detectionHits=nearby;
+            if(count>=nearby.Length)
+            {detectionHits=Physics.OverlapSphere(center,settings.detectionRadius,settings.threatLayerMask,QueryTriggerInteraction.Collide);count=detectionHits.Length;}
             visited.Clear();
             PointDefenseThreatProxy best = null;
             float bestT = float.PositiveInfinity;
@@ -142,7 +144,7 @@ namespace RoboRougelike.Mechanics.PointDefense
             int bestId = int.MaxValue;
             for (int i = 0; i < count; i++)
             {
-                Collider hit = nearby[i];
+                Collider hit = detectionHits[i];
                 if (hit == null || (vehicleRoot != null && hit.transform.IsChildOf(vehicleRoot))) continue;
                 PointDefenseThreatProxy proxy = hit.GetComponentInParent<PointDefenseThreatProxy>();
                 if (proxy == null || !visited.Add(proxy.GetInstanceID()) || !ValidTarget(proxy)) continue;
@@ -170,10 +172,12 @@ namespace RoboRougelike.Mechanics.PointDefense
             // Raycast may miss colliders enveloping the muzzle. Fail closed.
             int overlaps = Physics.OverlapSphereNonAlloc(origin, 0.025f, muzzleOverlaps,
                 settings.blockerLayerMask, QueryTriggerInteraction.Ignore);
-            if (overlaps >= muzzleOverlaps.Length) return false;
+            Collider[] overlapHits=muzzleOverlaps;
+            if(overlaps>=muzzleOverlaps.Length)
+            {overlapHits=Physics.OverlapSphere(origin,.025f,settings.blockerLayerMask,QueryTriggerInteraction.Ignore);overlaps=overlapHits.Length;}
             for (int i = 0; i < overlaps; i++)
             {
-                Collider col = muzzleOverlaps[i];
+                Collider col = overlapHits[i];
                 if (col == null) continue;
                 if (vehicleRoot != null && col.transform.IsChildOf(vehicleRoot)) continue;
                 if (col.transform.IsChildOf(threat.transform)) continue;
@@ -181,14 +185,16 @@ namespace RoboRougelike.Mechanics.PointDefense
             }
             int count = Physics.RaycastNonAlloc(origin, displacement / distance, sightHits,
                 distance, settings.blockerLayerMask, QueryTriggerInteraction.Ignore);
-            if (count >= sightHits.Length) return false;
+            RaycastHit[] lineHits=sightHits;
+            if(count>=sightHits.Length)
+            {lineHits=Physics.RaycastAll(origin,displacement/distance,distance,settings.blockerLayerMask,QueryTriggerInteraction.Ignore);count=lineHits.Length;}
             for (int i = 0; i < count; i++)
             {
-                Collider col = sightHits[i].collider;
+                Collider col = lineHits[i].collider;
                 if (col == null) continue;
                 if (vehicleRoot != null && col.transform.IsChildOf(vehicleRoot)) continue;
                 if (col.transform.IsChildOf(threat.transform)) continue;
-                if (sightHits[i].distance + 0.005f < distance) return false;
+                if (lineHits[i].distance + 0.005f < distance) return false;
             }
             return true;
         }
