@@ -11,11 +11,13 @@ namespace RoboRougelike.WPN004.Tests.PlayMode
         public int Hits;
         public float TotalDamage;
         public Vector3 LastImpulse;
+        public System.Action OnHit;
         public void ReceiveRocketDamage(float damage, Vector3 point, Vector3 impulse, GameObject attacker)
         {
             Hits++;
             TotalDamage += damage;
             LastImpulse = impulse;
+            OnHit?.Invoke();
         }
     }
 
@@ -201,6 +203,35 @@ namespace RoboRougelike.WPN004.Tests.PlayMode
             Assert.IsTrue(missile == null || missile.IsResolved);
         }
 
+        [Test]
+        public void ReceiverLookupUsesNearestEnabledAncestorWithoutLeakingAcrossTargets()
+        {
+            var root=new GameObject("Receiver root");var rootReceiver=root.AddComponent<TestRocketReceiver>();
+            var middle=new GameObject("Receiver middle");middle.transform.SetParent(root.transform);
+            var middleReceiver=middle.AddComponent<TestRocketReceiver>();
+            var child=new GameObject("Receiver collider");child.transform.SetParent(middle.transform);var collider=child.AddComponent<BoxCollider>();
+            var other=new GameObject("Unrelated collider");var unrelated=other.AddComponent<BoxCollider>();
+            try
+            {
+                Assert.AreSame(middleReceiver,RocketBlastResolver.ReceiverFor(collider));
+                middleReceiver.enabled=false;Assert.AreSame(rootReceiver,RocketBlastResolver.ReceiverFor(collider));
+                Assert.IsNull(RocketBlastResolver.ReceiverFor(unrelated),"A previous lookup must not leak its receiver.");
+                rootReceiver.enabled=false;Assert.IsNull(RocketBlastResolver.ReceiverFor(collider));
+                middleReceiver.enabled=true;Assert.AreSame(middleReceiver,RocketBlastResolver.ReceiverFor(collider));
+            }
+            finally{Object.DestroyImmediate(root);Object.DestroyImmediate(other);}
+        }
+        [Test]
+        public void NestedExplosionDoesNotLoseEitherExplosionsTargets()
+        {
+            var first=CreateTarget(Vector3.forward);var second=CreateTarget(Vector3.left);
+            Vector3 nestedCenter=Vector3.right*30;var nested=CreateTarget(nestedCenter+Vector3.forward);
+            first.OnHit=()=>RocketBlastResolver.Resolve(nestedCenter,Vector3.up,config.Snapshot(),null,owner,new Collider[64],new RaycastHit[64]);
+            Physics.SyncTransforms();
+            var result=RocketBlastResolver.Resolve(Vector3.zero,Vector3.up,config.Snapshot(),null,owner,new Collider[64],new RaycastHit[64]);
+            Assert.IsFalse(result.Overflow);Assert.AreEqual(2,result.DamagedParts);
+            Assert.AreEqual(1,first.Hits);Assert.AreEqual(1,second.Hits);Assert.AreEqual(1,nested.Hits);
+        }
         [Test]
         public void BlastDamagesOneReceiverOnceForMultipleColliders()
         {

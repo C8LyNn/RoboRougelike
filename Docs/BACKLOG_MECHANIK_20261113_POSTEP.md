@@ -1051,3 +1051,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 #### 20. Krótszy opis premii w garażu
 
 - Skrócono komunikat Double Shot, zachowując informację o pełnych 100%, częściowej szansie, obsługiwanych broniach, rezerwie oraz ograniczeniu bonusów. To wyłącznie zmiana tekstu; jego faktyczne zawijanie w Playerze: **NOT RUN**.
+
+#### 14, 44. Mniej tymczasowych kolekcji przy wybuchach
+
+- Wyszukiwanie odbiorcy obrażeń w hierarchii klocka ponownie używa listy komponentów. Zbiory wykrytych, widocznych i trafionych obiektów są czyszczone i ponownie używane przy kolejnych wybuchach; wybuch wywołany wewnątrz innego dostaje osobne kolekcje. Nie zmieniono kolejności trafień, zasłaniania ani limitu bonusowych pocisków.
+- Unity 6000.3.14f1: **20 PASS, 0 FAIL** PlayMode (`rocket_scratch_play.xml`, `.log`), w tym wybór najbliższego aktywnego odbiorcy i wybuch uruchomiony przez obrażenia innego wybuchu. Integracja **6 PASS, 0 FAIL** (`rocket_scratch_game.xml`, `.log`) obejmuje fizyczne części, zatłoczone zapytania, kopułę i obronę punktową. Zmiana usuwa jawne ponowne tworzenie kolekcji w typowej ścieżce; wpływ na alokacje i FPS w Playerze: **NOT RUN**.
