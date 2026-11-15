@@ -31,6 +31,7 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Śruciny korzystają teraz z istniejącej puli zwykłych pocisków, z resetem danych wystrzału i śledzeniem ignorowanych kolizji także pomiędzy śrucinami. Pula ogranicza wyłącznie liczbę przechowywanych nieaktywnych obiektów, nie liczbę strzałów podstawowych.
 - Unity 6000.3.14f1: `shotgun_reuse_after.xml` i `.log`: **6 PASS, 0 FAIL**, w tym dwie kolejne salwy faktycznie trafiające cel, wykorzystanie zwolnionych obiektów, tier i koszt energii, Double Shot, wiele strzelb oraz blokada strzału przez własny pancerz. Przed zmianą `shotgun_reuse_before.xml`: **1 FAIL** z powodu braku ponownego użycia.
+- Dodatkowo `shotgun_enemy_cleanup.xml` i `.log`: **2 PASS, 0 FAIL** dla strzelby przeciwnika oraz sprzątania fizycznych pocisków i odłamków.
 - To przygotowanie wydajnościowe, bez pomiaru FPS i bez usunięcia ograniczeń dodatkowych pocisków. Ręczna gra Windows: **NOT RUN**.
 
 ## 10–11. Fuzja części — częściowo sprawdzone i uzupełnione
