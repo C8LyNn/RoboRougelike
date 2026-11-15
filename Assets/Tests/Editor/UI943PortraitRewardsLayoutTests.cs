@@ -43,6 +43,17 @@ public sealed class UI943PortraitRewardsLayoutTests
         var label=(string)Method("RewardBasketContentsForModel").Invoke(null,new object[]{new[]{wheel},model});
         Assert.That(label,Does.Contain("×3"));
     }
+    [TestCase(-1,0,0,0,"brak łupów")]
+    [TestCase(-1,6,0,0,"wymagany")]
+    [TestCase(1,6,0,3,"3 części")]
+    [TestCase(4,6,0,2,"2 części • str. 2")]
+    [TestCase(1,6,1,3,"3 części • str. 1")]
+    [TestCase(6,6,0,0,"wymagany")]
+    public void SelectionSummaryIdentifiesAnOffscreenBasket(int selected,int count,int page,int parts,string expected)
+    {
+        var text=(string)Method("RewardBasketSelectionText").Invoke(null,new object[]{selected,count,page,parts});
+        Assert.That(text,Is.EqualTo(expected));
+    }
     [Test] public void RerollButtonsFitAlongsideInventoryAndBasketCards()
     {
         var portrait=RectOf("PortraitRewardRerollRect");var pager=RectOf("PortraitRewardPager");

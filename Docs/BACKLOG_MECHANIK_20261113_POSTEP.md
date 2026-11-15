@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 31 i 44. Wybrany zestaw poza widoczną stroną
+
+- Podsumowanie nagród w poziomym i pionowym układzie wskazuje stronę, na której nadal zaznaczony jest zestaw, gdy gracz przegląda inną stronę. Brak lub nieaktualny wybór nadal jest opisany jako wymagający wyboru; brak łupów ma osobny komunikat. Nie zmieniono zawartości nagród ani zasad ich przyznawania.
+- Unity 6000.3.14f1: **38 PASS, 0 FAIL** (`reward_selection_final.xml`, `.log`) dla opisów, układu oraz wyboru i odbioru z dalszej strony. Przed zmianą `reward_selection_red.xml`: **6 FAIL** z powodu braku informacji. Rzeczywista czytelność w Playerze: **NOT RUN**.
+
 ### 13. Zakresy premii czterech rodzin broni pociskowej
 
 - Dodano osobne zakresy obrażeń ciężkiego działa, strzelby, railguna i wyrzutni rakiet. Ich premie sumują się z globalnymi, broni oraz właściwym typem obrażeń, a `more/less` pozostają osobnymi mnożnikami. Wyłączenie fizycznego modułu usuwa jego wkład. Każda rodzina otrzymała opisaną, konfigurowalną nagrodę +30%; wartości i wpływ na pulę losowania są prototypowe. Nowe wartości zakresu dopisano po istniejących, bez zmiany numerów w starych zapisach.

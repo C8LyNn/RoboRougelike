@@ -233,6 +233,13 @@ namespace RoboRougelike.R1
         private static int RewardShortcutIndex(bool first,bool second,bool third)=>first?0:second?1:third?2:-1;
         private static string RewardConfirmCaption(int basketCount)=>basketCount==0?
             "Odbierz bonus [Enter]":"Zatwierdź oba wybory [Enter]";
+        private static string RewardBasketSelectionText(int selected,int basketCount,int currentPage,int partCount)
+        {
+            if(basketCount<=0)return "brak łupów";
+            if(selected<0||selected>=basketCount)return "wymagany";
+            int selectedPage=selected/3;
+            return partCount+" części"+(selectedPage==currentPage?"":$" • str. {selectedPage+1}");
+        }
         private static string RewardActionCaption(int bonus,int bonusCount,int basket,int basketCount,int inventoryCount,int lootCount)
         {
             if(bonusCount<=0)return "Brak dostępnych bonusów";
@@ -326,7 +333,7 @@ namespace RoboRougelike.R1
             int missing=RewardInventoryMissingSlots(run.VehicleModel.Inventory.Count,rewardPartCount);
             bool room=missing==0;
             GUI.Label(new Rect(45,603,685,87),
-                $"Moduł: {(selectedBonus>=0?"wybrany":"wymagany")}  •  Zestaw: {(selectedBasket>=0?rewardPartCount+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n" +
+                $"Moduł: {(selectedBonus>=0?"wybrany":"wymagany")}  •  Zestaw: {RewardBasketSelectionText(selectedBasket,rewardBaskets.Count,basketPage,rewardPartCount)}\n" +
                 $"Niewybrane części → +{run.VehicleModel.PreviewAward(ledger.PreviewScrap(run.VehicleModel,lootSelection))} Z.\n" +
                 "Bonusy trafiają do magazynu i pozostają NIEAKTYWNE do montażu.",small);
             GUI.enabled=rewardBasketRefreshFrame!=Time.frameCount&&RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount);
