@@ -210,17 +210,32 @@ namespace RoboRougelike.R3
             readonly IReadOnlyList<RoboRougelike.WPN001Shotgun.ShotgunPelletSpawn> pellets;
             readonly Vector3 origin;
             readonly float radius;
+            readonly Transform muzzle,pivot;
+            readonly Matrix4x4 ownerPose,muzzlePose,pivotPose;
+            bool clear;
             public int CheckedCount { get; private set; }
             public bool Finished { get; private set; }
-            public bool Clear { get; private set; }
+            public bool Clear
+            {
+                get { if(clear&&!PoseIsCurrent())clear=false;return clear; }
+                private set { clear=value; }
+            }
             internal ShotgunVolleyPathCheck(R3VehicleAssembly assembly,R3MountedPart part,
                 IReadOnlyList<RoboRougelike.WPN001Shotgun.ShotgunPelletSpawn> pellets,float radius,Vector3 origin,bool ready)
-            {this.assembly=assembly;this.part=part;this.pellets=pellets;this.radius=radius;this.origin=origin;Finished=!ready;}
+            {
+                this.assembly=assembly;this.part=part;this.pellets=pellets;this.radius=radius;this.origin=origin;Finished=!ready;
+                if(ready)
+                {
+                    muzzle=part.Muzzle;pivot=part.GunPivot;
+                    ownerPose=assembly.transform.localToWorldMatrix;muzzlePose=muzzle.localToWorldMatrix;pivotPose=pivot.localToWorldMatrix;
+                }
+            }
             public void Advance(int maxChecks)
             {
                 if(maxChecks<=0)throw new System.ArgumentOutOfRangeException(nameof(maxChecks));
                 if(Finished)return;
-                if(assembly==null||part==null){Finished=true;return;}
+                if(!PoseIsCurrent())
+                {Finished=true;return;}
                 int end=(int)System.Math.Min(pellets.Count,(long)CheckedCount+maxChecks);
                 while(CheckedCount<end)
                 {
@@ -232,6 +247,10 @@ namespace RoboRougelike.R3
                 }
                 if(CheckedCount==pellets.Count){Clear=true;Finished=true;}
             }
+            bool PoseIsCurrent()=>assembly!=null&&part!=null&&muzzle!=null&&pivot!=null&&part.gameObject.activeInHierarchy&&
+                part.transform.IsChildOf(assembly.transform)&&part.Muzzle==muzzle&&part.GunPivot==pivot&&
+                ownerPose.Equals(assembly.transform.localToWorldMatrix)&&muzzlePose.Equals(muzzle.localToWorldMatrix)&&
+                pivotPose.Equals(pivot.localToWorldMatrix);
         }
         internal ShotgunVolleyPathCheck BeginShotgunVolleyPathCheck(R3MountedPart part,
             IReadOnlyList<RoboRougelike.WPN001Shotgun.ShotgunPelletSpawn> pellets,float radius)

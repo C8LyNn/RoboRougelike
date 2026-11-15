@@ -61,6 +61,59 @@ public class RRLW6WeaponRegistryTests
 
 public class RRLW6ShotgunPhysicalTests
 {
+    [UnityTest] public IEnumerator CompletedVolleyPathDoesNotRemainClearAfterOwnerMoves()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=true;
+        var assembly=vehicle.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.Single(p=>p.Id==state.Id);
+        yield return null;
+        try
+        {
+            var pellet=new ShotgunPelletSpawn(0,1,gun.Muzzle.position,gun.Muzzle.forward,Vector3.zero,58,9,40,2,body,vehicle.gameObject);
+            var begin=typeof(R3VehicleAssembly).GetMethod("BeginShotgunVolleyPathCheck",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var check=begin.Invoke(assembly,new object[]{gun,new[]{pellet},.05f});
+            var type=check.GetType();type.GetMethod("Advance").Invoke(check,new object[]{1});
+            Assert.That((bool)type.GetProperty("Clear").GetValue(check),Is.True);
+            vehicle.transform.position+=Vector3.right*.2f;Physics.SyncTransforms();
+            Assert.That((bool)type.GetProperty("Clear").GetValue(check),Is.False,
+                "A caller must not commit a previously clear volley after its owner moves.");
+        }
+        finally{if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
+    [UnityTest] public IEnumerator ResumedVolleyPathRejectsStaleMuzzleOrOwnerPose()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=true;
+        var assembly=vehicle.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.Single(p=>p.Id==state.Id);
+        yield return null;
+        try
+        {
+            var begin=typeof(R3VehicleAssembly).GetMethod("BeginShotgunVolleyPathCheck",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            for(int change=0;change<2;change++)
+            {
+                var pellet=new ShotgunPelletSpawn(0,1,gun.Muzzle.position,gun.Muzzle.forward,Vector3.zero,58,9,40,2,body,vehicle.gameObject);
+                var check=begin.Invoke(assembly,new object[]{gun,new[]{pellet,pellet},.05f});
+                var type=check.GetType();var advance=type.GetMethod("Advance");
+                advance.Invoke(check,new object[]{1});
+                Assert.That((int)type.GetProperty("CheckedCount").GetValue(check),Is.EqualTo(1));
+                Assert.That((bool)type.GetProperty("Finished").GetValue(check),Is.False);
+                if(change==0)gun.Muzzle.localPosition+=Vector3.right*.2f;
+                else vehicle.transform.position+=Vector3.right*.2f;
+                Physics.SyncTransforms();
+                advance.Invoke(check,new object[]{1});
+                Assert.That((bool)type.GetProperty("Finished").GetValue(check),Is.True);
+                Assert.That((bool)type.GetProperty("Clear").GetValue(check),Is.False,
+                    change==0?"A moved muzzle must invalidate already checked directions.":"A moved vehicle must invalidate the captured world-space origin.");
+            }
+        }
+        finally{if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
     [UnityTest] public IEnumerator VolleyPathCheckCanResumeAndRejectALateBlockedPellet()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));

@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 44. Nieaktualna pozycja podczas kontroli salwy
+
+- Wznawiana kontrola torów salwy zapamiętuje położenie pojazdu, wylotu i osi obrotu broni. Jeśli w momencie następnego kroku lub odczytu pozytywnego wyniku ustawienie się różni albo broń nie jest już aktywna i przyłączona, wynik zostaje odrzucony. Unika to wykorzystania wcześniej sprawdzonych torów z nieaktualnej pozycji; zmiana przygotowuje dalszą pracę nad dzieleniem dużych salw na klatki.
+- Unity 6000.3.14f1: `shotgun_pose_before.xml` — **1 FAIL**, wznowienie po przesunięciu wylotu błędnie dawało wynik pozytywny. Po pierwszej zmianie `shotgun_pose_after.xml` — **4 PASS**. `shotgun_pose_completed_before.xml` — **1 FAIL**, gotowy wynik pozostawał pozytywny po przesunięciu pojazdu. `shotgun_pose_final.xml` — **5 PASS**, w tym oba scenariusze ruchu, późniejsza zablokowana śrucina oraz prawdziwy wystrzał i trafienie.
+- To nie jest jeszcze asynchroniczny wystrzał: obecna ścieżka strzelby nadal sprawdza i emituje całą podstawową salwę synchronicznie, a limit 64 śrucin pozostaje. Sama kontrola pozycji nie wykrywa wszystkich zmian geometrii pojazdu między etapami; potrzebne są dalsze zabezpieczenia przed zmianą przeszkód oraz zasady ponawiania i rozliczenia salwy. Nie wykonano ręcznego testu ani pomiaru wydajności.
+
 ### 02, 14, 21–23, 42 i 44. Wspólny budżet tworzenia pocisków
 
 - Kolejki pocisków konwencjonalnych, rakiet i urządzeń współdzielą orientacyjny budżet pracy 4 ms na klatkę i kolejno obsługują oczekujących właścicieli. Nadmiar pracy pozostaje w kolejce na później. Kolejka gracza wstrzymana podczas ratunku nie blokuje pozostałych; wyłączenie komponentu usuwa go z harmonogramu, a ponowne włączenie przywraca jego oczekujące zadania.
