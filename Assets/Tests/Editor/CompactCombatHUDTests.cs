@@ -75,6 +75,18 @@ public sealed class CompactCombatHUDTests
         Assert.That(Warning(float.NaN,100,float.NaN,500),Is.Null);
         Assert.That(Warning(1,0,1,0),Is.Null,"Missing resource data must not produce a false alert.");
     }
+    [Test] public void ProjectileWarningOnlyAppearsForAffectedActiveBonuses()
+    {
+        var method=typeof(R1RunHUD).GetMethod("ProjectileBudgetWarning",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        string Warning(bool shells,bool rockets,bool bonus,bool shellGun,bool rocketGun)=>(string)method.Invoke(null,new object[]{shells,rockets,bonus,shellGun,rocketGun});
+        Assert.That(Warning(true,true,false,true,true),Is.Null,"A vehicle without a bonus must not get a false warning.");
+        Assert.That(Warning(true,false,true,false,true),Is.Null,"A full shell budget cannot block rocket bonuses.");
+        Assert.That(Warning(false,true,true,true,false),Is.Null,"A full rocket budget cannot block shell bonuses.");
+        Assert.That(Warning(true,false,true,true,false),Does.Contain("bonusowe pociski"));
+        Assert.That(Warning(false,true,true,false,true),Does.Contain("bonusowe rakiety"));
+        Assert.That(Warning(true,true,true,true,true),Does.Contain("bonusowe pociski i rakiety"));
+    }
     [Test] public void EquipmentWarningsDistinguishLastWheelAndInactiveWeapons()
     {
         var method=typeof(R1RunHUD).GetMethod("CombatEquipmentWarning",BindingFlags.Static|BindingFlags.NonPublic);

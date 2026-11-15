@@ -1042,3 +1042,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Licznik tymczasowego budżetu bonusowych rakiet korzysta z rejestru aktywnych lotów zamiast wielokrotnie przeszukiwać scenę. Wyłączona rakieta nie zajmuje miejsca; ponowne włączenie przywraca ją do licznika, a przechwycenie zwalnia miejsce jeszcze przed odroczonym usunięciem obiektu. Sam limit bonusów pozostaje bez zmian.
 - Unity 6000.3.14f1: **7 PASS, 0 FAIL** (`rocket_registry_final.xml`, `.log`) obejmuje wyłączenie, ponowne włączenie, dezaktywację obiektu, przechwycenie, zmianę sceny i rzeczywiste salwy. Przed zmianą `rocket_registry_red.xml` wyłączony komponent nadal zajmował miejsce. Dodatkowo **18 PASS, 0 FAIL** PlayMode (`rocket_registry_package_final.xml`, `.log`). Koszt CPU w Playerze oraz duże, długotrwałe starcie: **NOT RUN**.
+
+#### 14, 20, 44. Ostrzeżenie o bonusowych rakietach
+
+- HUD rozróżnia zapełniony budżet bonusowych pocisków i rakiet. Komunikat pojawia się dla broni i aktywnej premii, których dotyczy ograniczenie; nie sugeruje, że przestają działać podstawowe strzały.
+- Unity 6000.3.14f1: **22 PASS, 0 FAIL** (`rocket_warning_final.xml`, `.log`), w tym przypadki bez aktywnego bonusu, z niepasującą bronią, zapełnieniem jednego lub obu budżetów oraz istniejące testy HUD i rejestru rakiet. `rocket_warning_red.xml`: brak rozróżnienia komunikatów. Faktyczny wygląd i czas pojawiania się komunikatu podczas ręcznej walki: **NOT RUN**.
