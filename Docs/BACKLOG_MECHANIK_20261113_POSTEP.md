@@ -7,7 +7,7 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Wpisy są chronologiczne: wcześniejsze opisy braków mogą zostać uzupełnione przez późniejsze wpisy dotyczące tego samego punktu. Nie traktuj pierwszego nagłówka jako aktualnej oceny całej pozycji.
 - Cargo Uplink oraz radar i minimapa mają tymczasowe działające rozwiązania wybrane zgodnie z późniejszą prośbą właściciela; ich wartości i czytelność wymagają playtestu.
-- **02 i 14 pozostają otwarte:** współdzielony limit 96 aktywnych pocisków fizycznych i 32 rakiet może powstrzymać część strzałów lub dodatkowych pocisków. Ich zastąpienie musi zachować zachowanie każdego pocisku i nie zawieszać gry; samo ukrycie albo podniesienie limitu nie rozwiązuje zadania.
+- **02 i 14 pozostają otwarte:** podstawowe strzały nie są już blokowane przy 96 aktywnych pociskach lub 32 rakietach, ale te progi nadal ograniczają powstawanie dodatkowych pocisków. Ich zastąpienie musi zachować zachowanie każdego pocisku i nie zawieszać gry; samo ukrycie albo podniesienie limitu nie rozwiązuje zadania. Zniesienie progu dla podstawowych strzałów zwiększa potencjalne obciążenie i wymaga profilowania.
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
@@ -1047,3 +1047,7 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - HUD rozróżnia zapełniony budżet bonusowych pocisków i rakiet. Komunikat pojawia się dla broni i aktywnej premii, których dotyczy ograniczenie; nie sugeruje, że przestają działać podstawowe strzały.
 - Unity 6000.3.14f1: **22 PASS, 0 FAIL** (`rocket_warning_final.xml`, `.log`), w tym przypadki bez aktywnego bonusu, z niepasującą bronią, zapełnieniem jednego lub obu budżetów oraz istniejące testy HUD i rejestru rakiet. `rocket_warning_red.xml`: brak rozróżnienia komunikatów. Faktyczny wygląd i czas pojawiania się komunikatu podczas ręcznej walki: **NOT RUN**.
+
+#### 20. Krótszy opis premii w garażu
+
+- Skrócono komunikat Double Shot, zachowując informację o pełnych 100%, częściowej szansie, obsługiwanych broniach, rezerwie oraz ograniczeniu bonusów. To wyłącznie zmiana tekstu; jego faktyczne zawijanie w Playerze: **NOT RUN**.
