@@ -581,7 +581,13 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(350,290,580,58),PauseCaption(run,1,run.MapReturnPending?"Potwierdź powrót":"Powrót do menu głównego"),button))run.RestartRun();
             if(GUI.Button(new Rect(350,360,580,58),PauseCaption(run,2,run.MapQuitPending?"Potwierdź wyjście":"Wyjdź z gry"),button))run.RequestQuitFromMenu();
             if(GUI.Button(new Rect(950,220,240,58),PauseCaption(run,3,"Sterowanie"),compactButton))OpenPauseControls();
-            GUI.Label(new Rect(350,430,580,60),run.MapExitPending?run.EditorMessage:"↑ / ↓ i Enter • pad: krzyżak, A, B / Start",small);
+            if(run.CanRescueFromPause)
+            {
+                GUI.enabled=run.EmergencyRescueCooldownLeft<=0;
+                if(GUI.Button(new Rect(950,290,240,58),PauseCaption(run,4,RescueButtonText(run)),compactButton))run.TryEmergencyRescueFromPause();
+                GUI.enabled=true;
+            }
+            GUI.Label(new Rect(350,430,580,60),run.MapExitPending?run.EditorMessage:run.EmergencyRescueNotice??"↑ / ↓ i Enter • pad: krzyżak, A, B / Start",small);
             DrawMovementPause(run);DrawSuspensionPause(run);
         }
         private static string PauseCaption(R1RunController run,int index,string label)

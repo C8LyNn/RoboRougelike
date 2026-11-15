@@ -46,11 +46,13 @@ namespace RoboRougelike.R1
         bool RangePause=>!MapEditorTesting&&Progress?.State==R1RunState.TestDrive;
         void MovePauseSelection(int direction)
         {
-            int count=MapEditorTesting?5:RangePause?6:4;
+            int count=(MapEditorTesting?5:RangePause?6:4)+(CanRescueFromPause?1:0);
             PauseSelection=(PauseSelection+count+direction)%count;
         }
         void ConfirmPauseSelection()
         {
+            if(CanRescueFromPause&&PauseSelection==(MapEditorTesting?5:RangePause?6:4))
+            {TryEmergencyRescueFromPause();return;}
             if(RangePause)
             {
                 if(PauseSelection==0)TogglePause();

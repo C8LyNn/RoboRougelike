@@ -35,9 +35,17 @@ namespace RoboRougelike.R1
         void SetRescueNotice(string text,bool whileActive=false){EmergencyRescueMessage=text;rescueNoticeWhileActive=whileActive;emergencyRescueMessageUntil=Time.unscaledTime+3f;}
         void ResetEmergencyRescue(){emergencyRescueReadyAt=0;emergencyRescueAttackReadyAt=0;emergencyRescueMessageUntil=0;garageRescueUntil=0;rescueNoticeWhileActive=false;EmergencyRescueMessage=null;}
 
-        public bool TryEmergencyRescue()
+        public bool CanRescueFromPause=>!RangeDisabled&&Progress!=null&&
+            (Progress.State==R1RunState.Combat||Progress.State==R1RunState.TestDrive||Progress.State==R1RunState.SafeZone);
+        public bool TryEmergencyRescue()=>TryEmergencyRescueCore(false);
+        public bool TryEmergencyRescueFromPause()
         {
-            if(Transitioning||Paused||QuitRequested||Player==null||Progress==null)return false;
+            if(!Paused||!CanRescueFromPause)return false;
+            return TryEmergencyRescueCore(true);
+        }
+        bool TryEmergencyRescueCore(bool fromPause)
+        {
+            if(Transitioning||(Paused&&!fromPause)||QuitRequested||Player==null||Progress==null)return false;
             if(Progress.State==R1RunState.Garage)
             {
                 Garage.Open();garageRescueUntil=Time.unscaledTime+Mathf.Max(0,EmergencyRescueDurationSeconds);
@@ -55,6 +63,7 @@ namespace RoboRougelike.R1
             emergencyRescueAttackReadyAt=Time.time+Mathf.Max(0,EmergencyRescueDurationSeconds);
             emergencyRescueReadyAt=Time.time+Mathf.Max(0,EmergencyRescueCooldownSeconds);
             SetRescueNotice(EmergencyRescueActiveDescription,true);
+            if(fromPause)TogglePause();
             return true;
         }
 

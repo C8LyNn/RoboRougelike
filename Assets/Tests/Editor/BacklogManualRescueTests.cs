@@ -43,6 +43,38 @@ public sealed class BacklogManualRescueTests
         Assert.That(Vector3.Dot(body.rotation*Vector3.up,Vector3.up),Is.GreaterThan(.99f));
     }
 
+    [UnityTest] public IEnumerator PausedCombatRescueCanBeSelectedAndKeepsProtectionRules()
+    {
+        run.Encounter.SetCombatActive(false);var player=run.Player;
+        var hp=player.GetComponentsInChildren<P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        run.TogglePause();Assert.That(run.Paused,Is.True);Assert.That(Time.timeScale,Is.Zero);
+        var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+        var move=typeof(R1RunController).GetMethod("MovePauseSelection",flags);
+        var confirm=typeof(R1RunController).GetMethod("ConfirmPauseSelection",flags);
+        for(int i=0;i<4;i++)move.Invoke(run,new object[]{1});
+        Assert.That(run.PauseSelection,Is.EqualTo(4),"Rescue must be reachable from the pause menu using keyboard or pad.");
+        confirm.Invoke(run,null);
+        Assert.That(run.Paused,Is.False);Assert.That(Time.timeScale,Is.EqualTo(1));
+        Assert.That(run.EmergencyRescueActive,Is.True);Assert.That(run.EmergencyRescueAttackBlocked,Is.True);
+        Assert.That(player.GetComponentsInChildren<P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.EqualTo(hp).Within(.01));
+        float accepted=player.Core.ApplyDamageResolvedTyped(20,player.Core.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Kinetic);
+        Assert.That(accepted,Is.EqualTo(10).Within(.001),"A paused combat rescue must use the normal incoming damage multiplier.");
+        yield return null;
+    }
+    [UnityTest] public IEnumerator FailedPausedRescueKeepsTheGamePaused()
+    {
+        run.Encounter.SetCombatActive(false);run.TogglePause();var body=run.Player.GetComponent<Rigidbody>();
+        bool wasKinematic=body.isKinematic;body.isKinematic=true;
+        try
+        {
+            var action=typeof(R1RunController).GetMethod("TryEmergencyRescueFromPause",BindingFlags.Instance|BindingFlags.Public);
+            Assert.That(action,Is.Not.Null);Assert.That(action.Invoke(run,null),Is.EqualTo(false));
+            Assert.That(run.Paused,Is.True);Assert.That(Time.timeScale,Is.Zero);Assert.That(run.EmergencyRescueActive,Is.False);
+        }
+        finally{body.isKinematic=wasKinematic;}
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator CombatRescueFeedbackReportsHalfDamageOnlyDuringProtection()
     {
         run.Encounter.SetCombatActive(false);run.EmergencyRescueDurationSeconds=.25f;

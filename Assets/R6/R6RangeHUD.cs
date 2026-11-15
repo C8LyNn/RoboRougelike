@@ -79,15 +79,21 @@ namespace RoboRougelike.R1
                 Panel(new Rect(190,115,900,550));
                 GUI.Label(new Rect(230,145,560,65),run.RangeDisabled?"Pojazd testowy unieruchomiony":"POLIGON • PAUZA",title);
                 if(GUI.Button(new Rect(810,150,240,45),PauseCaption(run,5,"Sterowanie"),compactButton))OpenPauseControls();
-                GUI.Label(new Rect(230,225,820,50),"Testujesz kopię — uszkodzenia i złom nie zmieniają garażu.\nGłówne akcje: ↑ / ↓ i Enter • pad: krzyżak, A, B / Start",small);
+                GUI.Label(new Rect(230,225,820,50),run.EmergencyRescueNotice??"Testujesz kopię — uszkodzenia i złom nie zmieniają garażu.\nGłówne akcje: ↑ / ↓ i Enter • pad: krzyżak, A, B / Start",small);
                 var pausedRange=run.GetComponent<R6TestRange>();
-                if(run.CreativeWorkshop&&!run.RangeDisabled&&GUI.Button(new Rect(230,280,820,36),"Przeciwnicy — dodaj lub usuń",compactButton))
+                if(run.CreativeWorkshop&&!run.RangeDisabled&&GUI.Button(new Rect(230,280,395,36),"Przeciwnicy — dodaj lub usuń",compactButton))
                 {creativeEnemyMenu=true;creativeEnemyMessage=null;}
-                if(pausedRange?.TrainingTarget!=null)
+                if(!run.CreativeWorkshop&&pausedRange?.TrainingTarget!=null)
                 {
                     GUI.enabled=!run.RangeDisabled&&!pausedRange.TrainingTarget.IsDefeated;
-                    if(GUI.Button(new Rect(230,280,820,36),pausedRange.TrainingFireRequested?"Wstrzymaj ostrzał celu":"Włącz ostrzał celu po wznowieniu",compactButton))
+                    if(GUI.Button(new Rect(230,280,395,36),pausedRange.TrainingFireRequested?"Wstrzymaj ostrzał celu":"Włącz ostrzał celu",compactButton))
                         pausedRange.SetTrainingFire(!pausedRange.TrainingFireRequested);
+                    GUI.enabled=true;
+                }
+                if(run.CanRescueFromPause)
+                {
+                    GUI.enabled=run.EmergencyRescueCooldownLeft<=0;
+                    if(GUI.Button(new Rect(650,280,400,36),PauseCaption(run,6,RescueButtonText(run)),compactButton))run.TryEmergencyRescueFromPause();
                     GUI.enabled=true;
                 }
                 if(!run.RangeDisabled&&GUI.Button(new Rect(230,325,820,60),PauseCaption(run,0,"Wznów  ["+R1ControlProfile.Display(R1ControlProfile.Current.Binding("Pause"))+"]"),button))run.TogglePause();

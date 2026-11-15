@@ -175,6 +175,24 @@ public sealed class Exit273PauseTests
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
         Assert.That(run.Paused,Is.False);
     }
+    [UnityTest] public IEnumerator RangePauseRescueResumesWithoutDamageAndGrantsImmunity()
+    {
+        Assert.That(run.EnterTestRange(),Is.True);float deadline=Time.realtimeSinceStartup+15;
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Transitioning,Is.False);run.TogglePause();
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var move=typeof(R1RunController).GetMethod("MovePauseSelection",flags);
+        var confirm=typeof(R1RunController).GetMethod("ConfirmPauseSelection",flags);
+        for(int i=0;i<6;i++)move.Invoke(run,new object[]{1});
+        Assert.That(run.PauseSelection,Is.EqualTo(6));float hp=run.Player.Core.CurrentHp;
+        confirm.Invoke(run,null);
+        Assert.That(run.Paused,Is.False);Assert.That(Time.timeScale,Is.EqualTo(1));
+        Assert.That(run.EmergencyRescueActive,Is.True);Assert.That(run.EmergencyRescueAttackBlocked,Is.True);
+        Assert.That(run.Player.Core.CurrentHp,Is.EqualTo(hp).Within(.01f));
+        run.Player.Core.ApplyDamage(20,run.Player.Core.transform.position,Vector3.up);
+        Assert.That(run.Player.Core.CurrentHp,Is.EqualTo(hp).Within(.01f),"Rescue on the range must protect against incoming damage.");
+        yield return null;
+    }
     [UnityTest] public IEnumerator DisabledTestVehicleSelectsResetInsteadOfUnavailableResume()
     {
         Assert.That(run.EnterTestRange(),Is.True);

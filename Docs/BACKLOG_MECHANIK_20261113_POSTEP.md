@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 42 i 44. Ratunek dostępny z menu pauzy
+
+- W aktywnej grze kamera blokuje kursor do celowania, co utrudniało użycie przycisku ratunku na HUD myszą. Ratunek jest teraz dostępny w pauzie walki, poligonu i testu własnej mapy, także przez wybór klawiaturą lub padem. Udana akcja wznawia rozgrywkę; nieudana pozostawia pauzę. Dotychczasowy skrót i zasady obrażeń pozostają zachowane.
+- Unity 6000.3.14f1: `pause_rescue_before.xml` — **3 FAIL**, brak akcji w menu i jej obsługi. `pause_rescue_after.xml` — **8 PASS**, w tym dostęp w walce i na poligonie, nieudana próba, połowa przyjmowanych obrażeń w walce, niewrażliwość na poligonie oraz wcześniejsze funkcje pauzy. W widocznym edytorze ręcznie otwarto poligon dla Lewiatana i wybrano nowy przycisk: pauza zniknęła, pokazano ochronę i cooldown, rdzeń oraz części pozostały na 100% HP. Widocznego Windows Playera, przycisku w teście mapy oraz całej walki ręcznie **nie sprawdzono**. Punkt 44 pozostaje otwarty.
+
 ### 25–26 i 44. Przeszkoda połączona z podłożem
 
 - Kontrola wolnego miejsca urządzenia uwzględnia także collider podłoża, gdy jego geometria faktycznie wchodzi w zajmowaną przestrzeń. Przeszkoda połączona z podłogą w jedną siatkę nie jest więc pomijana tylko dlatego, że środkowy promień rozpoznał ten sam collider jako podparcie. Wolna podłoga siatkowa nadal pozwala na ustawienie rampy; przy odmowie zasoby i cooldown pozostają bez zmian.
