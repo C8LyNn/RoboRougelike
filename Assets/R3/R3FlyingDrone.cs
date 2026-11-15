@@ -44,9 +44,10 @@ namespace RoboRougelike.R3
     public sealed class R3HealingTurret : MonoBehaviour,IRRLTeamMember
     {
         R3VehicleAssembly owner;Rigidbody ownerBody;float radius,rate;Collider[] hits=new Collider[64];
+        R1BonusScope repairCategory=R1BonusScope.Turrets;
         public int TeamId=>owner!=null?RRLHitRouter.Team(owner.transform):0;
-        public void Configure(R3VehicleAssembly assembly,float range,float ratioPerSecond)
-        {owner=assembly;ownerBody=assembly!=null?assembly.GetComponent<Rigidbody>():null;radius=range;rate=ratioPerSecond;}
+        public void Configure(R3VehicleAssembly assembly,float range,float ratioPerSecond,R1BonusScope category=R1BonusScope.Turrets)
+        {owner=assembly;ownerBody=assembly!=null?assembly.GetComponent<Rigidbody>():null;radius=range;rate=ratioPerSecond;repairCategory=category;}
         void FixedUpdate()
         {
             if(owner==null||ownerBody==null){Destroy(gameObject);return;}
@@ -81,7 +82,9 @@ namespace RoboRougelike.R3
             }
             if(selected!=null)
             {
-                float bonus=owner.GetComponent<R3MountedBonusEffects>()?.RepairEfficiencyMultiplier??1f;
+                var effects=owner.GetComponent<R3MountedBonusEffects>();
+                float bonus=effects==null?1f:repairCategory==R1BonusScope.Drones?
+                    effects.DroneRepairEfficiencyMultiplier:effects.TurretRepairEfficiencyMultiplier;
                 selected.RestoreHealthRatio((float)Math.Min(1d,weakest+(double)rate*bonus*Time.fixedDeltaTime));
             }
         }

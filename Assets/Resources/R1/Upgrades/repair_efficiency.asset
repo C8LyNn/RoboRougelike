@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoboRougelike.R1.R1UpgradeDefinition
   Id: repair_efficiency
   Title: "Wspomaganie napraw"
-  Description: "+30% skuteczności naprawy polowej, impulsu naprawczego i wieżyczki leczniczej."
+  Description: "+30% skuteczności naprawy polowej, impulsu naprawczego, dronów i wieżyczek leczniczych."
   Effect: 10
   Operation: 0
   Scope: 0

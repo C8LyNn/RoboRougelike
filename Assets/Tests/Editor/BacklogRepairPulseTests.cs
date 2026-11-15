@@ -67,6 +67,59 @@ public sealed class BacklogRepairPulseIntegrationTests
         Assert.That(target.Damageable.CurrentHp/target.Damageable.MaxHp,Is.EqualTo(.3f).Within(.001),"Zero repair rate must finish the tick without healing or looping.");
         UnityEngine.Object.Destroy(turretObject);UnityEngine.Object.Destroy(reward);
     }
+    [UnityTest] public IEnumerator ScopedRepairBonusesReachOnlyTheirRealDeployedDeviceAndCombineWithGlobal()
+    {
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(2500);
+        Assert.That(run.GaragePurchase(R3PartKind.HealingDroneGenerator),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.HealingTurretGenerator),Is.True);
+        R1UpgradeDefinition Bonus(string id,R1BonusScope scope,float amount,R1ModifierOperation operation=R1ModifierOperation.Increased)
+        {var item=ScriptableObject.CreateInstance<R1UpgradeDefinition>();item.Id=id;item.Effect=R1UpgradeEffect.RepairEfficiency;item.Scope=scope;item.Amount=amount;item.Operation=operation;return item;}
+        var global=Bonus("repair-global-qa",R1BonusScope.Global,.5f);
+        var droneBonus=Bonus("repair-drone-qa",R1BonusScope.Drones,.3f);
+        var turretBonus=Bonus("repair-turret-qa",R1BonusScope.Turrets,.4f,R1ModifierOperation.More);
+        GameObject floor=null;
+        try
+        {
+            Assert.That(run.VehicleModel.ReceiveBonuses(new[]{global,droneBonus,turretBonus}),Is.True,"Scoped repair bonuses must be accepted as physical items.");
+            foreach(var id in run.VehicleModel.Inventory.Select(p=>p.Id).ToArray())
+            {
+                var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                    .First(c=>run.VehicleModel.OwnedPlacementError(id,c,default)==null);
+                Assert.That(run.GarageMount(id,cell),Is.True);
+            }
+            Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+            Assert.That(run.CanUseMovement,Is.True);var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+            floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+            var body=run.Player.GetComponent<Rigidbody>();body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+            var service=run.Player.GetComponent<R3DeployableService>();
+            Assert.That(service.TryDeploy(R3PartKind.HealingTurretGenerator),Is.True);
+            body.isKinematic=true;
+            Assert.That(service.TryDeploy(R3PartKind.HealingDroneGenerator),Is.True);
+            var drone=GameObject.Find("Dron naprawczy");var turret=GameObject.Find("Wieżyczka lecznicza");
+            Assert.That(drone,Is.Not.Null);Assert.That(turret,Is.Not.Null);
+            var droneHeal=drone.GetComponent<R3HealingTurret>();var turretHeal=turret.GetComponent<R3HealingTurret>();
+            Assert.That(droneHeal,Is.Not.Null);Assert.That(turretHeal,Is.Not.Null);
+            drone.transform.position=body.position;turret.transform.position=body.position;Physics.SyncTransforms();
+            var target=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational).Damageable;
+            var tick=typeof(R3HealingTurret).GetMethod("FixedUpdate",BindingFlags.Instance|BindingFlags.NonPublic);
+            void Check(R3HealingTurret device,float rate,float multiplier)
+            {
+                target.RestoreHealthRatio(.3f);tick.Invoke(device,null);
+                Assert.That(target.CurrentHp/target.MaxHp,Is.EqualTo(.3f+rate*multiplier*Time.fixedDeltaTime).Within(.0001));
+            }
+            var effects=run.Player.GetComponent<R3MountedBonusEffects>();
+            Assert.That(effects.RepairEfficiencyMultiplier,Is.EqualTo(1.5f).Within(.001),"Category bonuses must not boost the player's own repair pulse.");
+            Check(droneHeal,run.VehicleModel.Economy.HealingDroneRate,1.8f);
+            Check(turretHeal,run.VehicleModel.Economy.HealingTurretRate,2.1f);
+            var dronePart=assembly.Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeEffect==R1UpgradeEffect.RepairEfficiency&&p.UpgradeScope==R1BonusScope.Drones);dronePart.gameObject.SetActive(false);yield return null;
+            Check(droneHeal,run.VehicleModel.Economy.HealingDroneRate,1.5f);Check(turretHeal,run.VehicleModel.Economy.HealingTurretRate,2.1f);
+            var turretPart=assembly.Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeEffect==R1UpgradeEffect.RepairEfficiency&&p.UpgradeScope==R1BonusScope.Turrets);turretPart.gameObject.SetActive(false);yield return null;
+            Check(turretHeal,run.VehicleModel.Economy.HealingTurretRate,1.5f);
+            dronePart.gameObject.SetActive(true);turretPart.gameObject.SetActive(true);yield return null;
+            Check(droneHeal,run.VehicleModel.Economy.HealingDroneRate,1.8f);Check(turretHeal,run.VehicleModel.Economy.HealingTurretRate,2.1f);
+        }
+        finally{if(floor!=null)UnityEngine.Object.Destroy(floor);UnityEngine.Object.Destroy(global);UnityEngine.Object.Destroy(droneBonus);UnityEngine.Object.Destroy(turretBonus);}
+    }
     [UnityTest]
     public IEnumerator TwoCopiesActivateOneCombinedPulseWithAtomicCostAndSharedCooldown()
     {

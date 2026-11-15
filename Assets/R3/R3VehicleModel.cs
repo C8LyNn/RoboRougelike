@@ -231,6 +231,7 @@ namespace RoboRougelike.R3
                 (effect==R1UpgradeEffect.Damage&&scope>=R1BonusScope.BasicCannon&&scope<=R1BonusScope.Weapons)||
                 (effect==R1UpgradeEffect.Damage&&scope>=R1BonusScope.AutomaticWeapon&&scope<=R1BonusScope.AuraWeapon)||
                 (effect==R1UpgradeEffect.Reload&&(scope==R1BonusScope.Weapons||scope==R1BonusScope.BasicCannon||scope==R1BonusScope.AutomaticWeapon||scope==R1BonusScope.HeavyWeapon||scope==R1BonusScope.ShotgunWeapon||scope==R1BonusScope.RailgunWeapon||scope==R1BonusScope.RocketWeapon))||
+                (effect==R1UpgradeEffect.RepairEfficiency&&(scope==R1BonusScope.Drones||scope==R1BonusScope.Turrets))||
                 (effect==R1UpgradeEffect.Hull&&scope==R1BonusScope.Construction)||
                 (effect==R1UpgradeEffect.Mobility&&scope>=R1BonusScope.WheelDrive&&scope<=R1BonusScope.HoverDrive));
         public static bool ValidBonusAmount(float amount)=>!float.IsNaN(amount)&&!float.IsInfinity(amount)&&amount>=0;

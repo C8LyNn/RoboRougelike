@@ -314,7 +314,7 @@ namespace RoboRougelike.R3
                 }
                 drone.AddComponent<R6VehicleDrive>().RefreshParts();
             }
-            var behaviour=drone.AddComponent<R3FlyingDrone>();behaviour.Configure(transform,e.DroneSpeed,e.DroneFireInterval,healing?e.HealingDroneDamage:support?e.SupportDroneDamage:e.DroneDamage,e.DroneAttackRange,e.DroneFollowRadius,e.DroneHoverHeight);behaviour.ConfigureGenerator(kind);if(healing)drone.AddComponent<R3HealingTurret>().Configure(assembly,e.HealingDroneRadius,e.HealingDroneRate);
+            var behaviour=drone.AddComponent<R3FlyingDrone>();behaviour.Configure(transform,e.DroneSpeed,e.DroneFireInterval,healing?e.HealingDroneDamage:support?e.SupportDroneDamage:e.DroneDamage,e.DroneAttackRange,e.DroneFollowRadius,e.DroneHoverHeight);behaviour.ConfigureGenerator(kind);if(healing)drone.AddComponent<R3HealingTurret>().Configure(assembly,e.HealingDroneRadius,e.HealingDroneRate,R1BonusScope.Drones);
             if(support)drone.AddComponent<R3SupportTurret>().Configure(assembly,e.SupportDroneRadius,e.SupportDroneEnergyPerSecond);
             hp.Died+=()=>{if(drone!=null)Destroy(drone);};spawned.Add(drone);Destroy(drone,e.DroneLifetime);return true;
         }
