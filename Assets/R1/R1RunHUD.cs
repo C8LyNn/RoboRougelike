@@ -317,6 +317,7 @@ namespace RoboRougelike.R1
                 DrawPassiveRadar(run);
                 if(run.Paused)LightStylePrototype.Instance?.DrawPausePanel();
                 TryPauseMouse(run,Event.current);
+                if(run.Paused)run.TryPauseNavigationMouse(Event.current);
                 if(!sessionOverlay){TrySafeZoneInteractMouse(run,Event.current);TryRescueMouse(run,Event.current);TryPickupSkipMouse(run,Event.current);TryMenuConfirmMouse(run,Event.current);}
                 if(quickSearchActive&&!garageSearchKey&&!catalogOpen&&!garageOptionsOpen)
                     HandleQuickGarageKey(run,Event.current,false);
@@ -599,11 +600,19 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(950,290,240,58),PauseCaption(run,4,RescueButtonText(run)),compactButton))run.TryEmergencyRescueFromPause();
                 GUI.enabled=true;
             }
-            GUI.Label(new Rect(350,430,580,60),run.MapExitPending?run.EditorMessage:run.EmergencyRescueNotice??"↑ / ↓ i Enter • pad: krzyżak, A, B / Start",small);
+            GUI.Label(new Rect(350,430,580,60),run.MapExitPending?run.EditorMessage:run.EmergencyRescueNotice??PauseNavigationHint(),small);
             DrawMovementPause(run);DrawSuspensionPause(run);
         }
         private static string PauseCaption(R1RunController run,int index,string label)
             => (run.PauseSelection==index?"›  ":"")+label;
+        private static string PauseNavigationHint()
+        {
+            var profile=R1ControlProfile.Current;
+            string previous=R1ControlProfile.Display(profile.Binding("PausePrevious"));
+            string next=R1ControlProfile.Display(profile.Binding("PauseNext"));
+            string confirm=R1ControlProfile.Display(profile.Binding("PauseConfirm"));
+            return $"{previous} / {next} i {confirm} • pad: krzyżak, A, B / Start";
+        }
 
         private void DrawGarage(R1RunController run)
         {

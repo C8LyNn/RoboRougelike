@@ -233,6 +233,59 @@ public sealed class Exit273PauseTests
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
         Assert.That(run.Paused,Is.False);
     }
+    [UnityTest] public IEnumerator ReassignedPauseNavigationUsesNewKeysAndRespectsControlsOverlay()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("PausePrevious","J"),Is.True);
+            Assert.That(profile.TryBind("PauseNext","K"),Is.True);
+            Assert.That(profile.TryBind("PauseConfirm","L"),Is.True);
+            run.TogglePause();Assert.That(run.Paused,Is.True);
+            var hud=run.GetComponent<R1RunHUD>();var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+            var open=typeof(R1RunHUD).GetMethod("OpenPauseControls",flags);var close=typeof(R1RunHUD).GetMethod("ClosePauseControls",flags);
+            open.Invoke(hud,null);yield return PressRangeKey(Key.K);
+            Assert.That(run.PauseSelection,Is.Zero,"The settings overlay owns input.");close.Invoke(hud,null);
+            yield return PressRangeKey(Key.DownArrow);Assert.That(run.PauseSelection,Is.Zero,"The old direction must no longer select.");
+            yield return PressRangeKey(Key.K);Assert.That(run.PauseSelection,Is.EqualTo(1));
+            yield return PressRangeKey(Key.J);Assert.That(run.PauseSelection,Is.Zero);
+            yield return PressRangeKey(Key.Enter);Assert.That(run.Paused,Is.True,"The old confirmation key must no longer activate the item.");
+            yield return PressRangeKey(Key.L);Assert.That(run.Paused,Is.False);
+            var hint=typeof(R1RunHUD).GetMethod("PauseNavigationHint",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+            Assert.That((string)hint.Invoke(null,null),Does.Contain("J").And.Contain("K").And.Contain("L"));
+        }
+        finally{profile.ResetDefaults();}
+    }
+    [UnityTest] public IEnumerator MousePauseNavigationRespectsUsedEventsAndControlsOverlay()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("PauseNext","MouseBack"),Is.True);
+            Assert.That(profile.TryBind("PausePrevious","MouseForward"),Is.True);
+            Assert.That(profile.TryBind("PauseConfirm","MouseMiddle"),Is.True);
+            run.TogglePause();var hud=run.GetComponent<R1RunHUD>();var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+            var handle=typeof(R1RunController).GetMethod("TryPauseNavigationMouse",flags);
+            var open=typeof(R1RunHUD).GetMethod("OpenPauseControls",flags);var close=typeof(R1RunHUD).GetMethod("ClosePauseControls",flags);
+            Assert.That(handle,Is.Not.Null);open.Invoke(hud,null);
+            handle.Invoke(run,new object[]{new Event{type=EventType.MouseDown,button=3}});Assert.That(run.PauseSelection,Is.Zero);
+            close.Invoke(hud,null);var used=new Event{type=EventType.MouseDown,button=3};used.Use();handle.Invoke(run,new object[]{used});
+            Assert.That(run.PauseSelection,Is.Zero,"UI-consumed input must not navigate the pause menu.");
+            var next=new Event{type=EventType.MouseDown,button=3};handle.Invoke(run,new object[]{next});
+            Assert.That(run.PauseSelection,Is.EqualTo(1));Assert.That(next.type,Is.EqualTo(EventType.Used));
+            handle.Invoke(run,new object[]{new Event{type=EventType.MouseDown,button=4}});Assert.That(run.PauseSelection,Is.Zero);
+            // Outside OnGUI Unity changes synthetic middle-button events to Ignore.
+            // Exercise confirmation with an extra button, whose synthetic event is supported.
+            Assert.That(profile.TryBind("PauseNext","K"),Is.True);
+            Assert.That(profile.TryBind("PauseConfirm","MouseBack"),Is.True);
+            var confirmInput=new Event{type=EventType.MouseDown,button=3};
+            Assert.That(R1ControlProfile.IsBindingMouseDown(confirmInput),Is.True);
+            Assert.That(profile.MatchesEvent("PauseConfirm",confirmInput),Is.True);
+            Assert.That(handle.Invoke(run,new object[]{confirmInput}),Is.EqualTo(true));Assert.That(run.Paused,Is.False);
+        }
+        finally{profile.ResetDefaults();}
+        yield return null;
+    }
     [UnityTearDown] public IEnumerator Cleanup()
     {
         if(probe!=null)Object.DestroyImmediate(probe.gameObject);

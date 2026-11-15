@@ -11,6 +11,30 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [Test] public void PauseMenuBindingsMigratePersistAndRejectActiveContextConflicts()
+    {
+        string[] actions={"PausePrevious","PauseNext","PauseConfirm"};
+        foreach(var action in actions)Assert.That(R1ControlProfile.Actions,Does.Contain(action));
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-pause-menu-"+Guid.NewGuid()+".json");
+        try
+        {
+            var initial=new R1ControlProfile(path);var old=R1ControlProfile.Actions.Where(a=>!actions.Contains(a)).ToArray();
+            var data=new LegacyControlData{actions=old,bindings=old.Select(initial.Binding).ToArray()};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            var migrated=new R1ControlProfile(path);Assert.That(migrated.Error,Is.Null);
+            Assert.That(actions.Select(migrated.Binding),Is.EqualTo(new[]{"UpArrow","DownArrow","Enter"}));
+            Assert.That(R1ControlProfile.ValidSnapshot(migrated.Snapshot()),Is.True);
+            Assert.That(migrated.TrySaveBinding("PauseNext","W",out _),Is.True,"Movement is inactive while the pause menu owns input.");
+            Assert.That(migrated.TryBind("PausePrevious","W"),Is.False);
+            Assert.That(migrated.TryBind("PausePrevious","K"),Is.True);
+            Assert.That(migrated.TryBind("PauseConfirm","R"),Is.False,"Range reset is active in the pause menu.");
+            Assert.That(migrated.TryBind("ResetRange","K"),Is.False);Assert.That(migrated.TryBind("Pause","K"),Is.False);
+            Assert.That(migrated.TrySaveBinding("PauseConfirm","MouseBack",out _),Is.True);
+            var restored=new R1ControlProfile(path);Assert.That(restored.Error,Is.Null);
+            Assert.That(restored.Binding("PauseNext"),Is.EqualTo("W"));Assert.That(restored.Binding("PauseConfirm"),Is.EqualTo("MouseBack"));
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [Test] public void MainMenuConfirmMigratesPersistsAndUsesItsOwnContext()
     {
         Assert.That(R1ControlProfile.Actions,Does.Contain("MenuConfirm"));

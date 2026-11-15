@@ -14,9 +14,9 @@ namespace RoboRougelike.R1
     {
         public static readonly string[] Actions={"MoveForward","MoveBackward","TurnLeft","TurnRight",
             "Weapon1","Weapon2","Weapon3","Weapon4","Active1","Active2","Active3","Active4",
-            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails","ResetRange","WeaponStatusPage","DefenseStatusPage","GarageUnderside","GarageFrame","GarageSearch","GarageBlocks","GarageWheels","GarageWeapons","GarageModules","GarageToolMount","GarageToolInspect","GarageToolRepair","GarageToolRemove","GarageRotateYLeft","GarageRotateYRight","GarageRotateXPositive","GarageRotateXNegative","GarageRotateZNegative","GarageRotateZPositive","Rescue","Interact","Pause","SkipPickup","RewardBonus1","RewardBonus2","RewardBonus3","RewardBasket1","RewardBasket2","RewardBasket3","RewardConfirm","MenuConfirm"};
+            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails","ResetRange","WeaponStatusPage","DefenseStatusPage","GarageUnderside","GarageFrame","GarageSearch","GarageBlocks","GarageWheels","GarageWeapons","GarageModules","GarageToolMount","GarageToolInspect","GarageToolRepair","GarageToolRemove","GarageRotateYLeft","GarageRotateYRight","GarageRotateXPositive","GarageRotateXNegative","GarageRotateZNegative","GarageRotateZPositive","Rescue","Interact","Pause","SkipPickup","RewardBonus1","RewardBonus2","RewardBonus3","RewardBasket1","RewardBasket2","RewardBasket3","RewardConfirm","MenuConfirm","PausePrevious","PauseNext","PauseConfirm"};
         static readonly string[] Defaults={"W","S","A","D","MouseLeft","MouseRight","Q","E",
-            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I","R","Tab","P","U","Home","Slash","Digit5","Digit6","Digit7","Digit8","Digit1","Digit2","Digit3","Digit4","Q","E","R","F","Z","X","H","F","Escape","Enter","Digit1","Digit2","Digit3","Q","W","E","Enter","Enter"};
+            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I","R","Tab","P","U","Home","Slash","Digit5","Digit6","Digit7","Digit8","Digit1","Digit2","Digit3","Digit4","Q","E","R","F","Z","X","H","F","Escape","Enter","Digit1","Digit2","Digit3","Q","W","E","Enter","Enter","UpArrow","DownArrow","Enter"};
         const int OriginalActionCount=20;
         readonly Dictionary<string,string> bindings=new Dictionary<string,string>();
         readonly string path;
@@ -60,18 +60,20 @@ namespace RoboRougelike.R1
         }
         static void FillMissing(string[] values,bool[] missing)
         {
-            var used=new HashSet<string>(values.Where((v,i)=>!missing[i]&&v!=null&&!MenuAction(Actions[i])),StringComparer.OrdinalIgnoreCase);
+            var used=new HashSet<string>(values.Where((v,i)=>!missing[i]&&v!=null&&!MenuAction(Actions[i])&&!PauseNavigation(Actions[i])),StringComparer.OrdinalIgnoreCase);
             var garageUsed=new HashSet<string>(values.Where((v,i)=>!missing[i]&&v!=null&&GarageAction(Actions[i])),StringComparer.OrdinalIgnoreCase);
-            var gameplayUsed=new HashSet<string>(values.Where((v,i)=>!missing[i]&&v!=null&&!GarageAction(Actions[i])&&!RewardAction(Actions[i])&&!MenuAction(Actions[i])),StringComparer.OrdinalIgnoreCase);
+            var gameplayUsed=new HashSet<string>(values.Where((v,i)=>!missing[i]&&v!=null&&!GarageAction(Actions[i])&&!RewardAction(Actions[i])&&!MenuAction(Actions[i])&&!PauseNavigation(Actions[i])),StringComparer.OrdinalIgnoreCase);
             var rewardUsed=new HashSet<string>(values.Where((v,i)=>!missing[i]&&v!=null&&RewardAction(Actions[i])),StringComparer.OrdinalIgnoreCase);
             var menuUsed=new HashSet<string>(values.Where((v,i)=>!missing[i]&&v!=null&&(MenuAction(Actions[i])||Actions[i]=="Pause")),StringComparer.OrdinalIgnoreCase);
+            var pauseUsed=new HashSet<string>(values.Where((v,i)=>!missing[i]&&v!=null&&(PauseNavigation(Actions[i])||Actions[i]=="Pause"||Actions[i]=="ResetRange")),StringComparer.OrdinalIgnoreCase);
             for(int i=0;i<values.Length;i++)
             {
                 if(!missing[i])continue;
                 var candidates=new[]{Defaults[i],"F5","F6","F7","F9","F11","F12"}.Concat(Enum.GetNames(typeof(Key)));
                 string chosen=candidates.FirstOrDefault(key=>AllowedActionBinding(Actions[i],key)&&!GarageModifierReserved(Actions[i],key)&&
-                    !(MenuAction(Actions[i])?menuUsed:RewardAction(Actions[i])?rewardUsed:GarageToolAction(Actions[i])||GarageRotationAction(Actions[i])?garageUsed:Actions[i]=="Interact"||Actions[i]=="Pause"||Actions[i]=="SkipPickup"?gameplayUsed:used).Contains(key));
-                values[i]=chosen;if(chosen!=null){if(MenuAction(Actions[i]))menuUsed.Add(chosen);else{used.Add(chosen);if(RewardAction(Actions[i]))rewardUsed.Add(chosen);else if(GarageAction(Actions[i]))garageUsed.Add(chosen);else gameplayUsed.Add(chosen);}}
+                    !(PauseNavigation(Actions[i])?pauseUsed:MenuAction(Actions[i])?menuUsed:RewardAction(Actions[i])?rewardUsed:GarageToolAction(Actions[i])||GarageRotationAction(Actions[i])?garageUsed:Actions[i]=="Interact"||Actions[i]=="Pause"||Actions[i]=="SkipPickup"?gameplayUsed:used).Contains(key)&&
+                    !((Actions[i]=="Pause"||Actions[i]=="ResetRange")&&pauseUsed.Contains(key))&&!(Actions[i]=="Pause"&&menuUsed.Contains(key)));
+                values[i]=chosen;if(chosen!=null){if(PauseNavigation(Actions[i]))pauseUsed.Add(chosen);else if(MenuAction(Actions[i]))menuUsed.Add(chosen);else{used.Add(chosen);if(RewardAction(Actions[i]))rewardUsed.Add(chosen);else if(GarageAction(Actions[i]))garageUsed.Add(chosen);else gameplayUsed.Add(chosen);if(Actions[i]=="Pause"||Actions[i]=="ResetRange")pauseUsed.Add(chosen);if(Actions[i]=="Pause")menuUsed.Add(chosen);}}
             }
         }
         public static bool ValidSnapshot(string[] values)
@@ -101,7 +103,8 @@ namespace RoboRougelike.R1
         public static bool Reserved(string binding)=>new[]{"Escape","Enter","NumpadEnter",
             "UpArrow","DownArrow","LeftArrow","RightArrow","F4","F8","F10"}.Contains(binding);
         static bool AllowedActionBinding(string action,string binding)=>action=="Pause"&&binding=="Escape"||
-            action=="SkipPickup"&&binding=="Enter"||(RewardAction(action)||MenuAction(action))&&(binding=="Enter"||binding=="NumpadEnter")||ValidBinding(binding)&&!Reserved(binding);
+            action=="SkipPickup"&&binding=="Enter"||(RewardAction(action)||MenuAction(action))&&(binding=="Enter"||binding=="NumpadEnter")||
+            PauseNavigation(action)&&PauseNavigationReserved(binding)||ValidBinding(binding)&&!Reserved(binding);
         // These buttons already place, remove/orbit and pick parts in the garage.
         static bool GarageCategoryAction(string action)=>action=="GarageBlocks"||action=="GarageWheels"||action=="GarageWeapons"||action=="GarageModules";
         static bool GarageToolAction(string action)=>action=="GarageToolMount"||action=="GarageToolInspect"||action=="GarageToolRepair"||action=="GarageToolRemove";
@@ -110,17 +113,21 @@ namespace RoboRougelike.R1
         static bool RewardAction(string action)=>action=="RewardBonus1"||action=="RewardBonus2"||action=="RewardBonus3"||
             action=="RewardBasket1"||action=="RewardBasket2"||action=="RewardBasket3"||action=="RewardConfirm";
         static bool MenuAction(string action)=>action=="MenuConfirm";
-        static int Context(string action)=>MenuAction(action)?3:RewardAction(action)?2:GarageAction(action)?1:0;
+        static bool PauseNavigation(string action)=>action=="PausePrevious"||action=="PauseNext"||action=="PauseConfirm";
+        static bool PauseNavigationReserved(string binding)=>binding=="Enter"||binding=="NumpadEnter"||binding=="UpArrow"||binding=="DownArrow"||binding=="LeftArrow"||binding=="RightArrow";
+        static int Context(string action)=>PauseNavigation(action)?4:MenuAction(action)?3:RewardAction(action)?2:GarageAction(action)?1:0;
         // Pause is also handled on main and result screens, so it cannot
         // share their confirmation binding even though movement can.
         static bool SameContext(string left,string right)=>Context(left)==Context(right)||
-            MenuAction(left)&&right=="Pause"||MenuAction(right)&&left=="Pause";
+            MenuAction(left)&&right=="Pause"||MenuAction(right)&&left=="Pause"||
+            PauseNavigation(left)&&(right=="Pause"||right=="ResetRange")||PauseNavigation(right)&&(left=="Pause"||left=="ResetRange");
         static bool GarageMouseReserved(string action,string binding)=>GarageAction(action)&&
             (binding=="MouseLeft"||binding=="MouseRight"||binding=="MouseMiddle");
         // Shift is the existing modifier for editing an already mounted part.
         static bool GarageModifierReserved(string action,string binding)=>GarageAction(action)&&(binding=="LeftShift"||binding=="RightShift");
         public static string Display(string binding)=>binding=="Escape"?"Esc":binding=="MouseLeft"?"LPM":binding=="MouseRight"?"PPM":
             binding=="MouseMiddle"?"ŚPM":binding=="MouseForward"?"Mysz 4":binding=="MouseBack"?"Mysz 5":
+            binding=="UpArrow"?"↑":binding=="DownArrow"?"↓":binding=="LeftArrow"?"←":binding=="RightArrow"?"→":
             binding=="Comma"?",":binding=="Period"?".":binding=="Slash"?"/":binding=="NumpadDivide"?"Num /":
             binding!=null&&binding.StartsWith("Numpad",StringComparison.Ordinal)?"Num "+binding.Substring(6):
             binding!=null&&binding.StartsWith("Digit",StringComparison.Ordinal)?binding.Substring(5):binding??"—";
@@ -150,7 +157,7 @@ namespace RoboRougelike.R1
             var old=Binding(action);string conflict=Conflict(action,binding);
             if(GarageMouseReserved(action,binding)){message="Ten przycisk wykonuje już podstawową akcję w garażu.";return false;}
             if(GarageModifierReserved(action,binding)){message="Shift służy w garażu do obrotu zamontowanej części.";return false;}
-            if(Reserved(binding)&&!(action=="Pause"&&binding=="Escape")&&!(action=="SkipPickup"&&binding=="Enter")&&!((RewardAction(action)||MenuAction(action))&&(binding=="Enter"||binding=="NumpadEnter"))){message="Ten klawisz jest używany przez inne sterowanie.";return false;}
+            if(Reserved(binding)&&!(action=="Pause"&&binding=="Escape")&&!(action=="SkipPickup"&&binding=="Enter")&&!((RewardAction(action)||MenuAction(action))&&(binding=="Enter"||binding=="NumpadEnter"))&&!(PauseNavigation(action)&&PauseNavigationReserved(binding))){message="Ten klawisz jest używany przez inne sterowanie.";return false;}
             if(conflict!=null){message="Ten przycisk jest już używany: "+ActionName(conflict)+".";return false;}
             if(!TryBind(action,binding)){message="Nie można przypisać tego przycisku.";return false;}
             try{Save();message="Zapisano przypisanie.";return true;}
@@ -175,6 +182,9 @@ namespace RoboRougelike.R1
                 case "Rescue":return "Ratunek";case "Interact":return "Interakcja";case "Pause":return "Pauza";case "SkipPickup":return "Pomiń zbieranie po walce";}
             if(action=="RewardConfirm")return "Nagrody: zatwierdź";
             if(action=="MenuConfirm")return "Menu: rozpocznij / wróć";
+            if(action=="PausePrevious")return "Pauza: poprzednia opcja";
+            if(action=="PauseNext")return "Pauza: następna opcja";
+            if(action=="PauseConfirm")return "Pauza: zatwierdź";
             if(action.StartsWith("RewardBonus"))return "Nagrody: bonus "+action.Substring(11);
             if(action.StartsWith("RewardBasket"))return "Nagrody: zestaw "+action.Substring(12);
             if(action.StartsWith("Weapon"))return "Broń "+action.Substring(6);

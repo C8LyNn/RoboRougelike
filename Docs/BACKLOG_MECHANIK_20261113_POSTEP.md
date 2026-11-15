@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 06, 39–40 i 44. Przypisanie nawigacji w pauzie
+
+- Ustawienia sterowania obejmują poprzednią opcję, następną opcję i zatwierdzenie w menu pauzy; domyślne strzałki i Enter pozostają bez zmian. Podpowiedzi pokazują aktualne przypisania. Można użyć klawiszy lub obsługiwanych przycisków myszy, a ustawienia zapobiegają konfliktom z pauzą, resetem poligonu i innymi akcjami nawigacji. Starsze profile otrzymują brakujące domyślne przypisania; blueprint przywraca je tylko na wyraźną prośbę.
+- Unity 6000.3.14f1: `pause_navigation_before.xml` — **3 FAIL**, nowe akcje jeszcze nie istniały. `pause_navigation_first.xml` — **3 PASS, 1 FAIL**, syntetyczne zdarzenie środkowego przycisku było klasyfikowane jako Ignore poza OnGUI; potwierdzono to w `pause_mouse_diagnose2.xml`. `pause_navigation_final.xml` — **39 PASS**, w tym nowa nawigacja, migracja, konflikty i ochrona otwartych ustawień; podany w tym przebiegu filtr jednego testu blueprintu miał złą nazwę klasy i nie został wykonany. Poprawny przebieg `pause_navigation_blueprint.xml` — **2 PASS**, starszy blueprint i jawne przywracanie przypisań.
+- Scenariusz myszy używa syntetycznych zdarzeń dodatkowych przycisków, a klawiatura wirtualnego wejścia Unity. Nie sprawdzono fizycznej myszy, środkowego przycisku ani widocznego Playera. Pozostałe stałe skróty i pełny odbiór #06 oraz #44 pozostają otwarte.
+
 ### 06, 39–40 i 44. Przypisanie akcji menu
 
 - Rozpoczęcie wyprawy z ekranu wyboru oraz powrót z ekranu wyniku mają teraz wspólną pozycję w ustawieniach sterowania. Domyślnie jest to Enter; można wybrać inny klawisz albo obsługiwany przycisk myszy. Podpisy pokazują aktualne przypisanie. Akcja ma osobny kontekst od jazdy i nagród, lecz nie może kolidować z pauzą działającą także w menu. Wpisywanie znaku przypisanego do akcji w polu ziarna nie powinno rozpoczynać gry; domyślny Enter zachowuje poprzednie działanie.

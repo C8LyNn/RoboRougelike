@@ -79,7 +79,7 @@ namespace RoboRougelike.R1
                 Panel(new Rect(190,115,900,550));
                 GUI.Label(new Rect(230,145,560,65),run.RangeDisabled?"Pojazd testowy unieruchomiony":"POLIGON • PAUZA",title);
                 if(GUI.Button(new Rect(810,150,240,45),PauseCaption(run,5,"Sterowanie"),compactButton))OpenPauseControls();
-                GUI.Label(new Rect(230,225,820,50),run.EmergencyRescueNotice??"Testujesz kopię — uszkodzenia i złom nie zmieniają garażu.\nGłówne akcje: ↑ / ↓ i Enter • pad: krzyżak, A, B / Start",small);
+                GUI.Label(new Rect(230,225,820,50),run.EmergencyRescueNotice??("Testujesz kopię — uszkodzenia i złom nie zmieniają garażu.\nGłówne akcje: "+PauseNavigationHint()),small);
                 var pausedRange=run.GetComponent<R6TestRange>();
                 if(run.CreativeWorkshop&&!run.RangeDisabled&&GUI.Button(new Rect(230,280,395,36),"Przeciwnicy — dodaj lub usuń",compactButton))
                 {creativeEnemyMenu=true;creativeEnemyMessage=null;}

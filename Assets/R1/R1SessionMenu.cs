@@ -68,6 +68,17 @@ namespace RoboRougelike.R1
             else if((MapEditorTesting&&PauseSelection==3)||(!MapEditorTesting&&PauseSelection==2))RequestQuitFromMenu();
             else GetComponent<R1RunHUD>()?.OpenPauseControls();
         }
+        internal bool TryPauseNavigationMouse(Event input)
+        {
+            var hud=GetComponent<R1RunHUD>();
+            if(!Paused||QuitRequested||Transitioning||SafeZoneTrading||hud?.PauseControlsOpen==true||
+               (RangePause&&hud?.CreativeEnemyMenuOpen==true)||!R1ControlProfile.IsBindingMouseDown(input))return false;
+            var profile=R1ControlProfile.Current;
+            if(profile.MatchesEvent("PausePrevious",input)){input.Use();MovePauseSelection(-1);return true;}
+            if(profile.MatchesEvent("PauseNext",input)){input.Use();MovePauseSelection(1);return true;}
+            if(profile.MatchesEvent("PauseConfirm",input)){input.Use();ConfirmPauseSelection();return true;}
+            return false;
+        }
 
         // Run before state/transition guards: quitting must also work while loading.
         bool ReadSessionInput()
@@ -107,12 +118,13 @@ namespace RoboRougelike.R1
             if (rangePause && !R1ControlProfile.Current.Binding("ResetRange").StartsWith("Mouse",System.StringComparison.Ordinal)&&
                 R1ControlProfile.Current.Pressed("ResetRange",true))
             { ResetTestRange(); return true; }
-            if ((keys != null && keys.upArrowKey.wasPressedThisFrame) ||
+            bool Pressed(string action)=>!profile.Binding(action).StartsWith("Mouse",System.StringComparison.Ordinal)&&profile.Pressed(action,true);
+            if (Pressed("PausePrevious") ||
                 (pad != null && pad.dpad.up.wasPressedThisFrame)) MovePauseSelection(-1);
-            if ((keys != null && keys.downArrowKey.wasPressedThisFrame) ||
+            if (Pressed("PauseNext") ||
                 (pad != null && pad.dpad.down.wasPressedThisFrame)) MovePauseSelection(1);
             if (pad != null && pad.buttonEast.wasPressedThisFrame) { HandleEscape(); return true; }
-            if ((keys != null && keys.enterKey.wasPressedThisFrame) ||
+            if (Pressed("PauseConfirm") ||
                 (pad != null && pad.buttonSouth.wasPressedThisFrame))
                 ConfirmPauseSelection();
             return true;
