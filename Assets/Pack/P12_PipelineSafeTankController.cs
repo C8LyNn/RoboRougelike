@@ -1349,6 +1349,7 @@ public float CurrentForwardSpeed =>
         }
         private void OnDisable(){activeShells.Remove(this);}
         private Transform ownerRoot;
+        private bool ownerWasAssigned;
         public Transform OwnerRoot=>ownerRoot;
         public float DamageAmount=>damage;
         public Vector3 LaunchPosition=>launchPosition;
@@ -1401,6 +1402,7 @@ public float CurrentForwardSpeed =>
         {railgun=gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRailPenetration>();railgun.Bind(shot,damageScale);}
         private void FixedUpdate()
         {
+            if(RetireLostOwner())return;
             if(railgun!=null){if(isActiveAndEnabled)railgun.Step(Time.fixedDeltaTime);return;}
             if(!IsActiveProjectile||damage<=0||float.IsNaN(damage)||float.IsInfinity(damage))return;
             var body=GetComponent<Rigidbody>();var own=GetComponent<Collider>();
@@ -1443,6 +1445,7 @@ public float CurrentForwardSpeed =>
             launchPosition=transform.position;
             maxTravelDistance=float.IsNaN(maxDistance)?0:Mathf.Max(0,maxDistance);
             ownerRoot = owner;
+            ownerWasAssigned = owner != null;
             targetRoot =
                 targetToIgnoreNonDamageable;
 
@@ -1502,8 +1505,15 @@ public float CurrentForwardSpeed =>
 
         private void Update()
         {
+            if(RetireLostOwner())return;
             if(!spent&&(transform.position-launchPosition).sqrMagnitude>maxTravelDistance*maxTravelDistance)
             {spent=true;gameObject.SetActive(false);Destroy(gameObject);}
+        }
+
+        private bool RetireLostOwner()
+        {
+            if(!ownerWasAssigned||(ownerRoot!=null&&ownerRoot.gameObject.activeInHierarchy))return false;
+            spent=true;gameObject.SetActive(false);Destroy(gameObject);return true;
         }
 
         private void IgnoreTargetHelpers()
@@ -1538,6 +1548,7 @@ public float CurrentForwardSpeed =>
         private void OnCollisionEnter(
             Collision collision)
         {
+            if(RetireLostOwner())return;
             if (railgun!=null || spent ||
                 collision == null ||
                 collision.collider == null)

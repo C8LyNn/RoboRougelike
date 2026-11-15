@@ -41,6 +41,21 @@ public class RRLW2PhysicsTests
         Assert.That(g.GetComponent<Collider>().enabled,Is.True);Assert.That(child.GetComponent<Collider>().enabled,Is.False);
         Assert.That(b.useGravity,Is.True);Assert.That(b.linearVelocity.y,Is.LessThan(0));
     }
+    [UnityTest] public IEnumerator DestroyedOwnerProjectileDoesNotHitFriendly() => LostOwnerProjectileDoesNotHitFriendly(true);
+    [UnityTest] public IEnumerator DisabledOwnerProjectileDoesNotHitFriendly() => LostOwnerProjectileDoesNotHitFriendly(false);
+    IEnumerator LostOwnerProjectileDoesNotHitFriendly(bool destroyOwner)
+    {
+        var owner=new GameObject("Projectile owner");objects.Add(owner);owner.AddComponent<RailgunFriendlyFixture>();
+        var ally=Cube(Vector3.forward*2);ally.AddComponent<RailgunFriendlyFixture>();
+        var hp=ally.AddComponent<P12PipelineSafeDamageable>();hp.Configure(100,false);
+        var shot=GameObject.CreatePrimitive(PrimitiveType.Sphere);objects.Add(shot);shot.transform.position=Vector3.back*8;shot.transform.localScale=Vector3.one*.15f;
+        var body=shot.AddComponent<Rigidbody>();body.useGravity=false;body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;
+        shot.AddComponent<P17PhysicalShell>().Configure(owner.transform,25,2,Vector3.forward,null);body.linearVelocity=Vector3.forward*30;
+        if(destroyOwner)Object.Destroy(owner);else owner.SetActive(false);
+        yield return Fixed(.5f);
+        Assert.That(hp.CurrentHp,Is.EqualTo(100).Within(.01f),"A projectile must not lose its team and damage an ally.");
+        Assert.That(shot==null||!shot.activeInHierarchy,Is.True,"An orphaned projectile must be retired safely.");
+    }
     [UnityTest] public IEnumerator RealProjectilePassesFreshlyReleasedWreckAndDamagesLivingPart()
     {
         var wreck=Cube(Vector3.zero);var rb=wreck.AddComponent<Rigidbody>();rb.mass=500;
