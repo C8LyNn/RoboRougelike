@@ -65,6 +65,15 @@ namespace RoboRougelike.R3
         }
         bool Ready(R3MountedPart part,R3PartKind kind)=>part!=null&&part.Kind==kind&&part.Operational&&
             part.gameObject.activeInHierarchy&&part.transform.IsChildOf(transform)&&!RRLEmpPartState.IsBlocked(part.gameObject);
+        bool TryTravelDirection(out Vector3 direction)
+        {
+            direction=Vector3.zero;if(body==null)return false;
+            var velocity=body.linearVelocity;
+            if(float.IsNaN(velocity.x)||float.IsInfinity(velocity.x)||float.IsNaN(velocity.z)||float.IsInfinity(velocity.z))return false;
+            double speed=System.Math.Sqrt((double)velocity.x*velocity.x+(double)velocity.z*velocity.z);
+            if(speed<.5d)return false;
+            direction=new Vector3((float)(velocity.x/speed),0,(float)(velocity.z/speed));return true;
+        }
         static bool IsDrone(R3PartKind kind)=>kind==R3PartKind.FlyingDroneGenerator||kind==R3PartKind.GroundDroneGenerator||kind==R3PartKind.HealingDroneGenerator||kind==R3PartKind.SupportDroneGenerator;
         static string Pool(R3PartKind kind)=>kind==R3PartKind.RampDeployer?RampPool:kind==R3PartKind.WallDeployer?WallPool:
             kind==R3PartKind.JumpPadDeployer?JumpPadPool:kind==R3PartKind.BlastTrapDeployer?BlastTrapPool:kind==R3PartKind.EmpTrapDeployer?EmpTrapPool:kind==R3PartKind.RepelTrapDeployer?RepelTrapPool:kind==R3PartKind.DamageTrapDeployer?DamageTrapPool:kind==R3PartKind.SlowTrapDeployer?SlowTrapPool:kind==R3PartKind.ImmobilizeTrapDeployer?ImmobilizeTrapPool:kind==R3PartKind.FlyingDroneGenerator?FlyingDronePool:kind==R3PartKind.GroundDroneGenerator?GroundDronePool:kind==R3PartKind.HealingDroneGenerator?HealingDronePool:kind==R3PartKind.SupportDroneGenerator?SupportDronePool:kind==R3PartKind.OffensiveTurretGenerator?OffensiveTurretPool:kind==R3PartKind.HealingTurretGenerator?HealingTurretPool:kind==R3PartKind.SupportTurretGenerator?SupportTurretPool:ShieldTurretPool;
@@ -109,7 +118,7 @@ namespace RoboRougelike.R3
                 }
                 float cost=0;foreach(var part in assembly.Parts)if(Ready(part,kind))cost+=EnergyPerCopy(kind)*R3VehicleModel.TierActivationCost(part.Tier);
                 if(energy==null||!energy.CanSpend(cost))return "brak energii";
-                return !IsDrone(kind)&&(body==null||body.linearVelocity.sqrMagnitude<.25f)?$"{current}/{maximum} • wymagany ruch":$"gotowy • {current}/{maximum}";
+                return !IsDrone(kind)&&!TryTravelDirection(out _)?$"{current}/{maximum} • wymagany ruch":$"gotowy • {current}/{maximum}";
         }
         float EnergyPerCopy(R3PartKind kind)=>kind==R3PartKind.RampDeployer?assembly.Model.Economy.RampEnergyPerCopy:
             kind==R3PartKind.WallDeployer?assembly.Model.Economy.WallEnergyPerCopy:kind==R3PartKind.JumpPadDeployer?assembly.Model.Economy.JumpPadEnergyPerCopy:IsDrone(kind)?assembly.Model.Economy.DroneEnergyPerCopy:(kind==R3PartKind.OffensiveTurretGenerator||kind==R3PartKind.HealingTurretGenerator||kind==R3PartKind.SupportTurretGenerator||kind==R3PartKind.ShieldTurretGenerator)?assembly.Model.Economy.TurretEnergyPerCopy:assembly.Model.Economy.TrapEnergyPerCopy;
@@ -126,7 +135,7 @@ namespace RoboRougelike.R3
                 kind!=R3PartKind.JumpPadDeployer&&kind!=R3PartKind.HealingDroneGenerator&&kind!=R3PartKind.SupportDroneGenerator&&kind!=R3PartKind.HealingTurretGenerator&&kind!=R3PartKind.SupportTurretGenerator&&kind!=R3PartKind.ShieldTurretGenerator)return false;
             if(IsDrone(kind))return TryLaunchDrone(kind);
             if(kind==R3PartKind.OffensiveTurretGenerator||kind==R3PartKind.HealingTurretGenerator||kind==R3PartKind.SupportTurretGenerator||kind==R3PartKind.ShieldTurretGenerator)return TryPlaceTurret(kind);
-            if(body.linearVelocity.sqrMagnitude<.25f)return false;
+            if(!TryTravelDirection(out var forward))return false;
             EnsurePools();string pool=Pool(kind);if(assembly.Model.Charges.Current(pool)<1)return false;
             int units=0;float cost=0;R3MountedPart source=null;
             foreach(var part in assembly.Parts)if(Ready(part,kind))
@@ -135,8 +144,6 @@ namespace RoboRougelike.R3
                 cost+=EnergyPerCopy(kind)*R3VehicleModel.TierActivationCost(part.Tier);
             }
             if(units<=0||source==null||float.IsNaN(cost)||float.IsInfinity(cost)||cost<0||!energy.CanSpend(cost))return false;
-            Vector3 forward=Vector3.ProjectOnPlane(body.rotation*Vector3.forward,Vector3.up).normalized;
-            if(forward.sqrMagnitude<.5f)return false;
             Vector3 behind=-forward;float rear=0;
             foreach(var collider in GetComponentsInChildren<Collider>())
             {
@@ -203,7 +210,7 @@ namespace RoboRougelike.R3
         }
         bool TryPlaceTurret(R3PartKind kind)
         {
-            if(body.linearVelocity.sqrMagnitude<.25f)return false;
+            if(!TryTravelDirection(out var travel))return false;
             EnsurePools();if(assembly.Model.Charges.Current(Pool(kind))<1)return false;
             int units=0;float cost=0;R3MountedPart source=null;
             foreach(var part in assembly.Parts)if(Ready(part,kind))
@@ -218,8 +225,7 @@ namespace RoboRougelike.R3
                 float.IsNaN(e.HealingTurretRate)||float.IsInfinity(e.HealingTurretRate)||e.HealingTurretRate<=0||(double)e.HealingTurretRate*units>float.MaxValue))return false;
             if(kind==R3PartKind.ShieldTurretGenerator&&(float.IsNaN(e.ShieldTurretRadius)||float.IsInfinity(e.ShieldTurretRadius)||e.ShieldTurretRadius<=0||float.IsNaN(e.ShieldTurretHp)||float.IsInfinity(e.ShieldTurretHp)||e.ShieldTurretHp<=0||(double)e.ShieldTurretHp*units>float.MaxValue))return false; if(kind==R3PartKind.SupportTurretGenerator&&(float.IsNaN(e.SupportTurretRadius)||float.IsInfinity(e.SupportTurretRadius)||e.SupportTurretRadius<=0||
                 float.IsNaN(e.SupportTurretEnergyPerSecond)||float.IsInfinity(e.SupportTurretEnergyPerSecond)||e.SupportTurretEnergyPerSecond<=0||(double)e.SupportTurretEnergyPerSecond*units>float.MaxValue))return false;
-            Vector3 rear=-Vector3.ProjectOnPlane(body.rotation*Vector3.forward,Vector3.up).normalized;
-            if(rear.sqrMagnitude<.5f)return false;float distance=0;
+            Vector3 rear=-travel;float distance=0;
             foreach(var c in GetComponentsInChildren<Collider>())
             {
                 if(!c.enabled||c.isTrigger||c.attachedRigidbody!=body)continue;

@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 21, 25–26 i 44. Stawianie urządzeń podczas cofania i poślizgu
+
+- Rampy, murki, jump pady, pułapki i wieżyczki wyznaczają stronę rozstawienia z poziomego kierunku rzeczywistego ruchu pojazdu. Przy cofaniu i poślizgu zostają za jego trasą, zamiast pojawiać się przed jadącym pojazdem. Sam ruch pionowy nie wystarcza do aktywacji; status i walidacja korzystają z tej samej zasady. Nadal obowiązują kontrola miejsca, zasoby i cooldown, a drony zachowują możliwość startu na postoju.
+- Unity 6000.3.14f1: `terrain_travel_before.xml` — **2 FAIL**: rampa pojawiała się przed cofającym pojazdem, a lot pionowy był uznawany za jazdę. `terrain_travel_after.xml` — **7 PASS**, w tym rampa przy cofaniu, murek przy bocznym ruchu, wieżyczka przy cofaniu, brak kosztu i cooldownu przy locie pionowym oraz wcześniejsze scenariusze rzeczywistej rampy, jump pada, wieżyczki i pułapek. Scenariusze sterowane testem; zachowanie przy gwałtownej zmianie kierunku i ręczna jazda w Windows Player **NOT RUN**.
+
 ### 01, 13 i 44. Rodzaje premii a limit modułów
 
 - Limit ośmiu rodzajów pasywnych rozróżnia teraz premie o tym samym identyfikatorze, jeśli różnią się efektem, operacją albo zakresem. Kopie tego samego rodzaju, także o innej wartości lub tierze, nadal nie zajmują nowego rodzaju. Uwzględnia to rozróżnienie istniejące w katalogu i zachowuje osobne fizyczne części.

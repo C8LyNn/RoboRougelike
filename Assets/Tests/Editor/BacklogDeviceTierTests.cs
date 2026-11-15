@@ -506,6 +506,36 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(ramp.GetComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().IsDead,Is.True);
         Object.Destroy(enemy);Object.Destroy(floor);
     }
+    [UnityTest] public IEnumerator VerticalMotionAloneCannotDeployTerrainOrSpendResources()
+    {
+        run.VehicleModel.Award(2000);FuseAndMount(R3PartKind.RampDeployer);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(80,1,80);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.up*3;Physics.SyncTransforms();
+        var bank=player.GetComponent<VehicleEnergyBank>();float energy=bank.Current;
+        Assert.That(service.StatusFor(R3PartKind.RampDeployer),Does.Contain("wymagany ruch"));
+        int charges=run.VehicleModel.Charges.Current(R3DeployableService.RampPool);
+        Assert.That(service.TryDeployRamp(),Is.False);
+        Assert.That(bank.Current,Is.EqualTo(energy));Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.RampPool),Is.EqualTo(charges));
+        Assert.That(run.VehicleModel.RampDeployerReadyAt,Is.LessThanOrEqualTo(Time.time));Object.Destroy(floor);
+    }
+    [UnityTest] public IEnumerator TerrainAndTurretsArePlacedBehindActualTravelDirection()
+    {
+        run.VehicleModel.Award(5000);FuseAndMount(R3PartKind.RampDeployer);FuseAndMount(R3PartKind.WallDeployer);FuseAndMount(R3PartKind.OffensiveTurretGenerator);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(120,-.5f,100);floor.transform.localScale=new Vector3(140,1,100);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.back*3;Physics.SyncTransforms();
+        Assert.That(service.TryDeployRamp(),Is.True);var ramp=GameObject.Find("Rozstawiona rampa");
+        Assert.That(Vector3.Dot(ramp.transform.position-body.position,Vector3.back),Is.LessThan(0),"Reversing must leave the ramp behind the actual movement.");
+        body.position=new Vector3(120,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.right*3;Physics.SyncTransforms();
+        Assert.That(service.TryDeploy(R3PartKind.WallDeployer),Is.True);var wall=GameObject.Find("Rozstawiony murek");
+        Assert.That(Vector3.Dot(wall.transform.position-body.position,Vector3.right),Is.LessThan(0),"A sideways drift must not place the wall into the vehicle's path.");
+        body.position=new Vector3(140,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.back*3;Physics.SyncTransforms();
+        Assert.That(service.TryDeploy(R3PartKind.OffensiveTurretGenerator),Is.True);var turret=GameObject.Find("Wieżyczka ofensywna");
+        Assert.That(Vector3.Dot(turret.transform.position-body.position,Vector3.back),Is.LessThan(0));Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator WallAndJumpPadUseIndependentChargesAndLaunchARealVehicle()
     {
         run.VehicleModel.Award(2000);FuseAndMount(R3PartKind.WallDeployer);FuseAndMount(R3PartKind.JumpPadDeployer);
