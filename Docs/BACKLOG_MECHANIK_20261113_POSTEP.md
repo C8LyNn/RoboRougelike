@@ -17,6 +17,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Unity 6000.3.14f1: `aim_query_after.xml` i `.log`: **2 PASS, 0 FAIL**, w tym cel oddalony o 100 m, najbliższy z dwóch celów, brak celu oraz ponad 1024 kolizje własnej konstrukcji. Pomiar edytora dla 50 zapytań przy 80 własnych częściach: około 180 KB przed zmianą (`aim_query_before2.xml`, test wykazał nadmiar alokacji), około 7 KB po zmianie; pomiar kontrolny wykrył alokację 1 MB.
 - To nie jest pomiar FPS w Windows Player. Limity dodatkowych pocisków oraz pełna regresja i ręczny playtest nadal pozostają otwarte.
 
+### 06 i 44. Wskazówka celu na poligonie
+
+- Wskazówka przy celu treningowym pokazuje bieżący klawisz pauzy, w której znajduje się sterowanie ostrzałem, zamiast zawsze podawać Esc. Tekst zniszczonego celu pozostał bez zmian.
+- Unity 6000.3.14f1: `range_pause_hint_final2.xml` i `.log`: **2 PASS, 0 FAIL** dla zmienionych przypisań i etykiet broni. Pierwsza próba (`range_pause_hint_final.xml`) miała **1 PASS, 1 FAIL**, bo test próbował użyć F8 zarezerwowanego przez grę; powtórzono z dostępnym F7. Czytelność w Windows Player: **NOT RUN**.
+
 ## 10–11. Fuzja części — częściowo sprawdzone i uzupełnione
 
 - Istniały operacja fuzji trzech fizycznych części oraz przycisk w katalogu garażu. Nowa część otrzymuje średnią procentową stanu wejść, także dla wejścia z 0 HP.

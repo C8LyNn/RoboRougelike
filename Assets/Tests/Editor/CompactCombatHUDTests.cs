@@ -158,10 +158,14 @@ public sealed class CompactCombatHUDTests
             Assert.That(profile.TryBind("SteeringLeft","J"),Is.True);
             Assert.That(profile.TryBind("DefenseStatusPage","F6"),Is.True);
             Assert.That(profile.TryBind("ResetRange","P"),Is.True);
+            Assert.That(profile.TryBind("Pause","F7"),Is.True);
             var method=typeof(R1RunHUD).GetMethod("RangeControlsHint",BindingFlags.Static|BindingFlags.NonPublic);
             Assert.That(method,Is.Not.Null);string hint=(string)method.Invoke(null,null);
             Assert.That(hint,Does.Contain("K/S/A/D").And.Contain("B").And.Contain("N/X/C/V").And.Contain("J/.").And.Contain("P — reset"));
             Assert.That(hint,Does.Not.Contain("WASD").And.Not.Contain("R — reset"));
+            var targetHint=typeof(R1RunHUD).GetMethod("RangeTrainingTargetHint",BindingFlags.Static|BindingFlags.NonPublic);
+            Assert.That((string)targetHint.Invoke(null,new object[]{false}),Does.Contain("F7 — sterowanie ostrzałem").And.Not.Contain("Esc"));
+            Assert.That((string)targetHint.Invoke(null,new object[]{true}),Is.EqualTo("Cel zniszczony."));
         }
         finally{profile.ResetDefaults();}
     }

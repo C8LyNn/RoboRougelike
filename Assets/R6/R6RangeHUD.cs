@@ -53,6 +53,8 @@ namespace RoboRougelike.R1
                 Names("Active1","Active2","Active3","Active4")+" — moduły • "+Names("Deploy1","Deploy2","Deploy3","Deploy4")+" — urządzenia • "+
                 Names("ResetRange")+" — reset • "+Names("Pause")+" — pauza";
         }
+        static string RangeTrainingTargetHint(bool defeated)=>defeated?"Cel zniszczony.":
+            "Robot na lewo przed startem.\n"+R1ControlProfile.Display(R1ControlProfile.Current.Binding("Pause"))+" — sterowanie ostrzałem celu.";
         private void AdvanceWeaponStatusPage(int count)
         {int pages=WeaponStatusPageCount(count);weaponStatusPage=(Mathf.Clamp(weaponStatusPage,0,pages-1)+1)%pages;}
         private void UpdateWeaponPaging(Event input,int count)
@@ -137,7 +139,7 @@ namespace RoboRougelike.R1
             {
                 Panel(new Rect(925,18,335,150));GUI.Label(new Rect(940,25,305,30),"CEL ELEKTRONICZNY",heading);
                 GUI.Label(new Rect(940,62,305,38),range.TrainingFireRequested?"Ostrzał WŁĄCZONY":"Ostrzał WYŁĄCZONY",body);
-                GUI.Label(new Rect(940,106,305,55),range.TrainingTarget.IsDefeated?"Cel zniszczony.":"Robot na lewo przed startem.\nEsc — sterowanie ostrzałem celu.",small);
+                GUI.Label(new Rect(940,106,305,55),RangeTrainingTargetHint(range.TrainingTarget.IsDefeated),small);
             }
             DrawAimReticle(run);
             Panel(new Rect(18,625,1244,78));
