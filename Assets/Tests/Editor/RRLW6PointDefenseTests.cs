@@ -27,7 +27,9 @@ public class RRLW6PointDefenseTests
     [UnityTest] public IEnumerator MountedDefenseInterceptsOneOfTwoOverlappingPairIgnoredShells()=>InterceptOverlappingShells(0);
     [UnityTest] public IEnumerator MountedDefenseInterceptsOneOfTwoOverlappingLayerFilteredShells()=>InterceptOverlappingShells(1);
     [UnityTest] public IEnumerator MountedDefenseInterceptsOneRealGroupedShell()=>InterceptOverlappingShells(2);
-    [UnityTest] public IEnumerator MountedDefenseAcquiresSlowPhysicalShellInsideRadius()
+    [UnityTest] public IEnumerator MountedDefenseAcquiresSlowPhysicalShellInsideRadius()=>MountedDefenseAcquiresSlowShell(true);
+    [UnityTest] public IEnumerator MountedDefenseAcquiresShellEnteringRadiusBeforeHorizon()=>MountedDefenseAcquiresSlowShell(false);
+    IEnumerator MountedDefenseAcquiresSlowShell(bool inside)
     {
         var run=R1RunController.Instance;var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.Award(1000);
         Vector3Int? mount=null;
@@ -41,12 +43,12 @@ public class RRLW6PointDefenseTests
         try
         {
             yield return MOVSeriesDeviceTests.FixedStep();
-            Vector3 center=body.worldCenterOfMass;Vector3 origin=center+Vector3.up*4.2f;
+            Vector3 center=body.worldCenterOfMass;Vector3 origin=center+Vector3.up*(inside?4.2f:6f);
             shell.transform.position=origin;shell.transform.localScale=Vector3.one*.16f;
-            var rb=shell.AddComponent<Rigidbody>();rb.useGravity=false;rb.linearVelocity=Vector3.down*.2f;
+            var rb=shell.AddComponent<Rigidbody>();rb.useGravity=false;rb.linearVelocity=Vector3.down*(inside?.2f:.3f);
             var projectile=shell.AddComponent<RogueMachine.P12PipelineSafe.P17PhysicalShell>();
             projectile.Configure(run.Encounter.Enemies.First().transform,20,10,Vector3.down,null);Physics.SyncTransforms();
-            controller.ScanNow();Assert.That(controller.CurrentTarget,Is.Not.Null,"A slow physical shot inside the radius must be acquired.");
+            controller.ScanNow();Assert.That(controller.CurrentTarget,Is.Not.Null,"A physical shot inside or entering the defended radius must be acquired.");
             Assert.That(controller.CurrentTarget.Threat.AimTransform,Is.EqualTo(shell.transform));
             int before=controller.Ammunition;
             for(int i=0;i<100&&controller.Ammunition==before;i++)controller.Advance(.05f);

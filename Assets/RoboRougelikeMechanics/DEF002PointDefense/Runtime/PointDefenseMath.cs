@@ -21,11 +21,18 @@ namespace RoboRougelike.Mechanics.PointDefense
             if (offset.sqrMagnitude <= defendedRadius * defendedRadius) return true;
             Vector3 relativeVelocity = velocity - defendedVelocity;
             float square = relativeVelocity.sqrMagnitude;
-            if (square < 0.0001f) return offset.sqrMagnitude <= defendedRadius * defendedRadius;
+            if (square <= 0f) return false;
             float t = -Vector3.Dot(offset, relativeVelocity) / square;
             if (t <= 0f)
                 return offset.sqrMagnitude <= defendedRadius * defendedRadius;
-            if (t > lookAhead) return false;
+            if (t > lookAhead)
+            {
+                // Distance is still decreasing at the horizon. A projectile
+                // can enter the defended sphere before reaching its closest point.
+                if (lookAhead<=0f||float.IsNaN(lookAhead)) return false;
+                if ((offset + relativeVelocity * lookAhead).sqrMagnitude > defendedRadius * defendedRadius) return false;
+                secondsToClosest=lookAhead;return true;
+            }
             secondsToClosest = t;
             return (offset + relativeVelocity * t).sqrMagnitude <= defendedRadius * defendedRadius;
         }

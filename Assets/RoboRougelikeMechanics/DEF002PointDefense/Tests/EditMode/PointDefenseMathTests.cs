@@ -36,6 +36,17 @@ namespace RoboRougelike.Mechanics.PointDefense.Tests
                 new Vector3(0, 0, -5), Vector3.zero, Vector3.zero, 3, 2, out time));
         }
         [Test]
+        public void ThreatEnteringRadiusBeforeHorizon_IsRecognizedEvenIfClosestPointIsLater()
+        {
+            Assert.IsTrue(PointDefenseMath.IsThreatApproaching(new Vector3(0,0,10),new Vector3(0,0,-1),
+                Vector3.zero,Vector3.zero,5,6,out float time));
+            Assert.That(time,Is.EqualTo(5).Within(.001));
+            Assert.IsFalse(PointDefenseMath.IsThreatApproaching(new Vector3(0,0,12),new Vector3(0,0,-1),
+                Vector3.zero,Vector3.zero,5,6,out _),"A shot still outside at the horizon must not be acquired.");
+            Assert.IsTrue(PointDefenseMath.IsThreatApproaching(new Vector3(0,0,5.01f),new Vector3(0,0,-.005f),
+                Vector3.zero,Vector3.zero,3,5,out _),"Very slow relative motion can still enter the radius within the horizon.");
+        }
+        [Test]
         public void ThreatAlreadyInsideProtection_IsRecognized()
         {
             float time;

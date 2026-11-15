@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 29 i 44. Pocisk wchodzący w obszar obrony punktowej
+
+- Obrona rozpoznaje pocisk, który wejdzie w chroniony promień przed końcem czasu przewidywania, nawet gdy jego najbliższe podejście do środka nastąpi później. Uwzględnia również bardzo małe niezerowe prędkości względne. Pocisk, który pozostaje poza promieniem przez cały przewidywany czas, nadal nie jest wybierany; widoczność, drużyna i fizyczne przechwycenie zachowują swoje kontrole.
+- Unity 6000.3.14f1: **26 PASS, 0 FAIL** (`defense_entry_edit.xml`, `.log`) obejmuje matematykę, bardzo powolny ruch oraz faktycznie zamontowaną obronę i fizyczny pocisk. **35 PASS, 0 FAIL** PlayMode (`defense_entry_play.xml`, `.log`) obejmuje również wystrzał przechwytywacza, przeszkody i istniejące zachowania. W scenariuszu zamontowanego urządzenia obrót i strzał wywołano kontrolowanymi krokami, a lot przechwytywacza wykorzystuje fizykę. `defense_entry_before.xml`: **1 FAIL** przed poprawką. Ręczna gra i balans: **NOT RUN**.
+- Progi dodatkowych pocisków #02/#14 i pełny odbiór #44 pozostają otwarte.
+
 ### 24, 29 i 44. Pocisk już wewnątrz ochrony punktowej
 
 - Obrona punktowa rozpoznaje pocisk, który już znajduje się w chronionym promieniu, także gdy zbliża się powoli i jego najbliższe podejście wypada poza czasem przewidywania. Takie zagrożenie ma czas pilności 0; pociski poza promieniem nadal podlegają dotychczasowym warunkom kierunku, czasu i widoczności.
