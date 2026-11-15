@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14 i 44. Dokładność tempa strzałów urządzeń
+
+- Drony i wieżyczki zachowują teraz ułamkowe opóźnienie wynikające z kroku fizyki, zamiast po każdym strzale zaczynać pełny odstęp od spóźnionego kroku. Przerwanie widoczności, utrata celu, ratunek i wyłączenie urządzenia resetują fazę: urządzenie nie zbiera strzałów za czas, w którym nie mogło strzelać. Zmiana nie usuwa ograniczenia jednego strzału na krok fizyki przy krótszych odstępach ani progów dodatkowych pocisków.
+- Unity 6000.3.14f1: `device_cadence_final.xml` i `.log`: **7 PASS, 0 FAIL** dla rzeczywistych pocisków, przeszkody i wznowienia ognia oraz wcześniejszego celowania i premii. Przy zadanym odstępie **0,03 s** i kroku fizyki **0,02 s** scenariusz naliczył **33 pociski w około 1 s**; wcześniej `device_cadence_before2.xml` wykazał **25**. Wstępne `device_cadence_before.xml` i `device_cadence_observe.xml` przeszły, ale były nieważnym pomiarem: 50 wznowień testu przypadło na jeden krok fizyki. Poprawiony scenariusz jawnie czeka na zmianę czasu fizyki. Wynik nie jest pomiarem FPS ani ręcznym playtestem.
+
 ### 13–14 i 44. Własny pocisk a widoczność celu urządzenia
 
 - Dron lub wieżyczka mogły traktować wcześniej wystrzelony pocisk tego samego właściciela jako zasłonę i nie oddać kolejnego strzału aż do jego trafienia. Sprawdzanie widoczności pomija teraz takie pociski; ściany i pozostałe przeszkody nadal blokują linię ognia. Same pociski i ich kolizje pozostają fizyczne i niezależne.

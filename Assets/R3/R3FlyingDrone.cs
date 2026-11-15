@@ -93,6 +93,7 @@ namespace RoboRougelike.R3
     public sealed class R3FlyingDrone : MonoBehaviour,IRRLTeamMember
     {
         Transform owner;Rigidbody body;Collider ownCollider;float speed,interval,damage,nextShot,nextScan,attackRange=40f,followRadius=6f,hoverHeight=3f;
+        bool firingPhase;float phaseDeadline;
         P12PipelineSafeEnemyTurret target;Collider aimCollider;RoboRougelike.R6.R6VehicleDrive groundDrive;bool stationary;
         public bool IsGround=>groundDrive!=null;
         public bool IsTurret=>stationary;
@@ -119,16 +120,25 @@ namespace RoboRougelike.R3
                 body.AddForce(Vector3.ClampMagnitude((desired-body.linearVelocity)*3,speed*4),ForceMode.Acceleration);
             }
             var run=R1RunController.Instance;
-            if(run!=null&&run.Player!=null&&owner==run.Player.transform&&run.EmergencyRescueAttackBlocked)return;
+            if(run!=null&&run.Player!=null&&owner==run.Player.transform&&run.EmergencyRescueAttackBlocked){firingPhase=false;return;}
             if(Time.time>=nextScan){nextScan=Time.time+.25f;FindTarget();}
-            if(target==null||target.IsDefeated||aimCollider==null||Time.time<nextShot)return;
+            if(target==null||target.IsDefeated||aimCollider==null){firingPhase=false;return;}
+            if(Time.time<nextShot)return;
             Vector3 deltaAim=aimCollider.bounds.center-body.position;float distance=deltaAim.magnitude;
-            if(distance<.1f||distance>attackRange||!ClearShot(deltaAim/distance,distance,target))return;
+            if(distance<.1f||distance>attackRange||!ClearShot(deltaAim/distance,distance,target)){firingPhase=false;return;}
+            // Preserve the fractional part of a cooldown when a fixed step
+            // arrives slightly late. Reacquiring a target or a long delay must
+            // not bank shots that were never fired while aim was unavailable.
+            float now=Time.time;
+            float origin=firingPhase&&nextShot==phaseDeadline&&now>=nextShot&&
+                now-nextShot<=Time.fixedDeltaTime*1.5f?nextShot:now;
             Fire(deltaAim/distance);
             var effects=owner.GetComponentInParent<R3MountedBonusEffects>();
             float scale=effects==null?1f:stationary?effects.TurretFireIntervalScale:effects.DroneFireIntervalScale;
-            nextShot=Time.time+R3MountedBonusEffects.SafeIntervalProduct(interval,scale);
+            nextShot=origin+R3MountedBonusEffects.SafeIntervalProduct(interval,scale);
+            phaseDeadline=nextShot;firingPhase=true;
         }
+        void OnDisable(){firingPhase=false;}
         void FindTarget()
         {
             target=null;aimCollider=null;double nearest=(double)attackRange*attackRange;

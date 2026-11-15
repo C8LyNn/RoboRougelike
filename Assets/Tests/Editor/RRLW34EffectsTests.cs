@@ -17,6 +17,43 @@ using Object=UnityEngine.Object;
 
 public class RRLW34EffectsTests
 {
+    [UnityTest] public IEnumerator DeviceCadenceDoesNotAccumulatePhysicsStepRounding()
+    {
+        var vehicle=Build(Model());yield return null;
+        var shooterObject=GameObject.CreatePrimitive(PrimitiveType.Cube);shooterObject.transform.SetParent(fixtures.transform);
+        shooterObject.transform.position=new Vector3(1000,1000,1000);shooterObject.AddComponent<Rigidbody>().useGravity=false;
+        var shooter=shooterObject.AddComponent<R3FlyingDrone>();shooter.ConfigureTurret(vehicle.transform,.03f,10,120);
+        var enemyObject=GameObject.CreatePrimitive(PrimitiveType.Cube);enemyObject.transform.SetParent(fixtures.transform);
+        enemyObject.transform.position=shooterObject.transform.position+Vector3.forward*100;
+        var hp=enemyObject.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
+        var enemy=enemyObject.AddComponent<P12PipelineSafeEnemyTurret>();enemy.enabled=false;enemy.Configure(vehicle.transform,null,null,enemyObject.transform,hp,null);
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        typeof(R3FlyingDrone).GetField("target",flags).SetValue(shooter,enemy);
+        typeof(R3FlyingDrone).GetField("aimCollider",flags).SetValue(shooter,enemyObject.GetComponent<Collider>());
+        typeof(R3FlyingDrone).GetField("nextScan",flags).SetValue(shooter,Time.time+100);
+        Physics.SyncTransforms();float start=Time.fixedTime;
+        for(int i=0;i<50;i++)yield return MOVSeriesDeviceTests.FixedStep();
+        float elapsed=Time.fixedTime-start;
+        var shots=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Where(p=>p.name=="P17_DronePhysicalShell"&&p.gameObject.activeInHierarchy).ToArray();
+        int expected=Mathf.FloorToInt(elapsed/.03f);
+        TestContext.WriteLine($"elapsed={elapsed} fixedDelta={Time.fixedDeltaTime} shots={shots.Length} expected={expected}");
+        Assert.That(elapsed,Is.GreaterThan(.8f),"The fixture must advance through actual physics steps.");
+        Assert.That(shots.Length,Is.InRange(expected-2,expected+2),$"Cadence should not round every 0.03 s interval up to 0.04 s (elapsed={elapsed}).");
+        ulong previous=shots.Max(shot=>shot.LaunchSequence);
+        var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.SetParent(fixtures.transform);
+        wall.transform.position=shooterObject.transform.position+Vector3.forward*2;Physics.SyncTransforms();
+        for(int i=0;i<20;i++)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Any(p=>p.name=="P17_DronePhysicalShell"&&p.LaunchSequence>previous),Is.False,
+            "A wall must prevent further shots while the target is obscured.");
+        wall.SetActive(false);Physics.SyncTransforms();
+        for(int i=0;i<5&&!Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Any(p=>p.name=="P17_DronePhysicalShell"&&p.LaunchSequence>previous);i++)
+            yield return MOVSeriesDeviceTests.FixedStep();
+        var resumed=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Where(p=>p.name=="P17_DronePhysicalShell"&&p.LaunchSequence>previous).ToArray();
+        Assert.That(resumed.Length,Is.EqualTo(1),"Reacquiring a target must not bank shots during the obstruction.");
+        shooter.enabled=false;Object.Destroy(wall);
+        foreach(var shot in shots)if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+        foreach(var shot in resumed)if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+    }
     [UnityTest] public IEnumerator APreviousProjectileDoesNotBlindDroneOrTurretAndWallsStillBlock()
     {
         var vehicle=Build(Model());yield return null;
