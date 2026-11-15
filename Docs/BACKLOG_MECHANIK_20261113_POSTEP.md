@@ -46,6 +46,7 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Generator wznawia przeszukiwanie kombinacji w miejscu, do którego dotarł, zamiast od początku sprawdzać wcześniej wykorzystane zestawy. Gdy dostępność części źródła się zmieni, jego przeszukiwanie jest odtwarzane; całkowicie niedostępne źródła są pomijane. Nie dodano limitu liczby ofert ani nie zmieniono zasad wyboru fizycznych części.
 - Unity 6000.3.14f1: `basket_cursor_final.xml` i `.log`: **30 PASS, 0 FAIL**, w tym wyczerpanie 136 dostępnych par po zmianie łupów, usunięcie całego źródła, stronicowanie i odbiór nagrody. `basket_cursor_first.xml`: **8 PASS, 1 FAIL** — zniknięcie źródła wywoływało wyjątek. W porównawczych `basket_cursor_hash_before.xml` i `basket_cursor_hash_after.xml` pełna kolejność ofert dla stałego ziarna i 153 unikalnych par miała ten sam skrót; wynik zapisano także jako test regresji.
+- Dodatkowy ograniczony scenariusz wszystkich **1140** trójek przeszedł przed zmianą i po niej (`basket_triples_before.xml`, `basket_triples_after.xml`). Pojedyncze czasy testu w edytorze były w obu przypadkach około **0,072 s**, więc ten pomiar nie wykazał mierzalnej poprawy wydajności.
 - Ta zmiana ogranicza ponowne przeszukiwanie, lecz nie jest pomiarem czasu klatki ani gwarancją płynności dla dowolnie wielkiej liczby ofert. Ograniczenie porównania niezaładowanych stron przy rerollu opisane poniżej pozostaje otwarte. Ręczna gra: **NOT RUN**.
 
 ### 14, 31–32, 44. Ładowanie dodatkowych zestawów nagród stronami

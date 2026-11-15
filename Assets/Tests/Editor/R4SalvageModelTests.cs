@@ -6,6 +6,16 @@ using RoboRougelike.R4;
 
 public class R4SalvageModelTests
 {
+    [Test] public void FallbackExhaustsAllTriplesWithoutLosingOrRepeatingExtraOffers()
+    {
+        var ledger=new R4SalvageLedger(3);
+        Assert.That(ledger.Record("enemy",Enumerable.Range(0,20).Select(i=>Item("triple-"+i)),R3EnemyArchetype.Scout),Is.True);
+        var offers=ledger.CreateBasketOffers(23,0,2000);
+        string Key(R4SalvageBasket basket)=>string.Join("|",basket.Items.Select(item=>item.Id).OrderBy(id=>id));
+        Assert.That(offers.Select(Key).Distinct().Count(),Is.EqualTo(1140));
+        Assert.That(offers.Skip(3).Select(Key).Distinct().Count(),Is.EqualTo(offers.Count-3));
+        Assert.That(offers.All(b=>b.Items.Count==3),Is.True);
+    }
     [Test] public void SeededFallbackSequenceStaysStable()
     {
         var ledger=new R4SalvageLedger(2);
