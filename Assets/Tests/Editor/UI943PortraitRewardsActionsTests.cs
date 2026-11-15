@@ -367,6 +367,27 @@ public sealed class UI943PortraitRewardsActionsTests
         }
         finally {if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
     }
+    [UnityTest] public IEnumerator FourthEncounteredArchetypeCanBeChosenAndClaimedFromExtraOffers()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=0;
+        foreach(var kind in new[]{R3EnemyArchetype.Scout,R3EnemyArchetype.Bruiser,R3EnemyArchetype.Gunner,R3EnemyArchetype.Flanker})
+        {
+            var part=new R3PartState(default,R3PartKind.Gun){Id=System.Guid.NewGuid().ToString("N"),Weapon=R4WeaponKind.Basic,Source="test/"+kind};
+            Assert.That(run.Salvage.Record("test-enemy-"+kind,new[]{new R4SalvageItem(part,1)},kind),Is.True);
+        }
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(50,0,0),R3PartKind.SalvageOptimizer){Health=1});
+        Call("TrackRewardLedger",run.Salvage);
+        var baskets=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        int index=Enumerable.Range(0,baskets.Count).FirstOrDefault(i=>baskets[i].Archetype==R3EnemyArchetype.Flanker);
+        Assert.That(baskets[index].Archetype,Is.EqualTo(R3EnemyArchetype.Flanker),"The extra choices must include the fourth enemy type.");
+        var ids=baskets[index].Items.Select(item=>item.Id).ToArray();Assert.That(ids,Is.Not.Empty);
+        Call("SelectRewardBonus",0);Call("ChooseRewardBasket",index);
+        Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.True);
+        Assert.That(ids.All(id=>run.VehicleModel.Inventory.Any(p=>p.Id==id)),Is.True,"Claim the original physical identities exactly once.");
+    }
     [UnityTest] public IEnumerator LargeBasketBonusesLoadPagesOnDemandWithoutChangingSeededOffers()
     {
         var advance=typeof(R1RunHUD).GetMethod("AdvanceBasketPage",BindingFlags.Instance|BindingFlags.NonPublic);

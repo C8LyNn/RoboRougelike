@@ -6,6 +6,31 @@ using RoboRougelike.R4;
 
 public class R4SalvageModelTests
 {
+    [Test] public void ExtraBasketsCanIncludeEveryEncounteredArchetype()
+    {
+        var ledger=new R4SalvageLedger(1);
+        var kinds=new[]{R3EnemyArchetype.Scout,R3EnemyArchetype.Bruiser,R3EnemyArchetype.Gunner,R3EnemyArchetype.Flanker};
+        foreach(var kind in kinds)
+            Assert.That(ledger.Record("enemy-"+kind,new[]{Item("part-"+kind)},kind),Is.True);
+        var offers=ledger.CreateBasketOffers(17,0,4);
+        Assert.That(offers.Select(b=>b.Archetype),Is.EquivalentTo(kinds));
+        Assert.That(offers.SelectMany(b=>b.Items).Select(item=>item.Id),Is.EquivalentTo(kinds.Select(k=>"part-"+k)));
+    }
+    [Test] public void DefaultThreeBasketsCanReachEveryArchetypeAcrossSeededRerolls()
+    {
+        var ledger=new R4SalvageLedger(1);
+        var kinds=new[]{R3EnemyArchetype.Scout,R3EnemyArchetype.Bruiser,R3EnemyArchetype.Gunner,R3EnemyArchetype.Flanker};
+        foreach(var kind in kinds)
+            Assert.That(ledger.Record("enemy-"+kind,new[]{Item("part-"+kind)},kind),Is.True);
+        var seen=new System.Collections.Generic.HashSet<R3EnemyArchetype>();
+        for(int seed=0;seed<32;seed++)
+        {
+            var offers=ledger.CreateBasketOffers(seed,0);Assert.That(offers.Count,Is.EqualTo(3));
+            Assert.That(offers.Select(b=>b.Archetype),Is.EqualTo(ledger.CreateBasketOffers(seed,0).Select(b=>b.Archetype)),"The same seed must remain reproducible.");
+            foreach(var offer in offers)seen.Add(offer.Archetype);
+        }
+        Assert.That(seen,Is.EquivalentTo(kinds),"A default run can reroll into loot from any encountered enemy type.");
+    }
     [Test] public void FallbackExhaustsAllTriplesWithoutLosingOrRepeatingExtraOffers()
     {
         var ledger=new R4SalvageLedger(3);

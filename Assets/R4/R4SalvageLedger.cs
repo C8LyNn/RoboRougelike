@@ -133,12 +133,16 @@ namespace RoboRougelike.R4
         // to request only the pages the player can currently see.
         public IEnumerable<R4SalvageBasket> EnumerateBasketOffers(int seed,int stage,int offerCount)
         {
-            // Select among the most common archetypes that actually appeared.
+            // Select among archetypes that actually appeared.
             // Every offer draws from one real defeated robot; armor stays excluded.
             var groups=basketSources.Where(s=>s.Parts.Any(p=>p.Selectable&&!collected.Contains(p.Id)&&!physicalDrops.Contains(p.Id))).GroupBy(s=>s.Type)
-                .OrderByDescending(g=>g.Count()).ThenBy(g=>g.Key).Take(3).ToArray();
+                .OrderByDescending(g=>g.Count()).ThenBy(g=>g.Key).ToArray();
             if(groups.Length==0||Limit==0)yield break;
             var random=new System.Random(seed);
+            // With more archetypes than the three base offers, rotate the first
+            // group by seed so rerolls can expose every encountered type. Keep
+            // existing sequences unchanged when there are at most three groups.
+            int groupStart=groups.Length>3?random.Next(groups.Length):0;
             var seen=new HashSet<string>(StringComparer.Ordinal);
             var cursors=new Dictionary<R4SalvageItem[],BasketFallbackCursor>();
             try
@@ -150,7 +154,7 @@ namespace RoboRougelike.R4
                 // differ and stop after bounded attempts if loot is scarce.
                 for(int attempt=0;attempt<(i<3?groups.Length:16);attempt++)
                 {
-                    var group=groups[(int)(((long)i+attempt)%groups.Length)]
+                    var group=groups[(int)(((long)i+attempt+groupStart)%groups.Length)]
                         .Where(s=>s.Parts.Any(p=>p.Selectable&&!collected.Contains(p.Id)&&!physicalDrops.Contains(p.Id))).ToArray();
                     if(group.Length==0)continue;
                     var source=group[random.Next(group.Length)];
@@ -170,7 +174,7 @@ namespace RoboRougelike.R4
                 // deterministically before ending the extra offers.
                 if(chosen==null&&i>=3)
                     for(int offset=0;offset<groups.Length&&chosen==null;offset++)
-                        foreach(var source in groups[(int)(((long)i+offset)%groups.Length)])
+                        foreach(var source in groups[(int)(((long)i+offset+groupStart)%groups.Length)])
                         {
                             chosen=FindUnseenBasket(source.Type,source.Parts,stage,seen,cursors);
                             if(chosen!=null)break;

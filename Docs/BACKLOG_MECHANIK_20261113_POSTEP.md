@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 31 i 44. Zestawy części wszystkich napotkanych przeciwników
+
+- Generator zestawów nie odrzuca już czwartego rodzaju pokonanego przeciwnika. Dodatkowe oferty mogą obejmować wszystkie napotkane rodzaje, a przelosowania trzech podstawowych ofert mogą pokazać każdy z nich. Losowanie z tym samym ziarnem jest powtarzalne; dotychczasowa sekwencja przy maksymalnie trzech rodzajach pozostaje zachowana. Zestawy nadal zawierają rzeczywiste, nieodebrane części i zachowują ich tożsamość.
+- Unity 6000.3.14f1: `reward_four_archetypes_before.xml` — **2 FAIL**, czwarty rodzaj był pomijany. `reward_four_archetypes_after.xml` — **25 PASS**, w tym powtarzalność wcześniejszej sekwencji oraz wybór i odbiór części czwartego rodzaju na ekranie nagród. Test ekranu używa kontrolowanych danych łupu i dodanego w fixture optymalizatora; ręczny odbiór w Windows Player **NOT RUN**. Punkt 44 pozostaje otwarty.
+
 ### 06, 31 i 44. Przypisania wyboru nagród
 
 - Trzy wybory bonusu, trzy widoczne zestawy oraz potwierdzenie można przypisać w ustawieniach do klawiszy lub obsługiwanych przycisków myszy. Ekran pokazuje aktualne przypisania; domyślne 1–3, Q/W/E i Enter pozostają. Nagrody mają własny kontekst konfliktów, więc mogą korzystać z klawiszy jazdy i garażu, ale dwie akcje nagród nie mogą otrzymać tego samego przycisku. Po zmianie potwierdzenia Enter i Num Enter można przypisać innym akcjom nagród. Stare profile i blueprinty otrzymują brakujące pola bez usuwania pozostałych ustawień.
