@@ -34,7 +34,8 @@ namespace RoboRougelike.WeaponIntegration
             Module.SetOperational(Device.Available&&State.ReloadReadyAt<=Time.time);
             var economy=Device.Owner.GetComponent<R3VehicleAssembly>()?.Model?.Economy;
             Module.Configure(new RailgunConfig{cooldownSeconds=R3MountedBonusEffects.SafeIntervalProduct(2.4f,tank!=null?tank.PackageIntervalScale:intervalScale),
-                maximumDistinctParts=economy?.RailgunMaxPenetratedParts??6,initialPenetrationEnergy=economy?.RailgunInitialPenetrationEnergy??100f});
+                maximumDistinctParts=economy?.RailgunMaxPenetratedParts??6,initialPenetrationEnergy=economy?.RailgunInitialPenetrationEnergy??100f,
+                maximumRange=economy?.RailgunRange??120f});
         }
         public bool Fire(){Refresh();if(!Device.Available||Time.time<State.DeviceReadyAt)return false;
             var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
@@ -70,7 +71,9 @@ namespace RoboRougelike.WeaponIntegration
                     shell.GetComponent<Renderer>().sharedMaterial=GetComponent<Renderer>().sharedMaterial;
                     var rb=shell.AddComponent<Rigidbody>();rb.useGravity=false;rb.isKinematic=true;rb.interpolation=RigidbodyInterpolation.Interpolate;
                     var origin=shell.AddComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.Railgun;origin.PartId=State.Id;
-                    var projectile=shell.AddComponent<P17PhysicalShell>();projectile.Configure(Device.Owner,0,30,shot.Direction,null,shot.Spec.Range);
+                    double speed=shot.InitialVelocity.magnitude;
+                    double lifetime=speed>0&&!double.IsInfinity(speed)&&!double.IsNaN(speed)?System.Math.Max(30d,(double)shot.Spec.Range/speed+1d):30d;
+                    var projectile=shell.AddComponent<P17PhysicalShell>();projectile.Configure(Device.Owner,0,(float)System.Math.Min(float.MaxValue,lifetime),shot.Direction,null,shot.Spec.Range);
                     projectile.ConfigureRailgun(shot,R3MountedBonusEffects.SafeDamageProduct(tank!=null?tank.PackagePiercingDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier)));
                 }
                 State.DeviceReadyAt=Time.time+shot.Spec.Cooldown;debitPending=false;

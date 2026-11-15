@@ -25,6 +25,13 @@ public class RRLW6RailgunModelTests
         var copy=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light),economy).DeepCopy().Economy;
         Assert.That(maximum.GetValue(copy),Is.EqualTo(60));Assert.That(energy.GetValue(copy),Is.EqualTo(300f));
     }
+    [Test] public void RailgunRangeSupportsLargeFiniteValuesAndConfigurationCopy()
+    {
+        Assert.That(new RailgunConfig{maximumRange=2500}.Snapshot().Range,Is.EqualTo(2500));
+        var economy=new R3GarageEconomy();var range=typeof(R3GarageEconomy).GetField("RailgunRange");Assert.That(range,Is.Not.Null);
+        range.SetValue(economy,2500f);var copy=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light),economy).DeepCopy();
+        Assert.That(range.GetValue(copy.Economy),Is.EqualTo(2500f));
+    }
     [Test] public void RailgunCatalogAndRecoveredResourcesUseExistingPaidRepair()
     {
         Assert.That(Enum.TryParse("Railgun",out R4WeaponKind kind),Is.True,"WPN002 missing from live catalog");
@@ -99,6 +106,24 @@ public class RRLW6RailgunPhysicalTests
         Assert.That(targets.Count(p=>p==null||p.IsDead),Is.EqualTo(30),"Each distinct target should be hit while energy remains.");
         foreach(var target in targets)if(target!=null)UnityEngine.Object.Destroy(target.gameObject);
         if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);yield return null;
+    }
+    [UnityTest] public IEnumerator ConfiguredRailgunCanHitTargetBeyondOldRangeCeiling()
+    {
+        var economy=new R3GarageEconomy();var range=typeof(R3GarageEconomy).GetField("RailgunRange");Assert.That(range,Is.Not.Null);
+        range.SetValue(economy,2500f);economy.RailgunInitialPenetrationEnergy=1000;
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard),economy);
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Railgun;
+        var run=R1RunController.Instance;var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Id==state.Id);
+        var item=GameObject.CreatePrimitive(PrimitiveType.Cube);item.transform.position=gun.Muzzle.position+gun.Muzzle.forward*1600;item.transform.localScale=new Vector3(5,5,1);
+        var target=item.AddComponent<P12PipelineSafeDamageable>();target.Configure(500,false);Physics.SyncTransforms();
+        var binding=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();Assert.That(binding.Fire(),Is.True);
+        Assert.That(binding.Module.CurrentSpec.Range,Is.EqualTo(2500));
+        var projectile=UnityEngine.Object.FindObjectsByType<RoboRougelike.WeaponIntegration.RRLRailPenetration>(FindObjectsSortMode.None).Single();
+        projectile.Step(20f);Assert.That(target.CurrentHp,Is.LessThan(500));
+        UnityEngine.Object.DestroyImmediate(vehicle.gameObject);
+        Assert.DoesNotThrow(()=>projectile.Step(.02f));Assert.That(projectile.gameObject.activeSelf,Is.False);
+        if(item!=null)UnityEngine.Object.Destroy(item);yield return null;
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

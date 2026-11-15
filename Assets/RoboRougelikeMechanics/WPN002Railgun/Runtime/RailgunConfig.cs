@@ -22,7 +22,7 @@ namespace RoboRougelike.WPN002Railgun
 
         public RailgunSpec Snapshot() => new RailgunSpec(
             RailgunRules.ClampFinite(projectileSpeed, 1f, 600f, 85f),
-            RailgunRules.ClampFinite(maximumRange, 1f, 1500f, 120f),
+            RailgunRules.Finite(maximumRange)?Mathf.Max(1f,maximumRange):120f,
             RailgunRules.ClampFinite(projectileRadius, 0.005f, 1f, 0.075f),
             RailgunRules.Finite(initialPenetrationEnergy)?Mathf.Max(1f,initialPenetrationEnergy):100f,
             RailgunRules.ClampFinite(energyLossPerMeter, 0f, 100f, 0.4f),

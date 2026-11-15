@@ -20,6 +20,9 @@ namespace RoboRougelike.WeaponIntegration
         public void Bind(RailgunShot value,float scale){shot=value;position=value.Origin;energy=value.Spec.InitialEnergy;damageScale=scale;body=GetComponent<Rigidbody>();}
         public void Step(float dt)
         {
+            // The owner can disappear during scene transitions or after destruction.
+            // Without it team ownership and self-collision filtering are no longer valid.
+            if(shot.OwnerRoot==null||!shot.OwnerRoot.activeInHierarchy){Stop();return;}
             float move=Mathf.Min(shot.InitialVelocity.magnitude*dt,shot.Spec.Range-travelled);
             if(move<=0){Stop();return;}Vector3 direction=shot.InitialVelocity.normalized;
             int count;RaycastHit[] candidates;
