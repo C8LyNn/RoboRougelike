@@ -20,6 +20,17 @@ namespace RoboRougelike.WPN001Shotgun.Tests.PlayMode
         }
     }
 
+    public sealed class WPN001MovingMuzzleSink : MonoBehaviour, IShotgunVolleySink
+    {
+        public Transform Muzzle;
+        public ShotgunPelletSpawn Before,After;
+        public bool TrySpawnVolley(IReadOnlyList<ShotgunPelletSpawn> pellets)
+        {
+            Before=pellets[0];Muzzle.position+=Vector3.right*3;Muzzle.rotation=Quaternion.Euler(0,90,0);
+            After=pellets[0];return true;
+        }
+    }
+
     public sealed class ShotgunModulePlayModeTests
     {
         private readonly List<GameObject> created = new List<GameObject>();
@@ -66,6 +77,15 @@ namespace RoboRougelike.WPN001Shotgun.Tests.PlayMode
         {
             Assert.IsTrue(module.TryFireAtTime(100f));
             Assert.AreEqual(8, sink.LastVolley.Count);
+        }
+        [Test] public void LazyVolleyKeepsFiringSnapshotWhenMuzzleMovesDuringEmission()
+        {
+            var observing=module.gameObject.AddComponent<WPN001MovingMuzzleSink>();observing.Muzzle=muzzle;
+            module.BindSink(observing);Vector3 original=muzzle.position;
+            Assert.IsTrue(module.TryFireAtTime(100f));
+            Assert.AreEqual(original,observing.Before.Origin);Assert.AreEqual(original,observing.After.Origin);
+            Assert.AreEqual(observing.Before.Direction,observing.After.Direction);
+            Assert.AreSame(body,observing.After.OwnerBody);
         }
         [Test] public void PelletDamageIsPerPellet()
         {

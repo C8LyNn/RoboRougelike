@@ -6,6 +6,28 @@ namespace RoboRougelike.WPN001Shotgun.Tests.EditMode
 {
     public sealed class ShotgunSpreadTests
     {
+        [TestCase(1,0f,0u)][TestCase(8,14f,17u)][TestCase(64,60f,512u)]
+        public void IndexedPatternMatchesExistingDirectionsRegardlessOfAccessOrder(int count,float cone,uint seed)
+        {
+            Vector3 axis=new Vector3(1,1,2).normalized;
+            var expected=Make(axis,count,cone,seed);
+            var pattern=new ShotgunSpread.IndexedPattern(axis,count,cone,seed);
+            for(int i=count-1;i>=0;i--)
+                Assert.That(Vector3.Distance(pattern.DirectionAt(i),expected[i]),Is.LessThan(.000001f));
+        }
+        [Test] public void IndexedPatternCanAddressVeryLargeVolleyWithoutAllocatingAnArray()
+        {
+            const int count=int.MaxValue;var pattern=new ShotgunSpread.IndexedPattern(Vector3.forward,count,60f,42u);
+            var first=pattern.DirectionAt(0);var middle=pattern.DirectionAt(count/2);var last=pattern.DirectionAt(count-1);
+            foreach(var direction in new[]{first,middle,last})
+            {
+                Assert.That(direction.magnitude,Is.EqualTo(1f).Within(.00001f));
+                Assert.LessOrEqual(Vector3.Angle(Vector3.forward,direction),30.001f);
+            }
+            Assert.Greater(Vector3.Distance(first,middle),.01f);Assert.Greater(Vector3.Distance(middle,last),.01f);
+            Assert.Throws<ArgumentOutOfRangeException>(()=>pattern.DirectionAt(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(()=>pattern.DirectionAt(count));
+        }
         private static Vector3[] Make(Vector3 axis, int count, float angle, uint seed)
         {
             var result = new Vector3[count];

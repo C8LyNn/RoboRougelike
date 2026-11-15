@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 44. Przygotowanie salwy strzelby
+
+- Moduł strzelby wylicza opis śrucin na żądanie, bez dwóch własnych tablic o długości salwy. Wzór rozrzutu dla dotychczasowych rozmiarów pozostaje zgodny z poprzednim, a dane wystrzału są ustalane przed przekazaniem salwy do synchronicznego odbiorcy. To przygotowanie do dalszej przebudowy, nie zniesienie limitu.
+- Unity 6000.3.14f1: `shotgun_indexed_pattern_edit.xml` — **39 PASS** dla konfiguracji i rozrzutu, w tym obliczenie trzech wybranych kierunków wzoru o rozmiarze `int.MaxValue`; `shotgun_lazy_volley_play.xml` — **19 PASS** dla modułu, w tym zachowanie pozycji i kierunku po poruszeniu lufy podczas emisji; `shotgun_lazy_volley_integration.xml` — **4 PASS** dla rzeczywistych pocisków, ponownego użycia oraz Double Shot. `shotgun_indexed_pattern_before.xml` — **1 PASS, 3 FAIL** przed implementacją wzoru indeksowanego.
+- Test dużego wzoru sprawdza tylko obliczenia trzech kierunków, nie tworzenie miliardów pocisków. Integracja nadal tworzy listy i fizyczne obiekty synchronicznie, a limit 64 śrucin oraz progi dodatkowych pocisków nadal obowiązują. Pomiar FPS i duże salwy w rozgrywce: **NOT RUN**; punktów 02, 14 i 44 nie uznano za zakończone.
+
 ### 14 i 44. Konfiguracja obrażeń śruciny
 
 - Konfiguracja strzelby nie obcina już obrażeń jednej śruciny do 1000. Wartość jest polem ustawień gry i przechodzi przez kopiowanie konfiguracji; domyślnie nadal wynosi **9**, bez zmiany zwykłej salwy. Ujemna wartość daje zero, a niepoprawna przywraca wartość domyślną. To ustawienie projektowe, nie nowe ulepszenie dostępne graczowi.

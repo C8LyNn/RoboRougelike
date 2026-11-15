@@ -9,6 +9,52 @@ namespace RoboRougelike.WPN001Shotgun
     {
         private const float GoldenAngleRadians = 2.3999632297286533f;
 
+        public readonly struct IndexedPattern
+        {
+            private readonly Vector3 axis;
+            private readonly Quaternion basis;
+            private readonly int count;
+            private readonly float offset,cosEdge;
+            private readonly bool direct;
+            public IndexedPattern(Vector3 forward,int count,float fullConeDegrees,uint seed)
+            {
+                if(count<1)throw new ArgumentOutOfRangeException(nameof(count));
+                if(!IsFinite(forward.x)||!IsFinite(forward.y)||!IsFinite(forward.z)||forward.sqrMagnitude<1e-10f)
+                    throw new ArgumentException("forward must be a finite, non-zero vector",nameof(forward));
+                if(!IsFinite(fullConeDegrees))throw new ArgumentException("cone must be finite",nameof(fullConeDegrees));
+                this.count=count;axis=forward.normalized;
+                float halfRadians=Mathf.Clamp(fullConeDegrees,0f,90f)*Mathf.Deg2Rad*.5f;
+                direct=count==1||halfRadians<=0f;
+                basis=Quaternion.FromToRotation(Vector3.forward,axis);
+                uint x=seed==0u?0x6D2B79F5u:seed;
+                x^=x<<13;x^=x>>17;x^=x<<5;
+                offset=(x&0x00FFFFFFu)*(Mathf.PI*2f/16777216f);
+                cosEdge=Mathf.Cos(halfRadians);
+            }
+            public Vector3 DirectionAt(int index)
+            {
+                if(index<0||index>=count)throw new ArgumentOutOfRangeException(nameof(index));
+                if(direct)return axis;
+                // Preserve the original float arithmetic for existing salvos;
+                // large indices use double so the angle does not lose precision.
+                float u=count<=64?(index+.5f)/count:(float)((index+.5d)/count);
+                float cosTheta=1f-u*(1f-cosEdge);
+                float sinTheta=Mathf.Sqrt(Mathf.Max(0f,1f-cosTheta*cosTheta));
+                float x,y;
+                if(count<=64)
+                {
+                    float azimuth=offset+GoldenAngleRadians*index;
+                    x=Mathf.Cos(azimuth)*sinTheta;y=Mathf.Sin(azimuth)*sinTheta;
+                }
+                else
+                {
+                    double azimuth=offset+2.3999632297286533d*index;
+                    x=(float)Math.Cos(azimuth)*sinTheta;y=(float)Math.Sin(azimuth)*sinTheta;
+                }
+                return (basis*new Vector3(x,y,cosTheta)).normalized;
+            }
+        }
+
         public static uint VolleySeed(uint baseSeed, uint successfulShotIndex)
         {
             // Different successful salvos receive independent patterns.

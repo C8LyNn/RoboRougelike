@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RoboRougelike.WPN001Shotgun
@@ -26,8 +28,29 @@ namespace RoboRougelike.WPN001Shotgun
         [SerializeField] private ShotgunConfig configuration = new ShotgunConfig();
 
         private readonly ShotgunFireGate gate = new ShotgunFireGate();
-        private Vector3[] directions = Array.Empty<Vector3>();
-        private ShotgunPelletSpawn[] volley = Array.Empty<ShotgunPelletSpawn>();
+        // The sink must consume this view synchronously, as required by
+        // IShotgunVolleySink. It describes the whole shot without allocating
+        // an array proportional to the configured pellet count.
+        private sealed class VolleyView : IReadOnlyList<ShotgunPelletSpawn>
+        {
+            private ShotgunSpread.IndexedPattern pattern;
+            private ShotgunSpec spec;
+            private uint index;
+            private Vector3 origin,inherited;
+            private Rigidbody body;
+            private GameObject owner;
+            public int Count => spec.PelletCount;
+            public void Set(ShotgunSpread.IndexedPattern spread,ShotgunSpec shot,uint volleyIndex,
+                Vector3 shotOrigin,Vector3 inheritedVelocity,Rigidbody ownerBody,GameObject ownerRoot)
+            {pattern=spread;spec=shot;index=volleyIndex;origin=shotOrigin;inherited=inheritedVelocity;body=ownerBody;owner=ownerRoot;}
+            public ShotgunPelletSpawn this[int pellet] => new ShotgunPelletSpawn(pellet,index,origin,
+                pattern.DirectionAt(pellet),inherited,spec.ProjectileSpeed,spec.DamagePerPellet,
+                spec.MaxTravelDistance,spec.ProjectileLifetime,body,owner);
+            public IEnumerator<ShotgunPelletSpawn> GetEnumerator()
+            {for(int i=0;i<Count;i++)yield return this[i];}
+            IEnumerator IEnumerable.GetEnumerator()=>GetEnumerator();
+        }
+        private readonly VolleyView volley = new VolleyView();
         public ShotgunFireFailure LastFailure { get; private set; }
         public ShotgunSpec CurrentSpec => (configuration ?? new ShotgunConfig()).Snapshot();
         public uint SuccessfulVolleys => gate.SuccessfulVolleys;
@@ -87,17 +110,12 @@ namespace RoboRougelike.WPN001Shotgun
             if (!gate.CanFire(now)) return Fail(ShotgunFireFailure.Cooldown);
 
             ShotgunSpec spec = (configuration ?? new ShotgunConfig()).Snapshot();
-            if (directions.Length != spec.PelletCount) directions = new Vector3[spec.PelletCount];
-            if (volley.Length != spec.PelletCount) volley = new ShotgunPelletSpawn[spec.PelletCount];
-            ShotgunSpread.BuildDirections(muzzle.forward, spec.PelletCount, spec.FullConeAngleDegrees,
-                ShotgunSpread.VolleySeed(basePatternSeed, gate.SuccessfulVolleys), directions);
+            var pattern=new ShotgunSpread.IndexedPattern(muzzle.forward,spec.PelletCount,spec.FullConeAngleDegrees,
+                ShotgunSpread.VolleySeed(basePatternSeed,gate.SuccessfulVolleys));
             Vector3 inherited = ownerBody != null
                 ? ownerBody.GetPointVelocity(muzzle.position) * spec.InheritedVelocityFactor
                 : Vector3.zero;
-            for (int i = 0; i < spec.PelletCount; i++)
-                volley[i] = new ShotgunPelletSpawn(i, gate.SuccessfulVolleys, muzzle.position,
-                    directions[i], inherited, spec.ProjectileSpeed, spec.DamagePerPellet,
-                    spec.MaxTravelDistance, spec.ProjectileLifetime, ownerBody, ownerRoot);
+            volley.Set(pattern,spec,gate.SuccessfulVolleys,muzzle.position,inherited,ownerBody,ownerRoot);
 
             IShotgunShotResourceBank bank = resourceBankComponent as IShotgunShotResourceBank;
             if (resourceBankComponent != null && (bank == null || !resourceBankComponent.isActiveAndEnabled))
