@@ -8,6 +8,7 @@ namespace RoboRougelike.R3
     // canonical ledger. The ledger, not this object, transfers ownership.
     public sealed class R3PhysicalLoot : MonoBehaviour
     {
+        public const float BasePickupRadius=1.1f;
         const int MaxContacts=4096;
         Collider[] contacts=new Collider[128];
         R4SalvageLedger ledger;
@@ -30,13 +31,15 @@ namespace RoboRougelike.R3
         {
             var run=R1RunController.Instance;
             if(ledger==null||run==null||run.Salvage!=ledger||run.Progress?.State!=R1RunState.Combat||run.Player==null)return;
+            var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+            float pickupRadius=assembly!=null?assembly.CargoPickupRadius:BasePickupRadius;
             while(true)
             {
-                int count=Physics.OverlapSphereNonAlloc(transform.position,1.1f,contacts,~0,QueryTriggerInteraction.Ignore);
+                int count=Physics.OverlapSphereNonAlloc(transform.position,pickupRadius,contacts,~0,QueryTriggerInteraction.Ignore);
                 if(TryCollect(contacts,count,run))return;
                 if(count<contacts.Length){System.Array.Clear(contacts,0,count);return;}
                 if(contacts.Length>=MaxContacts)
-                {System.Array.Clear(contacts,0,contacts.Length);var all=Physics.OverlapSphere(transform.position,1.1f,~0,QueryTriggerInteraction.Ignore);TryCollect(all,all.Length,run);return;}
+                {System.Array.Clear(contacts,0,contacts.Length);var all=Physics.OverlapSphere(transform.position,pickupRadius,~0,QueryTriggerInteraction.Ignore);TryCollect(all,all.Length,run);return;}
                 System.Array.Resize(ref contacts,Mathf.Min(contacts.Length*2,MaxContacts));
             }
         }

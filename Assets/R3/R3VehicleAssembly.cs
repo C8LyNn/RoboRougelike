@@ -18,6 +18,21 @@ namespace RoboRougelike.R3
         int previousShotPathOverlapCount;
         const int MaxShotPathBuffer=8192;
         public void Bind(R3VehicleModel model, P12PipelineSafeTankController tank) { Model = model; controller = tank; R3BuildValidation.Bind(this,model); }
+        // Prototype Cargo Uplink affects only the reach of real physical pickups.
+        public float CargoPickupRadius
+        {
+            get
+            {
+                double radius=R3PhysicalLoot.BasePickupRadius;
+                float extra=Model?.Economy.CargoPickupRangePerUnit??0;
+                if(float.IsNaN(extra)||float.IsInfinity(extra)||extra<=0)return (float)radius;
+                foreach(var part in Parts)
+                    if(part!=null&&part.Kind==R3PartKind.CargoUplink&&part.gameObject.activeInHierarchy&&part.Operational&&
+                       part.transform.IsChildOf(transform)&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
+                        radius+=(double)extra*R3VehicleModel.TierEffectUnits(part.Tier);
+                return (float)System.Math.Min(float.MaxValue,radius);
+            }
+        }
         public void Capture()
         {
             foreach(var emp in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLEmpPartState>())emp.CaptureState();

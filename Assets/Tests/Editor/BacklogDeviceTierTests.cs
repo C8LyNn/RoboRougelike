@@ -11,6 +11,20 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogDeviceTierTests
 {
+    [Test] public void CargoUplinkPrototypeFusesReservesEnergyAndSurvivesSave()
+    {
+        Assert.That(System.Enum.TryParse("CargoUplink",out R3PartKind kind),Is.True);
+        Assert.That(R3VehicleModel.IsPassiveSlotPart(kind),Is.True);Assert.That(R3VehicleModel.IsPassiveEnergyPart(kind),Is.True);
+        var field=typeof(R3GarageEconomy).GetField("CargoPickupRangePerUnit");Assert.That(field,Is.Not.Null);
+        var defaults=Resources.Load<R1RunDefinition>("R1/Run").GaragePrices;Assert.That((float)field.GetValue(defaults),Is.EqualTo(1));
+        var model=Model();field.SetValue(model.Economy,1.5f);float before=model.Energy.Maximum;
+        var part=FuseThree(model,kind);Mount(model,part);Assert.That(model.Energy.Maximum,Is.EqualTo(before-25));
+        Assert.That((float)field.GetValue(model.DeepCopy().Economy),Is.EqualTo(1.5f));
+        var blueprint=R3BlueprintPart.FromPart(part,Vector3Int.zero);
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(blueprint.Matches(restored.Parts.Single(p=>p.Id==part.Id)),Is.True);
+    }
     [Test] public void DroneAndTurretAttackRangeDefaultsAndCopiesArePreserved()
     {
         var defaults=Resources.Load<R1RunDefinition>("R1/Run").GaragePrices;

@@ -101,6 +101,44 @@ public sealed class BacklogProjectileTierPhysicsTests
         item.transform.localScale=new Vector3(width,4,1);
         var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);Physics.SyncTransforms();return hp;
     }
+    [UnityTest] public IEnumerator CargoUplinkCollectsPhysicalLootAtExtendedRangeWithoutDuplicatingIt()
+    {
+        Assert.That(System.Enum.TryParse("CargoUplink",out R3PartKind kind),Is.True);
+        var model=run.VehicleModel;
+        // Arrange a mounted module after the common fixture has already entered combat.
+        // The normal garage-only installation gate is covered by the model/garage tests.
+        typeof(R3VehicleModel).GetMethod("SetInstallationGate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic)
+            .Invoke(model,new object[]{null});
+        model.Award(1000);Assert.That(model.PurchaseToInventory(kind),Is.True);
+        var owned=model.Inventory.Last(p=>p.Kind==kind);
+        var candidates=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .Select(c=>new { Cell=c, Error=model.OwnedPlacementError(owned.Id,c,default) }).ToArray();
+        Assert.That(candidates.Any(c=>c.Error==null),Is.True,"No legal mounting cell: "+
+            string.Join("; ",candidates.GroupBy(c=>c.Error).Select(g=>$"{g.Key}: {g.Count()}")));
+        var cell=candidates.First(c=>c.Error==null).Cell;
+        Assert.That(model.Mount(owned.Id,cell),Is.True);
+        var previous=run.Player;previous.gameObject.SetActive(false);
+        var player=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        typeof(R1RunController).GetProperty("Player").GetSetMethod(true).Invoke(run,new object[]{player});
+        var assembly=player.GetComponent<R3VehicleAssembly>();var body=player.GetComponent<Rigidbody>();body.isKinematic=true;
+        var cargo=assembly.Parts.Single(p=>p.Id==owned.Id);
+        var radius=typeof(R3VehicleAssembly).GetProperty("CargoPickupRadius");Assert.That(radius,Is.Not.Null);
+        Assert.That((float)radius.GetValue(assembly),Is.EqualTo(2.1f).Within(.01));
+        var item=new R4SalvageItem("cargo-test-part","enemy",R3PartKind.Gun,R4WeaponKind.Basic,.6f);
+        Assert.That(run.Salvage.Record("cargo-test-enemy",new[]{item}),Is.True);
+        Physics.SyncTransforms();var edge=player.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger)
+            .OrderByDescending(c=>c.bounds.max.x).First().bounds;
+        R3PhysicalLoot.Spawn(edge.center+Vector3.right*(edge.extents.x+1.6f),run.Salvage,item.Id);
+        var pickup=Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Single(p=>p.ItemId==item.Id);
+        pickup.transform.position=edge.center+Vector3.right*(edge.extents.x+1.6f);pickup.GetComponent<Rigidbody>().isKinematic=true;
+        cargo.gameObject.SetActive(false);Physics.SyncTransforms();
+        for(int i=0;i<8;i++)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(model.Owns(item.Id),Is.False,"A disabled module cannot extend pickup range.");
+        cargo.gameObject.SetActive(true);Physics.SyncTransforms();float deadline=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<deadline&&!model.Owns(item.Id))yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(model.Owns(item.Id),Is.True,"The physical loot is collected when the module extends the range.");
+        Assert.That(model.Inventory.Count(p=>p.Id==item.Id),Is.EqualTo(1));Assert.That(run.Salvage.Items.Any(p=>p.Id==item.Id),Is.False);
+    }
     [UnityTest] public IEnumerator DefeatedEnemyDropsPhysicalPartThatPlayerActuallyCollects()
     {
         run.VehicleModel.Economy.PhysicalLootDropChance=1;
