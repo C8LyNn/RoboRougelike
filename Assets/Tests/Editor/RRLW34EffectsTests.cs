@@ -86,6 +86,41 @@ public class RRLW34EffectsTests
         Assert.That(hp.CurrentHp,Is.EqualTo(1000-shots.Length).Within(.1f),"Every separate shot must be able to hit and damage the target.");
         foreach(var shot in shots)if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
     }
+    [UnityTest] public IEnumerator PendingDeviceVolleysShareTurnsWithoutLosingShots()
+    {
+        var vehicle=Build(Model());yield return null;
+        var emitter=GameObject.CreatePrimitive(PrimitiveType.Cube);emitter.transform.SetParent(fixtures.transform);
+        emitter.transform.position=new Vector3(1000,1000,1000);emitter.AddComponent<Rigidbody>().isKinematic=true;
+        var shooter=emitter.AddComponent<R3FlyingDrone>();shooter.ConfigureTurret(vehicle.transform,.1f,7,120);shooter.enabled=false;
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var queue=vehicle.gameObject.AddComponent<R3DeviceProjectileQueue>();
+        typeof(R3DeviceProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        var capture=typeof(R3FlyingDrone).GetMethod("CaptureShot",flags);
+        var first=capture.Invoke(shooter,new object[]{Vector3.forward});var second=capture.Invoke(shooter,new object[]{Vector3.forward});
+        var count=first.GetType().GetField("Remaining");var origin=first.GetType().GetField("Origin");
+        count.SetValue(first,new System.Numerics.BigInteger(4));count.SetValue(second,new System.Numerics.BigInteger(2));
+        origin.SetValue(second,(Vector3)origin.GetValue(second)+Vector3.right*10);
+        var enqueue=typeof(R3DeviceProjectileQueue).GetMethod("Enqueue",flags);var drain=typeof(R3DeviceProjectileQueue).GetMethod("FixedUpdate",flags);
+        try
+        {
+            enqueue.Invoke(queue,new[]{first});enqueue.Invoke(queue,new[]{second});
+            Assert.That((System.Numerics.BigInteger)count.GetValue(first),Is.EqualTo(new System.Numerics.BigInteger(2)));
+            Assert.That((System.Numerics.BigInteger)count.GetValue(second),Is.EqualTo(new System.Numerics.BigInteger(2)));
+            drain.Invoke(queue,null);
+            Assert.That((System.Numerics.BigInteger)count.GetValue(second),Is.EqualTo(System.Numerics.BigInteger.One),"The second device must fire before the first volley finishes.");
+            for(int i=0;i<3;i++)drain.Invoke(queue,null);
+            Assert.That((System.Numerics.BigInteger)count.GetValue(first),Is.EqualTo(System.Numerics.BigInteger.Zero));
+            Assert.That((System.Numerics.BigInteger)count.GetValue(second),Is.EqualTo(System.Numerics.BigInteger.Zero));
+            var shots=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Where(p=>p.name=="P17_DronePhysicalShell"&&p.OwnerRoot==vehicle.transform).ToArray();
+            Assert.That(shots.Count(p=>Mathf.Abs(p.LaunchPosition.x-1000)<.01f),Is.EqualTo(4));
+            Assert.That(shots.Count(p=>Mathf.Abs(p.LaunchPosition.x-1010)<.01f),Is.EqualTo(2));
+        }
+        finally
+        {
+            foreach(var shot in Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Where(p=>p.name=="P17_DronePhysicalShell"&&p.OwnerRoot==vehicle.transform))
+                if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+        }
+    }
     [UnityTest] public IEnumerator DeferredDeviceShotsKeepTheirSnapshotWhenEmitterDisappears()
     {
         var vehicle=Build(Model());yield return null;

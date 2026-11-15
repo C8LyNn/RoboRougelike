@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14, 21–23, 42 i 44. Kolejność salw urządzeń
+
+- Oczekujące salwy dronów i wieżyczek tego samego właściciela dostają kolejne tury po jednym pocisku, gdy więcej niż jedna porcja czeka na emisję. Wcześniej długa pierwsza salwa zatrzymywała późniejsze aż do swojego zakończenia. Zachowano osobne pociski, zapisane parametry każdej salwy, koszt i wstrzymanie ostrzału podczas ratunku.
+- Unity 6000.3.14f1: `device_fair_before.xml` — **1 FAIL**, druga salwa nie dostała tury. `device_fair_final.xml` — **6 PASS**, w tym sześć rzeczywistych pocisków z dwóch porcji, wcześniejszy szybki ostrzał, trafienia dużej salwy, zniknięcie urządzenia lub właściciela i ratunek. Scenariusz tury ręcznie wywołuje krok kolejki; nie jest to pełna autonomiczna walka ani test Playera.
+- Budżet czasu nadal dopuszcza pierwszą próbę przy każdym wywołaniu kolejki, więc przy bardzo wielu jednoczesnych zleceniach nie jest sztywną gwarancją czasu klatki. Opóźnienia i wydajność skrajnych salw nie zostały zmierzone. Pozostały limit podstawowych śrucin oraz odbiór #44 są nadal otwarte.
+
 ### 02, 14, 20, 42 i 44. Liczba bonusowych pocisków i kolejność wyrzutni
 
 - Wyliczenie dodatkowych pocisków Double Shot i Overdrive oraz liczniki oczekujących salw obsługują wartości powyżej zakresu `int`. Dotyczy to dział, strzelb, railgunów i rakiet, w tym osobnych liczników bonusów każdej śruciny. Zwykłe losowanie ułamkowej szansy, koszt pojedynczego strzału i stopniowe tworzenie fizycznych pocisków pozostają. Kolejka rakiet daje teraz kolejnym oczekującym wyrzutniom tury, zamiast czekać na pełne opróżnienie pierwszej salwy. Starsze ograniczone metody pozostają dla zgodności wywołań, ale właściwa ścieżka broni używa pełnego licznika.

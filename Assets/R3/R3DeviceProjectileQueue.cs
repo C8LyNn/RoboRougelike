@@ -65,7 +65,8 @@ namespace RoboRougelike.R3
                     shot=Spawn(batch);
                     ExcludeSiblings(batch,shot);
                     batch.Remaining-=BigInteger.One;
-                    if(batch.Remaining.IsZero)batches.Dequeue();
+                    batches.Dequeue();
+                    if(!batch.Remaining.IsZero)batches.Enqueue(batch); // Share work among already-pending devices.
                 }
                 catch(Exception e){if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}UnityEngine.Debug.LogException(e,this);break;}
             }
