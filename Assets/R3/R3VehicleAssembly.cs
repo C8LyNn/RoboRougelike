@@ -241,6 +241,7 @@ namespace RoboRougelike.R3
             public string PartId;
             public Collider Primary;
             public RoboRougelike.WeaponIntegration.RRLRailgunBinding Rail;
+            public RoboRougelike.WeaponIntegration.RRLShotgunBinding Shotgun;
             public int Requested;
         }
         struct PendingRocketShot
@@ -286,7 +287,15 @@ namespace RoboRougelike.R3
                     if(part.Weapon==R4WeaponKind.Shotgun)
                     {
                         var binding=part.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
-                        if(binding!=null&&binding.Fire())part.NextFireTime=binding.State.DeviceReadyAt;
+                        if(binding!=null&&binding.FirePrimary())
+                        {
+                            part.NextFireTime=binding.State.DeviceReadyAt;
+                            if(binding.AdditionalRequested>0)
+                            {
+                                if(pending==null)pending=new List<PendingConventionalShot>();
+                                pending.Add(new PendingConventionalShot{Shotgun=binding,Requested=binding.AdditionalRequested});
+                            }
+                        }
                         continue;
                     }
                     if(part.Weapon==R4WeaponKind.RocketLauncher)
@@ -359,7 +368,9 @@ namespace RoboRougelike.R3
                 }
                 for(int i=0;i<pendingRockets.Count;i++)if(rocketAllocation[i]>0)pendingRockets[i].Binding.FireAdditional(rocketAllocation[i]);
             }
-            if(pending==null||P17PhysicalShell.AvailableSlots<=0)return;
+            if(pending==null)return;
+            if(P17PhysicalShell.AvailableSlots<=0)
+            {foreach(var shot in pending)if(shot.Shotgun!=null)shot.Shotgun.ClearDeferred();return;}
             var allocated=new int[pending.Count];
             int available=P17PhysicalShell.AvailableSlots;
             while(available>0)
@@ -373,9 +384,11 @@ namespace RoboRougelike.R3
                 if(allocated[i]>0)
                 {
                     var shot=pending[i];
-                    if(shot.Rail!=null)shot.Rail.FireAdditional(allocated[i]);
+                    if(shot.Shotgun!=null)shot.Shotgun.FireAdditional(allocated[i]);
+                    else if(shot.Rail!=null)shot.Rail.FireAdditional(allocated[i]);
                     else controller.FireAdditionalFrom(shot.Muzzle,shot.Kind,shot.PartId,shot.Primary,allocated[i]);
                 }
+                else if(pending[i].Shotgun!=null)pending[i].Shotgun.ClearDeferred();
         }
 
         public static R1VehicleState Build(R3VehicleModel model, R1RunStats stats, R3VisualPalette palette,

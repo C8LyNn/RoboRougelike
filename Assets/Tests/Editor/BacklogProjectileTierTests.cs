@@ -95,6 +95,53 @@ public sealed class BacklogProjectileTierPhysicsTests
         finally{foreach(var target in targets)if(target!=null)Object.Destroy(target.gameObject);foreach(var dummy in dummies)if(dummy!=null)Object.Destroy(dummy);if(fixtureOwner!=null)Object.Destroy(fixtureOwner);if(vehicle!=null)Object.Destroy(vehicle.gameObject);}
         yield return null;
     }
+    [UnityTest] public IEnumerator ShotgunCopiesFireBeforeBonusPelletsConsumeRemainingSlots()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(2000);
+        var first=model.Parts.First(p=>p.Kind==R3PartKind.Gun);first.Weapon=R4WeaponKind.Shotgun;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.Gun,false,R4WeaponKind.Shotgun)==null);
+        Assert.That(model.Buy(cell,R3PartKind.Gun,R4WeaponKind.Shotgun),Is.True);
+        cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.DoubleShot)==null);
+        Assert.That(model.Buy(cell,R3PartKind.DoubleShot),Is.True);model.Economy.DoubleShotChancePerUnit=100;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
+        var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=true;var assembly=vehicle.GetComponent<R3VehicleAssembly>();
+        var guns=assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Shotgun).ToArray();Assert.That(guns.Length,Is.EqualTo(2));
+        for(int i=0;i<guns.Length;i++)
+        {
+            var muzzle=new GameObject("Unblocked shotgun muzzle").transform;muzzle.SetParent(guns[i].transform,false);
+            muzzle.position=new Vector3(1000+i*8,1000,1000);muzzle.rotation=Quaternion.identity;guns[i].GunPivot=muzzle;guns[i].Muzzle=muzzle;
+            var binding=guns[i].GetComponent<RRLShotgunBinding>();Assert.That(binding,Is.Not.Null);
+            typeof(RRLShotgunBinding).GetField("muzzle",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).SetValue(binding,muzzle);
+            binding.Module.Bind(body,muzzle,vehicle.gameObject);
+        }
+        var targets=guns.Select(g=>{var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=g.Muzzle.position+Vector3.forward*5;
+            target.transform.localScale=new Vector3(3,3,.5f);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);return hp;}).ToArray();
+        Physics.SyncTransforms();Assert.That(guns.All(assembly.ClearProjectilePath),Is.True);
+        var dummies=new System.Collections.Generic.List<GameObject>();
+        try
+        {
+            while(P17PhysicalShell.AvailableSlots>20){var dummy=new GameObject("Projectile pool fixture");dummies.Add(dummy);dummy.AddComponent<P17PhysicalShell>();Assert.That(dummies.Count,Is.LessThan(200));}
+            int slot=System.Array.FindIndex(model.GetWeaponSlots(),w=>w==R4WeaponKind.Shotgun);Assert.That(slot,Is.GreaterThanOrEqualTo(0));
+            float before=vehicle.GetComponent<VehicleEnergyBank>().Current;assembly.FireSlot(slot);
+            Assert.That(guns.All(g=>g.NextFireTime>Time.time),Is.True,"Every shotgun must fire its full primary volley before bonus pellets fill the pool.");
+            Assert.That(guns.All(g=>g.GetComponent<RRLShotgunBinding>().State.Ammo==RRLShotgunBinding.MagazineSalvos-1),Is.True);
+            Assert.That(before-vehicle.GetComponent<VehicleEnergyBank>().Current,Is.EqualTo(2*VehicleEnergyCosts.Shotgun).Within(.001));
+            var origins=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>guns.Any(g=>g.Id==p.PartId)).ToArray();
+            foreach(var gun in guns)
+            {
+                var shots=origins.Where(p=>p.PartId==gun.Id).ToArray();Assert.That(shots.Length,Is.EqualTo(10),"Bonus pellets must be shared across shotguns.");
+                for(int i=0;i<shots.Length;i++)for(int j=i+1;j<shots.Length;j++)
+                    Assert.That(Physics.GetIgnoreCollision(shots[i].GetComponent<Collider>(),shots[j].GetComponent<Collider>()),Is.True);
+            }
+            float deadline=Time.realtimeSinceStartup+5;
+            while(Time.realtimeSinceStartup<deadline&&targets.Any(target=>target.CurrentHp>=500))yield return MOVSeriesDeviceTests.FixedStep();
+            Assert.That(targets.All(target=>target.CurrentHp<500),Is.True,"Both shotguns must physically hit their targets.");
+        }
+        finally{foreach(var target in targets)if(target!=null)Object.Destroy(target.gameObject);foreach(var dummy in dummies)if(dummy!=null){dummy.SetActive(false);Object.Destroy(dummy);}if(vehicle!=null)Object.Destroy(vehicle.gameObject);}
+        yield return null;
+    }
     [UnityTest] public IEnumerator RailgunCopiesFireBeforeBonusShotsConsumeRemainingSlots()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(2000);
