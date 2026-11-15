@@ -99,7 +99,7 @@ namespace RoboRougelike.WeaponIntegration
             // both bounded buffers for that workload without weakening it.
             float damage=R3MountedBonusEffects.SafeDamageProduct(60,tank!=null?tank.PackageRocketDamageScale:damageScale);
             damage=R3MountedBonusEffects.SafeDamageProduct(damage,R3VehicleModel.TierEffectUnits(State.Tier));
-            Module.SetConfig(new RocketConfig{damageAtCenter=damage,cooldown=R3MountedBonusEffects.SafeIntervalProduct(1.7f,tank!=null?tank.PackageIntervalScale:intervalScale),maxBlastColliders=1024,maxCastHits=512});
+            Module.SetConfig(new RocketConfig{damageAtCenter=damage,cooldown=R3MountedBonusEffects.SafeIntervalProduct(1.7f,tank!=null?tank.WeaponIntervalScale(R4WeaponKind.RocketLauncher):intervalScale),maxBlastColliders=1024,maxCastHits=512});
             projectileTemplate.GetComponent<R3ShieldRocketPayload>().Damage=Module.CurrentSpec.CenterDamage;
             var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
             float cost=VehicleEnergyCosts.Rocket*R3VehicleModel.TierActivationCost(State.Tier);

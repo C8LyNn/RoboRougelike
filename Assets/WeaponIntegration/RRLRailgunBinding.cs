@@ -35,7 +35,7 @@ namespace RoboRougelike.WeaponIntegration
             if(State.ReloadReadyAt>0&&Time.time>=State.ReloadReadyAt){State.Ammo=Magazine;State.ReloadReadyAt=0;}
             Module.SetOperational(Device.Available&&State.ReloadReadyAt<=Time.time);
             var economy=Device.Owner.GetComponent<R3VehicleAssembly>()?.Model?.Economy;
-            Module.Configure(new RailgunConfig{cooldownSeconds=R3MountedBonusEffects.SafeIntervalProduct(2.4f,tank!=null?tank.PackageIntervalScale:intervalScale),
+            Module.Configure(new RailgunConfig{cooldownSeconds=R3MountedBonusEffects.SafeIntervalProduct(2.4f,tank!=null?tank.WeaponIntervalScale(R4WeaponKind.Railgun):intervalScale),
                 maximumDistinctParts=economy?.RailgunMaxPenetratedParts??6,initialPenetrationEnergy=economy?.RailgunInitialPenetrationEnergy??100f,
                 maximumRange=economy?.RailgunRange??120f});
         }

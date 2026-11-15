@@ -67,7 +67,7 @@ namespace RoboRougelike.WeaponIntegration
             var assembly=Owner.GetComponent<R3VehicleAssembly>();
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>()))return false;
             Module.SetOperational(true);
-            Module.Configure(ShotgunSettings(tank!=null?tank.PackageIntervalScale:intervalScale));
+            Module.Configure(ShotgunSettings(tank!=null?tank.WeaponIntervalScale(R4WeaponKind.Shotgun):intervalScale));
             var energy=Owner.GetComponent<VehicleEnergyBank>();
             float cost=VehicleEnergyCosts.Shotgun*R3VehicleModel.TierActivationCost(State.Tier);
             if(energy!=null&&!energy.TrySpend(cost))return false;

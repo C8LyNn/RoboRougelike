@@ -792,6 +792,37 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(run.VehicleModel.Owns(id),Is.True);enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
         Assert.That(run.Salvage.Items.Any(p=>p.Id==id),Is.False);Assert.That(run.VehicleModel.Inventory.Count(p=>p.Id==id),Is.EqualTo(1));
     }
+    [UnityTest] public IEnumerator ScopedAutomaticFireRateControlsARealShot()
+    {
+        var bonus=BacklogBonusTierTests.OperationBonus("actual-auto-rate",.2f,"Increased",R1UpgradeEffect.Reload);bonus.Scope=R1BonusScope.AutomaticWeapon;
+        var gun=Build(R4WeaponKind.Automatic,out _,false,bonus);var hp=Target(gun,6);
+        var assembly=gun.GetComponentInParent<R3VehicleAssembly>();float firedAt=Time.time;
+        int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),weapon=>weapon==R4WeaponKind.Automatic);
+        Assert.That(slot,Is.GreaterThanOrEqualTo(0));assembly.FireSlot(slot);
+        Assert.That(gun.NextFireTime-firedAt,Is.EqualTo(R4WeaponDefinition.Get(R4WeaponKind.Automatic).Interval*.8f).Within(.002));
+        float deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=500)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.LessThan(500),"The automatic must fire a real projectile with the scoped cooldown.");
+        Object.Destroy(assembly.gameObject);Object.Destroy(hp.gameObject);Object.Destroy(bonus);
+    }
+    [UnityTest] public IEnumerator ScopedFireRateReachesEachPackagedPhysicalGun()
+    {
+        var cases=new[]{(R4WeaponKind.Shotgun,R1BonusScope.ShotgunWeapon,.85f),
+            (R4WeaponKind.Railgun,R1BonusScope.RailgunWeapon,2.4f),
+            (R4WeaponKind.RocketLauncher,R1BonusScope.RocketWeapon,1.7f)};
+        foreach(var (kind,scope,interval) in cases)
+        {
+            var bonus=BacklogBonusTierTests.OperationBonus("fire-rate-"+kind,.2f,"Increased",R1UpgradeEffect.Reload);bonus.Scope=scope;
+            var gun=Build(kind,out _,false,bonus);var hp=Target(gun,6);float firedAt=Time.time;
+            bool fired=kind==R4WeaponKind.Shotgun?gun.GetComponent<RRLShotgunBinding>().Fire():
+                kind==R4WeaponKind.Railgun?gun.GetComponent<RRLRailgunBinding>().Fire():gun.GetComponent<RRLRocketBinding>().Fire();
+            Assert.That(fired,Is.True,kind.ToString());
+            var state=gun.GetComponent<RRLDeviceBinding>().State;
+            Assert.That(state.DeviceReadyAt-firedAt,Is.EqualTo(interval*.8f).Within(.002),"The physical weapon must use its scoped interval.");
+            float deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=500)yield return new WaitForFixedUpdate();
+            Assert.That(hp.CurrentHp,Is.LessThan(500),"The scoped shot must actually hit.");
+            Object.Destroy(gun.GetComponentInParent<R3VehicleAssembly>().gameObject);Object.Destroy(hp.gameObject);Object.Destroy(bonus);yield return null;
+        }
+    }
     [UnityTest] public IEnumerator ShotgunTierTwoConsumesSixEnergyAndDamagesWithRealPellets()
     {
         var gun=Build(R4WeaponKind.Shotgun,out var energy);var hp=Target(gun,6);float before=energy.Current;

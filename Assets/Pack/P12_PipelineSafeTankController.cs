@@ -83,6 +83,8 @@ namespace RogueMachine.P12PipelineSafe
         private float basicBlastDamageModifier = 1f;
         private float basicBlastFraction;
         private float intervalModifier = 1f;
+        private readonly float[] scopedWeaponIntervals=new float[System.Enum.GetValues(typeof(RoboRougelike.R4.R4WeaponKind)).Length];
+        private bool hasScopedWeaponIntervals;
         private float mobilityModifier = 1f;
 
         public float EffectiveDamage => (float)System.Math.Min(float.MaxValue,(double)shotDamage*((1d-basicBlastFraction)*basicDamageModifier+basicBlastFraction*basicBlastDamageModifier));
@@ -98,6 +100,7 @@ namespace RogueMachine.P12PipelineSafe
             basicDamageModifier=damageModifier;
             basicBlastDamageModifier=damageModifier;basicBlastFraction=0;
             intervalModifier = float.IsNaN(interval)||float.IsInfinity(interval)?1f:Mathf.Max(0,interval);
+            hasScopedWeaponIntervals=false;
             mobilityModifier = float.IsNaN(mobility)||float.IsInfinity(mobility)?1f:Mathf.Max(0,mobility);
         }
         public void SetBasicDamageModifier(float damage)
@@ -643,7 +646,17 @@ public float CurrentForwardSpeed =>
             }
             return first;
         }
-        public float WeaponInterval(RoboRougelike.R4.R4WeaponKind kind) => RoboRougelike.R3.R3MountedBonusEffects.SafeIntervalProduct(RoboRougelike.R4.R4WeaponDefinition.Get(kind).Interval,intervalModifier);
+        public float WeaponInterval(RoboRougelike.R4.R4WeaponKind kind) => RoboRougelike.R3.R3MountedBonusEffects.SafeIntervalProduct(RoboRougelike.R4.R4WeaponDefinition.Get(kind).Interval,WeaponIntervalScale(kind));
+        internal void SetScopedWeaponIntervals(float[] scales)
+        {
+            if(scales==null||scales.Length!=scopedWeaponIntervals.Length){hasScopedWeaponIntervals=false;return;}
+            System.Array.Copy(scales,scopedWeaponIntervals,scales.Length);hasScopedWeaponIntervals=true;
+        }
+        public float WeaponIntervalScale(RoboRougelike.R4.R4WeaponKind kind)
+        {
+            int index=(int)kind;
+            return hasScopedWeaponIntervals&&index>=0&&index<scopedWeaponIntervals.Length?scopedWeaponIntervals[index]:intervalModifier;
+        }
         public float PackageDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.WeaponDamageMultiplier??damageModifier;
         public float PackageBlastDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.BlastDamageMultiplier??damageModifier;
         public float PackagePiercingDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.PiercingDamageMultiplier??damageModifier;

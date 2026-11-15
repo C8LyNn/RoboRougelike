@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using RogueMachine.P12PipelineSafe;
 using RoboRougelike.R1;
+using RoboRougelike.R4;
 
 namespace RoboRougelike.R3
 {
@@ -61,6 +62,10 @@ namespace RoboRougelike.R3
         public float RepairEfficiencyMultiplier {get;private set;}=1;
         public float ConstructionHullMultiplier {get;private set;}=1;
         public float DriveMobilityMultiplier {get;private set;}=1;
+        private static readonly R4WeaponKind[] ProjectileWeapons={R4WeaponKind.Basic,R4WeaponKind.Automatic,R4WeaponKind.Heavy,R4WeaponKind.Shotgun,R4WeaponKind.Railgun,R4WeaponKind.RocketLauncher};
+        private readonly float[] weaponIntervalScales=Enumerable.Repeat(1f,System.Enum.GetValues(typeof(R4WeaponKind)).Length).ToArray();
+        internal void ApplyWeaponIntervals(P12PipelineSafeTankController controller)
+        {if(controller!=null&&EffectiveStats!=null)controller.SetScopedWeaponIntervals(weaponIntervalScales);}
 
         // Saturation is only the representable numeric limit, not a balance cap.
         public static float SafeDamageProduct(float amount,float multiplier)
@@ -146,6 +151,9 @@ namespace RoboRougelike.R3
             var core=new R1ModifierGroup();var reload=new R1ModifierGroup();var shieldDurability=new R1ModifierGroup();var weaponDamage=new R1ModifierGroup();var automaticDamage=new R1ModifierGroup();var energyDamage=new R1ModifierGroup();var repairEfficiency=new R1ModifierGroup();var constructionHull=new R1ModifierGroup();var driveMobility=new R1ModifierGroup();
             var heavyDamage=new R1ModifierGroup();var shotgunDamage=new R1ModifierGroup();var railgunDamage=new R1ModifierGroup();var rocketDamage=new R1ModifierGroup();
             var beamDamage=new R1ModifierGroup();var sawDamage=new R1ModifierGroup();var auraDamage=new R1ModifierGroup();
+            var weaponReload=new R1ModifierGroup[weaponIntervalScales.Length];
+            foreach(var kind in ProjectileWeapons)
+            {weaponReload[(int)kind]=new R1ModifierGroup();weaponReload[(int)kind].Add(R1ModifierOperation.Increased,rapidFireReduction,1,true);}
             damage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             weaponDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             automaticDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
@@ -227,7 +235,12 @@ namespace RoboRougelike.R3
                 else if(module.UpgradeEffect==R1UpgradeEffect.Core)
                     core.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 else if(module.UpgradeEffect==R1UpgradeEffect.Reload)
-                    reload.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier),true);
+                {
+                    int units=R3VehicleModel.TierEffectUnits(module.Tier);
+                    if(module.UpgradeScope==R1BonusScope.Global)reload.Add(module.UpgradeOperation,module.UpgradeAmount,units,true);
+                    foreach(var kind in ProjectileWeapons)
+                        if(AppliesToFireRate(module.UpgradeScope,kind))weaponReload[(int)kind].Add(module.UpgradeOperation,module.UpgradeAmount,units,true);
+                }
                 else if(module.UpgradeEffect==R1UpgradeEffect.ShieldDurability)
                     shieldDurability.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 else if(module.UpgradeEffect==R1UpgradeEffect.RepairEfficiency)
@@ -236,6 +249,8 @@ namespace RoboRougelike.R3
                     hybridShare+=(double)module.UpgradeAmount*R3VehicleModel.TierEffectUnits(module.Tier);
             stats.ApplyBonusGroups(hull,damage,reload,mobility,core);
             EffectiveStats=stats;
+            for(int i=0;i<weaponIntervalScales.Length;i++)weaponIntervalScales[i]=stats.FireInterval;
+            foreach(var kind in ProjectileWeapons)weaponIntervalScales[(int)kind]=weaponReload[(int)kind].Apply(baseStats.FireInterval);
             DroneDamageMultiplier=droneDamage.Apply(baseStats.Damage);
             TurretDamageMultiplier=turretDamage.Apply(baseStats.Damage);
             TrapDamageMultiplier=trapDamage.Apply(baseStats.Damage);
@@ -262,6 +277,13 @@ namespace RoboRougelike.R3
         }
         private static bool AppliesToWeapon(R1BonusScope scope,R1BonusScope weapon,R1BonusScope damageType)=>
             scope==R1BonusScope.Global||scope==R1BonusScope.Weapons||scope==weapon||scope==damageType;
+        private static bool AppliesToFireRate(R1BonusScope scope,R4WeaponKind kind)=>scope==R1BonusScope.Global||scope==R1BonusScope.Weapons||
+            (scope==R1BonusScope.BasicCannon&&kind==R4WeaponKind.Basic)||
+            (scope==R1BonusScope.AutomaticWeapon&&kind==R4WeaponKind.Automatic)||
+            (scope==R1BonusScope.HeavyWeapon&&kind==R4WeaponKind.Heavy)||
+            (scope==R1BonusScope.ShotgunWeapon&&kind==R4WeaponKind.Shotgun)||
+            (scope==R1BonusScope.RailgunWeapon&&kind==R4WeaponKind.Railgun)||
+            (scope==R1BonusScope.RocketWeapon&&kind==R4WeaponKind.RocketLauncher);
         private static bool MatchesDrive(R1BonusScope scope,R3DriveKind drive)=>
             (scope==R1BonusScope.WheelDrive&&drive==R3DriveKind.Wheels)||
             (scope==R1BonusScope.TrackDrive&&drive==R3DriveKind.Tracks)||

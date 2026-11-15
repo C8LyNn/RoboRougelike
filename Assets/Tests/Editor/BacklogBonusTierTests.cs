@@ -9,6 +9,16 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogBonusTierTests
 {
+    [Test] public void AutomaticFireRateRewardIsAvailableAndExplainsItsScope()
+    {
+        var upgrade=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.Single(u=>u!=null&&u.Id=="rate_automatic_weapon");
+        Assert.That(upgrade.Effect,Is.EqualTo(R1UpgradeEffect.Reload));
+        Assert.That(upgrade.Scope,Is.EqualTo(R1BonusScope.AutomaticWeapon));
+        Assert.That(upgrade.Amount,Is.EqualTo(.2f).Within(.001));
+        var part=new R3PartState(default,R3PartKind.BonusModule){UpgradeEffect=upgrade.Effect,UpgradeScope=upgrade.Scope,UpgradeAmount=upgrade.Amount};
+        var method=typeof(R1RunHUD).GetMethod("BonusInstanceText",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That((string)method.Invoke(null,new object[]{part}),Does.Contain("automatu").And.Contain("20%"));
+    }
     [Test] public void BonusCatalogAndInstanceLabelsShowFractionalAndExtremeFiniteAmounts()
     {
         var catalog=typeof(R1RunHUD).GetMethod("BonusText",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
@@ -776,6 +786,36 @@ public sealed class BacklogBonusTierGameplayTests
         morePart.gameObject.SetActive(false);yield return null;
         Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(.88f).Within(.001),"Removing the multiplicative module must remove both tier contributions.");
         Object.Destroy(muzzle.gameObject);Object.Destroy(target);Object.Destroy(inc);Object.Destroy(red);Object.Destroy(more);Object.Destroy(less);
+    }
+    [UnityTest] public IEnumerator WeaponScopedFireRateStacksAndSurvivesCheckpoint()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var global=BacklogBonusTierTests.OperationBonus("rate-global",.1f,"Increased",R1UpgradeEffect.Reload);
+        var weapons=BacklogBonusTierTests.OperationBonus("rate-weapons",.1f,"Increased",R1UpgradeEffect.Reload);weapons.Scope=R1BonusScope.Weapons;
+        var automatic=BacklogBonusTierTests.OperationBonus("rate-automatic",.2f,"Increased",R1UpgradeEffect.Reload);automatic.Scope=R1BonusScope.AutomaticWeapon;
+        var more=BacklogBonusTierTests.OperationBonus("rate-more",.2f,"More",R1UpgradeEffect.Reload);
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{global,weapons,automatic,more}),Is.True);
+        foreach(var id in model.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct().First(c=>model.OwnedPlacementError(id,c,default)==null);
+            Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.UpgradeId=="rate-automatic").UpgradeScope,Is.EqualTo(R1BonusScope.AutomaticWeapon));
+        var rebuilt=R3VehicleAssembly.Build(restored,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(1000,50,1000),Quaternion.identity);
+        Assert.That(rebuilt.Controller.WeaponInterval(RoboRougelike.R4.R4WeaponKind.Automatic)/RoboRougelike.R4.R4WeaponDefinition.Get(RoboRougelike.R4.R4WeaponKind.Automatic).Interval,Is.EqualTo(.48f).Within(.001),"Restored mounted modules must apply their scoped effect.");
+        Object.Destroy(rebuilt.gameObject);yield return null;
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var tank=run.Player.Controller;
+        float Scale(RoboRougelike.R4.R4WeaponKind kind)=>tank.WeaponInterval(kind)/RoboRougelike.R4.R4WeaponDefinition.Get(kind).Interval;
+        Assert.That(Scale(RoboRougelike.R4.R4WeaponKind.Automatic),Is.EqualTo(.48f).Within(.001));
+        Assert.That(Scale(RoboRougelike.R4.R4WeaponKind.Basic),Is.EqualTo(.64f).Within(.001));
+        Assert.That(Scale(RoboRougelike.R4.R4WeaponKind.Heavy),Is.EqualTo(.64f).Within(.001));
+        var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==model.Parts.Single(s=>s.UpgradeId=="rate-automatic").Id);
+        part.gameObject.SetActive(false);yield return null;
+        Assert.That(Scale(RoboRougelike.R4.R4WeaponKind.Automatic),Is.EqualTo(.64f).Within(.001));
+        Object.Destroy(global);Object.Destroy(weapons);Object.Destroy(automatic);Object.Destroy(more);
     }
     [UnityTest] public IEnumerator BasicCannonBonusAffectsOnlyBasicShotsAndCombinesWithGlobalBonuses()
     {

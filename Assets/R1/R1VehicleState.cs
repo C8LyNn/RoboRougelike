@@ -68,6 +68,7 @@ namespace RoboRougelike.R1
         public void Apply(R1RunStats stats,float? constructionHull=null,float? driveMobility=null)
         {
             controller.SetRunModifiers(stats.Damage,stats.FireInterval,driveMobility??stats.Mobility);
+            GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.ApplyWeaponIntervals(controller);
             foreach (var part in GetComponentsInChildren<P12PipelineSafeDamageable>())
             {
                 var block = part.GetComponent<P12_PipelineSafePlayerBlock>();

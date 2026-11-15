@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 12–13 i 44. Premie odstępu między strzałami dla rodzajów broni
+
+- Dotychczasowy bonus odstępu między strzałami mógł być wyłącznie globalny. Można teraz przypisać go do wszystkich broni pociskowych albo osobno do działa podstawowego, automatu, ciężkiego działa, strzelby, railguna lub wyrzutni. Globalne, kategoriowe i pasujące premie łączą się addytywnie w grupie `increased/reduced`; `more/less` pozostają osobnymi mnożnikami. Rapid Fire nadal dołącza do wspólnej grupy. Zniszczenie lub odłączenie modułu usuwa jego wkład, a stary globalny format pozostaje obsługiwany. Premia skraca odstęp strzałów, a nie czas wymiany pustego magazynka.
+- Dodano konfigurowalną nagrodę **Szybszy automat**, początkowo −20% odstępu między strzałami automatu, z opisem jej zakresu w magazynie. Inne nowe zakresy są obsługiwane przez dane i zapis; osobne nagrody dla nich nie zostały dodane. Wartość i wpływ dodatkowej nagrody na losowanie wymagają playtestu.
+- Unity 6000.3.14f1: `weapon_rate_compat.xml` i `.log`: **54 PASS, 0 FAIL**, w tym rzeczywiste trafienia czterech fizycznych rodzajów broni, Rapid Fire, poprzednie globalne premie, zerowa i skrajnie duża wartość oraz walidacja. Dodatkowe `weapon_rate_restore.xml`: **4 PASS** dla odtworzenia rzeczywistego pojazdu z checkpointu, jego premii i fizycznych strzałów. Przed zmianą `weapon_rate_red.xml`: **1 FAIL**, bo zapis/model odrzucał taką premię. Nie wykonywano ręcznej gry ani pomiaru wydajności Windows Player. Nadal otwarte są progi dodatkowych pocisków #02/#14 oraz dalsze zakresy #13.
+
 ### 31 i 44. Wybrany zestaw poza widoczną stroną
 
 - Podsumowanie nagród w poziomym i pionowym układzie wskazuje stronę, na której nadal zaznaczony jest zestaw, gdy gracz przegląda inną stronę. Brak lub nieaktualny wybór nadal jest opisany jako wymagający wyboru; brak łupów ma osobny komunikat. Nie zmieniono zawartości nagród ani zasad ich przyznawania.
