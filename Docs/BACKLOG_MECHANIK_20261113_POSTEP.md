@@ -993,3 +993,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Kopuła oraz obrona punktowa sprawdzają, czy właściciel pocisku nadal jest aktywny, również przed kolejnym krokiem jego fizyki. Dzięki temu wyłączenie właściciela i kontakt w tej samej klatce nie uszkadzają przyjaznej kopuły ani nie przedstawiają pocisku jako celu dla obrony punktowej. Dotyczy to zwykłych pocisków i rakiet; ich normalne przechwytywanie jest zachowane.
 - Unity 6000.3.14f1: **7 PASS, 0 FAIL** (`lost_owner_shield_final.xml`, `.log`) dla syntetycznie wywołanego kontaktu w tej samej klatce oraz istniejących scenariuszy tarcz; **2 PASS** (`lost_owner_point_defense_final.xml`) dla faktycznego przechwycenia prawidłowych rakiet przez obronę obu tierów. Przed zmianą `lost_owner_shield_red.xml`: **2 FAIL**, kopuła traciła 25 lub 60 HP. Ręczna walka: **NOT RUN**.
+
+#### 14, 44. Aktualizacja starszego testu wybuchu
+
+- Dawny test oczekiwał, że wybuch rakiety nie zada obrażeń po przekroczeniu początkowego rozmiaru bufora. Zastąpiono to sprawdzeniem pełnego zapytania: przy ponad 1024 colliderach wybuch nadal trafia faktyczny cel. Nie zmieniono kodu gry w tym kroku.
+- Unity 6000.3.14f1: **3 PASS, 0 FAIL** (`rocket_stale_test_final.xml`, `.log`) dla poprawionego scenariusza i dwóch innych faktycznych trafień. Przed aktualizacją `rocket_stale_test_red.xml`: **1 FAIL**, test oczekiwał ostrzeżenia o starym zachowaniu, którego już nie ma.

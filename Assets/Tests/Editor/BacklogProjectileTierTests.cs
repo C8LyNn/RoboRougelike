@@ -577,7 +577,7 @@ public sealed class BacklogProjectileTierPhysicsTests
         }
         finally{Object.Destroy(fixture);}
     }
-    [UnityTest] public IEnumerator RocketBlastStillFailsClosedBeyondConfiguredBound()
+    [UnityTest] public IEnumerator RocketBlastHitsTargetBeyondInitialQueryBuffer()
     {
         var gun=Build(R4WeaponKind.RocketLauncher,out var energy);var hp=Target(gun,6,2);
         var fixture=new GameObject("Extreme explosion saturation fixture");
@@ -586,10 +586,9 @@ public sealed class BacklogProjectileTierPhysicsTests
         Physics.SyncTransforms();
         try
         {
-            LogAssert.Expect(LogType.Warning,"WPN-004: blast overlap overflow; no explosion damage applied.");
             Assert.That(gun.GetComponent<RRLRocketBinding>().Fire(),Is.True);
             float end=Time.time+1f;while(Time.time<end)yield return null;
-            Assert.That(hp.CurrentHp,Is.EqualTo(500),"An incomplete query must not apply a partial explosion.");
+            Assert.That(hp.CurrentHp,Is.LessThan(500),"The complete retry must still apply damage beyond the initial overlap buffer.");
         }
         finally{Object.Destroy(fixture);}
     }
