@@ -218,6 +218,61 @@ public sealed class BacklogDeviceTierTests
 
 public sealed class BacklogDeviceTierGameplayTests
 {
+    [UnityTest] public IEnumerator DirectionalShieldRecalculatesBonusBeforeSameFrameHit()
+    {
+        run.VehicleModel.Award(2500);var shieldState=FuseAndMount(R3PartKind.DirectionalShield);
+        var reward=ScriptableObject.CreateInstance<R1UpgradeDefinition>();reward.Id="shield-immediate-hit";
+        reward.Effect=R1UpgradeEffect.ShieldDurability;reward.Amount=.5f;
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        var id=model.Inventory.Single(p=>p.UpgradeId==reward.Id).Id;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(id,c,default)==null);
+        Assert.That(run.GarageMount(id,cell),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var bonus=assembly.Parts.Single(p=>p.Id==id);
+        var part=assembly.Parts.Single(p=>p.Id==shieldState.Id);
+        var generator=part.GetComponent<RoboRougelike.Defenses.DirectionalShield.DirectionalShieldGenerator>();
+        var filter=run.Player.GetComponent<RoboRougelike.WeaponIntegration.RRLShieldDamageFilter>();
+        try
+        {
+            Assert.That(generator.Capacity,Is.EqualTo(300).Within(.01));
+            var hit=part.transform.position+part.transform.forward*2;var direction=-part.transform.forward;
+            bonus.gameObject.SetActive(false);
+            float remaining=filter.FilterDamage(null,250,hit,direction);
+            Assert.That(generator.Capacity,Is.EqualTo(200).Within(.01),"The lost bonus must be removed before absorption.");
+            Assert.That(remaining,Is.EqualTo(50).Within(.01));Assert.That(generator.Charge,Is.Zero.Within(.01));
+            generator.RestoreState(100,0);bonus.gameObject.SetActive(true);
+            remaining=filter.FilterDamage(null,120,hit,direction);
+            Assert.That(generator.Capacity,Is.EqualTo(300).Within(.01));
+            Assert.That(remaining,Is.Zero.Within(.01));Assert.That(generator.Charge,Is.EqualTo(30).Within(.01));
+        }
+        finally{Object.Destroy(reward);}
+    }
+    [UnityTest] public IEnumerator DomeRecalculatesBonusBeforeSameFrameHit()
+    {
+        var reward=ScriptableObject.CreateInstance<R1UpgradeDefinition>();reward.Id="dome-immediate-hit";
+        reward.Effect=R1UpgradeEffect.ShieldDurability;reward.Amount=.5f;
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        var id=model.Inventory.Single(p=>p.UpgradeId==reward.Id).Id;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(id,c,default)==null);
+        Assert.That(run.GarageMount(id,cell),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var bonus=assembly.Parts.Single(p=>p.Id==id);
+        var dome=new GameObject("Same frame dome");dome.AddComponent<SphereCollider>();
+        var hp=dome.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(100,false);
+        var shield=dome.AddComponent<R3ShieldDome>();shield.Configure(1,2,run.Player.GetComponent<R3MountedBonusEffects>());
+        try
+        {
+            Assert.That(hp.MaxHp,Is.EqualTo(150).Within(.01));hp.RestoreHealthRatio(.5f);
+            bonus.gameObject.SetActive(false);shield.Absorb(20,dome.transform.position,Vector3.forward);
+            Assert.That(hp.MaxHp,Is.EqualTo(100).Within(.01),"The lost bonus must be removed before absorption.");
+            Assert.That(hp.CurrentHp,Is.EqualTo(30).Within(.01));
+            bonus.gameObject.SetActive(true);shield.Absorb(10,dome.transform.position,Vector3.forward);
+            Assert.That(hp.MaxHp,Is.EqualTo(150).Within(.01));Assert.That(hp.CurrentHp,Is.EqualTo(35).Within(.01));
+        }
+        finally{Object.Destroy(dome);Object.Destroy(reward);}
+    }
     [UnityTest] public IEnumerator TurretShieldBonusAffectsRealDomeButNotDirectionalShield()
     {
         run.VehicleModel.Award(3000);

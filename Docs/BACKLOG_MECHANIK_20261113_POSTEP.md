@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 12–13, 15, 24 i 44. Zmiana premii osłon przed trafieniem
+
+- Osłona kierunkowa przelicza pojemność podczas odświeżania dostępności przed pochłonięciem obrażeń. Kopuła przelicza wytrzymałość przed sprawdzeniem, czy nadal chroni i może pochłonąć trafienie. Wyłączenie lub ponowne włączenie modułu premii w tej samej klatce nie pozostawia poprzedniego mnożnika podczas kolejnego trafienia; procent ładunku lub HP pozostaje zachowany.
+- Unity 6000.3.14f1: `shield_sameframe_before.xml` — **2 FAIL**, obie osłony używały starej wytrzymałości po wyłączeniu modułu. `shield_sameframe_after.xml` — **6 PASS, 0 FAIL**: wyłączenie i włączenie modułu przed trafieniem, rzeczywista osłona kierunkowa, kopuła, dotychczasowe premiowanie globalne i wieżyczek, odbudowa po zapisie oraz przechwycenie pocisków i rakiet.
+- Nowe scenariusze wyłączają i włączają fizyczny moduł oraz wywołują pochłanianie bezpośrednio w tej samej klatce; nie są ręczną walką ani osobnym testem zniszczenia modułu przez pocisk. Pomiar wydajności i odbiór #44 pozostają otwarte.
+
 ### 06, 40 i 44. Konflikt pauzy ze skrótami garażu
 
 - Ustawienia zapobiegają nowemu przypisaniu tego samego klawisza lub przycisku myszy do pauzy i akcji garażowej, która działa na tym samym ekranie. Przy uzupełnianiu brakującego skrótu starszego profilu wybierają inny klawisz, jeżeli domyślny służy już do pauzy. Dawne zapisane profile i konfiguracje blueprintów z konfliktem nadal się wczytują bez automatycznej zmiany; ekran ustawień wskazuje konflikt do rozwiązania przez gracza.

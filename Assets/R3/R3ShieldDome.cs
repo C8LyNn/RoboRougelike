@@ -50,7 +50,15 @@ namespace RoboRougelike.R3
             if(hp==null||multiplier==appliedDurability)return;
             hp.SetDurabilityMultiplier(multiplier);appliedDurability=multiplier;
         }
-        bool Live => isActiveAndEnabled && boundary != null && boundary.enabled && hp != null && !hp.IsDead;
+        bool Live
+        {
+            get
+            {
+                if(!isActiveAndEnabled||boundary==null||!boundary.enabled||hp==null)return false;
+                RefreshDurability();
+                return !hp.IsDead;
+            }
+        }
         bool Enemy(Transform source)
         {
             if(source == null) return false;

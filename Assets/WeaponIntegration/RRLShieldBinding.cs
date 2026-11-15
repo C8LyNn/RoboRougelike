@@ -36,7 +36,11 @@ namespace RoboRougelike.WeaponIntegration
             RefreshOperational();CaptureState();
         }
         public void RefreshOperational()
-        {if(Generator!=null)Generator.SetOperational(isActiveAndEnabled&&Device!=null&&Device.Available);}
+        {
+            if(Generator==null)return;
+            Generator.SetOperational(isActiveAndEnabled&&Device!=null&&Device.Available);
+            RefreshCapacity();
+        }
         public void CaptureState()
         {
             if(Device?.State==null||Generator==null)return;
@@ -46,7 +50,7 @@ namespace RoboRougelike.WeaponIntegration
         }
         void Update()
         {
-            RefreshOperational();RefreshCapacity();if(Generator!=null)Generator.Advance(Time.deltaTime);CaptureState();
+            RefreshOperational();if(Generator!=null)Generator.Advance(Time.deltaTime);CaptureState();
         }
         void ConfigureCapacity(float multiplier)
         {
