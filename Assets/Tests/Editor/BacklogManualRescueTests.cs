@@ -379,6 +379,34 @@ public sealed class BacklogManualRescueTests
         }
         if(trapObject!=null)Object.Destroy(trapObject);Object.Destroy(dome);
     }
+    [UnityTest] public IEnumerator RescueFindsSafeGroundNearPlayerWhenSpawnAreaIsBlocked()
+    {
+        run.Encounter.SetCombatActive(false);
+        var spawn=(Vector3)typeof(R1RunController).GetField("playerSpawn",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        var spawnWall=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        var localWall=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        try
+        {
+            spawnWall.transform.position=spawn+Vector3.up*10;spawnWall.transform.localScale=new Vector3(60,20,60);
+            Vector3 remote=new Vector3(1000,.7f,1000);
+            floor.transform.position=remote+Vector3.down*1.2f;floor.transform.localScale=new Vector3(80,1,80);
+            localWall.transform.position=remote+Vector3.up*10;localWall.transform.localScale=new Vector3(60,20,60);
+            var player=run.Player;var body=player.GetComponent<Rigidbody>();
+            player.MoveTo(remote,Quaternion.Euler(0,35,0));body.linearVelocity=body.angularVelocity=Vector3.zero;
+            Physics.SyncTransforms();float hp=player.GetComponentsInChildren<P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+            Assert.That(run.TryEmergencyRescue(),Is.False,"A blocked local area must not be accepted as safe.");
+            Assert.That(run.EmergencyRescueCooldownLeft,Is.Zero);
+            localWall.SetActive(false);Physics.SyncTransforms();
+            Assert.That(run.TryEmergencyRescue(),Is.True,"Free ground near the upright player must remain usable when all spawn candidates are blocked.");
+            Assert.That(Vector3.Distance(body.position,remote),Is.LessThan(3));
+            Assert.That(Vector3.Dot(body.rotation*Vector3.up,Vector3.up),Is.GreaterThan(.99f));
+            Assert.That(player.GetComponentsInChildren<P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp),Is.EqualTo(hp).Within(.01f));
+            Assert.That(run.EmergencyRescueActive&&run.EmergencyRescueAttackBlocked,Is.True);
+        }
+        finally{Object.DestroyImmediate(spawnWall);Object.DestroyImmediate(floor);Object.DestroyImmediate(localWall);}
+        yield return null;
+    }
     [UnityTest] public IEnumerator BlockedDestinationsDoNotChargeOrStartRescue()
     {
         run.Encounter.SetCombatActive(false);

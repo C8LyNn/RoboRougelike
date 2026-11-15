@@ -80,22 +80,31 @@ namespace RoboRougelike.R1
             var anchor=Progress.State==R1RunState.SafeZone?SafeZoneSpawn:Progress.State==R1RunState.TestDrive?
                 (MapEditorTesting&&EditorDraft?.Spawn!=null?RoboRougelike.MapEditor.MapWorld.Position(EditorDraft.Spawn)+Vector3.up*.7f:new Vector3(0,.7f,-26)):
                 playerSpawn;
-            foreach(var offset in offsets)
+            // Keep the familiar spawn-first rescue, but a blocked spawn must
+            // not hide suitable ground near the current vehicle. Both search
+            // areas use the same slope and full-vehicle collision checks.
+            var centers=new[]{anchor,body.position};
+            for(int area=0;area<centers.Length;area++)
             {
-                var origin=anchor+offset+Vector3.up*15;
-                foreach(var hit in Physics.RaycastAll(origin,Vector3.down,40,~0,QueryTriggerInteraction.Ignore).OrderBy(h=>h.distance))
+                var center=centers[area];
+                if(area==1&&(center-anchor).sqrMagnitude<.01f)continue;
+                foreach(var offset in offsets)
                 {
-                    if(!R6WheelContacts.Terrain(hit.collider)||hit.normal.y<.7f||hit.point.y>anchor.y+1)continue;
-                    float lowest=float.PositiveInfinity;
-                    foreach(var c in colliders)
+                    var origin=center+offset+Vector3.up*15;
+                    foreach(var hit in Physics.RaycastAll(origin,Vector3.down,40,~0,QueryTriggerInteraction.Ignore).OrderBy(h=>h.distance))
                     {
-                        var e=c.bounds.extents;var y=Quaternion.Inverse(delta)*Vector3.up;
-                        float extent=Mathf.Abs(y.x)*e.x+Mathf.Abs(y.y)*e.y+Mathf.Abs(y.z)*e.z;
-                        lowest=Mathf.Min(lowest,(delta*(c.bounds.center-body.position)).y-extent);
+                        if(!R6WheelContacts.Terrain(hit.collider)||hit.normal.y<.7f||hit.point.y>center.y+1)continue;
+                        float lowest=float.PositiveInfinity;
+                        foreach(var c in colliders)
+                        {
+                            var e=c.bounds.extents;var y=Quaternion.Inverse(delta)*Vector3.up;
+                            float extent=Mathf.Abs(y.x)*e.x+Mathf.Abs(y.y)*e.y+Mathf.Abs(y.z)*e.z;
+                            lowest=Mathf.Min(lowest,(delta*(c.bounds.center-body.position)).y-extent);
+                        }
+                        var candidate=new Vector3(origin.x,hit.point.y-lowest+.08f,origin.z);
+                        if(!RescuePoseClear(body,colliders,delta,candidate))continue;
+                        target=candidate;return true;
                     }
-                    var candidate=new Vector3(origin.x,hit.point.y-lowest+.08f,origin.z);
-                    if(!RescuePoseClear(body,colliders,delta,candidate))continue;
-                    target=candidate;return true;
                 }
             }
             return false;

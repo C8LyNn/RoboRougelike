@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 42 i 44. Ratunek przy zablokowanym punkcie startowym
+
+- Ratunek nadal najpierw szuka miejsca wokół punktu startowego. Jeżeli te miejsca są zablokowane, sprawdza również okolice obecnej pozycji pojazdu, stosując tę samą kontrolę nachylenia, podłoża oraz kolizji całej konstrukcji. Jeśli obie okolice są niedostępne, nadal odmawia bez uruchomienia cooldownu i ochrony.
+- Unity 6000.3.14f1: `rescue_local_ground_before.xml` — **1 FAIL**, wolne podłoże przy pojeździe nie było rozpatrywane. `rescue_local_ground_after.xml` — **6 PASS**, w tym zablokowane obie okolice, odsłonięcie podłoża przy stojącym prosto pojeździe, brak kosztu HP, cooldown, ratunek z pauzy i ochrona podczas walki oraz na poligonie. Scenariusz używa kontrolowanych przeszkód i osobnej podłogi; nie jest ręcznym testem na mapie ani dowodem, że miejsce znajdzie się w każdej geometrii. Odbiór #44 pozostaje otwarty.
+
 ### 02 i 14. Pomocniczy generator kierunków ponad 64
 
 - `ShotgunSpread.BuildDirections` przyjmuje teraz liczbę kierunków większą niż 64, jeśli przygotowany przez wywołującego bufor jest wystarczająco duży. Dla większych wartości używa tego samego indeksowanego wzoru co opis salwy; dotychczasowe obliczenia do 64 pozostają. Wciąż sprawdza poprawność osi, kąta i wielkości bufora.
