@@ -16,6 +16,7 @@ namespace RoboRougelike.R1
         private readonly System.Collections.Generic.List<Vector3> passiveRadarContacts=new System.Collections.Generic.List<Vector3>();
         private R3VehicleAssembly passiveRadarOwner;
         private float passiveRadarNextScan,passiveRadarPreviousRange;
+        private static Rect PassiveRadarPanelRect(bool map)=>new Rect(690,426,165,map?166:46);
         private void DrawPassiveRadar(R1RunController run)
         {
             if(Event.current.type!=EventType.Repaint||run.Paused||run.QuitRequested||run.Transitioning||run.Error!=null||
@@ -28,7 +29,7 @@ namespace RoboRougelike.R1
                 R3PassiveRadar.Collect(run,vehicle,passiveRadarContacts);passiveRadarOwner=vehicle;
                 passiveRadarPreviousRange=radar;passiveRadarNextScan=Time.unscaledTime+.25f;
             }
-            var panel=new Rect(1090,466,165,map>0?166:46);Panel(panel);
+            var panel=PassiveRadarPanelRect(map>0);Panel(panel);
             GUI.Label(new Rect(panel.x+8,panel.y+5,150,22),radar>0?$"Wrogowie: {passiveRadarContacts.Count}":"Minimapa • brak radaru",small);
             if(map<=0)return;
             var square=new Rect(panel.x+25,panel.y+31,115,115);var color=GUI.color;

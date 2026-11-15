@@ -5,6 +5,18 @@ using UnityEngine;
 
 public sealed class UI943NoticeLayoutTests
 {
+    [TestCase(true)][TestCase(false)] public void RadarDoesNotCoverDamageWarningsOrRangeControls(bool map)
+    {
+        var radarMethod=typeof(R1RunHUD).GetMethod("PassiveRadarPanelRect",BindingFlags.Static|BindingFlags.NonPublic);
+        var noticeMethod=typeof(R1RunHUD).GetMethod("DamageNoticePanelRect",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(radarMethod,Is.Not.Null);Assert.That(noticeMethod,Is.Not.Null);
+        var radar=(Rect)radarMethod.Invoke(null,new object[]{map});
+        for(int i=0;i<3;i++)Assert.That(radar.Overlaps((Rect)noticeMethod.Invoke(null,new object[]{i})),Is.False,"Damage notices must remain visible.");
+        Assert.That(radar.Overlaps(new Rect(925,355,335,160)),Is.False,"Suspension information must remain visible.");
+        Assert.That(radar.Overlaps(new Rect(18,625,1244,78)),Is.False,"Range controls must remain visible.");
+        Assert.That(radar.Overlaps(new Rect(665,602,570,25)),Is.False,"Rescue feedback must remain visible.");
+        Assert.That(radar.Overlaps(new Rect(624,344,32,32)),Is.False,"The central reticle must remain visible.");
+    }
     [TestCase(1920,1080)] [TestCase(1366,768)] [TestCase(1024,768)]
     [TestCase(768,1024)] [TestCase(3840,2160)]
     public void ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(int width,int height)

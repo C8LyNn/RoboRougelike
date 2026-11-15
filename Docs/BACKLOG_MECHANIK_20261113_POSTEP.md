@@ -895,3 +895,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Usunięto progi 500 m zasięgu oraz 15 s życia śrucin w konfiguracji. Zasięg gracza jest ustawieniem `ShotgunRange` i domyślnie pozostaje 40 m; czas życia śrucin wydłuża się odpowiednio do ustawionego dystansu. Stare wartości domyślne, rozrzut, koszt i istniejąca salwa są zachowane. Niepoprawne liczby wracają do bezpiecznych wartości domyślnych. Przeciwnicy zachowują dotychczasową konfigurację.
 - Unity 6000.3.14f1: **22 PASS, 0 FAIL** (`shotgun_range_final.xml`, `.log`) obejmuje 1200 m i 25 s w konfiguracji, niepoprawne wartości, domyślny zasób, kopię ustawienia, dotychczasową salwę oraz rzeczywiste trafienie celu na 600 m. Dla przyspieszenia testu śrucinom nadano w scenariuszu większą prędkość po strzale; nie jest to pomiar normalnej trajektorii, czasu lotu ani balansu. Przed zmianą `shotgun_range_red.xml`: **2 FAIL** — stary próg i brak ustawienia. Ręczna gra: **NOT RUN**; globalny limit liczby pocisków pozostaje.
+
+#### 43–44. Radar nie zasłania ostrzeżeń
+
+- Przeniesiono prototypowy panel radaru i minimapy poza obszar ostrzeżeń o obrażeniach oraz informacji o zawieszeniu, a także poza celownik, informację ratunku i dolne sterowanie poligonu. Wynik nadal wymaga oceny wyglądu w grze.
+- Unity 6000.3.14f1: **18 PASS, 0 FAIL** (`radar_layout_final.xml`, `.log`), w tym geometria obu wariantów panelu, wcześniejsze rozmieszczenie ostrzeżeń, katalog i rzeczywiste wykrywanie. Przed zmianą `radar_layout_red.xml`: **2 FAIL**, pełna minimapa zasłaniała ostrzeżenie, a sam radar — zawieszenie. Test sprawdza współrzędne, nie zastępuje wizualnego playtestu.
