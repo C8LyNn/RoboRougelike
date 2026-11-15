@@ -6,6 +6,58 @@ using RoboRougelike.R4;
 
 public class R4SalvageModelTests
 {
+    [Test] public void SeededFallbackSequenceStaysStable()
+    {
+        var ledger=new R4SalvageLedger(2);
+        Assert.That(ledger.Record("enemy",Enumerable.Range(0,18).Select(i=>Item("stable-"+i)),R3EnemyArchetype.Scout),Is.True);
+        var offers=ledger.CreateBasketOffers(43,0,1000);
+        string contents=string.Join(";",offers.Select(b=>string.Join(",",b.Items.Select(item=>item.Id))));
+        using(var digest=System.Security.Cryptography.SHA256.Create())
+        {
+            string hash=System.BitConverter.ToString(digest.ComputeHash(System.Text.Encoding.UTF8.GetBytes(contents))).Replace("-","");
+            Assert.That(hash,Is.EqualTo("7396F7A23E731823C43569671711CA3059B95C0CA108AF26A1BB17D6286EEB35"),
+                "The seeded offer order must remain compatible with the earlier generator.");
+        }
+        Assert.That(offers.Select(b=>string.Join(",",b.Items.Select(item=>item.Id).OrderBy(id=>id))).Distinct().Count(),Is.EqualTo(153));
+    }
+    [Test] public void IncrementalOffersExhaustRealPairsAndAdaptWhenLootBecomesPhysical()
+    {
+        var ledger=new R4SalvageLedger(2);
+        var parts=Enumerable.Range(0,18).Select(i=>Item("adaptive-"+i)).ToArray();
+        Assert.That(ledger.Record("enemy",parts,R3EnemyArchetype.Scout),Is.True);
+        using(var offers=ledger.EnumerateBasketOffers(43,0,1000).GetEnumerator())
+        {
+            var initial=new System.Collections.Generic.List<R4SalvageBasket>();
+            for(int i=0;i<4;i++){Assert.That(offers.MoveNext(),Is.True);initial.Add(offers.Current);}
+            Assert.That(ledger.MarkPhysicalDrop(parts[0].Id),Is.True);
+            var rest=new System.Collections.Generic.List<R4SalvageBasket>();
+            while(offers.MoveNext())rest.Add(offers.Current);
+            string Key(R4SalvageBasket basket)=>string.Join("|",basket.Items.Select(item=>item.Id).OrderBy(id=>id));
+            Assert.That(rest.SelectMany(b=>b.Items).Any(item=>item.Id==parts[0].Id),Is.False);
+            var keys=initial.Concat(rest).Where(b=>b.Items.All(item=>item.Id!=parts[0].Id)).Select(Key).Distinct().ToArray();
+            Assert.That(keys.Length,Is.EqualTo(17*16/2),"Every remaining real pair should still be reachable.");
+            Assert.That(rest.Select(Key).Distinct().Count(),Is.EqualTo(rest.Count));
+        }
+    }
+    [Test] public void IncrementalOffersSkipSourcesThatBecomeUnavailable()
+    {
+        var ledger=new R4SalvageLedger(2);
+        var scouts=Enumerable.Range(0,6).Select(i=>Item("depleted-"+i)).ToArray();
+        var gunners=Enumerable.Range(0,6).Select(i=>Item("remaining-"+i)).ToArray();
+        Assert.That(ledger.Record("scout",scouts,R3EnemyArchetype.Scout),Is.True);
+        Assert.That(ledger.Record("gunner",gunners,R3EnemyArchetype.Gunner),Is.True);
+        using(var offers=ledger.EnumerateBasketOffers(5,0,100).GetEnumerator())
+        {
+            Assert.That(offers.MoveNext(),Is.True);
+            foreach(var part in scouts)Assert.That(ledger.MarkPhysicalDrop(part.Id),Is.True);
+            var remaining=new System.Collections.Generic.List<R4SalvageBasket>();
+            while(offers.MoveNext())remaining.Add(offers.Current);
+            Assert.That(remaining,Is.Not.Empty);
+            Assert.That(remaining.All(b=>b.Archetype==R3EnemyArchetype.Gunner),Is.True);
+            foreach(var part in gunners)Assert.That(ledger.MarkPhysicalDrop(part.Id),Is.True);
+            Assert.That(offers.MoveNext(),Is.False);
+        }
+    }
     [Test] public void AdditionalBasketsDoNotStopWhileDifferentEligibleRewardsRemain()
     {
         var ledger=new R4SalvageLedger(1);

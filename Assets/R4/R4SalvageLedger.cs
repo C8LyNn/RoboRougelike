@@ -133,14 +133,19 @@ namespace RoboRougelike.R4
             if(groups.Length==0||Limit==0)yield break;
             var random=new System.Random(seed);
             var seen=new HashSet<string>(StringComparer.Ordinal);
+            var cursors=new Dictionary<R4SalvageItem[],BasketFallbackCursor>();
+            try
+            {
             for(int i=0;i<Math.Max(0,offerCount);i++)
             {
                 R4SalvageBasket chosen=null;
                 // Preserve the original three offers. Additional offers must
                 // differ and stop after bounded attempts if loot is scarce.
-                for(int attempt=0;attempt<(i<3?1:16);attempt++)
+                for(int attempt=0;attempt<(i<3?groups.Length:16);attempt++)
                 {
-                    var group=groups[(int)(((long)i+attempt)%groups.Length)].ToArray();
+                    var group=groups[(int)(((long)i+attempt)%groups.Length)]
+                        .Where(s=>s.Parts.Any(p=>p.Selectable&&!collected.Contains(p.Id)&&!physicalDrops.Contains(p.Id))).ToArray();
+                    if(group.Length==0)continue;
                     var source=group[random.Next(group.Length)];
                     var pool=source.Parts.Where(p=>p.Selectable&&!collected.Contains(p.Id)&&!physicalDrops.Contains(p.Id)).OrderBy(p=>p.Id,StringComparer.Ordinal).ToArray();
                     int tier=Math.Max(0,Math.Min(5,stage));
@@ -160,18 +165,47 @@ namespace RoboRougelike.R4
                     for(int offset=0;offset<groups.Length&&chosen==null;offset++)
                         foreach(var source in groups[(int)(((long)i+offset)%groups.Length)])
                         {
-                            chosen=FindUnseenBasket(source.Type,source.Parts,stage,seen);
+                            chosen=FindUnseenBasket(source.Type,source.Parts,stage,seen,cursors);
                             if(chosen!=null)break;
                         }
                 if(chosen==null)break;
                 yield return chosen;
             }
+            }
+            finally{foreach(var cursor in cursors.Values)cursor.Dispose();}
         }
-        private R4SalvageBasket FindUnseenBasket(R3EnemyArchetype archetype,R4SalvageItem[] source,int stage,HashSet<string> seen)
+        private sealed class BasketFallbackCursor:IDisposable
+        {
+            public readonly R4SalvageItem[] Pool;
+            public readonly IEnumerator<R4SalvageBasket> Candidates;
+            public BasketFallbackCursor(R4SalvageItem[] pool,IEnumerator<R4SalvageBasket> candidates)
+            {Pool=pool;Candidates=candidates;}
+            public void Dispose()=>Candidates.Dispose();
+        }
+        private R4SalvageBasket FindUnseenBasket(R3EnemyArchetype archetype,R4SalvageItem[] source,int stage,HashSet<string> seen,
+            Dictionary<R4SalvageItem[],BasketFallbackCursor> cursors)
         {
             var pool=source.Where(p=>p.Selectable&&!collected.Contains(p.Id)&&!physicalDrops.Contains(p.Id))
                 .OrderBy(p=>p.Id,StringComparer.Ordinal).ToArray();
-            if(pool.Length==0)return null;
+            // Seen keys only grow, so already visited combinations cannot
+            // become eligible again unless this source's pool changes.
+            if(!cursors.TryGetValue(source,out var cursor)||!cursor.Pool.SequenceEqual(pool))
+            {
+                cursor?.Dispose();
+                cursor=new BasketFallbackCursor(pool,EnumerateFallbackBaskets(archetype,pool,stage).GetEnumerator());
+                cursors[source]=cursor;
+            }
+            while(cursor.Candidates.MoveNext())
+            {
+                var candidate=cursor.Candidates.Current;
+                string key=string.Join("\u001f",candidate.Items.Select(p=>p.Id));
+                if(seen.Add(key))return candidate;
+            }
+            return null;
+        }
+        private IEnumerable<R4SalvageBasket> EnumerateFallbackBaskets(R3EnemyArchetype archetype,R4SalvageItem[] pool,int stage)
+        {
+            if(pool.Length==0)yield break;
             int tier=Math.Max(0,Math.Min(5,stage));
             var counts=Enumerable.Range(30+tier*5,31)
                 .Select(percent=>Math.Min(Limit,Math.Max(1,(int)(((long)pool.Length*percent+99)/100)))).Distinct();
@@ -181,8 +215,7 @@ namespace RoboRougelike.R4
                 while(true)
                 {
                     var selected=indices.Select(index=>pool[index]).ToArray();
-                    string key=string.Join("\u001f",selected.Select(p=>p.Id));
-                    if(seen.Add(key))return new R4SalvageBasket(archetype,pool.Length,selected);
+                    yield return new R4SalvageBasket(archetype,pool.Length,selected);
                     int position=count-1;
                     while(position>=0&&indices[position]==pool.Length-count+position)position--;
                     if(position<0)break;
@@ -190,7 +223,6 @@ namespace RoboRougelike.R4
                     for(int j=position+1;j<count;j++)indices[j]=indices[j-1]+1;
                 }
             }
-            return null;
         }
         public int PreviewScrap(R3VehicleModel model,IEnumerable<string> selected)
         {

@@ -42,6 +42,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Unity 6000.3.14f1: `legacy_part_health_labels.xml` i `.log`: **4 PASS, 0 FAIL** dla istniejących kontroli wspólnego formatowania HP w katalogu i inspekcji. Test nie klika ani nie sprawdza wyglądu starszych paneli w Playerze; kompilacja projektu w Unity przeszła.
 - Komunikat po fuzji również używa tego formatu: wynik o HP mniejszym od 100% nie jest przedstawiany jako w pełni sprawny. `fusion_message_after.xml` i `.log`: **7 PASS, 0 FAIL**, w tym fuzja w rzeczywistym garażu, montaż wyniku i podgląd; `fusion_message_before.xml`: **1 FAIL**, komunikat pokazywał 100% mimo uszkodzenia.
 
+### 14, 30–32, 44. Dalsze strony przy wyczerpywaniu kombinacji
+
+- Generator wznawia przeszukiwanie kombinacji w miejscu, do którego dotarł, zamiast od początku sprawdzać wcześniej wykorzystane zestawy. Gdy dostępność części źródła się zmieni, jego przeszukiwanie jest odtwarzane; całkowicie niedostępne źródła są pomijane. Nie dodano limitu liczby ofert ani nie zmieniono zasad wyboru fizycznych części.
+- Unity 6000.3.14f1: `basket_cursor_final.xml` i `.log`: **30 PASS, 0 FAIL**, w tym wyczerpanie 136 dostępnych par po zmianie łupów, usunięcie całego źródła, stronicowanie i odbiór nagrody. `basket_cursor_first.xml`: **8 PASS, 1 FAIL** — zniknięcie źródła wywoływało wyjątek. W porównawczych `basket_cursor_hash_before.xml` i `basket_cursor_hash_after.xml` pełna kolejność ofert dla stałego ziarna i 153 unikalnych par miała ten sam skrót; wynik zapisano także jako test regresji.
+- Ta zmiana ogranicza ponowne przeszukiwanie, lecz nie jest pomiarem czasu klatki ani gwarancją płynności dla dowolnie wielkiej liczby ofert. Ograniczenie porównania niezaładowanych stron przy rerollu opisane poniżej pozostaje otwarte. Ręczna gra: **NOT RUN**.
+
 ### 14, 31–32, 44. Ładowanie dodatkowych zestawów nagród stronami
 
 - Przy otwarciu nagród interfejs tworzy najwyżej dwie strony oraz jedną ofertę do sprawdzenia, czy są dalsze. Kolejne strony powstają podczas przechodzenia dalej, bez zmiany ograniczenia liczby zestawów wynikającego z działających modułów; znak `+` wskazuje dalsze oferty. Ziarno, kolejność, różnorodność istniejących zestawów i fizyczne ID pozostały wspólne z dotychczasowym generatorem. Wybrany zestaw nadal jest odbierany przez autoryzowane okno odzysku. Porównanie ponownego losowania korzysta z licznika zestawów zamiast porównania każdego z każdym.
