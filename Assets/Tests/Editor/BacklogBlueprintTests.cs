@@ -67,7 +67,61 @@ public sealed class BacklogBlueprintTests
         var blueprint=R3BlueprintLibrary.Capture(model,"Styki");var armor=blueprint.parts.First(p=>p.kind==R3PartKind.Armor);
         armor.contacts=0;
         var plan=R3BlueprintLibrary.Plan(blueprint,model);
-        Assert.That(plan.Placements.Single(p=>p.Cell==armor.cell).AlreadyPlaced,Is.False);
+        Assert.That(plan.Placements.Any(p=>p.Cell==armor.cell),Is.False);
+        Assert.That(plan.Preview.MissingCount,Is.GreaterThan(0),"A different face mask cannot be restored by moving an incompatible block.");
+    }
+    [Test] public void BlueprintPrefersOwnedPartWithReproducibleContacts()
+    {
+        var design=new R3VehicleDesign();design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(Vector3Int.right,R3PartKind.Battery){ContactMask=R3MountingGrid.AllFaces});
+        var blueprint=R3BlueprintLibrary.Capture(new R3VehicleModel(design),"Styki baterii");
+        var empty=new R3VehicleDesign();empty.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        var target=new R3VehicleModel(empty);
+        var wrong=new R3PartState(default,R3PartKind.Battery){ContactMask=0};
+        var correct=new R3PartState(default,R3PartKind.Battery){ContactMask=R3MountingGrid.AllFaces};
+        Assert.That(target.ReceiveSalvage(new[]{wrong,correct}),Is.True);
+        var before=target.Inventory.Select(p=>p.Id).ToArray();
+        var plan=R3BlueprintLibrary.Plan(blueprint,target);
+        Assert.That(plan.Preview.MissingCount,Is.Zero);
+        Assert.That(plan.Placements.Single().Id,Is.EqualTo(correct.Id),"The first identical kind cannot displace a compatible physical part.");
+        Assert.That(target.Inventory.Select(p=>p.Id),Is.EqualTo(before));
+    }
+    [Test] public void BlueprintReportsIncompatibleContactsInsteadOfPromisingAMount()
+    {
+        var design=new R3VehicleDesign();design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(Vector3Int.right,R3PartKind.Battery){ContactMask=R3MountingGrid.AllFaces});
+        var blueprint=R3BlueprintLibrary.Capture(new R3VehicleModel(design),"Styki baterii");
+        var empty=new R3VehicleDesign();empty.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        var target=new R3VehicleModel(empty);var wrong=new R3PartState(default,R3PartKind.Battery){ContactMask=0};
+        Assert.That(target.ReceiveSalvage(new[]{wrong}),Is.True);
+        var plan=R3BlueprintLibrary.Plan(blueprint,target);
+        Assert.That(plan.Preview.MissingCount,Is.EqualTo(1));Assert.That(plan.Placements,Is.Empty);
+        Assert.That(plan.Preview.Missing.Single(),Does.Contain("mocowania"));
+        Assert.That(target.Inventory.Single().Id,Is.EqualTo(wrong.Id));
+    }
+    [Test] public void BlueprintCanUseStoredSideWheelWithTwoAxleContacts()
+    {
+        var wheel=new R3PartState(Vector3Int.left,R3PartKind.Wheel){ContactMask=R3MountingGrid.FaceBit(Vector3Int.right)};
+        var design=new R3VehicleDesign();design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));design.Parts.Add(wheel);
+        var blueprint=R3BlueprintLibrary.Capture(new R3VehicleModel(design),"Koło");
+        var empty=new R3VehicleDesign();empty.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        var target=new R3VehicleModel(empty);Assert.That(target.ReceiveSalvage(new[]{wheel}),Is.True);
+        Assert.That(target.Inventory.Single().ContactMask,Is.Not.EqualTo(wheel.ContactMask),"Stored axle has both faces available.");
+        var plan=R3BlueprintLibrary.Plan(blueprint,target);
+        Assert.That(plan.Preview.MissingCount,Is.Zero);Assert.That(plan.Placements.Single().Id,Is.EqualTo(wheel.Id));
+    }
+    [Test] public void LegacyGunContactsArePreservedInPlaceButNotPromisedOnRemount()
+    {
+        var gun=new R3PartState(Vector3Int.up,R3PartKind.Gun){ContactMask=R3MountingGrid.AllFaces};
+        var design=new R3VehicleDesign();design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));design.Parts.Add(gun);
+        var source=new R3VehicleModel(design);var blueprint=R3BlueprintLibrary.Capture(source,"Stara broń");
+        var existing=R3BlueprintLibrary.Plan(blueprint,source);
+        Assert.That(existing.Preview.MissingCount,Is.Zero);Assert.That(existing.Placements.Single().AlreadyPlaced,Is.True);
+        var empty=new R3VehicleDesign();empty.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        var target=new R3VehicleModel(empty);Assert.That(target.ReceiveSalvage(new[]{gun}),Is.True);
+        var remount=R3BlueprintLibrary.Plan(blueprint,target);
+        Assert.That(remount.Preview.MissingCount,Is.EqualTo(1));Assert.That(remount.Placements,Is.Empty);
+        Assert.That(remount.Preview.Missing.Single(),Does.Contain("mocowania"));
     }
     [Test] public void LocalSlotsRoundTripAndRejectBadData()
     {
@@ -154,6 +208,24 @@ public sealed class BacklogBlueprintGarageTests
         Assert.That(physical.CurrentHp/physical.MaxHp,Is.EqualTo(.65f).Within(.001));
         Assert.That(run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory).Select(p=>p.Id).OrderBy(x=>x),Is.EqualTo(allIds));
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(money));
+    }
+    [UnityTest] public IEnumerator RestorationUsesCompatibleBatteryWhenAnIncompatibleOneComesFirst()
+    {
+        var model=run.VehicleModel;var blueprint=R3BlueprintLibrary.Capture(model,"Zgodne styki");
+        var battery=model.Parts.First(p=>p.Kind==R3PartKind.Battery);string id=battery.Id;var cell=battery.Cell;
+        var wrong=new R3PartState(default,R3PartKind.Battery){ContactMask=0};
+        Assert.That(model.ReceiveSalvage(new[]{wrong}),Is.True);
+        Assert.That(run.GarageRemove(cell),Is.True);yield return null;
+        int scrap=model.Scrap;var ids=model.Parts.Concat(model.Inventory).Select(p=>p.Id).OrderBy(x=>x).ToArray();
+        var plan=R3BlueprintLibrary.Plan(blueprint,model);
+        Assert.That(plan.Preview.MissingCount,Is.Zero);Assert.That(plan.Placements.Single(p=>p.Cell==cell).Id,Is.EqualTo(id));
+        Assert.That(run.StartApplyBlueprint(blueprint),Is.True);
+        float deadline=Time.realtimeSinceStartup+30;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Transitioning,Is.False);Assert.That(run.BlueprintApplyMessage,Does.Contain("Odtworzono"));
+        Assert.That(run.VehicleModel.Parts.Single(p=>p.Cell==cell).Id,Is.EqualTo(id));
+        Assert.That(run.VehicleModel.Inventory.Any(p=>p.Id==wrong.Id),Is.True);
+        Assert.That(run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory).Select(p=>p.Id).OrderBy(x=>x),Is.EqualTo(ids));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
     }
     [UnityTest] public IEnumerator MissingPartsRefuseToStartWithoutChangingTheVehicle()
     {

@@ -31,6 +31,15 @@ namespace RoboRougelike.R3
             (kind!=R3PartKind.Wheel||(p.WheelStyle==wheel&&p.FootprintRevision==footprint))&&
             (kind!=R3PartKind.Armor||p.ArmorShape==shape)&&
             (kind!=R3PartKind.BonusModule||(p.UpgradeId==upgradeId&&p.UpgradeEffect==upgradeEffect&&p.UpgradeOperation==upgradeOperation&&p.UpgradeScope==upgradeScope&&p.UpgradeAmount==upgradeAmount));
+        internal bool CanReproduceContacts(R3PartState part)
+        {
+            if(part==null)return false;
+            if(kind==R3PartKind.Wheel&&R3VehicleModel.HasSideMount(part.WheelStyle))
+                // Stored side wheels have both axle faces; the placement logic
+                // selects the one that actually connects at the destination.
+                return contacts==R3MountingGrid.FaceBit(Vector3Int.left)||contacts==R3MountingGrid.FaceBit(Vector3Int.right);
+            return R3VehicleModel.PlacementContacts(kind,part)==contacts;
+        }
     }
     [Serializable] public sealed class R3Blueprint
     {
@@ -144,19 +153,20 @@ namespace RoboRougelike.R3
             {
                 if(placements[n]!=null)continue;
                 var wanted=document.parts[n];var cell=core.Cell+wanted.cell;
-                int index=available.FindIndex(p=>wanted.Matches(p)&&p.Health>0&&!mounted.Contains(p.Id));
-                if(index<0)index=available.FindIndex(p=>wanted.Matches(p)&&p.Health>0);
+                int index=available.FindIndex(p=>wanted.Matches(p)&&wanted.CanReproduceContacts(p)&&p.Health>0&&!mounted.Contains(p.Id));
+                if(index<0)index=available.FindIndex(p=>wanted.Matches(p)&&wanted.CanReproduceContacts(p)&&p.Health>0);
                 if(index>=0)
                 {
                     var chosen=available[index];
                     placements[n]=new R3BlueprintPlacement{Id=chosen.Id,Cell=cell,Rotation=wanted.rotation,AlreadyPlaced=false};
                     available.RemoveAt(index);found++;continue;
                 }
-                index=available.FindIndex(p=>wanted.Matches(p)&&p.Health<=0);
+                index=available.FindIndex(p=>wanted.Matches(p)&&wanted.CanReproduceContacts(p)&&p.Health<=0);
                 if(index>=0){available.RemoveAt(index);broken++;}
                 var description=new R3PartState(default,wanted.kind){Weapon=wanted.weapon,WheelStyle=wanted.wheel,ArmorShape=wanted.shape,Tier=wanted.tier};
                 string name=wanted.kind==R3PartKind.BonusModule?"Moduł bonusu "+wanted.upgradeId:R4WeaponDefinition.PartName(description);
-                missing.Add(name+(index>=0?" — wymaga naprawy":" — brak"));
+                bool incompatible=index<0&&available.Any(p=>wanted.Matches(p)&&!wanted.CanReproduceContacts(p));
+                missing.Add(name+(index>=0?" — wymaga naprawy":incompatible?" — niezgodne punkty mocowania":" — brak"));
             }
             return new R3BlueprintPlan{Placements=placements.Where(p=>p!=null).ToArray(),Preview=new R3BlueprintPreview{RequiredCount=document.parts.Length,AvailableCount=found,BrokenCount=broken,Missing=missing}};
         }

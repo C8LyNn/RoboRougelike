@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 39–40 i 44. Odtwarzanie blueprintu z właściwymi stykami
+
+- Plan odtwarzania wybiera posiadany egzemplarz, którego punkty mocowania można faktycznie odtworzyć, zamiast pierwszej części tego samego rodzaju. Gdy dostępne części mają niezgodne styki, podgląd wskazuje brak i jego przyczynę. Koła boczne zachowują obsługę dwóch powierzchni osiowych w magazynie; część już poprawnie zamontowana w starszym projekcie nie jest niepotrzebnie zdejmowana.
+- Unity 6000.3.14f1: `blueprint_contacts_before.xml` — **1 PASS, 2 FAIL**, ponieważ wybierano niezgodną baterię i nie zgłaszano braku zgodnej. `blueprint_contacts_after.xml` — **14 PASS**, w tym prawdziwe odtworzenie baterii w garażu, brak duplikacji i opłat, cofnięcie operacji przy przeszkodzie i zależności montażu. `blueprint_contacts_legacy_retry.xml` — **11 PASS**, także starsza broń pozostająca na miejscu oraz uczciwy podgląd, gdy jej dawnych styków nie można odtworzyć po zdjęciu. Pierwsza próba dodatkowego zestawu `blueprint_contacts_legacy.log` zakończyła się awarią podczas inicjalizacji licencji w sandboxie; powtórzenie poza sandboxem zakończyło się poprawnie.
+- Podgląd zgodności osi koła nie gwarantuje, że układ sąsiednich części umożliwi montaż w danym miejscu; właściwa operacja nadal sprawdza fizyczne połączenia i cofa nieudaną transakcję. Ręczny playtest **NOT RUN**, pełny odbiór punktu 44 pozostaje otwarty.
+
 ### 30, 36, 41 i 44. Katalog części w autoryzowanym odzysku
 
 - Naprawiono niezgodność między aktualnym `R3PartKind` a starszą listą rodzajów w usłudze nagród: nowy moduł w łupie mógł wcześniej zablokować otwarcie całego okna po zwycięstwie. Zaufany adapter R3 sprawdza teraz dokładne, istniejące nazwy aktualnego katalogu, natomiast samodzielny pakiet bez adaptera zachowuje swój dotychczasowy zamknięty zestaw. Rdzeń, nieznane i niekanoniczne nazwy, duplikaty ID oraz nieautoryzowane transakcje nadal są odrzucane.
