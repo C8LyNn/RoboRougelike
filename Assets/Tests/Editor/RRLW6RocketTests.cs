@@ -34,6 +34,63 @@ public class RRLW6RocketPhysicalTests
         var binding=gun.GetComponents<MonoBehaviour>().Single(p=>p.GetType().Name=="RRLRocketBinding");
         return (bool)binding.GetType().GetMethod("Fire").Invoke(binding,null);
     }
+    [UnityTest] public IEnumerator InterceptedRocketIsReusedWithNewDamageAndCleanState()
+    {
+        var gun=Build(out var state);var binding=gun.GetComponent<RRLRocketBinding>();
+        gun.GetComponentInParent<Rigidbody>().isKinematic=true;
+        Assert.That(Fire(gun),Is.True);
+        var first=UnityEngine.Object.FindObjectsByType<RocketProjectile>(FindObjectsSortMode.None).Single(p=>p.IsInitialized);
+        float oldDamage=first.GetComponent<R3ShieldRocketPayload>().Damage;
+        first.ApplyInterceptionDamage(float.MaxValue);
+        Assert.That(first.IsResolved,Is.True);
+        typeof(RRLRocketBinding).GetMethod("FireAdditional",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic)
+            .Invoke(binding,new object[]{1});
+        var simultaneous=UnityEngine.Object.FindObjectsByType<RocketProjectile>(FindObjectsSortMode.None).Single(p=>p.IsInitialized&&!p.IsResolved);
+        Assert.That(simultaneous,Is.Not.SameAs(first),"Callbacks in this frame must not observe a reused rocket.");
+        simultaneous.ApplyInterceptionDamage(float.MaxValue);
+        yield return null;
+        Assert.That(first!=null,Is.True,"A retired integrated rocket should remain available for reuse.");
+        Assert.That(first.gameObject.activeSelf,Is.False);
+        state.Tier=2;
+        float deadline=Time.realtimeSinceStartup+8;
+        while(Time.time<binding.Module.NextReadyTime&&Time.realtimeSinceStartup<deadline)yield return null;
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        target.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6;target.transform.localScale=new Vector3(2,2,.5f);
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);Physics.SyncTransforms();
+        Assert.That(Fire(gun),Is.True);
+        var second=UnityEngine.Object.FindObjectsByType<RocketProjectile>(FindObjectsSortMode.None).Single(p=>p.IsInitialized);
+        Assert.That(second,Is.SameAs(first));
+        Assert.That(second.IsResolved,Is.False);
+        Assert.That(second.HasActiveOwner,Is.True);
+        Assert.That(second.HitPoints,Is.EqualTo(12).Within(.001));
+        Assert.That(second.GetComponent<R3ShieldRocketPayload>().Damage,Is.GreaterThan(oldDamage));
+        Assert.That(second.GetComponent<RRLPointDefenseThreat>().IsActiveThreat,Is.True);
+        deadline=Time.realtimeSinceStartup+8;
+        while(hp.CurrentHp>=500&&Time.realtimeSinceStartup<deadline)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(hp.CurrentHp,Is.LessThan(500),"The reused rocket must actually hit and damage its new target.");
+        UnityEngine.Object.Destroy(target);
+    }
+    [UnityTest] public IEnumerator TransitionClearsRetiredRocketCache()
+    {
+        var gun=Build(out _);gun.GetComponentInParent<Rigidbody>().isKinematic=true;
+        Assert.That(Fire(gun),Is.True);
+        var rocket=UnityEngine.Object.FindObjectsByType<RocketProjectile>(FindObjectsSortMode.None).Single(p=>p.IsInitialized);
+        rocket.ApplyInterceptionDamage(float.MaxValue);yield return null;
+        Assert.That(rocket!=null,Is.True);
+        R1EncounterManager.ClearTransientObjects();yield return null;
+        Assert.That(rocket==null,Is.True,"Inactive cached rockets must be removed along with transient scene objects.");
+    }
+    [UnityTest] public IEnumerator DestroyingLauncherClearsItsRetiredRockets()
+    {
+        var gun=Build(out _);gun.GetComponentInParent<Rigidbody>().isKinematic=true;
+        Assert.That(Fire(gun),Is.True);
+        var rocket=UnityEngine.Object.FindObjectsByType<RocketProjectile>(FindObjectsSortMode.None).Single(p=>p.IsInitialized);
+        rocket.ApplyInterceptionDamage(float.MaxValue);yield return null;
+        Assert.That(rocket!=null,Is.True);
+        UnityEngine.Object.Destroy(gun.GetComponentInParent<R3VehicleAssembly>().gameObject);
+        yield return null;yield return null;
+        Assert.That(rocket==null,Is.True,"The launcher's cache must not survive its owner.");
+    }
     [UnityTest] public IEnumerator MoreThanThirtyTwoRealRocketsHitSeparateTargets()
     {
         var owner=new GameObject("Many rockets owner");var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;

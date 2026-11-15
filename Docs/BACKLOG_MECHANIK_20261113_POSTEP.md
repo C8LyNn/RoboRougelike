@@ -42,6 +42,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Unity 6000.3.14f1: `legacy_part_health_labels.xml` i `.log`: **4 PASS, 0 FAIL** dla istniejących kontroli wspólnego formatowania HP w katalogu i inspekcji. Test nie klika ani nie sprawdza wyglądu starszych paneli w Playerze; kompilacja projektu w Unity przeszła.
 - Komunikat po fuzji również używa tego formatu: wynik o HP mniejszym od 100% nie jest przedstawiany jako w pełni sprawny. `fusion_message_after.xml` i `.log`: **7 PASS, 0 FAIL**, w tym fuzja w rzeczywistym garażu, montaż wyniku i podgląd; `fusion_message_before.xml`: **1 FAIL**, komunikat pokazywał 100% mimo uszkodzenia.
 
+### 02, 14 i 44. Ponowne używanie rakiet wyrzutni
+
+- Rakiety z istniejącej wyrzutni mogą po trafieniu, przechwyceniu lub zakończeniu lotu wrócić do pamięci tej wyrzutni i zostać wykorzystane ponownie od następnej klatki. Nowy lot dostaje bieżącego właściciela, właściwe obrażenia, HP, kierunek i stan przechwytywania; dotychczasowe samodzielne użycie pakietu zachowuje niszczenie obiektu. Do 32 nieaktywnych rakiet na wyrzutnię jest przechowywanych, pozostałe są usuwane; gdy pamięć jest pusta, tworzony jest nowy obiekt. Jest to limit przechowywania, nie liczby wystrzelonych rakiet. Sprzątanie areny i usunięcie wyrzutni opróżnia jej pamięć.
+- Unity 6000.3.14f1: `rocket_reuse_physical.xml` i `.log`: **14 PASS, 0 FAIL**, w tym ponowny fizyczny strzał i trafienie po przechwyceniu, zmiana tieru i obrażeń, brak ponownego użycia w tej samej klatce, usuwanie cache przy przejściu i zniszczeniu wyrzutni oraz wcześniejsze scenariusze rakiet. `rocket_reuse_regression.xml`: **6 PASS, 0 FAIL** dla rakiet przeciwnika, bonusowych pocisków, pierwszeństwa salwy i osłon. Pakiet PlayMode `rocket_reuse_package.xml`: **21 PASS, 0 FAIL**. Przed zmianą `rocket_reuse_before.xml`: **1 FAIL**, obiekt przechwyconej rakiety był niszczony.
+- Zmiana ogranicza jawne tworzenie obiektów przy kolejnych strzałach; nie jest pomiarem FPS, nie usuwa progu 32 dla dodatkowych rakiet i nie potwierdza wydajności dużych salw w Playerze. Ręczna rozgrywka: **NOT RUN**.
+
 ### 02, 14 i 44. Wspólny bufor zapytania railguna
 
 - Pociski railguna korzystają ze współdzielonego bufora zapytania fizyki zamiast tworzyć osobną dużą tablicę na każdy pocisk. Zagnieżdżone rozliczenie obrażeń dostaje osobny bufor; przy przepełnieniu nadal następuje pełne zapytanie, bez limitowania wykrywanych przeszkód.

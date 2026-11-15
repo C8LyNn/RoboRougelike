@@ -45,6 +45,21 @@ namespace RoboRougelike.Mechanics.Rockets
         private float speed, age, hitPoints;
         private bool initialized, resolved, checkedLaunchClearance;
         private IRocketFlightBoundary flightBoundary;
+        private System.Action<RocketProjectile> retirementHandler;
+
+        // Opt-in only: standalone package rockets retain their original
+        // destroy-on-resolution behavior unless the integration supplies a pool.
+        public void SetRetirementHandler(System.Action<RocketProjectile> handler)=>retirementHandler=handler;
+        public bool PrepareForReuse()
+        {
+            if(gameObject.activeSelf||!resolved)return false;
+            initialized=false;resolved=false;checkedLaunchClearance=false;
+            ownerRoot=null;guidedTarget=null;attacker=null;flightBoundary=null;
+            forward=Vector3.zero;inheritedVelocity=Vector3.zero;speed=age=hitPoints=0;
+            if(blastBuffer!=null)System.Array.Clear(blastBuffer,0,blastBuffer.Length);
+            if(castBuffer!=null)System.Array.Clear(castBuffer,0,castBuffer.Length);
+            return true;
+        }
 
         // Notification only; original flight, blast and interception remain authoritative.
         public static event System.Action<RocketProjectile,Vector3,Vector3> Detonated;
@@ -92,8 +107,8 @@ namespace RoboRougelike.Mechanics.Rockets
             // Most rockets encounter few colliders while flying. Grow these
             // buffers on demand, and reserve blast/occlusion capacity only
             // when an explosion actually needs it.
-            castBuffer = new RaycastHit[Mathf.Min(32,spec.MaxCastHits)];
-            blastBuffer = new Collider[Mathf.Min(32,spec.MaxBlastColliders)];
+            if(castBuffer==null||castBuffer.Length<Mathf.Min(32,spec.MaxCastHits))castBuffer = new RaycastHit[Mathf.Min(32,spec.MaxCastHits)];
+            if(blastBuffer==null||blastBuffer.Length<Mathf.Min(32,spec.MaxBlastColliders))blastBuffer = new Collider[Mathf.Min(32,spec.MaxBlastColliders)];
             flightBoundary = GetComponent<IRocketFlightBoundary>();
             initialized = true;
             if(isActiveAndEnabled)activeFlights.Add(this);
@@ -222,7 +237,7 @@ namespace RoboRougelike.Mechanics.Rockets
             }
             if (optionalExplosionVfxPrefab != null)
                 Instantiate(optionalExplosionVfxPrefab, point, Quaternion.identity);
-            Destroy(gameObject);
+            Retire();
         }
 
         private RocketBlastResult ResolveBlast(Vector3 point,Vector3 normal)
@@ -257,7 +272,14 @@ namespace RoboRougelike.Mechanics.Rockets
         private bool RetireLostOwner()
         {
             if (!initialized || HasActiveOwner) return false;
-            resolved = true;gameObject.SetActive(false);Destroy(gameObject);return true;
+            resolved = true;gameObject.SetActive(false);Retire();return true;
+        }
+        private void Retire()
+        {
+            if(retirementHandler==null){Destroy(gameObject);return;}
+            gameObject.SetActive(false);
+            try{retirementHandler(this);}
+            catch(System.Exception error){Debug.LogException(error);Destroy(gameObject);}
         }
     }
 }

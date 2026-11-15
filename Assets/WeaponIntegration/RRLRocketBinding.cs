@@ -17,6 +17,10 @@ namespace RoboRougelike.WeaponIntegration
         P12PipelineSafeTankController tank;
         Transform muzzle;
         RocketProjectile projectileTemplate;
+        struct CachedRocket { public RocketProjectile Projectile; public int ReleasedFrame; }
+        // A retention limit, not a firing limit: cache misses create a new rocket.
+        const int MaxCachedRockets=32;
+        readonly System.Collections.Generic.Queue<CachedRocket> retiredRockets=new System.Collections.Generic.Queue<CachedRocket>();
         float damageScale=1,intervalScale=1;
         public void Bind(R3PartState state,Transform owner,Transform barrel,float damageMultiplier=1,float intervalMultiplier=1)
         {
@@ -39,8 +43,39 @@ namespace RoboRougelike.WeaponIntegration
                 var finCollider=fin.GetComponent<Collider>();finCollider.enabled=false;Destroy(finCollider);
             }
             var origin=template.AddComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.RocketLauncher;origin.PartId=state.Id;
-            Module=gameObject.AddComponent<RocketLauncher>();Module.Bind(Device.Body,owner,muzzle);Module.SetAmmoSource(this);Module.SetPrefab(prefab);
+            Module=gameObject.AddComponent<RocketLauncher>();Module.Bind(Device.Body,owner,muzzle);Module.SetAmmoSource(this);Module.SetPrefab(prefab);Module.SetSpawnFactory(RentRocket);
             Device.Damageable.Died+=Stop;Refresh();
+        }
+        RocketProjectile RentRocket(RocketProjectile prefab,Vector3 position,Quaternion rotation)
+        {
+            RocketProjectile rocket=null;
+            while(retiredRockets.Count>0)
+            {
+                var cached=retiredRockets.Peek();
+                if(cached.Projectile==null){retiredRockets.Dequeue();continue;}
+                // Callbacks may still hold the old projectile for this frame.
+                if(cached.ReleasedFrame>=Time.frameCount)break;
+                retiredRockets.Dequeue();
+                if(!cached.Projectile.PrepareForReuse()){Object.Destroy(cached.Projectile.gameObject);continue;}
+                rocket=cached.Projectile;break;
+            }
+            if(rocket==null)rocket=Object.Instantiate(prefab,position,rotation);
+            else rocket.transform.SetPositionAndRotation(position,rotation);
+            rocket.SetRetirementHandler(ReturnRocket);
+            // The same launcher can change tier and damage between flights.
+            rocket.GetComponent<R3ShieldRocketPayload>().Damage=prefab.GetComponent<R3ShieldRocketPayload>().Damage;
+            return rocket;
+        }
+        void ReturnRocket(RocketProjectile rocket)
+        {
+            if(rocket==null)return;
+            if(this==null||!isActiveAndEnabled||retiredRockets.Count>=MaxCachedRockets){Object.Destroy(rocket.gameObject);return;}
+            retiredRockets.Enqueue(new CachedRocket{Projectile=rocket,ReleasedFrame=Time.frameCount});
+        }
+        internal void ClearRocketCache()
+        {
+            while(retiredRockets.Count>0)
+            {var rocket=retiredRockets.Dequeue().Projectile;if(rocket!=null)Object.Destroy(rocket.gameObject);}
         }
         void Refresh()
         {
@@ -84,7 +119,7 @@ namespace RoboRougelike.WeaponIntegration
                 RocketProjectile extra=null;
                 try
                 {
-                    extra=Object.Instantiate(projectileTemplate,muzzle.position,muzzle.rotation);
+                    extra=RentRocket(projectileTemplate,muzzle.position,muzzle.rotation);
                     if(!extra.TryInitialize(Module.CurrentSpec,Device.Body,Device.Owner,gameObject,null,muzzle.forward))
                     {Object.Destroy(extra.gameObject);continue;}
                     if(!extra.gameObject.activeSelf)extra.gameObject.SetActive(true);
@@ -103,6 +138,6 @@ namespace RoboRougelike.WeaponIntegration
         void Update(){Refresh();if(Device.Available&&State.Ammo==0)BeginReload();}
         void Stop(){if(Module!=null)Module.SetOperational(false);}
         void OnDisable()=>Stop();
-        void OnDestroy(){if(Device?.Damageable!=null)Device.Damageable.Died-=Stop;}
+        void OnDestroy(){ClearRocketCache();if(Device?.Damageable!=null)Device.Damageable.Died-=Stop;}
     }
 }
