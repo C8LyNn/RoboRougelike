@@ -56,6 +56,32 @@ public class RRLW34EffectsTests
         Assert.That(Visible(),Is.False,"A wall tied with the target must be treated as cover regardless of hit order.");
         yield return null;
     }
+    [UnityTest, Explicit("Known backlog #14 failure; run directly when implementing sub-step device fire.")]
+    public IEnumerator DeviceCanFireSeveralPhysicalShotsPerPhysicsStep()
+    {
+        var vehicle=Build(Model());yield return null;
+        var shooterObject=GameObject.CreatePrimitive(PrimitiveType.Cube);shooterObject.transform.SetParent(fixtures.transform);
+        shooterObject.transform.position=new Vector3(1000,1000,1000);shooterObject.AddComponent<Rigidbody>().isKinematic=true;
+        var shooter=shooterObject.AddComponent<R3FlyingDrone>();shooter.ConfigureTurret(vehicle.transform,.005f,1,120);
+        var enemyObject=GameObject.CreatePrimitive(PrimitiveType.Cube);enemyObject.transform.SetParent(fixtures.transform);
+        enemyObject.transform.position=shooterObject.transform.position+Vector3.forward*100;
+        var hp=enemyObject.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
+        var enemy=enemyObject.AddComponent<P12PipelineSafeEnemyTurret>();enemy.enabled=false;enemy.Configure(vehicle.transform,null,null,enemyObject.transform,hp,null);
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        typeof(R3FlyingDrone).GetField("target",flags).SetValue(shooter,enemy);
+        typeof(R3FlyingDrone).GetField("aimCollider",flags).SetValue(shooter,enemyObject.GetComponent<Collider>());
+        typeof(R3FlyingDrone).GetField("nextScan",flags).SetValue(shooter,Time.time+100);
+        Physics.SyncTransforms();float start=Time.fixedTime;
+        for(int i=0;i<20;i++)yield return MOVSeriesDeviceTests.FixedStep();
+        float elapsed=Time.fixedTime-start;
+        var shots=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Where(p=>p.name=="P17_DronePhysicalShell"&&p.gameObject.activeInHierarchy).ToArray();
+        int expected=Mathf.FloorToInt(elapsed/.005f);
+        TestContext.WriteLine($"elapsed={elapsed} shots={shots.Length} expected={expected}");
+        Assert.That(elapsed,Is.GreaterThan(.3f));
+        Assert.That(shots.Length,Is.InRange(expected-5,expected+5),"Each due shot must remain an independent physical projectile.");
+        shooter.enabled=false;
+        foreach(var shot in shots)if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+    }
     [UnityTest] public IEnumerator DeviceCadenceDoesNotAccumulatePhysicsStepRounding()
     {
         var vehicle=Build(Model());yield return null;

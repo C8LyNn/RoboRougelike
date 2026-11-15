@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14 i 44. Potwierdzony limit tempa urządzeń
+
+- Dodano scenariusz `DeviceCanFireSeveralPhysicalShotsPerPhysicsStep` jako test **Explicit**: nie jest automatycznie zaliczany jako przechodzący test i należy go uruchomić bezpośrednio po naprawie. Urządzenie z odstępem 0,005 s obserwuje nieruchomy, widoczny cel; liczone są aktywne, osobne fizyczne pociski po 20 rzeczywistych krokach fizyki.
+- Unity 6000.3.14f1: `device_fast_cadence_before.xml` — **1 FAIL**: przez około 0,4 s powstało **20** pocisków wobec oczekiwanych około **79**. Test uruchomiono przed oznaczeniem go jako Explicit. Nie jest to pomiar FPS ani ręczny playtest.
+- Samo zastąpienie jednego wywołania `Fire` nieograniczoną pętlą grozi zawieszeniem gry. Rozwiązanie musi zachować należne strzały także przy porcjowaniu pracy, poprawnie traktować niedostępny cel i kolizje równocześnie powstałych pocisków. Limit nadal istnieje; punkty 14 i 44 są otwarte.
+
 ### 14 i 44. Konfiguracja prędkości śrucin
 
 - Konfiguracja strzelby nie obcina już prędkości śrucin do 250. Prędkość jest polem ustawień gry, jest zachowywana przy kopiowaniu konfiguracji i służy również do wyznaczania czasu życia niezbędnego do osiągnięcia skonfigurowanego zasięgu. Wartość domyślna pozostaje **58**; wartości nieskończone i NaN wracają do domyślnej, a wartości ujemne do minimum 0,1. To ustawienie projektowe, nie nowe ulepszenie gracza.
