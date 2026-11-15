@@ -1183,6 +1183,32 @@ public sealed class BacklogDeviceTierGameplayTests
         while(root!=null&&Time.realtimeSinceStartup<deadline)yield return MOVSeriesDeviceTests.FixedStep();
         Assert.That(root==null,Is.True,"Unused traps must still expire");
     }
+    [UnityTest] public IEnumerator ExtremeTierTwoBlastTrapStillDeploys() => ExtremeDamageTrapStillDeploys(R3PartKind.BlastTrapDeployer);
+    [UnityTest] public IEnumerator ExtremeTierTwoDamageTrapStillDeploys() => ExtremeDamageTrapStillDeploys(R3PartKind.DamageTrapDeployer);
+    IEnumerator ExtremeDamageTrapStillDeploys(R3PartKind kind)
+    {
+        run.VehicleModel.Award(2500);FuseAndMount(kind);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var body=run.Player.GetComponent<Rigidbody>();var service=run.Player.GetComponent<R3DeployableService>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.forward*3;
+        if(kind==R3PartKind.BlastTrapDeployer)run.VehicleModel.Economy.TrapBlastDamage=float.MaxValue;
+        else run.VehicleModel.Economy.TrapDamagePerSecond=float.MaxValue;
+        Assert.That(service.TryDeploy(kind),Is.True,"A finite, high damage value must not prevent deployment when upgraded");
+        var trap=GameObject.Find(kind==R3PartKind.BlastTrapDeployer?"Pułapka wybuchowa":"Pułapka obrażeń");Assert.That(trap,Is.Not.Null);
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,run.Player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}},run.Salvage,"extreme-trap-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();var target=enemy.GetComponent<Rigidbody>();target.useGravity=false;target.isKinematic=true;
+        float before=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp);
+        target.position=trap.transform.position+Vector3.up;Physics.SyncTransforms();
+        float deadline=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<deadline&&enemy!=null&&!enemy.IsDefeated&&enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp)>=before)
+            yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(enemy==null||enemy.IsDefeated||enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Sum(p=>p.CurrentHp)<before,Is.True,"The deployed trap must damage a real enemy");
+        Object.Destroy(floor);
+    }
     [UnityTest] public IEnumerator DamageTrapKeepsHurtingEnemyUntilFieldExpires()
     {
         Assert.That(System.Enum.TryParse("DamageTrapDeployer",out R3PartKind kind),Is.True,"Missing damage-over-time trap");

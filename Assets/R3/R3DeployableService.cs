@@ -166,14 +166,13 @@ namespace RoboRougelike.R3
             if(kind==R3PartKind.JumpPadDeployer&&(float.IsNaN(launch)||float.IsInfinity(launch)||launch<=0))return false;
             float radius=assembly.Model.Economy.TrapTriggerRadius,damage=assembly.Model.Economy.TrapBlastDamage,duration=assembly.Model.Economy.TrapEmpDuration;
             if(trap&&(float.IsNaN(radius)||float.IsInfinity(radius)||radius<=0))return false;
-            if(kind==R3PartKind.BlastTrapDeployer&&(float.IsNaN(damage)||float.IsInfinity(damage)||damage<=0||
-                (double)damage*units>float.MaxValue))return false;
+            if(kind==R3PartKind.BlastTrapDeployer&&(float.IsNaN(damage)||float.IsInfinity(damage)||damage<=0))return false;
             if(kind==R3PartKind.EmpTrapDeployer&&(float.IsNaN(duration)||float.IsInfinity(duration)||duration<=0||
                 radius>float.MaxValue/2||(double)duration*units>float.MaxValue))return false;
             float repel=assembly.Model.Economy.TrapRepelSpeed;
             if(kind==R3PartKind.RepelTrapDeployer&&(float.IsNaN(repel)||float.IsInfinity(repel)||repel<=0||(double)repel*units>float.MaxValue))return false;
             float dot=assembly.Model.Economy.TrapDamagePerSecond,fieldDuration=assembly.Model.Economy.TrapDamageDuration;
-            if(kind==R3PartKind.DamageTrapDeployer&&(float.IsNaN(dot)||float.IsInfinity(dot)||dot<=0||(double)dot*units>float.MaxValue||
+            if(kind==R3PartKind.DamageTrapDeployer&&(float.IsNaN(dot)||float.IsInfinity(dot)||dot<=0||
                 float.IsNaN(fieldDuration)||float.IsInfinity(fieldDuration)||fieldDuration<=0))return false;
             float slow=assembly.Model.Economy.TrapSlowMultiplier,slowDuration=assembly.Model.Economy.TrapSlowDuration;
             if(kind==R3PartKind.SlowTrapDeployer&&(float.IsNaN(slow)||float.IsInfinity(slow)||slow<0||slow>=1||
@@ -198,7 +197,7 @@ namespace RoboRougelike.R3
                 var sensor=new GameObject("Czujnik pułapki");sensor.transform.SetParent(ramp.transform,false);
                 sensor.transform.localScale=new Vector3(1f/width,1f/thickness,1f/length);
                 var trigger=sensor.AddComponent<SphereCollider>();trigger.isTrigger=true;trigger.radius=radius;
-                sensor.AddComponent<R3DeployableTrap>().Configure(ramp.transform,transform,kind,radius,damage*units,duration*units,assembly.Model.Economy.TrapRepelSpeed*units,dot*units,fieldDuration,lifetime,kind==R3PartKind.ImmobilizeTrapDeployer?0:slow,(kind==R3PartKind.ImmobilizeTrapDeployer?immobilize:slowDuration)*units);
+                sensor.AddComponent<R3DeployableTrap>().Configure(ramp.transform,transform,kind,radius,(double)damage*units,duration*units,assembly.Model.Economy.TrapRepelSpeed*units,(double)dot*units,fieldDuration,lifetime,kind==R3PartKind.ImmobilizeTrapDeployer?0:slow,(kind==R3PartKind.ImmobilizeTrapDeployer?immobilize:slowDuration)*units);
             }
             spawned.Add(ramp);if(!trap)Destroy(ramp,lifetime);return true;
         }

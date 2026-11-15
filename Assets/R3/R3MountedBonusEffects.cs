@@ -83,15 +83,16 @@ namespace RoboRougelike.R3
 
         // Resolve global and matching category bonuses for owned deployables;
         // weapon-specific bonuses remain on the weapon path.
-        public static float ScaleOwnedDamage(Transform owner,float amount,R1BonusScope category=R1BonusScope.Global,bool blast=false)
+        public static float ScaleOwnedDamage(Transform owner,double amount,R1BonusScope category=R1BonusScope.Global,bool blast=false)
         {
-            if(float.IsNaN(amount)||float.IsInfinity(amount)||amount<=0)return 0;
+            if(double.IsNaN(amount)||double.IsInfinity(amount)||amount<=0)return 0;
             var effects=owner!=null?owner.GetComponentInParent<R3MountedBonusEffects>():null;
             float factor=effects==null?1f:category switch {
                 R1BonusScope.Drones=>effects.DroneDamageMultiplier,R1BonusScope.Turrets=>effects.TurretDamageMultiplier,
                 R1BonusScope.Traps=>blast?effects.BlastTrapDamageMultiplier:effects.TrapDamageMultiplier,
                 _=>blast?effects.BlastDamageMultiplier:effects.EffectiveStats?.Damage??1f};
-            return SafeDamageProduct(amount,factor);
+            if(float.IsNaN(factor)||float.IsInfinity(factor)||factor<=0)return 0;
+            return (float)System.Math.Min(float.MaxValue,amount*factor);
         }
 
         public void SetOverdriveIncrease(float increase)

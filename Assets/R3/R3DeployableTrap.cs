@@ -35,7 +35,8 @@ namespace RoboRougelike.R3
     {
         Transform owner,root;
         R3PartKind kind;
-        float radius,damage,duration,repelSpeed,damagePerSecond,fieldDuration,expiresAt,slowFactor,slowSeconds;
+        float radius,duration,repelSpeed,fieldDuration,expiresAt,slowFactor,slowSeconds;
+        double damage,damagePerSecond;
         bool activated,deferredTrigger;
         Collider[] damageHits;
         Dictionary<Transform,Collider> damageTargets;
@@ -43,7 +44,7 @@ namespace RoboRougelike.R3
         readonly List<R3ShieldDome.BlastBoundary> exposedShields=new List<R3ShieldDome.BlastBoundary>();
         readonly List<Collider> unblockedTargets=new List<Collider>();
         public bool Activated=>activated;
-        public void Configure(Transform trap,Transform source,R3PartKind type,float triggerRadius,float blastDamage,float empDuration,float repel,float dot,float fieldSeconds,float trapSeconds,float slow,float slowDuration)
+        public void Configure(Transform trap,Transform source,R3PartKind type,float triggerRadius,double blastDamage,float empDuration,float repel,double dot,float fieldSeconds,float trapSeconds,float slow,float slowDuration)
         {root=trap;owner=source;kind=type;radius=triggerRadius;damage=blastDamage;duration=empDuration;repelSpeed=repel;damagePerSecond=dot;fieldDuration=fieldSeconds;expiresAt=Time.time+trapSeconds;slowFactor=slow;slowSeconds=slowDuration;}
         bool OwnerAttackBlocked
         {
@@ -155,9 +156,9 @@ namespace RoboRougelike.R3
             }
             ApplyAreaDamage(damageTargets,origin,damagePerSecond*Time.fixedDeltaTime,R3DamagePropagation.DamageKind.Kinetic);
         }
-        void ApplyAreaDamage(Dictionary<Transform,Collider> targets,Vector3 origin,float amount,R3DamagePropagation.DamageKind damageKind)
+        void ApplyAreaDamage(Dictionary<Transform,Collider> targets,Vector3 origin,double rawAmount,R3DamagePropagation.DamageKind damageKind)
         {
-            amount=R3MountedBonusEffects.ScaleOwnedDamage(owner,amount,R1BonusScope.Traps,damageKind==R3DamagePropagation.DamageKind.Blast);
+            float amount=R3MountedBonusEffects.ScaleOwnedDamage(owner,rawAmount,R1BonusScope.Traps,damageKind==R3DamagePropagation.DamageKind.Blast);
             R3ShieldDome.CollectExposedBlastBoundaries(origin,radius,owner,shieldBoundaries,exposedShields);unblockedTargets.Clear();
             foreach(var hit in targets.Values)
             {

@@ -930,3 +930,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Wynik diagnostyczny wybuchu sumuje obrażenia w szerszym zakresie i przy przekroczeniu możliwości typu `float` pozostaje maksymalną skończoną wartością. Obrażenia przekazywane poszczególnym celom nie są przez to ograniczane ani zmieniane.
 - Unity 6000.3.14f1, PlayMode: **18 PASS, 0 FAIL** (`rocket_total_final.xml`, `.log`), w tym dwa cele otrzymujące skrajnie duże skończone obrażenia i wcześniejsza regresja pakietu. Przed zmianą `rocket_total_red.xml` wynik sumy był nieskończony. Ręczna gra: **NOT RUN**.
+
+#### 14, 29, 44. Pułapki przy bardzo dużych obrażeniach
+
+- Ulepszone pułapki wybuchowe i zadające obrażenia w czasie nie odmawiają już rozstawienia, gdy poprawna skończona wartość po pomnożeniu przez tier przekracza zakres `float`. Obrażenia są przechowywane i mnożone w szerszym zakresie, a do pojedynczego trafienia przekazywana jest największa możliwa skończona wartość. Normalne wartości, koszty, czas trwania, premie i ochrona tarcz pozostają bez zmian.
+- Unity 6000.3.14f1: **21 PASS, 0 FAIL** (`trap_extreme_release.xml`, `.log`) obejmuje obie faktycznie rozstawione pułapki T2 i trafienia przeciwnika, normalne pole obrażeń, premie, tarcze oraz zasady ratunku. Przed zmianą `trap_extreme_red.xml`: **2 FAIL**, obie pułapki nie dawały się rozstawić. Ręczna gra i balans skrajnych wartości: **NOT RUN**.
