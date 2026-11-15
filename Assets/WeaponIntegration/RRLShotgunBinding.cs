@@ -39,7 +39,7 @@ namespace RoboRougelike.WeaponIntegration
             if(State.Ammo<0)State.Ammo=MagazineSalvos;
             Module=GetComponent<ShotgunModule>();if(Module==null)Module=gameObject.AddComponent<ShotgunModule>();
             Module.Bind(body,muzzle,owner.gameObject);Module.BindSink(this);Module.BindResourceBank(this);
-            Module.Configure(new ShotgunConfig{cooldownSeconds=.85f*intervalScale});
+            Module.Configure(ShotgunSettings(intervalScale));
             Module.SetPatternSeed(StableSeed(State.Id));Module.SetOperational(Available);
             if(hp!=null)hp.Died+=Stop;
             projectileMaterial=GetComponent<Renderer>()?.sharedMaterial;
@@ -48,6 +48,13 @@ namespace RoboRougelike.WeaponIntegration
         {
             uint seed=2166136261;foreach(char c in id??""){seed^=c;seed*=16777619;}return seed;
         }
+        ShotgunConfig ShotgunSettings(float interval)
+        {
+            float range=Owner!=null?Owner.GetComponent<R3VehicleAssembly>()?.Model?.Economy.ShotgunRange??40f:40f;
+            double safeRange=float.IsNaN(range)||float.IsInfinity(range)?40d:System.Math.Max(.1d,range);
+            return new ShotgunConfig{cooldownSeconds=R3MountedBonusEffects.SafeIntervalProduct(.85f,interval),maxTravelDistance=range,
+                projectileLifetime=(float)System.Math.Min(float.MaxValue,System.Math.Max(2d,safeRange/58d+1d))};
+        }
         public bool Fire()
         {
             RefreshResources();
@@ -55,7 +62,7 @@ namespace RoboRougelike.WeaponIntegration
             var assembly=Owner.GetComponent<R3VehicleAssembly>();
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>()))return false;
             Module.SetOperational(true);
-            Module.Configure(new ShotgunConfig{cooldownSeconds=.85f*(tank!=null?tank.PackageIntervalScale:intervalScale)});
+            Module.Configure(ShotgunSettings(tank!=null?tank.PackageIntervalScale:intervalScale));
             var energy=Owner.GetComponent<VehicleEnergyBank>();
             float cost=VehicleEnergyCosts.Shotgun*R3VehicleModel.TierActivationCost(State.Tier);
             if(energy!=null&&!energy.TrySpend(cost))return false;

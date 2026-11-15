@@ -47,6 +47,17 @@ public class RRLW6WeaponRegistryTests
 
 public class RRLW6ShotgunPhysicalTests
 {
+    [Test] public void ShotgunLongRangeSettingsRemainFiniteAndCopy()
+    {
+        var spec=new RoboRougelike.WPN001Shotgun.ShotgunConfig{maxTravelDistance=1200,projectileLifetime=25}.Snapshot();
+        Assert.That(spec.MaxTravelDistance,Is.EqualTo(1200));Assert.That(spec.ProjectileLifetime,Is.EqualTo(25));
+        var economy=new R3GarageEconomy();var range=typeof(R3GarageEconomy).GetField("ShotgunRange");Assert.That(range,Is.Not.Null);
+        Assert.That(range.GetValue(Resources.Load<R1RunDefinition>("R1/Run").GaragePrices),Is.EqualTo(40f));
+        var invalid=new RoboRougelike.WPN001Shotgun.ShotgunConfig{maxTravelDistance=float.NaN,projectileLifetime=float.PositiveInfinity}.Snapshot();
+        Assert.That(invalid.MaxTravelDistance,Is.EqualTo(40));Assert.That(invalid.ProjectileLifetime,Is.EqualTo(2));
+        range.SetValue(economy,1200f);var copy=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light),economy).DeepCopy();
+        Assert.That(range.GetValue(copy.Economy),Is.EqualTo(1200));
+    }
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
@@ -99,6 +110,23 @@ public class RRLW6ShotgunPhysicalTests
         Assert.That(hp.CurrentHp,Is.EqualTo(428).Within(.1f),$"Eight9-damage pellets; physics={Physics.simulationMode}, time={startTime}->{Time.time}, fixed={startFixed}->{Time.fixedTime}, target={target.transform.position}, ignoreLayers={Physics.GetIgnoreLayerCollision(0,0)}, starts={starts}, ends={ends}");
         gun.Damageable.ApplyDamage(10000,gun.transform.position,Vector3.up);
         Assert.That(shotgun.TryFire(),Is.False,"Destroyed or detached weapon cannot fire");
+    }
+    [UnityTest] public IEnumerator ConfiguredShotgunCanHitBeyondOldRangeCeiling()
+    {
+        var range=typeof(R3GarageEconomy).GetField("ShotgunRange");Assert.That(range,Is.Not.Null);
+        var run=R1RunController.Instance;var economy=new R3GarageEconomy();range.SetValue(economy,1200f);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard),economy);
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=gun.Muzzle.position+gun.Muzzle.forward*600;
+        target.transform.localScale=new Vector3(15,15,1);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);Physics.SyncTransforms();
+        var binding=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();Assert.That(binding.Fire(),Is.True);
+        Assert.That(binding.Module.CurrentSpec.MaxTravelDistance,Is.EqualTo(1200));Assert.That(binding.Module.CurrentSpec.ProjectileLifetime,Is.GreaterThan(20));
+        foreach(var pellet in UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==state.Id))
+            pellet.GetComponent<Rigidbody>().linearVelocity=gun.Muzzle.forward*1000;
+        float deadline=Time.realtimeSinceStartup+5;while(hp.CurrentHp>=500&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(hp.CurrentHp,Is.LessThan(500));if(target!=null)UnityEngine.Object.Destroy(target);if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);yield return null;
     }
     [UnityTearDown] public IEnumerator Cleanup()
     {

@@ -47,8 +47,8 @@ namespace RoboRougelike.WPN001Shotgun
             FullConeAngleDegrees = ClampFinite(fullConeAngleDegrees, 0f, 90f, 14f);
             ProjectileSpeed = ClampFinite(projectileSpeed, 0.1f, 250f, 58f);
             DamagePerPellet = ClampFinite(damagePerPellet, 0f, 1000f, 9f);
-            MaxTravelDistance = ClampFinite(maxTravelDistance, 0.1f, 500f, 40f);
-            ProjectileLifetime = ClampFinite(projectileLifetime, 0.01f, 15f, 2f);
+            MaxTravelDistance = FiniteMinimum(maxTravelDistance, 0.1f, 40f);
+            ProjectileLifetime = FiniteMinimum(projectileLifetime, 0.01f, 2f);
             CooldownSeconds = NonNegativeCooldown(cooldownSeconds, 0.85f);
             InheritedVelocityFactor = ClampFinite(inheritedVelocityFactor, 0f, 1f, 1f);
             RecoilImpulse = ClampFinite(recoilImpulse, 0f, 10f, 0f);
@@ -60,6 +60,8 @@ namespace RoboRougelike.WPN001Shotgun
             return float.IsNaN(value) || float.IsInfinity(value)
                 ? fallback : Mathf.Clamp(value, min, max);
         }
+        private static float FiniteMinimum(float value,float min,float fallback)
+            =>float.IsNaN(value)||float.IsInfinity(value)?fallback:Mathf.Max(min,value);
         internal static float NonNegativeCooldown(float value,float fallback)
         {
             if(float.IsNaN(value)||float.IsInfinity(value))return fallback;
