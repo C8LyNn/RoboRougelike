@@ -617,7 +617,13 @@ public float CurrentForwardSpeed =>
         public Collider FirePrimaryFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId)
         { return FireFromInternal(barrel,kind,partId,0,null); }
         public void FireAdditionalFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,Collider primary,int count)
-        { if(primary!=null&&count>0)FireFromInternal(barrel,kind,partId,count-1,primary); }
+        {
+            if(primary==null||count<=0)return;
+            var shell=primary.GetComponent<P17PhysicalShell>();if(shell==null||!shell.IsActiveProjectile)return;
+            var queue=GetComponent<RoboRougelike.R3.R3ConventionalProjectileQueue>();
+            if(queue==null)queue=gameObject.AddComponent<RoboRougelike.R3.R3ConventionalProjectileQueue>();
+            queue.Enqueue(shell,count);
+        }
         private Collider FireFromInternal(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,int extraShots,Collider existingSibling)
         {
             var profile=RoboRougelike.R4.R4WeaponDefinition.Get(kind);
@@ -633,24 +639,7 @@ public float CurrentForwardSpeed =>
             var first=SpawnPhysicalShell(barrel,kinetic,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId,blast);
             if(first==null)return null;
             if(existingSibling!=null)P17PhysicalShell.IgnoreProjectilePair(first,existingSibling);
-            if(extraShots<=0)return first;
-            var siblings=new System.Collections.Generic.List<Collider>{first};
-            if(existingSibling!=null)siblings.Add(existingSibling);
-            int allowed=Mathf.Min(extraShots,P17PhysicalShell.AvailableSlots);
-            for(int i=0;i<allowed;i++)
-            {
-                var extra=SpawnPhysicalShell(barrel,kinetic,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId,blast);
-                if(extra==null)break;
-                bool grouped=siblings.Count>0&&P17PhysicalShell.TryJoinVolley(siblings[0],extra);
-                if(!grouped&&siblings.Count==32)
-                {
-                    siblings.Add(extra);grouped=P17PhysicalShell.TryGroupVolleyColliders(siblings);
-                    if(grouped)continue;
-                    siblings.RemoveAt(siblings.Count-1);
-                }
-                if(!grouped)foreach(var sibling in siblings)if(sibling!=null)P17PhysicalShell.IgnoreProjectilePair(extra,sibling);
-                siblings.Add(extra);
-            }
+            if(extraShots>0)FireAdditionalFrom(barrel,kind,partId,first,extraShots);
             return first;
         }
         public float WeaponInterval(RoboRougelike.R4.R4WeaponKind kind) => RoboRougelike.R3.R3MountedBonusEffects.SafeIntervalProduct(RoboRougelike.R4.R4WeaponDefinition.Get(kind).Interval,WeaponIntervalScale(kind));
@@ -1582,6 +1571,28 @@ public float CurrentForwardSpeed =>
         public Vector3 LaunchPosition=>launchPosition;
         public bool IsActiveProjectile=>isActiveAndEnabled&&!spent&&ownerRoot!=null&&ownerRoot.gameObject.activeInHierarchy;
         public Vector3 FlightVelocity=>railgun!=null?railgun.Velocity:GetComponent<Rigidbody>().linearVelocity;
+        internal struct ConventionalSnapshot
+        {
+            public Transform Owner,Target;
+            public Vector3 Position,Direction,Velocity,Scale;
+            public float Mass,Lifetime,Range,Damage,Kinetic,Blast;
+            public bool Hybrid;
+            public Material Material;
+            public RoboRougelike.R4.R4WeaponKind Weapon;
+            public string PartId;
+        }
+        internal ConventionalSnapshot CaptureConventional()
+        {
+            if(!IsActiveProjectile||railgun!=null)throw new System.InvalidOperationException("A live conventional projectile is required.");
+            var body=GetComponent<Rigidbody>();var renderer=GetComponent<Renderer>();
+            var origin=GetComponent<RoboRougelike.R4.R4ProjectileOrigin>();
+            if(body==null||origin==null)throw new System.InvalidOperationException("A conventional projectile is missing its body or identity.");
+            double remaining=cacheableConventional?System.Math.Max(.5d,expiresAt-Time.timeAsDouble):.5d;
+            return new ConventionalSnapshot{Owner=ownerRoot,Target=targetRoot,Position=launchPosition,Direction=launchDirection,
+                Velocity=body.linearVelocity,Scale=transform.localScale,Mass=body.mass,Lifetime=(float)System.Math.Min(float.MaxValue,remaining),
+                Range=maxTravelDistance,Damage=damage,Kinetic=kineticComponent,Blast=blastComponent,Hybrid=hybridDamage,
+                Material=renderer!=null?renderer.sharedMaterial:null,Weapon=origin.Weapon,PartId=origin.PartId};
+        }
         public bool Intercept(float amount)
         {if(!IsActiveProjectile||amount<=0||float.IsNaN(amount)||float.IsInfinity(amount))return false;Retire();return true;}
         private static Mesh shellVisualMesh;

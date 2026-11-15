@@ -39,6 +39,11 @@ public sealed class BacklogProjectileTierTests
 public sealed class BacklogProjectileTierPhysicsTests
 {
     R1RunController run;
+    static void AllowOneFrameForConventionalCollisionFixture(R3VehicleAssembly assembly)
+    {
+        var queue=assembly.gameObject.AddComponent<R3ConventionalProjectileQueue>();
+        typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).SetValue(queue,1000d);
+    }
     static int ExplicitSiblingPairs(R4ProjectileOrigin[] shots)
     {
         var colliders=shots.Select(origin=>origin.GetComponent<Collider>()).ToHashSet();
@@ -287,9 +292,10 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(model.Buy(gunCell,R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
         var bonusCell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
             .First(c=>model.PlacementError(c,R3PartKind.DoubleShot)==null);
-        Assert.That(model.Buy(bonusCell,R3PartKind.DoubleShot),Is.True);model.Economy.DoubleShotChancePerUnit=100;
+        Assert.That(model.Buy(bonusCell,R3PartKind.DoubleShot),Is.True);model.Economy.DoubleShotChancePerUnit=1;
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
         vehicle.GetComponent<Rigidbody>().isKinematic=true;var assembly=vehicle.GetComponent<R3VehicleAssembly>();
+        AllowOneFrameForConventionalCollisionFixture(assembly);
         var guns=assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Automatic).ToArray();Assert.That(guns.Length,Is.EqualTo(2));
         for(int i=0;i<guns.Length;i++)
         {var muzzle=new GameObject("Unblocked gun muzzle").transform;muzzle.SetParent(guns[i].transform,false);muzzle.position=new Vector3(1000+i*3,1000,1000);muzzle.rotation=Quaternion.identity;guns[i].GunPivot=muzzle;guns[i].Muzzle=muzzle;}
@@ -318,6 +324,131 @@ public sealed class BacklogProjectileTierPhysicsTests
         }
         finally{foreach(var target in targets)if(target!=null)Object.Destroy(target.gameObject);foreach(var item in dummies)if(item!=null){item.SetActive(false);Object.Destroy(item);}if(vehicle!=null)Object.Destroy(vehicle.gameObject);}
         yield return null;
+    }
+    [UnityTest] public IEnumerator MoreThanNinetySixConventionalBonusShotsAreEventuallySpawned()
+    {
+        var gun=Build(R4WeaponKind.Automatic,out var energy,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.Model.Economy.DoubleShotChancePerUnit=100;
+        var muzzle=new GameObject("Unblocked queued shell muzzle").transform;muzzle.SetParent(gun.transform,false);
+        muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;gun.GunPivot=muzzle;gun.Muzzle=muzzle;
+        var queue=assembly.gameObject.AddComponent<R3ConventionalProjectileQueue>();
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        float before=energy.Current;Physics.SyncTransforms();
+        int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),w=>w==R4WeaponKind.Automatic);assembly.FireSlot(slot);
+        float cost=VehicleEnergyCosts.ConventionalShot(R4WeaponKind.Automatic)*R3VehicleModel.TierActivationCost(2);
+        Assert.That(energy.Current,Is.EqualTo(before-cost).Within(.001));
+        float deadline=Time.realtimeSinceStartup+8;R4ProjectileOrigin[] shots;
+        do
+        {
+            shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==gun.Id).ToArray();
+            if(shots.Length>=101)break;
+            yield return null;
+        }while(Time.realtimeSinceStartup<deadline);
+        Assert.That(shots.Length,Is.EqualTo(101),"The primary and all 100 separate bonuses must be emitted.");
+        Assert.That(shots.Select(p=>p.GetComponent<P17PhysicalShell>().LaunchSequence).Distinct().Count(),Is.EqualTo(101));
+        Assert.That(shots.All(p=>p.GetComponent<P17PhysicalShell>().OwnerRoot==assembly.transform),Is.True);
+        foreach(var shot in shots)if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}Object.Destroy(assembly.gameObject);
+    }
+    [UnityTest] public IEnumerator QueuedBasicBonusPreservesBothHybridDamageComponents()
+    {
+        var gun=Build(R4WeaponKind.Basic,out _,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.GetComponent<P12PipelineSafeTankController>().SetBasicDamageProfile(1.5f,1.2f,.5f);
+        var target=Target(gun,6);int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),w=>w==R4WeaponKind.Basic);
+        assembly.FireSlot(slot);
+        var shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==gun.Id).Select(p=>p.GetComponent<P17PhysicalShell>()).ToArray();
+        Assert.That(shots.Length,Is.EqualTo(2));var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var hybrid=typeof(P17PhysicalShell).GetField("hybridDamage",flags);
+        var kinetic=typeof(P17PhysicalShell).GetField("kineticComponent",flags);var blast=typeof(P17PhysicalShell).GetField("blastComponent",flags);
+        Assert.That(shots.All(s=>(bool)hybrid.GetValue(s)),Is.True);
+        float expected=(float)kinetic.GetValue(shots[0])+(float)blast.GetValue(shots[0]);
+        Assert.That((float)kinetic.GetValue(shots[1]),Is.EqualTo(kinetic.GetValue(shots[0])));
+        Assert.That((float)blast.GetValue(shots[1]),Is.EqualTo(blast.GetValue(shots[0])));
+        float deadline=Time.realtimeSinceStartup+5;while(500-target.CurrentHp<2*expected-.1f&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(500-target.CurrentHp,Is.EqualTo(2*expected).Within(.1f));
+        Object.Destroy(target.gameObject);Object.Destroy(assembly.gameObject);
+    }
+    [UnityTest] public IEnumerator ReusedPrimaryDoesNotBecomeSiblingOfQueuedBonuses()
+    {
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var staticFlags=System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic;
+        var rent=typeof(P17PhysicalShell).GetMethod("RentConventional",staticFlags);
+        typeof(P17PhysicalShell).GetMethod("ClearConventionalCache",staticFlags).Invoke(null,null);
+        var owner=new GameObject("Pooled shell test owner");owner.AddComponent<Rigidbody>().isKinematic=true;
+        var primary=(P17PhysicalShell)rent.Invoke(null,null);primary.transform.position=new Vector3(1000,1000,1000);
+        primary.GetComponent<R4ProjectileOrigin>().PartId="queued-pool-fixture";primary.gameObject.SetActive(true);
+        primary.GetComponent<Rigidbody>().linearVelocity=Vector3.forward*20;primary.Configure(owner.transform,1,5,Vector3.forward,null);
+        var queue=owner.AddComponent<R3ConventionalProjectileQueue>();
+        typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        typeof(R3ConventionalProjectileQueue).GetMethod("Enqueue",flags).Invoke(queue,new object[]{primary,3});
+        var initial=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId=="queued-pool-fixture")
+            .Select(p=>p.GetComponent<P17PhysicalShell>()).OrderBy(p=>p.LaunchSequence).ToArray();
+        Assert.That(initial.Length,Is.EqualTo(2));Assert.That(initial[0],Is.SameAs(primary));ulong oldSequence=primary.LaunchSequence;
+        queue.enabled=false;typeof(P17PhysicalShell).GetMethod("Retire",flags).Invoke(primary,null);yield return null;
+        var held=new System.Collections.Generic.List<P17PhysicalShell>();P17PhysicalShell reused=null;
+        for(int i=0;i<300;i++)
+        {
+            var shell=(P17PhysicalShell)rent.Invoke(null,null);
+            if(shell==primary){reused=shell;break;}held.Add(shell);
+        }
+        Assert.That(reused,Is.Not.Null,"The old primary must actually be reused by the pool.");
+        var unrelatedOwner=new GameObject("Reused shell owner");reused.transform.position=new Vector3(1100,1000,1000);
+        reused.GetComponent<R4ProjectileOrigin>().PartId="unrelated-reused-shot";reused.gameObject.SetActive(true);
+        reused.GetComponent<Rigidbody>().linearVelocity=Vector3.forward*20;reused.Configure(unrelatedOwner.transform,1,5,Vector3.forward,null);
+        Assert.That(reused.LaunchSequence,Is.Not.EqualTo(oldSequence));
+        typeof(R3ConventionalProjectileQueue).GetMethod("FixedUpdate",flags).Invoke(queue,null);
+        var newest=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId=="queued-pool-fixture")
+            .Select(p=>p.GetComponent<P17PhysicalShell>()).OrderByDescending(p=>p.LaunchSequence).First();
+        Assert.That(Physics.GetIgnoreCollision(reused.GetComponent<Collider>(),newest.GetComponent<Collider>()),Is.False,
+            "A reused object represents a different physical shot and must not inherit a sibling exclusion.");
+        foreach(var shot in held)if(shot!=null)Object.Destroy(shot.gameObject);
+        if(reused!=null)Object.Destroy(reused.gameObject);Object.Destroy(unrelatedOwner);Object.Destroy(owner);
+    }
+    [UnityTest] public IEnumerator QueuedConventionalShotsKeepSnapshotAfterGunIsDestroyed()
+    {
+        var gun=Build(R4WeaponKind.Automatic,out var energy,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        assembly.Model.Economy.DoubleShotChancePerUnit=3;
+        var queue=assembly.gameObject.AddComponent<R3ConventionalProjectileQueue>();
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        string id=gun.Id;int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),w=>w==R4WeaponKind.Automatic);
+        float before=energy.Current;assembly.FireSlot(slot);
+        var initial=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==id).ToArray();
+        Assert.That(initial.Length,Is.EqualTo(2));
+        var first=initial[0].GetComponent<P17PhysicalShell>();
+        Vector3 position=first.LaunchPosition,velocity=first.FlightVelocity;float damage=first.DamageAmount;
+        float cost=VehicleEnergyCosts.ConventionalShot(R4WeaponKind.Automatic)*R3VehicleModel.TierActivationCost(2);
+        Assert.That(energy.Current,Is.EqualTo(before-cost).Within(.001f));
+        assembly.GetComponent<Rigidbody>().position+=Vector3.right*20;Object.DestroyImmediate(gun.gameObject);
+        var drain=typeof(R3ConventionalProjectileQueue).GetMethod("FixedUpdate",flags);drain.Invoke(queue,null);drain.Invoke(queue,null);
+        var shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==id).Select(p=>p.GetComponent<P17PhysicalShell>()).ToArray();
+        Assert.That(shots.Length,Is.EqualTo(4));Assert.That(energy.Current,Is.EqualTo(before-cost).Within(.001f));
+        foreach(var shot in shots)
+        {
+            Assert.That(shot.OwnerRoot,Is.SameAs(assembly.transform));Assert.That(shot.DamageAmount,Is.EqualTo(damage));
+            Assert.That(Vector3.Distance(shot.LaunchPosition,position),Is.LessThan(.001f));
+            Assert.That(Vector3.Distance(shot.FlightVelocity,velocity),Is.LessThan(.001f));
+        }
+        foreach(var shot in shots){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}Object.Destroy(assembly.gameObject);yield return null;
+    }
+    [UnityTest] public IEnumerator AutomaticBonusShotIsNotLostWhenOldShellBudgetIsFull()
+    {
+        var gun=Build(R4WeaponKind.Automatic,out var energy,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var target=Target(gun,6);var dummies=new System.Collections.Generic.List<GameObject>();
+        try
+        {
+            while(P17PhysicalShell.AvailableSlots>0)
+            {var dummy=new GameObject("Shell capacity fixture");dummies.Add(dummy);dummy.AddComponent<P17PhysicalShell>();Assert.That(dummies.Count,Is.LessThan(110));}
+            float before=energy.Current;int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),w=>w==R4WeaponKind.Automatic);
+            assembly.FireSlot(slot);
+            var shots=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==gun.Id).ToArray();
+            Assert.That(shots.Length,Is.EqualTo(2),"Both the primary shot and its physical bonus must exist above the old threshold.");
+            float expected=shots.Sum(s=>s.GetComponent<P17PhysicalShell>().DamageAmount);
+            Assert.That(energy.Current,Is.EqualTo(before-VehicleEnergyCosts.ConventionalShot(R4WeaponKind.Automatic)*R3VehicleModel.TierActivationCost(2)).Within(.001));
+            float deadline=Time.realtimeSinceStartup+5;while(500-target.CurrentHp<expected-.1f&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(500-target.CurrentHp,Is.EqualTo(expected).Within(.1f),"Both separate projectiles must hit.");
+        }
+        finally{foreach(var dummy in dummies)if(dummy!=null)Object.Destroy(dummy);if(target!=null)Object.Destroy(target.gameObject);if(assembly!=null)Object.Destroy(assembly.gameObject);}
     }
     [UnityTest] public IEnumerator PrimaryShotsStillWorkWhenShellBonusBudgetIsFull()
     {
@@ -926,9 +1057,10 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(model.Buy(gunCell,R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
         var bonusCell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
             .First(c=>model.PlacementError(c,R3PartKind.DoubleShot)==null);
-        Assert.That(model.Buy(bonusCell,R3PartKind.DoubleShot),Is.True);model.Economy.DoubleShotChancePerUnit=100;
+        Assert.That(model.Buy(bonusCell,R3PartKind.DoubleShot),Is.True);model.Economy.DoubleShotChancePerUnit=47;
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
         vehicle.GetComponent<Rigidbody>().isKinematic=true;var assembly=vehicle.GetComponent<R3VehicleAssembly>();
+        AllowOneFrameForConventionalCollisionFixture(assembly);
         var guns=assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Automatic).ToArray();Assert.That(guns.Length,Is.EqualTo(2));
         for(int i=0;i<guns.Length;i++)
         {var muzzle=new GameObject("Separate grouped muzzle").transform;muzzle.SetParent(guns[i].transform,false);muzzle.position=new Vector3(1000+i*8,1000,1000);muzzle.rotation=Quaternion.identity;guns[i].GunPivot=muzzle;guns[i].Muzzle=muzzle;}
@@ -955,6 +1087,7 @@ public sealed class BacklogProjectileTierPhysicsTests
     [UnityTest] public IEnumerator LargeAutomaticSalvoKeepsIndependentHitsWithGroupedCollisionFiltering()
     {
         var gun=Build(R4WeaponKind.Automatic,out _,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        AllowOneFrameForConventionalCollisionFixture(assembly);
         assembly.Model.Economy.DoubleShotChancePerUnit=50;var core=assembly.GetComponent<R1VehicleState>().Core;float coreHp=core.CurrentHp;
         var hp=Target(gun,6);hp.Configure(2000,false);int slot=System.Array.FindIndex(assembly.Model.GetWeaponSlots(),weapon=>weapon==R4WeaponKind.Automatic);
         Assert.That(slot,Is.GreaterThanOrEqualTo(0));assembly.FireSlot(slot);
@@ -977,6 +1110,7 @@ public sealed class BacklogProjectileTierPhysicsTests
         var blocker=new GameObject("Automatic layer compatibility fixture");blocker.transform.position=new Vector3(3000,3000,3000);
         blocker.AddComponent<BoxCollider>().excludeLayers=1;blocker.SetActive(false);
         var gun=Build(R4WeaponKind.Automatic,out _,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        AllowOneFrameForConventionalCollisionFixture(assembly);
         assembly.Model.Economy.DoubleShotChancePerUnit=50;var hp=Target(gun,6);hp.Configure(2000,false);
         try
         {
@@ -993,6 +1127,7 @@ public sealed class BacklogProjectileTierPhysicsTests
     [UnityTest] public IEnumerator GroupedAutomaticShotsDamageHostileDomeIndividually()
     {
         var gun=Build(R4WeaponKind.Automatic,out _,true);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        AllowOneFrameForConventionalCollisionFixture(assembly);
         assembly.Model.Economy.DoubleShotChancePerUnit=50;var target=Target(gun,6);
         var dome=new GameObject("Grouped automatic shield");dome.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6;
         dome.AddComponent<SphereCollider>().isTrigger=true;var shield=dome.AddComponent<P12PipelineSafeDamageable>();shield.Configure(2000,false);

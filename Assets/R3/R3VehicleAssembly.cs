@@ -365,7 +365,7 @@ namespace RoboRougelike.R3
                     part.NextFireTime=Time.time+interval;part.LastConventionalShotTime=Time.time;
                     var firedMuzzle=part.Muzzle;
                     var primary=controller.FirePrimaryFrom(firedMuzzle,part.Weapon,part.Id);
-                    if(primary!=null&&P17PhysicalShell.AvailableSlots>0)
+                    if(primary!=null)
                     {
                         int requested=RollDoubleShotExtras(int.MaxValue);
                         if(requested>0)
@@ -380,10 +380,13 @@ namespace RoboRougelike.R3
             if(pendingRockets!=null)
                 foreach(var shot in pendingRockets)shot.Binding.FireAdditional(shot.Requested);
             if(pending==null)return;
+            foreach(var shot in pending)
+                if(shot.Shotgun==null&&shot.Rail==null)
+                    controller.FireAdditionalFrom(shot.Muzzle,shot.Kind,shot.PartId,shot.Primary,shot.Requested);
             if(P17PhysicalShell.AvailableSlots<=0)
             {foreach(var shot in pending)if(shot.Shotgun!=null)shot.Shotgun.ClearDeferred();return;}
             var requests=new int[pending.Count];
-            for(int i=0;i<pending.Count;i++)requests[i]=pending[i].Requested;
+            for(int i=0;i<pending.Count;i++)requests[i]=pending[i].Shotgun!=null||pending[i].Rail!=null?pending[i].Requested:0;
             var allocated=AllocateBonusShots(requests,P17PhysicalShell.AvailableSlots);
             for(int i=0;i<pending.Count;i++)
                 if(allocated[i]>0)
@@ -391,7 +394,6 @@ namespace RoboRougelike.R3
                     var shot=pending[i];
                     if(shot.Shotgun!=null)shot.Shotgun.FireAdditional(allocated[i]);
                     else if(shot.Rail!=null)shot.Rail.FireAdditional(allocated[i]);
-                    else controller.FireAdditionalFrom(shot.Muzzle,shot.Kind,shot.PartId,shot.Primary,allocated[i]);
                 }
                 else if(pending[i].Shotgun!=null)pending[i].Shotgun.ClearDeferred();
         }

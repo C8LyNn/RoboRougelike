@@ -193,6 +193,7 @@ namespace RoboRougelike.R1
         {
             return bonusActive&&shellBudgetFull&&hasShellGun?"Dużo strzałów — bonusowe pociski mogą nie powstać.":null;
         }
+        private static bool ProjectileBonusStillLimited(R4WeaponKind kind)=>kind==R4WeaponKind.Shotgun||kind==R4WeaponKind.Railgun;
         private static Rect EnemyStatusLabelRect(int row)=>new Rect(940,80+row*24,305,18);
         private static Rect EnemyStatusBarRect(int row)=>new Rect(940,99+row*24,305,4);
         private static Rect CombatEnemyPanelRect(int visibleRows,bool special,bool defeated)
@@ -404,7 +405,7 @@ namespace RoboRougelike.R1
                         {
                             if(part==null||part.Kind!=R3PartKind.Gun||!part.Operational||!part.gameObject.activeInHierarchy||
                                 !part.transform.IsChildOf(mounted.transform)||RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))continue;
-                            if(part.Weapon<=R4WeaponKind.Railgun)shellGun=true;
+                            if(ProjectileBonusStillLimited(part.Weapon))shellGun=true;
                         }
                     resourceWarning=ProjectileBudgetWarning(shellBudgetFull,bonusActive,shellGun);
                 }
