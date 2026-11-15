@@ -38,6 +38,48 @@ public sealed class BacklogEmpTierPhysicsTests
         yield return new EnterPlayMode();
     }
 
+    [UnityTest] public IEnumerator EnergyScopedBonusAffectsAuraAndBeamButNotKineticShots()
+    {
+        Assert.That(System.Enum.TryParse("EnergyDamage",out R1BonusScope scope),Is.True);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var gunState=model.Parts.First(p=>p.Kind==R3PartKind.Gun);gunState.Weapon=R4WeaponKind.EmpEmitter;
+        var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="energy-typed";bonus.Effect=R1UpgradeEffect.Damage;bonus.Scope=scope;bonus.Amount=.5f;
+        var reward=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.Single(p=>p!=null&&p.Id=="damage_energy");
+        Assert.That(reward.Scope,Is.EqualTo(scope));Assert.That(reward.Amount,Is.EqualTo(.4f));
+        Assert.That(model.ReceiveBonuses(new[]{bonus}),Is.True);var id=model.Inventory.Single(p=>p.UpgradeId==bonus.Id).Id;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct().First(c=>model.OwnedPlacementError(id,c,default)==null);
+        Assert.That(model.Mount(id,cell),Is.True);
+        var saved=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==id).UpgradeScope,Is.EqualTo(scope));
+        Assert.That(R3DamagePropagation.TransferFraction(R3DamagePropagation.DamageKind.Energy),Is.EqualTo(.25f));
+        var paletteObject=new GameObject("Energy scope palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
+        for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==gunState.Id);
+        var enemy=new GameObject("enemy fixture");enemy.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret>().enabled=false;
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.SetParent(enemy.transform);
+        target.transform.position=vehicle.transform.position+Vector3.forward*2;
+        var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(500,false);
+        Physics.SyncTransforms();var aura=gun.GetComponent<RRLDamageAuraBinding>();Assert.That(aura.Fire(),Is.True);
+        typeof(RRLDamageAuraBinding).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(aura,null);
+        Assert.That(hp.CurrentHp,Is.EqualTo(500-RRLDamageAuraBinding.DamagePerSecond*1.5f*Time.fixedDeltaTime).Within(.001f));
+        var effects=vehicle.GetComponent<R3MountedBonusEffects>();Assert.That(effects.KineticDamageMultiplier,Is.EqualTo(1));
+        var beamPart=GameObject.CreatePrimitive(PrimitiveType.Cube);beamPart.transform.SetParent(vehicle.transform,false);
+        beamPart.GetComponent<Collider>().enabled=false;beamPart.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Configure(100,false);
+        var muzzle=new GameObject("Beam muzzle").transform;muzzle.SetParent(beamPart.transform,false);
+        var beam=beamPart.AddComponent<RRLBeamBinding>();beam.Bind(new R3PartState(default,R3PartKind.Gun){Weapon=R4WeaponKind.BeamCutter},vehicle.transform,muzzle);
+        hp.RestoreHealthRatio(1);
+        var hit=new RoboRougelike.Mechanics.BeamCutter.BeamHitRequest(target.GetComponent<Collider>(),target.transform.position,Vector3.back,Vector3.forward,100,1,vehicle.GetComponent<Rigidbody>(),beam.gameObject);
+        beam.ApplyBeamHit(hit);Assert.That(hp.CurrentHp,Is.EqualTo(350).Within(.01));
+        vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id).gameObject.SetActive(false);yield return null;
+        hp.RestoreHealthRatio(1);beam.ApplyBeamHit(hit);Assert.That(hp.CurrentHp,Is.EqualTo(400).Within(.01));
+        Object.Destroy(vehicle.gameObject);Object.Destroy(enemy);Object.Destroy(paletteObject);Object.Destroy(material);Object.Destroy(bonus);yield return null;
+    }
+
     [UnityTest] public IEnumerator ExtremeFiniteBeamAndSawDamageStillReachesTargets()
     {
         var owner=new GameObject("Continuous weapon owner");owner.transform.position=new Vector3(1000,1000,1000);

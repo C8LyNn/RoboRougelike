@@ -80,7 +80,7 @@ namespace RoboRougelike.WeaponIntegration
                    (collider.ClosestPoint(origin)-origin).sqrMagnitude<(current.ClosestPoint(origin)-origin).sqrMagnitude)
                     targets[root]=collider;
             }
-            float scale=tank!=null?tank.PackageDamageScale:enemyDamageScale;
+            float scale=tank!=null?tank.PackageEnergyDamageScale:enemyDamageScale;
             float damage=R3MountedBonusEffects.SafeDamageProduct(DamagePerSecond,scale,R3VehicleModel.TierEffectUnits(State.Tier),step);
             R3ShieldDome.CollectExposedBlastBoundaries(origin,Radius,Device.Owner,shieldBoundaries,exposedShields);unblockedTargets.Clear();
             foreach(var collider in targets.Values)
@@ -89,7 +89,7 @@ namespace RoboRougelike.WeaponIntegration
                 if(!R3ShieldDome.TryFirstHit(origin,point,Device.Owner,out _,out _))unblockedTargets.Add(collider);
             }
             foreach(var collider in unblockedTargets)
-                if(collider!=null)RRLHitRouter.Apply(collider,damage,collider.ClosestPoint(origin),collider.transform.position-origin,Device.Owner);
+                if(collider!=null)RRLHitRouter.ApplyTyped(collider,damage,collider.ClosestPoint(origin),collider.transform.position-origin,Device.Owner,R3DamagePropagation.DamageKind.Energy);
             foreach(var boundary in exposedShields)
                 if(boundary.Dome!=null)boundary.Dome.Absorb(damage,boundary.Point,(boundary.Point-origin).normalized);
         }

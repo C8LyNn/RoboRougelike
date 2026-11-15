@@ -632,6 +632,7 @@ public float CurrentForwardSpeed =>
         public float PackageBlastDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.BlastDamageMultiplier??damageModifier;
         public float PackagePiercingDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.PiercingDamageMultiplier??damageModifier;
         public float PackageKineticDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.KineticDamageMultiplier??damageModifier;
+        public float PackageEnergyDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.EnergyDamageMultiplier??damageModifier;
         public float PackageIntervalScale => intervalModifier;
         private Collider SpawnPhysicalShell(Transform barrel,float hitDamage,float projectileSpeed,float projectileDiameter,
             float projectileMass,RoboRougelike.R4.R4WeaponKind kind,string partId,float blastDamage=0)

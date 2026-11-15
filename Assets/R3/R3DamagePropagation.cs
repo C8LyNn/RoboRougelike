@@ -10,7 +10,7 @@ namespace RoboRougelike.R3
     /// </summary>
     public static class R3DamagePropagation
     {
-        public enum DamageKind { Kinetic, Piercing, Blast }
+        public enum DamageKind { Kinetic, Piercing, Blast, Energy }
         // Initial playtest values, not final weapon balance.
         public static float TransferFraction(DamageKind kind) =>
             kind==DamageKind.Piercing ? .10f : kind==DamageKind.Blast ? .40f : .25f;
