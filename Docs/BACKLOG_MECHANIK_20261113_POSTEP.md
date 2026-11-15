@@ -935,3 +935,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Ulepszone pułapki wybuchowe i zadające obrażenia w czasie nie odmawiają już rozstawienia, gdy poprawna skończona wartość po pomnożeniu przez tier przekracza zakres `float`. Obrażenia są przechowywane i mnożone w szerszym zakresie, a do pojedynczego trafienia przekazywana jest największa możliwa skończona wartość. Normalne wartości, koszty, czas trwania, premie i ochrona tarcz pozostają bez zmian.
 - Unity 6000.3.14f1: **21 PASS, 0 FAIL** (`trap_extreme_release.xml`, `.log`) obejmuje obie faktycznie rozstawione pułapki T2 i trafienia przeciwnika, normalne pole obrażeń, premie, tarcze oraz zasady ratunku. Przed zmianą `trap_extreme_red.xml`: **2 FAIL**, obie pułapki nie dawały się rozstawić. Ręczna gra i balans skrajnych wartości: **NOT RUN**.
+
+#### 30–31, 44. Pauza podczas odbierania nagród
+
+- Podczas pauzy klawisze nie zatwierdzają już nagród pod otwartym menu ani nie przerywają czasu na zebranie fizycznych łupów po walce. Po wznowieniu można normalnie potwierdzić wybór. Osobny punkt wejścia obsługi klawiszy nagród także respektuje pauzę.
+- Unity 6000.3.14f1: **10 PASS, 0 FAIL** (`pause_rewards_release.xml`, `.log`) dla faktycznego ekranu nagród, przerwy na łupy i istniejących testów strefy. Przed zmianą `pause_rewards_red.xml`: **1 FAIL**, Enter zatwierdzał wybór mimo otwartej pauzy. Testy używają wirtualnej klawiatury; fizyczna klawiatura i ręczna gra: **NOT RUN**.

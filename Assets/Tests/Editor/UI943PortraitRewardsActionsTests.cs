@@ -160,6 +160,49 @@ public sealed class UI943PortraitRewardsActionsTests
         yield return null;
     }
 #if ENABLE_INPUT_SYSTEM
+    [UnityTest] public IEnumerator PauseDoesNotSkipThePostBattlePickupWindow()
+    {
+        run.Encounter.SetCombatActive(true);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        run.Encounter.SetCombatActive(false);
+        for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
+        Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0));run.TogglePause();Assert.That(run.Paused,Is.True);
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        InputSystem.settings=settings;settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));InputSystem.Update();
+            typeof(R1RunController).GetMethod("ReadMenuInput",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(run,null);
+            Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0),"Pausing must preserve time to collect physical drops.");
+        }
+        finally {if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
+    }
+    [UnityTest] public IEnumerator PausedRewardScreenDoesNotConfirmBehindPauseMenu()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        Call("TrackRewardLedger",run.Salvage);Call("PortraitRewardSelectBonus",0);Call("ChooseRewardBasket",0);
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        InputSystem.settings=settings;settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            run.TogglePause();Assert.That(run.Paused,Is.True);
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));InputSystem.Update();
+            typeof(R1RunController).GetMethod("ReadMenuInput",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(run,null);
+            Assert.That(run.Salvage.Closed,Is.False,"The pause menu must prevent actions on the screen behind it.");
+            hud.ReadRewardInput(keyboard);Assert.That(run.Salvage.Closed,Is.False,"The reward input entry point must also respect pause.");
+            run.TogglePause();InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));InputSystem.Update();
+            typeof(R1RunController).GetMethod("ReadMenuInput",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(run,null);
+            Assert.That(run.Salvage.Closed,Is.True,"The reward can still be confirmed after resuming.");
+        }
+        finally {if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
+    }
     [UnityTest] public IEnumerator ExtraBasketPageKeysSelectThatPageAndOnlyOneBasket()
     {
         foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);

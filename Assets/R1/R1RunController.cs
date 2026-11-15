@@ -411,6 +411,7 @@ namespace RoboRougelike.R1
         private void ReadMenuInput()
         {
 #if ENABLE_INPUT_SYSTEM
+            if(Paused||QuitRequested)return;
             var keyboard = Keyboard.current;
             if(Progress.State==R1RunState.SafeZone&&
                 !R1ControlProfile.Current.Binding("Interact").StartsWith("Mouse",System.StringComparison.Ordinal)&&

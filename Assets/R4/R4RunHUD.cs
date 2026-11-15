@@ -198,7 +198,7 @@ namespace RoboRougelike.R1
         public void ReadRewardInput(Keyboard keyboard)
         {
             var run=R1RunController.Instance;
-            if(run?.Progress?.State!=R1RunState.Salvage||run.Transitioning||run.Salvage==null)return;
+            if(run?.Progress?.State!=R1RunState.Salvage||run.Transitioning||run.Paused||run.QuitRequested||run.Salvage==null)return;
             TrackRewardLedger(run.Salvage);
             if(rewardInventoryOpen||rewardMissedOpen)return;
             int index=keyboard.digit1Key.wasPressedThisFrame?0:keyboard.digit2Key.wasPressedThisFrame?1:keyboard.digit3Key.wasPressedThisFrame?2:-1;
