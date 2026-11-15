@@ -1388,6 +1388,18 @@ public float CurrentForwardSpeed =>
             if(a!=null&&a.cacheableConventional)a.ignoredForFlight.Add(second);
             if(b!=null&&b.cacheableConventional)b.ignoredForFlight.Add(first);
         }
+        // A pair may be excluded by collider/body layer overrides without an
+        // explicit IgnoreCollision pair. Mutual exclusion is unambiguous even
+        // when either collider uses a different override priority.
+        private static bool MutuallyExcludedLayers(Collider first,Collider second)
+        {
+            if(first==null||second==null)return false;
+            int firstMask=first.excludeLayers.value,secondMask=second.excludeLayers.value;
+            var firstBody=first.attachedRigidbody;var secondBody=second.attachedRigidbody;
+            if(firstBody!=null)firstMask|=firstBody.excludeLayers.value;
+            if(secondBody!=null)secondMask|=secondBody.excludeLayers.value;
+            return (firstMask&(1<<second.gameObject.layer))!=0&&(secondMask&(1<<first.gameObject.layer))!=0;
+        }
         internal static P17PhysicalShell RentConventional()
         {
             while(conventionalCache.Count>0)
@@ -1537,7 +1549,8 @@ public float CurrentForwardSpeed =>
             bool Blocks(Collider collider)
             {
                 if(collider==null||collider==own||collider.isTrigger||collider.transform.IsChildOf(transform)||
-                   collider.transform==ownerRoot||collider.transform.IsChildOf(ownerRoot)||Physics.GetIgnoreCollision(own,collider))return false;
+                   collider.transform==ownerRoot||collider.transform.IsChildOf(ownerRoot)||Physics.GetIgnoreCollision(own,collider)||
+                   MutuallyExcludedLayers(own,collider))return false;
                 var hp=collider.GetComponentInParent<P12PipelineSafeDamageable>();
                 return collider.GetComponentInParent<RoboRougelike.R3.R3Debris>()==null&&(hp==null||!hp.IsDead)&&
                     RoboRougelike.WeaponIntegration.RRLHitRouter.CanHit(collider,ownerRoot);

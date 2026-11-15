@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 24. Kopuła a wzajemnie wykluczone kolizje
+
+- Podczas eksperymentu z filtrowaniem salw wykryto, że zapytanie pocisku o przeszkody przed kopułą traktowało drugi, wzajemnie wykluczony collider jako przeszkodę, mimo że obiekty nie mogły się zderzyć. Zapytanie pomija teraz takie pary również wtedy, gdy wykluczenie ustawiono na colliderze lub Rigidbody. Zwykłe kolizje, fizyczne strzały i istniejące ustawienia warstw pozostają zachowane.
+- Izolowany test użył tymczasowych warstw: dwa pociski tej samej grupy osobno trafiły i uszkodziły cel, były widoczne dla zapytań fizyki oraz posiadały komponent zagrożenia; pociski z różnych grup nadal się zderzały. Przed poprawką `volley_layer_invariants.xml`: **2 PASS, 1 FAIL**, ponieważ wykluczony sąsiedni pocisk zasłaniał kopułę. Po poprawce `volley_layer_shield_final.xml`: **10 PASS, 0 FAIL** dla tego przypadku, zwykłej ściany, szybkich strzałów, hybrydowego trafienia oraz istniejącego przechwycenia. `volley_layer_shield_mixed.xml`: **3 PASS** dla wykluczenia na colliderze, Rigidbody i mieszanego.
+- Eksperyment nie włącza grup warstw dla prawdziwych salw, nie mierzy FPS i nie usuwa progu dodatkowych pocisków. Pełna zgodność z innymi filtrami i rzeczywiste przechwycenie eksperymentalnej salwy przez urządzenie wymagają dalszego sprawdzenia; punkt #02/#14 pozostaje otwarty. Zasady warstw: [dokumentacja Unity Collider](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Collider-layerOverridePriority.html).
+
 ### 31 i 44. Alternatywa przy identycznym losowaniu nagród
 
 - Jeśli pierwsze wylosowane oferty odpowiadają obecnie widocznym, gra wyszukuje inną poprawną kombinację rzeczywistych części z dopuszczonych wraków i umieszcza ją na początku strony. Liczba ofert nie przekracza wartości wynikającej z modułów. Wyszukiwanie ogląda do siedmiu kandydatów: po trzech podstawowych dalsze zestawy są unikalne. Brak alternatywy pozostawia walutę i poprzedni wybór bez zmian. Zmiana dostępności części odświeża listę bez ponownej opłaty; wybrany bonus pozostaje.

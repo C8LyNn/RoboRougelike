@@ -46,6 +46,93 @@ public sealed class BacklogProjectileTierPhysicsTests
         run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
         while(run.Transitioning)yield return null;run.Encounter.SetCombatActive(false);
     }
+    [UnityTest] public IEnumerator ExperimentalSharedLayerKeepsIndependentPhysicalHits()
+    {
+        // Isolated experiment: this does not reserve or change any production layer.
+        const int layer=29;Vector3 start=new Vector3(1600,1600,1600);
+        var owner=new GameObject("Experimental salvo owner");
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=start+Vector3.forward*5;
+        target.transform.localScale=new Vector3(4,4,.5f);
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);
+        var shells=new System.Collections.Generic.List<GameObject>();
+        try
+        {
+            for(int i=0;i<2;i++)
+            {
+                var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);shells.Add(shell);shell.layer=layer;
+                shell.transform.position=start;shell.transform.localScale=Vector3.one*.16f;
+                var collider=shell.GetComponent<Collider>();collider.excludeLayers=1<<layer;
+                var body=shell.AddComponent<Rigidbody>();body.useGravity=false;body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;
+                body.linearVelocity=Vector3.forward*40;
+                shell.AddComponent<P17PhysicalShell>().Configure(owner.transform,20,3,Vector3.forward,null);
+            }
+            Physics.SyncTransforms();
+            Assert.That(Physics.GetIgnoreCollision(shells[0].GetComponent<Collider>(),shells[1].GetComponent<Collider>()),Is.False,
+                "Layer filtering must be verified by actual movement and hits, not the pair-ignore API.");
+            var seen=Physics.OverlapSphere(start,1,~0,QueryTriggerInteraction.Ignore);
+            Assert.That(shells.All(shell=>seen.Contains(shell.GetComponent<Collider>())),Is.True,"Both projectiles must remain visible to physics queries.");
+            Assert.That(shells.All(shell=>shell.GetComponent<RRLPointDefenseThreat>()!=null),Is.True);
+            float deadline=Time.realtimeSinceStartup+5;
+            while(hp.CurrentHp>460.01f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+            Assert.That(hp.CurrentHp,Is.EqualTo(460).Within(.02),"Two independent physical projectiles must both reach and damage the target.");
+        }
+        finally{foreach(var shell in shells)if(shell!=null)Object.Destroy(shell);Object.Destroy(target);Object.Destroy(owner);}
+    }
+    [UnityTest] public IEnumerator ExperimentalSeparateVolleyLayersStillCollide()
+    {
+        Vector3 center=new Vector3(1700,1700,1700);
+        var owners=new[]{new GameObject("Experimental owner A"),new GameObject("Experimental owner B")};
+        var shells=new System.Collections.Generic.List<GameObject>();
+        try
+        {
+            for(int i=0;i<2;i++)
+            {
+                int layer=28+i;float direction=i==0?1:-1;
+                var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);shells.Add(shell);shell.layer=layer;
+                shell.transform.position=center+Vector3.right*(-2*direction);shell.transform.localScale=Vector3.one*.2f;
+                shell.GetComponent<Collider>().excludeLayers=1<<layer;
+                var body=shell.AddComponent<Rigidbody>();body.useGravity=false;body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;
+                body.linearVelocity=Vector3.right*(direction*20);
+                shell.AddComponent<P17PhysicalShell>().Configure(owners[i].transform,20,3,Vector3.right*direction,null);
+            }
+            Physics.SyncTransforms();float deadline=Time.realtimeSinceStartup+5;
+            while(shells.All(shell=>shell!=null&&shell.GetComponent<P17PhysicalShell>().IsActiveProjectile)&&Time.realtimeSinceStartup<deadline)
+                yield return new WaitForFixedUpdate();
+            Assert.That(shells.Any(shell=>shell==null||!shell.GetComponent<P17PhysicalShell>().IsActiveProjectile),Is.True,
+                "Shots from distinct volleys must retain their existing collisions.");
+        }
+        finally{foreach(var shell in shells)if(shell!=null)Object.Destroy(shell);foreach(var owner in owners)Object.Destroy(owner);}
+    }
+    [UnityTest] public IEnumerator ExperimentalColliderLayerMustNotHideHostileShield()=>ExperimentalLayerShield(0);
+    [UnityTest] public IEnumerator ExperimentalBodyLayerMustNotHideHostileShield()=>ExperimentalLayerShield(1);
+    [UnityTest] public IEnumerator ExperimentalMixedLayersMustNotHideHostileShield()=>ExperimentalLayerShield(2);
+    IEnumerator ExperimentalLayerShield(int mode)
+    {
+        const int layer=29;Vector3 start=new Vector3(1800,1800,1800);
+        var owner=new GameObject("Experimental hostile owner");owner.AddComponent<P12PipelineSafeEnemyTurret>().enabled=false;
+        var dome=new GameObject("Experimental hostile shield");dome.transform.position=start+Vector3.forward*6;
+        dome.AddComponent<SphereCollider>().isTrigger=true;
+        var hp=dome.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);dome.AddComponent<R3ShieldDome>().Configure(1,1);
+        var shells=new System.Collections.Generic.List<GameObject>();
+        try
+        {
+            for(int i=0;i<2;i++)
+            {
+                var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);shells.Add(shell);shell.layer=layer;
+                shell.transform.position=start;shell.transform.localScale=Vector3.one*.16f;
+                var body=shell.AddComponent<Rigidbody>();body.useGravity=false;body.linearVelocity=Vector3.forward*1000;
+                if(mode==1||(mode==2&&i==1))body.excludeLayers=1<<layer;else shell.GetComponent<Collider>().excludeLayers=1<<layer;
+                shell.AddComponent<P17PhysicalShell>().Configure(owner.transform,20,3,Vector3.forward,null);
+            }
+            Physics.SyncTransforms();
+            Assert.That(R3ShieldDome.TryFirstHit(start,start+Vector3.forward*20,owner.transform,out _,out _),Is.True);
+            typeof(P17PhysicalShell).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic)
+                .Invoke(shells[0].GetComponent<P17PhysicalShell>(),null);
+            Assert.That(hp.CurrentHp,Is.EqualTo(480).Within(.02),"An excluded sibling must not hide a real hostile shield.");
+            yield return null;
+        }
+        finally{foreach(var shell in shells)if(shell!=null)Object.Destroy(shell);Object.Destroy(dome);Object.Destroy(owner);}
+    }
     [UnityTest] public IEnumerator RocketLauncherCopiesFireBeforeBonusRocketsConsumeRemainingSlots()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(2000);
