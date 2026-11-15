@@ -871,3 +871,7 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Zwykły pocisk ustawiał ignorowanie kolizji z własnym pojazdem dwa razy, osobno przez ten sam pocisk oraz ponownie przez sterownik. Usunięto drugie przejście i jego alokację tablicy; pierwsze pozostaje. To drobne przygotowanie do zwiększania skali ostrzału, a nie usunięcie limitów 96 pocisków i 32 rakiet ani obietnica konkretnego wzrostu FPS.
 - Unity 6000.3.14f1: **7 PASS, 0 FAIL** (`projectile_owner_optimization_first.xml`, `.log`), w tym rzeczywisty strzał spod powierzchni własnego pojazdu do celu bez uszkodzenia rdzenia, poprzednie premie, pocisk i rakieta. Profilowanie wydajności oraz ręczna gra: **NOT RUN**.
+
+#### 43. Czytelność prototypu minimapy
+
+- Licznik opisano jako liczbę wrogów, a pod mapą dodano krótką legendę kolorów gracza i przeciwnika. Układ wizualny w Windows Playerze nadal wymaga ręcznego sprawdzenia; zmiana nie modyfikuje wykrywania. Testów automatycznych wyłącznie dla tekstu i znaczników nie uruchamiano.

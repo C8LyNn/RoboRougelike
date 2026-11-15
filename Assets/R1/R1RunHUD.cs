@@ -29,7 +29,7 @@ namespace RoboRougelike.R1
                 passiveRadarPreviousRange=radar;passiveRadarNextScan=Time.unscaledTime+.25f;
             }
             var panel=new Rect(1090,466,165,map>0?166:46);Panel(panel);
-            GUI.Label(new Rect(panel.x+8,panel.y+5,150,22),radar>0?$"Radar: {passiveRadarContacts.Count}":"Minimapa • brak radaru",small);
+            GUI.Label(new Rect(panel.x+8,panel.y+5,150,22),radar>0?$"Wrogowie: {passiveRadarContacts.Count}":"Minimapa • brak radaru",small);
             if(map<=0)return;
             var square=new Rect(panel.x+25,panel.y+31,115,115);var color=GUI.color;
             GUI.color=new Color(.12f,.22f,.28f,.9f);GUI.DrawTexture(square,Texture2D.whiteTexture);
@@ -41,7 +41,10 @@ namespace RoboRougelike.R1
                 if(offset.sqrMagnitude>1)continue;
                 var point=center+offset*(square.width*.5f-5);GUI.DrawTexture(new Rect(point.x-3,point.y-3,6,6),Texture2D.whiteTexture);
             }
-            GUI.color=color;
+            GUI.color=new Color(.2f,.95f,1f);GUI.DrawTexture(new Rect(panel.x+9,panel.y+153,6,6),Texture2D.whiteTexture);
+            GUI.color=new Color(1f,.35f,.3f);GUI.DrawTexture(new Rect(panel.x+65,panel.y+153,6,6),Texture2D.whiteTexture);
+            GUI.color=color;GUI.Label(new Rect(panel.x+19,panel.y+147,40,20),"Ty",small);
+            GUI.Label(new Rect(panel.x+75,panel.y+147,72,20),"Wróg",small);
         }
         static string GameplayControlsHint()
         {
