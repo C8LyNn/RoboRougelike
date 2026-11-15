@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14, 29 i 44. Dokładność przewidywania obrony punktowej
+
+- Usunięto próg odrzucający przechwytywacze o dodatniej prędkości nie większej niż 0,001. Obliczenia zagrożenia i wyprzedzenia wykorzystują dokładniejsze wartości pośrednie i stabilny wzór na czas przechwycenia; niepoprawne, nieskończone lub NaN dane są odrzucane.
+- Unity 6000.3.14f1: **26 PASS, 0 FAIL** EditMode (`pd_numeric_target_edit.xml`, `.log`) i **36 PASS, 0 FAIL** PlayMode (`pd_numeric_target_play.xml`, `.log`). Test fizycznego kontrolera sprawdza, że bardzo powolny przechwytywacz zostaje wystrzelony; nie czeka na jego wielotysięcznosekundowy lot. Skrajnie wysokie prędkości sprawdzono tylko matematycznie, nie jako fizyczny lot Unity. Przed poprawką `pd_numeric_before.xml`: **3 FAIL, 1 PASS**. Szerszy przebieg `pd_numeric_after_edit` został świadomie przerwany i nie stanowi wyniku testowego. Ręczna gra i balans: **NOT RUN**.
+- Punktów 02, 14 i 44 nie uznano za ukończone; analizator #45 pozostaje na koniec.
+
 ### 29 i 44. Pocisk wchodzący w obszar obrony punktowej
 
 - Obrona rozpoznaje pocisk, który wejdzie w chroniony promień przed końcem czasu przewidywania, nawet gdy jego najbliższe podejście do środka nastąpi później. Uwzględnia również bardzo małe niezerowe prędkości względne. Pocisk, który pozostaje poza promieniem przez cały przewidywany czas, nadal nie jest wybierany; widoczność, drużyna i fizyczne przechwycenie zachowują swoje kontrole.

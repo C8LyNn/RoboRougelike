@@ -66,6 +66,18 @@ namespace RoboRougelike.Mechanics.PointDefense.Tests
             defense.ScanNow();
             Assert.AreSame(t.GetComponent<PointDefenseThreatProxy>(), defense.CurrentTarget);
         }
+        [Test] public void SlowPositiveInterceptorSpeedStillFires()
+        {
+            options.interceptorSpeed = .0005f; options.interceptorLifetime = 10000f;
+            defense.Configure(options, prototype);
+            defense.Bind(body, root.transform, turret.transform, muzzle.transform, 1);
+            var threat = CreateMissile(3f, 2, Vector3.zero);
+            defense.ScanNow();
+            Assert.AreSame(threat.GetComponent<PointDefenseThreatProxy>(), defense.CurrentTarget);
+            int before = defense.Ammunition;
+            defense.Advance(.02f);
+            Assert.Less(defense.Ammunition, before, "A valid positive speed must not silently block firing.");
+        }
         [Test] public void ScanningAndFiringRecognizeSlowThreatAlreadyInsideRadius()
         {
             var threat=CreateMissile(3f,2,new Vector3(0,0,-.2f));

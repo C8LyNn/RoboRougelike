@@ -7,6 +7,38 @@ namespace RoboRougelike.Mechanics.PointDefense.Tests
     public sealed class PointDefenseMathTests
     {
         [Test]
+        public void VeryFastFiniteIncomingThreatIsRecognized()
+        {
+            Assert.IsTrue(PointDefenseMath.IsThreatApproaching(new Vector3(0, 0, 10),
+                new Vector3(0, 0, -1e20f), Vector3.zero, Vector3.zero, 5, 1, out float time));
+            Assert.Greater(time, 0f);
+            Assert.That(time / 1e-19f, Is.EqualTo(1f).Within(.001f));
+        }
+        [Test]
+        public void SlowPositiveInterceptorSpeedCanLeadStationaryTarget()
+        {
+            Assert.IsTrue(PointDefenseMath.TryLead(Vector3.zero, Vector3.zero, Vector3.forward,
+                Vector3.zero, .0005f, 3000f, out Vector3 point, out float time));
+            Assert.That(time, Is.EqualTo(2000f).Within(.01f));
+            Assert.That(point.z, Is.EqualTo(1f).Within(.001f));
+        }
+        [Test]
+        public void FastFiniteTargetHasStablePositiveLead()
+        {
+            Assert.IsTrue(PointDefenseMath.TryLead(Vector3.zero, Vector3.zero, new Vector3(0, 0, 10),
+                new Vector3(0, 0, -1e20f), 1e20f, 5f, out Vector3 point, out float time));
+            Assert.That(time / 5e-20f, Is.EqualTo(1f).Within(.001f));
+            Assert.That(point.z, Is.EqualTo(5f).Within(.001f));
+        }
+        [Test]
+        public void NonFiniteInputsAreRejected()
+        {
+            Assert.IsFalse(PointDefenseMath.TryLead(Vector3.zero, Vector3.zero, Vector3.forward,
+                Vector3.zero, float.NaN, 3f, out _, out _));
+            Assert.IsFalse(PointDefenseMath.IsThreatApproaching(new Vector3(float.PositiveInfinity, 0, 0),
+                Vector3.zero, Vector3.zero, Vector3.zero, 3f, 1f, out _));
+        }
+        [Test]
         public void IncomingDirectThreat_IsRecognized()
         {
             float time;
