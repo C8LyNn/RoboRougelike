@@ -391,7 +391,7 @@ namespace RoboRougelike.R1
             };
             if(item.UpgradeOperation!=R1ModifierOperation.Increased)return OtherBonusOperationText(item,name,1);
             return name+" "+(item.UpgradeEffect==R1UpgradeEffect.Reload?"−":"+")+
-                (item.UpgradeAmount*100).ToString("0")+"%";
+                ((double)item.UpgradeAmount*100).ToString("0.###")+"%";
         }
         private static string DamageBonusName(R3PartState item)=>item.UpgradeScope switch {
             R1BonusScope.BasicCannon=>"Obrażenia działa podstawowego",R1BonusScope.Drones=>"Obrażenia dronów",
@@ -408,11 +408,11 @@ namespace RoboRougelike.R1
         {
             bool inverse=item.UpgradeEffect==R1UpgradeEffect.Reload;
             if(item.UpgradeOperation==R1ModifierOperation.Reduced)
-                return $"{name} {(inverse?"+":"−")}{(double)item.UpgradeAmount*units*100:0.#}%";
+                return $"{name} {(inverse?"+":"−")}{(double)item.UpgradeAmount*units*100:0.###}%";
             bool more=item.UpgradeOperation==R1ModifierOperation.More;
             double sign=(more?1d:-1d)*(inverse?-1d:1d);
             double factor=System.Math.Pow(System.Math.Max(0d,1d+sign*item.UpgradeAmount),units);
-            return $"{name} ×{factor:0.##} • osobny mnożnik";
+            return $"{name} ×{factor:0.####} • osobny mnożnik";
         }
         private static string BonusInstanceText(R3PartState item)
         {
@@ -436,7 +436,7 @@ namespace RoboRougelike.R1
                 default:return "Nieznany bonus";
             }
             if(item.UpgradeOperation!=R1ModifierOperation.Increased)return OtherBonusOperationText(item,name,units);
-            return $"{name} do {(reduction?"−":"+")}{percent:0.#}%";
+            return $"{name} do {(reduction?"−":"+")}{percent:0.###}%";
         }
         private void DrawInventory(R1RunController run)
         {

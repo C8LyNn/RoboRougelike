@@ -9,6 +9,26 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogBonusTierTests
 {
+    [Test] public void BonusCatalogAndInstanceLabelsShowFractionalAndExtremeFiniteAmounts()
+    {
+        var catalog=typeof(R1RunHUD).GetMethod("BonusText",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        var instance=typeof(R1RunHUD).GetMethod("BonusInstanceText",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        var item=new R3PartState(default,R3PartKind.BonusModule){Tier=1,UpgradeEffect=R1UpgradeEffect.Damage,UpgradeAmount=.0025f};
+        string fraction=.25.ToString("0.###",System.Globalization.CultureInfo.CurrentCulture)+"%";
+        Assert.That((string)catalog.Invoke(null,new object[]{item}),Does.Contain(fraction));
+        Assert.That((string)instance.Invoke(null,new object[]{item}),Does.Contain(fraction));
+        item.UpgradeOperation=R1ModifierOperation.Reduced;
+        Assert.That((string)catalog.Invoke(null,new object[]{item}),Does.Contain(fraction));
+        Assert.That((string)instance.Invoke(null,new object[]{item}),Does.Contain(fraction));
+        item.UpgradeOperation=R1ModifierOperation.More;
+        string multiplier=1.0025.ToString("0.####",System.Globalization.CultureInfo.CurrentCulture);
+        Assert.That((string)catalog.Invoke(null,new object[]{item}),Does.Contain(multiplier));
+        Assert.That((string)instance.Invoke(null,new object[]{item}),Does.Contain(multiplier));
+        item.UpgradeOperation=R1ModifierOperation.Increased;
+        item.UpgradeAmount=float.MaxValue;
+        Assert.That((string)catalog.Invoke(null,new object[]{item}),Does.Not.Contain("Infinity").And.Not.Contain("∞"));
+        Assert.That((string)instance.Invoke(null,new object[]{item}),Does.Not.Contain("Infinity").And.Not.Contain("∞"));
+    }
     [Test] public void NewWeaponBonusesCanAppearInRewardsAndBecomePhysicalInventory()
     {
         var ids=new[]{"damage_heavy_weapon","damage_shotgun_weapon","damage_railgun_weapon","damage_rocket_weapon",

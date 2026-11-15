@@ -31,6 +31,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Katalog garażu i podsumowanie koszyków odzysku rozdzielają teraz moduły o tym samym identyfikatorze i wartości, jeżeli mają inny zakres lub operację premii. Identyczne moduły różnych tierów nadal należą do jednego stosu, a osobne egzemplarze pozostają wybieralne. Klucz dotyczy interfejsu i nie zmienia formatu zapisu ani zasad fuzji.
 - Unity 6000.3.14f1: `bonus_stack_scope_after.xml` i `.log`: **7 PASS, 0 FAIL**, w tym liczba i wybór egzemplarzy w każdym stosie, opis koszyka oraz garaż kreatywny. Przed zmianą `bonus_stack_scope_before.xml`: **2 FAIL** — trzy różne premie były przedstawiane jako jeden stos. Czytelność i obsługa w Windows Player: **NOT RUN**.
 
+### 12–13, 44. Dokładniejsze opisy premii
+
+- Opisy premii w katalogu i egzemplarzu pokazują także ułamkowe wartości procentowe, a opis mnożnika osobnego zachowuje więcej miejsc po przecinku. Przeliczenie wartości katalogowej odbywa się w szerszym typie, aby poprawna bardzo duża wartość nie była przedstawiana jako nieskończoność. Zmieniono wyłącznie tekst; bardzo długie opisy wymagają oceny w Playerze.
+- Unity 6000.3.14f1: `bonus_amount_label_after.xml` i `.log`: **9 PASS, 0 FAIL**, w tym małe premie addytywne i mnożnikowe, bardzo duże wartości oraz wcześniejsze nazwy siedmiu kategorii broni. `bonus_amount_label_before.xml`: **1 FAIL**, opis +0,25% był pokazywany jako +0%.
+
 ### 02, 14 i 44. Wspólny bufor zapytania railguna
 
 - Pociski railguna korzystają ze współdzielonego bufora zapytania fizyki zamiast tworzyć osobną dużą tablicę na każdy pocisk. Zagnieżdżone rozliczenie obrażeń dostaje osobny bufor; przy przepełnieniu nadal następuje pełne zapytanie, bez limitowania wykrywanych przeszkód.
