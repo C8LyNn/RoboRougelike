@@ -47,6 +47,7 @@ namespace RoboRougelike.R3
         public float BlastTrapDamageMultiplier {get;private set;}=1;
         public float PiercingDamageMultiplier {get;private set;}=1;
         public float KineticDamageMultiplier {get;private set;}=1;
+        public float AutomaticDamageMultiplier {get;private set;}=1;
         public float WeaponDamageMultiplier {get;private set;}=1;
         public float ShieldDurabilityMultiplier {get;private set;}=1;
         public float RepairEfficiencyMultiplier {get;private set;}=1;
@@ -133,9 +134,10 @@ namespace RoboRougelike.R3
             var damage=new R1ModifierGroup();var basicDamage=new R1ModifierGroup();var basicBlastDamage=new R1ModifierGroup();var droneDamage=new R1ModifierGroup();
             var turretDamage=new R1ModifierGroup();var trapDamage=new R1ModifierGroup();var blastDamage=new R1ModifierGroup();
             var blastTrapDamage=new R1ModifierGroup();var piercingDamage=new R1ModifierGroup();var kineticDamage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
-            var core=new R1ModifierGroup();var reload=new R1ModifierGroup();var shieldDurability=new R1ModifierGroup();var weaponDamage=new R1ModifierGroup();var repairEfficiency=new R1ModifierGroup();var constructionHull=new R1ModifierGroup();var driveMobility=new R1ModifierGroup();
+            var core=new R1ModifierGroup();var reload=new R1ModifierGroup();var shieldDurability=new R1ModifierGroup();var weaponDamage=new R1ModifierGroup();var automaticDamage=new R1ModifierGroup();var repairEfficiency=new R1ModifierGroup();var constructionHull=new R1ModifierGroup();var driveMobility=new R1ModifierGroup();
             damage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             weaponDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            automaticDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             basicDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             basicBlastDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             droneDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
@@ -172,6 +174,8 @@ namespace RoboRougelike.R3
                         piercingDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                     if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons||module.UpgradeScope==R1BonusScope.KineticDamage)
                         kineticDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons||module.UpgradeScope==R1BonusScope.KineticDamage||module.UpgradeScope==R1BonusScope.AutomaticWeapon)
+                        automaticDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 }
                 else if(module.UpgradeEffect==R1UpgradeEffect.Mobility)
                 {
@@ -204,6 +208,7 @@ namespace RoboRougelike.R3
             BlastTrapDamageMultiplier=blastTrapDamage.Apply(baseStats.Damage);
             PiercingDamageMultiplier=piercingDamage.Apply(baseStats.Damage);
             KineticDamageMultiplier=kineticDamage.Apply(baseStats.Damage);
+            AutomaticDamageMultiplier=automaticDamage.Apply(baseStats.Damage);
             WeaponDamageMultiplier=weaponDamage.Apply(baseStats.Damage);
             ShieldDurabilityMultiplier=shieldDurability.Apply(1);
             RepairEfficiencyMultiplier=repairEfficiency.Apply(1);

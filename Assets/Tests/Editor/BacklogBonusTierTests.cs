@@ -739,6 +739,41 @@ public sealed class BacklogBonusTierGameplayTests
         Assert.That(hp.CurrentHp,Is.EqualTo(1000-40*1.8f).Within(.02),"Disabling the scoped module removes only its contribution.");
         Object.Destroy(muzzle.gameObject);Object.Destroy(target);Object.Destroy(global);Object.Destroy(more);Object.Destroy(basic);
     }
+    [UnityTest] public IEnumerator AutomaticScopedBonusAffectsOnlyAutomaticShotsAndCombinesWithGlobalBonuses()
+    {
+        Assert.That(System.Enum.TryParse("AutomaticWeapon",out R1BonusScope automaticScope),Is.True);
+        var reward=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.Single(p=>p!=null&&p.Id=="damage_automatic_weapon");
+        Assert.That(reward.Scope,Is.EqualTo(automaticScope));Assert.That(reward.Amount,Is.EqualTo(.3f));
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var global=BacklogBonusTierTests.OperationBonus("auto-global",.2f,"Increased");
+        var more=BacklogBonusTierTests.OperationBonus("auto-more",.5f,"More");
+        var automatic=BacklogBonusTierTests.OperationBonus("auto-only",.3f,"Increased");automatic.Scope=automaticScope;
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{global,more,automatic}),Is.True);
+        foreach(var id in model.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            var cell=cells.First(c=>model.OwnedPlacementError(id,c,default)==null);Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Any(p=>p.UpgradeScope==automaticScope),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var muzzle=new GameObject("Automatic scoped muzzle").transform;muzzle.position=new Vector3(1000,1000,1000);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=muzzle.position+Vector3.forward*4;
+        var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(1000,false);Physics.SyncTransforms();
+        run.Player.Controller.FireFrom(muzzle,RoboRougelike.R4.R4WeaponKind.Automatic,"scope-auto");
+        float deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(1000-12*2.25f).Within(.02));
+        hp.RestoreHealthRatio(1);run.Player.Controller.FireFrom(muzzle,RoboRougelike.R4.R4WeaponKind.Basic,"scope-basic");
+        deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(1000-40*1.8f).Within(.02));
+        var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeScope==automaticScope);
+        part.gameObject.SetActive(false);yield return null;hp.RestoreHealthRatio(1);
+        run.Player.Controller.FireFrom(muzzle,RoboRougelike.R4.R4WeaponKind.Automatic,"scope-auto-removed");
+        deadline=Time.time+3;while(Time.time<deadline&&hp.CurrentHp>=1000)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(1000-12*1.8f).Within(.02));
+        Object.Destroy(muzzle.gameObject);Object.Destroy(target);Object.Destroy(global);Object.Destroy(more);Object.Destroy(automatic);
+    }
     [UnityTest] public IEnumerator GlobalDamageBonusReachesDroneAndTurretButBasicCannonBonusDoesNot()
     {
         var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);

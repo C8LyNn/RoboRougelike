@@ -610,7 +610,8 @@ public float CurrentForwardSpeed =>
             var mounted=barrel!=null?barrel.GetComponentInParent<RoboRougelike.R3.R3MountedPart>():null;
             float tier=mounted!=null&&mounted.Kind==RoboRougelike.R3.R3PartKind.Gun&&mounted.Id==partId?
                 RoboRougelike.R3.R3VehicleModel.TierEffectUnits(mounted.Tier):1f;
-            float weaponDamage=kind==RoboRougelike.R4.R4WeaponKind.Basic?basicDamageModifier:PackageKineticDamageScale;
+            float weaponDamage=kind==RoboRougelike.R4.R4WeaponKind.Basic?basicDamageModifier:
+                kind==RoboRougelike.R4.R4WeaponKind.Automatic?(GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.AutomaticDamageMultiplier??damageModifier):PackageKineticDamageScale;
             float fraction=kind==RoboRougelike.R4.R4WeaponKind.Basic?basicBlastFraction:0;
             float kinetic=SafeShellDamage(profile.Damage*tier,1-fraction,weaponDamage);
             float blast=SafeShellDamage(profile.Damage*tier,fraction,basicBlastDamageModifier);
