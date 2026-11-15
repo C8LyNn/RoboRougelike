@@ -15,7 +15,7 @@ namespace RoboRougelike.WeaponIntegration
             var proxy=GetComponent<PointDefenseThreatProxy>();if(proxy==null)proxy=gameObject.AddComponent<PointDefenseThreatProxy>();proxy.Bind(this);
         }
         public int FactionId=>RRLHitRouter.Team(rocket!=null?rocket.OwnerRoot:shell!=null?shell.OwnerRoot:null);
-        public bool IsActiveThreat=>isActiveAndEnabled&&(rocket!=null?(rocket.IsInitialized&&!rocket.IsResolved):shell!=null&&shell.IsActiveProjectile);
+        public bool IsActiveThreat=>isActiveAndEnabled&&(rocket!=null?(rocket.IsInitialized&&!rocket.IsResolved&&rocket.HasActiveOwner):shell!=null&&shell.IsActiveProjectile);
         public Transform AimTransform=>transform;
         public Vector3 Velocity=>rocket!=null?rocket.FlightVelocity:shell!=null?shell.FlightVelocity:Vector3.zero;
         public bool TryIntercept(float damage)

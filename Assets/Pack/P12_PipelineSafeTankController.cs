@@ -1353,7 +1353,7 @@ public float CurrentForwardSpeed =>
         public Transform OwnerRoot=>ownerRoot;
         public float DamageAmount=>damage;
         public Vector3 LaunchPosition=>launchPosition;
-        public bool IsActiveProjectile=>isActiveAndEnabled&&!spent&&ownerRoot!=null;
+        public bool IsActiveProjectile=>isActiveAndEnabled&&!spent&&ownerRoot!=null&&ownerRoot.gameObject.activeInHierarchy;
         public Vector3 FlightVelocity=>railgun!=null?railgun.Velocity:GetComponent<Rigidbody>().linearVelocity;
         public bool Intercept(float amount)
         {if(!IsActiveProjectile||amount<=0||float.IsNaN(amount)||float.IsInfinity(amount))return false;spent=true;gameObject.SetActive(false);Destroy(gameObject);return true;}

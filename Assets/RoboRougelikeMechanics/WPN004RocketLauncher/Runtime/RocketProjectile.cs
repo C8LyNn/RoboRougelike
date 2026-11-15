@@ -32,6 +32,7 @@ namespace RoboRougelike.Mechanics.Rockets
         public static event System.Action<RocketProjectile,Vector3,Vector3> Detonated;
         public bool IsResolved => resolved;
         public bool IsInitialized => initialized;
+        public bool HasActiveOwner => initialized && ownerRoot != null && ownerRoot.gameObject.activeInHierarchy;
         public bool ExplodesWhenIntercepted => initialized&&spec.ExplodeWhenIntercepted;
         public float HitPoints => hitPoints;
         public Transform OwnerRoot => ownerRoot;
@@ -200,7 +201,7 @@ namespace RoboRougelike.Mechanics.Rockets
 
         private bool RetireLostOwner()
         {
-            if (!initialized || (ownerRoot != null && ownerRoot.gameObject.activeInHierarchy)) return false;
+            if (!initialized || HasActiveOwner) return false;
             resolved = true;gameObject.SetActive(false);Destroy(gameObject);return true;
         }
     }

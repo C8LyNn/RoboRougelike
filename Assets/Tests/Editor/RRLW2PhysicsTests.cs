@@ -41,6 +41,34 @@ public class RRLW2PhysicsTests
         Assert.That(g.GetComponent<Collider>().enabled,Is.True);Assert.That(child.GetComponent<Collider>().enabled,Is.False);
         Assert.That(b.useGravity,Is.True);Assert.That(b.linearVelocity.y,Is.LessThan(0));
     }
+    [UnityTest] public IEnumerator DisabledOwnerShellCannotDamageFriendlyShieldInSameFrame() => DisabledOwnerShotCannotDamageFriendlyShield(false);
+    [UnityTest] public IEnumerator DisabledOwnerRocketCannotDamageFriendlyShieldInSameFrame() => DisabledOwnerShotCannotDamageFriendlyShield(true);
+    IEnumerator DisabledOwnerShotCannotDamageFriendlyShield(bool rocketShot)
+    {
+        var owner=new GameObject("Projectile owner");objects.Add(owner);owner.transform.position=Vector3.right*5;owner.AddComponent<RailgunFriendlyFixture>();
+        var firingBody=owner.AddComponent<Rigidbody>();firingBody.isKinematic=true;
+        var dome=new GameObject("Friendly dome");objects.Add(dome);dome.AddComponent<SphereCollider>().isTrigger=true;
+        var hp=dome.AddComponent<P12PipelineSafeDamageable>();hp.Configure(100,false);dome.AddComponent<R3ShieldDome>().Configure(1,2);
+        var shot=new GameObject("Incoming projectile");objects.Add(shot);shot.transform.position=owner.transform.position;
+        var collider=shot.AddComponent<SphereCollider>();var body=shot.AddComponent<Rigidbody>();body.useGravity=false;
+        if(rocketShot)
+        {
+            shot.AddComponent<R3ShieldRocketPayload>();var projectile=shot.AddComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+            var spec=new RoboRougelike.Mechanics.Rockets.RocketConfig{initialSpeed=30,maxSpeed=30,acceleration=0}.Snapshot();
+            Assert.That(projectile.TryInitialize(spec,firingBody,owner.transform,owner,null,Vector3.left),Is.True);
+        }
+        else {body.linearVelocity=Vector3.left*30;shot.AddComponent<P17PhysicalShell>().Configure(owner.transform,25,2,Vector3.left,null);}
+        owner.SetActive(false);Physics.SyncTransforms();
+        var threat=shot.GetComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseThreat>();
+        if(threat==null)threat=shot.AddComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseThreat>();
+        Assert.That(threat.IsActiveThreat,Is.False,"Point defense must not target a projectile whose owner is gone.");
+        if(rocketShot)
+            Assert.That(shot.GetComponent<R3ShieldRocketPayload>().TryIntercept(shot.GetComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>(),shot.transform.position,Vector3.left,6),Is.False);
+        typeof(R3ShieldDome).GetMethod("OnTriggerEnter",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic)
+            .Invoke(dome.GetComponent<R3ShieldDome>(),new object[]{collider});
+        Assert.That(hp.CurrentHp,Is.EqualTo(100),"Owner loss must not turn a friendly shot into a hostile shield hit.");
+        yield return null;
+    }
     [UnityTest] public IEnumerator InterceptingRocketAfterOwnerDisabledDoesNotExplodeOnAlly()
     {
         var owner=new GameObject("Rocket owner");objects.Add(owner);owner.AddComponent<RailgunFriendlyFixture>();

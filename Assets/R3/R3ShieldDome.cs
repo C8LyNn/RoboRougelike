@@ -102,7 +102,7 @@ namespace RoboRougelike.R3
                 return;
             }
             var rocket = other.GetComponentInParent<RocketProjectile>();
-            if(rocket == null || !rocket.IsInitialized || rocket.IsResolved || !Enemy(rocket.OwnerRoot) ||
+            if(rocket == null || !rocket.IsInitialized || rocket.IsResolved || !rocket.HasActiveOwner || !Enemy(rocket.OwnerRoot) ||
                Vector3.Dot(other.transform.position-Center, rocket.FlightVelocity) >= 0) return;
             var payload = rocket.GetComponent<R3ShieldRocketPayload>();
             Vector3 launch=payload!=null?payload.LaunchPosition:rocket.OwnerRoot.position;
@@ -147,7 +147,7 @@ namespace RoboRougelike.R3
         void OnEnable()=>LaunchPosition=transform.position;
         public bool TryIntercept(RocketProjectile projectile,Vector3 origin,Vector3 direction,float distance)
         {
-            if(projectile==null||!projectile.IsInitialized||projectile.IsResolved||projectile.OwnerRoot==null||
+            if(projectile==null||!projectile.IsInitialized||projectile.IsResolved||!projectile.HasActiveOwner||
                !R3ShieldDome.TryFirstHit(origin,origin+direction*distance,projectile.OwnerRoot,out var shield,out float hitDistance))return false;
             Vector3 point=origin+direction*hitDistance,stop=point-direction*.02f;var body=projectile.GetComponent<Rigidbody>();
             if(body!=null)body.position=stop;projectile.transform.position=stop;

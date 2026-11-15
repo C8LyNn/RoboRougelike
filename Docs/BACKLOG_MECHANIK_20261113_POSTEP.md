@@ -988,3 +988,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Rakieta, której właściciel został usunięty lub wyłączony, kończy lot bez wybuchu i obrażeń. Kontrola obejmuje także zderzenie i przechwycenie, żeby nie straciła informacji o drużynie przed rozliczeniem wybuchu. Żywy właściciel zachowuje dotychczasowe zachowanie rakiety i tarcz.
 - Unity 6000.3.14f1: **14 PASS, 0 FAIL** (`rocket_lost_owner_final.xml`, `.log`) dla obu przypadków utraty właściciela, zwykłych pocisków, wybuchów i osłony; dodatkowo **1 PASS** (`rocket_intercept_owner_final.xml`) dla przechwycenia rakiety z wyłączonym właścicielem oraz **18 PASS** PlayMode (`rocket_owner_package_final.xml`, `.log`) dla pakietu rakiet. Przed zmianą `rocket_lost_owner_red.xml`: **2 FAIL**, sojusznik otrzymywał obrażenia od wybuchu. Ręczna walka: **NOT RUN**.
+
+#### 24, 29, 44. Kontakt osieroconego pocisku z kopułą
+
+- Kopuła oraz obrona punktowa sprawdzają, czy właściciel pocisku nadal jest aktywny, również przed kolejnym krokiem jego fizyki. Dzięki temu wyłączenie właściciela i kontakt w tej samej klatce nie uszkadzają przyjaznej kopuły ani nie przedstawiają pocisku jako celu dla obrony punktowej. Dotyczy to zwykłych pocisków i rakiet; ich normalne przechwytywanie jest zachowane.
+- Unity 6000.3.14f1: **7 PASS, 0 FAIL** (`lost_owner_shield_final.xml`, `.log`) dla syntetycznie wywołanego kontaktu w tej samej klatce oraz istniejących scenariuszy tarcz; **2 PASS** (`lost_owner_point_defense_final.xml`) dla faktycznego przechwycenia prawidłowych rakiet przez obronę obu tierów. Przed zmianą `lost_owner_shield_red.xml`: **2 FAIL**, kopuła traciła 25 lub 60 HP. Ręczna walka: **NOT RUN**.
