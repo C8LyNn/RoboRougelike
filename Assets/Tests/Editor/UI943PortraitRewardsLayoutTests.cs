@@ -128,6 +128,15 @@ public sealed class UI943PortraitRewardsLayoutTests
         Assert.That(text,Does.Contain("Obrażenia").And.Contain("Mobilność"));
         Assert.That(text,Does.Not.Contain("×2"));
     }
+    [Test] public void BasketSummaryKeepsDifferentBonusScopesAndOperationsSeparate()
+    {
+        var global=new R3PartState(Vector3Int.zero,R3PartKind.BonusModule,1){UpgradeId="same",UpgradeTitle="Moduł",UpgradeEffect=R1UpgradeEffect.Damage,UpgradeAmount=.2f};
+        var heavy=global.Copy();heavy.UpgradeScope=R1BonusScope.HeavyWeapon;
+        var more=global.Copy();more.UpgradeOperation=R1ModifierOperation.More;
+        var text=(string)Method("RewardBasketContents").Invoke(null,new object[]{new[]{new R4SalvageItem(global,1),new R4SalvageItem(heavy,1),new R4SalvageItem(more,1)}});
+        Assert.That(text,Does.Contain("ciężkiego działa").And.Contain("osobny mnożnik"));
+        Assert.That(text,Does.Not.Contain("×3"));
+    }
     [Test] public void InstanceDescriptionUsesActualTierStrength()
     {
         var item=new R3PartState(Vector3Int.zero,R3PartKind.BonusModule,1){Tier=2,UpgradeEffect=R1UpgradeEffect.Damage,UpgradeAmount=.2f};

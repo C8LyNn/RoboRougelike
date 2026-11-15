@@ -74,7 +74,8 @@ namespace RoboRougelike.R1
         {
             string id=part.UpgradeId??string.Empty;
             float amount=part.UpgradeAmount==0?0:part.UpgradeAmount;
-            return id.Length+":"+id+":"+(int)part.UpgradeEffect+":"+amount.ToString("R",CultureInfo.InvariantCulture);
+            return id.Length+":"+id+":"+(int)part.UpgradeEffect+":"+(int)part.UpgradeOperation+":"+
+                (int)part.UpgradeScope+":"+amount.ToString("R",CultureInfo.InvariantCulture);
         }
         static R1RunDefinition creativeCatalogSource;
         static readonly List<CatalogEntry> creativeBonusCatalog=new List<CatalogEntry>();

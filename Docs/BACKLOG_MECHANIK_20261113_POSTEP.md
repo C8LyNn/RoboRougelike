@@ -23,6 +23,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Unity 6000.3.14f1: `continuous_scopes_first.xml` i `.log`: **11 PASS, 0 FAIL** dla nowych zakresów, fuzji i wcześniejszych premii; `continuous_scopes_combined.xml`: **4 PASS** dla łączenia z premią energetyczną, globalną i `more`; `continuous_scopes_shields.xml`: **6 PASS** dla broni ciągłych i ochrony kopułą. Przed zmianą `continuous_scopes_before.xml`: **1 FAIL** z braku zakresu. Scenariusz nowych premii wywołuje istniejące metody trafienia wiązki i piły oraz krok aury w kontrolowanej scenie; nie jest ręcznym celowaniem ani playtestem.
 - Prototypowe wartości i wpływ trzech nowych nagród na losowanie wymagają oceny w grze. Punkt 13 pozostaje otwarty do pełnej weryfikacji wszystkich wymaganych zakresów.
 
+### 10–13, 30–31 i 44. Rozróżnianie stosów premii
+
+- Katalog garażu i podsumowanie koszyków odzysku rozdzielają teraz moduły o tym samym identyfikatorze i wartości, jeżeli mają inny zakres lub operację premii. Identyczne moduły różnych tierów nadal należą do jednego stosu, a osobne egzemplarze pozostają wybieralne. Klucz dotyczy interfejsu i nie zmienia formatu zapisu ani zasad fuzji.
+- Unity 6000.3.14f1: `bonus_stack_scope_after.xml` i `.log`: **7 PASS, 0 FAIL**, w tym liczba i wybór egzemplarzy w każdym stosie, opis koszyka oraz garaż kreatywny. Przed zmianą `bonus_stack_scope_before.xml`: **2 FAIL** — trzy różne premie były przedstawiane jako jeden stos. Czytelność i obsługa w Windows Player: **NOT RUN**.
+
 ### 02, 14 i 44. Wspólny bufor zapytania railguna
 
 - Pociski railguna korzystają ze współdzielonego bufora zapytania fizyki zamiast tworzyć osobną dużą tablicę na każdy pocisk. Zagnieżdżone rozliczenie obrażeń dostaje osobny bufor; przy przepełnieniu nadal następuje pełne zapytanie, bez limitowania wykrywanych przeszkód.
