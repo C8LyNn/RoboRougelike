@@ -16,8 +16,12 @@ public sealed class BacklogDeviceTierTests
     {
         Assert.That(System.Enum.TryParse(name,out R3PartKind kind),Is.True,"Missing prototype: "+name);
         Assert.That(R3VehicleModel.IsPassiveSlotPart(kind),Is.True);Assert.That(R3VehicleModel.IsPassiveEnergyPart(kind),Is.True);
+        var defaults=Resources.Load<R1RunDefinition>("R1/Run").GaragePrices;
+        Assert.That(defaults.RadarRangePerUnit,Is.EqualTo(50));Assert.That(defaults.MinimapRangePerUnit,Is.EqualTo(50));
         var model=Model();float maximum=model.Energy.Maximum;var part=FuseThree(model,kind);Mount(model,part);
         Assert.That(model.Energy.Maximum,Is.EqualTo(maximum-25));
+        model.Economy.RadarRangePerUnit=70;model.Economy.MinimapRangePerUnit=90;
+        Assert.That(model.DeepCopy().Economy.RadarRangePerUnit,Is.EqualTo(70));Assert.That(model.DeepCopy().Economy.MinimapRangePerUnit,Is.EqualTo(90));
         var json=JsonUtility.ToJson(model.MakeCheckpoint(0));
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(JsonUtility.FromJson<R3ModelCheckpoint>(json),R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
         Assert.That(restored.Parts.Single(p=>p.Id==part.Id).Tier,Is.EqualTo(2));
