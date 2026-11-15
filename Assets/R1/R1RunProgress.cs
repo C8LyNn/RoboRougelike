@@ -14,11 +14,13 @@ namespace RoboRougelike.R1
     public enum R1RunState { Ready, Combat, UpgradeChoice, Won, Lost, Garage, Salvage, Route, TestDrive, SafeZone }
 
     // One additive increased/reduced group followed by independent more/less
-    // factors. Double intermediates and saturation prevent non-finite stats.
+    // factors. Keep products in log space so large opposing factors can cancel
+    // before the final value is rounded to the representable float range.
     internal sealed class R1ModifierGroup
     {
-        double additive,multiplier=1d;
-        public void Reset(){additive=0;multiplier=1d;}
+        double additive,logMultiplier,logCompensation;
+        bool zeroMultiplier;
+        public void Reset(){additive=0;logMultiplier=0;logCompensation=0;zeroMultiplier=false;}
         public void Add(R1ModifierOperation operation,float amount,int copies,bool inverse=false)
         {
             if(float.IsNaN(amount)||float.IsInfinity(amount)||amount<0||copies<=0)return;
@@ -27,17 +29,27 @@ namespace RoboRougelike.R1
             {
                 case R1ModifierOperation.Increased:additive+=sign*amount*copies;break;
                 case R1ModifierOperation.Reduced:additive-=sign*amount*copies;break;
-                case R1ModifierOperation.More:Multiply(Math.Pow(Math.Max(0d,1d+sign*amount),copies));break;
-                case R1ModifierOperation.Less:Multiply(Math.Pow(Math.Max(0d,1d-sign*amount),copies));break;
+                case R1ModifierOperation.More:Multiply(Math.Max(0d,1d+sign*amount),copies);break;
+                case R1ModifierOperation.Less:Multiply(Math.Max(0d,1d-sign*amount),copies);break;
             }
         }
-        void Multiply(double factor)
-        {multiplier=multiplier==0d||factor==0d?0d:Math.Min(double.MaxValue,multiplier*factor);}
+        void Multiply(double factor,int copies)
+        {
+            if(factor==0d){zeroMultiplier=true;return;}
+            // Compensated summation reduces ordering error across many factors.
+            double term=copies*Math.Log(factor)-logCompensation;
+            double next=logMultiplier+term;
+            logCompensation=(next-logMultiplier)-term;
+            logMultiplier=next;
+        }
         public float Apply(float baseline)
         {
             double sum=Math.Max(0d,1d+additive);
-            if(baseline<=0||sum==0d||multiplier==0d)return 0f;
-            return (float)Math.Min(float.MaxValue,(double)baseline*sum*multiplier);
+            if(baseline<=0||float.IsNaN(baseline)||sum==0d||zeroMultiplier)return 0f;
+            if(logMultiplier==0d)return (float)Math.Min(float.MaxValue,(double)baseline*sum);
+            double resultLog=Math.Log(baseline)+Math.Log(sum)+logMultiplier;
+            if(resultLog>=Math.Log(float.MaxValue))return float.MaxValue;
+            return (float)Math.Exp(resultLog);
         }
     }
 

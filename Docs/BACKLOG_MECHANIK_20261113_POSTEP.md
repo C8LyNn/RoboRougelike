@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 12, 14 i 44. Duże przeciwstawne mnożniki premii
+
+- Wspólny mechanizm `more/less` zachowuje teraz iloczyn w postaci sumy logarytmów i ogranicza dopiero wynik końcowy do zakresu liczby `float`. Duże premie i redukcje mogą się wzajemnie zrównoważyć bez wcześniejszego przepełnienia lub wyzerowania pośredniego wyniku; zerowy mnożnik nadal daje zero. `increased/reduced` i zwykłe wartości zachowują dotychczasowe zasady.
+- Unity 6000.3.14f1: **59 PASS, 0 FAIL** (`modifier_balance_first.xml`, `.log` w `Prototypy`) obejmuje istniejące operacje i zakresy premii, stan energii, rzeczywiste zamontowane moduły oraz nowy model z 600 modułami: `2^1200 × 0,5^1200 = 1` w obu kolejnościach. Przed zmianą `modifier_balance_before.xml`: **1 FAIL**, pojemność wyniosła 0 zamiast 1500. Duży model jest syntetyczny; nie jest pomiarem wydajności ani ręczną grą.
+- Pozostałe progi dodatkowych pocisków #02/#14 oraz pełny odbiór #44 pozostają otwarte.
+
 ### 38 i 44. Próba sześciu walk fizycznym pilotem
 
 - Automatyczny pilot między walkami korzysta z rzeczywistych operacji garażu: naprawia, montuje zdobyte moduły oraz kupuje działa tylko za posiadany złom i zgodnie z zasadami montażu. Odkrycia technologii zapisuje w osobnym tymczasowym profilu. Kamera w tym scenariuszu jest sterowana przez test i ustawiona nad pojazdem, żeby sztuczne umieszczenie jej za przeszkodą nie zasłaniało celu; test nie weryfikuje kamery gracza.

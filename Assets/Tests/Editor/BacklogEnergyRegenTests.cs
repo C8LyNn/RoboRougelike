@@ -10,6 +10,21 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogEnergyRegenTests
 {
+    [Test] public void OpposingLargeMultiplierGroupsRemainOrderIndependent()
+    {
+        var design=new R3VehicleDesign();design.Parts.Add(new R3PartState(default,R3PartKind.Core));
+        var model=new R3VehicleModel(design);
+        for(int i=0;i<160;i++)model.Parts.Add(new R3PartState(default,R3PartKind.Battery));
+        for(int i=0;i<300;i++)model.Parts.Add(new R3PartState(default,R3PartKind.BonusModule)
+            {Tier=3,UpgradeEffect=R1UpgradeEffect.EnergyCapacity,UpgradeOperation=R1ModifierOperation.More,UpgradeAmount=1});
+        for(int i=0;i<300;i++)model.Parts.Add(new R3PartState(default,R3PartKind.BonusModule)
+            {Tier=3,UpgradeEffect=R1UpgradeEffect.EnergyCapacity,UpgradeOperation=R1ModifierOperation.Less,UpgradeAmount=.5f});
+        // Each T3 contributes four factors: 2^1200 * 0.5^1200 == 1.
+        const float expected=500+160*100-600*25;
+        model.RefreshEnergyLayout();Assert.That(model.Energy.Maximum,Is.EqualTo(expected).Within(.01),"Increasing factors first");
+        model.Parts.Reverse();model.RefreshEnergyLayout();
+        Assert.That(model.Energy.Maximum,Is.EqualTo(expected).Within(.01),"Decreasing factors first");
+    }
     [Test] public void BatteryCapacityScopeStacksWithGlobalWithoutBuffingCore()
     {
         Assert.That(Enum.TryParse("BatteryCapacity",out R1BonusScope scope),Is.True);
