@@ -14,6 +14,8 @@ namespace RoboRougelike.R6
         public bool TrainingFireRequested {get;private set;}
         readonly List<P12PipelineSafeEnemyTurret> creativeEnemies=new List<P12PipelineSafeEnemyTurret>();
         public int CreativeEnemyCount => creativeEnemies.FindAll(e=>e!=null&&!e.IsDefeated).Count;
+        public IEnumerable<P12PipelineSafeEnemyTurret> ActiveCreativeEnemies
+        {get {foreach(var enemy in creativeEnemies)if(enemy!=null&&!enemy.IsDefeated&&enemy.gameObject.activeInHierarchy)yield return enemy;}}
         public bool SpawnEnemy(P12PipelineSafeEnemyTurret template,Transform player,R3EnemyArchetype archetype,bool active)
         {
             if(Layout==null||template==null||player==null)return false;

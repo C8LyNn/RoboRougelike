@@ -32,6 +32,17 @@ namespace RoboRougelike.Mechanics.MOV003Blink.Tests
             return obstacle;
         }
 
+        private void DenseBoxes(Vector3 center,Vector3 size,int layer=0)
+        {
+            var group=new GameObject("MOV003_DenseBoxes");spawned.Add(group);
+            for(int i=0;i<280;i++)
+            {
+                var item=new GameObject("Box "+i){layer=layer};item.transform.SetParent(group.transform,false);
+                item.transform.position=center;item.AddComponent<BoxCollider>().size=size;
+            }
+            Physics.SyncTransforms();
+        }
+
         private BlinkDrive Vehicle(float x = 0f, float z = 0f, float mass = 100f)
         {
             GameObject root = new GameObject("MOV003_Vehicle");
@@ -112,6 +123,50 @@ namespace RoboRougelike.Mechanics.MOV003Blink.Tests
             BlinkDrive blink = Vehicle();
             Assert.AreEqual(BlinkResult.DestinationBlocked, blink.TryActivate());
             Assert.AreEqual(0f, blink.VehicleBody.position.z, 0.001f);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator DenseDestinationFloorStillAllowsBlinkAndDoesNotHideWall()
+        {
+            BlinkDrive blink=Vehicle();blink.Settings.RequireGroundSupport=false;blink.Settings.RequireClearPath=false;
+            blink.Settings.EnergyCost=10;var pool=new BlinkEnergyPool(50,50);blink.SetEnergySource(pool);
+            DenseBoxes(new Vector3(0,-.03f,8),new Vector3(2,.1f,2));
+            var wall=Obstacle(new Vector3(0,.5f,8),Vector3.one);
+            Assert.AreEqual(BlinkResult.DestinationBlocked,blink.TryActivate());
+            Assert.AreEqual(50,pool.Current);Assert.AreEqual(0,blink.CooldownRemaining);
+            wall.SetActive(false);Physics.SyncTransforms();
+            Assert.AreEqual(BlinkResult.Activated,blink.TryActivate());
+            Assert.AreEqual(40,pool.Current);Assert.AreEqual(8,blink.VehicleBody.position.z,.001f);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator DenseSweptFloorStillAllowsBlinkAndDoesNotHideWall()
+        {
+            BlinkDrive blink=Vehicle();blink.Settings.RequireGroundSupport=false;
+            blink.Settings.EnergyCost=10;var pool=new BlinkEnergyPool(50,50);blink.SetEnergySource(pool);
+            DenseBoxes(new Vector3(0,-.03f,4),new Vector3(2,.1f,.1f));
+            var wall=Obstacle(new Vector3(0,.5f,6),Vector3.one);
+            Assert.AreEqual(BlinkResult.PathBlocked,blink.TryActivate());
+            Assert.AreEqual(50,pool.Current);Assert.AreEqual(0,blink.CooldownRemaining);
+            wall.SetActive(false);Physics.SyncTransforms();
+            Assert.AreEqual(BlinkResult.Activated,blink.TryActivate());
+            Assert.AreEqual(40,pool.Current);Assert.AreEqual(8,blink.VehicleBody.position.z,.001f);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator DenseFilteredSupportHitsDoNotHideActualGround()
+        {
+            var ground=Ground();BlinkDrive blink=Vehicle();
+            blink.Settings.BlockingLayers=~(1<<9);blink.SetGroundFilter(c=>c==ground.GetComponent<Collider>());
+            DenseBoxes(new Vector3(0,.15f,8),new Vector3(2,.05f,2),9);
+            ground.SetActive(false);Physics.SyncTransforms();
+            Assert.AreEqual(BlinkResult.UnsupportedDestination,blink.TryActivate(),"Unaccepted objects must not count as support.");
+            ground.SetActive(true);Physics.SyncTransforms();
+            Assert.AreEqual(BlinkResult.Activated,blink.TryActivate(),"Full support buffers must not hide real ground.");
+            Assert.AreEqual(8,blink.VehicleBody.position.z,.001f);
             yield return null;
         }
 

@@ -13,6 +13,7 @@ namespace RoboRougelike.MOVSeries
         readonly List<BlinkDrive> blinks=new List<BlinkDrive>();
         readonly List<MagneticGrappleEmitter> emitters=new List<MagneticGrappleEmitter>();
         MagneticGrappleController grapple;
+        float grappleSpring,grappleDamping,grappleTension,grappleVehicleAcceleration,grappleTargetAcceleration;
         P12PipelineSafeVehicleStructure grappleTargetGraph;
         P12PipelineSafeDamageable[] grappleTargetParts;
         bool grappleTargetDirty;
@@ -27,6 +28,9 @@ namespace RoboRougelike.MOVSeries
                 grapple.SetEnergyProvider(GetComponent<VehicleEnergyBank>());grapple.Settings.maximumVehicleAcceleration=6;
                 grapple.Settings.maximumTargetAcceleration=4;grapple.Settings.maximumTensionNewtons=8000;
                 grapple.Settings.cooldownSeconds=6;grapple.TargetFilter=CanGrappleTarget;
+                grappleSpring=grapple.Settings.springStiffness;grappleDamping=grapple.Settings.damping;
+                grappleTension=grapple.Settings.maximumTensionNewtons;grappleVehicleAcceleration=grapple.Settings.maximumVehicleAcceleration;
+                grappleTargetAcceleration=grapple.Settings.maximumTargetAcceleration;
                 grapple.Released+=()=>{ClearGrappleTarget();if(assembly!=null)Model.GrappleReadyAt=Time.time+6;};
             }
             foreach(var part in assembly.Parts)
@@ -85,33 +89,49 @@ namespace RoboRougelike.MOVSeries
         }
         internal void InvalidateEmitter(MagneticGrappleEmitter emitter)
         {if(grapple!=null&&grapple.ActiveEmitter==emitter)ReleaseGrapples();}
+        void RefreshGrappleTuning()
+        {
+            if(grapple==null)return;
+            int units=0;float cost=0;
+            foreach(var emitter in emitters)
+            {
+                if(emitter==null||!emitter.IsOperational)continue;
+                var part=emitter.GetComponent<R3MountedPart>();if(part==null)continue;
+                units+=R3VehicleModel.TierEffectUnits(part.Tier);
+                cost+=VehicleEnergyCosts.Grapple*R3VehicleModel.TierActivationCost(part.Tier);
+            }
+            if(units==0)return;
+            var settings=grapple.Settings;settings.activationEnergy=cost;
+            settings.springStiffness=grappleSpring*units;settings.damping=grappleDamping*units;
+            settings.maximumTensionNewtons=grappleTension*units;
+            settings.maximumVehicleAcceleration=grappleVehicleAcceleration*units;
+            settings.maximumTargetAcceleration=grappleTargetAcceleration*units;
+        }
         public bool TryBlink(Vector3 direction)
         {
             if(!PrepareAction())return false;
             if(GrappleAttached||FindObjectsByType<MagneticGrappleController>(FindObjectsSortMode.None).Any(g=>g.IsAttached&&g.AttachedRigidbody==body))
             {Feedback="Blink zablokowany: aktywna lina";return false;}
-            foreach(var blink in blinks)
-            {
-                if(blink==null)continue;var state=State(blink.GetComponent<R3MountedPart>());
-                if(Time.time<state.DeviceReadyAt)continue;
-                var result=blink.TryActivate(direction);Feedback="Blink: "+result;
-                if(result!=BlinkResult.Activated)continue;
-                state.DeviceReadyAt=Time.time+6;
-                var visual=blink.GetComponent<RoboRougelike.R4_1.R4BlinkArt>();
-                if(visual!=null)visual.PlayActivation();
-                return true;
-            }
-            return false;
+            if(Model.BlinkReadyAt>Time.time||Model.Parts.Any(p=>p.Kind==R3PartKind.Blink&&p.DeviceReadyAt>Time.time))return false;
+            var eligible=blinks.Where(b=>b!=null&&b.Operational).ToArray();if(eligible.Length==0)return false;
+            int units=eligible.Sum(b=>R3VehicleModel.TierEffectUnits(b.GetComponent<R3MountedPart>().Tier));
+            float cost=eligible.Sum(b=>VehicleEnergyCosts.Blink*R3VehicleModel.TierActivationCost(b.GetComponent<R3MountedPart>().Tier));
+            var primary=eligible[0];primary.Configure(new BlinkSettings{DistanceMeters=8*units,CooldownSeconds=6,EnergyCost=cost});
+            var result=primary.TryActivate(direction);Feedback="Blink: "+result;if(result!=BlinkResult.Activated)return false;
+            Model.BlinkReadyAt=Time.time+6;foreach(var state in Model.Parts.Where(p=>p.Kind==R3PartKind.Blink))state.DeviceReadyAt=Model.BlinkReadyAt;
+            foreach(var blink in eligible)blink.GetComponent<RoboRougelike.R4_1.R4BlinkArt>()?.PlayActivation();
+            return true;
         }
         public bool TryGrapple(Vector3 direction)
         {
             if(!PrepareAction()||grapple==null)return false;
             if(grapple.IsAttached){ReleaseGrapples();return true;}
             if(Time.time<Model.GrappleReadyAt)return false;
+            RefreshGrappleTuning();
             foreach(var emitter in emitters)
             {
                 if(emitter==null||!grapple.TryFire(emitter,direction))continue;
-                Model.GrappleReadyAt=Time.time+6;Feedback="Zaczep aktywny • E zwalnia linę";return true;
+                Model.GrappleReadyAt=Time.time+6;Feedback="Zaczep aktywny • "+Model.ActiveSlotLabel(R3PartKind.MagneticGrapple)+" zwalnia linę";return true;
             }
             ClearGrappleTarget();
             Feedback="Zaczep: brak celu / niesprawny moduł";return false;

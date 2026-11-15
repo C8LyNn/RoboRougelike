@@ -239,15 +239,20 @@ namespace RoboRougelike.Mechanics.EMP.Tests
         }
 
         [Test]
-        public void Pulse_OverlapBudgetOverflowRefusesBeforeSpending()
+        public void Pulse_DenseOverlapFindsEveryReceiverAndSpendsOnce()
         {
             emitter.ConfigurePhysics(1 << TargetLayer, 1 << ObstacleLayer, 16, 32);
+            var bank=player.AddComponent<EmpEnergyReservoir>();bank.Configure(100f,20f,0f);
+            emitter.Configure(9f,3f,12f,7f);emitter.SetEnergySource(bank);
             for (int i = 0; i < 20; i++) CreateReceiver("crowded-" + i, 4f + i * .04f, id: 300 + i);
+            enemy.gameObject.AddComponent<SphereCollider>();
             Physics.SyncTransforms();
-            Assert.False(emitter.TryPulse(out EmpPulseReport result));
-            Assert.AreEqual(EmpPulseFailure.ColliderQueryOverflow, result.Failure);
-            Assert.That(emitter.CooldownRemaining, Is.Zero);
-            Assert.False(enemy.IsDisrupted);
+            Assert.True(emitter.TryPulse(out EmpPulseReport result));
+            Assert.AreEqual(21,result.ReceiversDetected);
+            Assert.AreEqual(21,result.ReceiversAffected,"Every distinct receiver is disrupted once.");
+            Assert.That(bank.Current,Is.EqualTo(13f));
+            Assert.That(emitter.CooldownRemaining,Is.EqualTo(12f));
+            Assert.True(enemy.IsDisrupted);
         }
 
         [Test]
@@ -270,6 +275,21 @@ namespace RoboRougelike.Mechanics.EMP.Tests
             Assert.True(emitter.TryPulse(out EmpPulseReport result));
             Assert.AreEqual(0, result.ReceiversAffected);
             Assert.False(enemy.IsDisrupted);
+        }
+
+        [Test]
+        public void Pulse_ManyOwnCollidersDoNotHideVisibleTarget()
+        {
+            emitter.ConfigurePhysics(1 << TargetLayer,1 << ObstacleLayer,64,8);
+            for(int i=0;i<12;i++)
+            {
+                var own=Create("own-collider-"+i,new Vector3(.5f+i*.1f,0,0),ObstacleLayer);
+                own.transform.SetParent(player.transform,true);own.AddComponent<BoxCollider>().size=Vector3.one*.05f;
+            }
+            Physics.SyncTransforms();
+            Assert.True(emitter.TryPulse(out var result));
+            Assert.AreEqual(1,result.ReceiversAffected,"Saturation by own parts must not obscure the enemy.");
+            Assert.True(enemy.IsDisrupted);
         }
 
         [Test]

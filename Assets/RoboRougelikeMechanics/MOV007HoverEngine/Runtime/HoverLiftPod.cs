@@ -14,6 +14,7 @@ namespace RoboRougelike.Mechanics.MOV007
         [Range(0f, 3f)] public float dampingRatio = 0.95f;
         [Min(1f)] public float nominalLoadKg = 160f;
         [Min(1f)] public float maximumLiftToNominalWeight = 2.6f;
+        [Min(0f)] public float propulsionMultiplier = 1f;
         [Tooltip("Prefer only level terrain / arena layers; raycast filters own compound colliders.")]
         public LayerMask terrainLayers = ~0;
         [Tooltip("If true, other dynamic vehicles do not count as support surfaces.")]
@@ -111,6 +112,7 @@ namespace RoboRougelike.Mechanics.MOV007
             probeStartAbovePod = Mathf.Max(0f, probeStartAbovePod);
             nominalLoadKg = Mathf.Max(1f, nominalLoadKg);
             maximumLiftToNominalWeight = Mathf.Max(1f, maximumLiftToNominalWeight);
+            propulsionMultiplier=float.IsNaN(propulsionMultiplier)||float.IsInfinity(propulsionMultiplier)?0f:Mathf.Max(0f,propulsionMultiplier);
             energyPerSecond = Mathf.Max(0f, energyPerSecond);
         }
     }

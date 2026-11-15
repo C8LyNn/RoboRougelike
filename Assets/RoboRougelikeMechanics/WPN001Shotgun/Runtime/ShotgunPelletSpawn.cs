@@ -37,8 +37,8 @@ namespace RoboRougelike.WPN001Shotgun
 
     /// <summary>
     /// The game-specific bridge. Must spawn every pellet atomically or clean up all
-    /// already-created objects and return false. Do NOT keep a reference to the list:
-    /// the module reuses its array on later shots.
+    /// already-created objects and return false before returning. The list is an
+    /// immutable snapshot of this shot and may also be retained for inspection.
     /// Reuse the R6 physical projectile / hit / block damage pipeline here.
     /// </summary>
     public interface IShotgunVolleySink

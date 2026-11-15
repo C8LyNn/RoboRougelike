@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace RoboRougelike.Mechanics.PointDefense
@@ -5,6 +6,8 @@ namespace RoboRougelike.Mechanics.PointDefense
     /// <summary>Pure math: can be tested without scenes or changing global RNG.</summary>
     public static class PointDefenseMath
     {
+        private static bool Finite(float value) { return !float.IsNaN(value) && !float.IsInfinity(value); }
+        private static bool Finite(Vector3 value) { return Finite(value.x) && Finite(value.y) && Finite(value.z); }
         public static float ClampPositive(float value, float fallback)
         {
             return float.IsNaN(value) || float.IsInfinity(value) || value <= 0f ? fallback : value;
@@ -15,16 +18,26 @@ namespace RoboRougelike.Mechanics.PointDefense
             float defendedRadius, out float secondsToClosest)
         {
             secondsToClosest = 0f;
-            Vector3 offset = position - defendedPoint;
-            Vector3 relativeVelocity = velocity - defendedVelocity;
-            float square = relativeVelocity.sqrMagnitude;
-            if (square < 0.0001f) return offset.sqrMagnitude <= defendedRadius * defendedRadius;
-            float t = -Vector3.Dot(offset, relativeVelocity) / square;
-            if (t <= 0f)
-                return offset.sqrMagnitude <= defendedRadius * defendedRadius;
-            if (t > lookAhead) return false;
-            secondsToClosest = t;
-            return (offset + relativeVelocity * t).sqrMagnitude <= defendedRadius * defendedRadius;
+            if (!Finite(position) || !Finite(velocity) || !Finite(defendedPoint) ||
+                !Finite(defendedVelocity) || !Finite(lookAhead) || !Finite(defendedRadius) || defendedRadius < 0f)
+                return false;
+            double ox = (double)position.x - defendedPoint.x, oy = (double)position.y - defendedPoint.y,
+                oz = (double)position.z - defendedPoint.z;
+            double radiusSquared = (double)defendedRadius * defendedRadius;
+            // A threat already in the defended radius is immediate, even if
+            // a slow approach puts its closest point beyond the look-ahead.
+            if (ox * ox + oy * oy + oz * oz <= radiusSquared) return true;
+            double vx = (double)velocity.x - defendedVelocity.x, vy = (double)velocity.y - defendedVelocity.y,
+                vz = (double)velocity.z - defendedVelocity.z;
+            double square = vx * vx + vy * vy + vz * vz;
+            if (square <= 0d || lookAhead <= 0f) return false;
+            double closest = -(ox * vx + oy * vy + oz * vz) / square;
+            if (closest <= 0d) return false;
+            // The shot can enter the sphere before reaching its closest point.
+            double sample = Math.Min(closest, lookAhead);
+            double dx = ox + vx * sample, dy = oy + vy * sample, dz = oz + vz * sample;
+            secondsToClosest = (float)sample;
+            return dx * dx + dy * dy + dz * dz <= radiusSquared;
         }
 
         /// <summary>Analytical constant-velocity interception in shooter-relative frame.</summary>
@@ -34,31 +47,40 @@ namespace RoboRougelike.Mechanics.PointDefense
         {
             aimPoint = target;
             flightTime = 0f;
-            if (projectileSpeed <= 0.001f || maxLeadTime <= 0f) return false;
-            Vector3 r = target - shooter;
-            Vector3 v = targetVelocity - shooterVelocity;
-            float a = Vector3.Dot(v, v) - projectileSpeed * projectileSpeed;
-            float b = 2f * Vector3.Dot(r, v);
-            float c = Vector3.Dot(r, r);
-            if (c < 0.000001f) return true;
-            float t;
-            if (Mathf.Abs(a) < 0.00001f)
+            if (!Finite(shooter) || !Finite(shooterVelocity) || !Finite(target) || !Finite(targetVelocity) ||
+                !Finite(projectileSpeed) || !Finite(maxLeadTime) || projectileSpeed <= 0f || maxLeadTime <= 0f)
+                return false;
+            double rx = (double)target.x - shooter.x, ry = (double)target.y - shooter.y, rz = (double)target.z - shooter.z;
+            double vx = (double)targetVelocity.x - shooterVelocity.x, vy = (double)targetVelocity.y - shooterVelocity.y,
+                vz = (double)targetVelocity.z - shooterVelocity.z;
+            double a = vx * vx + vy * vy + vz * vz - (double)projectileSpeed * projectileSpeed;
+            double b = 2d * (rx * vx + ry * vy + rz * vz);
+            double c = rx * rx + ry * ry + rz * rz;
+            if (c == 0d) return true;
+            double t;
+            if (a == 0d)
             {
-                if (Mathf.Abs(b) < 0.00001f) return false;
+                if (b == 0d) return false;
                 t = -c / b;
             }
             else
             {
-                float disc = b * b - 4f * a * c;
-                if (disc < 0f) return false;
-                float root = Mathf.Sqrt(disc);
-                float t0 = (-b - root) / (2f * a);
-                float t1 = (-b + root) / (2f * a);
-                t = t0 > 0f && t1 > 0f ? Mathf.Min(t0, t1) : Mathf.Max(t0, t1);
+                double disc = b * b - 4d * a * c;
+                if (disc < 0d) return false;
+                // Avoid subtracting nearly equal values when one root is small.
+                double root = Math.Sqrt(disc);
+                double q = -.5d * (b + (b >= 0d ? root : -root));
+                double t0 = q / a, t1 = q == 0d ? double.PositiveInfinity : c / q;
+                t = t0 > 0d && t1 > 0d ? Math.Min(t0, t1) : Math.Max(t0, t1);
             }
-            if (float.IsNaN(t) || float.IsInfinity(t) || t <= 0f || t > maxLeadTime) return false;
-            flightTime = t;
-            aimPoint = target + targetVelocity * t;
+            if (double.IsNaN(t) || double.IsInfinity(t) || t <= 0d || t > maxLeadTime) return false;
+            float resultTime = (float)t;
+            double px = target.x + targetVelocity.x * t, py = target.y + targetVelocity.y * t,
+                pz = target.z + targetVelocity.z * t;
+            if (resultTime <= 0f || !Finite(resultTime) || Math.Abs(px) > float.MaxValue ||
+                Math.Abs(py) > float.MaxValue || Math.Abs(pz) > float.MaxValue) return false;
+            flightTime = resultTime;
+            aimPoint = new Vector3((float)px, (float)py, (float)pz);
             return true;
         }
 

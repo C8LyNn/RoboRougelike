@@ -38,7 +38,7 @@ namespace RoboRougelike.R4
             public List<string> screenshots=new List<string>();public List<string> errors=new List<string>();
         }
         Result result=new Result();string output,lastKey;float captureAt=-1;string captureName;
-        readonly HashSet<int> seenShells=new HashSet<int>();
+        readonly HashSet<ulong> seenShells=new HashSet<ulong>();
         int debrisSeries;
         Mouse mouse;Keyboard keyboard;P12PipelineSafeCamera follow;P12PipelineSafeEnemyTurret target;Vector3 previous,velocity;
         readonly Dictionary<int,DebrisObservation> traces=new Dictionary<int,DebrisObservation>();
@@ -127,7 +127,7 @@ namespace RoboRougelike.R4
         void TrackPhysics()
         {
             var shells=FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None);result.peakShells=Math.Max(result.peakShells,shells.Length);
-            foreach(var shell in shells)if(seenShells.Add(shell.GetInstanceID()))result.physicalRounds++;
+            foreach(var shell in shells)if(shell.LaunchSequence!=0&&seenShells.Add(shell.LaunchSequence))result.physicalRounds++;
             var pieces=FindObjectsByType<R3Debris>(FindObjectsSortMode.None);result.peakDebris=Math.Max(result.peakDebris,pieces.Length);
             foreach(var p in pieces)
             {

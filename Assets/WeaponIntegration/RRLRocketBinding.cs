@@ -16,6 +16,11 @@ namespace RoboRougelike.WeaponIntegration
         public RocketLauncher Module {get;private set;}
         P12PipelineSafeTankController tank;
         Transform muzzle;
+        RocketProjectile projectileTemplate;
+        struct CachedRocket { public RocketProjectile Projectile; public int ReleasedFrame; }
+        // A retention limit, not a firing limit: cache misses create a new rocket.
+        const int MaxCachedRockets=32;
+        readonly System.Collections.Generic.Queue<CachedRocket> retiredRockets=new System.Collections.Generic.Queue<CachedRocket>();
         float damageScale=1,intervalScale=1;
         public void Bind(R3PartState state,Transform owner,Transform barrel,float damageMultiplier=1,float intervalMultiplier=1)
         {
@@ -24,7 +29,7 @@ namespace RoboRougelike.WeaponIntegration
             muzzle=barrel;damageScale=damageMultiplier;intervalScale=intervalMultiplier;if(state.Ammo<0)state.Ammo=Magazine;
             var template=new GameObject("WPN004 inactive projectile template");template.SetActive(false);template.transform.SetParent(transform,false);
             var rb=template.AddComponent<Rigidbody>();rb.useGravity=false;rb.isKinematic=true;template.AddComponent<SphereCollider>().isTrigger=true;
-            var prefab=template.AddComponent<RocketProjectile>();template.AddComponent<RRLPointDefenseThreat>();
+            var prefab=template.AddComponent<RocketProjectile>();projectileTemplate=prefab;template.AddComponent<RRLPointDefenseThreat>();template.AddComponent<R3ShieldRocketPayload>();
             var visual=GameObject.CreatePrimitive(PrimitiveType.Capsule);visual.name="Rocket visual";visual.transform.SetParent(template.transform,false);
             visual.transform.localRotation=Quaternion.Euler(90,0,0);visual.transform.localScale=new Vector3(.16f,.36f,.16f);
             var col=visual.GetComponent<Collider>();col.enabled=false;Destroy(col);
@@ -38,31 +43,77 @@ namespace RoboRougelike.WeaponIntegration
                 var finCollider=fin.GetComponent<Collider>();finCollider.enabled=false;Destroy(finCollider);
             }
             var origin=template.AddComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.RocketLauncher;origin.PartId=state.Id;
-            Module=gameObject.AddComponent<RocketLauncher>();Module.Bind(Device.Body,owner,muzzle);Module.SetAmmoSource(this);Module.SetPrefab(prefab);
+            Module=gameObject.AddComponent<RocketLauncher>();Module.Bind(Device.Body,owner,muzzle);Module.SetAmmoSource(this);Module.SetPrefab(prefab);Module.SetSpawnFactory(RentRocket);
             Device.Damageable.Died+=Stop;Refresh();
+        }
+        RocketProjectile RentRocket(RocketProjectile prefab,Vector3 position,Quaternion rotation)
+        {
+            RocketProjectile rocket=null;
+            while(retiredRockets.Count>0)
+            {
+                var cached=retiredRockets.Peek();
+                if(cached.Projectile==null){retiredRockets.Dequeue();continue;}
+                // Callbacks may still hold the old projectile for this frame.
+                if(cached.ReleasedFrame>=Time.frameCount)break;
+                retiredRockets.Dequeue();
+                if(!cached.Projectile.PrepareForReuse()){Object.Destroy(cached.Projectile.gameObject);continue;}
+                rocket=cached.Projectile;break;
+            }
+            if(rocket==null)rocket=Object.Instantiate(prefab,position,rotation);
+            else rocket.transform.SetPositionAndRotation(position,rotation);
+            rocket.SetRetirementHandler(ReturnRocket);
+            // The same launcher can change tier and damage between flights.
+            rocket.GetComponent<R3ShieldRocketPayload>().Damage=prefab.GetComponent<R3ShieldRocketPayload>().Damage;
+            return rocket;
+        }
+        void ReturnRocket(RocketProjectile rocket)
+        {
+            if(rocket==null)return;
+            if(this==null||!isActiveAndEnabled||retiredRockets.Count>=MaxCachedRockets){Object.Destroy(rocket.gameObject);return;}
+            retiredRockets.Enqueue(new CachedRocket{Projectile=rocket,ReleasedFrame=Time.frameCount});
+        }
+        internal void ClearRocketCache()
+        {
+            while(retiredRockets.Count>0)
+            {var rocket=retiredRockets.Dequeue().Projectile;if(rocket!=null)Object.Destroy(rocket.gameObject);}
         }
         void Refresh()
         {
             if(State.ReloadReadyAt>0&&Time.time>=State.ReloadReadyAt){State.Ammo=Magazine;State.ReloadReadyAt=0;}
             Module.SetOperational(Device.Available&&State.ReloadReadyAt<=Time.time);
         }
-        public bool Fire()
+        public bool Fire()=>FireCore(false);
+        internal bool FirePrimary()=>FireCore(true);
+        bool FireCore(bool deferExtras)
         {
             Refresh();if(!Device.Available||Time.time<State.DeviceReadyAt)return false;
             var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>()))return false;
-            int live=0;foreach(var rocket in Object.FindObjectsByType<RocketProjectile>(FindObjectsSortMode.None))if(rocket.IsInitialized&&!rocket.IsResolved)live++;
-            if(live>=32)return false;
             // The package fails closed on an incomplete physics query. The
             // integrated game admits large multi-collider vehicles, so size
             // both bounded buffers for that workload without weakening it.
-            Module.SetConfig(new RocketConfig{damageAtCenter=60*(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),cooldown=1.7f*(tank!=null?tank.PackageIntervalScale:intervalScale),maxBlastColliders=1024,maxCastHits=512});
+            float damage=R3MountedBonusEffects.SafeDamageProduct(60,tank!=null?tank.PackageRocketDamageScale:damageScale);
+            damage=R3MountedBonusEffects.SafeDamageProduct(damage,R3VehicleModel.TierEffectUnits(State.Tier));
+            Module.SetConfig(new RocketConfig{damageAtCenter=damage,cooldown=R3MountedBonusEffects.SafeIntervalProduct(1.7f,tank!=null?tank.WeaponIntervalScale(R4WeaponKind.RocketLauncher):intervalScale),maxBlastColliders=1024,maxCastHits=512});
+            projectileTemplate.GetComponent<R3ShieldRocketPayload>().Damage=Module.CurrentSpec.CenterDamage;
             var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
             float cost=VehicleEnergyCosts.Rocket*R3VehicleModel.TierActivationCost(State.Tier);
             if(energy!=null&&!energy.TrySpend(cost))return false;
             if(Module.TryFire()!=RocketFireResult.Fired){if(energy!=null)energy.Refund(cost);return false;}
             State.DeviceReadyAt=Module.NextReadyTime;
+            var extras=!deferExtras&&assembly!=null?assembly.RollDoubleShotExtrasExact():System.Numerics.BigInteger.Zero;
+            if(extras>0)FireAdditionalExact(extras);
             RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.RocketLauncher);return true;
+        }
+        internal void FireAdditional(int count)
+            =>FireAdditionalExact(count);
+        internal void FireAdditionalExact(System.Numerics.BigInteger count)
+        {
+            if(count<=0||Device?.Owner==null||muzzle==null||projectileTemplate==null||Module==null)return;
+            var queue=Device.Owner.GetComponent<RRLRocketVolleyQueue>();
+            if(queue==null)queue=Device.Owner.gameObject.AddComponent<RRLRocketVolleyQueue>();
+            queue.EnqueueExact(count,projectileTemplate,Module.CurrentSpec,Device.Body,Device.Owner,gameObject,
+                muzzle.position,muzzle.rotation,muzzle.forward,ReturnRocket);
         }
         public bool BeginReload(){Refresh();if(!Device.Available||State.Ammo>=Magazine||State.ReloadReadyAt>0)return false;State.ReloadReadyAt=Time.time+2.2f;return true;}
         public bool TrySpendAmmo(int units)
@@ -74,6 +125,6 @@ namespace RoboRougelike.WeaponIntegration
         void Update(){Refresh();if(Device.Available&&State.Ammo==0)BeginReload();}
         void Stop(){if(Module!=null)Module.SetOperational(false);}
         void OnDisable()=>Stop();
-        void OnDestroy(){if(Device?.Damageable!=null)Device.Damageable.Died-=Stop;}
+        void OnDestroy(){ClearRocketCache();if(Device?.Damageable!=null)Device.Damageable.Died-=Stop;}
     }
 }

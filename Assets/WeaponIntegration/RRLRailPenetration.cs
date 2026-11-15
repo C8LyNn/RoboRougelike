@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using RoboRougelike.WPN002Railgun;
+using RoboRougelike.R3;
 using RogueMachine.P12PipelineSafe;
 
 namespace RoboRougelike.WeaponIntegration
@@ -9,16 +10,35 @@ namespace RoboRougelike.WeaponIntegration
     public sealed class RRLRailPenetration : MonoBehaviour
     {
         const int MaxHitBuffer=4096;
-        RaycastHit[] hits=new RaycastHit[128];
+        // Physics and damage resolution run on Unity's main thread. Reuse one
+        // query buffer across projectiles, but isolate a nested damage callback.
+        static RaycastHit[] sharedHits=new RaycastHit[128];
+        static bool sharedHitsInUse;
         sealed class HitDistanceComparer : IComparer<RaycastHit>
         { public int Compare(RaycastHit a,RaycastHit b)=>a.distance.CompareTo(b.distance); }
         static readonly IComparer<RaycastHit> HitDistance=new HitDistanceComparer();
         readonly HashSet<int> visited=new HashSet<int>();
         RailgunShot shot;Rigidbody body;Vector3 position;float travelled,energy,damageScale;
         public Vector3 Velocity=>shot.InitialVelocity;
-        public void Bind(RailgunShot value,float scale){shot=value;position=value.Origin;energy=value.Spec.InitialEnergy;damageScale=scale;body=GetComponent<Rigidbody>();}
+        public void Bind(RailgunShot value,float scale)
+        {shot=value;position=value.Origin;travelled=0;visited.Clear();energy=value.Spec.InitialEnergy;damageScale=scale;body=GetComponent<Rigidbody>();}
         public void Step(float dt)
         {
+            if(sharedHitsInUse)
+            {
+                var nestedHits=new RaycastHit[128];
+                StepCore(dt,ref nestedHits);
+                return;
+            }
+            sharedHitsInUse=true;var hits=sharedHits;
+            try{StepCore(dt,ref hits);}
+            finally{sharedHits=hits;sharedHitsInUse=false;}
+        }
+        void StepCore(float dt,ref RaycastHit[] hits)
+        {
+            // The owner can disappear during scene transitions or after destruction.
+            // Without it team ownership and self-collision filtering are no longer valid.
+            if(shot.OwnerRoot==null||!shot.OwnerRoot.activeInHierarchy){Stop();return;}
             float move=Mathf.Min(shot.InitialVelocity.magnitude*dt,shot.Spec.Range-travelled);
             if(move<=0){Stop();return;}Vector3 direction=shot.InitialVelocity.normalized;
             int count;RaycastHit[] candidates;
@@ -34,27 +54,44 @@ namespace RoboRougelike.WeaponIntegration
             }
             System.Array.Sort(candidates,0,count,HitDistance);
             float previous=0;
+            bool blocked=R3ShieldDome.TryFirstHit(position,position+direction*move,shot.OwnerRoot.transform,out var shield,out float shieldDistance);
             for(int i=0;i<count;i++)
             {
                 var hit=candidates[i];var c=hit.collider;if(c==null||c.transform.IsChildOf(transform)||!RRLHitRouter.CanHit(c,shot.OwnerRoot.transform))continue;
                 var hp=c.GetComponentInParent<P12PipelineSafeDamageable>();
                 if(hp!=null&&visited.Contains(hp.GetInstanceID()))continue;
+                if(blocked&&shieldDistance<=hit.distance)
+                {
+                    energy=RailgunRules.AfterTravel(energy,shieldDistance-previous,shot.Spec.EnergyLossPerMeter);
+                    shield.Absorb(R3MountedBonusEffects.SafeDamageProduct(Mathf.Min(shot.Spec.MaxDamagePerPart,energy*shot.Spec.DamagePerEnergy),damageScale),position+direction*shieldDistance,direction);Stop();return;
+                }
                 energy=RailgunRules.AfterTravel(energy,hit.distance-previous,shot.Spec.EnergyLossPerMeter);previous=hit.distance;
-                if(hp==null){RRLHitRouter.Apply(c,Mathf.Min(shot.Spec.MaxDamagePerPart,energy*shot.Spec.DamagePerEnergy)*damageScale,hit.point,direction,shot.OwnerRoot.transform);Stop();return;}
+                if(hp==null){RRLHitRouter.Apply(c,R3MountedBonusEffects.SafeDamageProduct(Mathf.Min(shot.Spec.MaxDamagePerPart,energy*shot.Spec.DamagePerEnergy),damageScale),hit.point,direction,shot.OwnerRoot.transform);Stop();return;}
                 visited.Add(hp.GetInstanceID());
                 // Chassis resistance is integration tuning, read from existing physical HP.
                 var impact=RailgunRules.Evaluate(energy,Mathf.Clamp(hp.MaxHp*.2f,5,60),shot.Spec.DamagePerEnergy,shot.Spec.MaxDamagePerPart,visited.Count-1,shot.Spec.MaxDistinctParts,shot.Spec.MinEnergyToContinue,true);
-                float requested=impact.Damage*damageScale;
+                float requested=R3MountedBonusEffects.SafeDamageProduct(impact.Damage,damageScale);
                 float settled=hp.ApplyDamageResolvedTyped(requested,hit.point,direction,
                     RoboRougelike.R3.R3DamagePropagation.DamageKind.Piercing);
                 float absorbed=Mathf.Max(0,requested-settled);
-                energy=Mathf.Max(0,impact.RemainingEnergy-absorbed/Mathf.Max(.001f,shot.Spec.DamagePerEnergy*damageScale));
+                double energyPerDamage=System.Math.Max(.001d,(double)shot.Spec.DamagePerEnergy*damageScale);
+                energy=(float)System.Math.Max(0d,impact.RemainingEnergy-absorbed/energyPerDamage);
                 if(!impact.Continues||settled<=0||energy<=shot.Spec.MinEnergyToContinue){Stop();return;}
+            }
+            if(blocked)
+            {
+                energy=RailgunRules.AfterTravel(energy,shieldDistance-previous,shot.Spec.EnergyLossPerMeter);
+                shield.Absorb(R3MountedBonusEffects.SafeDamageProduct(Mathf.Min(shot.Spec.MaxDamagePerPart,energy*shot.Spec.DamagePerEnergy),damageScale),position+direction*shieldDistance,direction);Stop();return;
             }
             energy=RailgunRules.AfterTravel(energy,move-previous,shot.Spec.EnergyLossPerMeter);travelled+=move;position+=direction*move;
             body.MovePosition(position);
             if(energy<=shot.Spec.MinEnergyToContinue||travelled>=shot.Spec.Range-.0001f)Stop();
         }
-        void Stop(){gameObject.SetActive(false);Destroy(gameObject);}
+        void Stop()
+        {
+            var projectile=GetComponent<P17PhysicalShell>();
+            if(projectile!=null)projectile.Retire();
+            else{gameObject.SetActive(false);Destroy(gameObject);}
+        }
     }
 }

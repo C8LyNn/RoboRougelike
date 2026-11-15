@@ -20,6 +20,24 @@ namespace RoboRougelike.WPN001Shotgun.Tests.PlayMode
         }
     }
 
+    public sealed class WPN001MovingMuzzleSink : MonoBehaviour, IShotgunVolleySink
+    {
+        public Transform Muzzle;
+        public ShotgunPelletSpawn Before,After;
+        public bool TrySpawnVolley(IReadOnlyList<ShotgunPelletSpawn> pellets)
+        {
+            Before=pellets[0];Muzzle.position+=Vector3.right*3;Muzzle.rotation=Quaternion.Euler(0,90,0);
+            After=pellets[0];return true;
+        }
+    }
+
+    public sealed class WPN001RetainingSink : MonoBehaviour, IShotgunVolleySink
+    {
+        public readonly List<IReadOnlyList<ShotgunPelletSpawn>> Volleys = new List<IReadOnlyList<ShotgunPelletSpawn>>();
+        public bool TrySpawnVolley(IReadOnlyList<ShotgunPelletSpawn> pellets)
+        { Volleys.Add(pellets); return true; }
+    }
+
     public sealed class ShotgunModulePlayModeTests
     {
         private readonly List<GameObject> created = new List<GameObject>();
@@ -66,6 +84,34 @@ namespace RoboRougelike.WPN001Shotgun.Tests.PlayMode
         {
             Assert.IsTrue(module.TryFireAtTime(100f));
             Assert.AreEqual(8, sink.LastVolley.Count);
+        }
+        [Test] public void LazyVolleyKeepsFiringSnapshotWhenMuzzleMovesDuringEmission()
+        {
+            var observing=module.gameObject.AddComponent<WPN001MovingMuzzleSink>();observing.Muzzle=muzzle;
+            module.BindSink(observing);Vector3 original=muzzle.position;
+            Assert.IsTrue(module.TryFireAtTime(100f));
+            Assert.AreEqual(original,observing.Before.Origin);Assert.AreEqual(original,observing.After.Origin);
+            Assert.AreEqual(observing.Before.Direction,observing.After.Direction);
+            Assert.AreSame(body,observing.After.OwnerBody);
+        }
+        [Test] public void RetainedVolleyKeepsItsOwnSnapshotAfterNextShot()
+        {
+            var observing=module.gameObject.AddComponent<WPN001RetainingSink>();
+            module.BindSink(observing);
+            module.Configure(new ShotgunConfig{pelletCount=8,damagePerPellet=9f});
+            Assert.IsTrue(module.TryFireAtTime(100f));
+            var first=observing.Volleys[0];var before=first[3];
+            muzzle.position+=Vector3.right*3f;muzzle.rotation=Quaternion.Euler(0,90,0);
+            module.Configure(new ShotgunConfig{pelletCount=3,damagePerPellet=17f});
+            Assert.IsTrue(module.TryFireAtTime(101f));
+            Assert.AreEqual(8,first.Count);
+            var after=first[3];
+            Assert.AreEqual(before.Origin,after.Origin);Assert.AreEqual(before.Direction,after.Direction);
+            Assert.AreEqual(before.Damage,after.Damage);Assert.AreEqual(before.VolleyIndex,after.VolleyIndex);
+            Assert.AreSame(body,after.OwnerBody);
+            Assert.AreEqual(3,observing.Volleys[1].Count);
+            Assert.AreEqual(17f,observing.Volleys[1][0].Damage);
+            Assert.AreNotSame(first,observing.Volleys[1]);
         }
         [Test] public void PelletDamageIsPerPellet()
         {

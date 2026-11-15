@@ -18,6 +18,33 @@ namespace RoboRougelike.R3
         int previousShotPathOverlapCount;
         const int MaxShotPathBuffer=8192;
         public void Bind(R3VehicleModel model, P12PipelineSafeTankController tank) { Model = model; controller = tank; R3BuildValidation.Bind(this,model); }
+        public float PassiveDetectionRange(R3PartKind kind)
+        {
+            if(Model==null||(kind!=R3PartKind.RadarModule&&kind!=R3PartKind.MinimapModule))return 0;
+            float perUnit=kind==R3PartKind.RadarModule?Model.Economy.RadarRangePerUnit:Model.Economy.MinimapRangePerUnit;
+            if(float.IsNaN(perUnit)||float.IsInfinity(perUnit)||perUnit<=0)return 0;
+            double range=0;
+            foreach(var part in Parts)
+                if(part!=null&&part.Kind==kind&&part.gameObject.activeInHierarchy&&part.Operational&&
+                   part.transform.IsChildOf(transform)&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
+                    range+=(double)perUnit*R3VehicleModel.TierEffectUnits(part.Tier);
+            return (float)System.Math.Min(float.MaxValue,range);
+        }
+        // Prototype Cargo Uplink affects only the reach of real physical pickups.
+        public float CargoPickupRadius
+        {
+            get
+            {
+                double radius=R3PhysicalLoot.BasePickupRadius;
+                float extra=Model?.Economy.CargoPickupRangePerUnit??0;
+                if(float.IsNaN(extra)||float.IsInfinity(extra)||extra<=0)return (float)radius;
+                foreach(var part in Parts)
+                    if(part!=null&&part.Kind==R3PartKind.CargoUplink&&part.gameObject.activeInHierarchy&&part.Operational&&
+                       part.transform.IsChildOf(transform)&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
+                        radius+=(double)extra*R3VehicleModel.TierEffectUnits(part.Tier);
+                return (float)System.Math.Min(float.MaxValue,radius);
+            }
+        }
         public void Capture()
         {
             foreach(var emp in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLEmpPartState>())emp.CaptureState();
@@ -46,19 +73,23 @@ namespace RoboRougelike.R3
                 if(part.Kind==R3PartKind.Wheel)wheels++;
                 if(part.Kind==R3PartKind.DrivePower&&Model.SelectedDrive==R3DriveKind.Wheels&&
                    !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
-                    power+=Mathf.Clamp01(part.Damageable.CurrentHp/Mathf.Max(1,part.Damageable.MaxHp))*R3VehicleModel.TierEffectUnits(part.Tier);
+                    power+=R3VehicleModel.TierEffectUnits(part.Tier);
             }
-            controller.ConfigureChassis(SpeedFor(mass,wheels),Mathf.Min(130f,TurnFor(mass)*Mathf.Min(1.6f,1f+.12f*power)),mass);
+            float steering=(float)System.Math.Min(float.MaxValue,TurnFor(mass)*(1d+.12d*power));
+            controller.ConfigureChassis(SpeedFor(mass,wheels),steering,mass);
         }
         public static float SpeedFor(float mass,int wheels)
         {
-            float weight=Mathf.Clamp(Mathf.Sqrt(350f/Mathf.Max(1f,mass)),.6f,1.35f);
+            float weight=MassFactor(mass);
             // Wheels above the basic support threshold add real traction and
             // acceleration through R6; they do not grant free top speed.
             float support=Mathf.Clamp(Mathf.Sqrt(Mathf.Max(0,wheels)/4f),.7f,1f);
-            return Mathf.Clamp(7.5f*weight*support,2f,14f);
+            return 7.5f*weight*support;
         }
-        public static float TurnFor(float mass)=>Mathf.Clamp(82f*Mathf.Clamp(Mathf.Sqrt(350f/Mathf.Max(1f,mass)),.6f,1.35f),35f,130f);        public void AimGuns(Vector3 point)
+        // Keep the denominator representable even for malformed or empty chassis.
+        static float MassFactor(float mass)=>float.IsNaN(mass)||float.IsInfinity(mass)?0f:Mathf.Sqrt(350f/Mathf.Max(1f,mass));
+        public static float TurnFor(float mass)=>82f*MassFactor(mass);
+        public void AimGuns(Vector3 point)
         {
             foreach(var part in Parts)
                 if(part!=null && part.Kind==R3PartKind.Gun && part.gameObject.activeInHierarchy && part.Operational &&
@@ -81,15 +112,26 @@ namespace RoboRougelike.R3
                     part.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>()?.SetMotorRequested(held);
         }
         public void SetGroupTriggers(bool groupA,bool groupB)
+            =>SetSlotTriggers(groupA,groupB,false,false);
+        public void SetSlotTriggers(bool groupA,bool groupB,bool groupC,bool groupD)
         {
-            var a=Model.WeaponGroupA;var b=Model.WeaponGroupB;
+            var run=RoboRougelike.R1.R1RunController.Instance;
+            if(run!=null&&run.Player!=null&&run.Player.gameObject==gameObject&&run.EmergencyRescueAttackBlocked)
+                groupA=groupB=groupC=groupD=false;
+            var pressed=new[]{groupA,groupB,groupC,groupD};var slots=Model.GetWeaponSlots();
             foreach(var part in Parts)
             {
                 if(part==null||part.Kind!=R3PartKind.Gun)continue;
-                bool held=part.Operational&&part.gameObject.activeInHierarchy&&part.transform.IsChildOf(transform)&&
-                    !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject)&&
-                    ((groupA&&R3VehicleModel.MatchesWeaponGroup(part.Weapon,false,a,b,Model.CreativeMode))||
-                     (groupB&&R3VehicleModel.MatchesWeaponGroup(part.Weapon,true,a,b,Model.CreativeMode)));
+                bool rawHeld=false;
+                for(int slot=0;slot<4;slot++)
+                    if(pressed[slot]&&R3VehicleModel.MatchesWeaponSlot(part.Weapon,slot,slots,Model.CreativeMode)){rawHeld=true;break;}
+                part.GetComponent<RoboRougelike.WeaponIntegration.RRLDamageAuraBinding>()?.SetTriggerHeld(rawHeld);
+                bool held=false;
+                if(part.Operational&&part.gameObject.activeInHierarchy&&part.transform.IsChildOf(transform)&&
+                   !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
+                    for(int slot=0;slot<4;slot++)
+                        if(pressed[slot]&&R3VehicleModel.MatchesWeaponSlot(part.Weapon,slot,slots,Model.CreativeMode)){held=true;break;}
+                if(!held&&part.Weapon<=R4WeaponKind.Heavy)part.StopConventionalCadence();
                 part.GetComponent<RoboRougelike.WeaponIntegration.RRLBeamBinding>()?.SetTriggerHeld(held);
                 part.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>()?.SetMotorRequested(held);
             }
@@ -155,20 +197,87 @@ namespace RoboRougelike.R3
         }
         public bool ClearProjectilePath(R3MountedPart part,Vector3 direction,float range,float radius)
         {
-            if(part==null||part.Muzzle==null||direction.sqrMagnitude<.000001f||
-               range<=0||float.IsNaN(range)||float.IsInfinity(range)||
-               radius<=0||float.IsNaN(radius)||float.IsInfinity(radius))return false;
+            if(!ValidShotDirection(direction,range)||!PrepareShotPath(part,radius,out var origin))return false;
+            return ClearPreparedShotPath(part,origin,direction,range,radius);
+        }
+        // A bounded step makes it possible to spread directional checks over
+        // several updates. The current firing path still completes them at once.
+        // A caller yielding between steps must also handle changes to the world,
+        // gun and owner before committing the shot.
+        internal sealed class ShotgunVolleyPathCheck
+        {
+            readonly R3VehicleAssembly assembly;
+            readonly R3MountedPart part;
+            readonly IReadOnlyList<RoboRougelike.WPN001Shotgun.ShotgunPelletSpawn> pellets;
+            readonly Vector3 origin;
+            readonly float radius;
+            readonly Transform muzzle,pivot;
+            readonly Matrix4x4 ownerPose,muzzlePose,pivotPose;
+            bool clear;
+            public int CheckedCount { get; private set; }
+            public bool Finished { get; private set; }
+            public bool Clear
+            {
+                get { if(clear&&!PoseIsCurrent())clear=false;return clear; }
+                private set { clear=value; }
+            }
+            internal ShotgunVolleyPathCheck(R3VehicleAssembly assembly,R3MountedPart part,
+                IReadOnlyList<RoboRougelike.WPN001Shotgun.ShotgunPelletSpawn> pellets,float radius,Vector3 origin,bool ready)
+            {
+                this.assembly=assembly;this.part=part;this.pellets=pellets;this.radius=radius;this.origin=origin;Finished=!ready;
+                if(ready)
+                {
+                    muzzle=part.Muzzle;pivot=part.GunPivot;
+                    ownerPose=assembly.transform.localToWorldMatrix;muzzlePose=muzzle.localToWorldMatrix;pivotPose=pivot.localToWorldMatrix;
+                }
+            }
+            public void Advance(int maxChecks)
+            {
+                if(maxChecks<=0)throw new System.ArgumentOutOfRangeException(nameof(maxChecks));
+                if(Finished)return;
+                if(!PoseIsCurrent())
+                {Finished=true;return;}
+                int end=(int)System.Math.Min(pellets.Count,(long)CheckedCount+maxChecks);
+                while(CheckedCount<end)
+                {
+                    var pellet=pellets[CheckedCount++];
+                    var velocity=pellet.Direction*pellet.ProjectileSpeed+pellet.InheritedVelocity;
+                    float range=Mathf.Min(pellet.MaxDistance,velocity.magnitude*pellet.Lifetime);
+                    if(!ValidShotDirection(velocity,range)||!assembly.ClearPreparedShotPath(part,origin,velocity,range,radius))
+                    {Finished=true;return;}
+                }
+                if(CheckedCount==pellets.Count){Clear=true;Finished=true;}
+            }
+            bool PoseIsCurrent()=>assembly!=null&&part!=null&&muzzle!=null&&pivot!=null&&part.gameObject.activeInHierarchy&&
+                part.transform.IsChildOf(assembly.transform)&&part.Muzzle==muzzle&&part.GunPivot==pivot&&
+                ownerPose.Equals(assembly.transform.localToWorldMatrix)&&muzzlePose.Equals(muzzle.localToWorldMatrix)&&
+                pivotPose.Equals(pivot.localToWorldMatrix);
+        }
+        internal ShotgunVolleyPathCheck BeginShotgunVolleyPathCheck(R3MountedPart part,
+            IReadOnlyList<RoboRougelike.WPN001Shotgun.ShotgunPelletSpawn> pellets,float radius)
+        {
+            Vector3 origin=default;
+            bool ready=pellets!=null&&pellets.Count>0&&PrepareShotPath(part,radius,out origin);
+            return new ShotgunVolleyPathCheck(this,part,pellets,radius,origin,ready);
+        }
+        // All directions in a volley use the same muzzle and barrel. Keep the
+        // per-pellet cast, but do the shared overlap/barrel checks only once.
+        public bool ClearShotgunVolley(R3MountedPart part,IReadOnlyList<RoboRougelike.WPN001Shotgun.ShotgunPelletSpawn> pellets,float radius)
+        {
+            var check=BeginShotgunVolleyPathCheck(part,pellets,radius);
+            check.Advance(int.MaxValue);
+            return check.Clear;
+        }
+        static bool ValidShotDirection(Vector3 direction,float range)=>direction.sqrMagnitude>=.000001f&&
+            range>0&&!float.IsNaN(range)&&!float.IsInfinity(range);
+        bool PrepareShotPath(R3MountedPart part,float radius,out Vector3 origin)
+        {
+            origin=default;
+            if(part==null||part.Muzzle==null||radius<=0||float.IsNaN(radius)||float.IsInfinity(radius))return false;
             if(part.TryGetComponent<RoboRougelike.R4_1.R4WeaponArt>(out var art))art.Sync();
-            var origin=part.Muzzle.position;
+            origin=part.Muzzle.position;
             bool IsGun(Collider c)=>c!=null&&c.transform.IsChildOf(part.transform);
             bool IsOwner(Collider c)=>c!=null&&c.transform.IsChildOf(transform);
-            bool IsOwnProjectile(Collider c)
-            {
-                var shell=FindShotComponent<P17PhysicalShell>(c.transform);
-                if(shell!=null&&shell.OwnerRoot==transform)return true;
-                var rocket=FindShotComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>(c.transform);
-                return rocket!=null&&rocket.OwnerRoot==transform;
-            }
             // The barrel itself can rotate into another part even if its tip
             // is already beyond that part. Inspect the whole muzzle segment.
             if(part.GunPivot==null)return false;
@@ -180,6 +289,19 @@ namespace RoboRougelike.R3
             }
             var overlaps=ShotPathOverlap(origin,radius,out var overlapCount);
             for(int i=0;i<overlapCount;i++)if(IsOwner(overlaps[i])&&!IsGun(overlaps[i]))return false;
+            return true;
+        }
+        bool ClearPreparedShotPath(R3MountedPart part,Vector3 origin,Vector3 direction,float range,float radius)
+        {
+            bool IsGun(Collider c)=>c!=null&&c.transform.IsChildOf(part.transform);
+            bool IsOwner(Collider c)=>c!=null&&c.transform.IsChildOf(transform);
+            bool IsOwnProjectile(Collider c)
+            {
+                var shell=FindShotComponent<P17PhysicalShell>(c.transform);
+                if(shell!=null&&shell.OwnerRoot==transform)return true;
+                var rocket=FindShotComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>(c.transform);
+                return rocket!=null&&rocket.OwnerRoot==transform;
+            }
             float own=float.PositiveInfinity,other=float.PositiveInfinity;
             var hits=ShotPathCast(origin,radius,direction.normalized,range,out var hitCount);
             for(int i=0;i<hitCount;i++)
@@ -192,48 +314,185 @@ namespace RoboRougelike.R3
             return own>other || float.IsPositiveInfinity(own);
         }
         public void FireGroup(bool secondary)
+            =>FireSlot(secondary?1:0);
+        struct PendingConventionalShot
         {
-            var a=Model.WeaponGroupA;var b=Model.WeaponGroupB;
-            var kind=secondary?b:a;
-            if(!kind.HasValue)return;
+            public Transform Muzzle;
+            public R4WeaponKind Kind;
+            public string PartId;
+            public Collider Primary;
+            public RoboRougelike.WeaponIntegration.RRLRailgunBinding Rail;
+            public RoboRougelike.WeaponIntegration.RRLShotgunBinding Shotgun;
+            public System.Numerics.BigInteger Requested;
+            public System.Numerics.BigInteger CadenceShots;
+            public DoubleShotRoll CadenceRoll;
+            public float CadenceCost;
+        }
+        struct PendingRocketShot
+        {
+            public RoboRougelike.WeaponIntegration.RRLRocketBinding Binding;
+            public System.Numerics.BigInteger Requested;
+        }
+        internal readonly struct DoubleShotRoll
+        {
+            readonly System.Numerics.BigInteger active;
+            readonly double chance;
+            public DoubleShotRoll(System.Numerics.BigInteger activeUnits,double passiveChance){active=activeUnits;chance=passiveChance;}
+            public int Roll(int available)
+            {
+                if(available<=0)return 0;
+                int extra=(int)System.Numerics.BigInteger.Min(available,active);available-=extra;
+                if(available<=0||chance<=0)return extra;
+                double whole=System.Math.Floor(chance);
+                int guaranteed=(int)System.Math.Min(available,whole);
+                double fractional=chance-whole;
+                if(guaranteed<available&&fractional>0&&UnityEngine.Random.value<fractional)guaranteed++;
+                return extra+guaranteed;
+            }
+            public System.Numerics.BigInteger RollExact()
+            {
+                if(chance<=0)return active;
+                double whole=System.Math.Floor(chance);
+                var extra=active+new System.Numerics.BigInteger(whole);
+                double fractional=chance-whole;
+                if(fractional>0&&UnityEngine.Random.value<fractional)extra+=System.Numerics.BigInteger.One;
+                return extra;
+            }
+        }
+        internal DoubleShotRoll CaptureDoubleShotRoll()
+        {
+            if(Model==null)return default;
+            var active=GetComponent<R3OffensiveDevices>()?.AdditionalProjectileUnitsExact??System.Numerics.BigInteger.Zero;
+            float configured=Model.Economy.DoubleShotChancePerUnit;
+            if(float.IsNaN(configured)||float.IsInfinity(configured)||configured<=0)return new DoubleShotRoll(active,0);
+            long units=0;
             foreach(var part in Parts)
-                if(part!=null && part.Kind==R3PartKind.Gun && R3VehicleModel.MatchesWeaponGroup(part.Weapon,secondary,a,b,Model.CreativeMode) && part.Operational && part.gameObject.activeInHierarchy && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
+                if(part!=null&&part.Kind==R3PartKind.DoubleShot&&part.Operational&&part.gameObject.activeInHierarchy&&
+                   part.transform.IsChildOf(transform)&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
+                    units+=R3VehicleModel.TierEffectUnits(part.Tier);
+            return new DoubleShotRoll(active,(double)configured*units);
+        }
+        public int RollDoubleShotExtras(int available)=>available<=0?0:CaptureDoubleShotRoll().Roll(available);
+        internal System.Numerics.BigInteger RollDoubleShotExtrasExact()=>CaptureDoubleShotRoll().RollExact();
+        public void FireSlot(int slot)
+        {
+            var run=RoboRougelike.R1.R1RunController.Instance;
+            if(run!=null&&run.Player!=null&&run.Player.gameObject==gameObject&&run.EmergencyRescueAttackBlocked)return;
+            var slots=Model.GetWeaponSlots();if(slot<0||slot>=4||!slots[slot].HasValue)return;
+            List<PendingConventionalShot> pending=null;
+            List<PendingRocketShot> pendingRockets=null;
+            foreach(var part in Parts)
+                if(part!=null && part.Kind==R3PartKind.Gun && R3VehicleModel.MatchesWeaponSlot(part.Weapon,slot,slots,Model.CreativeMode) && part.Operational && part.gameObject.activeInHierarchy && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
                 {
                     part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>()?.Sync();
                     if(RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))continue;
-                    if(part.Weapon==R4WeaponKind.EmpEmitter)
-                    {
-                        var emp=part.GetComponent<RoboRougelike.WeaponIntegration.RRLEmpBinding>();
-                        if(emp!=null&&emp.Fire())part.NextFireTime=emp.State.DeviceReadyAt;continue;
-                    }
+                    if(part.Weapon==R4WeaponKind.EmpEmitter)continue; // toggled by the slot's press edge
                     if(part.Weapon==R4WeaponKind.BeamCutter||part.Weapon==R4WeaponKind.RotarySaw)continue;
                     if((part.Weapon<=R4WeaponKind.Railgun||part.Weapon==R4WeaponKind.RocketLauncher)
-                       &&!ClearProjectilePath(part))continue;
+                       &&!ClearProjectilePath(part)){if(part.Weapon<=R4WeaponKind.Heavy)part.StopConventionalCadence();continue;}
                     if(part.Weapon==R4WeaponKind.Shotgun)
                     {
                         var binding=part.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
-                        if(binding!=null&&binding.Fire())part.NextFireTime=binding.State.DeviceReadyAt;
+                        if(binding!=null&&binding.FirePrimary())
+                        {
+                            part.NextFireTime=binding.State.DeviceReadyAt;
+                            if(binding.HasAdditionalRequested)
+                            {
+                                if(pending==null)pending=new List<PendingConventionalShot>();
+                                pending.Add(new PendingConventionalShot{Shotgun=binding});
+                            }
+                        }
                         continue;
                     }
                     if(part.Weapon==R4WeaponKind.RocketLauncher)
                     {
                         var rocket=part.GetComponent<RoboRougelike.WeaponIntegration.RRLRocketBinding>();
-                        if(rocket!=null&&rocket.Fire())part.NextFireTime=rocket.State.DeviceReadyAt;
+                        if(rocket!=null&&rocket.FirePrimary())
+                        {
+                            part.NextFireTime=rocket.State.DeviceReadyAt;
+                            var requested=RollDoubleShotExtrasExact();
+                            if(requested>0)
+                            {
+                                if(pendingRockets==null)pendingRockets=new List<PendingRocketShot>();
+                                pendingRockets.Add(new PendingRocketShot{Binding=rocket,Requested=requested});
+                            }
+                        }
                         continue;
                     }
                     if(part.Weapon==R4WeaponKind.Railgun)
                     {
                         var rail=part.GetComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
-                        if(rail!=null&&rail.Fire())part.NextFireTime=rail.State.DeviceReadyAt;
+                        if(rail!=null&&rail.FirePrimary())
+                        {
+                            part.NextFireTime=rail.State.DeviceReadyAt;
+                            var requested=RollDoubleShotExtrasExact();
+                            if(requested>0)
+                            {
+                                if(pending==null)pending=new List<PendingConventionalShot>();
+                                pending.Add(new PendingConventionalShot{Rail=rail,Requested=requested});
+                            }
+                        }
                         continue;
                     }
+                    float interval=controller.WeaponInterval(part.Weapon);
+                    if(Time.time+interval<=Time.time&&part.LastConventionalShotTime==Time.time)continue;
+                    var cadence=part.Weapon<=R4WeaponKind.Heavy?part.ConventionalCadence:null;
+                    if(cadence!=null)
+                    {
+                        if(float.IsNaN(interval)||float.IsInfinity(interval)||interval<0){part.StopConventionalCadence();continue;}
+                        cadence.Observe(Time.time,interval,true);
+                        if(cadence.PendingShots.IsZero)continue;
+                    }
                     var energy=GetComponent<VehicleEnergyBank>();
-                    if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(part.Weapon)*R3VehicleModel.TierActivationCost(part.Tier)))continue;
-                    part.NextFireTime=Time.time+controller.WeaponInterval(part.Weapon);
-                    controller.FireFrom(part.Muzzle,part.Weapon,part.Id);
+                    float shotCost=VehicleEnergyCosts.ConventionalShot(part.Weapon)*R3VehicleModel.TierActivationCost(part.Tier);
+                    if(energy!=null&&!energy.TrySpend(shotCost)){part.StopConventionalCadence();continue;}
+                    if(cadence==null)part.NextFireTime=Time.time+interval;
+                    part.LastConventionalShotTime=Time.time;
+                    var firedMuzzle=part.Muzzle;
+                    var primary=controller.FirePrimaryFrom(firedMuzzle,part.Weapon,part.Id);
+                    if(primary!=null)
+                    {
+                        var roll=CaptureDoubleShotRoll();var requested=roll.RollExact();
+                        var due=cadence!=null?cadence.TakeAll():System.Numerics.BigInteger.One;
+                        if(cadence!=null)part.NextFireTime=cadence.NextFireTime;
+                        var additionalPrimaries=due-System.Numerics.BigInteger.One;
+                        if(requested>0||additionalPrimaries>0)
+                        {
+                            if(pending==null)pending=new List<PendingConventionalShot>();
+                            pending.Add(new PendingConventionalShot{Muzzle=firedMuzzle,Kind=part.Weapon,PartId=part.Id,Primary=primary,Requested=requested,CadenceShots=additionalPrimaries,CadenceRoll=roll,CadenceCost=shotCost});
+                        }
+                    }
                     var art=part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>();
                     if(art!=null){art.AdvanceMuzzle();part.Muzzle=art.Muzzle;}
                 }
+            if(pendingRockets!=null)
+                foreach(var shot in pendingRockets)shot.Binding.FireAdditionalExact(shot.Requested);
+            if(pending==null)return;
+            System.Numerics.BigInteger[] paid=null;bool hasCadence=false;
+            foreach(var shot in pending)if(shot.CadenceShots>0){hasCadence=true;break;}
+            if(hasCadence)
+            {
+                var costs=new float[pending.Count];var requests=new System.Numerics.BigInteger[pending.Count];
+                for(int i=0;i<pending.Count;i++){costs[i]=pending[i].CadenceCost;requests[i]=pending[i].CadenceShots;}
+                var energyBank=GetComponent<VehicleEnergyBank>();paid=energyBank!=null?energyBank.SpendFair(costs,requests):requests;
+            }
+            for(int i=0;i<pending.Count;i++)
+            {
+                var shot=pending[i];
+                if(shot.Shotgun!=null)shot.Shotgun.FireAdditional();
+                else if(shot.Rail!=null)shot.Rail.FireAdditionalExact(shot.Requested);
+                else
+                {
+                    var cadenceShots=paid!=null?paid[i]:shot.CadenceShots;
+                    if(cadenceShots>0&&shot.Primary!=null)
+                    {
+                        var queue=GetComponent<R3ConventionalProjectileQueue>();
+                        if(queue==null)queue=gameObject.AddComponent<R3ConventionalProjectileQueue>();
+                        queue.EnqueueCadence(shot.Primary.GetComponent<P17PhysicalShell>(),cadenceShots,shot.Requested,shot.CadenceRoll);
+                    }
+                    else controller.FireAdditionalExact(shot.Muzzle,shot.Kind,shot.PartId,shot.Primary,shot.Requested);
+                }
+            }
         }
 
         public static R1VehicleState Build(R3VehicleModel model, R1RunStats stats, R3VisualPalette palette,
@@ -279,7 +538,7 @@ namespace RoboRougelike.R3
                 if(state.Kind==R3PartKind.Core)core=block;
                 var part=item.AddComponent<R3MountedPart>(); part.Cell=state.Cell;part.Kind=state.Kind;part.Tier=R3VehicleModel.NormalizedTier(state.Tier);part.Damageable=hp;part.Block=block;
                 part.Id=state.Id;part.Weapon=state.Weapon;part.WheelStyle=state.WheelStyle;
-                part.UpgradeEffect=state.UpgradeEffect;part.UpgradeAmount=state.UpgradeAmount;
+                part.UpgradeEffect=state.UpgradeEffect;part.UpgradeOperation=state.UpgradeOperation;part.UpgradeScope=state.UpgradeScope;part.UpgradeAmount=state.UpgradeAmount;
                 assembly.Parts.Add(part);
                 if(state.Kind==R3PartKind.Armor&&!wide)R41PartGeometry.TryAttachArmor(item.transform,state.ArmorShape);
                 Transform payload=null;Transform partMuzzle=null;
@@ -346,9 +605,18 @@ namespace RoboRougelike.R3
                 root.AddComponent<RoboRougelike.MOV009Integration.MOV009VehicleAdapter>().Configure(assembly);
             if(model.Parts.Any(p=>p.Kind>=R3PartKind.Booster&&p.Kind<=R3PartKind.CrawlerTrack))
                 root.AddComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>().Configure(assembly);
+            root.AddComponent<RoboRougelike.MOVSeries.MOVSeriesInput>().Bind(root.GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>());
             root.AddComponent<R3MountedBonusEffects>().Configure(assembly,vehicle,stats);
             if(assembly.Parts.Any(p=>p.Kind==R3PartKind.RepairPulse))
                 root.AddComponent<R3RepairPulse>().Configure(assembly);
+            if(assembly.Parts.Any(p=>p.Kind==R3PartKind.Overdrive||p.Kind==R3PartKind.RapidFire||p.Kind==R3PartKind.DoubleShotOverdrive))
+                root.AddComponent<R3OffensiveDevices>().Configure(assembly);
+            if(assembly.Parts.Any(p=>p.Kind==R3PartKind.TargetedEmp||p.Kind==R3PartKind.AreaEmp))
+                root.AddComponent<R3EmpDevices>().Configure(assembly);
+            if(assembly.Parts.Any(p=>p.Kind==R3PartKind.RechargePulse))
+                root.AddComponent<R3RechargePulse>().Configure(assembly);
+            if(assembly.Parts.Any(p=>R3VehicleModel.IsDeployableSlotPart(p.Kind)))
+                root.AddComponent<R3DeployableService>().Configure(assembly);
             foreach(var part in assembly.Parts)
                 if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.Shotgun)
                     part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>()
@@ -383,7 +651,7 @@ namespace RoboRougelike.R3
                 root.AddComponent<RoboRougelike.WeaponIntegration.RRLWeaponControls>();
             foreach(var part in assembly.Parts)
                 if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.EmpEmitter)
-                    part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLEmpBinding>().Bind(model.Parts.First(p=>p.Id==part.Id),root.transform);
+                    part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLDamageAuraBinding>().Bind(model.Parts.First(p=>p.Id==part.Id),root.transform);
             foreach(var part in assembly.Parts)
                 if(part.Kind==R3PartKind.StructuralScanner)
                     part.gameObject.AddComponent<RoboRougelike.PackageIntegration.RRLStructuralScannerBinding>()

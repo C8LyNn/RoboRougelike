@@ -25,6 +25,8 @@ namespace RoboRougelike.PackageIntegration
                 if(enemy!=null&&!enemy.IsDefeated&&enemy.gameObject.activeInHierarchy)yield return enemy;
             var target=run.GetComponent<R6TestRange>()?.TrainingTarget;
             if(target!=null&&!target.IsDefeated&&target.gameObject.activeInHierarchy)yield return target;
+            var range=run.GetComponent<R6TestRange>();
+            if(range!=null)foreach(var enemy in range.ActiveCreativeEnemies)yield return enemy;
         }
         public static bool InEncounter(R1RunController run)=>run?.Progress!=null&&!run.Transitioning&&
             (run.Progress.State==R1RunState.Combat||run.Progress.State==R1RunState.TestDrive);

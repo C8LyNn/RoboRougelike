@@ -227,6 +227,33 @@ public class R41GarageTests
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(before));Assert.That(garage.Tool,Is.EqualTo(R41GarageTool.Inspect));
         yield return null;
     }
+    [UnityTest] public IEnumerator ReassignedRotationKeyTurnsGhostAndPointedWheel()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("GarageRotateYRight","K"),Is.True);
+            var garage=Run.Garage;Run.VehicleModel.Award(100);
+            var existing=Run.VehicleModel.Inventory.Select(part=>part.Id).ToArray();Assert.That(Run.GaragePurchase(R3PartKind.Armor),Is.True);
+            string armor=Run.VehicleModel.Inventory.First(part=>part.Kind==R3PartKind.Armor&&!existing.Contains(part.Id)).Id;garage.ChooseInventory(armor);
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K},Vector2.zero);
+            Assert.That(garage.SelectedRotation.y,Is.EqualTo(1));
+            var camera=Camera.main;garage.SetTool(R41GarageTool.Inspect);R3MountedPart pointed=null;Vector3 screen=default;
+            foreach(var part in Run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p!=null&&p.Kind==R3PartKind.Wheel))
+            {
+                var at=camera.WorldToScreenPoint(part.transform.position);
+                if(at.z<=0||!R3GarageView.InBuildArea(at,Screen.width,Screen.height))continue;
+                if(!garage.Point(camera.ScreenPointToRay(at))||garage.Cell!=part.Cell)continue;
+                pointed=part;screen=at;break;
+            }
+            Assert.That(pointed,Is.Not.Null);var cell=pointed.Cell;string id=pointed.Id;int wallet=Run.VehicleModel.Scrap;
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K,shift=true},new Vector2(screen.x,Screen.height-screen.y));
+            Assert.That(Run.VehicleModel.At(cell).Id,Is.EqualTo(id));Assert.That(Run.VehicleModel.At(cell).RotationQuarterTurns.y,Is.EqualTo(2));
+            Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(wallet));
+        }
+        finally{profile.ResetDefaults();}
+        yield return null;
+    }
     [UnityTest] public IEnumerator GhostColorTracksBlockedAndAllowedPlacementAfterReappearing()
     {
         var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
@@ -415,10 +442,16 @@ public class R41GarageTests
     [UnityTest] public IEnumerator WeaponGhostGeometryAndOrientationMatchMountedHeavyCannon()
     {
         Run.VehicleModel.Award(100);var garage=Run.Garage;string id=PurchasePart(R3PartKind.Gun,R4WeaponKind.Heavy);garage.ChooseInventory(id);
-        // The current starter has raised front armor at z=3; the former
-        // (2,2,2) placement legitimately intersects it. Mount on top of that
-        // armor instead, and still verify the real physical gate below.
-        Assert.That(garage.Point(TopRay(new Vector3Int(1,2,3))),Is.True);Assert.That(garage.Cell,Is.EqualTo(new Vector3Int(1,3,3)));
+        // Starter silhouettes change over time. Find an actual supported,
+        // ray-selectable cell and still exercise the real physical gate below.
+        bool found=false;
+        foreach(var support in Run.VehicleModel.Parts.Where(p=>p.Health>0))
+        {
+            var desired=support.Cell+Vector3Int.up;
+            if(Run.VehicleModel.OwnedPlacementError(id,desired,Vector3Int.zero)!=null)continue;
+            if(garage.Point(TopRay(support.Cell))&&garage.Cell==desired&&garage.PreviewValid){found=true;break;}
+        }
+        Assert.That(found,Is.True,"The current starter needs a visible legal mounting position: "+garage.PlacementIssue);
         Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
         var ghostBarrel=garage.Preview.Find("Obrót broni/Lufa");var size=ghostBarrel.localScale;var local=ghostBarrel.localPosition;
         var ghostArt=garage.Preview.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4W_Heavy_ROOT");
@@ -617,6 +650,23 @@ public class R41GarageTests
         garage.HandleGuiPointer(modified,Vector2.zero);
         Assert.That(garage.Tool,Is.EqualTo(R41GarageTool.Repair));
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(wallet));Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(parts));
+        yield return null;
+    }
+    [UnityTest] public IEnumerator ReassignedToolUsesGarageContextWithoutEditingVehicle()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("GarageToolRepair","K"),Is.True);
+            Assert.That(profile.TryBind("Weapon1","K"),Is.True);
+            var garage=Run.Garage;int wallet=Run.VehicleModel.Scrap,parts=Run.VehicleModel.Parts.Count;
+            garage.SetTool(R41GarageTool.Mount);garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K},Vector2.zero);
+            Assert.That(garage.Tool,Is.EqualTo(R41GarageTool.Repair));
+            garage.SetTool(R41GarageTool.Mount);garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.Alpha3},Vector2.zero);
+            Assert.That(garage.Tool,Is.EqualTo(R41GarageTool.Mount));
+            Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(wallet));Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(parts));
+        }
+        finally{profile.ResetDefaults();}
         yield return null;
     }
     [UnityTest] public IEnumerator GuiPointerEventsOrbitZoomAndNeverBuyThroughPanels()

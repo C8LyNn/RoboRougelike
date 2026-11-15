@@ -15,19 +15,51 @@ namespace RoboRougelike.R1
     {
         private readonly HashSet<string> lootSelection=new HashSet<string>();
         private IReadOnlyList<R4SalvageBasket> rewardBaskets=System.Array.Empty<R4SalvageBasket>();
+        private RewardBasketStream rewardBasketStream;
+        // One item of lookahead distinguishes a complete list from another
+        // available page without materializing every possible combination.
+        private sealed class RewardBasketStream:System.IDisposable
+        {
+            readonly IEnumerator<R4SalvageBasket> iterator;
+            R4SalvageBasket pending;
+            bool exhausted;
+            public readonly List<R4SalvageBasket> Items=new List<R4SalvageBasket>();
+            public bool HasMore=>pending!=null;
+            public RewardBasketStream(IEnumerable<R4SalvageBasket> source){iterator=source.GetEnumerator();}
+            public void LoadThrough(int count)
+            {
+                while(Items.Count<count&&!exhausted)
+                {
+                    if(pending!=null){Items.Add(pending);pending=null;continue;}
+                    if(iterator.MoveNext())Items.Add(iterator.Current);else exhausted=true;
+                }
+                if(!exhausted&&pending==null)
+                {if(iterator.MoveNext())pending=iterator.Current;else exhausted=true;}
+            }
+            public void Dispose(){iterator.Dispose();}
+        }
         private int selectedBasket=-1;
         private int selectedBonus=-1;
         private R4SalvageLedger displayedLedger;
-        private int lootPage,inventoryPage;
+        private long displayedBasketRevision;
+        private int rewardBasketSeed;
+        private string rewardBasketPreferredKey;
+        private int rewardBasketRefreshFrame=-1;
+        private int lootPage,inventoryPage,basketPage;
         private bool inventoryOpen;
         private string dismantleConfirmation;
         private string catalogFeedback;
         private bool rewardInventoryOpen;
+        private bool rewardMissedOpen;
+        private int rewardMissedPage;
+        private string rewardMissedFeedback;
         private bool rewardInventoryDamagedOnly;
         private int rewardInventoryPage;
         private string rewardDismantleConfirmation;
         private string rewardInventoryFeedback;
         private string rewardClaimFeedback;
+        private int basketRerollCount;
+        private static Rect RewardRerollRect()=>new Rect(455,556,370,35);
         private static Rect SalvageAmmoRect(float x,float y)=>new Rect(x+268,y+77,97,23);
         private static string SalvageAmmoLabel(R3PartState part)
         {
@@ -46,16 +78,38 @@ namespace RoboRougelike.R1
         }
         private void TrackRewardLedger(R4SalvageLedger ledger)
         {
-            if(displayedLedger==ledger)return;
-            displayedLedger=ledger;lootSelection.Clear();selectedBonus=-1;lootPage=0;
             var run=R1RunController.Instance;
-            rewardBaskets=ledger?.CreateBasketOffers((run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397),run?.Progress?.EncounterIndex??0)
-                ??System.Array.Empty<R4SalvageBasket>();
+            if(displayedLedger==ledger)
+            {
+                if(ledger==null||displayedBasketRevision==ledger.BasketRevision)return;
+                // A prepared or selected basket may now contain a collected
+                // part. Keep the bonus and open panels, but require a new basket.
+                RebuildRewardBasketStream(ledger,run,rewardBasketSeed);
+                lootSelection.Clear();selectedBasket=-1;basketPage=0;
+                rewardBasketRefreshFrame=Time.frameCount;
+                rewardClaimFeedback="Dostępne części się zmieniły. Wybierz zestaw ponownie.";
+                return;
+            }
+            displayedLedger=ledger;lootSelection.Clear();selectedBonus=-1;lootPage=0;basketPage=0;basketRerollCount=0;
+            rewardBasketRefreshFrame=-1;
+            rewardBasketPreferredKey=null;
+            rewardBasketSeed=(run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397);
+            RebuildRewardBasketStream(ledger,run,rewardBasketSeed);
             selectedBasket=-1;
-            rewardInventoryOpen=false;rewardInventoryDamagedOnly=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;rewardClaimFeedback=null;
+            rewardInventoryOpen=false;rewardMissedOpen=false;rewardMissedPage=0;rewardMissedFeedback=null;rewardInventoryDamagedOnly=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;rewardClaimFeedback=null;
+        }
+        private void RebuildRewardBasketStream(R4SalvageLedger ledger,R1RunController run,int seed)
+        {
+            rewardBasketStream?.Dispose();
+            rewardBasketStream=ledger==null?null:new RewardBasketStream(PrioritizedRewardBaskets(ledger,
+                seed,run?.Progress?.EncounterIndex??0,run?.VehicleModel?.RewardBasketOfferCount??3,rewardBasketPreferredKey));
+            rewardBasketStream?.LoadThrough(6);
+            rewardBaskets=rewardBasketStream!=null?rewardBasketStream.Items:System.Array.Empty<R4SalvageBasket>();
+            displayedBasketRevision=ledger?.BasketRevision??0;
         }
         internal bool CloseRewardInventory()
         {
+            if(rewardMissedOpen){rewardMissedOpen=false;rewardMissedFeedback=null;return true;}
             if(!rewardInventoryOpen)return false;
             rewardInventoryOpen=false;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;return true;
         }
@@ -73,14 +127,109 @@ namespace RoboRougelike.R1
         }
         private void ChooseRewardBasket(int index)
         {
-            if(index<0||index>=rewardBaskets.Count)return;
+            if(rewardBasketRefreshFrame==Time.frameCount||index<0||index>=rewardBaskets.Count)return;
             selectedBasket=index;rewardClaimFeedback=null;lootSelection.Clear();
             foreach(var item in rewardBaskets[index].Items)lootSelection.Add(item.Id);
+        }
+        private void DrawBasketPager(Rect rect)
+        {
+            int pages=(int)System.Math.Max(1,((long)rewardBaskets.Count+2)/3);
+            basketPage=Mathf.Clamp(basketPage,0,pages-1);
+            if(pages<=1)return;
+            bool enabled=GUI.enabled;
+            GUI.enabled=enabled&&basketPage>0;
+            if(GUI.Button(new Rect(rect.x,rect.y,54,rect.height),"‹",compactButton))basketPage--;
+            GUI.enabled=enabled;
+            GUI.Label(new Rect(rect.x+60,rect.y,rect.width-120,rect.height),$"Zestawy {basketPage+1}/{pages}{(rewardBasketStream?.HasMore==true?"+":"")}",small);
+            GUI.enabled=enabled&&basketPage<pages-1;
+            if(GUI.Button(new Rect(rect.x+rect.width-54,rect.y,54,rect.height),"›",compactButton))AdvanceBasketPage();
+            GUI.enabled=enabled;
+        }
+        private void AdvanceBasketPage()
+        {
+            int pages=(int)System.Math.Max(1,((long)rewardBaskets.Count+2)/3);
+            if(basketPage>=pages-1)return;
+            basketPage++;
+            int through=(int)System.Math.Min(int.MaxValue,((long)basketPage+2)*3);
+            rewardBasketStream?.LoadThrough(through);
+        }
+        private static string RewardBasketKey(R4SalvageBasket basket)=>((int)basket.Archetype)+":"+string.Concat(basket.Items.Select(p=>p.Id)
+            .OrderBy(id=>id,System.StringComparer.Ordinal).Select(id=>id.Length+":"+id));
+        private static bool SameRewardBaskets(IReadOnlyList<R4SalvageBasket> a,IReadOnlyList<R4SalvageBasket> b)
+        {
+            if(a==null||b==null)return false;
+            // Repeating an existing card a different number of times adds no
+            // choice, so it cannot justify spending scrap on a reroll.
+            var choices=new HashSet<string>(a.Select(RewardBasketKey),System.StringComparer.Ordinal);
+            return choices.SetEquals(b.Select(RewardBasketKey));
+        }
+        private static IEnumerable<R4SalvageBasket> PrioritizedRewardBaskets(R4SalvageLedger ledger,int seed,int stage,int offerCount,string preferredKey)
+        {
+            if(offerCount<=0)yield break;
+            // The first three legacy offers may repeat. Later offers are unique,
+            // so seven candidates suffice to find an alternative to a three-card page.
+            var preferred=preferredKey==null?null:ledger.EnumerateBasketOffers(seed,stage,System.Math.Max(7,offerCount)).Take(7)
+                .FirstOrDefault(basket=>RewardBasketKey(basket)==preferredKey);
+            int emitted=0;bool skipped=false;
+            if(preferred!=null){yield return preferred;emitted++;}
+            foreach(var basket in ledger.EnumerateBasketOffers(seed,stage,offerCount))
+            {
+                if(preferred!=null&&!skipped&&RewardBasketKey(basket)==preferredKey){skipped=true;continue;}
+                if(emitted>=offerCount)yield break;
+                yield return basket;emitted++;
+            }
+        }
+        private bool RerollRewardBaskets(R1RunController run)
+        {
+            if(run==null||run.VehicleModel==null||run.Definition==null||run.Progress?.State!=R1RunState.Salvage||
+                run.Salvage==null||run.Salvage!=displayedLedger||run.Salvage.Closed||rewardBaskets.Count==0||rewardBasketRefreshFrame==Time.frameCount)return false;
+            int price=Mathf.Max(0,run.Definition.RewardBasketRerollCost);
+            if(run.VehicleModel.Scrap<price){rewardClaimFeedback=$"Brakuje {price-run.VehicleModel.Scrap} Z na losowanie.";return false;}
+            int stage=run.Progress.EncounterIndex;
+            // Reroll returns to page one. Compare what the player will see to
+            // the current page, and do not rebuild every page previously read.
+            int currentStart=(int)System.Math.Min(int.MaxValue,(long)basketPage*3);
+            var currentlyVisible=rewardBaskets.Skip(currentStart).Take(3).ToArray();
+            int nextSeed=unchecked((run.Seed^(stage*397))+((basketRerollCount*16+1)*7919));
+            int offerCount=run.VehicleModel.RewardBasketOfferCount;
+            string preferredKey=null;
+            var next=new RewardBasketStream(run.Salvage.EnumerateBasketOffers(nextSeed,stage,offerCount));
+            next.LoadThrough(6);
+            if(next.Items.Count==0||SameRewardBaskets(currentlyVisible,next.Items.Take(3).ToArray()))
+            {
+                next.Dispose();next=null;
+                var visibleKeys=new HashSet<string>(currentlyVisible.Select(RewardBasketKey),System.StringComparer.Ordinal);
+                var alternative=run.Salvage.EnumerateBasketOffers(nextSeed,stage,System.Math.Max(7,offerCount)).Take(7)
+                    .FirstOrDefault(basket=>!visibleKeys.Contains(RewardBasketKey(basket)));
+                if(alternative!=null)
+                {
+                    preferredKey=RewardBasketKey(alternative);
+                    next=new RewardBasketStream(PrioritizedRewardBaskets(run.Salvage,nextSeed,stage,offerCount,preferredKey));
+                    next.LoadThrough(6);
+                }
+            }
+            if(next==null||next.Items.Count==0||SameRewardBaskets(currentlyVisible,next.Items.Take(3).ToArray()))
+            {next?.Dispose();rewardClaimFeedback="Nie udało się wylosować innych zestawów. Nie pobrano opłaty.";return false;}
+            if(!run.VehicleModel.TrySpendScrap(price)){next.Dispose();return false;}
+            rewardBasketStream?.Dispose();rewardBasketStream=next;rewardBasketSeed=nextSeed;rewardBasketPreferredKey=preferredKey;displayedBasketRevision=run.Salvage.BasketRevision;
+            basketRerollCount++;rewardBaskets=next.Items;basketPage=0;selectedBasket=-1;lootSelection.Clear();
+            rewardClaimFeedback=$"Nowe zestawy • koszt {price} Z. Wybierz zestaw.";return true;
+        }
+        private void DrawRerollRewardButton(R1RunController run,Rect rect)
+        {
+            int price=Mathf.Max(0,run.Definition.RewardBasketRerollCost);
+            bool wasEnabled=GUI.enabled;
+            GUI.enabled=wasEnabled&&rewardBaskets.Count>0&&run.VehicleModel.Scrap>=price;
+            string caption=run.VehicleModel.Scrap<price?$"Brakuje {price-run.VehicleModel.Scrap} Z":$"Przelosuj zestawy • {price} Z";
+            if(GUI.Button(rect,caption,compactButton))RerollRewardBaskets(run);
+            GUI.enabled=wasEnabled;
         }
         private void SelectRewardBonus(int index){selectedBonus=index;rewardClaimFeedback=null;}
         private bool ConfirmSelectedRewards(R1RunController run)
         {
+            if(rewardBasketRefreshFrame==Time.frameCount)return false;
             bool accepted=run.ConfirmRewards(lootSelection,selectedBonus>=0?new[]{selectedBonus}:System.Array.Empty<int>());
+            if(accepted){rewardBasketStream?.Dispose();rewardBasketStream=null;}
             rewardClaimFeedback=accepted?null:"Nie udało się odebrać nagród. Spróbuj ponownie.";
             return accepted;
         }
@@ -96,9 +245,32 @@ namespace RoboRougelike.R1
                     if(part.Kind==R3PartKind.BonusModule)name+=" • "+BonusInstanceText(part);
                     return group.Count()>1?$"{name} ×{group.Count()}":name;
                 }));
+        private static string RewardBasketContentsForModel(IEnumerable<R4SalvageItem> items,R3VehicleModel model)=>string.Join(", ",
+            items.Select(item=>item.ToPart()).GroupBy(part=>part.Kind==R3PartKind.BonusModule?
+                "bonus:"+CatalogBonusKey(part)+":"+R3VehicleModel.NormalizedTier(part.Tier):"part:"+R4WeaponDefinition.PartName(part))
+                .Select(group=>{
+                    var part=group.First();string name=R4WeaponDefinition.PartName(part);
+                    if(part.Kind==R3PartKind.BonusModule)name+=" • "+BonusInstanceText(part);
+                    long quantity=group.Sum(p=>(long)model.GrantQuantity(p.Kind,p.ArmorShape));
+                    return quantity>1?$"{name} ×{quantity}":name;
+                }));
+        private int SelectedRewardPartCount(R1RunController run)=>run?.Salvage==null||run.VehicleModel==null?0:
+            (int)System.Math.Min(int.MaxValue,run.Salvage.Items.Where(p=>lootSelection.Contains(p.Id))
+                .Sum(p=>(long)run.VehicleModel.GrantQuantity(p.Kind,p.ToPart().ArmorShape)));
         private static int RewardShortcutIndex(bool first,bool second,bool third)=>first?0:second?1:third?2:-1;
+        static readonly string[] RewardBonusActions={"RewardBonus1","RewardBonus2","RewardBonus3"};
+        static readonly string[] RewardBasketActions={"RewardBasket1","RewardBasket2","RewardBasket3"};
+        static string RewardBinding(string action)=>R1ControlProfile.Display(R1ControlProfile.Current.Binding(action));
+        static string RewardBindings(string[] actions)=>string.Join(" / ",actions.Select(RewardBinding));
         private static string RewardConfirmCaption(int basketCount)=>basketCount==0?
-            "Odbierz bonus [Enter]":"Zatwierdź oba wybory [Enter]";
+            "Odbierz bonus ["+RewardBinding("RewardConfirm")+"]":"Zatwierdź oba wybory ["+RewardBinding("RewardConfirm")+"]";
+        private static string RewardBasketSelectionText(int selected,int basketCount,int currentPage,int partCount)
+        {
+            if(basketCount<=0)return "brak łupów";
+            if(selected<0||selected>=basketCount)return "wymagany";
+            int selectedPage=selected/3;
+            return partCount+" części"+(selectedPage==currentPage?"":$" • str. {selectedPage+1}");
+        }
         private static string RewardActionCaption(int bonus,int bonusCount,int basket,int basketCount,int inventoryCount,int lootCount)
         {
             if(bonusCount<=0)return "Brak dostępnych bonusów";
@@ -118,35 +290,61 @@ namespace RoboRougelike.R1
             $"Wybierz moduł i jeden zestaw z wraków. +{scrap} Z za walkę.";
         private static bool RewardSelectionReady(int bonus,int bonusCount,int basket,int basketCount,int inventoryCount,int lootCount)
             =>bonus>=0&&bonus<bonusCount&&(basketCount==0||(basket>=0&&basket<basketCount))&&
-              inventoryCount+lootCount+1<=R3VehicleModel.InventoryCapacity;
+              (long)inventoryCount+lootCount+1<=R3VehicleModel.InventoryCapacity;
 #if ENABLE_INPUT_SYSTEM
+        static bool RewardKeyPressed(Keyboard keyboard,R1ControlProfile profile,string action)
+        {
+            var binding=profile.Binding(action);
+            return keyboard!=null&&System.Enum.TryParse(binding,false,out Key key)&&key!=Key.None&&keyboard[key].wasPressedThisFrame;
+        }
         public void ReadRewardInput(Keyboard keyboard)
         {
             var run=R1RunController.Instance;
-            if(run?.Progress?.State!=R1RunState.Salvage||run.Transitioning||run.Salvage==null)return;
+            if(run?.Progress?.State!=R1RunState.Salvage||run.Transitioning||run.Paused||run.QuitRequested||run.Salvage==null)return;
             TrackRewardLedger(run.Salvage);
-            if(rewardInventoryOpen)return;
-            int index=keyboard.digit1Key.wasPressedThisFrame?0:keyboard.digit2Key.wasPressedThisFrame?1:keyboard.digit3Key.wasPressedThisFrame?2:-1;
+            if(rewardBasketRefreshFrame==Time.frameCount)return;
+            if(rewardInventoryOpen||rewardMissedOpen)return;
+            var profile=R1ControlProfile.Current;
+            int index=RewardShortcutIndex(RewardKeyPressed(keyboard,profile,RewardBonusActions[0]),RewardKeyPressed(keyboard,profile,RewardBonusActions[1]),RewardKeyPressed(keyboard,profile,RewardBonusActions[2]));
             if(index>=0&&index<run.Progress.Offers.Count)
             {
                 SelectRewardBonus(index);
             }
-            int basket=RewardShortcutIndex(keyboard.qKey.wasPressedThisFrame,keyboard.wKey.wasPressedThisFrame,keyboard.eKey.wasPressedThisFrame);
-            if(basket>=0&&basket<rewardBaskets.Count)ChooseRewardBasket(basket);
-            if(keyboard.enterKey.wasPressedThisFrame&&RewardSelectionReady(selectedBonus,run.Progress.Offers.Count,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count))ConfirmSelectedRewards(run);
+            int basket=RewardShortcutIndex(RewardKeyPressed(keyboard,profile,RewardBasketActions[0]),RewardKeyPressed(keyboard,profile,RewardBasketActions[1]),RewardKeyPressed(keyboard,profile,RewardBasketActions[2]));
+            if(basket>=0&&basketPage*3+basket<rewardBaskets.Count)ChooseRewardBasket(basketPage*3+basket);
+            if(RewardKeyPressed(keyboard,profile,"RewardConfirm")&&RewardSelectionReady(selectedBonus,run.Progress.Offers.Count,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,SelectedRewardPartCount(run)))ConfirmSelectedRewards(run);
         }
 #endif
+        void TryRewardMouse(R1RunController run,Event input)
+        {
+            if(run?.Progress?.State!=R1RunState.Salvage||run.Transitioning||run.Paused||run.QuitRequested||run.Salvage==null||
+               rewardInventoryOpen||rewardMissedOpen||rewardBasketRefreshFrame==Time.frameCount||!R1ControlProfile.IsBindingMouseDown(input))return;
+            var profile=R1ControlProfile.Current;
+            for(int i=0;i<RewardBonusActions.Length;i++)
+                if(profile.MatchesEvent(RewardBonusActions[i],input))
+                {if(i<run.Progress.Offers.Count)SelectRewardBonus(i);input.Use();return;}
+            for(int i=0;i<RewardBasketActions.Length;i++)
+                if(profile.MatchesEvent(RewardBasketActions[i],input))
+                {if(basketPage*3+i<rewardBaskets.Count)ChooseRewardBasket(basketPage*3+i);input.Use();return;}
+            if(profile.MatchesEvent("RewardConfirm",input))
+            {
+                if(RewardSelectionReady(selectedBonus,run.Progress.Offers.Count,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,SelectedRewardPartCount(run)))ConfirmSelectedRewards(run);
+                input.Use();
+            }
+        }
         private void DrawSalvage(R1RunController run)
         {
             var ledger=run.Salvage;
             TrackRewardLedger(ledger);
+            if(rewardMissedOpen){DrawMissedLoot(run,false);return;}
             if(rewardInventoryOpen){DrawRewardInventory(run);return;}
             GUI.Label(new Rect(45,30,1190,60),run.LastActivityWasReactor?"ZWYCIĘSTWO • REAKTOR OBRONIONY":"ZWYCIĘSTWO • WYBÓR NAGRÓD",title);
             GUI.Label(new Rect(45,97,1190,50),
                 RewardIntro(rewardBaskets.Count,run.LastScrapReward)+
                 (string.IsNullOrEmpty(run.TechnologyMessage)?"":"\n"+run.TechnologyMessage),body);
-            GUI.Label(new Rect(45,155,355,32),"BONUS • [1 / 2 / 3]",heading);
-            GUI.Label(new Rect(455,155,765,32),"ZESTAW • [Q / W / E]",heading);
+            GUI.Label(new Rect(45,155,355,32),"BONUS • ["+RewardBindings(RewardBonusActions)+"]",heading);
+            GUI.Label(new Rect(455,155,420,32),"ZESTAW • ["+RewardBindings(RewardBasketActions)+"]",heading);
+            DrawBasketPager(new Rect(875,155,345,32));
 
             var offers=run.Progress.Offers.ToArray();
             for(int i=0;i<offers.Length;i++)
@@ -157,42 +355,90 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(55,y+40,243,57),upgrade.Description,small);
                 bool chosen=selectedBonus==i;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
-                if(GUI.Button(new Rect(308,y+25,97,50),chosen?"Wybrano ✓":$"Wybierz [{i+1}]",compactButton))
+                if(GUI.Button(new Rect(308,y+25,97,50),chosen?"Wybrano ✓":$"Wybierz [{RewardBinding(RewardBonusActions[i])}]",compactButton))
                     SelectRewardBonus(i);
                 GUI.enabled=true;GUI.backgroundColor=Color.white;
             }
             if(offers.Length==0)
                 GUI.Label(new Rect(55,205,345,80),"Brak propozycji modułów bonusowych.",small);
 
-            for(int i=0;i<rewardBaskets.Count;i++)
+            for(int i=0;i<3&&basketPage*3+i<rewardBaskets.Count;i++)
             {
-                var basket=rewardBaskets[i];float x=455,y=197+i*116;
+                int basketIndex=basketPage*3+i;
+                var basket=rewardBaskets[basketIndex];float x=455,y=197+i*116;
                 Panel(new Rect(x,y,765,104));
                 GUI.contentColor=BasketColor(basket);
                 GUI.Label(new Rect(x+10,y+6,520,28),RewardBasketHeading(basket),body);
                 GUI.contentColor=Color.white;
-                GUI.Label(new Rect(x+10,y+39,535,54),RewardBasketContents(basket.Items)+"\nWszystkie części sprawne (100% HP)",small);
-                bool chosen=selectedBasket==i;
+                GUI.Label(new Rect(x+10,y+39,535,54),RewardBasketContentsForModel(basket.Items,run.VehicleModel)+"\nWszystkie części sprawne (100% HP)",small);
+                bool chosen=selectedBasket==basketIndex;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
-                string key=i<3?"QWE"[i].ToString():null;
-                if(GUI.Button(new Rect(x+570,y+25,180,50),chosen?"Wybrano ✓":key!=null?$"Wybierz [{key}]":"Wybierz",compactButton))ChooseRewardBasket(i);
+                string key=i<3?RewardBinding(RewardBasketActions[i]):null;
+                if(GUI.Button(new Rect(x+570,y+25,180,50),chosen?"Wybrano ✓":key!=null?$"Wybierz [{key}]":"Wybierz",compactButton))ChooseRewardBasket(basketIndex);
                 GUI.backgroundColor=Color.white;
             }
             if(rewardBaskets.Count==0)GUI.Label(new Rect(465,205,735,60),"Brak części do odzyskania.",small);
 
+            DrawRerollRewardButton(run,RewardRerollRect());
+            DrawMissedLootButton(run,new Rect(45,556,370,35));
             if(GUI.Button(new Rect(850,556,375,35),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • zwolnij miejsce",compactButton))
                 rewardInventoryOpen=true;
-            int missing=RewardInventoryMissingSlots(run.VehicleModel.Inventory.Count,lootSelection.Count);
+            int rewardPartCount=SelectedRewardPartCount(run);
+            int missing=RewardInventoryMissingSlots(run.VehicleModel.Inventory.Count,rewardPartCount);
             bool room=missing==0;
             GUI.Label(new Rect(45,603,685,87),
-                $"Moduł: {(selectedBonus>=0?"wybrany":"wymagany")}  •  Zestaw: {(selectedBasket>=0?lootSelection.Count+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n" +
+                $"Moduł: {(selectedBonus>=0?"wybrany":"wymagany")}  •  Zestaw: {RewardBasketSelectionText(selectedBasket,rewardBaskets.Count,basketPage,rewardPartCount)}\n" +
                 $"Niewybrane części → +{run.VehicleModel.PreviewAward(ledger.PreviewScrap(run.VehicleModel,lootSelection))} Z.\n" +
                 "Bonusy trafiają do magazynu i pozostają NIEAKTYWNE do montażu.",small);
-            GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count);
-            if(GUI.Button(new Rect(805,610,420,68),RewardActionCaption(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count),button))
+            GUI.enabled=rewardBasketRefreshFrame!=Time.frameCount&&RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount);
+            if(GUI.Button(new Rect(805,610,420,68),RewardActionCaption(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount),button))
                 ConfirmSelectedRewards(run);
             GUI.enabled=true;
             if(!room||!string.IsNullOrEmpty(rewardClaimFeedback))GUI.Label(new Rect(45,685,1180,30),!room?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. Otwórz magazyn, aby je zwolnić.":rewardClaimFeedback,small);
+            TryRewardMouse(run,Event.current);
+        }
+        private void DrawMissedLootButton(R1RunController run,Rect rect)
+        {
+            int count=run.Salvage.MissedPhysicalItems.Count();
+            if(count>0&&GUI.Button(rect,$"Pominięte łupy ({count})",compactButton))
+            {rewardMissedOpen=true;rewardMissedPage=0;rewardMissedFeedback=null;}
+        }
+        private static string MissedLootRecoveryCaption(int price,int scrap,bool room)=>
+            !room?"Brak miejsca":price<=0?"Odzysk niedostępny":scrap<price?$"Brakuje {(long)price-scrap} Z":$"Odzyskaj • {price} Z";
+        private void DrawMissedLoot(R1RunController run,bool portrait)
+        {
+            var model=run.VehicleModel;var items=run.Salvage.MissedPhysicalItems.ToArray();
+            int pages=Mathf.Max(1,Mathf.CeilToInt(items.Length/5f));rewardMissedPage=Mathf.Clamp(rewardMissedPage,0,pages-1);
+            float left=portrait?24:45,width=portrait?720:1180,top=portrait?170:180,height=portrait?108:68,step=portrait?120:76;
+            GUI.Label(new Rect(left,20,width,45),"POMINIĘTE ŁUPY",title);
+            GUI.Label(new Rect(left,72,width,76),$"Odzyskaj część za {model.Economy.MissedLootRecoveryCost} Z • masz {model.Scrap} Z.\nStan HP pozostaje taki jak na polu walki.",small);
+            if(items.Length==0)GUI.Label(new Rect(left,top,width,45),"Brak pominiętych części.",body);
+            var visible=items.Skip(rewardMissedPage*5).Take(5).ToArray();
+            for(int i=0;i<visible.Length;i++)
+            {
+                var item=visible[i];var part=item.ToPart();int quantity=model.GrantQuantity(part.Kind,part.ArmorShape);
+                float y=top+i*step;Panel(new Rect(left,y,width,height));
+                float buttonWidth=portrait?190:250;
+                GUI.Label(new Rect(left+12,y+5,width-buttonWidth-30,height-10),$"{R4WeaponDefinition.PartName(part)} × {quantity} • HP {PartHealthText(part.Health)}\n{part.Source}",small);
+                bool hasRoom=(long)model.Inventory.Count+quantity<=model.AvailableInventoryCapacity;
+                int price=model.Economy.MissedLootRecoveryCost;bool affordable=price>0&&model.Scrap>=price;
+                bool enabled=GUI.enabled;GUI.enabled=enabled&&hasRoom&&affordable;
+                string caption=MissedLootRecoveryCaption(price,model.Scrap,hasRoom);
+                if(GUI.Button(new Rect(left+width-buttonWidth-12,y+(height-48)/2,buttonWidth,48),caption,compactButton))
+                {
+                    bool accepted=run.TryRecoverMissedLoot(item.Id);
+                    rewardMissedFeedback=accepted?"Część trafiła do magazynu.":"Nie udało się odzyskać części.";
+                    if(accepted)return;
+                }
+                GUI.enabled=enabled;
+            }
+            float pagerY=portrait?800:580;bool previous=GUI.enabled;
+            GUI.enabled=previous&&rewardMissedPage>0;if(GUI.Button(new Rect(left,pagerY,90,40),"←",compactButton))rewardMissedPage--;
+            GUI.enabled=previous;GUI.Label(new Rect(left+105,pagerY+5,220,32),$"Strona {rewardMissedPage+1}/{pages}",small);
+            GUI.enabled=previous&&rewardMissedPage<pages-1;if(GUI.Button(new Rect(left+320,pagerY,90,40),"→",compactButton))rewardMissedPage++;
+            GUI.enabled=previous;
+            if(!string.IsNullOrEmpty(rewardMissedFeedback))GUI.Label(new Rect(left,portrait?865:625,portrait?720:700,35),rewardMissedFeedback,small);
+            if(GUI.Button(portrait?new Rect(24,930,720,64):new Rect(805,630,420,60),"Wróć do nagród [Esc]",button))CloseRewardInventory();
         }
         private static Rect RewardInventoryDetailsRect(int index)=>new Rect(60,187+index*76,475,57);
         private static Rect RewardInventoryStatusRect(int index)=>new Rect(550,187+index*76,280,57);
@@ -204,7 +450,7 @@ namespace RoboRougelike.R1
                 new Rect(area.x,area.y,confirmWidth,area.height);
         }
         private static string RewardInventoryItemText(R3PartState item) =>
-            $"{R4WeaponDefinition.PartName(item)} • HP {item.Health*100:0}%\nŹródło: {item.Source}";
+            $"{R4WeaponDefinition.PartName(item)} • HP {PartHealthText(item.Health)}\nŹródło: {item.Source}";
         private static string RewardInventoryRepairText(R3VehicleModel model,R3PartState item)
         {
             if(item.Health>=1f)return "Naprawa: niepotrzebna";
@@ -220,8 +466,9 @@ namespace RoboRougelike.R1
         {
             var model=run.VehicleModel;
             GUI.Label(new Rect(45,30,1190,60),"MAGAZYN • MIEJSCE NA NAGRODY",title);
-            int missing=RewardInventoryMissingSlots(model.Inventory.Count,lootSelection.Count);
-            GUI.Label(new Rect(45,99,790,62),$"Zajęte: {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • Nagrody: {lootSelection.Count+1} miejsc.\n"+
+            int rewardPartCount=SelectedRewardPartCount(run);
+            int missing=RewardInventoryMissingSlots(model.Inventory.Count,rewardPartCount);
+            GUI.Label(new Rect(45,99,790,62),$"Zajęte: {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • Nagrody: {(long)rewardPartCount+1} miejsc.\n"+
                 (missing>0?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. ":"Obecny wybór się mieści. ")+"Rozmontowanie wymaga potwierdzenia.",body);
             DrawRewardInventoryFilter(model,new Rect(860,110,350,48));
             var items=RewardInventoryItems(model,rewardInventoryDamagedOnly);
@@ -258,31 +505,69 @@ namespace RoboRougelike.R1
         private static string BonusText(R3PartState item)
         {
             if(item.UpgradeEffect==R1UpgradeEffect.Repair)return "Regeneracja 2,5% HP/s";
+            if(item.UpgradeEffect==R1UpgradeEffect.HybridBlastRounds)return $"Amunicja działa: {Mathf.Min(1,item.UpgradeAmount)*100:0.#}% wybuchowa";
             string name=item.UpgradeEffect switch {
-                R1UpgradeEffect.Hull=>"Wytrzymałość",R1UpgradeEffect.Damage=>"Obrażenia",
-                R1UpgradeEffect.Reload=>"Czas przeładowania",R1UpgradeEffect.Mobility=>"Mobilność",
-                R1UpgradeEffect.Core=>"Rdzeń",_=>"Bonus"
+                R1UpgradeEffect.Hull=>item.UpgradeScope==R1BonusScope.Construction?"Wytrzymałość klocków":"Wytrzymałość",R1UpgradeEffect.Damage=>DamageBonusName(item),
+                R1UpgradeEffect.Reload=>ReloadBonusName(item),R1UpgradeEffect.Mobility=>MobilityBonusName(item),
+                R1UpgradeEffect.Core=>"Rdzeń",R1UpgradeEffect.EnergyCapacity=>EnergyCapacityBonusName(item),R1UpgradeEffect.EnergyRegeneration=>"Regeneracja energii",R1UpgradeEffect.ShieldDurability=>ShieldDurabilityBonusName(item),R1UpgradeEffect.RepairEfficiency=>RepairBonusName(item),_=>"Bonus"
             };
+            if(item.UpgradeOperation!=R1ModifierOperation.Increased)return OtherBonusOperationText(item,name,1);
             return name+" "+(item.UpgradeEffect==R1UpgradeEffect.Reload?"−":"+")+
-                (item.UpgradeAmount*100).ToString("0")+"%";
+                ((double)item.UpgradeAmount*100).ToString("0.###")+"%";
+        }
+        private static string EnergyCapacityBonusName(R3PartState item)=>item.UpgradeScope==R1BonusScope.BatteryCapacity?"Pojemność baterii":"Pojemność energii";
+        private static string ShieldDurabilityBonusName(R3PartState item)=>item.UpgradeScope==R1BonusScope.Turrets?"Wytrzymałość kopuł wieżyczek":"Wytrzymałość osłon";
+        private static string RepairBonusName(R3PartState item)=>item.UpgradeScope switch {
+            R1BonusScope.Drones=>"Naprawy wykonywane przez drony",R1BonusScope.Turrets=>"Naprawy wykonywane przez wieżyczki",_=>"Skuteczność napraw"};
+        private static string DamageBonusName(R3PartState item)=>item.UpgradeScope switch {
+            R1BonusScope.BasicCannon=>"Obrażenia działa podstawowego",R1BonusScope.Drones=>"Obrażenia dronów",
+            R1BonusScope.Turrets=>"Obrażenia wieżyczek",R1BonusScope.Traps=>"Obrażenia pułapek",
+            R1BonusScope.BlastDamage=>"Obrażenia wybuchowe",R1BonusScope.PiercingDamage=>"Obrażenia przebijające",
+            R1BonusScope.KineticDamage=>"Obrażenia kinetyczne",R1BonusScope.Weapons=>"Obrażenia broni",R1BonusScope.AutomaticWeapon=>"Obrażenia broni automatycznej",R1BonusScope.EnergyDamage=>"Obrażenia energetyczne",
+            R1BonusScope.HeavyWeapon=>"Obrażenia ciężkiego działa",R1BonusScope.ShotgunWeapon=>"Obrażenia strzelby",
+            R1BonusScope.RailgunWeapon=>"Obrażenia railguna",R1BonusScope.RocketWeapon=>"Obrażenia wyrzutni rakiet",
+            R1BonusScope.BeamWeapon=>"Obrażenia wiązki",R1BonusScope.SawWeapon=>"Obrażenia piły",R1BonusScope.AuraWeapon=>"Obrażenia aury",_=>"Obrażenia"};
+        private static string MobilityBonusName(R3PartState item)=>item.UpgradeScope switch {
+            R1BonusScope.WheelDrive=>"Mobilność kół",R1BonusScope.TrackDrive=>"Mobilność gąsienic",
+            R1BonusScope.OmniDrive=>"Mobilność Omni",R1BonusScope.HoverDrive=>"Mobilność zawisu",_=>"Mobilność"};
+        private static string ReloadBonusName(R3PartState item)=>item.UpgradeScope switch {
+            R1BonusScope.Weapons=>"Odstęp strzałów broni",R1BonusScope.Drones=>"Odstęp strzałów dronów",R1BonusScope.Turrets=>"Odstęp strzałów wieżyczek",R1BonusScope.BasicCannon=>"Odstęp strzałów działa podstawowego",
+            R1BonusScope.AutomaticWeapon=>"Odstęp strzałów automatu",R1BonusScope.HeavyWeapon=>"Odstęp strzałów ciężkiego działa",
+            R1BonusScope.ShotgunWeapon=>"Odstęp salw strzelby",R1BonusScope.RailgunWeapon=>"Odstęp strzałów railguna",
+            R1BonusScope.RocketWeapon=>"Odstęp strzałów wyrzutni",_=>"Odstęp strzałów"};
+        private static string OtherBonusOperationText(R3PartState item,string name,int units)
+        {
+            bool inverse=item.UpgradeEffect==R1UpgradeEffect.Reload;
+            if(item.UpgradeOperation==R1ModifierOperation.Reduced)
+                return $"{name} {(inverse?"+":"−")}{(double)item.UpgradeAmount*units*100:0.###}%";
+            bool more=item.UpgradeOperation==R1ModifierOperation.More;
+            double sign=(more?1d:-1d)*(inverse?-1d:1d);
+            double factor=System.Math.Pow(System.Math.Max(0d,1d+sign*item.UpgradeAmount),units);
+            return $"{name} ×{factor:0.####} • osobny mnożnik";
         }
         private static string BonusInstanceText(R3PartState item)
         {
             int units=R3VehicleModel.TierEffectUnits(item.Tier);
             if(item.UpgradeEffect==R1UpgradeEffect.Repair)
-                return $"Regeneracja do {Mathf.Min(.08f,units*.025f)*100:0.#}% HP/s";
-            var stats=new R1RunStats();for(int i=0;i<units;i++)stats.Apply(item.UpgradeEffect,item.UpgradeAmount);
-            string name;float percent;bool reduction=false;
+                return $"Regeneracja {units*.025f*100:0.#}% HP/s";
+            if(item.UpgradeEffect==R1UpgradeEffect.HybridBlastRounds)
+                return $"Działo: do {Mathf.Min(1,item.UpgradeAmount*units)*100:0.#}% składowej wybuchowej";
+            string name;double percent;bool reduction=false;
             switch(item.UpgradeEffect)
             {
-                case R1UpgradeEffect.Hull:name="Wytrzymałość";percent=(stats.Hull-1)*100;break;
-                case R1UpgradeEffect.Damage:name="Obrażenia";percent=(stats.Damage-1)*100;break;
-                case R1UpgradeEffect.Reload:name="Czas przeładowania";percent=(1-stats.FireInterval)*100;reduction=true;break;
-                case R1UpgradeEffect.Mobility:name="Mobilność";percent=(stats.Mobility-1)*100;break;
-                case R1UpgradeEffect.Core:name="Rdzeń";percent=(stats.Core-1)*100;break;
+                case R1UpgradeEffect.Hull:name=item.UpgradeScope==R1BonusScope.Construction?"Wytrzymałość klocków":"Wytrzymałość";percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.Damage:name=DamageBonusName(item);percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.Reload:name=ReloadBonusName(item);percent=System.Math.Min(100d,(double)item.UpgradeAmount*units*100);reduction=true;break;
+                case R1UpgradeEffect.Mobility:name=MobilityBonusName(item);percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.Core:name="Rdzeń";percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.EnergyCapacity:name=EnergyCapacityBonusName(item);percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.EnergyRegeneration:name="Regeneracja energii";percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.ShieldDurability:name=ShieldDurabilityBonusName(item);percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.RepairEfficiency:name=RepairBonusName(item);percent=(double)item.UpgradeAmount*units*100;break;
                 default:return "Nieznany bonus";
             }
-            return $"{name} do {(reduction?"−":"+")}{percent:0.#}%";
+            if(item.UpgradeOperation!=R1ModifierOperation.Increased)return OtherBonusOperationText(item,name,units);
+            return $"{name} do {(reduction?"−":"+")}{percent:0.###}%";
         }
         private void DrawInventory(R1RunController run)
         {
@@ -317,12 +602,12 @@ namespace RoboRougelike.R1
             DrawCatalogBulkRepair(run,items,new Rect(970,295,280,36));
             int price=model.Price(kind,weapon);
             bool unlocked=run.CanBuyTechnology(kind,weapon);
-            GUI.enabled=unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&model.Inventory.Count<model.AvailableInventoryCapacity;
-            if(GUI.Button(new Rect(970,340,136,40),model.CreativeMode?"Dodaj za darmo":GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))
+            GUI.enabled=unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&(long)model.Inventory.Count+CatalogPurchaseQuantity(model,kind)<=model.AvailableInventoryCapacity;
+            if(GUI.Button(new Rect(970,340,136,40),CatalogPurchaseCaption(model,kind,unlocked,price),compactButton))
             {
                 dismantleConfirmation=null;
                 if(AddSelectedCatalogPart(run,kind,weapon))
-                {var purchased=model.Inventory.Last();garage.ChooseInventory(purchased.Id);DismissCatalog();garage.Message=run.CreativeWorkshop?"Dodano część za darmo. Kliknij pojazd, aby ją zamontować.":"Kupiono część. Kliknij pojazd, aby ją zamontować.";}
+                {var purchased=model.Inventory.Last();garage.ChooseInventory(purchased.Id);DismissCatalog();garage.Message=run.CreativeWorkshop?"Dodano część za darmo. Kliknij pojazd, aby ją zamontować.":$"Kupiono {CatalogPurchaseQuantity(model,kind)} szt. Kliknij pojazd, aby zamontować część.";}
                 else catalogFeedback=garage.Message=PurchaseFailure(run,kind,weapon);
             }
             DrawBuyFive(run,kind,weapon,new Rect(1112,340,138,40));
@@ -330,7 +615,7 @@ namespace RoboRougelike.R1
             var selected=items.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             if(selected==null)
             {if(items.Length>0)GUI.Label(new Rect(970,400,280,100),"Wybierz egzemplarz z listy. Zielony podgląd oznacza poprawne miejsce montażu.",small);return;}
-            GUI.Label(new Rect(970,395,280,70),$"{R4WeaponDefinition.PartName(selected)} • HP {selected.Health*100:0}%\n"+
+            GUI.Label(new Rect(970,395,280,70),$"{R4WeaponDefinition.PartName(selected)} • HP {PartHealthText(selected.Health)}\n"+
                 (selected.Kind==R3PartKind.BonusModule?BonusInstanceText(selected)+"\n":"")+
                 (selected.Health<=0?"Napraw w wierszu przed montażem.":"Kliknij HP w wierszu, aby montować."),small);
             if(dismantleConfirmation==selected.Id)
@@ -381,11 +666,16 @@ namespace RoboRougelike.R1
             var group=new[]{selected}.Concat(others).ToArray();
             bool available=tier<3&&group.Length==3;
             string label=tier>=3?"Maksymalny poziom T3":!available?$"Połącz T{tier} — potrzeba 3":
-                $"3×T{tier} → T{tier+1} • HP "+string.Join("/",group.Select(p=>(p.Health*100).ToString("0")))+"%";
+                FusionPreviewLabel(tier,group);
             GUI.enabled=available;
             if(GUI.Button(rect,label,compactButton))
             {dismantleConfirmation=null;catalogFeedback=run.GarageFuse(group.Select(p=>p.Id))?run.Garage.Message:"Nie udało się połączyć części.";}
             GUI.enabled=true;
+        }
+        private static string FusionPreviewLabel(int tier,R3PartState[] group)
+        {
+            var inputs=string.Join(" / ",group.Select(p=>PartHealthText(p.Health)));
+            return $"3×T{tier} → T{tier+1} • HP {PartHealthText(group.Average(p=>p.Health))}\nSkładniki: {inputs}";
         }
         private void RepairCatalogItem(R1RunController run,string id)
         {
@@ -477,10 +767,13 @@ namespace RoboRougelike.R1
                 return false;
             }
             dismantleConfirmation=null;
+            bool selectedForMounting=run.Garage!=null&&run.Garage.Tool==R41GarageTool.Mount&&run.Garage.SelectedInventoryId==id;
             int before=run.VehicleModel.Scrap;
             bool done=run.GarageDismantle(id);
             int credited=run.VehicleModel.Scrap-before;
             catalogFeedback=done?$"Rozmontowano część • +{credited} Z.":"Nie udało się rozmontować części.";
+            if(done&&selectedForMounting)catalogFeedback+=string.IsNullOrEmpty(run.Garage.SelectedInventoryId)?
+                " Wybierz część do montażu.":" Wybrano kolejną taką samą część.";
             return done;
         }
     }

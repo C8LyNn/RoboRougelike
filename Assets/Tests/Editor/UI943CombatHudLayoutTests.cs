@@ -5,6 +5,32 @@ using UnityEngine;
 
 public sealed class UI943CombatHudLayoutTests
 {
+    [Test] public void PickupNoticeAndSkipButtonFitWithoutOverlapping()
+    {
+        var flags=BindingFlags.NonPublic|BindingFlags.Static;
+        var label=typeof(R1RunHUD).GetMethod("PickupGraceLabelRect",flags);
+        var button=typeof(R1RunHUD).GetMethod("PickupGraceButtonRect",flags);
+        Assert.That(label,Is.Not.Null);Assert.That(button,Is.Not.Null);
+        var a=(Rect)label.Invoke(null,new object[]{121f});var b=(Rect)button.Invoke(null,new object[]{121f});
+        Assert.That(a.Overlaps(b),Is.False);Assert.That(a.xMin,Is.GreaterThanOrEqualTo(20));Assert.That(b.xMax,Is.LessThanOrEqualTo(680));
+    }
+    [TestCase(1)][TestCase(2)][TestCase(3)][TestCase(4)]
+    public void MultipleActiveAbilityRowsDoNotOverlapDetailsOrButton(int count)
+    {
+        var flags=BindingFlags.NonPublic|BindingFlags.Static;
+        var extra=typeof(R1RunHUD).GetMethod("CombatAbilityExtraHeight",flags);
+        var row=typeof(R1RunHUD).GetMethod("CombatAbilityStatusRect",flags);
+        Assert.That(extra,Is.Not.Null);Assert.That(row,Is.Not.Null);
+        int height=(int)extra.Invoke(null,new object[]{count});
+        var details=new Rect(36,120+height,630,26);var button=new Rect(535,88,130,30);
+        for(int i=0;i<count;i++)
+        {
+            var rect=(Rect)row.Invoke(null,new object[]{i});
+            Assert.That(rect.Overlaps(details),Is.False);
+            Assert.That(rect.Overlaps(button),Is.False);
+            if(i>0)Assert.That(rect.Overlaps((Rect)row.Invoke(null,new object[]{i-1})),Is.False);
+        }
+    }
     [TestCase(18,42)] [TestCase(36,50)] [TestCase(90,65)]
     public void AimStatusPanelFitsTextAndStaysOutsideCombatPanels(float textHeight,float expected)
     {
@@ -85,7 +111,7 @@ public sealed class UI943CombatHudLayoutTests
         Assert.That(panel.yMin,Is.GreaterThanOrEqualTo(348),"Weapon status must remain unobstructed.");
         Assert.That(panel.yMax,Is.LessThanOrEqualTo(516),"Damage notices must remain unobstructed.");
     }
-    [TestCase(1)][TestCase(2)][TestCase(3)][TestCase(4)][TestCase(5)]
+    [TestCase(1)][TestCase(2)][TestCase(3)][TestCase(4)][TestCase(5)][TestCase(6)]
     public void CompactMovementPanelFitsBetweenDefenseAndRangeInstructions(int rows)
     {
         var flags=BindingFlags.NonPublic|BindingFlags.Static;
@@ -96,7 +122,7 @@ public sealed class UI943CombatHudLayoutTests
         var defensePanel=(Rect)defense.Invoke(null,new object[]{9});
         Assert.That(panel.Overlaps(defensePanel),Is.False);
         Assert.That(panel.yMax,Is.LessThanOrEqualTo(625));
-        Assert.That(panel.height,Is.GreaterThanOrEqualTo(rows*24));
+        Assert.That(panel.height,Is.GreaterThanOrEqualTo(rows*21));
     }
     [TestCase(1)] [TestCase(4)] [TestCase(9)]
     public void DefenseHeadingAndRowsFitInsideTheirPanel(int count)

@@ -94,6 +94,7 @@ namespace RoboRougelike.R1
         IEnumerator BuildEditedMapTest()
         {
             Transitioning=true;Paused=false;RangeDisabled=false;SetSimulation(false);
+            ResetEmergencyRescue();
             if(Player!=null){Player.gameObject.SetActive(false);Destroy(Player.gameObject);}
             R1EncounterManager.ClearTransientObjects();VehicleModel=workshopModel.DeepCopy();
             EditorWorld.Build(EditorDraft,palette);var spawn=EditorDraft.Spawn;

@@ -17,6 +17,7 @@ namespace RoboRougelike.Mechanics.Rockets
         private IRocketAmmoSource ammoSource;
         private IRocketEnergySource energySource;
         private Transform guidanceTarget;
+        private System.Func<RocketProjectile,Vector3,Quaternion,RocketProjectile> spawnFactory;
 
         public float NextReadyTime => gate.NextReadyTime;
         public RocketSpec CurrentSpec => (config ?? new RocketConfig()).Snapshot();
@@ -37,6 +38,7 @@ namespace RoboRougelike.Mechanics.Rockets
         public void SetGuidanceTarget(Transform value) => guidanceTarget = value;
         public void SetOperational(bool value) => operational = value;
         public void SetRequireAttachedToOwner(bool value) => requireAttachedToOwner = value;
+        public void SetSpawnFactory(System.Func<RocketProjectile,Vector3,Quaternion,RocketProjectile> value)=>spawnFactory=value;
 
         public RocketFireResult TryFire()
         {
@@ -67,7 +69,7 @@ namespace RoboRougelike.Mechanics.Rockets
             RocketProjectile spawned = null;
             try
             {
-                spawned = Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
+                spawned = spawnFactory!=null?spawnFactory(projectilePrefab,muzzle.position,muzzle.rotation):Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
                 if (spawned == null || !spawned.TryInitialize(spec, vehicleBody, ownerRoot,
                         gameObject, guidanceTarget, muzzle.forward))
                 {

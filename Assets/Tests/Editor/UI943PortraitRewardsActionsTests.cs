@@ -25,6 +25,27 @@ public sealed class UI943PortraitRewardsActionsTests
     void Field(string name,object value)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).SetValue(hud,value);
     static R4SalvageItem[] Choices(R1RunController r)=>r.Salvage.Items.Where(p=>p.Selectable).ToArray();
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
+    static string BasketSignature(R4SalvageBasket basket)=>string.Join(",",basket.Items.Select(item=>item.Id).OrderBy(id=>id));
+    static bool FindDuplicateCountSeeds(R4SalvageLedger ledger,int stage,int runSeed,out int oldSeed,out int rerolls)
+    {
+        oldSeed=0;rerolls=0;
+        for(int n=0;n<128;n++)
+        {
+            int nextSeed=unchecked((runSeed^(stage*397))+((n*16+1)*7919));
+            var next=ledger.CreateBasketOffers(nextSeed,stage,3);
+            var nextChoices=new HashSet<string>(next.Select(BasketSignature));
+            if(nextChoices.Count!=2)continue;
+            string nextMultiset=string.Join("|",next.Select(BasketSignature).OrderBy(s=>s));
+            for(int previous=0;previous<128;previous++)
+            {
+                var old=ledger.CreateBasketOffers(previous,stage,3);
+                if(nextChoices.SetEquals(old.Select(BasketSignature))&&
+                    string.Join("|",old.Select(BasketSignature).OrderBy(s=>s))!=nextMultiset)
+                {oldSeed=previous;rerolls=n;return true;}
+            }
+        }
+        return false;
+    }
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
@@ -65,6 +86,55 @@ public sealed class UI943PortraitRewardsActionsTests
         Assert.That(ContainsId(run.VehicleModel,choices[7].Id),Is.False);
         Assert.That((bool)Call("PortraitRewardConfirm",run),Is.False,"Nie wolno wypłacić nagród dwukrotnie.");
     }
+    [UnityTest] public IEnumerator SelectingRecoveredWheelReportsAllRequiredBundleSlots()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Call("TrackRewardLedger",run.Salvage);
+        var wheel=Choices(run).First(p=>p.Kind==R3PartKind.Wheel);
+        Call("PortraitRewardToggleLoot",wheel);
+        Assert.That((int)Call("SelectedRewardPartCount",run),Is.EqualTo(2),"The UI must reserve both wheels in the reward package.");
+        Call("PortraitRewardSelectBonus",0);
+        Assert.That(run.VehicleModel.ReceiveSalvage(Enumerable.Range(0,198).Select(_=>new R3PartState(default,R3PartKind.Gun))),Is.True);
+        int funds=run.VehicleModel.Scrap;
+        Assert.That((bool)Call("PortraitRewardConfirm",run),Is.False,"Two wheels and the bonus cannot fit in two slots.");
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(198));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(funds));
+        Assert.That(run.Salvage.Closed,Is.False);
+    }
+    [UnityTest] public IEnumerator RerollChargesOnceKeepsBonusAndRequiresANewBasketSelection()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Call("TrackRewardLedger",run.Salvage);
+        Call("PortraitRewardSelectBonus",0);Call("ChooseRewardBasket",0);
+        var old=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(old.Count,Is.GreaterThan(0));
+        var reroll=typeof(R1RunHUD).GetMethod("RerollRewardBaskets",BindingFlags.Instance|BindingFlags.NonPublic);
+        Assert.That(reroll,Is.Not.Null,"The live reward interface must support rerolling.");
+        var price=typeof(R1RunDefinition).GetField("RewardBasketRerollCost");Assert.That(price,Is.Not.Null);
+        int cost=(int)price.GetValue(run.Definition),before=run.VehicleModel.Scrap;
+        Assert.That(before,Is.GreaterThanOrEqualTo(cost));
+        Assert.That((bool)reroll.Invoke(hud,new object[]{run}),Is.True);
+        var updated=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        string Signature(IReadOnlyList<R4SalvageBasket> offers)=>string.Join("|",offers.Select(b=>string.Join(",",b.Items.Select(p=>p.Id).OrderBy(id=>id))));
+        Assert.That(Signature(updated),Is.Not.EqualTo(Signature(old)));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-cost));Assert.That(run.Salvage.Closed,Is.False);
+        Assert.That((int)Field("selectedBonus"),Is.EqualTo(0));Assert.That((int)Field("selectedBasket"),Is.EqualTo(-1));
+        Assert.That((HashSet<string>)Field("lootSelection"),Is.Empty);
+        Assert.That(cost,Is.GreaterThan(0));Call("ChooseRewardBasket",0);
+        Assert.That(run.VehicleModel.TrySpendScrap(run.VehicleModel.Scrap),Is.True);
+        Assert.That((bool)reroll.Invoke(hud,new object[]{run}),Is.False);
+        Assert.That(run.VehicleModel.Scrap,Is.Zero);Assert.That((int)Field("selectedBasket"),Is.EqualTo(0));
+        Assert.That((string)Field("rewardClaimFeedback"),Does.Contain("Brakuje"));
+        run.VehicleModel.Award(100);
+        var single=new R4SalvageLedger(3);
+        Assert.That(single.Record("only-enemy",new[]{new R4SalvageItem("only-gun","fixture",R3PartKind.Gun,R4WeaponKind.Basic,1)},R3EnemyArchetype.Scout),Is.True);
+        typeof(R1RunController).GetProperty("Salvage").GetSetMethod(true).Invoke(run,new object[]{single});
+        Call("TrackRewardLedger",single);Call("ChooseRewardBasket",0);int funds=run.VehicleModel.Scrap;
+        Assert.That((bool)reroll.Invoke(hud,new object[]{run}),Is.False,"Identical offers must not incur a fee.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(funds));Assert.That((int)Field("selectedBasket"),Is.EqualTo(0));
+        Assert.That((string)Field("rewardClaimFeedback"),Does.Contain("Nie pobrano opłaty"));
+    }
     [UnityTest] public IEnumerator EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation()
     {
         foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
@@ -78,6 +148,9 @@ public sealed class UI943PortraitRewardsActionsTests
         Assert.That((bool)Field("rewardInventoryOpen"),Is.False);
         Assert.That(Field("rewardDismantleConfirmation"),Is.Null);
         Assert.That(run.Paused,Is.False,"Closing the top overlay must not also pause the game.");
+        Field("rewardMissedOpen",true);yield return null;run.HandleEscape();
+        Assert.That((bool)Field("rewardMissedOpen"),Is.False);
+        Assert.That(run.Paused,Is.False,"Closing missed loot must not also pause the game.");
         yield return null;run.HandleEscape();
         Assert.That(run.Paused,Is.True,"The next Escape still opens the session pause menu.");
     }
@@ -108,6 +181,421 @@ public sealed class UI943PortraitRewardsActionsTests
         yield return null;
     }
 #if ENABLE_INPUT_SYSTEM
+    [UnityTest] public IEnumerator MouseBoundPickupSkipIgnoresClicksConsumedByUi()
+    {
+        run.Encounter.SetCombatActive(true);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        run.Encounter.SetCombatActive(false);
+        for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
+        Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0));
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("SkipPickup","MouseBack"),Is.True);
+            var handler=typeof(R1RunHUD).GetMethod("TryPickupSkipMouse",BindingFlags.Static|BindingFlags.NonPublic);Assert.That(handler,Is.Not.Null);
+            var used=new Event{type=EventType.MouseDown,button=3};used.Use();handler.Invoke(null,new object[]{run,used});
+            Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0));
+            handler.Invoke(null,new object[]{run,new Event{type=EventType.MouseDown,button=3}});
+            Assert.That(run.PickupGraceRemaining,Is.Zero);
+        }
+        finally {profile.ResetDefaults();}
+    }
+    [UnityTest] public IEnumerator ConfiguredKeySkipsPickupWindowAndUpdatesButtonHint()
+    {
+        run.Encounter.SetCombatActive(true);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        run.Encounter.SetCombatActive(false);
+        for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
+        Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0));
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();Assert.That(profile.TryBind("SkipPickup","K"),Is.True);
+        var caption=typeof(R1RunHUD).GetMethod("PickupSkipCaption",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(caption,Is.Not.Null);Assert.That((string)caption.Invoke(null,null),Does.Contain("K"));
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        InputSystem.settings=settings;settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            var input=typeof(R1RunController).GetMethod("ReadMenuInput",BindingFlags.Instance|BindingFlags.NonPublic);
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));InputSystem.Update();input.Invoke(run,null);
+            Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0),"Changing the binding replaces the old action key.");
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.K));InputSystem.Update();input.Invoke(run,null);
+            Assert.That(run.PickupGraceRemaining,Is.Zero);
+        }
+        finally {profile.ResetDefaults();if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
+    }
+    [UnityTest] public IEnumerator PickupWindowCountsRemainingPartsAndEnergyCubes()
+    {
+        foreach(var pickup in UnityEngine.Object.FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None))pickup.gameObject.SetActive(false);
+        foreach(var pickup in UnityEngine.Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None))pickup.gameObject.SetActive(false);
+        var parts=Enumerable.Range(0,3).Select(i=>new GameObject("Pickup part fixture "+i)).ToArray();
+        var energy=Enumerable.Range(0,2).Select(i=>new GameObject("Pickup energy fixture "+i)).ToArray();
+        foreach(var p in parts)p.AddComponent<R3PhysicalLoot>();foreach(var e in energy)e.AddComponent<EnergyPickup>();
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.PickupGraceRemaining<=0;i++)yield return null;
+        var partCount=typeof(R1RunController).GetProperty("PickupPartsRemaining");var energyCount=typeof(R1RunController).GetProperty("PickupEnergyRemaining");
+        Assert.That(partCount,Is.Not.Null);Assert.That(energyCount,Is.Not.Null);
+        Assert.That((int)partCount.GetValue(run),Is.EqualTo(3));Assert.That((int)energyCount.GetValue(run),Is.EqualTo(2));
+        parts[0].SetActive(false);energy[0].SetActive(false);yield return null;
+        Assert.That((int)partCount.GetValue(run),Is.EqualTo(2));Assert.That((int)energyCount.GetValue(run),Is.EqualTo(1));
+        foreach(var p in parts)UnityEngine.Object.Destroy(p);foreach(var e in energy)UnityEngine.Object.Destroy(e);
+    }
+    [UnityTest] public IEnumerator PlayerCanSkipThePickupWindowButNotWhilePaused()
+    {
+        run.Encounter.SetCombatActive(true);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        run.Encounter.SetCombatActive(false);
+        for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
+        Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0));
+        var skip=typeof(R1RunController).GetMethod("SkipPickupGrace");Assert.That(skip,Is.Not.Null);
+        run.TogglePause();Assert.That((bool)skip.Invoke(run,null),Is.False);Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0));
+        run.TogglePause();Assert.That((bool)skip.Invoke(run,null),Is.True);Assert.That(run.PickupGraceRemaining,Is.Zero);
+        Assert.That((bool)skip.Invoke(run,null),Is.False,"The transition can only be requested once.");
+    }
+    [UnityTest] public IEnumerator PauseDoesNotSkipThePostBattlePickupWindow()
+    {
+        run.Encounter.SetCombatActive(true);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        run.Encounter.SetCombatActive(false);
+        for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
+        Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0));run.TogglePause();Assert.That(run.Paused,Is.True);
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        InputSystem.settings=settings;settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));InputSystem.Update();
+            typeof(R1RunController).GetMethod("ReadMenuInput",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(run,null);
+            Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0),"Pausing must preserve time to collect physical drops.");
+        }
+        finally {if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
+    }
+    [UnityTest] public IEnumerator PausedRewardScreenDoesNotConfirmBehindPauseMenu()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        Call("TrackRewardLedger",run.Salvage);Call("PortraitRewardSelectBonus",0);Call("ChooseRewardBasket",0);
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        InputSystem.settings=settings;settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            run.TogglePause();Assert.That(run.Paused,Is.True);
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));InputSystem.Update();
+            typeof(R1RunController).GetMethod("ReadMenuInput",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(run,null);
+            Assert.That(run.Salvage.Closed,Is.False,"The pause menu must prevent actions on the screen behind it.");
+            hud.ReadRewardInput(keyboard);Assert.That(run.Salvage.Closed,Is.False,"The reward input entry point must also respect pause.");
+            run.TogglePause();InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));InputSystem.Update();
+            typeof(R1RunController).GetMethod("ReadMenuInput",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(run,null);
+            Assert.That(run.Salvage.Closed,Is.True,"The reward can still be confirmed after resuming.");
+        }
+        finally {if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
+    }
+    [UnityTest] public IEnumerator ReboundRewardKeysSelectAndConfirmWithoutOldShortcuts()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Call("TrackRewardLedger",run.Salvage);
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        InputSystem.settings=settings;settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            Assert.That(profile.TryBind("RewardBonus1","K"),Is.True);
+            Assert.That(profile.TryBind("RewardBasket1","L"),Is.True);
+            Assert.That(profile.TryBind("RewardConfirm","J"),Is.True);
+            var caption=typeof(R1RunHUD).GetMethod("RewardConfirmCaption",BindingFlags.Static|BindingFlags.NonPublic);
+            Assert.That((string)caption.Invoke(null,new object[]{1}),Does.Contain("[J]"));
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Digit1,Key.Q,Key.Enter));InputSystem.Update();hud.ReadRewardInput(keyboard);
+            Assert.That((int)Field("selectedBonus"),Is.EqualTo(-1));Assert.That((int)Field("selectedBasket"),Is.EqualTo(-1));Assert.That(run.Salvage.Closed,Is.False);
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.K,Key.L));InputSystem.Update();hud.ReadRewardInput(keyboard);
+            Assert.That((int)Field("selectedBonus"),Is.EqualTo(0));Assert.That((int)Field("selectedBasket"),Is.EqualTo(0));
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.J));InputSystem.Update();hud.ReadRewardInput(keyboard);
+            Assert.That(run.Salvage.Closed,Is.True);
+        }
+        finally{profile.ResetDefaults();if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
+    }
+    [UnityTest] public IEnumerator ReboundRewardMouseRespectsPauseAndConsumedUiEvents()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Call("TrackRewardLedger",run.Salvage);
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("RewardBonus1","MouseBack"),Is.True);
+            var used=new Event{type=EventType.MouseDown,button=3};used.Use();Call("TryRewardMouse",run,used);
+            Assert.That((int)Field("selectedBonus"),Is.EqualTo(-1));
+            run.TogglePause();Call("TryRewardMouse",run,new Event{type=EventType.MouseDown,button=3});
+            Assert.That((int)Field("selectedBonus"),Is.EqualTo(-1));run.TogglePause();
+            Field("rewardInventoryOpen",true);Call("TryRewardMouse",run,new Event{type=EventType.MouseDown,button=3});
+            Assert.That((int)Field("selectedBonus"),Is.EqualTo(-1));Field("rewardInventoryOpen",false);
+            Call("TryRewardMouse",run,new Event{type=EventType.MouseDown,button=3});
+            Assert.That((int)Field("selectedBonus"),Is.EqualTo(0));
+        }
+        finally{profile.ResetDefaults();}
+    }
+    [UnityTest] public IEnumerator ExtraBasketPageKeysSelectThatPageAndOnlyOneBasket()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(50,0,0),R3PartKind.SalvageOptimizer){Health=1});
+        Call("TrackRewardLedger",run.Salvage);
+        var baskets=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(baskets.Count,Is.GreaterThanOrEqualTo(4));
+        Field("basketPage",1);
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        InputSystem.settings=settings;settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Q));InputSystem.Update();hud.ReadRewardInput(keyboard);
+            Assert.That((int)Field("selectedBasket"),Is.EqualTo(3));
+            Assert.That((HashSet<string>)Field("lootSelection"),Is.EquivalentTo(baskets[3].Items.Select(p=>p.Id)));
+            Assert.That(run.Salvage.Closed,Is.False);
+        }
+        finally {if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
+    }
+    [UnityTest] public IEnumerator FourthEncounteredArchetypeCanBeChosenAndClaimedFromExtraOffers()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=0;
+        foreach(var kind in new[]{R3EnemyArchetype.Scout,R3EnemyArchetype.Bruiser,R3EnemyArchetype.Gunner,R3EnemyArchetype.Flanker})
+        {
+            var part=new R3PartState(default,R3PartKind.Gun){Id=System.Guid.NewGuid().ToString("N"),Weapon=R4WeaponKind.Basic,Source="test/"+kind};
+            Assert.That(run.Salvage.Record("test-enemy-"+kind,new[]{new R4SalvageItem(part,1)},kind),Is.True);
+        }
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(50,0,0),R3PartKind.SalvageOptimizer){Health=1});
+        Call("TrackRewardLedger",run.Salvage);
+        var baskets=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        int index=Enumerable.Range(0,baskets.Count).FirstOrDefault(i=>baskets[i].Archetype==R3EnemyArchetype.Flanker);
+        Assert.That(baskets[index].Archetype,Is.EqualTo(R3EnemyArchetype.Flanker),"The extra choices must include the fourth enemy type.");
+        var ids=baskets[index].Items.Select(item=>item.Id).ToArray();Assert.That(ids,Is.Not.Empty);
+        Call("SelectRewardBonus",0);Call("ChooseRewardBasket",index);
+        Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.True);
+        Assert.That(ids.All(id=>run.VehicleModel.Inventory.Any(p=>p.Id==id)),Is.True,"Claim the original physical identities exactly once.");
+    }
+    [UnityTest] public IEnumerator LargeBasketBonusesLoadPagesOnDemandWithoutChangingSeededOffers()
+    {
+        var advance=typeof(R1RunHUD).GetMethod("AdvanceBasketPage",BindingFlags.Instance|BindingFlags.NonPublic);
+        Assert.That(advance,Is.Not.Null,"Reward paging must not generate a huge offer list up front.");
+        var ledger=new R4SalvageLedger(8);
+        var items=Enumerable.Range(0,40).Select(i=>new R4SalvageItem("page-"+i,"foe",R3PartKind.Gun,R4WeaponKind.Basic,1)).ToArray();
+        Assert.That(ledger.Record("foe",items,R3EnemyArchetype.Scout),Is.True);
+        run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(50,0,0),R3PartKind.SalvageOptimizer){Health=1});
+        run.VehicleModel.Economy.SalvageOptimizerExtraOffersPerUnit=int.MaxValue;
+        Call("TrackRewardLedger",ledger);
+        var baskets=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(baskets.Count,Is.EqualTo(6),"Only the first two pages should be materialized initially.");
+        Call("AdvanceBasketPage");Assert.That((int)Field("basketPage"),Is.EqualTo(1));
+        Assert.That(baskets.Count,Is.EqualTo(9));
+        Call("AdvanceBasketPage");Assert.That((int)Field("basketPage"),Is.EqualTo(2));
+        Assert.That(baskets.Count,Is.EqualTo(12));
+        int stage=run.Progress.EncounterIndex;int seed=run.Seed^(stage*397);
+        string Signature(R4SalvageBasket basket)=>basket.Archetype+":"+string.Join(",",basket.Items.Select(p=>p.Id).OrderBy(id=>id));
+        Assert.That(baskets.Select(Signature),Is.EqualTo(ledger.CreateBasketOffers(seed,stage,12).Select(Signature)));
+        Call("ChooseRewardBasket",6);
+        Assert.That((HashSet<string>)Field("lootSelection"),Is.EquivalentTo(baskets[6].Items.Select(p=>p.Id)));
+        yield return null;
+    }
+    [UnityTest] public IEnumerator ChangedLootInvalidatesPreparedBasketsButKeepsBonusAndOpenInventory()
+    {
+        var ledger=new R4SalvageLedger(3);
+        var items=Enumerable.Range(0,20).Select(i=>new R4SalvageItem("change-"+i,"foe",R3PartKind.Gun,R4WeaponKind.Basic,1)).ToArray();
+        Assert.That(ledger.Record("foe",items,R3EnemyArchetype.Scout),Is.True);
+        run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(50,0,0),R3PartKind.SalvageOptimizer){Health=1});
+        run.VehicleModel.Economy.SalvageOptimizerExtraOffersPerUnit=20;
+        Call("TrackRewardLedger",ledger);Call("PortraitRewardSelectBonus",0);Call("ChooseRewardBasket",0);
+        var old=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");string unavailable=old[0].Items[0].Id;
+        Field("rewardInventoryOpen",true);Assert.That(ledger.MarkPhysicalDrop(unavailable),Is.True);
+        Call("TrackRewardLedger",ledger);
+        var updated=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(updated,Is.Not.SameAs(old));
+        Assert.That(updated.SelectMany(b=>b.Items).Any(item=>item.Id==unavailable),Is.False);
+        Assert.That((int)Field("selectedBasket"),Is.EqualTo(-1));Assert.That((HashSet<string>)Field("lootSelection"),Is.Empty);
+        Assert.That((int)Field("selectedBonus"),Is.Zero);Assert.That((bool)Field("rewardInventoryOpen"),Is.True);
+        Assert.That((string)Field("rewardClaimFeedback"),Does.Contain("Wybierz"));
+        Call("AdvanceBasketPage");Call("AdvanceBasketPage");
+        Assert.That(updated.SelectMany(b=>b.Items).Any(item=>item.Id==unavailable),Is.False);
+        yield return null;
+    }
+    [UnityTest] public IEnumerator CollectingAlreadyExcludedLootDoesNotResetBasketChoice()
+    {
+        var ledger=new R4SalvageLedger(3);
+        var items=Enumerable.Range(0,8).Select(i=>new R4SalvageItem("pickup-"+i,"foe",R3PartKind.Gun,R4WeaponKind.Basic,1)).ToArray();
+        Assert.That(ledger.Record("foe",items,R3EnemyArchetype.Scout),Is.True);
+        Assert.That(ledger.MarkPhysicalDrop(items[0].Id),Is.True);
+        Call("TrackRewardLedger",ledger);Call("ChooseRewardBasket",0);
+        var before=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");var selected=(HashSet<string>)Field("lootSelection");
+        var ids=selected.ToArray();Assert.That(ledger.TryCollectPhysical(run.VehicleModel,items[0].Id),Is.True);
+        Call("TrackRewardLedger",ledger);
+        Assert.That(Field("rewardBaskets"),Is.SameAs(before));Assert.That((int)Field("selectedBasket"),Is.Zero);
+        Assert.That(selected,Is.EquivalentTo(ids));
+        yield return null;
+    }
+    [UnityTest] public IEnumerator LootChangeCannotConsumeTheSameConfirmationKeyPress()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Call("TrackRewardLedger",run.Salvage);
+        Call("PortraitRewardSelectBonus",0);Call("ChooseRewardBasket",0);
+        var ledger=run.Salvage;
+        foreach(var item in ledger.RewardItems.Where(p=>p.Selectable).ToArray())Assert.That(ledger.MarkPhysicalDrop(item.Id),Is.True);
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        InputSystem.settings=settings;settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));InputSystem.Update();
+            hud.ReadRewardInput(keyboard);
+            Assert.That(ledger.Closed,Is.False,"The input that discovers changed loot must not also confirm a different reward.");
+            Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Assert.That((int)Field("selectedBasket"),Is.EqualTo(-1));
+            yield return null;
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));InputSystem.Update();hud.ReadRewardInput(keyboard);
+            Assert.That(ledger.Closed,Is.True,"A fresh confirmation may accept the now-empty basket list.");
+        }
+        finally{if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
+    }
+    [UnityTest] public IEnumerator IdenticalSeedRerollFindsAnotherRealBasketAndChargesOnce()
+    {
+        var ledger=run.Salvage;
+        var items=Enumerable.Range(0,8).Select(i=>new R4SalvageItem(Guid.NewGuid().ToString("N"),"fixture",R3PartKind.Gun,R4WeaponKind.Basic,1)).ToArray();
+        Assert.That(ledger.Record("fallback-enemy",items,R3EnemyArchetype.Scout),Is.True);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        Call("TrackRewardLedger",ledger);
+        int seed=unchecked((run.Seed^(run.Progress.EncounterIndex*397))+7919);
+        Field("rewardBasketSeed",seed);Call("RebuildRewardBasketStream",ledger,run,seed);
+        Call("PortraitRewardSelectBonus",0);Call("ChooseRewardBasket",0);
+        string Signature(R4SalvageBasket basket)=>basket.Archetype+":"+string.Join(",",basket.Items.Select(item=>item.Id).OrderBy(id=>id));
+        var previous=((IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets")).Take(3).Select(Signature).ToArray();
+        int before=run.VehicleModel.Scrap;
+        Assert.That((bool)Call("RerollRewardBaskets",run),Is.True,"An identical first draw must fall back to an actual alternative.");
+        Assert.That((int)Field("rewardBasketSeed"),Is.EqualTo(seed),"The fallback must use the candidate draw, rather than hoping a later seed differs.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-run.Definition.RewardBasketRerollCost));
+        var next=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(next.Count,Is.EqualTo(3),"The fallback must respect the configured offer count.");
+        Assert.That(previous,Does.Not.Contain(Signature(next[0])),"The first new offer must differ from every currently visible offer.");
+        var expected=next[0].Items.Select(item=>item.Id).ToArray();
+        var eligible=ledger.RewardItems.Where(item=>item.Selectable).ToArray();
+        Assert.That(expected.All(id=>eligible.Any(item=>item.Id==id)),Is.True,"The fallback must only use real enemy parts.");
+        string unavailable=eligible.First(item=>!expected.Contains(item.Id)).Id;
+        Assert.That(ledger.MarkPhysicalDrop(unavailable),Is.True);Call("TrackRewardLedger",ledger);
+        next=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(next.SelectMany(basket=>basket.Items).Any(item=>item.Id==unavailable),Is.False,"Refreshing a fallback must discard unavailable parts.");
+        Assert.That((int)Field("rewardBasketSeed"),Is.EqualTo(seed));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-run.Definition.RewardBasketRerollCost));
+        yield return null;expected=next[0].Items.Select(item=>item.Id).ToArray();
+        Call("ChooseRewardBasket",0);Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.True);
+        Assert.That(expected.All(id=>run.VehicleModel.Inventory.Any(part=>part.Id==id)),Is.True);
+        Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.False,"The chosen parts must not be granted twice.");
+        yield return null;
+    }
+    [UnityTest] public IEnumerator RerollDoesNotChargeWhenOnlyDuplicateCountsChange()
+    {
+        var ledger=run.Salvage;
+        string first=Guid.NewGuid().ToString("N"),second=Guid.NewGuid().ToString("N");
+        Assert.That(ledger.Record("fixture-a",new[]{new R4SalvageItem(first,"a",R3PartKind.Gun,R4WeaponKind.Basic,1)},R3EnemyArchetype.Scout),Is.True);
+        Assert.That(ledger.Record("fixture-b",new[]{new R4SalvageItem(second,"b",R3PartKind.Gun,R4WeaponKind.Basic,1)},R3EnemyArchetype.Scout),Is.True);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        foreach(var other in ledger.Items.Where(p=>p.Id!=first&&p.Id!=second&&p.PhysicalLootEligible).ToArray())ledger.MarkPhysicalDrop(other.Id);
+        Call("TrackRewardLedger",ledger);yield return null;run.VehicleModel.Award(100);
+        int stage=run.Progress.EncounterIndex;
+        Assert.That(FindDuplicateCountSeeds(ledger,stage,run.Seed,out int oldSeed,out int rerolls),Is.True,
+            "The fixture must produce the same two choices with different repetitions.");
+        Field("basketRerollCount",rerolls);Field("rewardBasketSeed",oldSeed);
+        Call("RebuildRewardBasketStream",ledger,run,oldSeed);Call("PortraitRewardSelectBonus",0);Call("ChooseRewardBasket",0);
+        var previousOffers=Field("rewardBaskets");int before=run.VehicleModel.Scrap;
+        Assert.That((bool)Call("RerollRewardBaskets",run),Is.False,"A duplicate reshuffle cannot cost scrap when no new choice exists.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before));Assert.That(Field("rewardBaskets"),Is.SameAs(previousOffers));
+        Assert.That((int)Field("selectedBasket"),Is.EqualTo(0));Assert.That((int)Field("selectedBonus"),Is.EqualTo(0));
+        Assert.That((string)Field("rewardClaimFeedback"),Does.Contain("Nie pobrano opłaty"));
+    }
+    [UnityTest] public IEnumerator RerollFindsAnAlternativeWhenOnlyDuplicateCountsChange()
+    {
+        var ledger=run.Salvage;
+        string first=Guid.NewGuid().ToString("N"),second=Guid.NewGuid().ToString("N");
+        var parts=new[]{new R4SalvageItem(first,"a",R3PartKind.Gun,R4WeaponKind.Basic,1),new R4SalvageItem(second,"b",R3PartKind.Gun,R4WeaponKind.Basic,1)};
+        Assert.That(ledger.Record("fixture-enemy",parts,R3EnemyArchetype.Scout),Is.True);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        foreach(var other in ledger.Items.Where(p=>p.Id!=first&&p.Id!=second&&p.PhysicalLootEligible).ToArray())ledger.MarkPhysicalDrop(other.Id);
+        Call("TrackRewardLedger",ledger);yield return null;run.VehicleModel.Award(100);
+        int stage=run.Progress.EncounterIndex;
+        Assert.That(FindDuplicateCountSeeds(ledger,stage,run.Seed,out int oldSeed,out int rerolls),Is.True);
+        Field("basketRerollCount",rerolls);Field("rewardBasketSeed",oldSeed);
+        Call("RebuildRewardBasketStream",ledger,run,oldSeed);Call("PortraitRewardSelectBonus",0);Call("ChooseRewardBasket",0);
+        var old=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");var previous=new HashSet<string>(old.Take(3).Select(BasketSignature));
+        int before=run.VehicleModel.Scrap;
+        Assert.That((bool)Call("RerollRewardBaskets",run),Is.True,"The third actual combination must be offered when it exists.");
+        var next=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(previous.Contains(BasketSignature(next[0])),Is.False);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-run.Definition.RewardBasketRerollCost));
+        Assert.That((int)Field("selectedBonus"),Is.Zero);Assert.That((int)Field("selectedBasket"),Is.EqualTo(-1));
+        var selected=next[0].Items.Select(p=>p.Id).ToArray();Call("ChooseRewardBasket",0);
+        Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.True);
+        Assert.That(selected.All(id=>run.VehicleModel.Inventory.Any(p=>p.Id==id)),Is.True);
+        Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.False,"Recovered parts cannot be granted twice.");
+    }
+    [UnityTest] public IEnumerator LargeBasketRerollAndLaterPageCanBeClaimedOnce()
+    {
+        var ledger=run.Salvage;
+        var items=Enumerable.Range(0,40).Select(i=>new R4SalvageItem(Guid.NewGuid().ToString("N"),"foe",R3PartKind.Gun,R4WeaponKind.Basic,1)).ToArray();
+        Assert.That(ledger.Record("foe",items,R3EnemyArchetype.Scout),Is.True);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(50,0,0),R3PartKind.SalvageOptimizer){Health=1});
+        run.VehicleModel.Economy.SalvageOptimizerExtraOffersPerUnit=int.MaxValue;
+        run.VehicleModel.Award(1000);Call("TrackRewardLedger",ledger);
+        Call("PortraitRewardSelectBonus",0);Call("AdvanceBasketPage");Call("AdvanceBasketPage");Call("ChooseRewardBasket",6);
+        var old=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");Assert.That(old.Count,Is.EqualTo(12));
+        string Signature(R4SalvageBasket basket)=>basket.Archetype+":"+string.Join(",",basket.Items.Select(p=>p.Id).OrderBy(id=>id));
+        var visibleBefore=old.Skip(6).Take(3).Select(Signature).OrderBy(s=>s).ToArray();
+        int before=run.VehicleModel.Scrap;Assert.That((bool)Call("RerollRewardBaskets",run),Is.True);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-run.Definition.RewardBasketRerollCost));
+        Assert.That((int)Field("selectedBonus"),Is.Zero);Assert.That((int)Field("selectedBasket"),Is.EqualTo(-1));
+        var next=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(next.Count,Is.EqualTo(6),"A reroll returns to page one; it must not regenerate every previously visited page.");
+        Assert.That(next.Take(3).Select(Signature).OrderBy(s=>s),Is.Not.EqualTo(visibleBefore),"The player must see different offers immediately after paying.");
+        string unavailable=next[0].Items[0].Id;int rerollSeed=(int)Field("rewardBasketSeed");
+        Assert.That(ledger.MarkPhysicalDrop(unavailable),Is.True);Call("TrackRewardLedger",ledger);
+        next=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(next.Select(Signature),Is.EqualTo(ledger.CreateBasketOffers(rerollSeed,run.Progress.EncounterIndex,6).Select(Signature)));
+        Assert.That(next.SelectMany(b=>b.Items).Any(item=>item.Id==unavailable),Is.False);
+        Assert.That((int)Field("basketRerollCount"),Is.EqualTo(1));Assert.That((int)Field("selectedBonus"),Is.Zero);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-run.Definition.RewardBasketRerollCost));
+        Call("ChooseRewardBasket",0);Assert.That((int)Field("selectedBasket"),Is.EqualTo(-1));
+        Assert.That((bool)Call("RerollRewardBaskets",run),Is.False);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-run.Definition.RewardBasketRerollCost));
+        yield return null;
+        Call("AdvanceBasketPage");Call("AdvanceBasketPage");Call("ChooseRewardBasket",6);
+        var ids=next[6].Items.Select(item=>item.Id).ToArray();
+        Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.True);
+        Assert.That(ledger.Closed,Is.True);
+        Assert.That(ids.All(id=>run.VehicleModel.Inventory.Count(part=>part.Id==id)==1),Is.True);
+        Assert.That((bool)Call("ConfirmSelectedRewards",run),Is.False);
+        yield return null;
+    }
     [UnityTest] public IEnumerator CollectedFinalPickupDoesNotConsumeRewardConfirmationKey()
     {
         // Defeated enemies only drop energy while combat is active. The shared
@@ -118,6 +606,7 @@ public sealed class UI943PortraitRewardsActionsTests
         for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
         Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0),"Expected the post-battle pickup window.");
         foreach(var pickup in UnityEngine.Object.FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None))pickup.gameObject.SetActive(false);
+        foreach(var pickup in UnityEngine.Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None))pickup.gameObject.SetActive(false);
         for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
         Assert.That(run.PickupGraceRemaining,Is.Zero,"Pickup grace must not remain active in rewards.");

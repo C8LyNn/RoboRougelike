@@ -12,6 +12,31 @@ using RoboRougelike.R4;
 using RoboRougelike.B01.Rewards;
 using RogueMachine.P12PipelineSafe;
 
+public sealed class RecoveryPartCatalogTests
+{
+    sealed class Hooks : IAtomicR3RewardHooks
+    {
+        public bool IsAuthenticVictory(string id)=>id=="win";
+        public bool WasAlreadyCommitted(string id)=>false;
+        public System.Collections.Generic.IReadOnlyCollection<string> OtherCanonicalOwnedIds=>Array.Empty<string>();
+        public bool CommitVerifiedSalvageBatch(string id,System.Collections.Generic.IReadOnlyList<RewardCandidate> parts,out string reason)
+        {reason="NOT_NEEDED";return false;}
+    }
+    static RewardCandidate Candidate(string kind)=>new RewardCandidate(Guid.NewGuid().ToString("N"),kind,"test",1);
+    static RewardKeep3Service Service()=>new RewardKeep3Service(new R3RewardPort(new R3VehicleModel(new R3VehicleDesign()),new Hooks()));
+    [Test] public void RecoveryAcceptsEveryCanonicalPartKindAndRejectsAliasesAndCore()
+    {
+        var values=Enum.GetValues(typeof(R3PartKind)).Cast<R3PartKind>().Where(kind=>kind!=R3PartKind.Core).ToArray();
+        var offers=values.Select(kind=>Candidate(kind.ToString())).ToArray();var service=Service();
+        Assert.That(service.TryOpen("win",offers,out var error),Is.True,error);
+        Assert.That(service.VisibleOptions.Select(p=>p.PartKind),Is.EquivalentTo(values.Select(k=>k.ToString())));
+        Assert.That(service.TrySave(out string json,out error),Is.True,error);
+        Assert.That(Service().TryRestore(json,out error),Is.True,error);
+        foreach(string invalid in new[]{"Core","armor","0","999","AreaEmp ","Gun, Wheel","UnknownKind"})
+            Assert.That(Service().TryOpen("win",new[]{Candidate(invalid)},out _),Is.False,invalid);
+    }
+}
+
 public sealed class RewardRC2IntegrationTests
 {
     R1RunController run;
@@ -60,13 +85,40 @@ public sealed class RewardRC2IntegrationTests
     {
         yield return Win();var choices=run.Salvage.Items.Where(x=>x.Selectable).Take(3).ToArray();Assert.That(choices.Length,Is.EqualTo(3));
         Assert.That(Window.VisibleOptions.Select(x=>x.InstanceId),Is.EquivalentTo(run.Salvage.Items.Select(x=>x.Id)));
+        int expected=run.VehicleModel.Inventory.Count+1+choices.Sum(item=>run.VehicleModel.GrantQuantity(item.Kind,item.ToPart().ArmorShape));
         Assert.That(run.ConfirmRewards(choices.Select(x=>x.Id),new[]{0}),Is.True);
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.Salvage.Closed,Is.True);
-        Assert.That(Window.HasOpenWindow,Is.False);Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(4));
+        Assert.That(Window.HasOpenWindow,Is.False);Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(expected));
+        Assert.That(run.VehicleModel.Inventory.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(expected),"Bundle copies need distinct physical identities.");
         foreach(var original in choices)
-        {var part=run.VehicleModel.Inventory.Single(x=>x.Id==original.Id);Assert.That(part.Health,Is.EqualTo(1));Assert.That(part.Ammo,Is.EqualTo(original.Ammo));Assert.That(part.Weapon,Is.EqualTo(original.Weapon));Assert.That(part.RotationQuarterTurns,Is.EqualTo(original.Rotation));Assert.That(part.ContactMask,Is.EqualTo(original.Contacts));}
+        {var part=run.VehicleModel.Inventory.Single(x=>x.Id==original.Id);Assert.That(part.Health,Is.EqualTo(1));Assert.That(part.Ammo,Is.EqualTo(original.Ammo));Assert.That(part.Weapon,Is.EqualTo(original.Weapon));Assert.That(part.RotationQuarterTurns,Is.EqualTo(original.Rotation));Assert.That(part.ContactMask,Is.EqualTo(R3VehicleModel.StoredWheelContacts(original.ToPart())),"Stored side wheels must expose their valid axle contacts.");}
         int scrap=run.VehicleModel.Scrap;Assert.That(run.ConfirmRewards(choices.Select(x=>x.Id),new[]{0}),Is.False);
-        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(4));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(expected));
+    }
+    [UnityTest] public IEnumerator NewCatalogPartsDoNotBlockVictoryAndRemainRecoverable()
+    {
+        var ledger=run.Salvage;
+        var bonus=run.Definition.Upgrades.Where(u=>u!=null).Select(R3VehicleModel.CreateBonusReward).First(p=>p!=null);
+        var parts=Enum.GetValues(typeof(R3PartKind)).Cast<R3PartKind>().Where(k=>k!=R3PartKind.Core)
+            .Select(k=>new R4SalvageItem(k==R3PartKind.BonusModule?bonus:new R3PartState(default,k,.4f),.4f)).ToArray();
+        var inventoryCheck=new R3VehicleModel(new R3VehicleDesign());
+        Assert.That(inventoryCheck.ReceiveSalvage(parts.Where(p=>p.Selectable).Select(p=>p.ToPart())),Is.True,
+            "Every synthetic offer must itself be a valid physical inventory part.");
+        Assert.That(ledger.Record("all-current-part-kinds",parts,R3EnemyArchetype.Scout),Is.True);
+        yield return Win();
+        Assert.That(run.RecoveryError,Is.Null);
+        Assert.That(parts.All(p=>Window.VisibleOptions.Any(option=>option.InstanceId==p.Id&&option.PartKind==p.Kind.ToString())),Is.True,
+            "Every real catalog kind must be accepted by the authenticated reward window.");
+        var desired=new[]{R3PartKind.AreaEmp,R3PartKind.GroundDroneGenerator,R3PartKind.RadarModule};
+        var selected=desired.Select(kind=>parts.Single(p=>p.Kind==kind).Id).ToArray();
+        Assert.That(run.ConfirmRewards(selected,new[]{0}),Is.True);
+        foreach(var id in selected)
+        {
+            var recovered=run.VehicleModel.Inventory.Single(p=>p.Id==id);
+            Assert.That(recovered.Health,Is.EqualTo(1));
+            Assert.That(recovered.Kind,Is.EqualTo(parts.Single(p=>p.Id==id).Kind));
+        }
+        Assert.That(run.ConfirmRewards(selected,new[]{0}),Is.False,"The same physical parts cannot be granted twice.");
     }
     [UnityTest] public IEnumerator WinningEncounterOffersBasketAndClaimsTheChosenPhysicalParts()
     {

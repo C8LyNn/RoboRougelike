@@ -6,11 +6,45 @@ namespace RoboRougelike.WPN001Shotgun.Tests.EditMode
 {
     public sealed class ShotgunSpreadTests
     {
+        [TestCase(1,0f,0u)][TestCase(8,14f,17u)][TestCase(64,60f,512u)]
+        public void IndexedPatternMatchesExistingDirectionsRegardlessOfAccessOrder(int count,float cone,uint seed)
+        {
+            Vector3 axis=new Vector3(1,1,2).normalized;
+            var expected=Make(axis,count,cone,seed);
+            var pattern=new ShotgunSpread.IndexedPattern(axis,count,cone,seed);
+            for(int i=count-1;i>=0;i--)
+                Assert.That(Vector3.Distance(pattern.DirectionAt(i),expected[i]),Is.LessThan(.000001f));
+        }
+        [Test] public void IndexedPatternCanAddressVeryLargeVolleyWithoutAllocatingAnArray()
+        {
+            const int count=int.MaxValue;var pattern=new ShotgunSpread.IndexedPattern(Vector3.forward,count,60f,42u);
+            var first=pattern.DirectionAt(0);var middle=pattern.DirectionAt(count/2);var last=pattern.DirectionAt(count-1);
+            foreach(var direction in new[]{first,middle,last})
+            {
+                Assert.That(direction.magnitude,Is.EqualTo(1f).Within(.00001f));
+                Assert.LessOrEqual(Vector3.Angle(Vector3.forward,direction),30.001f);
+            }
+            Assert.Greater(Vector3.Distance(first,middle),.01f);Assert.Greater(Vector3.Distance(middle,last),.01f);
+            Assert.Throws<ArgumentOutOfRangeException>(()=>pattern.DirectionAt(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(()=>pattern.DirectionAt(count));
+        }
         private static Vector3[] Make(Vector3 axis, int count, float angle, uint seed)
         {
             var result = new Vector3[count];
             ShotgunSpread.BuildDirections(axis, count, angle, seed, result);
             return result;
+        }
+        [TestCase(120f, 45f)][TestCase(180f, 60f)][TestCase(360f, 120f)]
+        public void WideConeReachesBeyondOldLimitInBothGenerators(float angle, float minimum)
+        {
+            var directions=Make(Vector3.forward,16,angle,17u);
+            var indexed=new ShotgunSpread.IndexedPattern(Vector3.forward,16,angle,17u);
+            Assert.That(Vector3.Angle(Vector3.forward,directions[15]),Is.GreaterThan(minimum));
+            for(int i=0;i<directions.Length;i++)
+            {
+                Assert.That(directions[i].magnitude,Is.EqualTo(1f).Within(.00001f));
+                Assert.That(Vector3.Distance(directions[i],indexed.DirectionAt(i)),Is.LessThan(.000001f));
+            }
         }
         [Test] public void ExactNumberOfDirections() =>
             Assert.AreEqual(8, ShotgunSpread.BuildDirections(Vector3.forward, 8, 14f, 1u, new Vector3[8]));
@@ -62,8 +96,21 @@ namespace RoboRougelike.WPN001Shotgun.Tests.EditMode
             Assert.Throws<ArgumentNullException>(() => ShotgunSpread.BuildDirections(Vector3.forward, 1, 1f, 0u, null));
         [Test] public void RejectUndersizedBuffer() =>
             Assert.Throws<ArgumentOutOfRangeException>(() => ShotgunSpread.BuildDirections(Vector3.forward, 8, 10f, 0u, new Vector3[7]));
-        [Test] public void RejectMoreThan64Pellets() =>
-            Assert.Throws<ArgumentOutOfRangeException>(() => ShotgunSpread.BuildDirections(Vector3.forward, 65, 10f, 0u, new Vector3[65]));
+        [Test] public void LargeVolleyFillsOnlyRequestedDirectionsDeterministically()
+        {
+            const int count=129;var axis=new Vector3(1,2,3).normalized;
+            var output=new Vector3[count+1];output[count]=Vector3.one*7;
+            Assert.AreEqual(count,ShotgunSpread.BuildDirections(axis,count,40f,512u,output));
+            var again=Make(axis,count,40f,512u);var different=Make(axis,count,40f,513u);
+            for(int i=0;i<count;i++)
+            {
+                Assert.That(output[i].magnitude,Is.EqualTo(1f).Within(.00001f));
+                Assert.LessOrEqual(Vector3.Angle(axis,output[i]),20.001f);
+                Assert.AreEqual(output[i],again[i]);
+            }
+            Assert.Greater(Vector3.Distance(output[count-1],different[count-1]),.0001f);
+            Assert.AreEqual(Vector3.one*7,output[count]);
+        }
         [Test] public void RejectZeroForward() =>
             Assert.Throws<ArgumentException>(() => Make(Vector3.zero, 3, 10f, 0u));
         [Test] public void RejectInvalidCone() =>

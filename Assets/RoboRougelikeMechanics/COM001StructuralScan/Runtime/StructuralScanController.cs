@@ -19,8 +19,9 @@ namespace RoboRougelike.Mechanics.StructuralScan
         private readonly StructuralScanClock clock = new StructuralScanClock();
         private readonly List<StructuralScanContact> contacts = new List<StructuralScanContact>();
         private readonly List<StructuralScanContact> candidateContacts = new List<StructuralScanContact>();
-        private readonly RaycastHit[] hitBuffer = new RaycastHit[128];
-        private readonly Collider[] originBuffer = new Collider[128];
+        private const int MaxReusableQueryBuffer=4096;
+        private RaycastHit[] hitBuffer = new RaycastHit[128];
+        private Collider[] originBuffer = new Collider[128];
         private int selectedTargetOwner;
         private IStructuralScanEnergy energy;
         private IStructuralScanSelfFilter ownFilter;
@@ -82,7 +83,6 @@ namespace RoboRougelike.Mechanics.StructuralScan
         {
             if (!IsReady || registry == null || sensor == null || settings == null) return false;
             settings.Validate();
-            if (registry.Count > settings.maxRegisteredParts) return false; // fail closed
             RefreshAdapters();
             if (settings.activationEnergy > 0f && energy == null) return false;
 
@@ -148,25 +148,37 @@ namespace RoboRougelike.Mechanics.StructuralScan
             if (distance <= 0.0001f) return false;
             Vector3 direction = delta / distance;
 
-            int overlapping = Physics.OverlapSphereNonAlloc(origin, 0.025f, originBuffer,
-                settings.obstructionMask, QueryTriggerInteraction.Ignore);
-            if (overlapping == originBuffer.Length) return false;
+            int overlapping;Collider[] originHits;
+            while(true)
+            {
+                overlapping=Physics.OverlapSphereNonAlloc(origin,0.025f,originBuffer,settings.obstructionMask,QueryTriggerInteraction.Ignore);
+                if(overlapping<originBuffer.Length){originHits=originBuffer;break;}
+                if(originBuffer.Length>=MaxReusableQueryBuffer)
+                {originHits=Physics.OverlapSphere(origin,0.025f,settings.obstructionMask,QueryTriggerInteraction.Ignore);overlapping=originHits.Length;break;}
+                Array.Resize(ref originBuffer,Math.Min(originBuffer.Length*2,MaxReusableQueryBuffer));
+            }
             for (int i = 0; i < overlapping; i++)
             {
-                Collider c = originBuffer[i];
+                Collider c = originHits[i];
                 if (c != null && !IsOwn(c) && !part.OwnsCollider(c)) return false;
             }
 
-            int count = Physics.RaycastNonAlloc(origin, direction, hitBuffer, distance + 0.02f,
-                settings.obstructionMask, QueryTriggerInteraction.Ignore);
-            if (count == hitBuffer.Length) return false;
+            int count;RaycastHit[] rayHits;
+            while(true)
+            {
+                count=Physics.RaycastNonAlloc(origin,direction,hitBuffer,distance+0.02f,settings.obstructionMask,QueryTriggerInteraction.Ignore);
+                if(count<hitBuffer.Length){rayHits=hitBuffer;break;}
+                if(hitBuffer.Length>=MaxReusableQueryBuffer)
+                {rayHits=Physics.RaycastAll(origin,direction,distance+0.02f,settings.obstructionMask,QueryTriggerInteraction.Ignore);count=rayHits.Length;break;}
+                Array.Resize(ref hitBuffer,Math.Min(hitBuffer.Length*2,MaxReusableQueryBuffer));
+            }
             float first = float.PositiveInfinity;
             bool firstIsTarget = false;
             for (int i = 0; i < count; ++i)
             {
-                Collider c = hitBuffer[i].collider;
+                Collider c = rayHits[i].collider;
                 if (c == null || IsOwn(c)) continue;
-                float t = hitBuffer[i].distance;
+                float t = rayHits[i].distance;
                 if (t < first - 0.0001f)
                 {
                     first = t;

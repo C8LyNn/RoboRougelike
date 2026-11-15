@@ -53,12 +53,12 @@ namespace RoboRougelike.Mechanics.MOV008
                 Mathf.Abs(currentSpeed) >= Mathf.Abs(target)) return 0f;
             float seconds = brake ? brakeSeconds :
                 (Mathf.Abs(demand) > 0.001f ? responseSeconds : coastSeconds);
-            float desiredForce = (target - currentSpeed) * massShareKg /
-                                 Mathf.Max(0.02f, Finite(seconds));
+            double desiredForce = ((double)target-currentSpeed)*massShareKg /
+                                  Mathf.Max(0.02f, Finite(seconds));
             float mechanicalLimit = brake || Mathf.Abs(demand) <= 0.001f ? brakingForceLimit : motorForceLimit;
             float limit = Mathf.Min(Mathf.Max(0f, Finite(mechanicalLimit)),
                                     Mathf.Max(0f, Finite(tractionLimit)));
-            return Mathf.Clamp(desiredForce, -limit, limit);
+            return (float)System.Math.Max(-limit,System.Math.Min(limit,desiredForce));
         }
 
         public static float LateralForce(float lateralSpeed, float massShareKg,

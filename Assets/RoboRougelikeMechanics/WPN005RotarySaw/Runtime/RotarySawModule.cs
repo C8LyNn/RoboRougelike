@@ -6,6 +6,7 @@ namespace RoboRougelike.Weapons.RotarySaw
     [DisallowMultipleComponent]
     public sealed class RotarySawModule : MonoBehaviour
     {
+        const int MaxReusableContacts=4096;
         [SerializeField] private RotarySawConfiguration configuration = new RotarySawConfiguration();
         [SerializeField] private Transform bladeCenter;
         [SerializeField] private Rigidbody ownerRigidbody;
@@ -156,22 +157,24 @@ namespace RoboRougelike.Weapons.RotarySaw
 
             Vector3 center = bladeCenter.position;
             Vector3 axle = CurrentAxle(bladeCenter);
-            // Conservative broadphase: if buffer fills, do no damage this physics step.
-            int count = Physics.OverlapSphereNonAlloc(center,
-                Mathf.Sqrt(configuration.bladeRadius * configuration.bladeRadius +
-                           configuration.bladeHalfThickness * configuration.bladeHalfThickness),
-                overlapBuffer, configuration.contactLayers, QueryTriggerInteraction.Ignore);
-            if (count >= overlapBuffer.Length)
+            float queryRadius=Mathf.Sqrt(configuration.bladeRadius * configuration.bladeRadius +
+                           configuration.bladeHalfThickness * configuration.bladeHalfThickness);
+            int count;Collider[] contacts;
+            while(true)
             {
+                count=Physics.OverlapSphereNonAlloc(center,queryRadius,overlapBuffer,configuration.contactLayers,QueryTriggerInteraction.Ignore);
+                if(count<overlapBuffer.Length){contacts=overlapBuffer;break;}
                 OverflowedLastTick = true;
-                return;
+                if(overlapBuffer.Length>=MaxReusableContacts)
+                {contacts=Physics.OverlapSphere(center,queryRadius,configuration.contactLayers,QueryTriggerInteraction.Ignore);count=contacts.Length;break;}
+                System.Array.Resize(ref overlapBuffer,Mathf.Min(overlapBuffer.Length*2,MaxReusableContacts));
             }
 
             selected.Clear();
             seenPartIds.Clear();
             for (int i = 0; i < count; i++)
             {
-                Collider collider = overlapBuffer[i];
+                Collider collider = contacts[i];
                 if (IsOwnCollider(collider)) continue;
                 if (!sink.TryResolve(collider, out SawTarget target)) continue;
                 if (target.partId == 0 || seenPartIds.Contains(target.partId)) continue;

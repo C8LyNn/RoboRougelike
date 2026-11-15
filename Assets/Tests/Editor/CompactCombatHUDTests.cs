@@ -6,6 +6,25 @@ using UnityEngine;
 
 public sealed class CompactCombatHUDTests
 {
+    [TestCase(0f,"0")]
+    [TestCase(.01f,"<1")]
+    [TestCase(.4f,"<1")]
+    [TestCase(10f,"10")]
+    public void ResourceLabelsDistinguishEmptyFromPositiveFraction(float amount,string expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("ResourceValueLabel",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((string)method.Invoke(null,new object[]{amount}),Is.EqualTo(expected));
+    }
+    [TestCase(20,12,true,"Brakuje 8 Z")]
+    [TestCase(0,100,true,"Odzysk niedostępny")]
+    [TestCase(20,100,false,"Brak miejsca")]
+    [TestCase(20,100,true,"Odzyskaj • 20 Z")]
+    public void MissedLootRecoveryExplainsActualBlocker(int price,int scrap,bool room,string expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("MissedLootRecoveryCaption",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);Assert.That((string)method.Invoke(null,new object[]{price,scrap,room}),Is.EqualTo(expected));
+    }
     [Test]
     public void RunSummaryDoesNotPromiseOldVehicleOrAssumeFinalBoss()
     {
@@ -32,16 +51,16 @@ public sealed class CompactCombatHUDTests
         var summary=(string)method.Invoke(null,new object[]{design});
         Assert.That(summary,Does.Contain("Energia: 550"),"500 core + 100 battery - 2×25 passive reservation.");
     }
-    [Test] public void GarageMotorAdviceDoesNotSuggestAddingPowerAtTheCap()
+    [Test] public void GarageMotorAdviceDoesNotClaimAnArbitraryCap()
     {
         var method=typeof(R1RunHUD).GetMethod("GarageWheelPowerAdvice",BindingFlags.Static|BindingFlags.NonPublic);
         Assert.That(method,Is.Not.Null);
         string below=(string)method.Invoke(null,new object[]{4f});
-        string capped=(string)method.Invoke(null,new object[]{5f});
+        string many=(string)method.Invoke(null,new object[]{12f});
         Assert.That(below,Does.Contain("dołóż silnik"));
-        Assert.That(capped,Does.Contain("Limit silników"));
-        Assert.That(capped,Does.Not.Contain("dołóż silnik"));
-        Assert.That(capped,Does.Contain("koła"));
+        Assert.That(many,Does.Not.Contain("Limit silników"));
+        Assert.That(many,Does.Contain("dołóż silnik"));
+        Assert.That(many,Does.Contain("koła"));
     }
     [TestCase(0f,100f,0f)]
     [TestCase(50f,100f,.5f)]
@@ -110,5 +129,74 @@ public sealed class CompactCombatHUDTests
             toggle.Invoke(hud,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.I}});Assert.That((bool)open.GetValue(hud),Is.False);
         }
         finally{Object.DestroyImmediate(go);}
+    }
+    [Test] public void CombatDetailsUsesReboundKeyInsteadOfHardcodedI()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();var go=new GameObject("HUD remap test");
+        try
+        {
+            Assert.That(profile.TryBind("DefenseStatusPage","F6"),Is.True);
+            Assert.That(profile.TryBind("CombatDetails","P"),Is.True);
+            var hud=go.AddComponent<R1RunHUD>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+            var toggle=typeof(R1RunHUD).GetMethod("UpdateCombatDetails",flags);var open=typeof(R1RunHUD).GetField("combatDetailsOpen",flags);
+            toggle.Invoke(hud,new object[]{new Event{type=EventType.KeyDown,keyCode=KeyCode.I}});Assert.That((bool)open.GetValue(hud),Is.False);
+            var key=new Event{type=EventType.KeyDown,keyCode=KeyCode.P};toggle.Invoke(hud,new object[]{key});
+            Assert.That((bool)open.GetValue(hud),Is.True);Assert.That(key.type,Is.EqualTo(EventType.Used));
+        }
+        finally{profile.ResetDefaults();Object.DestroyImmediate(go);}
+    }
+    [Test] public void RangeHintsShowConfiguredControls()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("MoveForward","K"),Is.True);
+            Assert.That(profile.TryBind("Weapon3","B"),Is.True);
+            Assert.That(profile.TryBind("Deploy1","N"),Is.True);
+            Assert.That(profile.TryBind("SteeringLeft","J"),Is.True);
+            Assert.That(profile.TryBind("DefenseStatusPage","F6"),Is.True);
+            Assert.That(profile.TryBind("ResetRange","P"),Is.True);
+            Assert.That(profile.TryBind("Pause","F7"),Is.True);
+            var method=typeof(R1RunHUD).GetMethod("RangeControlsHint",BindingFlags.Static|BindingFlags.NonPublic);
+            Assert.That(method,Is.Not.Null);string hint=(string)method.Invoke(null,null);
+            Assert.That(hint,Does.Contain("K/S/A/D").And.Contain("B").And.Contain("N/X/C/V").And.Contain("J/.").And.Contain("P — reset"));
+            Assert.That(hint,Does.Not.Contain("WASD").And.Not.Contain("R — reset"));
+            var targetHint=typeof(R1RunHUD).GetMethod("RangeTrainingTargetHint",BindingFlags.Static|BindingFlags.NonPublic);
+            Assert.That((string)targetHint.Invoke(null,new object[]{false}),Does.Contain("F7 — sterowanie ostrzałem").And.Not.Contain("Esc"));
+            Assert.That((string)targetHint.Invoke(null,new object[]{true}),Is.EqualTo("Cel zniszczony."));
+        }
+        finally{profile.ResetDefaults();}
+    }
+    [Test] public void WeaponStatusLabelsUseConfiguredSlots()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("Weapon1","MouseMiddle"),Is.True);
+            Assert.That(profile.TryBind("Weapon3","B"),Is.True);
+            var method=typeof(R1RunHUD).GetMethod("WeaponSlotInputLabel",BindingFlags.Static|BindingFlags.NonPublic);
+            Assert.That(method,Is.Not.Null);
+            Assert.That((string)method.Invoke(null,new object[]{0}),Is.EqualTo("A / ŚPM"));
+            Assert.That((string)method.Invoke(null,new object[]{2}),Is.EqualTo("C / B"));
+        }
+        finally{profile.ResetDefaults();}
+    }
+
+    [Test] public void RangeChargesRemainAccessibleAndFitSeparatePanel()
+    {
+        var flags=BindingFlags.Static|BindingFlags.NonPublic;
+        var count=typeof(R1RunHUD).GetMethod("RangeChargePageCount",flags);
+        var start=typeof(R1RunHUD).GetMethod("RangeChargePageStart",flags);
+        var rect=typeof(R1RunHUD).GetMethod("RangeChargeEntryRect",flags);
+        Assert.That((int)count.Invoke(null,new object[]{0}),Is.EqualTo(1));
+        Assert.That((int)count.Invoke(null,new object[]{9}),Is.EqualTo(3));
+        Assert.That((int)start.Invoke(null,new object[]{9,99}),Is.EqualTo(8),"A page is clamped when parts are removed.");
+        var panel=new Rect(18,193,610,58);
+        for(int i=0;i<4;i++)
+        {
+            var item=(Rect)rect.Invoke(null,new object[]{i});
+            Assert.That(panel.Contains(item.min)&&panel.Contains(item.max),Is.True);
+            for(int j=0;j<i;j++)Assert.That(item.Overlaps((Rect)rect.Invoke(null,new object[]{j})),Is.False);
+        }
     }
 }

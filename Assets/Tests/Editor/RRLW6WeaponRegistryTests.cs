@@ -13,6 +13,20 @@ using RogueMachine.P12PipelineSafe;
 
 public class RRLW6WeaponRegistryTests
 {
+    [Test] public void ShotgunPelletDamageCanExceedOldCapAndConfigurationCopies()
+    {
+        Assert.That(new ShotgunConfig{damagePerPellet=2000}.Snapshot().DamagePerPellet,Is.EqualTo(2000));
+        Assert.That(new ShotgunConfig{damagePerPellet=float.NaN}.Snapshot().DamagePerPellet,Is.EqualTo(9));
+        Assert.That(new ShotgunConfig{damagePerPellet=-1}.Snapshot().DamagePerPellet,Is.Zero);
+        float extreme=new ShotgunConfig{damagePerPellet=float.MaxValue}.Snapshot().DamagePerPellet;
+        Assert.That(extreme,Is.EqualTo(float.MaxValue));
+        Assert.That(R3MountedBonusEffects.SafeDamageProduct(extreme,2),Is.EqualTo(float.MaxValue),"A later multiplier must not turn finite damage into infinity.");
+        var field=typeof(R3GarageEconomy).GetField("ShotgunDamagePerPellet");Assert.That(field,Is.Not.Null);
+        Assert.That(field.GetValue(Resources.Load<R1RunDefinition>("R1/Run").GaragePrices),Is.EqualTo(9f));
+        var economy=new R3GarageEconomy();field.SetValue(economy,2000f);
+        var copy=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light),economy).DeepCopy().Economy;
+        Assert.That(field.GetValue(copy),Is.EqualTo(2000f));
+    }
     [Test] public void ShotgunIsAnExplicitProfileAfterUnchangedLegacyOrdinals()
     {
         Assert.That((int)R4WeaponKind.Basic,Is.EqualTo(0));
@@ -47,6 +61,216 @@ public class RRLW6WeaponRegistryTests
 
 public class RRLW6ShotgunPhysicalTests
 {
+    [UnityTest] public IEnumerator CompletedVolleyPathDoesNotRemainClearAfterOwnerMoves()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=true;
+        var assembly=vehicle.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.Single(p=>p.Id==state.Id);
+        yield return null;
+        try
+        {
+            var pellet=new ShotgunPelletSpawn(0,1,gun.Muzzle.position,gun.Muzzle.forward,Vector3.zero,58,9,40,2,body,vehicle.gameObject);
+            var begin=typeof(R3VehicleAssembly).GetMethod("BeginShotgunVolleyPathCheck",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var check=begin.Invoke(assembly,new object[]{gun,new[]{pellet},.05f});
+            var type=check.GetType();type.GetMethod("Advance").Invoke(check,new object[]{1});
+            Assert.That((bool)type.GetProperty("Clear").GetValue(check),Is.True);
+            vehicle.transform.position+=Vector3.right*.2f;Physics.SyncTransforms();
+            Assert.That((bool)type.GetProperty("Clear").GetValue(check),Is.False,
+                "A caller must not commit a previously clear volley after its owner moves.");
+        }
+        finally{if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
+    [UnityTest] public IEnumerator ResumedVolleyPathRejectsStaleMuzzleOrOwnerPose()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=true;
+        var assembly=vehicle.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.Single(p=>p.Id==state.Id);
+        yield return null;
+        try
+        {
+            var begin=typeof(R3VehicleAssembly).GetMethod("BeginShotgunVolleyPathCheck",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            for(int change=0;change<2;change++)
+            {
+                var pellet=new ShotgunPelletSpawn(0,1,gun.Muzzle.position,gun.Muzzle.forward,Vector3.zero,58,9,40,2,body,vehicle.gameObject);
+                var check=begin.Invoke(assembly,new object[]{gun,new[]{pellet,pellet},.05f});
+                var type=check.GetType();var advance=type.GetMethod("Advance");
+                advance.Invoke(check,new object[]{1});
+                Assert.That((int)type.GetProperty("CheckedCount").GetValue(check),Is.EqualTo(1));
+                Assert.That((bool)type.GetProperty("Finished").GetValue(check),Is.False);
+                if(change==0)gun.Muzzle.localPosition+=Vector3.right*.2f;
+                else vehicle.transform.position+=Vector3.right*.2f;
+                Physics.SyncTransforms();
+                advance.Invoke(check,new object[]{1});
+                Assert.That((bool)type.GetProperty("Finished").GetValue(check),Is.True);
+                Assert.That((bool)type.GetProperty("Clear").GetValue(check),Is.False,
+                    change==0?"A moved muzzle must invalidate already checked directions.":"A moved vehicle must invalidate the captured world-space origin.");
+            }
+        }
+        finally{if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
+    [UnityTest] public IEnumerator VolleyPathCheckCanResumeAndRejectALateBlockedPellet()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=true;
+        var assembly=vehicle.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.Single(p=>p.Id==state.Id);
+        yield return null;
+        var blockedDirection=Quaternion.AngleAxis(7,gun.Muzzle.up)*gun.Muzzle.forward;
+        var blocker=GameObject.CreatePrimitive(PrimitiveType.Cube);blocker.transform.SetParent(vehicle.transform,true);
+        blocker.transform.position=gun.Muzzle.position+blockedDirection*5f;blocker.transform.localScale=Vector3.one*.25f;
+        Physics.SyncTransforms();
+        try
+        {
+            var clear=new ShotgunPelletSpawn(0,1,gun.Muzzle.position,gun.Muzzle.forward,Vector3.zero,58,9,40,2,body,vehicle.gameObject);
+            var blocked=new ShotgunPelletSpawn(80,1,gun.Muzzle.position,blockedDirection,Vector3.zero,58,9,40,2,body,vehicle.gameObject);
+            var pellets=Enumerable.Repeat(clear,80).Concat(new[]{blocked}).ToArray();
+            var begin=typeof(R3VehicleAssembly).GetMethod("BeginShotgunVolleyPathCheck",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            Assert.That(begin,Is.Not.Null,"A large volley must support checking a bounded number of paths per step.");
+            var check=begin.Invoke(assembly,new object[]{gun,pellets,.05f});
+            var type=check.GetType();var advance=type.GetMethod("Advance");var checkedCount=type.GetProperty("CheckedCount");
+            var finished=type.GetProperty("Finished");var clearResult=type.GetProperty("Clear");
+            Assert.That((bool)finished.GetValue(check),Is.False);
+            advance.Invoke(check,new object[]{7});
+            Assert.That((int)checkedCount.GetValue(check),Is.EqualTo(7));Assert.That((bool)finished.GetValue(check),Is.False);
+            advance.Invoke(check,new object[]{73});
+            Assert.That((int)checkedCount.GetValue(check),Is.EqualTo(80));Assert.That((bool)finished.GetValue(check),Is.False);
+            advance.Invoke(check,new object[]{1});
+            Assert.That((bool)finished.GetValue(check),Is.True);Assert.That((bool)clearResult.GetValue(check),Is.False);
+            advance.Invoke(check,new object[]{1});Assert.That((int)checkedCount.GetValue(check),Is.EqualTo(pellets.Length));
+            Assert.That(assembly.ClearShotgunVolley(gun,pellets,.05f),Is.False,"The ordinary firing path must agree.");
+            blocker.SetActive(false);Physics.SyncTransforms();
+            check=begin.Invoke(assembly,new object[]{gun,pellets,.05f});advance.Invoke(check,new object[]{int.MaxValue});
+            Assert.That((bool)finished.GetValue(check),Is.True);Assert.That((bool)clearResult.GetValue(check),Is.True);
+            Assert.That((int)checkedCount.GetValue(check),Is.EqualTo(pellets.Length));
+            Assert.That(assembly.ClearShotgunVolley(gun,pellets,.05f),Is.True);
+        }
+        finally{if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
+    [UnityTest] public IEnumerator BlockedLaterPelletRejectsWholeVolleyAndClearVolleySpawns()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=true;
+        var assembly=vehicle.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.Single(p=>p.Id==state.Id);
+        yield return null;
+        var blockedDirection=Quaternion.AngleAxis(7,gun.Muzzle.up)*gun.Muzzle.forward;
+        var blocker=GameObject.CreatePrimitive(PrimitiveType.Cube);blocker.transform.SetParent(vehicle.transform,true);
+        blocker.transform.position=gun.Muzzle.position+blockedDirection*5f;blocker.transform.localScale=Vector3.one*.25f;
+        Physics.SyncTransforms();
+        var first=new ShotgunPelletSpawn(0,1,gun.Muzzle.position,gun.Muzzle.forward,Vector3.zero,58,9,40,2,body,vehicle.gameObject);
+        var second=new ShotgunPelletSpawn(1,1,gun.Muzzle.position,blockedDirection,Vector3.zero,58,9,40,2,body,vehicle.gameObject);
+        var binding=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
+        try
+        {
+            Assert.That(assembly.ClearProjectilePath(gun,first.Direction,40,.05f),Is.True,"The first pellet is clear.");
+            Assert.That(assembly.ClearProjectilePath(gun,second.Direction,40,.05f),Is.False,"The later pellet is blocked by owned armor.");
+            Assert.That(binding.TrySpawnVolley(new[]{first,second}),Is.False);
+            Assert.That(UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId==state.Id),Is.Zero,"The accepted prefix must not be emitted.");
+            blocker.SetActive(false);Physics.SyncTransforms();
+            Assert.That(binding.TrySpawnVolley(new[]{first,second}),Is.True);
+            Assert.That(UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId==state.Id),Is.EqualTo(2));
+        }
+        finally{if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
+    [UnityTest] public IEnumerator ConfiguredPelletCountSurvivesCopyAndFiresPhysicalVolley()
+    {
+        var field=typeof(R3GarageEconomy).GetField("ShotgunPelletCount");Assert.That(field,Is.Not.Null);
+        Assert.That(field.GetValue(Resources.Load<R1RunDefinition>("R1/Run").GaragePrices),Is.EqualTo(8));
+        var economy=new R3GarageEconomy();field.SetValue(economy,16);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard),economy);
+        Assert.That(field.GetValue(model.DeepCopy().Economy),Is.EqualTo(16));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6;
+        target.transform.localScale=new Vector3(6,6,1);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(10000,false);
+        Physics.SyncTransforms();
+        try
+        {
+            var binding=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
+            int ammo=state.Ammo;Assert.That(binding.Fire(),Is.True);
+            Assert.That(binding.Module.CurrentSpec.PelletCount,Is.EqualTo(16));Assert.That(state.Ammo,Is.EqualTo(ammo-1));
+            var pellets=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==state.Id).ToArray();
+            Assert.That(pellets.Length,Is.EqualTo(16));
+            float deadline=Time.realtimeSinceStartup+5;while(10000f-hp.CurrentHp<143f&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(10000f-hp.CurrentHp,Is.EqualTo(144f).Within(1f),"Each configured pellet must hit independently.");
+        }
+        finally{if(target!=null)UnityEngine.Object.Destroy(target);if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
+    [UnityTest] public IEnumerator ConfiguredShotgunSpeedDrivesRealPelletsAboveOldCeiling()
+    {
+        var field=typeof(R3GarageEconomy).GetField("ShotgunProjectileSpeed");Assert.That(field,Is.Not.Null);
+        Assert.That(field.GetValue(Resources.Load<R1RunDefinition>("R1/Run").GaragePrices),Is.EqualTo(58f));
+        var economy=new R3GarageEconomy{ShotgunRange=1200f};field.SetValue(economy,500f);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard),economy);
+        Assert.That(field.GetValue(model.DeepCopy().Economy),Is.EqualTo(500f));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=gun.Muzzle.position+gun.Muzzle.forward*10;
+        target.transform.localScale=new Vector3(4,4,1);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);
+        Physics.SyncTransforms();
+        try
+        {
+            var binding=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();Assert.That(binding.Fire(),Is.True);
+            Assert.That(binding.Module.CurrentSpec.ProjectileSpeed,Is.EqualTo(500f));
+            Assert.That(binding.Module.CurrentSpec.ProjectileLifetime,Is.EqualTo(3.4f).Within(.001f));
+            var pellets=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==state.Id).ToArray();
+            Assert.That(pellets.Length,Is.EqualTo(8));
+            foreach(var pellet in pellets)Assert.That(pellet.GetComponent<Rigidbody>().linearVelocity.magnitude,Is.EqualTo(500f).Within(.01f));
+            float deadline=Time.realtimeSinceStartup+5;while(hp.CurrentHp>=500&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(hp.CurrentHp,Is.LessThan(500),"The fast physical pellets must also hit the target.");
+        }
+        finally{if(target!=null)UnityEngine.Object.Destroy(target);if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
+    [UnityTest] public IEnumerator ConfiguredShotgunDealsDamageAboveOldPelletCap()
+    {
+        var field=typeof(R3GarageEconomy).GetField("ShotgunDamagePerPellet");Assert.That(field,Is.Not.Null);
+        var economy=new R3GarageEconomy();field.SetValue(economy,2000f);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard),economy);
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6;
+        target.transform.localScale=new Vector3(4,4,1);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000000,false);
+        Physics.SyncTransforms();
+        try
+        {
+            var binding=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();Assert.That(binding.Fire(),Is.True);
+            Assert.That(binding.Module.CurrentSpec.DamagePerPellet,Is.EqualTo(2000));
+            float deadline=Time.realtimeSinceStartup+5;
+            while(1000000f-hp.CurrentHp<15999f&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(1000000f-hp.CurrentHp,Is.EqualTo(16000f).Within(1f),"All eight independent pellets must retain their configured damage.");
+        }
+        finally{if(target!=null)UnityEngine.Object.Destroy(target);if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
+    [Test] public void ShotgunLongRangeSettingsRemainFiniteAndCopy()
+    {
+        var spec=new RoboRougelike.WPN001Shotgun.ShotgunConfig{maxTravelDistance=1200,projectileLifetime=25}.Snapshot();
+        Assert.That(spec.MaxTravelDistance,Is.EqualTo(1200));Assert.That(spec.ProjectileLifetime,Is.EqualTo(25));
+        var economy=new R3GarageEconomy();var range=typeof(R3GarageEconomy).GetField("ShotgunRange");Assert.That(range,Is.Not.Null);
+        Assert.That(range.GetValue(Resources.Load<R1RunDefinition>("R1/Run").GaragePrices),Is.EqualTo(40f));
+        var invalid=new RoboRougelike.WPN001Shotgun.ShotgunConfig{maxTravelDistance=float.NaN,projectileLifetime=float.PositiveInfinity}.Snapshot();
+        Assert.That(invalid.MaxTravelDistance,Is.EqualTo(40));Assert.That(invalid.ProjectileLifetime,Is.EqualTo(2));
+        range.SetValue(economy,1200f);var copy=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light),economy).DeepCopy();
+        Assert.That(range.GetValue(copy.Economy),Is.EqualTo(1200));
+    }
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
@@ -99,6 +323,50 @@ public class RRLW6ShotgunPhysicalTests
         Assert.That(hp.CurrentHp,Is.EqualTo(428).Within(.1f),$"Eight9-damage pellets; physics={Physics.simulationMode}, time={startTime}->{Time.time}, fixed={startFixed}->{Time.fixedTime}, target={target.transform.position}, ignoreLayers={Physics.GetIgnoreLayerCollision(0,0)}, starts={starts}, ends={ends}");
         gun.Damageable.ApplyDamage(10000,gun.transform.position,Vector3.up);
         Assert.That(shotgun.TryFire(),Is.False,"Destroyed or detached weapon cannot fire");
+    }
+    [UnityTest] public IEnumerator ConfiguredShotgunCanHitBeyondOldRangeCeiling()
+    {
+        var range=typeof(R3GarageEconomy).GetField("ShotgunRange");Assert.That(range,Is.Not.Null);
+        var run=R1RunController.Instance;var economy=new R3GarageEconomy();range.SetValue(economy,1200f);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard),economy);
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=gun.Muzzle.position+gun.Muzzle.forward*600;
+        target.transform.localScale=new Vector3(15,15,1);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);Physics.SyncTransforms();
+        var binding=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();Assert.That(binding.Fire(),Is.True);
+        Assert.That(binding.Module.CurrentSpec.MaxTravelDistance,Is.EqualTo(1200));Assert.That(binding.Module.CurrentSpec.ProjectileLifetime,Is.GreaterThan(20));
+        foreach(var pellet in UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==state.Id))
+            pellet.GetComponent<Rigidbody>().linearVelocity=gun.Muzzle.forward*1000;
+        float deadline=Time.realtimeSinceStartup+5;while(hp.CurrentHp>=500&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(hp.CurrentHp,Is.LessThan(500));if(target!=null)UnityEngine.Object.Destroy(target);if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);yield return null;
+    }
+    [UnityTest] public IEnumerator ConsecutiveShotgunVolleysReusePelletsAndBothDamageTarget()
+    {
+        var run=R1RunController.Instance;
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        target.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6;target.transform.localScale=new Vector3(4,4,1);
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);Physics.SyncTransforms();
+        yield return null; // Finish deferred destruction of builder helper colliders.
+        var binding=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
+        Assert.That(binding.Fire(),Is.True);
+        var first=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==state.Id).Select(p=>p.gameObject.GetInstanceID()).ToArray();
+        Assert.That(first.Length,Is.EqualTo(8));
+        float deadline=Time.realtimeSinceStartup+4;
+        while((hp.CurrentHp>428.1f||Time.time<binding.State.DeviceReadyAt+.02f)&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(hp.CurrentHp,Is.EqualTo(428).Within(.1));
+        Assert.That(binding.Fire(),Is.True);
+        var second=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==state.Id).Select(p=>p.gameObject.GetInstanceID()).ToArray();
+        Assert.That(second.Length,Is.EqualTo(8));
+        Assert.That(second.Intersect(first).Count(),Is.GreaterThan(0),"A later real volley can reuse retired pellets.");
+        deadline=Time.realtimeSinceStartup+4;while(hp.CurrentHp>356.1f&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(hp.CurrentHp,Is.EqualTo(356).Within(.1),"Reused pellets must all damage the target.");
+        UnityEngine.Object.Destroy(target);UnityEngine.Object.Destroy(vehicle.gameObject);yield return null;
     }
     [UnityTearDown] public IEnumerator Cleanup()
     {

@@ -15,6 +15,16 @@ using UnityEngine.InputSystem.LowLevel;
 
 public class CreativeRangeTests
 {
+    [UnityTest] public IEnumerator EarnedScrapSummaryStaysNonNegativeAfterLargeTotal()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);
+        var wheel=run.VehicleModel.Inventory.First(p=>p.Kind==R3PartKind.Wheel);
+        var property=typeof(R1RunController).GetProperty("EarnedScrap");property.GetSetMethod(true).Invoke(run,new object[]{int.MaxValue-1});
+        Assert.That(run.GarageDismantle(wheel.Id),Is.True);
+        Assert.That(run.EarnedScrap,Is.EqualTo(int.MaxValue),"The summary must not wrap into a negative saved value.");
+        yield return null;
+    }
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");
@@ -40,6 +50,50 @@ public class CreativeRangeTests
         yield return null;
     }
 
+    [UnityTest] public IEnumerator GarageUndersideUsesReassignedKey()
+    {
+        var profile=R1ControlProfile.Current;var old=profile.Snapshot();
+        try
+        {
+            profile.ResetDefaults();Assert.That(profile.TryBind("GarageUnderside","K"),Is.True);
+            var wheelHint=typeof(R1RunHUD).GetMethod("GarageWheelSelection",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+            var fork=new R3PartState(Vector3Int.zero,R3PartKind.Wheel){WheelStyle=R3WheelStyle.SmallFork};
+            Assert.That((string)wheelHint.Invoke(null,new object[]{fork}),Does.Contain("K: widok od spodu").And.Not.Contain("U: widok od spodu"));
+            var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+            var garage=run.Garage;var field=typeof(R3GarageView).GetField("pitch",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            float before=(float)field.GetValue(garage);
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.U},Vector2.zero);
+            Assert.That((float)field.GetValue(garage),Is.EqualTo(before));
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K},Vector2.zero);
+            Assert.That((float)field.GetValue(garage),Is.Not.EqualTo(before));
+            float changed=(float)field.GetValue(garage);
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K,control=true},Vector2.zero);
+            Assert.That((float)field.GetValue(garage),Is.EqualTo(changed));
+            yield return null;
+        }
+        finally{typeof(R1ControlProfile).GetMethod("RestoreValues",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(profile,new object[]{old});}
+    }
+
+    [UnityTest] public IEnumerator GarageFrameUsesReassignedKeyWithoutChangingSelection()
+    {
+        var profile=R1ControlProfile.Current;var old=profile.Snapshot();
+        try
+        {
+            profile.ResetDefaults();Assert.That(profile.TryBind("GarageFrame","K"),Is.True);
+            var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+            Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+            var item=run.VehicleModel.Inventory.Last();var garage=run.Garage;garage.ChooseInventory(item.Id);garage.Zoom(-100);
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.Home},Vector2.zero);
+            Assert.That(garage.Distance,Is.EqualTo(3));
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K,shift=true},Vector2.zero);
+            Assert.That(garage.Distance,Is.EqualTo(3));
+            garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.K},Vector2.zero);
+            Assert.That(garage.Distance,Is.GreaterThanOrEqualTo(4.5f));
+            Assert.That(garage.SelectedInventoryId,Is.EqualTo(item.Id));yield return null;
+        }
+        finally{typeof(R1ControlProfile).GetMethod("RestoreValues",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(profile,new object[]{old});}
+    }
+
     [UnityTest] public IEnumerator EscapeClosesEnemyMenuBeforeResumingSimulation()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
@@ -60,6 +114,32 @@ public class CreativeRangeTests
         run.HandleEscape();
         Assert.That(run.Paused,Is.False);
         Assert.That((bool)active.GetValue(enemy),Is.True);
+    }
+
+    [UnityTest] public IEnumerator SpawnedCreativeEnemyIsVisibleToAutonomousTurretAndScanners()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var range=run.GetComponent<R6TestRange>();var training=range.TrainingTarget;
+        Assert.That(run.SpawnCreativeEnemy(R3EnemyArchetype.Gunner),Is.True);
+        var enemy=range.Layout.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret>().Single(e=>e!=training);
+        enemy.SetCombatActive(false);enemy.GetComponent<Rigidbody>().isKinematic=true;
+        if(training!=null)training.gameObject.SetActive(false);range.SetTrainingTarget(null);Physics.SyncTransforms();
+        Assert.That(RoboRougelike.PackageIntegration.RRLScanWorld.LiveEnemies(run),Does.Contain(enemy),"Enemy spawned from the range menu must be a discoverable target.");
+        var registryObject=new GameObject("Test rejestru skanera");
+        var registry=registryObject.AddComponent<RoboRougelike.Mechanics.StructuralScan.StructuralScanRegistry>();
+        RoboRougelike.PackageIntegration.RRLScanWorld.Register(registry,run);
+        Assert.That(registry.Parts.Any(p=>p.OwnerKey==enemy.GetInstanceID()),Is.True,"The structural scanner must register the spawned enemy's parts.");
+        RoboRougelike.PackageIntegration.RRLPulseSignal.Prepare(run);
+        Assert.That(enemy.GetComponent<RoboRougelike.PackageIntegration.RRLPulseSignal>()?.Tag,Is.Not.Null,"The pulse scanner must prepare an enemy signal.");
+        var turret=GameObject.CreatePrimitive(PrimitiveType.Cube);turret.transform.position=enemy.Core.transform.position+Vector3.up*8;
+        turret.transform.localScale=Vector3.one*.4f;var body=turret.AddComponent<Rigidbody>();body.isKinematic=true;
+        var weapon=turret.AddComponent<R3FlyingDrone>();weapon.ConfigureTurret(run.Player.transform,.2f,1);Physics.SyncTransforms();
+        var nextShot=typeof(R3FlyingDrone).GetField("nextShot",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance);
+        float deadline=Time.time+3;while(Time.time<deadline&&(float)nextShot.GetValue(weapon)<=0)yield return new WaitForFixedUpdate();
+        Assert.That((float)nextShot.GetValue(weapon),Is.GreaterThan(0),"An autonomous turret must fire at the spawned enemy.");
+        run.ClearCreativeEnemies();Assert.That(RoboRougelike.PackageIntegration.RRLScanWorld.LiveEnemies(run).Contains(enemy),Is.False);
+        Object.Destroy(turret);Object.Destroy(registryObject);
     }
 
     [UnityTest] public IEnumerator CreativeGarageStartsWithCoreAndOffersFreeParts()
@@ -158,10 +238,121 @@ public class CreativeRangeTests
         Assert.That(model.Buy(new Vector3Int(0,1,3),R3PartKind.Gun,R4WeaponKind.Basic),Is.True);
         Assert.That(model.Buy(new Vector3Int(0,1,6),R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
         Assert.That(model.Buy(new Vector3Int(0,1,9),R3PartKind.Gun,R4WeaponKind.Heavy),Is.True);
-        Assert.That(model.WeaponInGroup(R4WeaponKind.Heavy,true),Is.True,"Dodatkowe typy obsługuje PPM.");
+        Assert.That(model.Buy(new Vector3Int(0,1,12),R3PartKind.Gun,R4WeaponKind.Shotgun),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,15),R3PartKind.Gun,R4WeaponKind.Railgun),Is.True);
+        Assert.That(model.WeaponInSlot(R4WeaponKind.Heavy,2),Is.True,"Trzeci typ ma własny slot.");
+        Assert.That(model.WeaponInSlot(R4WeaponKind.Railgun,1),Is.True,"Nadmiarowe typy kreatywne obsługuje PPM.");
         var groups=typeof(R1RunHUD).GetMethod("GarageWeaponGroups",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
         Assert.That((string)groups.Invoke(null,new object[]{model}),Does.Contain("PPM").And.Contain("pozostałe"));
+        Assert.That(model.AssignWeaponSlot(R4WeaponKind.Railgun,2),Is.True,"Nadmiarowy rodzaj w trybie kreatywnym musi dać się wybrać do slotu.");
+        Assert.That(model.WeaponAtSlot(2),Is.EqualTo(R4WeaponKind.Railgun));
+        Assert.That(model.Buy(new Vector3Int(0,1,20),R3PartKind.Booster),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,22),R3PartKind.JumpDrive),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,24),R3PartKind.Blink),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,26),R3PartKind.MagneticGrapple),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,1,28),R3PartKind.RepairPulse),Is.True);
+        Assert.That(model.AssignActiveSlot(R3PartKind.RepairPulse,3),Is.True,"Nadmiarowy moduł kreatywny musi dać się wybrać do slotu.");
+        Assert.That(model.GetActiveSlots()[3],Is.EqualTo(R3PartKind.RepairPulse));
         Assert.That(model.Scrap,Is.Zero);
+        yield return null;
+    }
+
+    [UnityTest] public IEnumerator CreativeSlotPickerReachesEveryUnassignedTypeAndShowsCurrentBinding()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var model=run.VehicleModel.DeepCopy();
+        for(int z=1;z<=60;z++)Assert.That(model.Buy(new Vector3Int(0,0,z),R3PartKind.Armor),Is.True);
+        var weapons=new[]{R4WeaponKind.Basic,R4WeaponKind.Automatic,R4WeaponKind.Heavy,R4WeaponKind.Shotgun,R4WeaponKind.Railgun,R4WeaponKind.RocketLauncher};
+        for(int i=0;i<weapons.Length;i++)Assert.That(model.Buy(new Vector3Int(0,1,3+i*3),R3PartKind.Gun,weapons[i]),Is.True,weapons[i].ToString());
+        var active=new[]{R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Blink,R3PartKind.MagneticGrapple,R3PartKind.RepairPulse,R3PartKind.Overdrive};
+        for(int i=0;i<active.Length;i++)Assert.That(model.Buy(new Vector3Int(0,1,22+i*2),active[i]),Is.True,active[i].ToString());
+        var deploy=new[]{R3PartKind.RampDeployer,R3PartKind.WallDeployer,R3PartKind.JumpPadDeployer,R3PartKind.BlastTrapDeployer,R3PartKind.EmpTrapDeployer,R3PartKind.RepelTrapDeployer};
+        for(int i=0;i<deploy.Length;i++)Assert.That(model.Buy(new Vector3Int(0,1,36+i*2),deploy[i]),Is.True,deploy[i].ToString());
+        var flags=System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic;
+        var weaponOptions=typeof(R1RunHUD).GetMethod("CreativeExtraWeapons",flags);
+        var moduleOptions=typeof(R1RunHUD).GetMethod("CreativeExtraModules",flags);
+        var index=typeof(R1RunHUD).GetMethod("CreativeOptionIndex",flags);
+        var caption=typeof(R1RunHUD).GetMethod("CreativeExtraCaption",flags);
+        Assert.That(weaponOptions,Is.Not.Null);Assert.That(moduleOptions,Is.Not.Null);Assert.That(index,Is.Not.Null);Assert.That(caption,Is.Not.Null);
+        var extraWeapons=(R4WeaponKind[])weaponOptions.Invoke(null,new object[]{model});
+        var extraActive=(R3PartKind[])moduleOptions.Invoke(null,new object[]{model,false});
+        var extraDeploy=(R3PartKind[])moduleOptions.Invoke(null,new object[]{model,true});
+        Assert.That(extraWeapons.Length,Is.EqualTo(2));Assert.That(extraActive.Length,Is.EqualTo(2));Assert.That(extraDeploy.Length,Is.EqualTo(2));
+        Assert.That((int)index.Invoke(null,new object[]{0,2}),Is.EqualTo(0));Assert.That((int)index.Invoke(null,new object[]{1,2}),Is.EqualTo(1));
+        Assert.That((int)index.Invoke(null,new object[]{2,2}),Is.EqualTo(0),"Navigation wraps when the list changes or reaches the end.");
+        Assert.That(model.AssignWeaponSlot(extraWeapons[1],3),Is.True);Assert.That(model.GetWeaponSlots()[3],Is.EqualTo(extraWeapons[1]));
+        Assert.That(model.AssignActiveSlot(extraActive[1],3),Is.True);Assert.That(model.GetActiveSlots()[3],Is.EqualTo(extraActive[1]));
+        Assert.That(model.AssignDeployableSlot(extraDeploy[1],3),Is.True);Assert.That(model.GetDeployableSlots()[3],Is.EqualTo(extraDeploy[1]));
+        Assert.That((R4WeaponKind[])weaponOptions.Invoke(null,new object[]{model}),Does.Contain(extraWeapons[0]));
+        Assert.That((R3PartKind[])moduleOptions.Invoke(null,new object[]{model,false}),Does.Contain(extraActive[0]));
+        Assert.That((R3PartKind[])moduleOptions.Invoke(null,new object[]{model,true}),Does.Contain(extraDeploy[0]));
+        Assert.That(model.AssignWeaponSlot(extraWeapons[0],3),Is.True);
+        Assert.That(model.AssignActiveSlot(extraActive[0],3),Is.True);
+        Assert.That(model.AssignDeployableSlot(extraDeploy[0],3),Is.True);
+        Assert.That((R4WeaponKind[])weaponOptions.Invoke(null,new object[]{model}),Does.Contain(extraWeapons[1]));
+        Assert.That((R3PartKind[])moduleOptions.Invoke(null,new object[]{model,false}),Does.Contain(extraActive[1]));
+        Assert.That((R3PartKind[])moduleOptions.Invoke(null,new object[]{model,true}),Does.Contain(extraDeploy[1]));
+        var profile=new R1ControlProfile(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"RRL-extra-bindings-"+System.Guid.NewGuid()+".json"));
+        Assert.That(profile.TryBind("Weapon4","K"),Is.True);Assert.That(profile.TryBind("Active4","J"),Is.True);Assert.That(profile.TryBind("Deploy4","B"),Is.True);
+        foreach(var pair in new[]{("Weapon4","K"),("Active4","J"),("Deploy4","B")})
+            Assert.That((string)caption.Invoke(null,new object[]{profile,pair.Item1,"Przykład",1,2}),Does.Contain(pair.Item2).And.Contain("2/2"));
+        yield return null;
+    }
+
+    R3PartState MountModifiedCreativeBonus(R1RunController run)
+    {
+        var definition=run.Definition.Upgrades.First(item=>item!=null&&item.Effect==R1UpgradeEffect.Damage);
+        Assert.That(run.AddCreativeBonus(definition.Id),Is.True);var part=run.VehicleModel.Inventory.Last();
+        part.UpgradeOperation=R1ModifierOperation.More;part.UpgradeScope=R1BonusScope.AutomaticWeapon;part.Tier=2;
+        Assert.That(run.GarageMount(part.Id,Vector3Int.right,Vector3Int.zero),Is.True);
+        return run.VehicleModel.Parts.Single(p=>p.Id==part.Id);
+    }
+
+    [UnityTest] public IEnumerator CreativeCopiedBonusKeepsOperationScopeTierAndIdentity()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var mounted=MountModifiedCreativeBonus(run);int before=run.VehicleModel.Inventory.Count;
+        Assert.That(run.AddCreativeEquivalent(mounted,out var copy),Is.True);
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(before+1));Assert.That(copy.Id,Is.Not.EqualTo(mounted.Id));
+        Assert.That(copy.UpgradeOperation,Is.EqualTo(mounted.UpgradeOperation));Assert.That(copy.UpgradeScope,Is.EqualTo(mounted.UpgradeScope));
+        Assert.That(copy.Tier,Is.EqualTo(mounted.Tier));Assert.That(R3VehicleModel.SameMountVariant(copy,mounted),Is.True);
+        yield return null;
+    }
+
+    [UnityTest] public IEnumerator CreativeMountedBonusVariantCanBeSelectedAndCopied()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var mounted=MountModifiedCreativeBonus(run);var hud=run.GetComponent<R1RunHUD>();
+        Assert.That(hud.SelectMountedPartForBuilding(run,mounted),Is.True,"A valid mounted variant must be available even if it differs from the base reward definition.");
+        var selected=run.VehicleModel.Inventory.Single(p=>p.Id==run.Garage.SelectedInventoryId);
+        Assert.That(selected.Id,Is.Not.EqualTo(mounted.Id));Assert.That(R3VehicleModel.SameMountVariant(selected,mounted),Is.True);
+        var add=typeof(R1RunHUD).GetMethod("AddSelectedCatalogPart",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That((bool)add.Invoke(hud,new object[]{run,R3PartKind.BonusModule,R4WeaponKind.Basic}),Is.True);
+        Assert.That(R3VehicleModel.SameMountVariant(run.VehicleModel.Inventory.Last(),mounted),Is.True,
+            "The catalog add action must also preserve a mounted variant absent from the reward definitions.");
+        Assert.That(run.VehicleModel.Scrap,Is.Zero);
+        yield return null;
+    }
+
+    [UnityTest] public IEnumerator CreativeCatalogAddsExactBonusVariantWhenDefinitionsShareAnId()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var original=run.Definition.Upgrades;var definition=original.First(item=>item!=null&&item.Effect==R1UpgradeEffect.Damage);
+        var variant=ScriptableObject.CreateInstance<R1UpgradeDefinition>();
+        variant.Id=definition.Id;variant.Title="Testowy wariant";variant.Effect=R1UpgradeEffect.Damage;
+        variant.Operation=R1ModifierOperation.More;variant.Scope=R1BonusScope.AutomaticWeapon;variant.Amount=definition.Amount;
+        try
+        {
+            run.Definition.Upgrades=original.Concat(new[]{variant}).ToArray();var sample=R3VehicleModel.CreateBonusReward(variant);
+            var hud=run.GetComponent<R1RunHUD>();var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+            var key=typeof(R1RunHUD).GetMethod("CatalogBonusKey",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+            typeof(R1RunHUD).GetField("catalogBonusId",flags).SetValue(hud,key.Invoke(null,new object[]{sample}));
+            var add=typeof(R1RunHUD).GetMethod("AddSelectedCatalogPart",flags);
+            Assert.That((bool)add.Invoke(hud,new object[]{run,R3PartKind.BonusModule,R4WeaponKind.Basic}),Is.True);
+            var added=run.VehicleModel.Inventory.Last();Assert.That(R3VehicleModel.SameBonusType(added,sample),Is.True,
+                "The selected scope and operation must win over an earlier definition with the same ID.");
+        }
+        finally{run.Definition.Upgrades=original;Object.Destroy(variant);}
         yield return null;
     }
 

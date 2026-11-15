@@ -53,8 +53,8 @@ namespace RoboRougelike.R1
             var garage=run.Garage;var model=run.VehicleModel;var selected=model.At(garage.Cell);
             GUI.Label(new Rect(24,12,185,40),"GARAŻ",heading);
             var energy=run.Player!=null?run.Player.GetComponent<VehicleEnergyBank>():null;
-            GUI.Label(new Rect(210,14,540,52),$"{model.Design.Name} • Złom: {model.Scrap} • Pola: {System.Linq.Enumerable.Sum(model.Parts,p=>System.Linq.Enumerable.Count(R3VehicleModel.OccupiedCells(p)))}/180"+
-                (energy!=null?$"\nEnergia: {energy.Current:0}/{energy.Maximum:0}":""),small);
+            GUI.Label(new Rect(210,14,540,52),$"{model.Design.Name} • Złom: {model.Scrap} • Punkty: {model.ConstructionBudgetUsed}/{model.ConstructionBudgetLimit}"+
+                $"\n{model.ConstructionSizeLabel}: {model.PhysicalPartCount} części"+(energy!=null?$" • Energia: {energy.Current:0}/{energy.Maximum:0}":""),small);
             string[] tools={"Montuj","Zaznacz","Napraw","Zdejmij"};
             for(int i=0;i<tools.Length;i++)
             {
@@ -110,14 +110,14 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(24,846,110,40),"Zoom +",compactButton))garage.Zoom(-1);
             if(GUI.Button(new Rect(141,846,110,40),"Zoom −",compactButton))garage.Zoom(1);
             if(GUI.Button(new Rect(258,846,116,40),"Dopasuj",compactButton))garage.FrameVehicle();
-            GUI.Label(new Rect(394,612,350,76),$"Komórka: {garage.Cell} • {PartName(selected?.Kind??garage.SelectedPart)}\n"+(selected==null?"Wybierz część.":$"HP: {selected.Health*100:0}% • naprawa {model.RepairCost(selected)} Z"),small);
+            GUI.Label(new Rect(394,612,350,76),$"Komórka: {garage.Cell} • {PartName(selected?.Kind??garage.SelectedPart)}\n"+(selected==null?"Wybierz część.":$"HP: {PartHealthText(selected.Health)} • naprawa {model.RepairCost(selected)} Z"),small);
             GUI.enabled=selected!=null&&model.RepairCost(selected)>0&&model.Scrap>=model.RepairCost(selected);
             if(GUI.Button(new Rect(394,686,350,42),"Napraw wybraną część",compactButton))garage.RepairPartAt(garage.Cell);
             GUI.enabled=selected!=null;
             if(GUI.Button(new Rect(394,734,350,42),"Zdejmij część",compactButton))garage.RemovePartAt(garage.Cell);
             int bulk=model.AffordableRepairCost;GUI.enabled=bulk>0;
             if(GUI.Button(new Rect(394,782,350,42),$"Napraw możliwe — {bulk} Z",compactButton))garage.Message=run.GarageRepairAffordable()?"Naprawiono dostępne części.":"Nie można naprawić części.";
-            int emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;
+            long emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;
             if(GUI.Button(new Rect(394,826,350,38),$"Odbudowa awaryjna — {emergency} Z",compactButton))garage.Message=run.GarageEmergencyRepair()?"Odbudowano niezbędne moduły.":"Nie można odbudować części.";
             GUI.enabled=true;
             GUI.Label(new Rect(394,868,250,36),"A / LPM: "+WeaponGroupName(model.WeaponGroupA)+"\nB / PPM: "+WeaponGroupName(model.WeaponGroupB),small);

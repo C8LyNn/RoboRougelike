@@ -76,6 +76,13 @@ public sealed class UI943PortraitCatalogTests
         Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.Wheel),Is.EqualTo(12));
         Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.Armor),Is.EqualTo(7));
         Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.Gun),Is.EqualTo(R4WeaponDefinition.Count));
+        var healer=entries.Single(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.HealingDroneGenerator);
+        Assert.That(Field(healer,"Name"),Is.EqualTo("Generator drona naprawczego"));
+        var support=entries.Single(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.SupportDroneGenerator);
+        Assert.That(Field(support,"Name"),Is.EqualTo("Generator drona energetycznego"));
+        Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.ShieldTurretGenerator),Is.EqualTo(1));
+        foreach(var kind in new[]{R3PartKind.CargoUplink,R3PartKind.RadarModule,R3PartKind.MinimapModule})
+            Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==kind),Is.EqualTo(1),$"Missing or duplicated {kind} catalog entry");
         Assert.That(entries.Select(e=>(Field(e,"Kind"),Field(e,"Weapon"),Field(e,"Group"))).Distinct().Count(),Is.EqualTo(entries.Length));
     }
     [Test] public void DifferentBonusEffectsWithTheSameIdDoNotShareAStack()
@@ -96,5 +103,36 @@ public sealed class UI943PortraitCatalogTests
             Assert.That(names.Distinct().Count(),Is.EqualTo(3),"The player must be able to distinguish the stacks.");
         }
         finally{Object.DestroyImmediate(damage);Object.DestroyImmediate(strong);Object.DestroyImmediate(speed);}
+    }
+    [Test] public void SameIdBonusesWithDifferentScopesOrOperationsHaveSeparateSelectableStacks()
+    {
+        var model=new R3VehicleModel(new R3VehicleDesign());
+        R1UpgradeDefinition Bonus(R1BonusScope scope,R1ModifierOperation operation)
+        {
+            var item=ScriptableObject.CreateInstance<R1UpgradeDefinition>();item.Id="shared";item.Title="Moduł";
+            item.Effect=R1UpgradeEffect.Damage;item.Amount=.2f;item.Scope=scope;item.Operation=operation;return item;
+        }
+        var global=Bonus(R1BonusScope.Global,R1ModifierOperation.Increased);
+        var heavy=Bonus(R1BonusScope.HeavyWeapon,R1ModifierOperation.Increased);
+        var more=Bonus(R1BonusScope.Global,R1ModifierOperation.More);
+        var hudObject=new GameObject("Catalog bonus grouping fixture");
+        try
+        {
+            Assert.That(model.ReceiveBonuses(new[]{global,global,heavy,more}),Is.True);
+            model.Inventory[1].Tier=2;
+            var entriesMethod=typeof(R1RunHUD).GetMethod("BuildCatalogEntries",BindingFlags.Static|BindingFlags.NonPublic);
+            var entries=((IEnumerable)entriesMethod.Invoke(null,new object[]{model})).Cast<object>()
+                .Where(entry=>(R3PartKind)entry.GetType().GetField("Kind").GetValue(entry)==R3PartKind.BonusModule).ToArray();
+            Assert.That(entries.Length,Is.EqualTo(3),"Scope and operation distinguish stacks; tier does not.");
+            Assert.That(entries.Select(e=>(string)e.GetType().GetField("Name").GetValue(e)).Distinct().Count(),Is.EqualTo(3));
+            var hud=hudObject.AddComponent<R1RunHUD>();
+            var key=typeof(R1RunHUD).GetMethod("CatalogBonusKey",BindingFlags.Static|BindingFlags.NonPublic);
+            var getItems=typeof(R1RunHUD).GetMethod("CatalogItemsForGroup",BindingFlags.Instance|BindingFlags.NonPublic);
+            int Count(R3PartState item)=>(getItems.Invoke(hud,new object[]{model,R3PartKind.BonusModule,R4WeaponKind.Basic,key.Invoke(null,new object[]{item})}) as R3PartState[]).Length;
+            Assert.That(Count(model.Inventory[0]),Is.EqualTo(2));
+            Assert.That(Count(model.Inventory[2]),Is.EqualTo(1));
+            Assert.That(Count(model.Inventory[3]),Is.EqualTo(1));
+        }
+        finally{Object.DestroyImmediate(global);Object.DestroyImmediate(heavy);Object.DestroyImmediate(more);Object.DestroyImmediate(hudObject);}
     }
 }

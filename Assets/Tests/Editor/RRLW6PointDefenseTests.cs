@@ -21,17 +21,114 @@ public class RRLW6PointDefenseTests
         while(run.Transitioning)yield return null;run.Encounter.SetCombatActive(false);
     }
     [UnityTest] public IEnumerator MountedPointDefenseInterceptsActualRocketUsingItsOriginalHp()
+    {yield return InterceptActualRocket(1);}
+    [UnityTest] public IEnumerator TierTwoPointDefenseInterceptsActualRocket()
+    {yield return InterceptActualRocket(2);}
+    [UnityTest] public IEnumerator MountedDefenseInterceptsOneOfTwoOverlappingPairIgnoredShells()=>InterceptOverlappingShells(0);
+    [UnityTest] public IEnumerator MountedDefenseInterceptsOneOfTwoOverlappingLayerFilteredShells()=>InterceptOverlappingShells(1);
+    [UnityTest] public IEnumerator MountedDefenseInterceptsOneRealGroupedShell()=>InterceptOverlappingShells(2);
+    [UnityTest] public IEnumerator MountedDefenseAcquiresSlowPhysicalShellInsideRadius()=>MountedDefenseAcquiresSlowShell(true);
+    [UnityTest] public IEnumerator MountedDefenseAcquiresShellEnteringRadiusBeforeHorizon()=>MountedDefenseAcquiresSlowShell(false);
+    IEnumerator MountedDefenseAcquiresSlowShell(bool inside)
+    {
+        var run=R1RunController.Instance;var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.Award(1000);
+        Vector3Int? mount=null;
+        for(int y=3;y>=0&&!mount.HasValue;y--)for(int z=-6;z<=-2&&!mount.HasValue;z++)for(int x=-5;x<=4&&!mount.HasValue;x++)
+        {var cell=new Vector3Int(x,y,z);if(model.PlacementError(cell,R3PartKind.PointDefense)==null)mount=cell;}
+        Assert.That(mount.HasValue,Is.True);Assert.That(model.Buy(mount.Value,R3PartKind.PointDefense),Is.True);
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
+        var body=vehicle.GetComponent<Rigidbody>();body.constraints=RigidbodyConstraints.FreezeAll;
+        var controller=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==R3PartKind.PointDefense).GetComponent<PointDefenseController>();
+        var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        try
+        {
+            yield return MOVSeriesDeviceTests.FixedStep();
+            Vector3 center=body.worldCenterOfMass;Vector3 origin=center+Vector3.up*(inside?4.2f:6f);
+            shell.transform.position=origin;shell.transform.localScale=Vector3.one*.16f;
+            var rb=shell.AddComponent<Rigidbody>();rb.useGravity=false;rb.linearVelocity=Vector3.down*(inside?.2f:.3f);
+            var projectile=shell.AddComponent<RogueMachine.P12PipelineSafe.P17PhysicalShell>();
+            projectile.Configure(run.Encounter.Enemies.First().transform,20,10,Vector3.down,null);Physics.SyncTransforms();
+            controller.ScanNow();Assert.That(controller.CurrentTarget,Is.Not.Null,"A physical shot inside or entering the defended radius must be acquired.");
+            Assert.That(controller.CurrentTarget.Threat.AimTransform,Is.EqualTo(shell.transform));
+            int before=controller.Ammunition;
+            for(int i=0;i<100&&controller.Ammunition==before;i++)controller.Advance(.05f);
+            Assert.That(controller.Ammunition,Is.LessThan(before),"The mounted defense must fire at the threat.");
+            float deadline=Time.realtimeSinceStartup+3;
+            while(Time.realtimeSinceStartup<deadline&&shell!=null&&shell.activeInHierarchy)yield return MOVSeriesDeviceTests.FixedStep();
+            Assert.That(shell==null||!shell.activeInHierarchy,Is.True,"A physical interceptor must remove the shell.");
+        }
+        finally{if(shell!=null)UnityEngine.Object.Destroy(shell);UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
+    IEnumerator InterceptOverlappingShells(int mode)
+    {
+        var run=R1RunController.Instance;var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.Award(1000);
+        Vector3Int? mount=null;
+        for(int y=3;y>=0&&!mount.HasValue;y--)for(int z=-6;z<=-2&&!mount.HasValue;z++)for(int x=-5;x<=4&&!mount.HasValue;x++)
+        {var cell=new Vector3Int(x,y,z);if(model.PlacementError(cell,R3PartKind.PointDefense)==null)mount=cell;}
+        Assert.That(mount.HasValue,Is.True);Assert.That(model.Buy(mount.Value,R3PartKind.PointDefense),Is.True);
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
+        var body=vehicle.GetComponent<Rigidbody>();body.constraints=RigidbodyConstraints.FreezeAll;
+        var assembly=vehicle.GetComponent<R3VehicleAssembly>();var part=assembly.Parts.Single(p=>p.Kind==R3PartKind.PointDefense);
+        var controller=part.GetComponent<PointDefenseController>();var enemy=run.Encounter.Enemies.First();
+        var shells=new System.Collections.Generic.List<GameObject>();
+        try
+        {
+            yield return new WaitForFixedUpdate();
+            Vector3 origin=part.transform.position+Vector3.up*1.2f+Vector3.forward*18;
+            Vector3 direction=(vehicle.transform.position+Vector3.up-origin).normalized;
+            for(int i=0;i<2;i++)
+            {
+                GameObject shell;
+                if(mode==2)
+                {
+                    var rent=typeof(RogueMachine.P12PipelineSafe.P17PhysicalShell).GetMethod("RentConventional",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+                    shell=((RogueMachine.P12PipelineSafe.P17PhysicalShell)rent.Invoke(null,null)).gameObject;
+                }
+                else shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                shells.Add(shell);
+                shell.transform.position=origin;shell.transform.localScale=Vector3.one*.16f;
+                shell.GetComponent<Collider>().enabled=true;shell.GetComponent<Collider>().isTrigger=false;
+                if(mode==1){shell.layer=29;shell.GetComponent<Collider>().excludeLayers=1<<29;}
+                var rb=shell.GetComponent<Rigidbody>();if(rb==null)rb=shell.AddComponent<Rigidbody>();
+                rb.useGravity=false;rb.isKinematic=false;rb.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;
+                if(!shell.activeSelf)shell.SetActive(true);rb.linearVelocity=direction*6;
+                var projectile=shell.GetComponent<RogueMachine.P12PipelineSafe.P17PhysicalShell>();
+                if(projectile==null)projectile=shell.AddComponent<RogueMachine.P12PipelineSafe.P17PhysicalShell>();
+                projectile.Configure(enemy.transform,20,6,direction,null);
+            }
+            if(mode==0)Physics.IgnoreCollision(shells[0].GetComponent<Collider>(),shells[1].GetComponent<Collider>());
+            if(mode==2)
+            {
+                var group=typeof(RogueMachine.P12PipelineSafe.P17PhysicalShell).GetMethod("TryGroupVolley",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+                Assert.That((bool)group.Invoke(null,new object[]{shells}),Is.True,"The actual group lease must be used.");
+            }
+            shells[1].GetComponent<Rigidbody>().position=origin+Vector3.right*50;
+            Physics.SyncTransforms();controller.ScanNow();
+            Assert.That(controller.CurrentTarget,Is.Not.Null,"A single incoming projectile must be acquired by the fixture.");
+            shells[1].GetComponent<Rigidbody>().position=origin;
+            Physics.SyncTransforms();controller.ScanNow();
+            Assert.That(controller.CurrentTarget,Is.Not.Null,"Overlapping independent threats must not prevent acquisition.");
+            int ammo=controller.Ammunition;float end=Time.time+2;
+            while(Time.time<end&&shells.All(shell=>shell!=null&&shell.activeInHierarchy))yield return null;
+            Assert.That(controller.Ammunition,Is.LessThan(ammo),"The real mounted defense must fire an interceptor.");
+            Assert.That(shells.Count(shell=>shell==null||!shell.activeInHierarchy),Is.EqualTo(1),"One interceptor must remove one physical projectile, leaving the other active.");
+        }
+        finally{foreach(var shell in shells)if(shell!=null)UnityEngine.Object.Destroy(shell);UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
+    IEnumerator InterceptActualRocket(int tier)
     {
         Assert.That(Enum.TryParse("PointDefense",out R3PartKind kind),Is.True,"DEF002 missing physical mount");
         var run=R1RunController.Instance;var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.Award(1000);
         var physicalBase=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);Physics.SyncTransforms();
         Vector3Int? mount=null;
-        for(int z=-6;z<=-2&&!mount.HasValue;z++)for(int x=-5;x<=4&&!mount.HasValue;x++)for(int y=0;y<4&&!mount.HasValue;y++)
+        // Prefer a supported upper mounting point: the rebuilt starter is smaller,
+        // and a lower edge can scrape the raised test platform before interception.
+        for(int y=3;y>=0&&!mount.HasValue;y--)for(int z=-6;z<=-2&&!mount.HasValue;z++)for(int x=-5;x<=4&&!mount.HasValue;x++)
         {var c=new Vector3Int(x,y,z);if(model.PlacementError(c,kind)==null)mount=c;}
-        Assert.That(mount.HasValue,Is.True);Assert.That(model.Buy(mount.Value,kind),Is.True);
+        Assert.That(mount.HasValue,Is.True);Assert.That(model.Buy(mount.Value,kind),Is.True);model.At(mount.Value).Tier=tier;
         physicalBase.gameObject.SetActive(false);UnityEngine.Object.Destroy(physicalBase.gameObject);
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
-        // Keep this interception fixture physically supported, rather than assuming the old frozen-Y body.
+        // Keep the interception fixture physically supported on a test stand.
         var platform=GameObject.CreatePrimitive(PrimitiveType.Cube);platform.transform.position=new Vector3(100,2.85f,100);platform.transform.localScale=new Vector3(12,1,12);
         Physics.SyncTransforms();yield return MOV009IntegrationTests.Seconds(.7f);
         var assembly=vehicle.GetComponent<R3VehicleAssembly>();var part=assembly.Parts.Single(p=>p.Kind==kind);
@@ -45,6 +142,15 @@ public class RRLW6PointDefenseTests
         bank.Module.Bind(enemy.GetComponent<Rigidbody>(),enemy.transform,muzzle);
         Assert.That(bank.Fire(),Is.True);
         var rocket=UnityEngine.Object.FindObjectsByType<RoboRougelike.Mechanics.Rockets.RocketProjectile>(FindObjectsSortMode.None).Single(p=>p.IsInitialized);
+        PointDefenseInterceptor interceptor=null;float untilShot=Time.time+1;
+        while(Time.time<untilShot&&interceptor==null)
+        {
+            interceptor=UnityEngine.Object.FindObjectsByType<PointDefenseInterceptor>(FindObjectsSortMode.None).FirstOrDefault(p=>p.IsInitialized);
+            if(interceptor==null)yield return null;
+        }
+        Assert.That(interceptor,Is.Not.Null,"A real interceptor must be launched.");
+        var damage=typeof(PointDefenseInterceptor).GetField("damage",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That((float)damage.GetValue(interceptor),Is.EqualTo(6*R3VehicleModel.TierEffectUnits(tier)).Within(.001));
         float hp=part.Damageable.CurrentHp;Physics.SyncTransforms();
         float end=Time.time+1;while(Time.time<end&&rocket!=null&&!rocket.IsResolved)yield return null;
         Assert.That(rocket==null||rocket.IsResolved,Is.True,"Real interceptors must resolve the source rocket HP");
@@ -52,8 +158,13 @@ public class RRLW6PointDefenseTests
         Assert.That(part.Damageable.CurrentHp,Is.EqualTo(hp));
         Assert.That(controller.Ammunition,Is.LessThan(40).And.GreaterThanOrEqualTo(35));
         var state=model.Parts.Single(p=>p.Id==part.Id);assembly.Capture();Assert.That(state.Ammo,Is.EqualTo(controller.Ammunition));
-        part.Damageable.ApplyDamage(10000,part.transform.position,Vector3.up);
-        Assert.That(controller.IsOperational,Is.False);assembly.Capture();Assert.That(model.Repair(part.Cell),Is.True);
+        // A huge overkill now propagates through connection graph and destroys
+        // the support, making repair correctly impossible. Use a lethal piercing
+        // hit with a small margin so the attached support stays repairable.
+        part.Damageable.ApplyDamageResolvedTyped(part.Damageable.CurrentHp/.9f+1f,part.transform.position,Vector3.up,
+            R3DamagePropagation.DamageKind.Piercing);
+        Assert.That(controller.IsOperational,Is.False,"Destroyed defense must immediately stop.");
+        assembly.Capture();Assert.That(model.Repair(part.Cell),Is.True,$"Repair failed at {part.Cell}; scrap={model.Scrap}; health={state.Health}");
         var rebuilt=R3VehicleAssembly.Build(model.DeepCopy(),new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(150,4,100),Quaternion.identity);
         Assert.That(rebuilt.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==part.Id).GetComponent<PointDefenseController>().Ammunition,Is.EqualTo(state.Ammo));
     }
@@ -73,14 +184,20 @@ public class RRLW6PointDefenseTests
     [UnityTest] public IEnumerator EnemyDefenseLosesRealArmorMountAndRemainsRepairableSalvage()
     {
         var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
+        // Exercise post-defeat salvage deterministically; physical detached drops
+        // are covered separately and preserve the condition at the earlier drop.
+        run.VehicleModel.Economy.PhysicalLootDropChance=0;
         Assert.That(enemy.EquipPointDefense(),Is.True);
         var binding=enemy.GetComponentInChildren<RRLPointDefenseBinding>();
         var support=binding.transform.parent.GetComponentInParent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();
         Assert.That(support,Is.Not.Null,"Device must be parented to actual physical armor");
         Assert.That(binding.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Length,Is.EqualTo(1));
         binding.Controller.RestoreState(7,.2f);binding.CaptureState();string id=binding.State.Id;float ready=binding.State.DeviceReadyAt;
-        support.ApplyDamage(10000,support.transform.position,Vector3.up);
+        // Keep the enemy alive long enough to observe detachment before its
+        // final salvage snapshot; a huge hit propagates into and kills the core.
+        support.ApplyDamage(support.CurrentHp*1.4f,support.transform.position,Vector3.up);
         Assert.That(binding.Controller.IsOperational,Is.False,"Losing the real mounting armor detaches the device immediately");
+        Assert.That(enemy.IsDefeated,Is.False,"The mounting hit must not also defeat the enemy.");
         enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
         var salvage=run.Salvage.Items.Single(p=>p.Id==id);Assert.That(salvage.Selectable,Is.True);Assert.That(salvage.Health,Is.Zero);
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.Award(1000);

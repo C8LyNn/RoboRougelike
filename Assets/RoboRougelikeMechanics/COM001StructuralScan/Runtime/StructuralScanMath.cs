@@ -6,12 +6,17 @@ namespace RoboRougelike.Mechanics.StructuralScan
     {
         public static bool InCone(Vector3 origin, Vector3 forward, Vector3 point, float range, float fullConeDegrees)
         {
-            Vector3 delta = point - origin;
-            float distance2 = delta.sqrMagnitude;
-            if (distance2 < 0.000001f || distance2 > range * range || forward.sqrMagnitude < 0.000001f)
+            if(float.IsNaN(range)||float.IsInfinity(range)||range<0)return false;
+            // Double intermediates avoid overflow for finite float coordinates
+            // and ranges, without putting a gameplay cap on the scan distance.
+            double x=(double)point.x-origin.x,y=(double)point.y-origin.y,z=(double)point.z-origin.z;
+            double distance2=x*x+y*y+z*z;
+            double forward2=(double)forward.x*forward.x+(double)forward.y*forward.y+(double)forward.z*forward.z;
+            if (double.IsNaN(distance2)||double.IsNaN(forward2)||distance2 < 0.000001d || distance2 > (double)range * range || forward2 < 0.000001d)
                 return false;
             float minimumCosine = Mathf.Cos(Mathf.Deg2Rad * Mathf.Clamp(fullConeDegrees, 1f, 180f) * 0.5f);
-            return Vector3.Dot(forward.normalized, delta.normalized) >= minimumCosine - 0.000001f;
+            double cosine=((double)forward.x*x+(double)forward.y*y+(double)forward.z*z)/System.Math.Sqrt(forward2*distance2);
+            return cosine >= minimumCosine - 0.000001f;
         }
 
         // Heuristic priority, NOT guaranteed graph-theoretical disconnection criticality.

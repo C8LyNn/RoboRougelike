@@ -68,6 +68,10 @@ public sealed class MapEditorIntegrationTests
         Assert.That(run.Player.GetComponent<R6VehicleDrive>(),Is.Not.Null);
         Assert.That(run.VehicleModel,Is.Not.SameAs(model));
         Assert.That(run.Player.transform.position.z,Is.EqualTo(-8).Within(.5f));
+        float hpBefore=run.Player.Core.CurrentHp;
+        Assert.That(run.TryEmergencyRescue(),Is.True,"Custom map rescue must use its own selected spawn");
+        Assert.That(run.Player.Core.CurrentHp,Is.EqualTo(hpBefore),"Testing a custom map has no rescue damage");
+        Assert.That(run.Player.GetComponent<Rigidbody>().position.z,Is.EqualTo(-8).Within(.5f));
         // Teleport only to isolate the trigger test; the separate R6 test drives across the ramp.
         var body=run.Player.GetComponent<Rigidbody>();body.position=MapWorld.Position(draft.Finish)+Vector3.up*.7f;
         Physics.SyncTransforms();float fixedBefore=Time.fixedTime;

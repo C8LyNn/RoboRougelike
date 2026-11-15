@@ -18,9 +18,10 @@ namespace RoboRougelike.Mechanics.PointDefense
         [SerializeField] private bool operational = true;
         [SerializeField] private MonoBehaviour energySourceBehaviour;
 
-        private readonly Collider[] nearby = new Collider[256];
-        private readonly RaycastHit[] sightHits = new RaycastHit[96];
-        private readonly Collider[] muzzleOverlaps = new Collider[48];
+        private const int MaxReusableHits=4096;
+        private Collider[] nearby = new Collider[256];
+        private RaycastHit[] sightHits = new RaycastHit[96];
+        private Collider[] muzzleOverlaps = new Collider[48];
         private readonly System.Collections.Generic.HashSet<int> visited = new System.Collections.Generic.HashSet<int>();
         private IPointDefenseEnergySource energy;
         private PointDefenseThreatProxy target;
@@ -132,9 +133,15 @@ namespace RoboRougelike.Mechanics.PointDefense
         {
             if (vehicleBody == null) return null;
             Vector3 center = vehicleBody.worldCenterOfMass;
-            int count = Physics.OverlapSphereNonAlloc(center, settings.detectionRadius, nearby,
-                settings.threatLayerMask, QueryTriggerInteraction.Collide);
-            if (count >= nearby.Length) return null; // overflow => no shot, not incomplete targeting
+            int count;Collider[] detectionHits;
+            while(true)
+            {
+                count=Physics.OverlapSphereNonAlloc(center,settings.detectionRadius,nearby,settings.threatLayerMask,QueryTriggerInteraction.Collide);
+                if(count<nearby.Length){detectionHits=nearby;break;}
+                if(nearby.Length>=MaxReusableHits)
+                {detectionHits=Physics.OverlapSphere(center,settings.detectionRadius,settings.threatLayerMask,QueryTriggerInteraction.Collide);count=detectionHits.Length;break;}
+                System.Array.Resize(ref nearby,Mathf.Min(nearby.Length*2,MaxReusableHits));
+            }
             visited.Clear();
             PointDefenseThreatProxy best = null;
             float bestT = float.PositiveInfinity;
@@ -142,7 +149,7 @@ namespace RoboRougelike.Mechanics.PointDefense
             int bestId = int.MaxValue;
             for (int i = 0; i < count; i++)
             {
-                Collider hit = nearby[i];
+                Collider hit = detectionHits[i];
                 if (hit == null || (vehicleRoot != null && hit.transform.IsChildOf(vehicleRoot))) continue;
                 PointDefenseThreatProxy proxy = hit.GetComponentInParent<PointDefenseThreatProxy>();
                 if (proxy == null || !visited.Add(proxy.GetInstanceID()) || !ValidTarget(proxy)) continue;
@@ -168,27 +175,52 @@ namespace RoboRougelike.Mechanics.PointDefense
             float distance = displacement.magnitude;
             if (distance <= 0.00001f) return false;
             // Raycast may miss colliders enveloping the muzzle. Fail closed.
-            int overlaps = Physics.OverlapSphereNonAlloc(origin, 0.025f, muzzleOverlaps,
-                settings.blockerLayerMask, QueryTriggerInteraction.Ignore);
-            if (overlaps >= muzzleOverlaps.Length) return false;
+            int overlaps;Collider[] overlapHits;
+            while(true)
+            {
+                overlaps=Physics.OverlapSphereNonAlloc(origin,.025f,muzzleOverlaps,settings.blockerLayerMask,QueryTriggerInteraction.Ignore);
+                if(overlaps<muzzleOverlaps.Length){overlapHits=muzzleOverlaps;break;}
+                if(muzzleOverlaps.Length>=MaxReusableHits)
+                {overlapHits=Physics.OverlapSphere(origin,.025f,settings.blockerLayerMask,QueryTriggerInteraction.Ignore);overlaps=overlapHits.Length;break;}
+                System.Array.Resize(ref muzzleOverlaps,Mathf.Min(muzzleOverlaps.Length*2,MaxReusableHits));
+            }
             for (int i = 0; i < overlaps; i++)
             {
-                Collider col = muzzleOverlaps[i];
+                Collider col = overlapHits[i];
                 if (col == null) continue;
                 if (vehicleRoot != null && col.transform.IsChildOf(vehicleRoot)) continue;
                 if (col.transform.IsChildOf(threat.transform)) continue;
                 return false;
             }
-            int count = Physics.RaycastNonAlloc(origin, displacement / distance, sightHits,
-                distance, settings.blockerLayerMask, QueryTriggerInteraction.Ignore);
-            if (count >= sightHits.Length) return false;
+            int count;RaycastHit[] lineHits;
+            while(true)
+            {
+                count=Physics.RaycastNonAlloc(origin,displacement/distance,sightHits,distance,settings.blockerLayerMask,QueryTriggerInteraction.Ignore);
+                if(count<sightHits.Length){lineHits=sightHits;break;}
+                if(sightHits.Length>=MaxReusableHits)
+                {lineHits=Physics.RaycastAll(origin,displacement/distance,distance,settings.blockerLayerMask,QueryTriggerInteraction.Ignore);count=lineHits.Length;break;}
+                System.Array.Resize(ref sightHits,Mathf.Min(sightHits.Length*2,MaxReusableHits));
+            }
+            Collider targetCollider=null;float targetEntry=distance;
+            for(int i=0;i<count;i++)
+            {
+                var col=lineHits[i].collider;
+                if(col!=null&&col.transform.IsChildOf(threat.transform)&&lineHits[i].distance<=targetEntry)
+                {targetCollider=col;targetEntry=lineHits[i].distance;}
+            }
             for (int i = 0; i < count; i++)
             {
-                Collider col = sightHits[i].collider;
+                Collider col = lineHits[i].collider;
                 if (col == null) continue;
                 if (vehicleRoot != null && col.transform.IsChildOf(vehicleRoot)) continue;
                 if (col.transform.IsChildOf(threat.transform)) continue;
-                if (sightHits[i].distance + 0.005f < distance) return false;
+                // Identical shots can occupy the same point while their own
+                // colliders are deliberately excluded from one another. A
+                // sibling at the same entry distance must not hide the target.
+                if(targetCollider!=null&&Mathf.Abs(lineHits[i].distance-targetEntry)<=.005f&&
+                   col.GetComponentInParent<PointDefenseThreatProxy>()!=null&&
+                   PointDefenseInterceptor.MutuallyExcluded(targetCollider,col))continue;
+                if (lineHits[i].distance + 0.005f < distance) return false;
             }
             return true;
         }

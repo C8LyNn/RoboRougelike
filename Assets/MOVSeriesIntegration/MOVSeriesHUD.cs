@@ -47,8 +47,8 @@ namespace RoboRougelike.R1
         GUIStyle garageTabStyle;
         static readonly R3PartKind[] shopKinds={R3PartKind.Armor,R3PartKind.Wheel,R3PartKind.Gun,R3PartKind.Suspension,
             R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Blink,R3PartKind.Gyroscope,
-            R3PartKind.OmniDrive,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack,R3PartKind.DirectionalShield,R3PartKind.PointDefense,R3PartKind.StructuralScanner,R3PartKind.ScannerPulse,R3PartKind.IndependentSteering,R3PartKind.Battery,R3PartKind.RepairPulse,R3PartKind.DrivePower,R3PartKind.EnergyRegenerator};
-        static readonly string[] shopNames={"Pancerz","Koło","Broń","Zawieszenie","Booster","Skok","Blink","Żyroskop","Omni","Zaczep","Hover","Gąsienica","Tarcza","Obrona pkt.","Skan struktury","Impuls skanera","Skręt osi","Bateria","Impuls naprawczy","Silnik kół","Regenerator energii"};
+            R3PartKind.OmniDrive,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack,R3PartKind.DirectionalShield,R3PartKind.PointDefense,R3PartKind.StructuralScanner,R3PartKind.ScannerPulse,R3PartKind.IndependentSteering,R3PartKind.Battery,R3PartKind.RepairPulse,R3PartKind.DrivePower,R3PartKind.EnergyRegenerator,R3PartKind.SalvageOptimizer,R3PartKind.Overdrive,R3PartKind.RapidFire,R3PartKind.DoubleShot,R3PartKind.DoubleShotOverdrive,R3PartKind.TargetedEmp,R3PartKind.AreaEmp,R3PartKind.ChargeCapacity,R3PartKind.ChargeRegenerator,R3PartKind.RechargePulse,R3PartKind.RampDeployer,R3PartKind.WallDeployer,R3PartKind.JumpPadDeployer,R3PartKind.BlastTrapDeployer,R3PartKind.EmpTrapDeployer,R3PartKind.RepelTrapDeployer,R3PartKind.DamageTrapDeployer,R3PartKind.SlowTrapDeployer,R3PartKind.ImmobilizeTrapDeployer,R3PartKind.FlyingDroneGenerator,R3PartKind.GroundDroneGenerator,R3PartKind.HealingDroneGenerator,R3PartKind.SupportDroneGenerator,R3PartKind.OffensiveTurretGenerator,R3PartKind.HealingTurretGenerator,R3PartKind.SupportTurretGenerator,R3PartKind.ShieldTurretGenerator,R3PartKind.CargoUplink,R3PartKind.RadarModule,R3PartKind.MinimapModule};
+        static readonly string[] shopNames={"Pancerz","Koło","Broń","Zawieszenie","Booster","Skok","Blink","Żyroskop","Omni","Zaczep","Hover","Gąsienica","Tarcza","Obrona pkt.","Skan struktury","Impuls skanera","Skręt osi","Bateria","Impuls naprawczy","Silnik kół","Regenerator energii","Optymalizator odzysku","Overdrive","Rapid Fire","Double Shot","Double Shot Overdrive","EMP celowany","EMP obszarowy","Pojemność ładunków","Regenerator ładunków","Impuls ładunków","Wyrzutnik ramp","Wyrzutnik murków","Wyrzutnik jump padów","Pułapka wybuchowa","Pułapka EMP","Pułapka odrzucająca","Pułapka obrażeń","Pułapka spowalniająca","Pułapka unieruchamiająca","Generator drona","Generator drona naziemnego","Generator drona naprawczego","Generator drona energetycznego","Wieżyczka ofensywna","Wieżyczka lecznicza","Wieżyczka wspierająca","Wieżyczka osłonowa","Cargo Uplink","Radar","Minimapa"};
         static readonly string[] driveNames={"Koła","Gąsienice","Omni","Hover"};
         readonly struct CatalogEntry
         {
@@ -74,7 +74,8 @@ namespace RoboRougelike.R1
         {
             string id=part.UpgradeId??string.Empty;
             float amount=part.UpgradeAmount==0?0:part.UpgradeAmount;
-            return id.Length+":"+id+":"+(int)part.UpgradeEffect+":"+amount.ToString("R",CultureInfo.InvariantCulture);
+            return id.Length+":"+id+":"+(int)part.UpgradeEffect+":"+(int)part.UpgradeOperation+":"+
+                (int)part.UpgradeScope+":"+amount.ToString("R",CultureInfo.InvariantCulture);
         }
         static R1RunDefinition creativeCatalogSource;
         static readonly List<CatalogEntry> creativeBonusCatalog=new List<CatalogEntry>();
@@ -104,7 +105,9 @@ namespace RoboRougelike.R1
             }
             for(int i=0;i<R4WeaponDefinition.Count;i++)
             {var weapon=(R4WeaponKind)i;result.Add(new CatalogEntry(R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name));}
-            foreach(var item in model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).GroupBy(CatalogBonusKey).Select(g=>g.First()))
+            var bonusParts=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule);
+            if(model.CreativeMode)bonusParts=bonusParts.Concat(model.Parts.Where(p=>p.Kind==R3PartKind.BonusModule&&p.Health>0));
+            foreach(var item in bonusParts.GroupBy(CatalogBonusKey).Select(g=>g.First()))
                 result.Add(new CatalogEntry(R3PartKind.BonusModule,R4WeaponKind.Basic,CatalogBonusKey(item),CatalogBonusGroupName(item)+" • T1: "+BonusText(item)));
             var definition=R1RunController.Instance?.Definition;
             if(model.CreativeMode&&definition?.Upgrades!=null)
@@ -240,7 +243,7 @@ namespace RoboRougelike.R1
             var selected=run.Garage.SelectedPart;
             if(selected==R3PartKind.Booster)
             {
-                GUI.Label(new Rect(30,355,280,25),$"{m.BoosterThrustNewtons:0} N • {m.BoosterDurationSeconds:0.0} s • Shift",small);
+                GUI.Label(new Rect(30,355,280,25),$"{m.BoosterThrustNewtons:0} N / T1 • {m.BoosterDurationSeconds:0.0} s • {m.ActiveSlotLabel(R3PartKind.Booster)}",small);
                 if(GUI.Button(new Rect(30,384,135,31),"Siła − 500 N",compactButton))ChangeMovement(run,m.BoosterThrustNewtons-500,m.BoosterDurationSeconds,m.GyroEnabled,m.HoverHeightMeters);
                 if(GUI.Button(new Rect(175,384,135,31),"Siła + 500 N",compactButton))ChangeMovement(run,m.BoosterThrustNewtons+500,m.BoosterDurationSeconds,m.GyroEnabled,m.HoverHeightMeters);
                 if(GUI.Button(new Rect(30,420,135,31),"Czas − 0,2 s",compactButton))ChangeMovement(run,m.BoosterThrustNewtons,m.BoosterDurationSeconds-.2f,m.GyroEnabled,m.HoverHeightMeters);
@@ -255,19 +258,21 @@ namespace RoboRougelike.R1
             else if(selected==R3PartKind.Battery)
                 GUI.Label(new Rect(30,355,280,95),"Bateria: T1 +100, T2 +200, T3 +400 maks. energii.\nDziała po zamontowaniu.\nPole ładowania przyspiesza regenerację.",small);
             else if(selected==R3PartKind.RepairPulse)
-                GUI.Label(new Rect(30,355,280,100),"V — impuls naprawczy\nDziała 5 s • odnowienie 15 s\nWyższy tier leczy szybciej.\nNie odbudowuje zniszczonych.",small);
+                GUI.Label(new Rect(30,355,280,100),"Impuls naprawczy — przypisz slot 1–4\nDziała 5 s • odnowienie 15 s\nWyższy tier leczy szybciej.\nNie odbudowuje zniszczonych.",small);
             else if(selected==R3PartKind.DrivePower)
                 GUI.Label(new Rect(30,355,280,100),$"Silnik kół wspomaga\nprzyspieszanie i skręcanie.\nRezerwa: {VehicleEnergyState.PassiveReservation:0} energii na moduł.\nPotrzebuje kół na podłożu.",small);
             else if(selected==R3PartKind.EnergyRegenerator)
                 GUI.Label(new Rect(30,355,280,100),$"Regenerator T1/T2/T3: +{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(1):0}/+{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(2):0}/+{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(3):0} energii/s.\nNa postoju regeneracja ×4.\nRezerwa: {VehicleEnergyState.PassiveReservation:0} energii na moduł.",small);
+            else if(selected==R3PartKind.SalvageOptimizer)
+                GUI.Label(new Rect(30,355,280,100),$"Odzysk T1: +{m.Economy.SalvageOptimizerBonus*100:0}% złomu i do +{m.Economy.SalvageOptimizerExtraOffersPerUnit} ofert.\nBonusy sumują się.\nRezerwa: {VehicleEnergyState.PassiveReservation:0} energii na moduł.",small);
             else if(selected==R3PartKind.PointDefense)
-                GUI.Label(new Rect(30,355,280,100),"Obrona 1×1×1 • automat 24 m\n40 nabojów • T przeładuj (3 s)\nChroni przed pociskami i rakietami.\nWymaga wolnej linii strzału.",small);
+                GUI.Label(new Rect(30,355,280,100),"Obrona 1×1×1 • automat 24 m\n40 nabojów • "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("Reload"))+" przeładuj (3 s)\nChroni przed pociskami i rakietami.\nWymaga wolnej linii strzału.",small);
             else if(selected==R3PartKind.DirectionalShield)
             {
                 GUI.Label(new Rect(30,355,280,100),"Tarcza 1×1×1 • ładuje się sama\n100 osłony • 120° • zasięg 9 m\nRegeneracja 12/s po 3 s.\nKierunek zmienisz obrotem XYZ.",small);
             }
             else if(selected==R3PartKind.IndependentSteering)
-                GUI.Label(new Rect(30,355,280,100),"M — zmień tryb podczas jazdy\nPrzód / tył / przeciwnie / krab.\nWymaga 4 prostych kół narożnych.\nInny układ: standardowy skręt R6.",small);
+                GUI.Label(new Rect(30,355,280,100),$"{R1ControlProfile.Display(R1ControlProfile.Current.Binding("SteeringMode"))} — zmień tryb podczas jazdy\nPrzód / tył / przeciwnie / krab.\nWymaga 4 prostych kół narożnych.\nInny układ: standardowy skręt R6.",small);
             else if(selected==R3PartKind.Gyroscope)
             {
                 GUI.Label(new Rect(30,355,280,55),"Żyroskop prostuje przechył.\nG przełącza go podczas jazdy.",small);
@@ -275,7 +280,7 @@ namespace RoboRougelike.R1
             }
             else
             {
-                string hint=selected==R3PartKind.JumpDrive?"Spacja — skok z podłoża.\nKilka modułów zwiększa impuls.":selected==R3PartKind.Blink?"Q — Blink do przodu (8 m).\nDroga i lądowanie muszą być wolne.":selected==R3PartKind.MagneticGrapple?"E — zaczep w punkt celowania.\nE ponownie — zwolnij linę.":"Kliknij ścianę bloku, aby montować.\nZielony ghost: miejsce poprawne.\nOmni i gąsienice montuj nisko.";
+                string hint=selected==R3PartKind.JumpDrive?"Slot 1–4 — skok z podłoża.\nKopie i wyższe tiery wzmacniają impuls.":selected==R3PartKind.Blink?"Blink: 8 m za jednostkę tieru.\nDroga i lądowanie muszą być wolne.":selected==R3PartKind.MagneticGrapple?"Kopie wzmacniają zaczep i koszt.\nNaciśnij ponownie, aby zwolnić linę.":"Kliknij ścianę bloku, aby montować.\nZielony ghost: miejsce poprawne.\nOmni i gąsienice montuj nisko.";
                 GUI.Label(new Rect(30,355,280,92),hint,small);
             }
         }
@@ -289,12 +294,12 @@ namespace RoboRougelike.R1
         {
             float wait=a.ReadyIn(kind);return float.IsPositiveInfinity(wait)?"niedostępny":wait>.05f?$"{wait:0.0} s":"gotowy";
         }
-        readonly List<string> compactMovementRows=new List<string>(5);
+        readonly List<string> compactMovementRows=new List<string>(6);
         static string CompactMovementPair(string first,string second)=>string.IsNullOrEmpty(first)?second:
             string.IsNullOrEmpty(second)?first:first+" • "+second;
         static Rect CompactMovementPanelRect(int rows)
         {
-            float top=615-Mathf.Clamp(rows,1,5)*24-10;
+            float top=615-Mathf.Clamp(rows,1,6)*21-10;
             return new Rect(18,top,610,615-top);
         }
         void RebuildMovementRows(R1RunController run,MOVSeriesVehicleAdapter a,string steeringStatus)
@@ -304,16 +309,16 @@ namespace RoboRougelike.R1
             bool Installed(R3PartKind kind)=>m.Parts.Any(p=>p.Kind==kind);
             void AddPair(string first,string second)
             {string line=CompactMovementPair(first,second);if(!string.IsNullOrEmpty(line))compactMovementRows.Add(line);}
-            AddPair(Installed(R3PartKind.Booster)?$"Shift Booster: {(a.Boosting?"aktywny":AbilityStatus(a,R3PartKind.Booster))}":null,
-                Installed(R3PartKind.JumpDrive)?$"Spacja skok: {AbilityStatus(a,R3PartKind.JumpDrive)}":null);
+            AddPair(Installed(R3PartKind.Booster)?$"{m.ActiveSlotLabel(R3PartKind.Booster)} Booster: {(a.Boosting?"aktywny":AbilityStatus(a,R3PartKind.Booster))}":null,
+                Installed(R3PartKind.JumpDrive)?$"{m.ActiveSlotLabel(R3PartKind.JumpDrive)} skok: {AbilityStatus(a,R3PartKind.JumpDrive)}":null);
             string grapple=Installed(R3PartKind.MagneticGrapple)?a.OperationalCount(R3PartKind.MagneticGrapple)==0?"niedostępny":
-                a.GrappleAttached?"E zwalnia":m.GrappleReadyAt>Time.time?$"{m.GrappleReadyAt-Time.time:0.0} s":"gotowy":null;
-            AddPair(Installed(R3PartKind.Blink)?$"Q Blink: {AbilityStatus(a,R3PartKind.Blink)}":null,
-                grapple!=null?$"E zaczep: {grapple}":null);
-            AddPair(Installed(R3PartKind.Gyroscope)?$"G żyroskop: {(a.OperationalCount(R3PartKind.Gyroscope)==0?"niedostępny":m.GyroEnabled?"ON":"OFF")}":null,
+                a.GrappleAttached?"ponownie zwalnia":m.GrappleReadyAt>Time.time?$"{m.GrappleReadyAt-Time.time:0.0} s":"gotowy":null;
+            AddPair(Installed(R3PartKind.Blink)?$"{m.ActiveSlotLabel(R3PartKind.Blink)} Blink: {AbilityStatus(a,R3PartKind.Blink)}":null,
+                grapple!=null?$"{m.ActiveSlotLabel(R3PartKind.MagneticGrapple)} zaczep: {grapple}":null);
+            AddPair(Installed(R3PartKind.Gyroscope)?$"{R1ControlProfile.Display(R1ControlProfile.Current.Binding("Gyro"))} żyroskop: {(a.OperationalCount(R3PartKind.Gyroscope)==0?"niedostępny":m.GyroEnabled?"ON":"OFF")}":null,
                 m.SelectedDrive==R3DriveKind.Hover?$"Hover: {m.HoverHeightMeters:0.0} m":null);
-            string detail=steeringStatus??a.Feedback;
-            if(!string.IsNullOrEmpty(detail))compactMovementRows.Add(detail);
+            if(!string.IsNullOrEmpty(steeringStatus))compactMovementRows.Add(steeringStatus);
+            if(!string.IsNullOrEmpty(a.Feedback))compactMovementRows.Add(a.Feedback);
         }
         void DrawMovementTelemetry(R1RunController run)
         {
@@ -328,7 +333,7 @@ namespace RoboRougelike.R1
             }
             RebuildMovementRows(run,a,steering!=null?steering.Status:null);
             var panel=CompactMovementPanelRect(compactMovementRows.Count);Panel(panel);
-            for(int i=0;i<compactMovementRows.Count;i++)GUI.Label(new Rect(33,panel.y+5+i*24,580,23),compactMovementRows[i],small);
+            for(int i=0;i<compactMovementRows.Count;i++)GUI.Label(new Rect(33,panel.y+5+i*21,580,20),compactMovementRows[i],small);
         }
     }
 }

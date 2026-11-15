@@ -5,6 +5,8 @@ namespace RoboRougelike.WPN002Railgun
     // Pure deterministic calculations, with no physics or Unity random state.
     public static class RailgunRules
     {
+        public static float NonNegativeCooldown(float value,float fallback)
+        { return !Finite(value)?fallback:Mathf.Max(0,value); }
         public static bool Finite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
         public static float ClampFinite(float v, float min, float max, float fallback)
             => Finite(v) ? Mathf.Clamp(v, min, max) : fallback;
@@ -25,7 +27,7 @@ namespace RoboRougelike.WPN002Railgun
             // At least a small positive cost per *distinct* part, never zero-cost penetration.
             float cost = Finite(resistance) ? Mathf.Max(0.01f, resistance) : incomingEnergy;
             float after = Mathf.Max(0f, incomingEnergy - cost);
-            bool go = penetrable && partsBeforeImpact + 1 < Mathf.Max(1, maximumParts) &&
+            bool go = penetrable && (long)partsBeforeImpact + 1 < Mathf.Max(1, maximumParts) &&
                 after > Mathf.Max(0f, minRemainingEnergy);
             return new RailgunImpact(damage, after, go);
         }

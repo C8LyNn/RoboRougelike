@@ -35,6 +35,131 @@ public sealed class BacklogRepairPulseIntegrationTests
         run=R1RunController.Instance;
         Assert.That(run?.Progress,Is.Not.Null,"Game controller must finish initialization before the test.");
     }
+    [UnityTest] public IEnumerator RepairEfficiencyAffectsTheActivePulseAndHealingTurret()
+    {
+        Assert.That(Enum.TryParse("RepairEfficiency",out R1UpgradeEffect effect),Is.True);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(500);
+        Assert.That(run.GaragePurchase(R3PartKind.RepairPulse),Is.True);
+        var reward=ScriptableObject.CreateInstance<R1UpgradeDefinition>();reward.Id="repair-rate-qa";reward.Effect=effect;reward.Amount=.5f;
+        Assert.That(run.VehicleModel.ReceiveBonuses(new[]{reward}),Is.True);
+        foreach(var id in run.VehicleModel.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>run.VehicleModel.OwnedPlacementError(id,c,default)==null);
+            Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var pulse=run.Player.GetComponent<R3RepairPulse>();
+        var target=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational);target.Damageable.RestoreHealthRatio(.3f);
+        Assert.That(pulse.TryActivate(),Is.EqualTo(1));
+        var tick=typeof(R3RepairPulse).GetMethod("Tick",BindingFlags.Instance|BindingFlags.NonPublic);tick.Invoke(pulse,new object[]{1f});
+        Assert.That(target.Damageable.CurrentHp/target.Damageable.MaxHp,Is.EqualTo(.375f).Within(.001));
+        var turretObject=new GameObject("Repair efficiency turret");turretObject.transform.position=run.Player.GetComponent<Rigidbody>().position;
+        var turret=turretObject.AddComponent<R3HealingTurret>();turret.Configure(assembly,100,.05f);
+        target.Damageable.RestoreHealthRatio(.3f);Physics.SyncTransforms();
+        typeof(R3HealingTurret).GetMethod("FixedUpdate",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(turret,null);
+        Assert.That(target.Damageable.CurrentHp/target.Damageable.MaxHp,Is.EqualTo(.3f+.075f*Time.fixedDeltaTime).Within(.0001));
+        var bonus=assembly.Parts.Single(p=>p.UpgradeEffect==effect);bonus.gameObject.SetActive(false);yield return null;
+        target.Damageable.RestoreHealthRatio(.3f);tick.Invoke(pulse,new object[]{1f});
+        Assert.That(target.Damageable.CurrentHp/target.Damageable.MaxHp,Is.EqualTo(.35f).Within(.001));
+        bonus.UpgradeOperation=R1ModifierOperation.Reduced;bonus.UpgradeAmount=1;bonus.gameObject.SetActive(true);yield return null;
+        target.Damageable.RestoreHealthRatio(.3f);tick.Invoke(pulse,new object[]{1f});
+        Assert.That(target.Damageable.CurrentHp/target.Damageable.MaxHp,Is.EqualTo(.3f).Within(.001),"Zero repair rate must finish the tick without healing or looping.");
+        UnityEngine.Object.Destroy(turretObject);UnityEngine.Object.Destroy(reward);
+    }
+    [UnityTest] public IEnumerator ScopedRepairBonusesReachOnlyTheirRealDeployedDeviceAndCombineWithGlobal()
+    {
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(2500);
+        Assert.That(run.GaragePurchase(R3PartKind.HealingDroneGenerator),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.HealingTurretGenerator),Is.True);
+        R1UpgradeDefinition Bonus(string id,R1BonusScope scope,float amount,R1ModifierOperation operation=R1ModifierOperation.Increased)
+        {var item=ScriptableObject.CreateInstance<R1UpgradeDefinition>();item.Id=id;item.Effect=R1UpgradeEffect.RepairEfficiency;item.Scope=scope;item.Amount=amount;item.Operation=operation;return item;}
+        var global=Bonus("repair-global-qa",R1BonusScope.Global,.5f);
+        var droneBonus=Bonus("repair-drone-qa",R1BonusScope.Drones,.3f);
+        var turretBonus=Bonus("repair-turret-qa",R1BonusScope.Turrets,.4f,R1ModifierOperation.More);
+        GameObject floor=null;
+        try
+        {
+            Assert.That(run.VehicleModel.ReceiveBonuses(new[]{global,droneBonus,turretBonus}),Is.True,"Scoped repair bonuses must be accepted as physical items.");
+            foreach(var id in run.VehicleModel.Inventory.Select(p=>p.Id).ToArray())
+            {
+                var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                    .First(c=>run.VehicleModel.OwnedPlacementError(id,c,default)==null);
+                Assert.That(run.GarageMount(id,cell),Is.True);
+            }
+            Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+            Assert.That(run.CanUseMovement,Is.True);var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+            floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+            var body=run.Player.GetComponent<Rigidbody>();body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+            var service=run.Player.GetComponent<R3DeployableService>();
+            Assert.That(service.TryDeploy(R3PartKind.HealingTurretGenerator),Is.True);
+            body.isKinematic=true;
+            Assert.That(service.TryDeploy(R3PartKind.HealingDroneGenerator),Is.True);
+            var drone=GameObject.Find("Dron naprawczy");var turret=GameObject.Find("Wieżyczka lecznicza");
+            Assert.That(drone,Is.Not.Null);Assert.That(turret,Is.Not.Null);
+            var droneHeal=drone.GetComponent<R3HealingTurret>();var turretHeal=turret.GetComponent<R3HealingTurret>();
+            Assert.That(droneHeal,Is.Not.Null);Assert.That(turretHeal,Is.Not.Null);
+            drone.transform.position=body.position;turret.transform.position=body.position;Physics.SyncTransforms();
+            var target=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational).Damageable;
+            var tick=typeof(R3HealingTurret).GetMethod("FixedUpdate",BindingFlags.Instance|BindingFlags.NonPublic);
+            void Check(R3HealingTurret device,float rate,float multiplier)
+            {
+                target.RestoreHealthRatio(.3f);tick.Invoke(device,null);
+                Assert.That(target.CurrentHp/target.MaxHp,Is.EqualTo(.3f+rate*multiplier*Time.fixedDeltaTime).Within(.0001));
+            }
+            var effects=run.Player.GetComponent<R3MountedBonusEffects>();
+            Assert.That(effects.RepairEfficiencyMultiplier,Is.EqualTo(1.5f).Within(.001),"Category bonuses must not boost the player's own repair pulse.");
+            Check(droneHeal,run.VehicleModel.Economy.HealingDroneRate,1.8f);
+            Check(turretHeal,run.VehicleModel.Economy.HealingTurretRate,2.1f);
+            var dronePart=assembly.Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeEffect==R1UpgradeEffect.RepairEfficiency&&p.UpgradeScope==R1BonusScope.Drones);dronePart.gameObject.SetActive(false);yield return null;
+            Check(droneHeal,run.VehicleModel.Economy.HealingDroneRate,1.5f);Check(turretHeal,run.VehicleModel.Economy.HealingTurretRate,2.1f);
+            var turretPart=assembly.Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeEffect==R1UpgradeEffect.RepairEfficiency&&p.UpgradeScope==R1BonusScope.Turrets);turretPart.gameObject.SetActive(false);yield return null;
+            Check(turretHeal,run.VehicleModel.Economy.HealingTurretRate,1.5f);
+            dronePart.gameObject.SetActive(true);turretPart.gameObject.SetActive(true);yield return null;
+            Check(droneHeal,run.VehicleModel.Economy.HealingDroneRate,1.8f);Check(turretHeal,run.VehicleModel.Economy.HealingTurretRate,2.1f);
+        }
+        finally{if(floor!=null)UnityEngine.Object.Destroy(floor);UnityEngine.Object.Destroy(global);UnityEngine.Object.Destroy(droneBonus);UnityEngine.Object.Destroy(turretBonus);}
+    }
+    [UnityTest]
+    public IEnumerator TwoCopiesActivateOneCombinedPulseWithAtomicCostAndSharedCooldown()
+    {
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(500);
+        for(int i=0;i<2;i++)
+        {
+            Assert.That(run.GaragePurchase(R3PartKind.RepairPulse),Is.True);
+            var item=run.VehicleModel.Inventory.Last(p=>p.Kind==R3PartKind.RepairPulse);
+            var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>run.VehicleModel.OwnedPlacementError(item.Id,c,default)==null);
+            Assert.That(run.GarageMount(item.Id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);
+        for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        Assert.That(run.CanUseMovement,Is.True);
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var energy=run.Player.GetComponent<VehicleEnergyBank>();
+        var pulse=run.Player.GetComponent<R3RepairPulse>();var devices=assembly.Parts.Where(p=>p.Kind==R3PartKind.RepairPulse).ToArray();
+        var target=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational);target.Damageable.RestoreHealthRatio(.3f);
+        Assert.That(energy.TrySpend(energy.Current-20),Is.True);
+        Assert.That(pulse.TryActivate(),Is.Zero,"Half the required energy must never activate only one copy.");
+        Assert.That(energy.Current,Is.EqualTo(20).Within(.001f));
+        energy.Recharge(100);float before=energy.Current;
+        Assert.That(pulse.TryActivate(),Is.EqualTo(2));Assert.That(pulse.ActiveCount,Is.EqualTo(1),"One kind creates one shared pulse.");
+        Assert.That(energy.Current,Is.EqualTo(before-30).Within(.001f));
+        var ready=typeof(R3VehicleModel).GetProperty("RepairPulseReadyAt");Assert.That(ready,Is.Not.Null,"The kind's cooldown must survive replacing all its physical copies.");
+        var copy=run.VehicleModel.DeepCopy();copy.Parts.RemoveAll(p=>p.Kind==R3PartKind.RepairPulse);
+        Assert.That((float)ready.GetValue(copy),Is.GreaterThan(Time.time));
+        var checkpoint=copy.MakeCheckpoint(Time.time);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,copy.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That((float)ready.GetValue(restored),Is.GreaterThan(Time.time));
+        var tick=typeof(R3RepairPulse).GetMethod("Tick",BindingFlags.Instance|BindingFlags.NonPublic);
+        tick.Invoke(pulse,new object[]{1f});
+        Assert.That(target.Damageable.CurrentHp/target.Damageable.MaxHp,Is.EqualTo(.4f).Within(.001f));
+        devices[0].gameObject.SetActive(false);tick.Invoke(pulse,new object[]{1f});
+        Assert.That(target.Damageable.CurrentHp/target.Damageable.MaxHp,Is.EqualTo(.45f).Within(.001f),"Losing one copy reduces the combined effect.");
+        Assert.That(pulse.TryActivate(),Is.Zero);
+        Assert.That(run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.RepairPulse).All(p=>p.DeviceReadyAt>Time.time),Is.True);
+        yield return null;
+    }
     [UnityTest]
     public IEnumerator RealMountedModuleSpendsEnergyHealsGraduallyAndStopsWhenDestroyed()
     {
@@ -87,6 +212,7 @@ public sealed class BacklogRepairPulseIntegrationTests
         Assert.That(pulse.ActiveCount,Is.Zero);Assert.That(pulse.Status,Is.EqualTo("nieaktywny"));
         Assert.That(armor.Damageable.CurrentHp/armor.Damageable.MaxHp,Is.EqualTo(.65f).Within(.001f),"An inactive device must stop its pulse.");
         device.gameObject.SetActive(true);state.DeviceReadyAt=0;
+        typeof(R3VehicleModel).GetProperty("RepairPulseReadyAt").SetValue(run.VehicleModel,0f); // simulate the shared cooldown expiring
         Assert.That(pulse.TryActivate(),Is.EqualTo(1));
         // A killing blow can also damage connected armor. Use a bounded hit
         // and measure after routing instead of assuming neighbours stay intact.
@@ -127,7 +253,7 @@ public sealed class BacklogRepairPulseIntegrationTests
         }
     }
     [UnityTest]
-    public IEnumerator StatusUsesAvailableDeviceWhenOtherIsCoolingOrDisrupted()
+    public IEnumerator StatusReflectsSharedCooldownWhenAnyCopyIsCoolingOrDisrupted()
     {
         Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);
         Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(500);
@@ -146,18 +272,18 @@ public sealed class BacklogRepairPulseIntegrationTests
         assembly.Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational).Damageable.RestoreHealthRatio(.5f);
         var cooling=run.VehicleModel.Parts.Single(p=>p.Id==devices[0].Id);
         cooling.DeviceReadyAt=Time.time+10f;
-        Assert.That(pulse.Status,Is.EqualTo("gotowy"));
+        Assert.That(pulse.Status,Does.StartWith("odnowienie "));
         var emp=devices[1].GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();
         Assert.That(emp,Is.Not.Null);emp.ApplyEmp(3f);
         Assert.That(pulse.Status,Does.StartWith("odnowienie "));
         emp.Advance(3f);
-        Assert.That(pulse.Status,Is.EqualTo("gotowy"));
+        Assert.That(pulse.Status,Does.StartWith("odnowienie "));
         devices[1].gameObject.SetActive(false);
         Assert.That(pulse.Status,Does.StartWith("odnowienie "),"An inactive available device must not mask the other device's cooldown.");
         devices[0].gameObject.SetActive(false);
         Assert.That(pulse.Status,Is.EqualTo("nieaktywny"));
         devices[0].gameObject.SetActive(true);devices[1].gameObject.SetActive(true);
-        Assert.That(pulse.Status,Is.EqualTo("gotowy"));
+        Assert.That(pulse.Status,Does.StartWith("odnowienie "));
         yield return null;
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}

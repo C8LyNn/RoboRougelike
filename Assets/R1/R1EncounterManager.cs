@@ -87,6 +87,9 @@ namespace RoboRougelike.R1
         {
             foreach (var shell in Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None))
             { shell.gameObject.SetActive(false); Object.Destroy(shell.gameObject); }
+            P17PhysicalShell.ClearConventionalCache();
+            foreach(var binding in Object.FindObjectsByType<RoboRougelike.WeaponIntegration.RRLRocketBinding>(FindObjectsInactive.Include,FindObjectsSortMode.None))
+                binding.ClearRocketCache();
             foreach(var rocket in Object.FindObjectsByType<RoboRougelike.Mechanics.Rockets.RocketProjectile>(FindObjectsSortMode.None))
                 if(rocket.IsInitialized){rocket.gameObject.SetActive(false);Object.Destroy(rocket.gameObject);}
             foreach(var interceptor in Object.FindObjectsByType<RoboRougelike.Mechanics.PointDefense.PointDefenseInterceptor>(FindObjectsSortMode.None))
@@ -102,6 +105,8 @@ namespace RoboRougelike.R1
             }
             foreach (var item in debris) { item.SetActive(false); Object.Destroy(item); }
             foreach(var pickup in Object.FindObjectsByType<RoboRougelike.R3.EnergyPickup>(FindObjectsSortMode.None))
+            {pickup.gameObject.SetActive(false);Object.Destroy(pickup.gameObject);}
+            foreach(var pickup in Object.FindObjectsByType<RoboRougelike.R3.R3PhysicalLoot>(FindObjectsSortMode.None))
             {pickup.gameObject.SetActive(false);Object.Destroy(pickup.gameObject);}
             foreach(var item in Object.FindObjectsByType<RoboRougelike.R3.R3Debris>(FindObjectsSortMode.None))
             {item.gameObject.SetActive(false);Object.Destroy(item.gameObject);}

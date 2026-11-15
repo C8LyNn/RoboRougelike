@@ -9,12 +9,18 @@ namespace RoboRougelike.WPN002Railgun.Tests.EditMode
         [Test] public void DefaultHasPositiveRange() => Assert.That(new RailgunConfig().Snapshot().Range, Is.GreaterThan(0));
         [Test] public void DefaultPenetratesMultipleParts() => Assert.That(new RailgunConfig().Snapshot().MaxDistinctParts, Is.GreaterThan(1));
         [Test] public void DefaultHasRecoil() => Assert.That(new RailgunConfig().Snapshot().RecoilImpulse, Is.GreaterThan(0));
-        [Test] public void HugeMaximumPartCountIsCapped() => Assert.That(new RailgunConfig { maximumDistinctParts = 999 }.Snapshot().MaxDistinctParts, Is.EqualTo(24));
+        [Test] public void LargeMaximumPartCountIsPreserved() => Assert.That(new RailgunConfig { maximumDistinctParts = 999 }.Snapshot().MaxDistinctParts, Is.EqualTo(999));
+        [Test] public void LargeFinitePenetrationEnergyIsPreserved() => Assert.That(new RailgunConfig { initialPenetrationEnergy = 50000 }.Snapshot().InitialEnergy, Is.EqualTo(50000));
+        [Test] public void MaximumPartCountDoesNotOverflowAtItsLastImpact()
+        {
+            var result=RailgunRules.Evaluate(100,1,1,100,int.MaxValue,int.MaxValue,1,true);
+            Assert.That(result.Continues,Is.False);
+        }
         [Test] public void TooSmallPartCountIsRaised() => Assert.That(new RailgunConfig { maximumDistinctParts = -1 }.Snapshot().MaxDistinctParts, Is.EqualTo(1));
         [Test] public void NanSpeedUsesFallback() => Assert.That(new RailgunConfig { projectileSpeed = float.NaN }.Snapshot().Speed, Is.EqualTo(85f));
         [Test] public void NegativeEnergyIsClamped() => Assert.That(new RailgunConfig { initialPenetrationEnergy = -4f }.Snapshot().InitialEnergy, Is.GreaterThan(0));
         [Test] public void NegativeRecoilIsClampedToZero() => Assert.That(new RailgunConfig { recoilImpulse = -5f }.Snapshot().RecoilImpulse, Is.Zero);
-        [Test] public void ZeroCooldownIsClamped() => Assert.That(new RailgunConfig { cooldownSeconds = 0f }.Snapshot().Cooldown, Is.GreaterThan(0));
+        [Test] public void ZeroCooldownIsPreserved() => Assert.That(new RailgunConfig { cooldownSeconds = 0f }.Snapshot().Cooldown, Is.Zero);
         [Test] public void InitialShotIsReady() => Assert.That(new RailgunFireGate().CanFire(0f), Is.True);
         [Test] public void CommitStartsCooldown()
         { var gate = new RailgunFireGate(); Assert.That(gate.Commit(5f, 2f), Is.True); Assert.That(gate.CanFire(6f), Is.False); }

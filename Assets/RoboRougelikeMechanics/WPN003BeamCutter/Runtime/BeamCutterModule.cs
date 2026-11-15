@@ -4,7 +4,8 @@ using UnityEngine;
 namespace RoboRougelike.Mechanics.BeamCutter
 {
     /// <summary>
-    /// Non-allocating ray query for the first non-self obstacle. Damage only via injected R6 sink.
+    /// Reuses ray buffers normally, falling back to a complete query when saturated.
+    /// Damage is applied only via the injected R6 sink.
     /// Each FixedUpdate computes DPS * ACTUAL firing seconds; no direct target HP changes.
     /// </summary>
     [DisallowMultipleComponent]
@@ -12,6 +13,8 @@ namespace RoboRougelike.Mechanics.BeamCutter
     {
         private const int MaxRayHits = 128;
         private const int MaxMuzzleOverlaps = 64;
+        // Scratch-buffer threshold only; still query every hit above this size.
+        private const int MaxReusableHits = 4096;
 
         [SerializeField] private BeamCutterSettings settings = new BeamCutterSettings();
         [SerializeField] private Transform muzzle;
@@ -23,8 +26,8 @@ namespace RoboRougelike.Mechanics.BeamCutter
         [SerializeField] private LineRenderer beamLine;
         [SerializeField] private bool automaticFixedUpdate = true;
 
-        private readonly RaycastHit[] _hits = new RaycastHit[MaxRayHits];
-        private readonly Collider[] _muzzleOverlaps = new Collider[MaxMuzzleOverlaps];
+        private RaycastHit[] _hits = new RaycastHit[MaxRayHits];
+        private Collider[] _muzzleOverlaps = new Collider[MaxMuzzleOverlaps];
         private BeamCutterSettings _runtimeSettings;
         private BeamThermalState _thermal;
         private IBeamDamageSink _sink;
@@ -158,17 +161,7 @@ namespace RoboRougelike.Mechanics.BeamCutter
                 HideBeam();
                 return Store(new BeamStepResult(BeamStepStatus.ObstructedAtMuzzle, 0f, null, 0f, origin));
             }
-            if (!TryFindFirstNonSelfHit(origin, forward, cfg.rangeMeters, cfg.hitLayers, out RaycastHit firstHit, out bool overflow))
-            {
-                // RaycastNonAlloc buffer saturation is treated as an unsafe/ambiguous query.
-                // Fail closed: no damage, energy charge or recoil.
-                if (overflow)
-                {
-                    thermal.AdvanceIdle(stepSeconds);
-                    HideBeam();
-                    return Store(new BeamStepResult(BeamStepStatus.HitBufferOverflow, 0f, null, 0f, origin));
-                }
-            }
+            FindFirstNonSelfHit(origin,forward,cfg.rangeMeters,cfg.hitLayers,out RaycastHit firstHit);
             float requiredEnergy = cfg.energyPerSecond * firedSeconds;
             if (requiredEnergy > 0f && (_energy == null || !_energy.TryConsume(requiredEnergy)))
             {
@@ -217,36 +210,46 @@ namespace RoboRougelike.Mechanics.BeamCutter
 
         private bool IsMuzzleInsideNonSelfCollider(Vector3 origin, LayerMask layers)
         {
-            int count = Physics.OverlapSphereNonAlloc(origin, 0.01f, _muzzleOverlaps, layers, QueryTriggerInteraction.Ignore);
-            if (count >= _muzzleOverlaps.Length) return true; // fail closed
+            int count;Collider[] overlaps;
+            while(true)
+            {
+                count=Physics.OverlapSphereNonAlloc(origin,.01f,_muzzleOverlaps,layers,QueryTriggerInteraction.Ignore);
+                if(count<_muzzleOverlaps.Length){overlaps=_muzzleOverlaps;break;}
+                if(_muzzleOverlaps.Length>=MaxReusableHits)
+                {overlaps=Physics.OverlapSphere(origin,.01f,layers,QueryTriggerInteraction.Ignore);count=overlaps.Length;break;}
+                Array.Resize(ref _muzzleOverlaps,Mathf.Min(_muzzleOverlaps.Length*2,MaxReusableHits));
+            }
             for (int i = 0; i < count; i++)
             {
-                Collider collider = _muzzleOverlaps[i];
+                Collider collider = overlaps[i];
                 if (collider != null && !IsOwnCollider(collider)) return true;
             }
             return false;
         }
 
-        private bool TryFindFirstNonSelfHit(Vector3 origin, Vector3 direction, float distance,
-            LayerMask layers, out RaycastHit closest, out bool overflow)
+        private void FindFirstNonSelfHit(Vector3 origin, Vector3 direction, float distance,
+            LayerMask layers, out RaycastHit closest)
         {
             closest = default;
-            int count = Physics.RaycastNonAlloc(origin, direction, _hits, distance, layers, QueryTriggerInteraction.Ignore);
-            overflow = count >= _hits.Length;
-            if (overflow) return false;
+            int count;RaycastHit[] hits;
+            while(true)
+            {
+                count=Physics.RaycastNonAlloc(origin,direction,_hits,distance,layers,QueryTriggerInteraction.Ignore);
+                if(count<_hits.Length){hits=_hits;break;}
+                if(_hits.Length>=MaxReusableHits)
+                {hits=Physics.RaycastAll(origin,direction,distance,layers,QueryTriggerInteraction.Ignore);count=hits.Length;break;}
+                Array.Resize(ref _hits,Mathf.Min(_hits.Length*2,MaxReusableHits));
+            }
             float nearest = float.PositiveInfinity;
-            bool found = false;
             for (int i = 0; i < count; i++)
             {
-                RaycastHit hit = _hits[i];
+                RaycastHit hit = hits[i];
                 Collider collider = hit.collider;
                 if (collider == null || IsOwnCollider(collider)) continue;
                 if (hit.distance < 0f || hit.distance >= nearest) continue;
                 nearest = hit.distance;
                 closest = hit;
-                found = true;
             }
-            return found;
         }
 
         private bool IsOwnCollider(Collider collider)

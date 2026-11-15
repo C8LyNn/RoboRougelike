@@ -100,6 +100,23 @@ public sealed class BacklogEnemyBatteryTierTests
         bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(600));
         yield return null;
     }
+    [UnityTest] public IEnumerator EnemyPointDefenseReservesEnergyAndReleasesItWhenDestroyed()
+    {
+        var run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        for(int i=0;i<300&&run.Transitioning;i++)yield return null;
+        Assert.That(run.Transitioning,Is.False);run.Encounter.SetCombatActive(false);
+        var enemy=run.Encounter.Enemies.Last();var bank=enemy.GetComponent<VehicleEnergyBank>();float original=bank.Maximum;
+        Assert.That(enemy.EquipPointDefense(),Is.True);
+        RoboRougelike.WeaponIntegration.RRLEmpVehicleAdapter.Configure(enemy.transform);
+        var defense=enemy.GetComponentInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();Assert.That(defense,Is.Not.Null);
+        bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(original-25).Within(.01));
+        defense.Device.Damageable.RestoreHealthRatio(.01f);bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(original-25).Within(.01));
+        var emp=defense.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();Assert.That(emp,Is.Not.Null);emp.ApplyEmp(2);
+        bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(original-25).Within(.01));emp.ClearEmp();
+        defense.Device.Damageable.ApplyDamageResolvedTyped(defense.Device.Damageable.CurrentHp+1,defense.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Piercing);
+        bank.Refresh();Assert.That(defense.Device.Damageable.IsDead,Is.True);Assert.That(bank.Maximum,Is.EqualTo(original).Within(.01));
+        yield return null;
+    }
     [UnityTearDown] public IEnumerator Cleanup()
     {
         if (Application.isPlaying) { Time.timeScale = 1; yield return new ExitPlayMode(); }

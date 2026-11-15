@@ -47,10 +47,10 @@ namespace RoboRougelike.WeaponIntegration
     {
         public struct Snapshot
         {
-            public int Guns,InRange,Aligned,Clear;
+            public int Guns,InRange,Aligned,Clear,AreaWeapons;
             public float Distance;
             public bool HasSurface,DamageableSurface;
-            public string Caption => Guns==0?"Brak sprawnej broni":
+            public string Caption => Guns==0?(AreaWeapons>0?"Aura energetyczna • bez celowania":"Brak sprawnej broni"):
                 !HasSurface?"Brak celu • zasięg zależy od broni":
                 InRange==0?$"{Distance:0} m • poza zasięgiem":
                 Aligned==0?$"{Distance:0} m • obrót luf":
@@ -105,7 +105,7 @@ namespace RoboRougelike.WeaponIntegration
                 case R4WeaponKind.RotarySaw:
                     return part.GetComponent<RRLSawBinding>()?.Module?.ContactRadius??0;
                 case R4WeaponKind.EmpEmitter:
-                    return part.GetComponent<RRLEmpBinding>()?.Module?.PulseRadius??0;
+                    return part.GetComponent<RRLDamageAuraBinding>()!=null?RRLDamageAuraBinding.Radius:0;
                 default:return R4WeaponDefinition.Get(part.Weapon).Speed*controller.PhysicalShellLifetime;
             }
         }
@@ -119,6 +119,7 @@ namespace RoboRougelike.WeaponIntegration
             {
                 if(part==null||part.Kind!=R3PartKind.Gun||!part.Operational||!part.gameObject.activeInHierarchy||!part.transform.IsChildOf(assembly.transform)||
                     part.Muzzle==null||RRLEmpPartState.IsBlocked(part.gameObject))continue;
+                if(part.Weapon==R4WeaponKind.EmpEmitter){result.AreaWeapons++;continue;}
                 result.Guns++;
                 Vector3 origin=part.Weapon==R4WeaponKind.EmpEmitter?part.transform.position:part.Muzzle.position;
                 Vector3 direction=point-origin;float distance=direction.magnitude;

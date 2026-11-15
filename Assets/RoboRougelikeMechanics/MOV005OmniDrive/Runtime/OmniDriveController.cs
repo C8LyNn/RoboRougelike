@@ -78,17 +78,17 @@ namespace RoboRougelike.Mechanics.MOV005OmniDrive
                 moveInput = Vector2.zero;
                 yawInput = 0f;
             }
-            float totalLinear = 0f, weightedSpeed = 0f;
-            float totalAngular = 0f, weightedYawSpeed = 0f;
-            float totalEnergyRate = 0f;
+            double totalLinear = 0d, weightedSpeed = 0d;
+            double totalAngular = 0d, weightedYawSpeed = 0d;
+            double totalEnergyRate = 0d;
             for (int i = 0; i < modules.Length; i++)
             {
                 OmniDriveModule drive = modules[i];
                 if (drive == null || !drive.CanDrive(body)) continue;
                 totalLinear += drive.LinearAcceleration;
-                weightedSpeed += drive.MaximumSpeed * drive.LinearAcceleration;
+                weightedSpeed += (double)drive.MaximumSpeed * drive.LinearAcceleration;
                 totalAngular += drive.YawAngularAcceleration;
-                weightedYawSpeed += drive.YawSpeedDegrees * drive.YawAngularAcceleration;
+                weightedYawSpeed += (double)drive.YawSpeedDegrees * drive.YawAngularAcceleration;
                 totalEnergyRate += drive.EnergyCostPerSecond;
             }
             if (totalLinear <= 0f && totalAngular <= 0f) return;
@@ -98,18 +98,17 @@ namespace RoboRougelike.Mechanics.MOV005OmniDrive
             // still work with no provider. Positive cost without a provider FAILS CLOSED.
             if ((moveRequested || yawRequested) && totalEnergyRate > 0f)
             {
-                float demand = totalEnergyRate * Time.fixedDeltaTime *
+                double demand = totalEnergyRate * Time.fixedDeltaTime *
                     Mathf.Max(moveInput.magnitude, Mathf.Abs(yawInput));
-                if (energySource == null || !energySource.TrySpend(demand)) return;
+                if (energySource == null || demand>float.MaxValue || !energySource.TrySpend((float)demand)) return;
             }
-            float speed = totalLinear > 0f ? weightedSpeed / totalLinear : 0f;
-            float yawSpeed = totalAngular > 0f ? weightedYawSpeed / totalAngular : 0f;
+            float speed = totalLinear > 0d ? (float)System.Math.Min(float.MaxValue,weightedSpeed/totalLinear) : 0f;
+            float yawSpeed = totalAngular > 0d ? (float)System.Math.Min(float.MaxValue,weightedYawSpeed/totalAngular) : 0f;
             // Modules supply a finite reference thrust. Actual acceleration falls with
             // increasing total vehicle mass, including armor and recovered parts.
-            float referenceThrust = totalLinear * accelerationReferenceMassKg;
-            float acceleration = Mathf.Min(referenceThrust / Mathf.Max(body.mass, 0.001f),
-                maxCombinedLinearAcceleration);
-            float angularAcceleration = Mathf.Min(totalAngular, maxCombinedAngularAcceleration);
+            double referenceThrust = totalLinear * accelerationReferenceMassKg;
+            float acceleration = (float)System.Math.Min(maxCombinedLinearAcceleration,referenceThrust/Mathf.Max(body.mass,0.001f));
+            float angularAcceleration = (float)System.Math.Min(totalAngular,maxCombinedAngularAcceleration);
             float idleBrake = coastOnReleasedInput ? 0f : idleLinearBrakeAcceleration;
             LastLinearAcceleration = OmniDriveMath.LinearAcceleration(body.linearVelocity, body.rotation,
                 moveInput, speed, acceleration, idleBrake, Time.fixedDeltaTime);
@@ -117,7 +116,7 @@ namespace RoboRougelike.Mechanics.MOV005OmniDrive
             LastYawAcceleration = OmniDriveMath.YawAcceleration(Vector3.Dot(body.angularVelocity, Vector3.up),
                 yawInput, yawSpeed, angularAcceleration, yawBrake, Time.fixedDeltaTime);
             if (LastLinearAcceleration.sqrMagnitude > 0f)
-                body.AddForce(LastLinearAcceleration * body.mass, ForceMode.Force);
+                body.AddForce(LastLinearAcceleration, ForceMode.Acceleration);
             if (Mathf.Abs(LastYawAcceleration) > 0f)
                 body.AddTorque(Vector3.up * LastYawAcceleration, ForceMode.Acceleration);
         }

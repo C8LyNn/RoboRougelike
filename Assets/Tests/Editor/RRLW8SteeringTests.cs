@@ -5,6 +5,8 @@ using NUnit.Framework;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
 using RoboRougelike.R6;
@@ -38,7 +40,9 @@ public class RRLW8SteeringTests
             Assert.That(run.VehicleModel.Parts.Select(p=>p.Cell).Distinct().Count(),Is.EqualTo(run.VehicleModel.Parts.Count));
             Assert.That(R3VehicleModel.Connected(run.VehicleModel.Parts),Is.True);
         }
-        Assert.That(run.GarageBuy(new Vector3Int(0,chassis==R3VehicleKind.Light?1:2,-2),kind),Is.True);
+        var desired=new Vector3Int(0,chassis==R3VehicleKind.Light?1:2,-2);
+        var mount=MOVSeriesDeviceTests.FindFixtureCell(run.VehicleModel,kind,desired);
+        Assert.That(run.GarageBuy(mount,kind),Is.True);
         if(withSuspension)foreach(var cell in MOV009ModelTests.Cells(chassis))Assert.That(run.GarageBuy(cell,R3PartKind.Suspension),Is.True);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         module=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==kind);
@@ -180,11 +184,34 @@ public class RRLW8SteeringTests
     [UnityTest] public IEnumerator PlayerGuiMCyclesOwnedModesAndRejectsPauseAndControllerLoss()
     {
         Assert.That(Enum.TryParse("IndependentSteering",out kind),Is.True);yield return Build();
-        var key=new Event{type=EventType.KeyDown,keyCode=KeyCode.None,character='m'};
+        var key=new Event{type=EventType.KeyDown,keyCode=KeyCode.M,character='m'};
         run.TogglePause();Assert.That(Gui(key),Is.False);Assert.That(source.Mode,Is.EqualTo(SteeringMode.FrontOnly));run.TogglePause();
         foreach(var mode in new[]{SteeringMode.RearOnly,SteeringMode.CounterPhase,SteeringMode.Crab,SteeringMode.FrontOnly})
         {Assert.That(Gui(key),Is.True);Assert.That(source.Mode,Is.EqualTo(mode));Assert.That(Gui(key),Is.False,"Raw and GUI delivery in one frame must not double-cycle");yield return null;}
         module.Damageable.ApplyDamage(100000,module.transform.position,Vector3.up);Assert.That(Gui(key),Is.False);
+    }
+    [UnityTest] public IEnumerator PlayerCanRebindSteeringModeWithoutKeepingOldKey()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        InputSystem.settings=settings;var keyboard=InputSystem.AddDevice<Keyboard>();var mouse=InputSystem.AddDevice<Mouse>();
+        try
+        {
+            Assert.That(profile.TryBind("DefenseStatusPage","F6"),Is.True);
+            Assert.That(profile.TryBind("SteeringMode","P"),Is.True);
+            Assert.That(Enum.TryParse("IndependentSteering",out kind),Is.True);yield return Build();
+            Assert.That(Gui(new Event{type=EventType.KeyDown,keyCode=KeyCode.M}),Is.False);
+            Assert.That(Gui(new Event{type=EventType.KeyDown,keyCode=KeyCode.P}),Is.True);
+            Assert.That(source.Mode,Is.EqualTo(SteeringMode.RearOnly));
+            yield return null;InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.P));yield return null;yield return null;
+            Assert.That(source.Mode,Is.EqualTo(SteeringMode.CounterPhase),"The live Input System update must use the new key too.");
+            Assert.That(profile.TryBind("Weapon1","N"),Is.True);Assert.That(profile.TryBind("SteeringMode","MouseLeft"),Is.True);
+            InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Left));yield return null;yield return null;
+            Assert.That(source.Mode,Is.EqualTo(SteeringMode.Crab),"Mouse binding must still work through Input System.");
+        }
+        finally{profile.ResetDefaults();InputSystem.RemoveDevice(keyboard);InputSystem.RemoveDevice(mouse);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

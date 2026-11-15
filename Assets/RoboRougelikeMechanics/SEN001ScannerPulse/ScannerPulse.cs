@@ -61,10 +61,18 @@ namespace RoboRougelike.Mechanics.SEN001
             seenThisPulse.Clear();
             int count = Physics.OverlapSphereNonAlloc(position, RadiusMeters, queryBuffer,
                 detectableLayers, triggerInteraction);
-            LastPulseTruncated = count == QueryCapacity;
+            Collider[] hits=queryBuffer;
+            if(count==queryBuffer.Length)
+            {
+                // A full NonAlloc buffer may have omitted arbitrary colliders,
+                // including marked targets hidden behind unmarked colliders.
+                hits=Physics.OverlapSphere(position,RadiusMeters,detectableLayers,triggerInteraction);
+                count=hits.Length;
+            }
+            LastPulseTruncated = false;
             for (int i = 0; i < count; i++)
             {
-                Collider hit = queryBuffer[i];
+                Collider hit = hits[i];
                 if (hit == null || !hit.enabled || !hit.gameObject.activeInHierarchy) continue;
                 if (ignoreOwnHierarchy && hit.transform.IsChildOf(transform)) continue;
                 ScannerDetectable target = hit.GetComponentInParent<ScannerDetectable>();

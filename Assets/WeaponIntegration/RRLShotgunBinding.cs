@@ -24,6 +24,10 @@ namespace RoboRougelike.WeaponIntegration
         P12PipelineSafeTankController tank;
         P12PipelineSafeEnemyTurret enemy;
         bool debitPending;
+        bool deferExtras;
+        List<System.Numerics.BigInteger> deferredRequests;
+        List<GameObject> deferredCreated;
+        internal bool HasAdditionalRequested { get; private set; }
         float damageScale=1,intervalScale=1;
         RRLDeviceBinding device;
         public bool Available => device!=null&&device.Available;
@@ -34,11 +38,12 @@ namespace RoboRougelike.WeaponIntegration
             tank=owner.GetComponent<P12PipelineSafeTankController>();enemy=owner.GetComponent<P12PipelineSafeEnemyTurret>();
             device=GetComponent<RRLDeviceBinding>();if(device==null)device=gameObject.AddComponent<RRLDeviceBinding>();
             device.Bind(state,owner);
-            damageScale=Mathf.Max(0,damageMultiplier);intervalScale=Mathf.Max(.01f,intervalMultiplier);
+            damageScale=Mathf.Max(0,damageMultiplier);
+            intervalScale=float.IsNaN(intervalMultiplier)||float.IsInfinity(intervalMultiplier)?1f:Mathf.Max(0,intervalMultiplier);
             if(State.Ammo<0)State.Ammo=MagazineSalvos;
             Module=GetComponent<ShotgunModule>();if(Module==null)Module=gameObject.AddComponent<ShotgunModule>();
             Module.Bind(body,muzzle,owner.gameObject);Module.BindSink(this);Module.BindResourceBank(this);
-            Module.Configure(new ShotgunConfig{cooldownSeconds=.85f*intervalScale});
+            Module.Configure(ShotgunSettings(intervalScale));
             Module.SetPatternSeed(StableSeed(State.Id));Module.SetOperational(Available);
             if(hp!=null)hp.Died+=Stop;
             projectileMaterial=GetComponent<Renderer>()?.sharedMaterial;
@@ -47,6 +52,16 @@ namespace RoboRougelike.WeaponIntegration
         {
             uint seed=2166136261;foreach(char c in id??""){seed^=c;seed*=16777619;}return seed;
         }
+        ShotgunConfig ShotgunSettings(float interval)
+        {
+            var economy=Owner!=null?Owner.GetComponent<R3VehicleAssembly>()?.Model?.Economy:null;
+            float range=economy?.ShotgunRange??40f;
+            float speed=economy?.ShotgunProjectileSpeed??58f;
+            double safeRange=float.IsNaN(range)||float.IsInfinity(range)?40d:System.Math.Max(.1d,range);
+            double safeSpeed=float.IsNaN(speed)||float.IsInfinity(speed)?58d:System.Math.Max(.1d,speed);
+            return new ShotgunConfig{pelletCount=economy?.ShotgunPelletCount??8,fullConeAngleDegrees=economy?.ShotgunConeAngle??14f,cooldownSeconds=R3MountedBonusEffects.SafeIntervalProduct(.85f,interval),maxTravelDistance=range,damagePerPellet=economy?.ShotgunDamagePerPellet??9f,projectileSpeed=speed,
+                projectileLifetime=(float)System.Math.Min(float.MaxValue,System.Math.Max(2d,safeRange/safeSpeed+1d))};
+        }
         public bool Fire()
         {
             RefreshResources();
@@ -54,7 +69,7 @@ namespace RoboRougelike.WeaponIntegration
             var assembly=Owner.GetComponent<R3VehicleAssembly>();
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>()))return false;
             Module.SetOperational(true);
-            Module.Configure(new ShotgunConfig{cooldownSeconds=.85f*(tank!=null?tank.PackageIntervalScale:intervalScale)});
+            Module.Configure(ShotgunSettings(tank!=null?tank.WeaponIntervalScale(R4WeaponKind.Shotgun):intervalScale));
             var energy=Owner.GetComponent<VehicleEnergyBank>();
             float cost=VehicleEnergyCosts.Shotgun*R3VehicleModel.TierActivationCost(State.Tier);
             if(energy!=null&&!energy.TrySpend(cost))return false;
@@ -63,6 +78,8 @@ namespace RoboRougelike.WeaponIntegration
             if(result)State.DeviceReadyAt=Module.NextReadyTime;
             return result;
         }
+        internal bool FirePrimary()
+        {ClearDeferred();deferExtras=true;try{return Fire();}finally{deferExtras=false;if(!HasAdditionalRequested)ClearDeferred();}}
         public bool BeginReload()
         {
             RefreshResources();
@@ -89,46 +106,72 @@ namespace RoboRougelike.WeaponIntegration
         {if(debitPending&&State!=null){State.Ammo=Mathf.Min(MagazineSalvos,State.Ammo+1);debitPending=false;}}
         public bool TrySpawnVolley(IReadOnlyList<ShotgunPelletSpawn> pellets)
         {
-            if(!Available||pellets==null||pellets.Count==0||P17PhysicalShell.AvailableSlots<pellets.Count)return false;
+            if(!Available||pellets==null||pellets.Count==0)return false;
             var assembly=Owner.GetComponent<R3VehicleAssembly>();
             var part=GetComponent<R3MountedPart>();
-            if(assembly!=null)
-                foreach(var pellet in pellets)
-                {
-                    var velocity=pellet.Direction*pellet.ProjectileSpeed+pellet.InheritedVelocity;
-                    var range=Mathf.Min(pellet.MaxDistance,velocity.magnitude*pellet.Lifetime);
-                    if(!assembly.ClearProjectilePath(part,velocity,range,.05f))return false;
-                }
+            if(assembly!=null&&!assembly.ClearShotgunVolley(part,pellets,.05f))return false;
             var created=new List<GameObject>(pellets.Count);
             try
             {
-                foreach(var pellet in pellets)
+                foreach(var pellet in pellets)CreatePellet(pellet,created);
+                var requests=new List<System.Numerics.BigInteger>(pellets.Count);bool any=false;
+                var doubleShot=assembly!=null?assembly.CaptureDoubleShotRoll():default;
+                for(int i=0;i<pellets.Count;i++)
                 {
-                    if(pellet.OwnerRoot!=Owner.gameObject||pellet.OwnerBody!=body)throw new System.InvalidOperationException("Wrong projectile owner");
-                    var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);created.Add(shell);
-                    shell.name="WPN001 physical pellet";shell.transform.SetPositionAndRotation(pellet.Origin,Quaternion.LookRotation(pellet.Direction));
-                    shell.transform.localScale=Vector3.one*.1f;
-                    // A volley shares one muzzle position. Its pellets must not consume
-                    // each other as zero-distance collisions before reaching the world.
-                    var pelletCollider=shell.GetComponent<Collider>();
-                    for(int i=0;i<created.Count-1;i++)
-                        Physics.IgnoreCollision(pelletCollider,created[i].GetComponent<Collider>(),true);
-                    if(projectileMaterial!=null)shell.GetComponent<Renderer>().sharedMaterial=projectileMaterial;
-                    var origin=shell.AddComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.Shotgun;origin.PartId=State.Id;
-                    var rb=shell.AddComponent<Rigidbody>();rb.mass=.2f;rb.useGravity=false;
-                    rb.interpolation=RigidbodyInterpolation.Interpolate;rb.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;
-                    rb.linearVelocity=pellet.Direction*pellet.ProjectileSpeed+pellet.InheritedVelocity;
-                    shell.AddComponent<P17PhysicalShell>().Configure(Owner,pellet.Damage*(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),pellet.Lifetime,pellet.Direction,null,pellet.MaxDistance);
+                    var requested=doubleShot.RollExact();
+                    requests.Add(requested);any|=requested>0;
                 }
-                debitPending=false;
+                if(deferExtras)
+                {
+                    deferredRequests=requests;deferredCreated=created;HasAdditionalRequested=any;
+                }
                 RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.Shotgun);
+                if(!deferExtras&&any)QueueAdditional(created,requests);
+                debitPending=false;
                 return true;
             }
             catch
             {
+                ClearDeferred();
                 foreach(var shell in created)if(shell!=null){shell.SetActive(false);Destroy(shell);}
                 return false;
             }
+        }
+        internal void FireAdditional()
+        {
+            if(Owner==null||deferredRequests==null||deferredCreated==null){ClearDeferred();return;}
+            try{QueueAdditional(deferredCreated,deferredRequests);}finally{ClearDeferred();}
+        }
+        void QueueAdditional(IReadOnlyList<GameObject> created,IReadOnlyList<System.Numerics.BigInteger> requested)
+        {
+            var queue=Owner.GetComponent<R3ConventionalProjectileQueue>();
+            if(queue==null)queue=Owner.gameObject.AddComponent<R3ConventionalProjectileQueue>();
+            queue.EnqueueShotgunExact(created,requested);
+        }
+        internal void ClearDeferred(){deferredRequests=null;deferredCreated=null;HasAdditionalRequested=false;}
+        void CreatePellet(ShotgunPelletSpawn pellet,List<GameObject> created)
+        {
+            if(pellet.OwnerRoot!=Owner.gameObject||pellet.OwnerBody!=body)throw new System.InvalidOperationException("Wrong projectile owner");
+            var projectile=P17PhysicalShell.RentConventional();var shell=projectile.gameObject;created.Add(shell);
+            shell.name="WPN001 physical pellet";shell.transform.SetPositionAndRotation(pellet.Origin,Quaternion.LookRotation(pellet.Direction));
+            shell.transform.localScale=Vector3.one*.1f;
+            var pelletCollider=shell.GetComponent<Collider>();
+            pelletCollider.enabled=true;pelletCollider.isTrigger=false;
+            var renderer=shell.GetComponent<Renderer>();
+            if(renderer!=null)renderer.sharedMaterial=projectileMaterial!=null?projectileMaterial:projectile.DefaultMaterial;
+            var origin=shell.GetComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.Shotgun;origin.PartId=State.Id;
+            var rb=shell.GetComponent<Rigidbody>();rb.mass=.2f;rb.useGravity=false;rb.isKinematic=false;
+            rb.interpolation=RigidbodyInterpolation.Interpolate;rb.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;
+            shell.SetActive(true);rb.angularVelocity=Vector3.zero;
+            bool grouped=created.Count>1&&created[0]!=null&&P17PhysicalShell.TryJoinVolley(created[0].GetComponent<Collider>(),pelletCollider);
+            if(!grouped&&created.Count==33)grouped=P17PhysicalShell.TryGroupVolley(created);
+            if(!grouped)
+                for(int i=0;i<created.Count-1;i++)if(created[i]!=null)
+                    P17PhysicalShell.IgnoreProjectilePair(pelletCollider,created[i].GetComponent<Collider>());
+            rb.linearVelocity=pellet.Direction*pellet.ProjectileSpeed+pellet.InheritedVelocity;
+            float pelletDamage=R3MountedBonusEffects.SafeDamageProduct(pellet.Damage,tank!=null?tank.PackageShotgunDamageScale:damageScale);
+            pelletDamage=R3MountedBonusEffects.SafeDamageProduct(pelletDamage,R3VehicleModel.TierEffectUnits(State.Tier));
+            projectile.Configure(Owner,pelletDamage,pellet.Lifetime,pellet.Direction,null,pellet.MaxDistance);
         }
         void Stop(){if(Module!=null)Module.SetOperational(false);}
         void OnDisable()=>Stop();

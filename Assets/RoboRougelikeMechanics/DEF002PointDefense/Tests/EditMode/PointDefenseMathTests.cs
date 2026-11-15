@@ -7,6 +7,38 @@ namespace RoboRougelike.Mechanics.PointDefense.Tests
     public sealed class PointDefenseMathTests
     {
         [Test]
+        public void VeryFastFiniteIncomingThreatIsRecognized()
+        {
+            Assert.IsTrue(PointDefenseMath.IsThreatApproaching(new Vector3(0, 0, 10),
+                new Vector3(0, 0, -1e20f), Vector3.zero, Vector3.zero, 5, 1, out float time));
+            Assert.Greater(time, 0f);
+            Assert.That(time / 1e-19f, Is.EqualTo(1f).Within(.001f));
+        }
+        [Test]
+        public void SlowPositiveInterceptorSpeedCanLeadStationaryTarget()
+        {
+            Assert.IsTrue(PointDefenseMath.TryLead(Vector3.zero, Vector3.zero, Vector3.forward,
+                Vector3.zero, .0005f, 3000f, out Vector3 point, out float time));
+            Assert.That(time, Is.EqualTo(2000f).Within(.01f));
+            Assert.That(point.z, Is.EqualTo(1f).Within(.001f));
+        }
+        [Test]
+        public void FastFiniteTargetHasStablePositiveLead()
+        {
+            Assert.IsTrue(PointDefenseMath.TryLead(Vector3.zero, Vector3.zero, new Vector3(0, 0, 10),
+                new Vector3(0, 0, -1e20f), 1e20f, 5f, out Vector3 point, out float time));
+            Assert.That(time / 5e-20f, Is.EqualTo(1f).Within(.001f));
+            Assert.That(point.z, Is.EqualTo(5f).Within(.001f));
+        }
+        [Test]
+        public void NonFiniteInputsAreRejected()
+        {
+            Assert.IsFalse(PointDefenseMath.TryLead(Vector3.zero, Vector3.zero, Vector3.forward,
+                Vector3.zero, float.NaN, 3f, out _, out _));
+            Assert.IsFalse(PointDefenseMath.IsThreatApproaching(new Vector3(float.PositiveInfinity, 0, 0),
+                Vector3.zero, Vector3.zero, Vector3.zero, 3f, 1f, out _));
+        }
+        [Test]
         public void IncomingDirectThreat_IsRecognized()
         {
             float time;
@@ -36,11 +68,29 @@ namespace RoboRougelike.Mechanics.PointDefense.Tests
                 new Vector3(0, 0, -5), Vector3.zero, Vector3.zero, 3, 2, out time));
         }
         [Test]
+        public void ThreatEnteringRadiusBeforeHorizon_IsRecognizedEvenIfClosestPointIsLater()
+        {
+            Assert.IsTrue(PointDefenseMath.IsThreatApproaching(new Vector3(0,0,10),new Vector3(0,0,-1),
+                Vector3.zero,Vector3.zero,5,6,out float time));
+            Assert.That(time,Is.EqualTo(5).Within(.001));
+            Assert.IsFalse(PointDefenseMath.IsThreatApproaching(new Vector3(0,0,12),new Vector3(0,0,-1),
+                Vector3.zero,Vector3.zero,5,6,out _),"A shot still outside at the horizon must not be acquired.");
+            Assert.IsTrue(PointDefenseMath.IsThreatApproaching(new Vector3(0,0,5.01f),new Vector3(0,0,-.005f),
+                Vector3.zero,Vector3.zero,3,5,out _),"Very slow relative motion can still enter the radius within the horizon.");
+        }
+        [Test]
         public void ThreatAlreadyInsideProtection_IsRecognized()
         {
             float time;
             Assert.IsTrue(PointDefenseMath.IsThreatApproaching(new Vector3(0, 0, 0.5f),
                 Vector3.zero, Vector3.zero, Vector3.zero, 3, 2, out time));
+        }
+        [Test]
+        public void SlowApproachingThreatAlreadyInsideProtection_IsImmediate()
+        {
+            Assert.IsTrue(PointDefenseMath.IsThreatApproaching(new Vector3(0,0,3),new Vector3(0,0,-.2f),
+                Vector3.zero,Vector3.zero,10,4,out float time));
+            Assert.That(time,Is.EqualTo(0),"An already-inside threat is urgent even when its closest approach is beyond the horizon.");
         }
         [Test]
         public void RelativeMotion_IsConsidered()

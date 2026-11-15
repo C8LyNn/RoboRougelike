@@ -21,6 +21,50 @@ public class MOV009IntegrationTests
         run=R1RunController.Instance;run.SelectVehicle(R3VehicleKind.Light);Assert.That(run.OpenSandboxGarage(),Is.True);
     }
     public static IEnumerator Seconds(float value){float end=Time.time+value;while(Time.time<end)yield return null;}
+    [UnityTest] public IEnumerator HigherTierSuspensionAppliesMorePhysicalSupport()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(3000);
+        for(int i=0;i<4;i++)
+        {
+            Assert.That(model.PurchaseToInventory(R3PartKind.Suspension),Is.True);
+            var part=model.Inventory.Last();
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(part.Id,c,default)==null);
+            Assert.That(model.Mount(part.Id,cell),Is.True);
+        }
+        var stronger=model.DeepCopy();foreach(var part in stronger.Parts.Where(p=>p.Kind==R3PartKind.Suspension))part.Tier=2;
+        var strongest=model.DeepCopy();foreach(var part in strongest.Parts.Where(p=>p.Kind==R3PartKind.Suspension))part.Tier=3;
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(120,-.5f,100);floor.transform.localScale=new Vector3(100,1,60);
+        var basic=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,.72f,100),Quaternion.identity);
+        var advanced=R3VehicleAssembly.Build(stronger,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(120,.72f,100),Quaternion.identity);
+        var elite=R3VehicleAssembly.Build(strongest,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(140,.72f,100),Quaternion.identity);
+        foreach(var rig in new[]{basic,advanced,elite})
+        {
+            foreach(var collider in rig.GetComponentsInChildren<Collider>())collider.enabled=false;
+            var body=rig.GetComponent<Rigidbody>();body.useGravity=false;body.constraints=RigidbodyConstraints.FreezePositionX|RigidbodyConstraints.FreezePositionZ|RigidbodyConstraints.FreezeRotation;
+        }
+        yield return null;Physics.SyncTransforms();
+        var normal=basic.GetComponent<ActiveSuspensionController>();var improved=advanced.GetComponent<ActiveSuspensionController>();
+        var strongestController=elite.GetComponent<ActiveSuspensionController>();
+        advanced.GetComponent<MOV009VehicleAdapter>().Configure(advanced.GetComponent<R3VehicleAssembly>());
+        advanced.GetComponent<Rigidbody>().useGravity=false;
+        Assert.That(improved.RegisteredModuleCount,Is.EqualTo(4));
+        var step=typeof(ActiveSuspensionController).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(step,Is.Not.Null);
+        foreach(var controller in new[]{normal,improved,strongestController})step.Invoke(controller,null);
+        Assert.That(normal.LastTotalLiftNewtons,Is.GreaterThan(0));
+        Assert.That(improved.LastTotalLiftNewtons,Is.EqualTo(normal.LastTotalLiftNewtons*2).Within(normal.LastTotalLiftNewtons*.05f));
+        Assert.That(strongestController.LastTotalLiftNewtons,Is.EqualTo(normal.LastTotalLiftNewtons*4).Within(normal.LastTotalLiftNewtons*.1f));
+        var previousMode=Physics.simulationMode;
+        try
+        {
+            Physics.simulationMode=SimulationMode.Script;Physics.Simulate(Time.fixedDeltaTime);
+            Assert.That(advanced.GetComponent<Rigidbody>().linearVelocity.y,Is.GreaterThan(basic.GetComponent<Rigidbody>().linearVelocity.y));
+            Assert.That(elite.GetComponent<Rigidbody>().linearVelocity.y,Is.GreaterThan(advanced.GetComponent<Rigidbody>().linearVelocity.y));
+        }
+        finally{Physics.simulationMode=previousMode;}
+        UnityEngine.Object.Destroy(basic.gameObject);UnityEngine.Object.Destroy(advanced.gameObject);UnityEngine.Object.Destroy(elite.gameObject);UnityEngine.Object.Destroy(floor);
+    }
     IEnumerator RangeWithSupports()
     {
         Assert.That(Enum.IsDefined(typeof(R3PartKind),MOV009ModelTests.Suspension),Is.True,"Missing real construction part category.");

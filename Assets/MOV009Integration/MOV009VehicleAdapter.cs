@@ -70,7 +70,8 @@ namespace RoboRougelike.MOV009Integration
                     module=point.GetComponent<ActiveSuspensionModule>();
                     if(module==null)module=point.gameObject.AddComponent<ActiveSuspensionModule>();
                 }
-                module.ConfigureSpring(RideHeightMeters,StiffnessPerModule,DampingPerModule,MaximumForcePerModule);
+                int units=R3VehicleModel.TierEffectUnits(part.Tier);
+                module.ConfigureSpring(RideHeightMeters,StiffnessPerModule*units,DampingPerModule*Mathf.Sqrt(units),MaximumForcePerModule*units);
                 var binding=part.GetComponent<MOV009PartBinding>();
                 if(binding==null)binding=part.gameObject.AddComponent<MOV009PartBinding>();
                 binding.Configure(part,module);

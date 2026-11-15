@@ -8,10 +8,16 @@ namespace RoboRougelike.WPN001Shotgun.Tests.EditMode
         [Test] public void DefaultPelletCountIsEight() => Assert.AreEqual(8, new ShotgunConfig().Snapshot().PelletCount);
         [Test] public void PelletCountClampedAt64() => Assert.AreEqual(64, new ShotgunConfig { pelletCount = 999 }.Snapshot().PelletCount);
         [Test] public void PelletCountClampedAtOne() => Assert.AreEqual(1, new ShotgunConfig { pelletCount = -10 }.Snapshot().PelletCount);
-        [Test] public void ConeAngleClampedTo90() => Assert.AreEqual(90f, new ShotgunConfig { fullConeAngleDegrees = 180f }.Snapshot().FullConeAngleDegrees);
+        [TestCase(120f)][TestCase(180f)][TestCase(360f)]
+        public void WideConeIsPreserved(float angle) => Assert.AreEqual(angle, new ShotgunConfig { fullConeAngleDegrees = angle }.Snapshot().FullConeAngleDegrees);
+        [Test] public void ConeClampsToFullSphere() => Assert.AreEqual(360f, new ShotgunConfig { fullConeAngleDegrees = 900f }.Snapshot().FullConeAngleDegrees);
+        [Test] public void NonFiniteConeUsesDefault() => Assert.AreEqual(14f, new ShotgunConfig { fullConeAngleDegrees = float.NaN }.Snapshot().FullConeAngleDegrees);
         [Test] public void NonFiniteDamageFallsBack() => Assert.AreEqual(9f, new ShotgunConfig { damagePerPellet = float.NaN }.Snapshot().DamagePerPellet);
+        [Test] public void ProjectileSpeedAboveOldCeilingIsPreserved() => Assert.AreEqual(500f, new ShotgunConfig { projectileSpeed = 500f }.Snapshot().ProjectileSpeed);
+        [Test] public void NonFiniteProjectileSpeedFallsBack() => Assert.AreEqual(58f, new ShotgunConfig { projectileSpeed = float.PositiveInfinity }.Snapshot().ProjectileSpeed);
+        [Test] public void NegativeProjectileSpeedUsesMinimum() => Assert.AreEqual(.1f, new ShotgunConfig { projectileSpeed = -1f }.Snapshot().ProjectileSpeed);
         [Test] public void NegativeDamageClampedToZero() => Assert.AreEqual(0f, new ShotgunConfig { damagePerPellet = -2f }.Snapshot().DamagePerPellet);
-        [Test] public void CooldownNeverZero() => Assert.AreEqual(0.01f, new ShotgunConfig { cooldownSeconds = 0f }.Snapshot().CooldownSeconds);
+        [Test] public void CooldownMayBeZero() => Assert.AreEqual(0f, new ShotgunConfig { cooldownSeconds = 0f }.Snapshot().CooldownSeconds);
         [Test] public void RecoilImpulseClampedToTen() => Assert.AreEqual(10f, new ShotgunConfig { recoilImpulse = 50f }.Snapshot().RecoilImpulse);
         [Test] public void VelocityInheritanceClampedToOne() => Assert.AreEqual(1f, new ShotgunConfig { inheritedVelocityFactor = 20f }.Snapshot().InheritedVelocityFactor);
         [Test] public void NegativeRangeClampedToMinimum() => Assert.AreEqual(0.1f, new ShotgunConfig { maxTravelDistance = -1f }.Snapshot().MaxTravelDistance);
@@ -63,11 +69,11 @@ namespace RoboRougelike.WPN001Shotgun.Tests.EditMode
             Assert.AreEqual(0u, gate.SuccessfulVolleys);
             Assert.IsTrue(gate.CanFire(0f));
         }
-        [Test] public void GateClampsZeroCooldown()
+        [Test] public void GateLimitsZeroCooldownToOneVolleyPerClockValue()
         {
             var gate = new ShotgunFireGate(); gate.RegisterSuccessfulVolley(0f, 0f);
-            Assert.IsFalse(gate.CanFire(0.001f));
-            Assert.IsTrue(gate.CanFire(0.02f));
+            Assert.IsFalse(gate.CanFire(0f));
+            Assert.IsTrue(gate.CanFire(0.001f));
         }
     }
 }

@@ -23,6 +23,7 @@ namespace RoboRougelike.R1
         private static Rect PortraitRewardLootButton(int index)
         {var card=PortraitRewardLootCard(index);return new Rect(card.x+248,card.y+15,96,52);}
         private static Rect PortraitRewardPager()=>new Rect(24,792,720,44);
+        private static Rect PortraitRewardRerollRect()=>new Rect(24,792,350,44);
         private static Rect PortraitRewardSummary()=>new Rect(24,840,720,72);
         private static Rect PortraitRewardConfirm()=>new Rect(24,930,720,64);
         private static Rect PortraitRewardInventoryCard(int index)=>new Rect(24,170+index*120,720,108);
@@ -37,11 +38,12 @@ namespace RoboRougelike.R1
         private void DrawPortraitSalvage(R1RunController run)
         {
             var ledger=run.Salvage;TrackRewardLedger(ledger);
+            if(rewardMissedOpen){DrawMissedLoot(run,true);return;}
             if(rewardInventoryOpen){DrawPortraitRewardInventory(run);return;}
             GUI.Label(new Rect(24,20,720,42),"ZWYCIĘSTWO",title);
             GUI.Label(new Rect(24,68,720,28),$"{(run.LastActivityWasReactor?"Reaktor obroniony":$"Starcie {run.Progress.CompletedEncounters}/{run.Progress.TotalEncounters}")} • +{run.LastScrapReward} Z"+
                 (string.IsNullOrEmpty(run.TechnologyMessage)?" • wybierz nagrody":run.Technology?.Error!=null?" • problem zapisu technologii":" • nowa technologia"),body);
-            GUI.Label(new Rect(24,100,720,28),"BONUS • [1 / 2 / 3]",heading);
+            GUI.Label(new Rect(24,100,720,28),"BONUS • ["+RewardBindings(RewardBonusActions)+"]",heading);
             var offers=run.Progress.Offers.ToArray();
             for(int i=0;i<offers.Length;i++)
             {
@@ -49,44 +51,52 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(card.x+12,card.y+5,530,24),upgrade.Title,body);
                 GUI.Label(new Rect(card.x+12,card.y+30,530,60),upgrade.Description,small);
                 bool chosen=selectedBonus==i;GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
-                if(GUI.Button(new Rect(card.x+555,card.y+22,150,52),chosen?"Wybrano ✓":$"Wybierz [{i+1}]",compactButton))PortraitRewardSelectBonus(i);
+                if(GUI.Button(new Rect(card.x+555,card.y+22,150,52),chosen?"Wybrano ✓":$"Wybierz [{RewardBinding(RewardBonusActions[i])}]",compactButton))PortraitRewardSelectBonus(i);
                 GUI.backgroundColor=Color.white;
             }
             if(offers.Length==0)GUI.Label(new Rect(36,145,680,50),"Brak propozycji modułów bonusowych.",small);
-            GUI.Label(new Rect(24,442,720,30),"ZESTAW • [Q / W / E]",heading);
-            for(int i=0;i<rewardBaskets.Count;i++)
+            GUI.Label(new Rect(24,442,340,30),"ZESTAW • ["+RewardBindings(RewardBasketActions)+"]",heading);
+            DrawBasketPager(new Rect(400,442,344,30));
+            for(int i=0;i<3&&basketPage*3+i<rewardBaskets.Count;i++)
             {
-                var basket=rewardBaskets[i];var card=PortraitRewardBasketCard(i);var info=PortraitRewardBasketInfo(i);Panel(card);
+                int basketIndex=basketPage*3+i;
+                var basket=rewardBaskets[basketIndex];var card=PortraitRewardBasketCard(i);var info=PortraitRewardBasketInfo(i);Panel(card);
                 GUI.contentColor=BasketColor(basket);
                 GUI.Label(new Rect(info.x,info.y,info.width,24),RewardBasketHeading(basket),small);
                 GUI.contentColor=Color.white;
-                GUI.Label(new Rect(info.x,card.y+31,info.width,58),RewardBasketContents(basket.Items)+"\nOdbiór: 100% HP",small);
-                bool chosen=selectedBasket==i;
+                GUI.Label(new Rect(info.x,card.y+31,info.width,58),RewardBasketContentsForModel(basket.Items,run.VehicleModel)+"\nOdbiór: 100% HP",small);
+                bool chosen=selectedBasket==basketIndex;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
-                string key=i<3?"QWE"[i].ToString():null;
-                if(GUI.Button(PortraitRewardBasketButton(i),chosen?"Wybrano ✓":key!=null?$"Wybierz [{key}]":"Wybierz",compactButton))ChooseRewardBasket(i);
+                string key=i<3?RewardBinding(RewardBasketActions[i]):null;
+                if(GUI.Button(PortraitRewardBasketButton(i),chosen?"Wybrano ✓":key!=null?$"Wybierz [{key}]":"Wybierz",compactButton))ChooseRewardBasket(basketIndex);
                 GUI.backgroundColor=Color.white;
             }
             if(rewardBaskets.Count==0)GUI.Label(new Rect(36,495,680,50),"Brak części do odzyskania.",small);
             var pager=PortraitRewardPager();
-            if(GUI.Button(new Rect(pager.x+370,pager.y,350,44),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity}",compactButton))rewardInventoryOpen=true;
-            int missing=RewardInventoryMissingSlots(run.VehicleModel.Inventory.Count,lootSelection.Count);
+            DrawRerollRewardButton(run,PortraitRewardRerollRect());
+            bool hasMissed=ledger.MissedPhysicalItems.Any();
+            if(GUI.Button(new Rect(pager.x+370,pager.y,hasMissed?170:350,44),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity}",compactButton))rewardInventoryOpen=true;
+            if(hasMissed)DrawMissedLootButton(run,new Rect(pager.x+550,pager.y,170,44));
+            int rewardPartCount=SelectedRewardPartCount(run);
+            int missing=RewardInventoryMissingSlots(run.VehicleModel.Inventory.Count,rewardPartCount);
             bool room=missing==0;
             GUI.Label(PortraitRewardSummary(),
-                $"Bonus: {(selectedBonus>=0?"wybrany":"wymagany")} • Zestaw: {(selectedBasket>=0?lootSelection.Count+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n"+
+                $"Bonus: {(selectedBonus>=0?"wybrany":"wymagany")} • Zestaw: {RewardBasketSelectionText(selectedBasket,rewardBaskets.Count,basketPage,rewardPartCount)}\n"+
                 $"Niewybrane części → +{run.VehicleModel.PreviewAward(ledger.PreviewScrap(run.VehicleModel,lootSelection))} Z. Bonus jest nieaktywny do montażu.\n"+
                 (!room?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. Otwórz magazyn, aby je zwolnić.":rewardClaimFeedback??""),small);
-            GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count);
-            if(GUI.Button(PortraitRewardConfirm(),RewardActionCaption(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count),button))PortraitRewardConfirm(run);
+            GUI.enabled=rewardBasketRefreshFrame!=Time.frameCount&&RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount);
+            if(GUI.Button(PortraitRewardConfirm(),RewardActionCaption(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount),button))PortraitRewardConfirm(run);
             GUI.enabled=true;
+            TryRewardMouse(run,Event.current);
         }
 
         private void DrawPortraitRewardInventory(R1RunController run)
         {
             var model=run.VehicleModel;
             GUI.Label(new Rect(24,20,720,42),"MAGAZYN NAGRÓD",title);
-            int missing=RewardInventoryMissingSlots(model.Inventory.Count,lootSelection.Count);
-            GUI.Label(new Rect(24,70,720,84),$"Zajęte: {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • Nagrody: {lootSelection.Count+1} miejsc.\n"+
+            int rewardPartCount=SelectedRewardPartCount(run);
+            int missing=RewardInventoryMissingSlots(model.Inventory.Count,rewardPartCount);
+            GUI.Label(new Rect(24,70,720,84),$"Zajęte: {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • Nagrody: {(long)rewardPartCount+1} miejsc.\n"+
                 (missing>0?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. ":"Obecny wybór się mieści. ")+"Rozmontowanie wymaga potwierdzenia.",body);
             var items=RewardInventoryItems(model,rewardInventoryDamagedOnly);int pages=Mathf.Max(1,Mathf.CeilToInt(items.Length/5f));
             rewardInventoryPage=Mathf.Clamp(rewardInventoryPage,0,pages-1);
@@ -97,7 +107,7 @@ namespace RoboRougelike.R1
                 var item=visible[i];var card=PortraitRewardInventoryCard(i);var detail=PortraitRewardInventoryDetails(i);Panel(card);
                 GUI.Label(new Rect(detail.x,card.y+5,detail.width,23),R4WeaponDefinition.PartName(item),body);
                 GUI.Label(new Rect(detail.x,card.y+30,detail.width,28),$"Źródło: {item.Source}",small);
-                GUI.Label(new Rect(detail.x,card.y+59,detail.width,20),$"HP {item.Health*100:0}%",small);
+                GUI.Label(new Rect(detail.x,card.y+59,detail.width,20),$"HP {PartHealthText(item.Health)}",small);
                 string ammo=SalvageAmmoLabel(item);
                 GUI.Label(new Rect(detail.x,card.y+80,detail.width,21),RewardInventoryRepairText(model,item)+(ammo==null?"":" • "+ammo),small);
                 if(rewardDismantleConfirmation==item.Id)

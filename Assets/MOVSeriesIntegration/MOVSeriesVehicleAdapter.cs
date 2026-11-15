@@ -24,7 +24,6 @@ namespace RoboRougelike.MOVSeries
             // Compound wheel contacts amplify Coulomb stiction. The drive already models
             // finite rolling/lateral resistance; retain a small physical contact friction.
             drive.RefreshMass();drive.EnableSuspensionPhysics(.05f);ConfigureDevices();ConfigureSpecialDevices();ConfigureDrives();SyncDevices();SyncDrives();
-            gameObject.AddComponent<MOVSeriesInput>().Bind(this);
         }
         internal bool Available(R3MountedPart part)=>StructurallyAvailable(part)&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject);
         internal bool StructurallyAvailable(R3MountedPart part)=>part!=null&&part.Operational&&
@@ -35,12 +34,13 @@ namespace RoboRougelike.MOVSeries
             if(assembly==null)return false;structure.EvaluateStructure();drive.RefreshMass();SyncDevices();return CanControl;
         }
         public static bool IsTerrain(Collider c)=>c!=null&&c.attachedRigidbody==null&&
-            c.GetComponentInParent<P12PipelineSafeDamageable>()==null&&c.GetComponentInParent<R3Debris>()==null;
+            (c.GetComponentInParent<P12PipelineSafeDamageable>()==null||c.GetComponentInParent<R3DeployableSurface>()!=null)&&
+            c.GetComponentInParent<R3Debris>()==null;
         void FixedUpdate()
         {
             if(assembly==null)return;
             if(graphDirty){graphDirty=false;structure.EvaluateStructure();}
-            drive.RefreshMass();SyncDevices();SyncDrives();
+            drive.RefreshMass();SyncDevices();SyncDrives();RefreshGrappleTuning();
             if(!CanControl)CancelActions();
         }
         public void CancelActions()

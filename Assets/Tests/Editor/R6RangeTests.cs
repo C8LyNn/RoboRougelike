@@ -75,23 +75,26 @@ public class R6RangeTests
             progress=false;
             foreach(var cell in candidates)
             {
-                if(model.Parts.Count==180)break;
+                if(model.ConstructionBudgetUsed+model.Economy.Construction.BlockCost>model.ConstructionBudgetLimit)break;
                 if(model.At(cell)!=null)continue;
                 if(run.GarageBuy(cell,R3PartKind.Armor)){progress=true;yield return null;}
             }
-        }while(progress&&model.Parts.Count<180);
-        Assert.That(model.Parts.Count,Is.EqualTo(180));Assert.That(model.CanDeploy,Is.True);
-        Assert.That(model.PlacementError(new Vector3Int(0,5,0),R3PartKind.Armor),Is.EqualTo("Limit 180 pól części."));
+        }while(progress&&model.ConstructionBudgetUsed+model.Economy.Construction.BlockCost<=model.ConstructionBudgetLimit);
+        Assert.That(model.ConstructionBudgetUsed,Is.LessThanOrEqualTo(model.ConstructionBudgetLimit));
+        Assert.That(model.ConstructionBudgetLimit-model.ConstructionBudgetUsed,Is.LessThan(model.Economy.Construction.BlockCost));
+        Assert.That(model.CanDeploy,Is.True);
+        Assert.That(model.PlacementError(new Vector3Int(0,5,0),R3PartKind.Armor),Does.Contain("Budżet konstrukcji"));
+        int parts=model.Parts.Count;
         int budget=model.Scrap;
         Assert.That(run.EnterTestRange(),Is.True,"Maximum construction must be deployable to the test range.");while(run.Transitioning)yield return null;
-        Assert.That(run.Player.GetComponent<R3VehicleAssembly>().Parts.Count,Is.EqualTo(180));
+        Assert.That(run.Player.GetComponent<R3VehicleAssembly>().Parts.Count,Is.EqualTo(parts));
         var target=GameObject.Find("Poligon R6").GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().First(p=>p.name=="Rdzeń celu"&&Mathf.Abs(p.transform.position.x)<.1f);
         var gun=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Gun);gun.Muzzle.LookAt(target.transform.position);
         run.Player.Controller.FireFrom(gun.Muzzle,gun.Weapon,gun.Id);
         float end=Time.time+3;while(Time.time<end&&target.CurrentHp==target.MaxHp)yield return null;
         Assert.That(target.CurrentHp,Is.LessThan(target.MaxHp),"Maximum-size construction must use a real projectile to damage a range target.");
         run.ReturnFromTestRange();while(run.Transitioning)yield return null;
-        Assert.That(run.VehicleModel,Is.SameAs(model));Assert.That(model.Scrap,Is.EqualTo(budget));Assert.That(model.Parts.Count,Is.EqualTo(180));
+        Assert.That(run.VehicleModel,Is.SameAs(model));Assert.That(model.Scrap,Is.EqualTo(budget));Assert.That(model.Parts.Count,Is.EqualTo(parts));
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

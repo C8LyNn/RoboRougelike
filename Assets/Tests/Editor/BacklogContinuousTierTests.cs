@@ -57,6 +57,50 @@ public sealed class BacklogContinuousTierPhysicsTests
         Assert.That(bank.Current,Is.EqualTo(energyBefore-.72f).Within(.01));
         yield return null;
     }
+    [UnityTest] public IEnumerator BeamHitsHostileDomeBeforeProtectedTarget()
+    {
+        var gun=Build(R4WeaponKind.BeamCutter,out var bank);var binding=gun.GetComponent<RRLBeamBinding>();
+        var item=GameObject.CreatePrimitive(PrimitiveType.Cube);item.transform.position=gun.Muzzle.position+gun.Muzzle.forward*8;
+        item.transform.localScale=new Vector3(3,3,.5f);var target=item.AddComponent<P12PipelineSafeDamageable>();target.Configure(500,false);
+        var dome=new GameObject("shield beam fixture");dome.transform.position=gun.Muzzle.position+gun.Muzzle.forward*5+gun.Muzzle.up;
+        dome.AddComponent<Rigidbody>().isKinematic=true;dome.AddComponent<SphereCollider>().isTrigger=true;
+        var hp=dome.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);dome.AddComponent<R3ShieldDome>().Configure(2,2);
+        Physics.SyncTransforms();binding.Module.SetTriggerHeld(true);var step=binding.Module.ManualFixedStep(.1f);
+        Assert.That(step.Status.ToString(),Is.EqualTo("Firing"));Assert.That(hp.CurrentHp,Is.LessThan(500));
+        Assert.That(target.CurrentHp,Is.EqualTo(500),"The beam must not damage the protected target");
+        Object.Destroy(dome);Object.Destroy(item);yield return null;
+    }
+    [UnityTest] public IEnumerator BeamDamagesDomeEvenWithoutTargetBehindIt()
+    {
+        var gun=Build(R4WeaponKind.BeamCutter,out var bank);var binding=gun.GetComponent<RRLBeamBinding>();
+        var dome=new GameObject("shield beam empty fixture");dome.transform.position=gun.Muzzle.position+gun.Muzzle.forward*5+gun.Muzzle.up;
+        dome.AddComponent<Rigidbody>().isKinematic=true;dome.AddComponent<SphereCollider>().isTrigger=true;
+        var hp=dome.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);dome.AddComponent<R3ShieldDome>().Configure(2,2);
+        Physics.SyncTransforms();binding.SetTriggerHeld(true);
+        float deadline=Time.realtimeSinceStartup+5;while(Time.realtimeSinceStartup<deadline&&hp.CurrentHp>=500)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(hp.CurrentHp,Is.LessThan(500),"A beam must hit the dome even when it otherwise hits nothing");
+        binding.SetTriggerHeld(false);Object.Destroy(dome);
+    }
+    [UnityTest] public IEnumerator ExtremeFiniteBeamBonusDamagesDomeWithoutTargetBehindIt()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.BeamCutter;state.Tier=3;
+        var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="beam-large";bonus.Effect=R1UpgradeEffect.Damage;bonus.Amount=float.MaxValue;
+        Assert.That(model.ReceiveBonuses(new[]{bonus}),Is.True);string id=model.Inventory.Single(p=>p.UpgradeId==bonus.Id).Id;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(id,c,default)==null);
+        Assert.That(model.Mount(id,cell),Is.True);
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().useGravity=false;
+        var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);var binding=gun.GetComponent<RRLBeamBinding>();
+        var dome=new GameObject("extreme shield beam fixture");dome.transform.position=gun.Muzzle.position+gun.Muzzle.forward*5+gun.Muzzle.up;
+        dome.AddComponent<Rigidbody>().isKinematic=true;dome.AddComponent<SphereCollider>().isTrigger=true;
+        var hp=dome.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);dome.AddComponent<R3ShieldDome>().Configure(2,2);
+        Physics.SyncTransforms();binding.SetTriggerHeld(true);
+        float deadline=Time.realtimeSinceStartup+5;while(Time.realtimeSinceStartup<deadline&&!hp.IsDead)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(hp.IsDead,Is.True,"The no-target shield path must retain finite extreme damage.");
+        binding.SetTriggerHeld(false);Object.Destroy(dome);Object.Destroy(vehicle.gameObject);Object.Destroy(bonus);
+    }
     [UnityTest] public IEnumerator SawTierTwoScalesRealDamageSinkAndMotorEnergySetting()
     {
         var gun=Build(R4WeaponKind.RotarySaw,out var bank);var binding=gun.GetComponent<RRLSawBinding>();

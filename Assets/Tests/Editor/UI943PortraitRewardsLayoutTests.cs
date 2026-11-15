@@ -36,6 +36,79 @@ public sealed class UI943PortraitRewardsLayoutTests
         Assert.That((bool)Method("RewardSelectionReady").Invoke(null,new object[]{0,3,-1,1,0,0}),Is.False);
         Assert.That((string)Method("RewardConfirmCaption").Invoke(null,new object[]{1}),Does.Contain("oba"));
     }
+    [Test] public void RewardContentsShowActualConfiguredBundleQuantity()
+    {
+        var model=new R3VehicleModel(new R3VehicleDesign());model.Economy.DriveGrantQuantity=3;
+        var wheel=new R4SalvageItem(new R3PartState(Vector3Int.zero,R3PartKind.Wheel),1);
+        var label=(string)Method("RewardBasketContentsForModel").Invoke(null,new object[]{new[]{wheel},model});
+        Assert.That(label,Does.Contain("×3"));
+    }
+    [TestCase(-1,0,0,0,"brak łupów")]
+    [TestCase(-1,6,0,0,"wymagany")]
+    [TestCase(1,6,0,3,"3 części")]
+    [TestCase(4,6,0,2,"2 części • str. 2")]
+    [TestCase(1,6,1,3,"3 części • str. 1")]
+    [TestCase(6,6,0,0,"wymagany")]
+    public void SelectionSummaryIdentifiesAnOffscreenBasket(int selected,int count,int page,int parts,string expected)
+    {
+        var text=(string)Method("RewardBasketSelectionText").Invoke(null,new object[]{selected,count,page,parts});
+        Assert.That(text,Is.EqualTo(expected));
+    }
+    [Test] public void RerollButtonsFitAlongsideInventoryAndBasketCards()
+    {
+        var portrait=RectOf("PortraitRewardRerollRect");var pager=RectOf("PortraitRewardPager");
+        Assert.That(portrait.xMin,Is.GreaterThanOrEqualTo(pager.xMin));Assert.That(portrait.xMax,Is.LessThanOrEqualTo(pager.xMax));
+        Assert.That(portrait.Overlaps(new Rect(pager.x+370,pager.y,350,44)),Is.False);
+        for(int i=0;i<3;i++)Assert.That(portrait.Overlaps(RectOf("PortraitRewardBasketCard",i)),Is.False);
+        var landscape=RectOf("RewardRerollRect");Assert.That(landscape.Overlaps(new Rect(850,556,375,35)),Is.False);
+    }
+    [Test] public void ReorderingExistingRewardBasketsIsNotANewOffer()
+    {
+        var ledger=new R4SalvageLedger(3);
+        Assert.That(ledger.Record("a",new[]{new R4SalvageItem("gun","test",R3PartKind.Gun,R4WeaponKind.Basic,1)},R3EnemyArchetype.Scout),Is.True);
+        Assert.That(ledger.Record("b",new[]{new R4SalvageItem("wheel","test",R3PartKind.Wheel,R4WeaponKind.Basic,1)},R3EnemyArchetype.Bruiser),Is.True);
+        var offers=ledger.CreateBasketOffers(7,0);Assert.That(offers.Count,Is.EqualTo(3));
+        var reordered=offers.Skip(1).Concat(offers.Take(1)).ToArray();
+        Assert.That((bool)Method("SameRewardBaskets").Invoke(null,new object[]{offers,reordered}),Is.True);
+    }
+    [Test] public void DifferentDuplicateCountsDoNotCreateANewChoice()
+    {
+        var ledger=new R4SalvageLedger(3);
+        Assert.That(ledger.Record("a",new[]{new R4SalvageItem("gun","test",R3PartKind.Gun,R4WeaponKind.Basic,1)},R3EnemyArchetype.Scout),Is.True);
+        Assert.That(ledger.Record("b",new[]{new R4SalvageItem("wheel","test",R3PartKind.Wheel,R4WeaponKind.Basic,1)},R3EnemyArchetype.Bruiser),Is.True);
+        var unique=ledger.CreateBasketOffers(7,0).GroupBy(b=>b.Archetype).Select(g=>g.First()).ToArray();
+        Assert.That(unique.Length,Is.EqualTo(2));
+        var a=new[]{unique[0],unique[0],unique[1]};var b=new[]{unique[0],unique[1],unique[1]};
+        Assert.That((bool)Method("SameRewardBaskets").Invoke(null,new object[]{a,b}),Is.True,"Changing repetitions adds no selectable basket.");
+        Assert.That((bool)Method("SameRewardBaskets").Invoke(null,new object[]{a,new[]{unique[0],unique[0]}}),Is.False,"A missing choice still changes the set.");
+    }
+    [Test] public void SevenCandidatesFindAnAlternativeWheneverOneExistsInSmallWrecks()
+    {
+        for(int size=1;size<=8;size++)
+        {
+            var ledger=new R4SalvageLedger(3);
+            var items=Enumerable.Range(0,size).Select(i=>new R4SalvageItem("candidate-"+i,"fixture",R3PartKind.Gun,R4WeaponKind.Basic,1)).ToArray();
+            Assert.That(ledger.Record("enemy",items,R3EnemyArchetype.Scout),Is.True);
+            for(int stage=0;stage<=5;stage++)
+            {
+                var counts=Enumerable.Range(30+stage*5,31).Select(percent=>System.Math.Min(3,System.Math.Max(1,(size*percent+99)/100))).Distinct().ToArray();
+                var possible=new HashSet<string>();
+                for(int mask=1;mask<(1<<size);mask++)
+                {
+                    var ids=items.Where((item,index)=>(mask&(1<<index))!=0).Select(item=>item.Id).OrderBy(id=>id).ToArray();
+                    if(counts.Contains(ids.Length))possible.Add(string.Join(",",ids));
+                }
+                string Key(R4SalvageBasket basket)=>string.Join(",",basket.Items.Select(item=>item.Id).OrderBy(id=>id));
+                for(int seed=0;seed<32;seed++)
+                {
+                    var visible=ledger.CreateBasketOffers(seed,stage,3).Select(Key).ToHashSet();
+                    bool exists=possible.Any(key=>!visible.Contains(key));
+                    bool found=ledger.CreateBasketOffers(seed,stage,7).Any(basket=>!visible.Contains(Key(basket)));
+                    Assert.That(found,Is.EqualTo(exists),$"size={size} stage={stage} seed={seed}");
+                }
+            }
+        }
+    }
     [Test] public void DamagedRewardInventoryShowsWorstPartsFirstWithoutChangingInventory()
     {
         var model=new R3VehicleModel(new R3VehicleDesign());
@@ -104,14 +177,25 @@ public sealed class UI943PortraitRewardsLayoutTests
         Assert.That(text,Does.Contain("Obrażenia").And.Contain("Mobilność"));
         Assert.That(text,Does.Not.Contain("×2"));
     }
+    [Test] public void BasketSummaryKeepsDifferentBonusScopesAndOperationsSeparate()
+    {
+        var global=new R3PartState(Vector3Int.zero,R3PartKind.BonusModule,1){UpgradeId="same",UpgradeTitle="Moduł",UpgradeEffect=R1UpgradeEffect.Damage,UpgradeAmount=.2f};
+        var heavy=global.Copy();heavy.UpgradeScope=R1BonusScope.HeavyWeapon;
+        var more=global.Copy();more.UpgradeOperation=R1ModifierOperation.More;
+        var text=(string)Method("RewardBasketContents").Invoke(null,new object[]{new[]{new R4SalvageItem(global,1),new R4SalvageItem(heavy,1),new R4SalvageItem(more,1)}});
+        Assert.That(text,Does.Contain("ciężkiego działa").And.Contain("osobny mnożnik"));
+        Assert.That(text,Does.Not.Contain("×3"));
+    }
     [Test] public void InstanceDescriptionUsesActualTierStrength()
     {
         var item=new R3PartState(Vector3Int.zero,R3PartKind.BonusModule,1){Tier=2,UpgradeEffect=R1UpgradeEffect.Damage,UpgradeAmount=.2f};
         string Text()=>(string)Method("BonusInstanceText").Invoke(null,new object[]{item});
-        Assert.That(Text(),Does.Contain("44%"));
-        item.UpgradeEffect=R1UpgradeEffect.Reload;Assert.That(Text(),Does.Contain("36%"));
+        Assert.That(Text(),Does.Contain("40%"));
+        item.UpgradeEffect=R1UpgradeEffect.Mobility;Assert.That(Text(),Does.Contain("40%"));
+        item.UpgradeEffect=R1UpgradeEffect.Hull;Assert.That(Text(),Does.Contain("40%"));
+        item.UpgradeEffect=R1UpgradeEffect.Reload;Assert.That(Text(),Does.Contain("40%"));
         item.UpgradeEffect=R1UpgradeEffect.Repair;Assert.That(Text(),Does.Contain("5%"));
-        item.Tier=3;Assert.That(Text(),Does.Contain("8%"),"Repair bonus follows its actual cap.");
+        item.Tier=3;Assert.That(Text(),Does.Contain("10%"),"Four repair contributions each provide 2.5% per second.");
     }
     [Test] public void ActualPortraitBasketCardsFitWithoutCoveringTheirControls()
     {

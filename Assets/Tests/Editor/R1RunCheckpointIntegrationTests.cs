@@ -21,6 +21,16 @@ public sealed class R1RunCheckpointIntegrationTests
         for(int i=0;i<300&&R1RunController.Instance?.Progress==null;i++)yield return null;
         run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
     }
+    [UnityTest] public IEnumerator LargeWalletAndSaturatedRunSummarySurviveRealSaveAndLoad()
+    {
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);Assert.That(run.PrepareUnifiedRun(),Is.True);yield return null;
+        run.VehicleModel.Award(150000);int balance=run.VehicleModel.Scrap;Assert.That(balance,Is.GreaterThan(100000));
+        typeof(R1RunController).GetProperty("EarnedScrap").GetSetMethod(true).Invoke(run,new object[]{int.MaxValue});
+        Assert.That(run.SaveRunCheckpoint(),Is.True,run.RunSaveMessage);var previous=run;run.RestartRun();
+        for(int i=0;i<300&&(R1RunController.Instance==previous||R1RunController.Instance?.Progress==null);i++)yield return null;
+        run=R1RunController.Instance;Assert.That(run.LoadRunCheckpoint(),Is.True,run.RunSaveMessage);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(balance));Assert.That(run.EarnedScrap,Is.EqualTo(int.MaxValue));
+    }
     [UnityTest] public IEnumerator MissingGarageCameraRejectsLoadWithoutPartialRun()
     {
         var savedProgress=new R1RunProgress(6,true);Assert.That(savedProgress.Start()&&savedProgress.PrepareGarage(),Is.True);
@@ -112,6 +122,66 @@ public sealed class R1RunCheckpointIntegrationTests
         Assert.That(run.SelectedVehicle,Is.EqualTo(R3VehicleKind.Light));Assert.That(run.SelectedVehicleVariant,Is.EqualTo(3));
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(200));
         Assert.That(run.VehicleModel.Design.Name,Is.EqualTo(R3VehicleCatalog.Create(R3VehicleKind.Light,3).Name));
+    }
+    [UnityTest] public IEnumerator NewWeaponBonusesKeepIdentityAndEffectsThroughRealRunSaveAndLoad()
+    {
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);Assert.That(run.PrepareUnifiedRun(),Is.True);yield return null;
+        string[] ids={"damage_heavy_weapon","damage_shotgun_weapon","damage_railgun_weapon","damage_rocket_weapon",
+            "damage_beam_weapon","damage_saw_weapon","damage_aura_weapon"};
+        var definitions=ids.Select(id=>run.Definition.Upgrades.Single(upgrade=>upgrade!=null&&upgrade.Id==id)).ToArray();
+        Assert.That(run.VehicleModel.ReceiveBonuses(definitions),Is.True);
+        var mounted=run.VehicleModel.Inventory.Single(p=>p.UpgradeId==ids[0]);string mountedId=mounted.Id;
+        var candidate=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>run.VehicleModel.OwnedPlacementError(mountedId,c,default)==null);
+        Assert.That(run.GarageMount(mountedId,candidate),Is.True);yield return null;
+        var damaged=run.VehicleModel.Inventory.Single(p=>p.UpgradeId==ids[1]);damaged.Tier=2;damaged.Health=.37f;
+        var expected=run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory).Where(p=>ids.Contains(p.UpgradeId))
+            .ToDictionary(p=>p.Id,p=>(p.UpgradeId,p.UpgradeScope,p.Tier,p.Health));
+        Assert.That(expected.Count,Is.EqualTo(ids.Length));
+        Assert.That(run.SaveRunCheckpoint(),Is.True,run.RunSaveMessage);
+        var previous=run;run.RestartRun();
+        for(int i=0;i<300&&(R1RunController.Instance==previous||R1RunController.Instance?.Progress==null);i++)yield return null;
+        run=R1RunController.Instance;Assert.That(run.LoadRunCheckpoint(),Is.True,run.RunSaveMessage);
+        var actual=run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory).Where(p=>ids.Contains(p.UpgradeId)).ToArray();
+        Assert.That(actual.Length,Is.EqualTo(ids.Length));
+        foreach(var part in actual)
+        {
+            Assert.That(expected.TryGetValue(part.Id,out var original),Is.True);
+            Assert.That(part.UpgradeId,Is.EqualTo(original.UpgradeId));Assert.That(part.UpgradeScope,Is.EqualTo(original.UpgradeScope));
+            Assert.That(part.Tier,Is.EqualTo(original.Tier));Assert.That(part.Health,Is.EqualTo(original.Health).Within(.001));
+        }
+        Assert.That(run.VehicleModel.Parts.Any(p=>p.Id==mountedId),Is.True);
+        Assert.That(run.Player.GetComponent<R3MountedBonusEffects>().HeavyDamageMultiplier,Is.EqualTo(1.3f).Within(.001));
+    }
+    [UnityTest] public IEnumerator NewWeaponRewardCanBeClaimedMountedSavedAndRestoredAfterEncounter()
+    {
+        var definition=run.Definition;var original=definition.Upgrades;
+        var choices=new[]{"damage_heavy_weapon","damage_shotgun_weapon","damage_beam_weapon"};
+        try
+        {
+            definition.Upgrades=choices.Select(id=>original.Single(item=>item!=null&&item.Id==id)).ToArray();
+            Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);Assert.That(run.PrepareUnifiedRun(),Is.True);yield return null;
+            Assert.That(run.ChooseLD02Arena(),Is.True);while(run.Transitioning)yield return null;
+            run.Encounter.SetCombatActive(false);
+            foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+            for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+            Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+            int index=run.Progress.Offers.ToList().FindIndex(item=>item.Id=="damage_heavy_weapon");Assert.That(index,Is.GreaterThanOrEqualTo(0));
+            Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{index}),Is.True);yield return null;
+            var item=run.VehicleModel.Inventory.Single(p=>p.UpgradeId=="damage_heavy_weapon");string itemId=item.Id;
+            var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>run.VehicleModel.OwnedPlacementError(itemId,c,default)==null);
+            Assert.That(run.GarageMount(itemId,cell),Is.True);yield return null;
+            Assert.That(run.Player.GetComponent<R3MountedBonusEffects>().HeavyDamageMultiplier,Is.EqualTo(1.3f).Within(.001));
+            Assert.That(run.SaveRunCheckpoint(),Is.True,run.RunSaveMessage);
+            var previous=run;run.RestartRun();
+            for(int i=0;i<300&&(R1RunController.Instance==previous||R1RunController.Instance?.Progress==null);i++)yield return null;
+            run=R1RunController.Instance;Assert.That(run.LoadRunCheckpoint(),Is.True,run.RunSaveMessage);
+            Assert.That(run.VehicleModel.Parts.Count(p=>p.Id==itemId),Is.EqualTo(1));
+            Assert.That(run.VehicleModel.Inventory.Any(p=>p.Id==itemId),Is.False);
+            Assert.That(run.Player.GetComponent<R3MountedBonusEffects>().HeavyDamageMultiplier,Is.EqualTo(1.3f).Within(.001));
+        }
+        finally{definition.Upgrades=original;}
     }
     [UnityTest] public IEnumerator SaveAfterVictoryRestoresGarageWithoutDuplicatingPartsOrReward()
     {

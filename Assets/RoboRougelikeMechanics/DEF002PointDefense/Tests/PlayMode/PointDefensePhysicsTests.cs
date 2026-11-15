@@ -66,6 +66,122 @@ namespace RoboRougelike.Mechanics.PointDefense.Tests
             defense.ScanNow();
             Assert.AreSame(t.GetComponent<PointDefenseThreatProxy>(), defense.CurrentTarget);
         }
+        [Test] public void SlowPositiveInterceptorSpeedStillFires()
+        {
+            options.interceptorSpeed = .0005f; options.interceptorLifetime = 10000f;
+            defense.Configure(options, prototype);
+            defense.Bind(body, root.transform, turret.transform, muzzle.transform, 1);
+            var threat = CreateMissile(3f, 2, Vector3.zero);
+            defense.ScanNow();
+            Assert.AreSame(threat.GetComponent<PointDefenseThreatProxy>(), defense.CurrentTarget);
+            int before = defense.Ammunition;
+            defense.Advance(.02f);
+            Assert.Less(defense.Ammunition, before, "A valid positive speed must not silently block firing.");
+        }
+        [Test] public void ScanningAndFiringRecognizeSlowThreatAlreadyInsideRadius()
+        {
+            var threat=CreateMissile(3f,2,new Vector3(0,0,-.2f));
+            defense.ScanNow();Assert.AreSame(threat.GetComponent<PointDefenseThreatProxy>(),defense.CurrentTarget);
+            int before=defense.Ammunition;defense.Advance(.02f);
+            Assert.Less(defense.Ammunition,before,"The physical defense must launch an interceptor at the nearby threat.");
+        }
+        [Test] public void ScanningAcquiresThreatEnteringRadiusBeforeHorizon()
+        {
+            var threat=CreateMissile(12f,2,new Vector3(0,0,-1));
+            defense.ScanNow();Assert.AreSame(threat.GetComponent<PointDefenseThreatProxy>(),defense.CurrentTarget);
+            int before=defense.Ammunition;defense.Advance(.02f);
+            Assert.Less(defense.Ammunition,before);
+        }
+        [Test] public void ScanningWorksWithManyOwnCollidersInDetectionArea()
+        {
+            for(int i=0;i<260;i++)root.AddComponent<BoxCollider>().size=Vector3.one*.1f;
+            var threat=CreateMissile();Physics.SyncTransforms();defense.ScanNow();
+            Assert.AreSame(threat.GetComponent<PointDefenseThreatProxy>(),defense.CurrentTarget);
+            var field=typeof(PointDefenseController).GetField("nearby",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var buffer=(Collider[])field.GetValue(defense);Assert.Greater(buffer.Length,256);defense.ScanNow();Assert.AreSame(buffer,field.GetValue(defense));
+        }
+        [Test] public void ScanningWorksThroughManyOwnCollidersButStillRespectsWall()
+        {
+            var own=Track("OwnDenseSight",new Vector3(0,0,3));own.transform.SetParent(root.transform,true);
+            for(int i=0;i<100;i++)own.AddComponent<BoxCollider>().size=Vector3.one*.1f;
+            var threat=CreateMissile();Physics.SyncTransforms();defense.ScanNow();
+            Assert.AreSame(threat.GetComponent<PointDefenseThreatProxy>(),defense.CurrentTarget);
+            var field=typeof(PointDefenseController).GetField("sightHits",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var buffer=(RaycastHit[])field.GetValue(defense);Assert.Greater(buffer.Length,96);
+            var wall=Track("Wall",new Vector3(0,0,6));wall.AddComponent<BoxCollider>().size=new Vector3(5,5,1);
+            Physics.SyncTransforms();defense.ScanNow();Assert.IsNull(defense.CurrentTarget);Assert.AreSame(buffer,field.GetValue(defense));
+        }
+        [Test] public void ScanningWorksWithManyOwnCollidersAtMuzzle()
+        {
+            var own=Track("OwnDenseMuzzle",muzzle.transform.position);own.transform.SetParent(root.transform,true);
+            for(int i=0;i<50;i++)own.AddComponent<BoxCollider>().size=Vector3.one*.1f;
+            var threat=CreateMissile();Physics.SyncTransforms();defense.ScanNow();
+            Assert.AreSame(threat.GetComponent<PointDefenseThreatProxy>(),defense.CurrentTarget);
+            var field=typeof(PointDefenseController).GetField("muzzleOverlaps",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var buffer=(Collider[])field.GetValue(defense);Assert.Greater(buffer.Length,48);defense.ScanNow();Assert.AreSame(buffer,field.GetValue(defense));
+        }
+        [TestCase(true)][TestCase(false)] public void InterceptorIgnoresDenseOwnGeometryAtStartOrAlongFlight(bool overlap)
+        {
+            var threat=CreateMissile(1.44f);threat.GetComponent<SphereCollider>().radius=.04f;
+            var own=Track("OwnDenseInterceptor",muzzle.transform.position+(overlap?Vector3.zero:Vector3.forward*.2f));own.transform.SetParent(root.transform,true);
+            for(int i=0;i<(overlap?50:100);i++)own.AddComponent<BoxCollider>().size=Vector3.one*.05f;
+            var shot=Track("Dense interceptor",muzzle.transform.position).AddComponent<PointDefenseInterceptor>();
+            shot.Initialize(threat.GetComponent<PointDefenseThreatProxy>(),root.transform,Vector3.forward*18,1,.12f,1);Physics.SyncTransforms();
+            typeof(PointDefenseInterceptor).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(shot,null);
+            Assert.AreEqual(1,threat.interceptCalls);
+            var field=typeof(PointDefenseInterceptor).GetField(overlap?"initialOverlaps":"hits",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            Assert.Greater(((System.Array)field.GetValue(shot)).Length,overlap?48:96);
+        }
+        [Test] public void DenseInterceptorSweepStillStopsAtForeignWall()
+        {
+            var threat=CreateMissile(1.44f);threat.GetComponent<SphereCollider>().radius=.04f;
+            var own=Track("OwnDenseInterceptor",muzzle.transform.position+Vector3.forward*.2f);own.transform.SetParent(root.transform,true);
+            for(int i=0;i<100;i++)own.AddComponent<BoxCollider>().size=Vector3.one*.05f;
+            var wall=Track("Wall",muzzle.transform.position+Vector3.forward*.26f);wall.AddComponent<BoxCollider>().size=Vector3.one*.03f;
+            var shot=Track("Dense interceptor",muzzle.transform.position).AddComponent<PointDefenseInterceptor>();
+            shot.Initialize(threat.GetComponent<PointDefenseThreatProxy>(),root.transform,Vector3.forward*18,1,.12f,1);Physics.SyncTransforms();
+            typeof(PointDefenseInterceptor).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(shot,null);
+            Assert.AreEqual(0,threat.interceptCalls,"The retry must never make a projectile pass through a wall.");
+        }
+        [Test] public void WallOverlappingIgnoredSiblingStillBlocksScanning()
+        {
+            var first=CreateMissile();var second=CreateMissile();
+            Physics.IgnoreCollision(first.GetComponent<Collider>(),second.GetComponent<Collider>());
+            var wall=Track("Wall at target",first.transform.position);wall.AddComponent<SphereCollider>().radius=.45f;
+            Physics.SyncTransforms();defense.ScanNow();
+            Assert.IsNull(defense.CurrentTarget,"An unrelated solid wall must not be treated as a sibling projectile.");
+        }
+        [Test] public void WallOverlappingLockedThreatStillBlocksInterceptor()
+        {
+            var first=CreateMissile(1.1f);var second=CreateMissile(1.1f);
+            Physics.IgnoreCollision(first.GetComponent<Collider>(),second.GetComponent<Collider>());
+            var wall=Track("Wall at interceptor",muzzle.transform.position);wall.AddComponent<SphereCollider>().radius=.1f;
+            var shot=Track("Overlapping interceptor",muzzle.transform.position).AddComponent<PointDefenseInterceptor>();
+            shot.Initialize(first.GetComponent<PointDefenseThreatProxy>(),root.transform,Vector3.forward*18,1,.12f,1);Physics.SyncTransforms();
+            typeof(PointDefenseInterceptor).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(shot,null);
+            Assert.AreEqual(0,first.interceptCalls,"A wall at the same point must prevent interception.");
+            Assert.AreEqual(0,second.interceptCalls);
+        }
+        [Test] public void WallTiedWithLockedThreatStillBlocksSweptInterceptor()
+        {
+            var threat=CreateMissile(1.44f);threat.GetComponent<SphereCollider>().radius=.04f;
+            var wall=Track("Wall tied with target",threat.transform.position);wall.AddComponent<SphereCollider>().radius=.04f;
+            var shot=Track("Tied interceptor",muzzle.transform.position).AddComponent<PointDefenseInterceptor>();
+            shot.Initialize(threat.GetComponent<PointDefenseThreatProxy>(),root.transform,Vector3.forward*18,1,.12f,1);Physics.SyncTransforms();
+            typeof(PointDefenseInterceptor).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(shot,null);
+            Assert.AreEqual(0,threat.interceptCalls,"An equally near wall must win over the locked threat.");
+        }
+        [Test] public void EarlierSiblingStillBlocksSweptInterceptor()
+        {
+            var target=CreateMissile(1.44f);target.GetComponent<SphereCollider>().radius=.04f;
+            var closer=CreateMissile(1.38f);closer.GetComponent<SphereCollider>().radius=.04f;
+            Physics.IgnoreCollision(target.GetComponent<Collider>(),closer.GetComponent<Collider>());
+            var shot=Track("Blocked interceptor",muzzle.transform.position).AddComponent<PointDefenseInterceptor>();
+            shot.Initialize(target.GetComponent<PointDefenseThreatProxy>(),root.transform,Vector3.forward*18,1,.12f,1);Physics.SyncTransforms();
+            typeof(PointDefenseInterceptor).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(shot,null);
+            Assert.AreEqual(0,target.interceptCalls,"An earlier sibling projectile must not be passed through.");
+            Assert.AreEqual(0,closer.interceptCalls,"The interceptor only damages its locked target.");
+        }
         [Test] public void Scanning_SkipsFriendly()
         {
             CreateMissile(faction: 1); defense.ScanNow();

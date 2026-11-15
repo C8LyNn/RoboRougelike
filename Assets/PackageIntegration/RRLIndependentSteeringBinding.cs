@@ -95,12 +95,12 @@ namespace RoboRougelike.PackageIntegration
             lastInputFrame=Time.frameCount;return true;
         }
         public bool HandleGuiInput(Event input)=>input!=null&&input.type==EventType.KeyDown&&!input.alt&&!input.control&&!input.command&&
-            (input.keyCode==KeyCode.M||input.character=='m'||input.character=='M')&&CycleMode();
+            R1ControlProfile.Current.MatchesEvent("SteeringMode",input)&&CycleMode();
         void Update()
         {
             RefreshAvailability();
 #if ENABLE_INPUT_SYSTEM
-            if(Keyboard.current?.mKey.wasPressedThisFrame==true)CycleMode();
+            if(R1ControlProfile.Current.Pressed("SteeringMode",true))CycleMode();
 #endif
         }
         void OnGUI(){if(HandleGuiInput(Event.current))Event.current.Use();}

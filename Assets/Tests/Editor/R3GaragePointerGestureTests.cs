@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using RoboRougelike.R1;
 using RoboRougelike.R3;
 using UnityEngine;
 
@@ -32,8 +33,9 @@ public sealed class R3GaragePointerGestureTests
     [TestCase(KeyCode.X,0,0,1)]
     public void RotationShortcutsSpecifyQuarterTurnsOnTheCorrectAxis(KeyCode key,int x,int y,int z)
     {
-        Assert.That(R3GarageRotationInput.TryStep(key,out var step),Is.True);
+        var profile=new R1ControlProfile(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"RRL-rotation-default-"+System.Guid.NewGuid()+".json"));
+        Assert.That(R3GarageRotationInput.TryStepForProfile(new Event{type=EventType.KeyDown,keyCode=key},profile,out var step),Is.True);
         Assert.That(step,Is.EqualTo(new Vector3Int(x,y,z)));
-        Assert.That(R3GarageRotationInput.TryStep(KeyCode.Space,out _),Is.False);
+        Assert.That(R3GarageRotationInput.TryStepForProfile(new Event{type=EventType.KeyDown,keyCode=KeyCode.Space},profile,out _),Is.False);
     }
 }

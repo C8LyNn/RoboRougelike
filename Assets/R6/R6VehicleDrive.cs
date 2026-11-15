@@ -29,9 +29,10 @@ namespace RoboRougelike.R6
             // R6's planar mode never loaded them with vehicle weight.
             material.staticFriction=material.dynamicFriction=Mathf.Clamp(contactFriction,0,R6Tuning.Current.ContactFriction);
         }
-        // Motor output rises with installed working devices; the cap represents
-        // finite tire traction rather than a limit on how many blocks can be fitted.
-        public static float MotorMultiplier(float units)=>Mathf.Min(2f,1f+.2f*Mathf.Max(0,units));
+        // Every working motor contributes; physical wheel contacts still govern
+        // whether the drive can apply force. Reject invalid numeric inputs.
+        public static float MotorMultiplier(float units)=>float.IsNaN(units)||float.IsInfinity(units)?1f:
+            (float)System.Math.Min(float.MaxValue,1d+.2d*System.Math.Max(0,units));
         float BaseTractionForce=>traction*R6Tuning.Current.WheelForce;
         public float AvailableForce => BaseTractionForce*MotorMultiplier(powerUnits);
         public float ActivePowerUnits=>powerUnits;
@@ -91,7 +92,7 @@ namespace RoboRougelike.R6
                 var mounted=part.GetComponent<R3MountedPart>();
                 if(mounted!=null&&mounted.Kind==R3PartKind.DrivePower&&
                     !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
-                    powerUnits+=Mathf.Clamp01(part.CurrentHp/Mathf.Max(1,part.MaxHp))*R3VehicleModel.TierEffectUnits(mounted.Tier);
+                    powerUnits+=R3VehicleModel.TierEffectUnits(mounted.Tier);
                 if(!IsWheel(part)||RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))continue;
                 float condition=Mathf.Lerp(R6Tuning.Current.DamageTractionFloor,1,part.CurrentHp/part.MaxHp);
                 condition*=R3VehicleModel.TierWheelTraction(mounted!=null?mounted.Tier:
@@ -119,7 +120,14 @@ namespace RoboRougelike.R6
         void Prepare(){if(Time.time>=nextMassRefresh)RefreshMass();RefreshGroundContact();}
         public void Step(float throttle,float steering,float forwardLimit,float reverseLimit,float turnLimit)
         {
-            if(body.isKinematic)return;Prepare();independentSteering?.RefreshAvailability();
+            if(body.isKinematic)return;
+            if(float.IsNaN(turnLimit)||float.IsInfinity(turnLimit)||turnLimit<0)turnLimit=0;
+            // Keep the old stability allowance for ordinary vehicles, but do
+            // not make it smaller than a stronger build's steering target.
+            // The final bound only keeps squared angular values representable.
+            float safeRadians=(float)System.Math.Min(System.Math.Sqrt(float.MaxValue)*.25d,(double)turnLimit*Mathf.Deg2Rad);
+            body.maxAngularVelocity=Mathf.Max(3f,safeRadians);
+            Prepare();independentSteering?.RefreshAvailability();
             var movement=GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>();
             if(movement!=null&&movement.TryDrive(throttle,steering,forwardLimit,reverseLimit,turnLimit))return;
             if(GroundedWheels==0)return;

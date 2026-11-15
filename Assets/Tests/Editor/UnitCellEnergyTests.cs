@@ -65,13 +65,14 @@ public sealed class UnitCellEnergyTests
     public void CheckpointPreservesEnergyAndOlderCheckpointStartsCharged()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        float startingCharge=model.Energy.Current;
         Assert.That(model.Energy.TrySpend(120),Is.True);
         var saved=model.MakeCheckpoint(0);
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,new R3GarageEconomy(),0,out var restored,out var error),Is.True,error);
-        Assert.That(restored.Energy.Current,Is.EqualTo(380));
+        Assert.That(restored.Energy.Current,Is.EqualTo(startingCharge-120));
         saved.energyVersion=0;saved.energy=0;
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,new R3GarageEconomy(),0,out restored,out error),Is.True,error);
-        Assert.That(restored.Energy.Current,Is.EqualTo(500));
+        Assert.That(restored.Energy.Current,Is.EqualTo(restored.Energy.Maximum));
     }
 
     [UnityTest]
@@ -91,7 +92,8 @@ public sealed class UnitCellEnergyTests
         Assert.That(bankType, Is.Not.Null, "A real vehicle needs the shared energy bank.");
         var bank = run.Player.GetComponent(bankType);
         Assert.That(bank, Is.Not.Null);
-        Assert.That((float)bankType.GetProperty("Maximum").GetValue(bank), Is.EqualTo(500));
+        Assert.That((float)bankType.GetProperty("Maximum").GetValue(bank), Is.EqualTo(run.VehicleModel.Energy.Maximum));
+        Assert.That(run.VehicleModel.Energy.Maximum,Is.EqualTo(475),"The starter has one passive module reserving 25 energy.");
         yield return new ExitPlayMode();
     }
 
@@ -131,19 +133,23 @@ public sealed class UnitCellEnergyTests
         var run=R1RunController.Instance;
         Assert.That(run,Is.Not.Null);Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);
         Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(1000);
-        var batteryCell=FindPlacement(run.VehicleModel,R3PartKind.Battery);
-        Assert.That(batteryCell.HasValue,Is.True);Assert.That(run.GarageBuy(batteryCell.Value,R3PartKind.Battery),Is.True);
-        var bank=run.Player.GetComponent<VehicleEnergyBank>();Assert.That(bank.Maximum,Is.EqualTo(600));
-        bank.Recharge(1000);Assert.That(bank.Current,Is.EqualTo(600));
+        float baseline=run.Player.GetComponent<VehicleEnergyBank>().Maximum;
         var gyroCell=FindPlacement(run.VehicleModel,R3PartKind.Gyroscope);
         Assert.That(gyroCell.HasValue,Is.True);Assert.That(run.GarageBuy(gyroCell.Value,R3PartKind.Gyroscope),Is.True);
-        bank=run.Player.GetComponent<VehicleEnergyBank>();Assert.That(bank.Maximum,Is.EqualTo(575));
+        var bank=run.Player.GetComponent<VehicleEnergyBank>();Assert.That(bank.Maximum,Is.EqualTo(baseline-25));
+        var batteryCell=FindPlacement(run.VehicleModel,R3PartKind.Battery);
+        Assert.That(batteryCell.HasValue,Is.True);Assert.That(run.GarageBuy(batteryCell.Value,R3PartKind.Battery),Is.True);
+        bank=run.Player.GetComponent<VehicleEnergyBank>();Assert.That(bank.Maximum,Is.EqualTo(baseline+75));
+        bank.Recharge(1000);Assert.That(bank.Current,Is.EqualTo(baseline+75));
         R3MountedPart battery=null;
         foreach(var part in run.Player.GetComponent<R3VehicleAssembly>().Parts)
             if(part.Kind==R3PartKind.Battery){battery=part;break;}
         Assert.That(battery,Is.Not.Null);
-        battery.Damageable.ApplyDamage(100000,battery.transform.position,Vector3.zero);
-        bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(475));Assert.That(bank.Current,Is.LessThanOrEqualTo(475));
+        // A kinetic hit propagates through the vehicle. Use enough to destroy
+        // the battery without intentionally destroying its neighbours and core.
+        battery.Damageable.ApplyDamage(battery.Damageable.MaxHp*1.35f,battery.transform.position,Vector3.zero);
+        Assert.That(battery.Damageable.IsDead,Is.True);
+        bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(baseline-25));Assert.That(bank.Current,Is.LessThanOrEqualTo(baseline-25));
         yield return new ExitPlayMode();
     }
 
@@ -157,6 +163,7 @@ public sealed class UnitCellEnergyTests
         var run=R1RunController.Instance;
         Assert.That(run,Is.Not.Null);Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);
         Assert.That(run.OpenSandboxGarage(),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         var assembly=run.Player.GetComponent<R3VehicleAssembly>();
         var bank=run.Player.GetComponent<VehicleEnergyBank>();
         R3MountedPart gun=null;foreach(var part in assembly.Parts)if(part.Kind==R3PartKind.Gun){gun=part;break;}
@@ -166,7 +173,10 @@ public sealed class UnitCellEnergyTests
         float before=bank.Current;assembly.FireGuns();
         Assert.That(gun.NextFireTime,Is.GreaterThan(Time.time));
         Assert.That(bank.Current,Is.EqualTo(before).Within(.01f));
-        Assert.That(bank.TrySpend(bank.Current),Is.True);gun.NextFireTime=0;
+        float readyAt=gun.NextFireTime;deadline=Time.realtimeSinceStartup+10;
+        while(Time.time<=readyAt&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+        Assert.That(Time.time,Is.GreaterThan(readyAt),"The second shot must occur after the gun's cooldown.");
+        run.VehicleModel.Energy.Restore(0);
         assembly.FireGuns();
         Assert.That(gun.NextFireTime,Is.GreaterThan(Time.time),"The basic gun remains usable when the bank is empty.");
         Assert.That(bank.Current,Is.Zero);
@@ -174,7 +184,7 @@ public sealed class UnitCellEnergyTests
     }
 
     [UnityTest]
-    public IEnumerator ProjectileWeaponsAndEmpShareTheRealVehicleBank()
+    public IEnumerator ProjectileWeaponsShareTheRealVehicleBank()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
         yield return new EnterPlayMode();
@@ -184,7 +194,7 @@ public sealed class UnitCellEnergyTests
         Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);Assert.That(run.OpenSandboxGarage(),Is.True);
         var palette=run.GetComponent<R3VisualPalette>();Assert.That(palette,Is.Not.Null);
         var kinds=new[]{R4WeaponKind.Automatic,R4WeaponKind.Heavy,R4WeaponKind.Shotgun,
-            R4WeaponKind.Railgun,R4WeaponKind.RocketLauncher,R4WeaponKind.EmpEmitter};
+            R4WeaponKind.Railgun,R4WeaponKind.RocketLauncher};
         for(int i=0;i<kinds.Length;i++)
         {
             var design=R3VehicleCatalog.Create(R3VehicleKind.Light);
@@ -196,7 +206,7 @@ public sealed class UnitCellEnergyTests
             R3MountedPart gun=null;foreach(var part in assembly.Parts)if(part.Kind==R3PartKind.Gun){gun=part;break;}
             Assert.That(gun,Is.Not.Null,kinds[i].ToString());
             gun.GunPivot.rotation=Quaternion.LookRotation(Vector3.up,Vector3.forward);Physics.SyncTransforms();
-            if(kinds[i]!=R4WeaponKind.EmpEmitter)Assert.That(assembly.ClearProjectilePath(gun),Is.True,kinds[i]+" muzzle must be clear");
+            Assert.That(assembly.ClearProjectilePath(gun),Is.True,kinds[i]+" muzzle must be clear");
             var gunState=model.Parts.First(p=>p.Kind==R3PartKind.Gun);int ammo=gunState.Ammo;
             Assert.That(bank.TrySpend(bank.Current),Is.True);assembly.FireGroup(false);
             Assert.That(gun.NextFireTime,Is.Zero,kinds[i]+" must not fire when empty");

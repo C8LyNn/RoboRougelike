@@ -92,7 +92,10 @@ public class MOVSeriesSpecialTests
         var floor=fixtures.transform.Find("Ground");floor.gameObject.SetActive(false);
         var actor=Box("Foreign body under destination",new Vector3(0,-.5f,1008),new Vector3(15,1,15));actor.AddComponent<Rigidbody>().isKinematic=true;
         Physics.SyncTransforms();Vector3 before=v.GetComponent<Rigidbody>().position;
-        Assert.That(Act(v,"TryBlink",Vector3.forward),Is.False);Assert.That(v.GetComponent<Rigidbody>().position,Is.EqualTo(before));
+        Assert.That(Act(v,"TryBlink",Vector3.forward),Is.False);
+        // Syncing Unity Rigidbody transforms can round the pose by a few float ULPs.
+        // Ten micrometres still detects gameplay-significant movement from Blink.
+        Assert.That(Vector3.Distance(v.GetComponent<Rigidbody>().position,before),Is.LessThan(.00001f));
         Assert.That(v.GetComponentInChildren<BlinkDrive>().CooldownRemaining,Is.Zero);actor.SetActive(false);
         Assert.That(Act(v,"TryBlink",Vector3.forward),Is.False);
     }
@@ -110,6 +113,55 @@ public class MOVSeriesSpecialTests
         var rebuilt=R3VehicleAssembly.Build(model.DeepCopy(),new R1RunStats(),palette,new Vector3(0,.7f,1000),Quaternion.identity);
         rebuilt.transform.SetParent(fixtures.transform,true);rebuilt.Controller.SetGameplayInputEnabled(true);
         Assert.That(Act(rebuilt,"TryGrapple",Vector3.forward),Is.False,"Release cooldown survives rebuild and emitter changes.");
+    }
+    [UnityTest] public IEnumerator GrappleCopiesShareCostIncreasePullAndLosePowerWhenSpareFails()
+    {
+        var one=Build(R3VehicleKind.Light,-20,R3PartKind.MagneticGrapple,R3PartKind.MagneticGrapple);
+        var two=Build(R3VehicleKind.Light,20,R3PartKind.MagneticGrapple,R3PartKind.MagneticGrapple);
+        one.GetComponentsInChildren<MagneticGrappleEmitter>()[1].SetOperational(false);
+        Box("One anchor",new Vector3(-20,2,1015),new Vector3(8,4,1));
+        Box("Two anchor",new Vector3(20,2,1015),new Vector3(8,4,1));yield return MOVSeriesDeviceTests.Seconds(.6f);
+        var a=one.GetComponent<Rigidbody>();var b=two.GetComponent<Rigidbody>();a.linearVelocity=Vector3.zero;b.linearVelocity=Vector3.zero;
+        var energy=two.GetComponent<VehicleEnergyBank>();float cost=VehicleEnergyCosts.Grapple;
+        float untouched=energy.Current;Assert.That(Act(two,"TryGrapple",Vector3.back),Is.False);
+        Assert.That(energy.Current,Is.EqualTo(untouched).Within(.001));
+        Assert.That(two.GetComponent<MOVSeriesVehicleAdapter>().Model.GrappleReadyAt,Is.Zero);
+        Assert.That(energy.TrySpend(energy.Current-cost*1.5f),Is.True);float before=energy.Current;
+        Assert.That(Act(two,"TryGrapple",Vector3.forward),Is.False,"One copy must not activate if the group lacks energy.");
+        Assert.That(energy.Current,Is.EqualTo(before).Within(.001));
+        energy.Recharge(100);before=energy.Current;
+        Assert.That(Act(one,"TryGrapple",Vector3.forward),Is.True);Assert.That(Act(two,"TryGrapple",Vector3.forward),Is.True);
+        Assert.That(energy.Current,Is.EqualTo(before-2*cost).Within(.001));
+        var rope=two.GetComponent<MagneticGrappleController>();Assert.That(rope.Settings.maximumTensionNewtons,Is.EqualTo(16000));
+        yield return MOVSeriesDeviceTests.Seconds(.4f);
+        Assert.That(b.linearVelocity.z,Is.GreaterThan(a.linearVelocity.z+.05f),"A second copy must improve actual pulling, not just its UI.");
+        var spare=two.GetComponentsInChildren<MagneticGrappleEmitter>().Single(e=>e!=rope.ActiveEmitter);
+        spare.SetOperational(false);yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(rope.IsAttached,Is.True);Assert.That(rope.Settings.maximumTensionNewtons,Is.EqualTo(8000));
+    }
+    [UnityTest] public IEnumerator TieredGrapplesUseTierEnergyAndStrongerPhysicalPull()
+    {
+        R1VehicleState Make(int tier,float x)
+        {
+            var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+            var cell=MOVSeriesDeviceTests.FindFixtureCell(model,R3PartKind.MagneticGrapple,new Vector3Int(1,1,0));
+            model.Parts.Add(new R3PartState(cell,R3PartKind.MagneticGrapple){Tier=tier});
+            var v=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
+            v.transform.SetParent(fixtures.transform,true);v.Controller.SetGameplayInputEnabled(true);return v;
+        }
+        var one=Make(1,-20);var two=Make(2,0);var three=Make(3,20);
+        Box("Tier one anchor",new Vector3(-20,2,1015),new Vector3(8,4,1));
+        Box("Tier two anchor",new Vector3(0,2,1015),new Vector3(8,4,1));
+        Box("Tier three anchor",new Vector3(20,2,1015),new Vector3(8,4,1));yield return MOVSeriesDeviceTests.Seconds(.6f);
+        var a=one.GetComponent<Rigidbody>();var b=two.GetComponent<Rigidbody>();var c=three.GetComponent<Rigidbody>();
+        a.linearVelocity=Vector3.zero;b.linearVelocity=Vector3.zero;c.linearVelocity=Vector3.zero;
+        var energy2=two.GetComponent<VehicleEnergyBank>();var energy3=three.GetComponent<VehicleEnergyBank>();float before2=energy2.Current,before3=energy3.Current;
+        Assert.That(Act(one,"TryGrapple",Vector3.forward),Is.True);Assert.That(Act(two,"TryGrapple",Vector3.forward),Is.True);Assert.That(Act(three,"TryGrapple",Vector3.forward),Is.True);
+        Assert.That(energy2.Current,Is.EqualTo(before2-VehicleEnergyCosts.Grapple*R3VehicleModel.TierActivationCost(2)).Within(.001));
+        Assert.That(energy3.Current,Is.EqualTo(before3-VehicleEnergyCosts.Grapple*R3VehicleModel.TierActivationCost(3)).Within(.001));
+        yield return MOVSeriesDeviceTests.Seconds(.4f);
+        Assert.That(b.linearVelocity.z,Is.GreaterThan(a.linearVelocity.z+.05f));
+        Assert.That(c.linearVelocity.z,Is.GreaterThan(b.linearVelocity.z+.05f));
     }
     [UnityTest] public IEnumerator DynamicTargetHasOppositeReactionIncomingBlinkGuardAndEmitterDetachRelease()
     {

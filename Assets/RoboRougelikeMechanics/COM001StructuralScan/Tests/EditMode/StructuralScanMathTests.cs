@@ -13,6 +13,11 @@ namespace RoboRougelike.Mechanics.StructuralScan.Tests.EditMode
         [Test] public void OriginIsNotTarget() => Assert.IsFalse(StructuralScanMath.InCone(Vector3.zero, Vector3.forward, Vector3.zero, 10, 75));
         [Test] public void ZeroForwardVectorCannotScan() => Assert.IsFalse(StructuralScanMath.InCone(Vector3.zero, Vector3.zero, Vector3.forward, 10, 75));
         [Test] public void ForwardMagnitudeDoesNotMatter() => Assert.IsTrue(StructuralScanMath.InCone(Vector3.zero, Vector3.forward * 500, new Vector3(0, 0, 2), 10, 75));
+        [Test] public void LargeFiniteRangeDoesNotOverflowDistanceMath()
+        {
+            Assert.IsTrue(StructuralScanMath.InCone(Vector3.zero,Vector3.forward,new Vector3(0,0,float.MaxValue),float.MaxValue,75));
+            Assert.IsFalse(StructuralScanMath.InCone(Vector3.zero,Vector3.forward,new Vector3(float.MaxValue,0,float.MaxValue),float.MaxValue,180));
+        }
         [Test] public void OffAxisWithinConeIsVisible() => Assert.IsTrue(StructuralScanMath.InCone(Vector3.zero, Vector3.forward, new Vector3(1, 0, 5), 10, 75));
         [Test] public void OffAxisOutsideConeIsNotVisible() => Assert.IsFalse(StructuralScanMath.InCone(Vector3.zero, Vector3.forward, new Vector3(5, 0, 1), 10, 75));
         [Test] public void ConeUsesDirectionNotWorldZ() => Assert.IsTrue(StructuralScanMath.InCone(Vector3.zero, Vector3.right, new Vector3(4, 0, 0), 10, 75));

@@ -50,8 +50,8 @@ namespace RogueMachine.P12PipelineSafe
 
         private float moveInput;
         private float turnInput;
-        private bool fireHeld, secondaryFireHeld;
-        private bool waitForPrimaryRelease, waitForSecondaryRelease;
+        private bool fireHeld, secondaryFireHeld, thirdFireHeld, fourthFireHeld;
+        private bool waitForPrimaryRelease, waitForSecondaryRelease, waitForThirdRelease, waitForFourthRelease;
 
         private float currentSpeed;
 
@@ -71,29 +71,46 @@ namespace RogueMachine.P12PipelineSafe
 
         public void ConfigureChassis(float speed, float turning, float mass)
         {
-            forwardSpeed = Mathf.Clamp(speed, 2, 14); reverseSpeed = forwardSpeed * 0.6f;
-            turnSpeed = Mathf.Clamp(turning, 35, 130);
+            forwardSpeed = float.IsNaN(speed)||float.IsInfinity(speed)?0f:Mathf.Max(0,speed); reverseSpeed = forwardSpeed * 0.6f;
+            turnSpeed = float.IsNaN(turning)||float.IsInfinity(turning)?35f:Mathf.Max(0,turning);
             GetComponent<Rigidbody>().mass = Mathf.Max(50, mass);
         }
 
         private Material projectileMaterial;
         private bool gameplayInputEnabled = true;
         private float damageModifier = 1f;
+        private float basicDamageModifier = 1f;
+        private float basicBlastDamageModifier = 1f;
+        private float basicBlastFraction;
         private float intervalModifier = 1f;
+        private readonly float[] scopedWeaponIntervals=new float[System.Enum.GetValues(typeof(RoboRougelike.R4.R4WeaponKind)).Length];
+        private bool hasScopedWeaponIntervals;
         private float mobilityModifier = 1f;
 
-        public float EffectiveDamage => shotDamage * damageModifier;
-        public float EffectiveFireInterval => fireInterval * intervalModifier;
-        public float EffectiveForwardSpeed => forwardSpeed * mobilityModifier;
-        public float EffectiveReverseSpeed => reverseSpeed * mobilityModifier;
-        public float EffectiveTurnSpeed => turnSpeed * mobilityModifier;
+        void EnsureMountedBonuses()=>GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.EnsureCurrent();
+        public float EffectiveDamage {get{EnsureMountedBonuses();return (float)System.Math.Min(float.MaxValue,(double)shotDamage*((1d-basicBlastFraction)*basicDamageModifier+basicBlastFraction*basicBlastDamageModifier));}}
+        public float EffectiveFireInterval {get{EnsureMountedBonuses();return RoboRougelike.R3.R3MountedBonusEffects.SafeIntervalProduct(fireInterval,intervalModifier);}}
+        public float EffectiveForwardSpeed {get{EnsureMountedBonuses();return (float)System.Math.Min(float.MaxValue,(double)forwardSpeed*mobilityModifier);}}
+        public float EffectiveReverseSpeed {get{EnsureMountedBonuses();return (float)System.Math.Min(float.MaxValue,(double)reverseSpeed*mobilityModifier);}}
+        public float EffectiveTurnSpeed {get{EnsureMountedBonuses();return (float)System.Math.Min(float.MaxValue,(double)turnSpeed*mobilityModifier);}}
         public bool GameplayInputEnabled => gameplayInputEnabled;
 
         public void SetRunModifiers(float damage, float interval, float mobility)
         {
-            damageModifier = Mathf.Clamp(damage, 1f, 3f);
-            intervalModifier = Mathf.Clamp(interval, 0.35f, 1f);
-            mobilityModifier = Mathf.Clamp(mobility, 1f, 2f);
+            damageModifier = float.IsNaN(damage)||float.IsInfinity(damage)?1f:Mathf.Max(0,damage);
+            basicDamageModifier=damageModifier;
+            basicBlastDamageModifier=damageModifier;basicBlastFraction=0;
+            intervalModifier = float.IsNaN(interval)||float.IsInfinity(interval)?1f:Mathf.Max(0,interval);
+            hasScopedWeaponIntervals=false;
+            mobilityModifier = float.IsNaN(mobility)||float.IsInfinity(mobility)?1f:Mathf.Max(0,mobility);
+        }
+        public void SetBasicDamageModifier(float damage)
+        {SetBasicDamageProfile(damage,damage,0);}
+        public void SetBasicDamageProfile(float kinetic,float blast,float blastFraction)
+        {
+            basicDamageModifier=float.IsNaN(kinetic)||float.IsInfinity(kinetic)?damageModifier:Mathf.Max(0,kinetic);
+            basicBlastDamageModifier=float.IsNaN(blast)||float.IsInfinity(blast)?damageModifier:Mathf.Max(0,blast);
+            basicBlastFraction=float.IsNaN(blastFraction)||float.IsInfinity(blastFraction)?0:Mathf.Clamp01(blastFraction);
         }
 
         public void SetGameplayInputEnabled(bool active)
@@ -103,9 +120,9 @@ namespace RogueMachine.P12PipelineSafe
             AimFeedback=default;
             weaponReticles.Clear();
             moveInput = turnInput = currentSpeed = 0;
-            fireHeld = secondaryFireHeld = false;
-            waitForPrimaryRelease = waitForSecondaryRelease = true;
-            if(modularAssembly!=null)modularAssembly.SetGroupTriggers(false,false);
+            fireHeld = secondaryFireHeld = thirdFireHeld = fourthFireHeld = false;
+            waitForPrimaryRelease = waitForSecondaryRelease = waitForThirdRelease = waitForFourthRelease = true;
+            if(modularAssembly!=null)modularAssembly.SetSlotTriggers(false,false,false,false);
             GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>()?.CancelActions();
             if (rb != null) StopResidualPhysics();
         }
@@ -170,33 +187,36 @@ public float CurrentForwardSpeed =>
         {
             moveInput = 0f;
             turnInput = 0f;
-            fireHeld = secondaryFireHeld = false;
+            fireHeld = secondaryFireHeld = thirdFireHeld = fourthFireHeld = false;
             if (!gameplayInputEnabled) return;
 
 #if ENABLE_INPUT_SYSTEM
             Keyboard keyboard = Keyboard.current;
+            var controls=RoboRougelike.R1.R1ControlProfile.Current;
+            // Keep the historical arrow aliases for the default WASD profile,
+            // unless an arrow is explicitly assigned to another gameplay action.
+            bool HeldDirection(string action,string original,Key arrow)=>controls.Pressed(action)||
+                keyboard!=null&&keyboard[arrow].isPressed&&controls.Binding(action)==original&&
+                controls.Conflict(action,arrow.ToString())==null;
 
-            if (keyboard != null)
             {
-                if (keyboard.wKey.isPressed ||
-                    keyboard.upArrowKey.isPressed)
+                if (HeldDirection("MoveForward","W",Key.UpArrow))
                     moveInput += 1f;
 
-                if (keyboard.sKey.isPressed ||
-                    keyboard.downArrowKey.isPressed)
+                if (HeldDirection("MoveBackward","S",Key.DownArrow))
                     moveInput -= 1f;
 
-                if (keyboard.dKey.isPressed ||
-                    keyboard.rightArrowKey.isPressed)
+                if (HeldDirection("TurnRight","D",Key.RightArrow))
                     turnInput += 1f;
 
-                if (keyboard.aKey.isPressed ||
-                    keyboard.leftArrowKey.isPressed)
+                if (HeldDirection("TurnLeft","A",Key.LeftArrow))
                     turnInput -= 1f;
             }
 
-            bool primaryPressed=Mouse.current != null && Mouse.current.leftButton.isPressed;
-            bool secondaryPressed=Mouse.current != null && Mouse.current.rightButton.isPressed;
+            bool primaryPressed=controls.Pressed("Weapon1");
+            bool secondaryPressed=controls.Pressed("Weapon2");
+            bool thirdPressed=controls.Pressed("Weapon3");
+            bool fourthPressed=controls.Pressed("Weapon4");
 #else
             if (Input.GetKey(KeyCode.W) ||
                 Input.GetKey(KeyCode.UpArrow))
@@ -216,11 +236,17 @@ public float CurrentForwardSpeed =>
 
             bool primaryPressed=Input.GetMouseButton(0);
             bool secondaryPressed=Input.GetMouseButton(1);
+            bool thirdPressed=Input.GetKey(KeyCode.Q);
+            bool fourthPressed=Input.GetKey(KeyCode.E);
 #endif
             if(!primaryPressed)waitForPrimaryRelease=false;
             if(!secondaryPressed)waitForSecondaryRelease=false;
+            if(!thirdPressed)waitForThirdRelease=false;
+            if(!fourthPressed)waitForFourthRelease=false;
             fireHeld=primaryPressed&&!waitForPrimaryRelease;
             secondaryFireHeld=secondaryPressed&&!waitForSecondaryRelease;
+            thirdFireHeld=thirdPressed&&!waitForThirdRelease;
+            fourthFireHeld=fourthPressed&&!waitForFourthRelease;
         }
 
         private RoboRougelike.R6.R6VehicleDrive drive;
@@ -229,7 +255,7 @@ public float CurrentForwardSpeed =>
             if (rb.isKinematic) return;
             if(drive==null)drive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();
             RefreshCollisionEnvelope(false);
-            drive.Step(gameplayInputEnabled?moveInput:0,gameplayInputEnabled?turnInput:0,forwardSpeed*mobilityModifier,reverseSpeed*mobilityModifier,turnSpeed*mobilityModifier);
+            drive.Step(gameplayInputEnabled?moveInput:0,gameplayInputEnabled?turnInput:0,EffectiveForwardSpeed,EffectiveReverseSpeed,EffectiveTurnSpeed);
             currentSpeed=drive.ForwardSpeed;
         }
 
@@ -277,11 +303,17 @@ public float CurrentForwardSpeed =>
                 modularAssembly,this,aimPoint,LastConsumedAimCollider);
             RoboRougelike.WeaponIntegration.RRLWeaponReticles.Collect(aimCamera,modularAssembly,this,aimPoint,weaponReticles);
 
+            var run=RoboRougelike.R1.R1RunController.Instance;
+            if(run!=null&&run.Player!=null&&run.Player.Controller==this&&run.EmergencyRescueAttackBlocked)
+            {if(modularAssembly!=null)modularAssembly.SetSlotTriggers(false,false,false,false);return;}
+
             if(modularAssembly!=null)
             {
-                modularAssembly.SetGroupTriggers(fireHeld,secondaryFireHeld);
+                modularAssembly.SetSlotTriggers(fireHeld,secondaryFireHeld,thirdFireHeld,fourthFireHeld);
                 if(fireHeld)modularAssembly.FireGroup(false);
                 if(secondaryFireHeld)modularAssembly.FireGroup(true);
+                if(thirdFireHeld)modularAssembly.FireSlot(2);
+                if(fourthFireHeld)modularAssembly.FireSlot(3);
             }
             else if (fireHeld && Time.time >= nextFireTime)
             {
@@ -395,6 +427,12 @@ public float CurrentForwardSpeed =>
             if(aimCamera==null)aimCamera=Camera.main;
             return aimCamera!=null?FindAimPoint():transform.position+transform.forward*24;
         }
+        public Collider ModuleAimCollider()
+        {
+            if(aimCamera==null)aimCamera=Camera.main;
+            if(aimCamera==null)return null;
+            FindAimPoint(true);return LastConsumedAimCollider;
+        }
         public Vector3 LastConsumedAimPoint {get;private set;}
         public Collider LastConsumedAimCollider {get;private set;}
         public int LastConsumedAimFrame {get;private set;}=-1;
@@ -402,6 +440,9 @@ public float CurrentForwardSpeed =>
         readonly List<RoboRougelike.WeaponIntegration.RRLWeaponReticles.Marker> weaponReticles = new List<RoboRougelike.WeaponIntegration.RRLWeaponReticles.Marker>(4);
         public IReadOnlyList<RoboRougelike.WeaponIntegration.RRLWeaponReticles.Marker> WeaponReticles=>weaponReticles;
         public float PhysicalShellLifetime => projectileLifetime;
+        private RaycastHit[] aimHits = new RaycastHit[32];
+        private static readonly IComparer<RaycastHit> AimHitDistanceComparer =
+            Comparer<RaycastHit>.Create((a,b)=>a.distance.CompareTo(b.distance));
         private Vector3 FindAimPoint(bool consumed=false)
         {
             Ray ray =
@@ -413,25 +454,27 @@ public float CurrentForwardSpeed =>
                     )
                 );
 
-            RaycastHit[] hits =
-                Physics.RaycastAll(
-                    ray.origin,
-                    ray.direction,
-                    aimRange,
-                    ~0,
-                    QueryTriggerInteraction.Ignore
-                );
-
-            Array.Sort(
-                hits,
-                (a, b) =>
-                    a.distance.CompareTo(
-                        b.distance
-                    )
-            );
-
-            foreach (RaycastHit hit in hits)
+            RaycastHit[] hits = aimHits;
+            int count;
+            while(true)
             {
+                count=Physics.RaycastNonAlloc(ray.origin,ray.direction,hits,aimRange,~0,QueryTriggerInteraction.Ignore);
+                if(count<hits.Length)break;
+                if(hits.Length>=1024)
+                {
+                    // A full buffer may have omitted the closest target. Keep correctness
+                    // even in unusually dense scenes instead of imposing a hit limit.
+                    hits=Physics.RaycastAll(ray.origin,ray.direction,aimRange,~0,QueryTriggerInteraction.Ignore);
+                    count=hits.Length;
+                    break;
+                }
+                hits=aimHits=new RaycastHit[hits.Length*2];
+            }
+            Array.Sort(hits,0,count,AimHitDistanceComparer);
+
+            for(int i=0;i<count;i++)
+            {
+                RaycastHit hit=hits[i];
                 if (hit.collider == null)
                     continue;
 
@@ -559,25 +602,81 @@ public float CurrentForwardSpeed =>
         { FireFrom(muzzle); }
 
         public void FireFrom(Transform barrel)
-        { SpawnPhysicalShell(barrel,EffectiveDamage,projectileSpeed,projectileDiameter,projectileMass,
-            RoboRougelike.R4.R4WeaponKind.Basic,null); }
+        {
+            EnsureMountedBonuses();
+            float kinetic=SafeShellDamage(shotDamage,1-basicBlastFraction,basicDamageModifier);
+            float blast=SafeShellDamage(shotDamage,basicBlastFraction,basicBlastDamageModifier);
+            SpawnPhysicalShell(barrel,kinetic,projectileSpeed,projectileDiameter,projectileMass,
+                RoboRougelike.R4.R4WeaponKind.Basic,null,blast);
+        }
+
+        static float SafeShellDamage(float damage,float fraction,float modifier)=>
+            (float)System.Math.Min(float.MaxValue,(double)damage*fraction*modifier);
 
         public void FireFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId)
+        { FireFrom(barrel,kind,partId,0); }
+        public void FireFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,int extraShots)
+        { FireFromInternal(barrel,kind,partId,extraShots,null); }
+        public Collider FirePrimaryFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId)
+        { return FireFromInternal(barrel,kind,partId,0,null); }
+        public void FireAdditionalFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,Collider primary,int count)
+            =>FireAdditionalExact(barrel,kind,partId,primary,count);
+        internal void FireAdditionalExact(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,Collider primary,System.Numerics.BigInteger count)
         {
+            if(primary==null||count<=0)return;
+            var shell=primary.GetComponent<P17PhysicalShell>();if(shell==null||!shell.IsActiveProjectile)return;
+            var queue=GetComponent<RoboRougelike.R3.R3ConventionalProjectileQueue>();
+            if(queue==null)queue=gameObject.AddComponent<RoboRougelike.R3.R3ConventionalProjectileQueue>();
+            queue.EnqueueExact(shell,count);
+        }
+        private Collider FireFromInternal(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,int extraShots,Collider existingSibling)
+        {
+            EnsureMountedBonuses();
             var profile=RoboRougelike.R4.R4WeaponDefinition.Get(kind);
             var mounted=barrel!=null?barrel.GetComponentInParent<RoboRougelike.R3.R3MountedPart>():null;
             float tier=mounted!=null&&mounted.Kind==RoboRougelike.R3.R3PartKind.Gun&&mounted.Id==partId?
                 RoboRougelike.R3.R3VehicleModel.TierEffectUnits(mounted.Tier):1f;
-            SpawnPhysicalShell(barrel,profile.Damage*damageModifier*tier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
+            float weaponDamage=kind==RoboRougelike.R4.R4WeaponKind.Basic?basicDamageModifier:
+                kind==RoboRougelike.R4.R4WeaponKind.Automatic?(GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.AutomaticDamageMultiplier??damageModifier):
+                kind==RoboRougelike.R4.R4WeaponKind.Heavy?(GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.HeavyDamageMultiplier??damageModifier):PackageKineticDamageScale;
+            float fraction=kind==RoboRougelike.R4.R4WeaponKind.Basic?basicBlastFraction:0;
+            float kinetic=SafeShellDamage(profile.Damage*tier,1-fraction,weaponDamage);
+            float blast=SafeShellDamage(profile.Damage*tier,fraction,basicBlastDamageModifier);
+            var first=SpawnPhysicalShell(barrel,kinetic,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId,blast);
+            if(first==null)return null;
+            if(existingSibling!=null)P17PhysicalShell.IgnoreProjectilePair(first,existingSibling);
+            if(extraShots>0)FireAdditionalFrom(barrel,kind,partId,first,extraShots);
+            return first;
         }
-        public float WeaponInterval(RoboRougelike.R4.R4WeaponKind kind) => RoboRougelike.R4.R4WeaponDefinition.Get(kind).Interval*intervalModifier;
-        public float PackageDamageScale => damageModifier;
-        public float PackageIntervalScale => intervalModifier;
-        private void SpawnPhysicalShell(Transform barrel,float hitDamage,float projectileSpeed,float projectileDiameter,
-            float projectileMass,RoboRougelike.R4.R4WeaponKind kind,string partId)
+        public float WeaponInterval(RoboRougelike.R4.R4WeaponKind kind) => RoboRougelike.R3.R3MountedBonusEffects.SafeIntervalProduct(RoboRougelike.R4.R4WeaponDefinition.Get(kind).Interval,WeaponIntervalScale(kind));
+        internal void SetScopedWeaponIntervals(float[] scales)
+        {
+            if(scales==null||scales.Length!=scopedWeaponIntervals.Length){hasScopedWeaponIntervals=false;return;}
+            System.Array.Copy(scales,scopedWeaponIntervals,scales.Length);hasScopedWeaponIntervals=true;
+        }
+        public float WeaponIntervalScale(RoboRougelike.R4.R4WeaponKind kind)
+        {
+            EnsureMountedBonuses();
+            int index=(int)kind;
+            return hasScopedWeaponIntervals&&index>=0&&index<scopedWeaponIntervals.Length?scopedWeaponIntervals[index]:intervalModifier;
+        }
+        public float PackageDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.WeaponDamageMultiplier??damageModifier;
+        public float PackageBlastDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.BlastDamageMultiplier??damageModifier;
+        public float PackagePiercingDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.PiercingDamageMultiplier??damageModifier;
+        public float PackageKineticDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.KineticDamageMultiplier??damageModifier;
+        public float PackageShotgunDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.ShotgunDamageMultiplier??damageModifier;
+        public float PackageRailgunDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.RailgunDamageMultiplier??damageModifier;
+        public float PackageRocketDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.RocketDamageMultiplier??damageModifier;
+        public float PackageBeamDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.BeamDamageMultiplier??damageModifier;
+        public float PackageSawDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.SawDamageMultiplier??damageModifier;
+        public float PackageAuraDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.AuraDamageMultiplier??damageModifier;
+        public float PackageEnergyDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.EnergyDamageMultiplier??damageModifier;
+        public float PackageIntervalScale {get{EnsureMountedBonuses();return intervalModifier;}}
+        private Collider SpawnPhysicalShell(Transform barrel,float hitDamage,float projectileSpeed,float projectileDiameter,
+            float projectileMass,RoboRougelike.R4.R4WeaponKind kind,string partId,float blastDamage=0)
         {
             if (barrel == null)
-                return;
+                return null;
 
             Vector3 direction =
                 barrel.forward.normalized;
@@ -590,19 +689,18 @@ public float CurrentForwardSpeed =>
                     projectileDiameter * 0.75f
                 );
 
-            GameObject shell =
-                GameObject.CreatePrimitive(
-                    PrimitiveType.Sphere
-                );
+            P17PhysicalShell projectile=P17PhysicalShell.RentConventional();
+            GameObject shell=projectile.gameObject;
 
             RoboRougelike.R6.R6CombatFeedback.Muzzle(barrel,kind);
 
             shell.name =
                 "P17_PlayerPhysicalShell";
-            var originTag=shell.AddComponent<RoboRougelike.R4.R4ProjectileOrigin>();originTag.Weapon=kind;originTag.PartId=partId;
+            var originTag=shell.GetComponent<RoboRougelike.R4.R4ProjectileOrigin>();originTag.Weapon=kind;originTag.PartId=partId;
 
             shell.transform.position =
                 origin;
+            shell.transform.rotation=Quaternion.identity;
 
             shell.transform.localScale =
                 Vector3.one *
@@ -611,23 +709,18 @@ public float CurrentForwardSpeed =>
             Renderer shellRenderer =
                 shell.GetComponent<Renderer>();
 
-            if (shellRenderer != null &&
-                projectileMaterial != null)
-            {
-                shellRenderer.sharedMaterial =
-                    projectileMaterial;
-            }
+            if(shellRenderer!=null)shellRenderer.sharedMaterial=projectileMaterial!=null?projectileMaterial:projectile.DefaultMaterial;
 
             SphereCollider sphere =
                 shell.GetComponent<SphereCollider>();
 
             if (sphere != null)
             {
+                sphere.enabled = true;
                 sphere.isTrigger = false;
             }
 
-            Rigidbody projectileBody =
-                shell.AddComponent<Rigidbody>();
+            Rigidbody projectileBody = shell.GetComponent<Rigidbody>();
 
             projectileBody.mass =
                 projectileMass;
@@ -635,11 +728,16 @@ public float CurrentForwardSpeed =>
             projectileBody.useGravity =
                 false;
 
+            projectileBody.isKinematic = false;
+
             projectileBody.interpolation =
                 RigidbodyInterpolation.Interpolate;
 
             projectileBody.collisionDetectionMode =
                 CollisionDetectionMode.ContinuousDynamic;
+
+            shell.SetActive(true);
+            projectileBody.angularVelocity=Vector3.zero;
 
 #if UNITY_6000_0_OR_NEWER
             projectileBody.linearVelocity =
@@ -651,49 +749,10 @@ public float CurrentForwardSpeed =>
                 projectileSpeed;
 #endif
 
-            P17PhysicalShell projectile =
-                shell.AddComponent<
-                    P17PhysicalShell
-                >();
+            if(blastDamage>0)projectile.ConfigureHybrid(transform,hitDamage,blastDamage,projectileLifetime,direction,null);
+            else projectile.Configure(transform,hitDamage,projectileLifetime,direction,null);
 
-            projectile.Configure(
-                transform,
-                hitDamage,
-                projectileLifetime,
-                direction,
-                null
-            );
-
-            IgnoreOwnerColliders(
-                sphere
-            );
-        }
-
-        private void IgnoreOwnerColliders(
-            Collider projectileCollider)
-        {
-            if (projectileCollider == null)
-                return;
-
-            Collider[] ownerColliders =
-                GetComponentsInChildren<
-                    Collider
-                >(true);
-
-            foreach (Collider ownerCollider
-                     in ownerColliders)
-            {
-                if (ownerCollider == null ||
-                    ownerCollider ==
-                    projectileCollider)
-                    continue;
-
-                Physics.IgnoreCollision(
-                    projectileCollider,
-                    ownerCollider,
-                    true
-                );
-            }
+            return sphere;
         }
 
         private void EnsureProjectileMaterial()
@@ -1307,33 +1366,256 @@ public float CurrentForwardSpeed =>
     {
         private static readonly System.Collections.Generic.HashSet<P17PhysicalShell> activeShells =
             new System.Collections.Generic.HashSet<P17PhysicalShell>();
+        private struct CachedConventionalShell
+        {
+            public P17PhysicalShell Shell;
+            public int ReleasedFrame;
+        }
+        // This is a retention limit for inactive objects, not a projectile
+        // limit: excess inactive objects are destroyed and future shots can
+        // always allocate a new one.
+        private const int MaxCachedConventionalShells=256;
+        private static readonly System.Collections.Generic.Queue<CachedConventionalShell> conventionalCache =
+            new System.Collections.Generic.Queue<CachedConventionalShell>();
+        private bool cacheableConventional;
+        private double expiresAt;
+        private static ulong nextLaunchSequence;
+        public ulong LaunchSequence {get;private set;}
+        private System.Collections.Generic.List<Collider> ignoredForFlight;
+        internal Material DefaultMaterial {get;private set;}
+        // A few reserved layers avoid quadratic pair filters for unusually
+        // large single-gun volleys. Exhaustion falls back to ordinary pairs;
+        // these leases never limit how many shots can be created.
+        private sealed class VolleyLayerLease
+        {
+            internal readonly int Slot,Layer;
+            internal int Members;
+            internal VolleyLayerLease(int slot,int layer){Slot=slot;Layer=layer;}
+        }
+        private static readonly VolleyLayerLease[] volleyLayers=new VolleyLayerLease[8];
+        private VolleyLayerLease volleyLayer;
+        internal bool HasVolleyLayer=>volleyLayer!=null;
+        private int originalVolleyLayer,originalVolleyExclusions;
+        internal static bool TryGroupVolley(System.Collections.Generic.IReadOnlyList<GameObject> shots)
+            =>TryGroupVolleyInternal(shots,false);
+        private static bool TryGroupVolleyInternal(System.Collections.Generic.IReadOnlyList<GameObject> shots,bool allowUnpooled)
+        {
+            if(shots==null||shots.Count<2)return false;
+            var unique=new System.Collections.Generic.HashSet<P17PhysicalShell>();
+            foreach(var shot in shots)
+            {
+                var shell=shot!=null?shot.GetComponent<P17PhysicalShell>():null;
+                var col=shot!=null?shot.GetComponent<Collider>():null;
+                if(shell==null||!unique.Add(shell)||(!allowUnpooled&&!shell.cacheableConventional)||shell.volleyLayer!=null||!shell.isActiveAndEnabled||shot.layer!=0||col==null||!col.enabled)return false;
+            }
+            Collider[] sceneColliders=null;
+            for(int slot=0;slot<volleyLayers.Length;slot++)
+            {
+                int layer=24+slot;
+                if(volleyLayers[slot]!=null||LayerMask.NameToLayer("RRSalvo"+slot)!=layer)continue;
+                // Preserve every global collision-matrix decision the normal
+                // projectile layer would have made against other objects.
+                bool compatible=true;
+                for(int other=0;other<32;other++)
+                    if(Physics.GetIgnoreLayerCollision(layer,other)!=Physics.GetIgnoreLayerCollision(0,other)){compatible=false;break;}
+                if(compatible)
+                {
+                    if(sceneColliders==null)sceneColliders=UnityEngine.Object.FindObjectsByType<Collider>(FindObjectsInactive.Include,FindObjectsSortMode.None);
+                    foreach(var existing in sceneColliders)
+                    {
+                        if(existing==null)continue;
+                        // Do not claim a layer in use, or change how an
+                        // existing collider's custom filters see the shot.
+                        if(existing.gameObject.layer==layer||DistinguishesLayer(existing.includeLayers.value,layer)||DistinguishesLayer(existing.excludeLayers.value,layer))
+                        {compatible=false;break;}
+                        var body=existing.attachedRigidbody;
+                        if(body!=null&&(DistinguishesLayer(body.includeLayers.value,layer)||DistinguishesLayer(body.excludeLayers.value,layer)))
+                        {compatible=false;break;}
+                    }
+                }
+                if(!compatible)continue;
+                var lease=new VolleyLayerLease(slot,layer);volleyLayers[slot]=lease;
+                foreach(var shot in shots)shot.GetComponent<P17PhysicalShell>().JoinVolleyLayer(lease);
+                return true;
+            }
+            return false;
+        }
+        internal static bool TryGroupVolleyColliders(System.Collections.Generic.IReadOnlyList<Collider> colliders)
+        {
+            if(colliders==null)return false;
+            var shots=new GameObject[colliders.Count];
+            for(int i=0;i<colliders.Count;i++)
+            {if(colliders[i]==null)return false;shots[i]=colliders[i].gameObject;}
+            return TryGroupVolley(shots);
+        }
+        internal static bool TryGroupDeviceVolleyColliders(System.Collections.Generic.IReadOnlyList<Collider> colliders)
+        {
+            if(colliders==null)return false;
+            var shots=new GameObject[colliders.Count];
+            for(int i=0;i<colliders.Count;i++)
+            {if(colliders[i]==null)return false;shots[i]=colliders[i].gameObject;}
+            return TryGroupVolleyInternal(shots,true);
+        }
+        private static bool DistinguishesLayer(int mask,int layer)=>((mask&1)!=0)!=((mask&(1<<layer))!=0);
+        internal static bool TryJoinVolley(Collider sibling,Collider added)
+            =>TryJoinVolleyInternal(sibling,added,false);
+        internal static bool TryJoinDeviceVolley(Collider sibling,Collider added)
+            =>TryJoinVolleyInternal(sibling,added,true);
+        private static bool TryJoinVolleyInternal(Collider sibling,Collider added,bool allowUnpooled)
+        {
+            if(sibling==null||added==null)return false;
+            var first=sibling.GetComponent<P17PhysicalShell>();var next=added.GetComponent<P17PhysicalShell>();
+            if(first==null||first.volleyLayer==null||next==null||(!allowUnpooled&&!next.cacheableConventional)||next.volleyLayer!=null||!next.isActiveAndEnabled||next.gameObject.layer!=0)return false;
+            next.JoinVolleyLayer(first.volleyLayer);return true;
+        }
+        private void JoinVolleyLayer(VolleyLayerLease lease)
+        {
+            var col=GetComponent<Collider>();originalVolleyLayer=gameObject.layer;originalVolleyExclusions=col.excludeLayers.value;
+            volleyLayer=lease;lease.Members++;col.excludeLayers=originalVolleyExclusions|(1<<lease.Layer);gameObject.layer=lease.Layer;
+        }
+        private void ReleaseVolleyLayer()
+        {
+            var lease=volleyLayer;if(lease==null)return;volleyLayer=null;
+            var col=GetComponent<Collider>();if(col!=null)col.excludeLayers=originalVolleyExclusions;
+            gameObject.layer=originalVolleyLayer;
+            lease.Members--;if(lease.Members==0&&ReferenceEquals(volleyLayers[lease.Slot],lease))volleyLayers[lease.Slot]=null;
+        }
+        internal static void IgnoreProjectilePair(Collider first,Collider second)
+        {
+            if(first==null||second==null)return;
+            Physics.IgnoreCollision(first,second,true);
+            var a=first.GetComponent<P17PhysicalShell>();var b=second.GetComponent<P17PhysicalShell>();
+            if(a!=null&&a.cacheableConventional)a.ignoredForFlight.Add(second);
+            if(b!=null&&b.cacheableConventional)b.ignoredForFlight.Add(first);
+        }
+        // A pair may be excluded by collider/body layer overrides without an
+        // explicit IgnoreCollision pair. Mutual exclusion is unambiguous even
+        // when either collider uses a different override priority.
+        private static bool MutuallyExcludedLayers(Collider first,Collider second)
+        {
+            if(first==null||second==null)return false;
+            int firstMask=first.excludeLayers.value,secondMask=second.excludeLayers.value;
+            var firstBody=first.attachedRigidbody;var secondBody=second.attachedRigidbody;
+            if(firstBody!=null)firstMask|=firstBody.excludeLayers.value;
+            if(secondBody!=null)secondMask|=secondBody.excludeLayers.value;
+            return (firstMask&(1<<second.gameObject.layer))!=0&&(secondMask&(1<<first.gameObject.layer))!=0;
+        }
+        internal static P17PhysicalShell RentConventional()
+        {
+            while(conventionalCache.Count>0)
+            {
+                var cached=conventionalCache.Peek();
+                if(cached.Shell==null){conventionalCache.Dequeue();continue;}
+                // A collision callback can still hold the old reference this
+                // frame. Only rent it again after that frame has finished.
+                if(cached.ReleasedFrame>=Time.frameCount)break;
+                conventionalCache.Dequeue();
+                var shell=cached.Shell;shell.spent=false;shell.ownerRoot=null;shell.ownerWasAssigned=false;
+                shell.targetRoot=null;shell.damage=0;shell.hybridDamage=false;shell.kineticComponent=0;shell.blastComponent=0;
+                return shell;
+            }
+            var item=GameObject.CreatePrimitive(PrimitiveType.Sphere);item.SetActive(false);
+            var defaultMaterial=item.GetComponent<Renderer>().sharedMaterial;
+            item.AddComponent<Rigidbody>();item.AddComponent<RoboRougelike.R4.R4ProjectileOrigin>();
+            var result=item.AddComponent<P17PhysicalShell>();result.cacheableConventional=true;result.DefaultMaterial=defaultMaterial;
+            result.ignoredForFlight=new System.Collections.Generic.List<Collider>();
+            return result;
+        }
+        internal static void ClearConventionalCache()
+        {
+            while(conventionalCache.Count>0)
+            {
+                var item=conventionalCache.Dequeue().Shell;
+                if(item!=null)Destroy(item.gameObject);
+            }
+        }
+        internal void Retire()
+        {
+            // Mark spent before resetting physics pairs; trigger callbacks
+            // caused by a filter change must not process this shot again.
+            spent=true;
+            if(railgun!=null){railgun.enabled=false;railgun=null;}
+            bool reusable=cacheableConventional;
+            if(reusable)
+            {
+                var own=GetComponent<Collider>();
+                if(own==null||!own.enabled||!own.gameObject.activeInHierarchy)reusable=false;
+                else foreach(var other in ignoredForFlight)
+                {
+                    if(other==null||!Physics.GetIgnoreCollision(own,other))continue;
+                    // Unity can retain ignore pairs across deactivation. If a
+                    // counterpart is inactive we cannot safely reset it.
+                    if(!other.enabled||!other.gameObject.activeInHierarchy){reusable=false;continue;}
+                    Physics.IgnoreCollision(own,other,false);
+                }
+                ignoredForFlight.Clear();
+            }
+            gameObject.SetActive(false);
+            ReleaseVolleyLayer();
+            if(reusable&&conventionalCache.Count<MaxCachedConventionalShells)
+                conventionalCache.Enqueue(new CachedConventionalShell{Shell=this,ReleasedFrame=Time.frameCount});
+            else Destroy(gameObject);
+        }
         // Unity physics and component traversal run on the main thread. Keep
         // one reusable scratch list, but isolate a nested setup if a physics
         // callback ever causes another projectile to be configured here.
         private static readonly System.Collections.Generic.List<Collider> projectileColliderBuffer =
             new System.Collections.Generic.List<Collider>();
         private static bool projectileColliderBufferInUse;
-        public static int AvailableSlots => Mathf.Max(0,96-activeShells.Count);
+        public static int ActiveCount => activeShells.Count;
         private void OnEnable()
         {
-            if(activeShells.Count>=96){gameObject.SetActive(false);Destroy(gameObject);return;}
             activeShells.Add(this);
             if(GetComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseThreat>()==null)gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseThreat>();
         }
         private void OnDisable(){activeShells.Remove(this);}
+        private void OnDestroy(){ReleaseVolleyLayer();}
         private Transform ownerRoot;
+        private bool ownerWasAssigned;
         public Transform OwnerRoot=>ownerRoot;
-        public bool IsActiveProjectile=>isActiveAndEnabled&&!spent&&ownerRoot!=null;
+        public float DamageAmount=>damage;
+        public Vector3 LaunchPosition=>launchPosition;
+        public bool IsActiveProjectile=>isActiveAndEnabled&&!spent&&ownerRoot!=null&&ownerRoot.gameObject.activeInHierarchy;
         public Vector3 FlightVelocity=>railgun!=null?railgun.Velocity:GetComponent<Rigidbody>().linearVelocity;
+        internal struct ConventionalSnapshot
+        {
+            public Transform Owner,Target;
+            public Vector3 Position,Direction,Velocity,Scale;
+            public Quaternion Rotation;
+            public float Mass,Lifetime,Range,Damage,Kinetic,Blast;
+            public bool Hybrid;
+            public Material Material;
+            public RoboRougelike.R4.R4WeaponKind Weapon;
+            public string PartId;
+        }
+        internal ConventionalSnapshot CaptureConventional()
+        {
+            if(!IsActiveProjectile||railgun!=null)throw new System.InvalidOperationException("A live conventional projectile is required.");
+            var body=GetComponent<Rigidbody>();var renderer=GetComponent<Renderer>();
+            var origin=GetComponent<RoboRougelike.R4.R4ProjectileOrigin>();
+            if(body==null||origin==null)throw new System.InvalidOperationException("A conventional projectile is missing its body or identity.");
+            double remaining=cacheableConventional?System.Math.Max(.5d,expiresAt-Time.timeAsDouble):.5d;
+            return new ConventionalSnapshot{Owner=ownerRoot,Target=targetRoot,Position=launchPosition,Direction=launchDirection,Rotation=transform.rotation,
+                Velocity=body.linearVelocity,Scale=transform.localScale,Mass=body.mass,Lifetime=(float)System.Math.Min(float.MaxValue,remaining),
+                Range=maxTravelDistance,Damage=damage,Kinetic=kineticComponent,Blast=blastComponent,Hybrid=hybridDamage,
+                Material=renderer!=null?renderer.sharedMaterial:null,Weapon=origin.Weapon,PartId=origin.PartId};
+        }
         public bool Intercept(float amount)
-        {if(!IsActiveProjectile||amount<=0||float.IsNaN(amount)||float.IsInfinity(amount))return false;spent=true;gameObject.SetActive(false);Destroy(gameObject);return true;}
+        {if(!IsActiveProjectile||amount<=0||float.IsNaN(amount)||float.IsInfinity(amount))return false;Retire();return true;}
         private static Mesh shellVisualMesh;
         private Transform shellVisual;
         private Rigidbody shellBody;
         private void CreateShellVisual()
         {
             var original=GetComponent<Renderer>();
-            if(original==null||original.sharedMaterial==null)return;
+            if(original==null)return;
+            if(original.sharedMaterial==null)
+            {if(shellVisual!=null)shellVisual.gameObject.SetActive(false);original.enabled=true;return;}
+            if(shellVisual!=null)
+            {
+                shellVisual.gameObject.SetActive(true);shellVisual.GetComponent<Renderer>().sharedMaterial=original.sharedMaterial;
+                shellBody=GetComponent<Rigidbody>();original.enabled=false;OrientShellVisual(launchDirection);return;
+            }
             if(shellVisualMesh==null)
             {
                 var template=GameObject.CreatePrimitive(PrimitiveType.Capsule);template.SetActive(false);
@@ -1363,12 +1645,88 @@ public float CurrentForwardSpeed =>
         private float damage;
         private Vector3 launchDirection;
         private bool spent;
+        private bool hybridDamage;
+        private float kineticComponent,blastComponent;
         private Vector3 launchPosition;
         private float maxTravelDistance=float.PositiveInfinity;
+        // Shield path checks run for every approaching projectile. Reuse the
+        // common buffers while retaining a complete fallback for dense scenes.
+        private const int DomeQueryBufferLimit=256;
+        private static Collider[] domeOverlapBuffer=new Collider[16];
+        private static RaycastHit[] domeSweepBuffer=new RaycastHit[16];
+        private static bool domeQueryInUse;
         private RoboRougelike.WeaponIntegration.RRLRailPenetration railgun;
         public void ConfigureRailgun(RoboRougelike.WPN002Railgun.RailgunShot shot,float damageScale)
-        {railgun=gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRailPenetration>();railgun.Bind(shot,damageScale);}
-        private void FixedUpdate(){if(railgun!=null&&isActiveAndEnabled)railgun.Step(Time.fixedDeltaTime);}
+        {
+            railgun=GetComponent<RoboRougelike.WeaponIntegration.RRLRailPenetration>();
+            if(railgun==null)railgun=gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRailPenetration>();
+            railgun.enabled=true;railgun.Bind(shot,damageScale);
+        }
+        private void FixedUpdate()
+        {
+            if(RetireLostOwner())return;
+            if(railgun!=null){if(isActiveAndEnabled)railgun.Step(Time.fixedDeltaTime);return;}
+            if(!IsActiveProjectile||damage<=0||float.IsNaN(damage)||float.IsInfinity(damage))return;
+            var body=GetComponent<Rigidbody>();var own=GetComponent<Collider>();
+            if(body==null||own==null)return;
+            var step=body.linearVelocity*Time.fixedDeltaTime;float distance=step.magnitude;
+            if(distance<=.00001f||float.IsNaN(distance)||float.IsInfinity(distance))return;
+            if(!float.IsInfinity(maxTravelDistance))distance=Mathf.Min(distance,Mathf.Max(0,maxTravelDistance-(body.position-launchPosition).magnitude));
+            if(distance<=.00001f)return;
+            Vector3 direction=step.normalized,start=body.position,end=start+direction*distance;
+            if(!RoboRougelike.R3.R3ShieldDome.TryFirstHit(start,end,ownerRoot,out var dome,out float shieldDistance))return;
+            bool Blocks(Collider collider)
+            {
+                if(collider==null||collider==own||collider.isTrigger||collider.transform.IsChildOf(transform)||
+                   collider.transform==ownerRoot||collider.transform.IsChildOf(ownerRoot)||Physics.GetIgnoreCollision(own,collider)||
+                   MutuallyExcludedLayers(own,collider))return false;
+                var hp=collider.GetComponentInParent<P12PipelineSafeDamageable>();
+                return collider.GetComponentInParent<RoboRougelike.R3.R3Debris>()==null&&(hp==null||!hp.IsDead)&&
+                    RoboRougelike.WeaponIntegration.RRLHitRouter.CanHit(collider,ownerRoot);
+            }
+            var sphere=own as SphereCollider;
+            float radius=sphere!=null?sphere.radius*Mathf.Max(Mathf.Abs(transform.lossyScale.x),Mathf.Abs(transform.lossyScale.y),Mathf.Abs(transform.lossyScale.z)):.01f;
+            radius=Mathf.Max(.001f,radius);
+            bool shared=!domeQueryInUse;
+            var overlaps=shared?domeOverlapBuffer:new Collider[16];
+            var hits=shared?domeSweepBuffer:new RaycastHit[16];
+            if(shared)domeQueryInUse=true;
+            try
+            {
+                int count;
+                while(true)
+                {
+                    count=Physics.OverlapSphereNonAlloc(start,radius,overlaps,~0,QueryTriggerInteraction.Ignore);
+                    if(count<overlaps.Length)break;
+                    if(overlaps.Length>=DomeQueryBufferLimit)
+                    {overlaps=Physics.OverlapSphere(start,radius,~0,QueryTriggerInteraction.Ignore);count=overlaps.Length;break;}
+                    System.Array.Resize(ref overlaps,Mathf.Min(DomeQueryBufferLimit,overlaps.Length*2));
+                    if(shared)domeOverlapBuffer=overlaps;
+                }
+                for(int i=0;i<count;i++)if(Blocks(overlaps[i]))return;
+                while(true)
+                {
+                    count=Physics.SphereCastNonAlloc(start,radius,direction,hits,shieldDistance,~0,QueryTriggerInteraction.Ignore);
+                    if(count<hits.Length)break;
+                    if(hits.Length>=DomeQueryBufferLimit)
+                    {hits=Physics.SphereCastAll(start,radius,direction,shieldDistance,~0,QueryTriggerInteraction.Ignore);count=hits.Length;break;}
+                    System.Array.Resize(ref hits,Mathf.Min(DomeQueryBufferLimit,hits.Length*2));
+                    if(shared)domeSweepBuffer=hits;
+                }
+                for(int i=0;i<count;i++)if(Blocks(hits[i].collider))return;
+            }
+            finally
+            {
+                if(shared)
+                {
+                    System.Array.Clear(domeOverlapBuffer,0,domeOverlapBuffer.Length);
+                    System.Array.Clear(domeSweepBuffer,0,domeSweepBuffer.Length);
+                    domeQueryInUse=false;
+                }
+            }
+            float amount=damage;Vector3 point=start+direction*shieldDistance;
+            if(Intercept(1f))dome.Absorb(amount,point,direction);
+        }
 
 
         public void Configure(
@@ -1380,9 +1738,13 @@ public float CurrentForwardSpeed =>
             float maxDistance=float.PositiveInfinity)
         {
             if(!isActiveAndEnabled)return;
+            unchecked{nextLaunchSequence++;if(nextLaunchSequence==0)nextLaunchSequence++;}
+            LaunchSequence=nextLaunchSequence;
+            hybridDamage=false;kineticComponent=blastComponent=0;
             launchPosition=transform.position;
             maxTravelDistance=float.IsNaN(maxDistance)?0:Mathf.Max(0,maxDistance);
             ownerRoot = owner;
+            ownerWasAssigned = owner != null;
             targetRoot =
                 targetToIgnoreNonDamageable;
 
@@ -1393,18 +1755,22 @@ public float CurrentForwardSpeed =>
                 initialDirection.normalized;
             CreateShellVisual();
 
-            Destroy(
-                gameObject,
-                Mathf.Max(
-                    0.5f,
-                    lifetime
-                )
-            );
+            if(cacheableConventional)expiresAt=Time.timeAsDouble+Mathf.Max(.5f,lifetime);
+            else Destroy(gameObject,Mathf.Max(.5f,lifetime));
 
             IgnoreOwnerCollisions();
 
             if (targetRoot != null)
                 IgnoreTargetHelpers();
+        }
+
+        public void ConfigureHybrid(Transform owner,float kinetic,float blast,float lifetime,Vector3 direction,Transform targetToIgnoreNonDamageable,float maxDistance=float.PositiveInfinity)
+        {
+            if(float.IsNaN(kinetic)||float.IsInfinity(kinetic)||kinetic<0||float.IsNaN(blast)||float.IsInfinity(blast)||blast<0)return;
+            double total=(double)kinetic+blast,scale=total>float.MaxValue?float.MaxValue/total:1d;
+            Configure(owner,(float)(total*scale),lifetime,direction,targetToIgnoreNonDamageable,maxDistance);
+            if(!isActiveAndEnabled)return;
+            kineticComponent=(float)(kinetic*scale);blastComponent=(float)(blast*scale);hybridDamage=true;
         }
 
         private void IgnoreOwnerCollisions()
@@ -1426,6 +1792,7 @@ public float CurrentForwardSpeed =>
                 {
                     if (ownerCollider == null || ownerCollider == ownCollider)continue;
                     Physics.IgnoreCollision(ownCollider,ownerCollider,true);
+                    if(cacheableConventional)ignoredForFlight.Add(ownerCollider);
                 }
             }
             finally { ownerColliders.Clear(); if(shared)projectileColliderBufferInUse=false; }
@@ -1433,8 +1800,16 @@ public float CurrentForwardSpeed =>
 
         private void Update()
         {
+            if(RetireLostOwner())return;
+            if(cacheableConventional&&!spent&&Time.timeAsDouble>=expiresAt){Retire();return;}
             if(!spent&&(transform.position-launchPosition).sqrMagnitude>maxTravelDistance*maxTravelDistance)
-            {spent=true;gameObject.SetActive(false);Destroy(gameObject);}
+            {Retire();}
+        }
+
+        private bool RetireLostOwner()
+        {
+            if(!ownerWasAssigned||(ownerRoot!=null&&ownerRoot.gameObject.activeInHierarchy))return false;
+            Retire();return true;
         }
 
         private void IgnoreTargetHelpers()
@@ -1460,7 +1835,11 @@ public float CurrentForwardSpeed =>
                     bool damageable=targetCollider.TryGetComponent<P12PipelineSafeDamageable>(out _);
                     for(var parent=targetCollider.transform.parent;!damageable&&parent!=null;parent=parent.parent)
                         if(parent.gameObject.activeInHierarchy&&parent.TryGetComponent<P12PipelineSafeDamageable>(out _))damageable=true;
-                    if(!damageable)Physics.IgnoreCollision(ownCollider,targetCollider,true);
+                    if(!damageable)
+                    {
+                        Physics.IgnoreCollision(ownCollider,targetCollider,true);
+                        if(cacheableConventional)ignoredForFlight.Add(targetCollider);
+                    }
                 }
             }
             finally { targetColliders.Clear(); if(shared)projectileColliderBufferInUse=false; }
@@ -1469,6 +1848,7 @@ public float CurrentForwardSpeed =>
         private void OnCollisionEnter(
             Collision collision)
         {
+            if(RetireLostOwner())return;
             if (railgun!=null || spent ||
                 collision == null ||
                 collision.collider == null)
@@ -1493,7 +1873,11 @@ public float CurrentForwardSpeed =>
                 !RoboRougelike.WeaponIntegration.RRLHitRouter.CanHit(collision.collider,ownerRoot))
             {
                 var own=GetComponent<Collider>();
-                if(own!=null)Physics.IgnoreCollision(own,collision.collider,true);
+                if(own!=null)
+                {
+                    Physics.IgnoreCollision(own,collision.collider,true);
+                    if(cacheableConventional)ignoredForFlight.Add(collision.collider);
+                }
                 var shellBody=GetComponent<Rigidbody>();
                 if(shellBody!=null)shellBody.linearVelocity=launchDirection*Mathf.Max(
                     shellBody.linearVelocity.magnitude,collision.relativeVelocity.magnitude);
@@ -1512,7 +1896,10 @@ public float CurrentForwardSpeed =>
                     : transform.position;
 
             if((point-launchPosition).sqrMagnitude<=maxTravelDistance*maxTravelDistance)
-                RoboRougelike.WeaponIntegration.RRLHitRouter.Apply(collision.collider,damage,point,launchDirection,ownerRoot);
+            {
+                if(hybridDamage)RoboRougelike.WeaponIntegration.RRLHitRouter.ApplyHybrid(collision.collider,kineticComponent,blastComponent,point,launchDirection,ownerRoot);
+                else RoboRougelike.WeaponIntegration.RRLHitRouter.Apply(collision.collider,damage,point,launchDirection,ownerRoot);
+            }
 
             Rigidbody hitBody =
                 collision.rigidbody;
@@ -1526,9 +1913,7 @@ public float CurrentForwardSpeed =>
                 );
             }
 
-            Destroy(
-                gameObject
-            );
+            if(cacheableConventional)Retire();else Destroy(gameObject);
         }
     }
 

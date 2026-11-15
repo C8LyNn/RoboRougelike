@@ -112,6 +112,38 @@ namespace RoboRougelike.Mechanics.BeamCutter.Tests
             Assert.AreEqual(_target.GetComponent<Collider>(), _beam.ManualFixedStep(0.1f).FirstHit);
         }
 
+        [Test] public void DenseOwnGeometryDoesNotCancelBeamAndWallStillBlocks()
+        {
+            var own=new GameObject("Dense own armor");own.transform.SetParent(_vehicle.transform,false);own.transform.localPosition=Vector3.forward*2;
+            for(int i=0;i<130;i++)own.AddComponent<BoxCollider>().size=Vector3.one*.2f;
+            Physics.SyncTransforms();_beam.SetTriggerHeld(true);
+            Assert.AreEqual(_target.GetComponent<Collider>(),_beam.ManualFixedStep(.1f).FirstHit);
+            var bufferField=typeof(BeamCutterModule).GetField("_hits",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var buffer=(RaycastHit[])bufferField.GetValue(_beam);Assert.Greater(buffer.Length,128,"The dense fast path should grow its reusable buffer.");
+            var wall=MakeCube("Dense line wall",3f);
+            try{Physics.SyncTransforms();Assert.AreEqual(wall.GetComponent<Collider>(),_beam.ManualFixedStep(.1f).FirstHit);Assert.AreSame(buffer,bufferField.GetValue(_beam));}
+            finally{Object.DestroyImmediate(wall);}
+        }
+        [Test] public void DenseOwnGeometryAtMuzzleDoesNotHideForeignObstruction()
+        {
+            var own=new GameObject("Dense muzzle armor");own.transform.SetParent(_vehicle.transform,false);
+            for(int i=0;i<65;i++)own.AddComponent<BoxCollider>().size=Vector3.one*.1f;
+            Physics.SyncTransforms();_beam.SetTriggerHeld(true);
+            Assert.AreEqual(_target.GetComponent<Collider>(),_beam.ManualFixedStep(.1f).FirstHit);
+            var bufferField=typeof(BeamCutterModule).GetField("_muzzleOverlaps",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var buffer=(Collider[])bufferField.GetValue(_beam);Assert.Greater(buffer.Length,64);
+            var wall=MakeCube("Dense muzzle wall",0f);
+            try{Physics.SyncTransforms();Assert.AreEqual(BeamStepStatus.ObstructedAtMuzzle,_beam.ManualFixedStep(.1f).Status);Assert.AreSame(buffer,bufferField.GetValue(_beam));}
+            finally{Object.DestroyImmediate(wall);}
+        }
+        [Test] public void MoreThanReusableCapacityStillFindsTheActualTarget()
+        {
+            var own=new GameObject("Very dense own armor");own.transform.SetParent(_vehicle.transform,false);own.transform.localPosition=Vector3.forward*2;
+            for(int i=0;i<4100;i++)own.AddComponent<BoxCollider>().size=Vector3.one*.2f;
+            Physics.SyncTransforms();_beam.SetTriggerHeld(true);
+            Assert.AreEqual(_target.GetComponent<Collider>(),_beam.ManualFixedStep(.1f).FirstHit);
+        }
+
         [Test]
         public void WallWithoutDamageReceiver_StillBlocks()
         {

@@ -114,7 +114,7 @@ namespace RoboRougelike.Mechanics.MOV007
 
             // Shared tanks are debited once per active, ground-supported pod per step.
             // A failed debit means no lift and no thrust from that pod this frame.
-            int paidCount = 0;
+            int paidCount = 0;float poweredUnits=0;
             for (int i = 0; i < _supported.Count; i++)
             {
                 HoverLiftPod pod = _supported[i];
@@ -129,30 +129,36 @@ namespace RoboRougelike.Mechanics.MOV007
                 vehicleBody.AddForceAtPosition(pod.LiftDirection * liftForce, pod.transform.position, ForceMode.Force);
                 pod.UpdateDiagnostics(true, height, liftForce);
                 paidCount++;
+                if(!float.IsNaN(pod.propulsionMultiplier)&&!float.IsInfinity(pod.propulsionMultiplier)&&pod.propulsionMultiplier>0)
+                    poweredUnits=(float)System.Math.Min(float.MaxValue,(double)poweredUnits+pod.propulsionMultiplier);
             }
             LastSupportedPodCount = paidCount;
-            if (paidCount > 0) ApplyPlanarDrive(paidCount);
+            if (poweredUnits > 0) ApplyPlanarDrive(poweredUnits);
         }
 
-        private void ApplyPlanarDrive(int supportingPodCount)
+        private void ApplyPlanarDrive(float supportingPodCount)
         {
             Vector3 desired = HoverPhysicsMath.DesiredPlanarVelocity(
                 transform, MoveInput, forwardSpeedMetersPerSec, strafeSpeedMetersPerSec);
             float response = BrakeInput ? brakeResponseSeconds :
                 (MoveInput.sqrMagnitude < 0.001f ? idleDragResponseSeconds : inputResponseSeconds);
             if (BrakeInput) desired = Vector3.zero;
+            float thrustCap=float.IsNaN(thrustNewtonsPerPoweredPod)||float.IsInfinity(thrustNewtonsPerPoweredPod)?0f:
+                (float)System.Math.Min(float.MaxValue,(double)supportingPodCount*Mathf.Max(0,thrustNewtonsPerPoweredPod));
             Vector3 force = HoverPhysicsMath.PlanarMotorForce(
                 vehicleBody.linearVelocity, desired, vehicleBody.mass, response,
-                supportingPodCount * thrustNewtonsPerPoweredPod,
+                thrustCap,
                 counteractExternalBoost || BrakeInput || MoveInput.sqrMagnitude < 0.001f);
             vehicleBody.AddForce(force, ForceMode.Force);
 
             float targetYaw = TurnInput * yawDegreesPerSecond * Mathf.Deg2Rad;
             if (BrakeInput) targetYaw = 0f;
             float inertia = HoverPhysicsMath.ApproximateWorldUpInertia(vehicleBody);
+            float yawCap=float.IsNaN(yawTorqueNmPerPoweredPod)||float.IsInfinity(yawTorqueNmPerPoweredPod)?0f:
+                (float)System.Math.Min(float.MaxValue,(double)supportingPodCount*Mathf.Max(0,yawTorqueNmPerPoweredPod));
             float torque = HoverPhysicsMath.YawMotorTorque(
                 Vector3.Dot(vehicleBody.angularVelocity, Vector3.up), targetYaw,
-                inertia, response, supportingPodCount * yawTorqueNmPerPoweredPod);
+                inertia, response, yawCap);
             vehicleBody.AddTorque(Vector3.up * torque, ForceMode.Force);
         }
 

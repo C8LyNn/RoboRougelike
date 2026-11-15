@@ -7,6 +7,7 @@ namespace RoboRougelike.WeaponIntegration
     [DisallowMultipleComponent]
     public sealed class RRLPointDefenseBinding : MonoBehaviour,IRRLDeviceLifecycle
     {
+        public const float EnergyPerShot=2.5f;
         public void RefreshAvailability(){if(Controller!=null)Controller.SetOperational(Device.Available&&State.ReloadReadyAt<=Time.time);}
         public RRLDeviceBinding Device {get;private set;}
         public PointDefenseController Controller {get;private set;}
@@ -26,7 +27,7 @@ namespace RoboRougelike.WeaponIntegration
             Controller=gameObject.AddComponent<PointDefenseController>();Controller.SetAutomaticSimulation(false);
             // Explicit live balance: two hits against the original 12-HP rocket, limited magazine.
             var energy=owner.GetComponent<VehicleEnergyBank>();
-            Controller.Configure(new PointDefenseConfiguration{useAmmunition=true,startingAmmunition=state.Ammo,interceptorDamage=6,energyPerShot=energy!=null?2.5f:0f},prefab);
+            Controller.Configure(new PointDefenseConfiguration{useAmmunition=true,startingAmmunition=state.Ammo,interceptorDamage=6*R3VehicleModel.TierEffectUnits(state.Tier),energyPerShot=energy!=null?EnergyPerShot*R3VehicleModel.TierActivationCost(state.Tier):0f},prefab);
             Controller.SetEnergySource(energy);
             Controller.Bind(Device.Body,owner,pivot,muzzle,RRLHitRouter.Team(owner));
             Controller.RestoreState(state.Ammo,Mathf.Max(0,state.DeviceReadyAt-Time.time));

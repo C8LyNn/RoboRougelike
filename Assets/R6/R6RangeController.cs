@@ -30,25 +30,35 @@ namespace RoboRougelike.R1
         }
         public bool AddCreativeBonus(string id)
         {
-            if(!CreativeWorkshop||Transitioning||Progress?.State!=R1RunState.Garage||VehicleModel==null||string.IsNullOrEmpty(id))return false;
-            var bonus=System.Array.Find(Definition.Upgrades,item=>item!=null&&item.Id==id);
-            return bonus!=null&&VehicleModel.ReceiveBonuses(new[]{bonus});
+            if(string.IsNullOrEmpty(id)||Definition?.Upgrades==null)return false;
+            return AddCreativeBonusDefinition(System.Array.Find(Definition.Upgrades,item=>item!=null&&item.Id==id));
         }
+        internal bool AddCreativeBonusDefinition(R1UpgradeDefinition bonus)=>
+            CreativeWorkshop&&!Transitioning&&Progress?.State==R1RunState.Garage&&VehicleModel!=null&&bonus!=null&&
+            Definition?.Upgrades!=null&&System.Array.IndexOf(Definition.Upgrades,bonus)>=0&&VehicleModel.ReceiveBonuses(new[]{bonus});
         public bool AddCreativeEquivalent(R3PartState source,out R3PartState created)
         {
             created=null;
             if(!CreativeWorkshop||Transitioning||Progress?.State!=R1RunState.Garage||VehicleModel==null||
                source==null||source.Kind==R3PartKind.Core||source.Health<=0||
                !VehicleModel.Parts.Contains(source)||!R3VehicleModel.ValidEconomicPart(source))return false;
-            bool added=source.Kind==R3PartKind.BonusModule?AddCreativeBonus(source.UpgradeId):
-                GaragePurchase(source.Kind,source.Weapon,source.WheelStyle,source.ArmorShape);
+            if(source.Kind==R3PartKind.BonusModule)
+            {
+                // A physical bonus may have a different operation or scope
+                // than today's reward definition with the same ID. Preserve
+                // the mounted variant rather than looking it up by ID alone.
+                var copy=new R3PartState(default,R3PartKind.BonusModule){Tier=R3VehicleModel.NormalizedTier(source.Tier),
+                    Source="Kopia kreatywna",ContactMask=source.ContactMask,FootprintRevision=source.FootprintRevision,
+                    UpgradeId=source.UpgradeId,UpgradeTitle=source.UpgradeTitle,UpgradeDescription=source.UpgradeDescription,
+                    UpgradeEffect=source.UpgradeEffect,UpgradeOperation=source.UpgradeOperation,UpgradeScope=source.UpgradeScope,UpgradeAmount=source.UpgradeAmount};
+                if(!VehicleModel.ReceiveSalvage(new[]{copy}))return false;
+                created=VehicleModel.Inventory[VehicleModel.Inventory.Count-1];return true;
+            }
+            bool added=GaragePurchase(source.Kind,source.Weapon,source.WheelStyle,source.ArmorShape);
             if(!added)return false;
             created=VehicleModel.Inventory[VehicleModel.Inventory.Count-1];
             created.Tier=R3VehicleModel.NormalizedTier(source.Tier);created.FootprintRevision=source.FootprintRevision;
             created.ContactMask=R3VehicleModel.StoredWheelContacts(source);
-            if(created.Kind==R3PartKind.BonusModule)
-            {created.UpgradeId=source.UpgradeId;created.UpgradeTitle=source.UpgradeTitle;created.UpgradeDescription=source.UpgradeDescription;
-             created.UpgradeEffect=source.UpgradeEffect;created.UpgradeAmount=source.UpgradeAmount;}
             return true;
         }
 
@@ -76,6 +86,7 @@ namespace RoboRougelike.R1
         IEnumerator BuildTestRange()
         {
             Transitioning=true;Paused=false;RangeDisabled=false;SetSimulation(false);Encounter.Clear();
+            ResetEmergencyRescue();
             if(Player!=null){Player.gameObject.SetActive(false);Destroy(Player.gameObject);}
             if(testRange!=null)testRange.Clear();
             R1EncounterManager.ClearTransientObjects();

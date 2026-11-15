@@ -103,6 +103,61 @@ public sealed class BacklogTechnologyIntegrationTests
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
         Assert.That(run.GaragePurchase(R3PartKind.Gun,R4WeaponKind.Railgun),Is.True,"Defeated enemy unlocks future purchases.");
     }
+    [UnityTest] public IEnumerator DisarmedEnemyStillUnlocksItsRailgunAfterCoreDefeat()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        var enemy=run.Encounter.Enemies.First();enemy.GetComponent<Rigidbody>().isKinematic=true;
+        enemy.SetCombatActive(true);Assert.That(enemy.EquipRailgun(),Is.True);
+        Assert.That(run.CanBuyTechnology(R3PartKind.Gun,R4WeaponKind.Railgun),Is.False);
+        string id=enemy.EquipmentInstanceId("gun");var weapon=enemy.WeaponBlock;
+        weapon.ApplyDamageResolvedTyped(weapon.CurrentHp/.9f+1,weapon.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Kinetic);
+        Assert.That(weapon.IsDead,Is.True);Assert.That(enemy.IsDefeated,Is.False);
+        Assert.That(run.Salvage.Items.Any(p=>p.Id==id&&p.Weapon==R4WeaponKind.Railgun),Is.True,
+            "The early wreck must retain the actual type, even though the enemy started with another gun.");
+        Assert.That(run.CanBuyTechnology(R3PartKind.Gun,R4WeaponKind.Railgun),Is.False,"Dropping a gun is not core defeat.");
+        enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        Assert.That(enemy.IsDefeated,Is.True);
+        Assert.That(run.CanBuyTechnology(R3PartKind.Gun,R4WeaponKind.Railgun),Is.True);
+        Assert.That(new R1TechnologyProgress(path).IsUnlocked(R3PartKind.Gun,R4WeaponKind.Railgun),Is.True);
+        Assert.That(run.Salvage.Items.Count(p=>p.Id==id),Is.EqualTo(1));
+        yield return null;
+    }
+    [UnityTest] public IEnumerator AdditionalGunEquippedAfterEnemyStartCanDropWhenDetached()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        var enemy=run.Encounter.Enemies.First();enemy.GetComponent<Rigidbody>().isKinematic=true;enemy.SetCombatActive(true);
+        var list=(System.Collections.IList)enemy.GetType().GetField("additionalGuns",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(enemy);
+        foreach(var existing in enemy.AdditionalWeapons.ToArray())
+            if(existing.Block!=null){existing.Block.gameObject.SetActive(false);UnityEngine.Object.Destroy(existing.Block.gameObject);}
+        list.Clear();
+        Assert.That(enemy.EquipAdditionalGun(),Is.True,"This weapon is equipped after the enemy's Start method.");
+        var extra=enemy.AdditionalWeapons.Single();string id=enemy.EquipmentInstanceId("extra-gun/0");
+        var block=extra.Block.GetComponent<RogueMachine.P12PipelineSafe.P12_PipelineSafePlayerBlock>();Assert.That(block,Is.Not.Null);
+        block.MarkDetached();
+        Assert.That(run.Salvage.Items.Count(p=>p.Id==id&&p.Weapon==R4WeaponKind.Automatic),Is.EqualTo(1));
+        Assert.That(UnityEngine.Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Count(p=>p.ItemId==id),Is.EqualTo(1));
+        enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        Assert.That(enemy.IsDefeated,Is.True);
+        Assert.That(run.Salvage.Items.Count(p=>p.Id==id),Is.EqualTo(1),"Core defeat must not duplicate the already dropped weapon.");
+        Assert.That(UnityEngine.Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Count(p=>p.ItemId==id),Is.EqualTo(1));
+        Assert.That(run.VehicleModel.Owns(id),Is.False,"Discovery and defeat must not grant an uncollected part.");
+        yield return null;
+    }
+    [UnityTest] public IEnumerator AdditionalGunEquippedAfterEnemyStartCanDropWhenDestroyed()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        var enemy=run.Encounter.Enemies.First();enemy.GetComponent<Rigidbody>().isKinematic=true;enemy.SetCombatActive(true);
+        var list=(System.Collections.IList)enemy.GetType().GetField("additionalGuns",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(enemy);
+        foreach(var existing in enemy.AdditionalWeapons.ToArray())
+            if(existing.Block!=null){existing.Block.gameObject.SetActive(false);UnityEngine.Object.Destroy(existing.Block.gameObject);}
+        list.Clear();Assert.That(enemy.EquipAdditionalGun(),Is.True);
+        var gun=enemy.AdditionalWeapons.Single().Block;string id=enemy.EquipmentInstanceId("extra-gun/0");
+        gun.ApplyDamageResolvedTyped(gun.CurrentHp/.75f+1,gun.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Kinetic);
+        Assert.That(gun.IsDead,Is.True);Assert.That(enemy.IsDefeated,Is.False);
+        Assert.That(run.Salvage.Items.Count(p=>p.Id==id&&p.Weapon==R4WeaponKind.Automatic&&p.Health==0),Is.EqualTo(1));
+        Assert.That(UnityEngine.Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Count(p=>p.ItemId==id),Is.EqualTo(1));
+        yield return null;
+    }
     [UnityTest] public IEnumerator RecoveredTechnologySaveDoesNotKeepTheOldErrorMessage()
     {
         string parent=path+"-blocked";
