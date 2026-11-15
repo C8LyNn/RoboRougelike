@@ -183,4 +183,22 @@ public sealed class CompactCombatHUDTests
         }
         finally{profile.ResetDefaults();}
     }
+
+    [Test] public void RangeChargesRemainAccessibleAndFitSeparatePanel()
+    {
+        var flags=BindingFlags.Static|BindingFlags.NonPublic;
+        var count=typeof(R1RunHUD).GetMethod("RangeChargePageCount",flags);
+        var start=typeof(R1RunHUD).GetMethod("RangeChargePageStart",flags);
+        var rect=typeof(R1RunHUD).GetMethod("RangeChargeEntryRect",flags);
+        Assert.That((int)count.Invoke(null,new object[]{0}),Is.EqualTo(1));
+        Assert.That((int)count.Invoke(null,new object[]{9}),Is.EqualTo(3));
+        Assert.That((int)start.Invoke(null,new object[]{9,99}),Is.EqualTo(8),"A page is clamped when parts are removed.");
+        var panel=new Rect(18,193,610,58);
+        for(int i=0;i<4;i++)
+        {
+            var item=(Rect)rect.Invoke(null,new object[]{i});
+            Assert.That(panel.Contains(item.min)&&panel.Contains(item.max),Is.True);
+            for(int j=0;j<i;j++)Assert.That(item.Overlaps((Rect)rect.Invoke(null,new object[]{j})),Is.False);
+        }
+    }
 }

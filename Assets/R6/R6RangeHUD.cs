@@ -8,6 +8,7 @@ namespace RoboRougelike.R1
     {
         GUIStyle aimCrossStyle,aimCaptionStyle,weaponMarkerStyle;
         int weaponStatusPage;
+        int rangeChargePage;
         int hudWeaponCount,hudDefenseCount;
         bool creativeEnemyMenu;
         string creativeEnemyMessage;
@@ -55,6 +56,9 @@ namespace RoboRougelike.R1
         }
         static string RangeTrainingTargetHint(bool defeated)=>defeated?"Cel zniszczony.":
             "Robot na lewo przed startem.\n"+R1ControlProfile.Display(R1ControlProfile.Current.Binding("Pause"))+" — sterowanie ostrzałem celu.";
+        static int RangeChargePageCount(int count)=>Mathf.Max(1,(Mathf.Max(0,count)+3)/4);
+        static int RangeChargePageStart(int count,int page)=>Mathf.Clamp(page,0,RangeChargePageCount(count)-1)*4;
+        static Rect RangeChargeEntryRect(int index)=>new Rect(34+(index%2)*285,200+(index/2)*22,280,20);
         private void AdvanceWeaponStatusPage(int count)
         {int pages=WeaponStatusPageCount(count);weaponStatusPage=(Mathf.Clamp(weaponStatusPage,0,pages-1)+1)%pages;}
         private void UpdateWeaponPaging(Event input,int count)
@@ -132,7 +136,19 @@ namespace RoboRougelike.R1
                     if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.SupportTurretGenerator))charges+=$" • Wsparcie {bank.Current(R3DeployableService.SupportTurretPool)}/{bank.Maximum(R3DeployableService.SupportTurretPool)}";
                     if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.ShieldTurretGenerator))charges+=$" • Kopuła {bank.Current(R3DeployableService.ShieldTurretPool)}/{bank.Maximum(R3DeployableService.ShieldTurretPool)}";
                 }
-                GUI.Label(new Rect(34,151,580,22),$"Energia: {energy.Current:0}/{energy.Maximum:0}{charges}",small);
+                GUI.Label(new Rect(34,151,435,22),$"Energia: {energy.Current:0}/{energy.Maximum:0}",small);
+                var entries=charges.Split(new[]{" • "},System.StringSplitOptions.RemoveEmptyEntries);
+                if(entries.Length>0)
+                {
+                    int pages=RangeChargePageCount(entries.Length);
+                    rangeChargePage=Mathf.Clamp(rangeChargePage,0,pages-1);
+                    if(pages>1&&GUI.Button(new Rect(480,149,130,25),$"Ładunki {rangeChargePage+1}/{pages} ›",compactButton))
+                        rangeChargePage=(rangeChargePage+1)%pages;
+                    Panel(new Rect(18,193,610,58));
+                    int start=RangeChargePageStart(entries.Length,rangeChargePage);
+                    for(int i=0;i<4&&start+i<entries.Length;i++)
+                        GUI.Label(RangeChargeEntryRect(i),entries[start+i],small);
+                }
             }
             var range=run.GetComponent<R6TestRange>();
             if(range?.TrainingTarget!=null)
