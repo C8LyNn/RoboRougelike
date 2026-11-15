@@ -84,7 +84,7 @@ namespace RoboRougelike.Mechanics.Rockets
                     bc != null ? bc.GetInstanceID() : 0);
             });
             var impulseSpent = new Dictionary<Rigidbody, float>();
-            float total = 0f;
+            double total = 0d;
             int damaged = 0;
             boundary?.CommitBlast();
             foreach (var pair in visible)
@@ -110,7 +110,7 @@ namespace RoboRougelike.Mechanics.Rockets
                 damaged++;
                 total += damage;
             }
-            return new RocketBlastResult(false, damaged, total);
+            return new RocketBlastResult(false, damaged, (float)System.Math.Min(float.MaxValue,total));
         }
 
         private static bool CanSee(Vector3 center, Candidate c, IRocketDamageReceiver receiver,

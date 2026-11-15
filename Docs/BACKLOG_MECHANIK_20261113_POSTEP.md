@@ -925,3 +925,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Wiązka, piła, obrona punktowa i podparcie automatycznego ratunku powiększają oraz ponownie wykorzystują bufor po pierwszym zapełnieniu. Przy ponad 4096 trafieniach nadal korzystają z pełnego zapytania, więc próg ogranicza wielkość zapamiętanego bufora, nie liczbę rozpatrywanych obiektów. Zmniejsza to powtarzane alokacje w typowych gęstych scenach; nie mierzono rzeczywistego czasu klatki, a powyżej progu pełne zapytanie nadal może alokować przy każdym użyciu.
 - Unity 6000.3.14f1: pakiety PlayMode **67 PASS, 0 FAIL** (`physics_reuse_final.xml`, `.log`) sprawdzają wcześniejsze zachowania i ponowne użycie buforów; dodatkowo **1 PASS** (`physics_reuse_overflow.xml`) obejmuje ponad 4100 colliderów i trafienie właściwego celu. Integracja **5 PASS, 0 FAIL** (`physics_reuse_integration.xml`, `.log`) obejmuje zamontowaną wiązkę, piłę, obronę, automatyczne podnoszenie i ponowne użycie bufora podparcia. Przed zmianą testy ponownego użycia wykazały **6 FAIL** (`physics_reuse_red.xml`) oraz osobne błędy wiązki i podparcia. Ręczna gra i profilowanie wydajności: **NOT RUN**.
+
+#### 14. Suma bardzo dużych obrażeń wybuchu
+
+- Wynik diagnostyczny wybuchu sumuje obrażenia w szerszym zakresie i przy przekroczeniu możliwości typu `float` pozostaje maksymalną skończoną wartością. Obrażenia przekazywane poszczególnym celom nie są przez to ograniczane ani zmieniane.
+- Unity 6000.3.14f1, PlayMode: **18 PASS, 0 FAIL** (`rocket_total_final.xml`, `.log`), w tym dwa cele otrzymujące skrajnie duże skończone obrażenia i wcześniejsza regresja pakietu. Przed zmianą `rocket_total_red.xml` wynik sumy był nieskończony. Ręczna gra: **NOT RUN**.

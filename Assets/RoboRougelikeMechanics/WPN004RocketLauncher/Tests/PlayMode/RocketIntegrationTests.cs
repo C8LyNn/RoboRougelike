@@ -214,6 +214,16 @@ namespace RoboRougelike.WPN004.Tests.PlayMode
             Assert.AreEqual(1, receiver.Hits);
         }
 
+        [Test] public void ExtremeBlastTotalRemainsFiniteAcrossMultipleTargets()
+        {
+            var left=CreateTarget(Vector3.left);var right=CreateTarget(Vector3.right);
+            config.damageAtCenter=float.MaxValue;config.edgeDamageFraction=1;Physics.SyncTransforms();
+            var result=RocketBlastResolver.Resolve(Vector3.zero,Vector3.up,config.Snapshot(),null,owner,new Collider[64],new RaycastHit[64]);
+            Assert.IsFalse(result.Overflow);Assert.AreEqual(1,left.Hits);Assert.AreEqual(1,right.Hits);
+            Assert.IsFalse(float.IsNaN(result.TotalDamage)||float.IsInfinity(result.TotalDamage));
+            Assert.AreEqual(float.MaxValue,result.TotalDamage);
+        }
+
         [Test]
         public void BlastFailsClosedOnOverlapOverflow()
         {
