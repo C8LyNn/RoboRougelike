@@ -117,7 +117,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(394,734,350,42),"Zdejmij część",compactButton))garage.RemovePartAt(garage.Cell);
             int bulk=model.AffordableRepairCost;GUI.enabled=bulk>0;
             if(GUI.Button(new Rect(394,782,350,42),$"Napraw możliwe — {bulk} Z",compactButton))garage.Message=run.GarageRepairAffordable()?"Naprawiono dostępne części.":"Nie można naprawić części.";
-            int emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;
+            long emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;
             if(GUI.Button(new Rect(394,826,350,38),$"Odbudowa awaryjna — {emergency} Z",compactButton))garage.Message=run.GarageEmergencyRepair()?"Odbudowano niezbędne moduły.":"Nie można odbudować części.";
             GUI.enabled=true;
             GUI.Label(new Rect(394,868,250,36),"A / LPM: "+WeaponGroupName(model.WeaponGroupA)+"\nB / PPM: "+WeaponGroupName(model.WeaponGroupB),small);

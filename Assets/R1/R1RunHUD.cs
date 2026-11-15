@@ -678,7 +678,7 @@ namespace RoboRougelike.R1
             GUI.enabled=bulkCost>0;
             if(GUI.Button(new Rect(970,405,280,48),$"Napraw możliwe — {bulkCost} Z",button))
                 garage.Message=run.GarageRepairAffordable()?"Naprawiono dostępne części; sprawdź pozostały Złom.":"Brak środków, połączenia lub uszkodzeń.";
-            int emergencyCost=model.EmergencyRepairCost;
+            long emergencyCost=model.EmergencyRepairCost;
             GUI.enabled=emergencyCost>0&&model.Scrap>=emergencyCost;
             if(GUI.Button(new Rect(970,465,280,56),$"Odbudowa awaryjna — {emergencyCost} Z\nniezbędne moduły: 100% HP",compactButton))
                 garage.Message=run.GarageEmergencyRepair()?"Odbudowano niezbędną broń, napęd i połączenia; koszt pobrano raz.":"Brak środków lub poprawnego planu napędu / rdzenia.";

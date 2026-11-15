@@ -42,6 +42,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Unity 6000.3.14f1: `legacy_part_health_labels.xml` i `.log`: **4 PASS, 0 FAIL** dla istniejących kontroli wspólnego formatowania HP w katalogu i inspekcji. Test nie klika ani nie sprawdza wyglądu starszych paneli w Playerze; kompilacja projektu w Unity przeszła.
 - Komunikat po fuzji również używa tego formatu: wynik o HP mniejszym od 100% nie jest przedstawiany jako w pełni sprawny. `fusion_message_after.xml` i `.log`: **7 PASS, 0 FAIL**, w tym fuzja w rzeczywistym garażu, montaż wyniku i podgląd; `fusion_message_before.xml`: **1 FAIL**, komunikat pokazywał 100% mimo uszkodzenia.
 
+### 07, 37, 42, 44. Koszt odbudowy awaryjnej przy wysokich cenach
+
+- Koszt całego planu odbudowy jest sumowany i pokazywany jako liczba 64-bitowa. Jeżeli przekracza zasoby, operacja zostaje odrzucona bez pobierania złomu i zmian w częściach; kwota mieszcząca się w portfelu jest nadal pobierana w całości jeden raz. Ekrany garażu korzystają z tej samej pełnej wyceny. Standardowe ceny nie zostały zmienione.
+- Unity 6000.3.14f1: `emergency_price_extreme_final.xml` i `.log`: **4 PASS, 0 FAIL** dla sumy przekraczającej zakres portfela, dokładnej brakującej kwoty, dużej opłacalnej naprawy i istniejących wycen. `emergency_price_final.xml`: **5 PASS** obejmowało również geometrię paneli garażu. Przed zmianą `emergency_price_before.xml`: **1 FAIL**, wyjątek przepełnienia przy wycenie. Ręczna ocena bardzo długiej liczby w UI: **NOT RUN**.
+
 ### 07, 39–40, 44. Kopia konfiguracji konstrukcji
 
 - Sprawdzono niezależną kopię wszystkich publicznych liczbowych ustawień ekonomii i budżetu konstrukcyjnego, z różnymi wartościami dla każdego pola. Poligon i odtwarzanie blueprintu korzystają z tej metody kopiowania. Nie znaleziono brakującego ustawienia; nie zmieniano mechaniki.

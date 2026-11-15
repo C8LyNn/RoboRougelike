@@ -1071,14 +1071,14 @@ namespace RoboRougelike.R3
             if(InvalidWeaponTypes)return false;
             var plan=EmergencyRepairPlan();
             if(plan==null||plan.Count==0||plan.Any(p=>!ValidEconomicPart(p)||RepairCost(p)<=0))return false;
-            int price=plan.Sum(RepairCost);
+            long price=plan.Sum(part=>(long)RepairCost(part));
             if(Scrap<price)return false;
             if(restorationGate!=null&&!restorationGate(plan))return false;
-            Scrap-=price;
+            Scrap-=(int)price;
             foreach(var part in plan)part.Health=1;
             return true;
         }
-        public int EmergencyRepairCost => EmergencyRepairPlan()?.Sum(RepairCost)??0;
+        public long EmergencyRepairCost => EmergencyRepairPlan()?.Sum(part=>(long)RepairCost(part))??0L;
         private List<R3PartState> EmergencyRepairPlan()
         {
             if (InvalidWeaponTypes || CanDeploy || !Parts.Any(p => p.Kind == R3PartKind.Core && p.Health > 0)) return null;

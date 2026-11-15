@@ -6,6 +6,43 @@ using UnityEngine;
 
 public sealed class OwnedRebuildPricingTests
 {
+    [Test] public void ExpensiveEmergencyRebuildShowsExactTotalAndNeverOverflowsOrUndercharges()
+    {
+        var design=new R3VehicleDesign{Name="Expensive emergency repair"};
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(Vector3Int.up,R3PartKind.Gun,0));
+        design.Parts.Add(new R3PartState(Vector3Int.left,R3PartKind.Wheel,0));
+        design.Parts.Add(new R3PartState(Vector3Int.right,R3PartKind.Wheel,0));
+        var model=new R3VehicleModel(design,new R3GarageEconomy{WheelCost=int.MaxValue,GunCost=int.MaxValue});
+        model.Award(int.MaxValue);
+        var damaged=model.Parts.Where(p=>p.Health<=0).ToArray();
+        long expected=damaged.Sum(p=>(long)model.RepairCost(p));
+        Assert.That(expected,Is.GreaterThan(int.MaxValue));
+        Assert.That(model.CanDeploy,Is.False);
+        Assert.That(model.EmergencyRepairCost,Is.EqualTo(expected));
+        var caption=typeof(RoboRougelike.R1.R1RunHUD).GetMethod("GarageEmergencyRepairCaption",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(caption,Is.Not.Null);
+        Assert.That((string)caption.Invoke(null,new object[]{expected,model.Scrap,false}),Does.Contain((expected-model.Scrap).ToString()));
+        Assert.That(model.EmergencyRepair(),Is.False,"A wallet smaller than the full quote cannot pay for this plan.");
+        Assert.That(model.Scrap,Is.EqualTo(int.MaxValue));
+        Assert.That(damaged.All(p=>p.Health==0),Is.True);
+    }
+    [Test] public void LargeAffordableEmergencyRebuildChargesTheEntireQuoteOnce()
+    {
+        var design=new R3VehicleDesign{Name="Affordable expensive repair"};
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(Vector3Int.up,R3PartKind.Gun));
+        design.Parts.Add(new R3PartState(Vector3Int.left,R3PartKind.Wheel,0));
+        design.Parts.Add(new R3PartState(Vector3Int.right,R3PartKind.Wheel,0));
+        var model=new R3VehicleModel(design,new R3GarageEconomy{WheelCost=int.MaxValue});model.Award(int.MaxValue);
+        long expected=model.Parts.Where(p=>p.Health<=0).Sum(p=>(long)model.RepairCost(p));
+        Assert.That(expected,Is.GreaterThan(1_000_000_000L).And.LessThanOrEqualTo(int.MaxValue));
+        Assert.That(model.EmergencyRepairCost,Is.EqualTo(expected));
+        Assert.That(model.EmergencyRepair(),Is.True);
+        Assert.That((long)model.Scrap,Is.EqualTo((long)int.MaxValue-expected));
+        Assert.That(model.Parts.All(p=>p.Health==1),Is.True);
+        Assert.That(model.EmergencyRepair(),Is.False);
+    }
     [TestCase(R3PartKind.Wheel)][TestCase(R3PartKind.OmniDrive)][TestCase(R3PartKind.HoverEngine)]
     [TestCase(R3PartKind.CrawlerTrack)][TestCase(R3PartKind.Booster)][TestCase(R3PartKind.JumpDrive)]
     [TestCase(R3PartKind.DrivePower)][TestCase(R3PartKind.Blink)][TestCase(R3PartKind.MagneticGrapple)]

@@ -370,7 +370,7 @@ namespace RoboRougelike.R1
                 "Brak złomu na naprawę":"Naprawa niedostępna";
         }
 
-        static string GarageEmergencyRepairCaption(int cost,int scrap,bool canDeploy)=>
+        static string GarageEmergencyRepairCaption(long cost,int scrap,bool canDeploy)=>
             cost<=0?(canDeploy?"Odbudowa niepotrzebna":"Odbudowa niedostępna"):
             scrap<cost?$"Brakuje {cost-scrap} Z na odbudowę":$"Odbudowa awaryjna — {cost} Z";
 
@@ -961,7 +961,7 @@ namespace RoboRougelike.R1
                 int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0||(model.CreativeMode&&model.Parts.Any(p=>p.Health<1));
                 if(GUI.Button(new Rect(350,309,380,44),GarageBulkRepairCaption(model,repair),compactButton))
                     RepairFromGarageOptions(run,false);
-                int emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;
+                long emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;
                 if(GUI.Button(new Rect(350,363,380,48),GarageEmergencyRepairCaption(emergency,model.Scrap,model.CanDeploy),compactButton))
                     RepairFromGarageOptions(run,true);
                 GUI.enabled=true;
@@ -1002,7 +1002,7 @@ namespace RoboRougelike.R1
                 int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0||(model.CreativeMode&&model.Parts.Any(p=>p.Health<1));
                 if(GUI.Button(new Rect(680,325,300,40),GarageBulkRepairCaption(model,repair),compactButton))
                     RepairFromGarageOptions(run,false);
-                int emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;
+                long emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;
                 if(GUI.Button(new Rect(680,375,300,46),GarageEmergencyRepairCaption(emergency,model.Scrap,model.CanDeploy),compactButton))
                     RepairFromGarageOptions(run,true);
                 GUI.enabled=true;
