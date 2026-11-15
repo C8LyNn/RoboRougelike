@@ -950,3 +950,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Komunikat podczas zbierania pokazuje osobno liczbę widocznych w świecie części i kostek energii oraz pozostały czas. Liczby są aktualizowane na podstawie aktywnych obiektów, więc zniknięcie zebranego przedmiotu zmniejsza właściwy licznik. Oba typy są wyszukiwane w trakcie istniejącej przerwy po walce; nie profilowano kosztu dodatkowego wyszukiwania.
 - Unity 6000.3.14f1: **5 PASS, 0 FAIL** (`pickup_counts_release.xml`, `.log`), w tym aktywne obiekty obu typów, zmiana liczby po dezaktywacji, przejście do nagród i pauza. W scenariuszu licznika użyto obiektów testowych z komponentami łupu i energii; automatyczny test nie sprawdzał wizualnej czytelności HUD ani całego przebiegu zbierania. Przed zmianą `pickup_counts_red.xml`: brak liczników.
+
+#### 10–11, 30, 44. Czytelniejszy stan części
+
+- Garaż, szczegóły i odzysk nagród oraz podgląd fuzji pokazują prawie zniszczoną, ale sprawną część jako „<1%”, a nie „0%”, oraz lekko uszkodzoną jako „>99%”, a nie „100%”. Prawdziwe 0% i 100% pozostają jednoznaczne. Zmiana dotyczy prezentacji, nie zdrowia części ani kosztów naprawy.
+- Unity 6000.3.14f1: **46 PASS, 0 FAIL** (`garage_health_final.xml`, `.log`) obejmuje oba skrajne przypadki, faktyczny wybór w garażu, wcześniejsze operacje katalogu, łupy i przewidywanie HP po fuzji. `garage_health_red.xml`: **2 FAIL**, wartości 0,4% i 99,9% były pokazywane jako 0% i 100%. Pierwszy szerszy przebieg miał **31 PASS, 1 FAIL**, gdyż stary test niszczył jedną część, chociaż zakup daje obecnie pakiet pięciu; scenariusz poprawiono, by faktycznie zniszczyć cały badany stos. Wizualny test w Playerze: **NOT RUN**.

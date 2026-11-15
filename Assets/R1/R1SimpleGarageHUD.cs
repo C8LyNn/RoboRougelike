@@ -426,18 +426,25 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(x,y+296,width,42),"Kliknij rodzaj, aby przenieść go do kolejnego slotu. Zajęte sloty zamienią się miejscami.",small);
         }
 
+        static string PartHealthText(float health)
+        {
+            if(float.IsNaN(health)||float.IsInfinity(health))return "—";
+            if(health>0&&health<.01f)return "<1%";
+            if(health>.99f&&health<1)return ">99%";
+            return $"{Mathf.Clamp01(health)*100:0}%";
+        }
         static string GarageInspectionSummary(R3VehicleModel model,R3PartState part)
         {
             int quote=model.RepairCost(part);
             string repair=part.Health>=1?"sprawna":model.CreativeMode?"naprawa za darmo":quote>0?$"naprawa: {quote} Z":"naprawa niedostępna";
-            return $"{R4WeaponDefinition.PartName(part)} • HP {part.Health*100:0}%\n{repair}";
+            return $"{R4WeaponDefinition.PartName(part)} • HP {PartHealthText(part.Health)}\n{repair}";
         }
 
         string GarageSelectionSummary(R1RunController run,R3PartState inspected,R3PartState owned)
         {
             var model=run.VehicleModel;
             if(inspected!=null)return GarageInspectionSummary(model,inspected);
-            if(owned!=null)return $"{R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%"+
+            if(owned!=null)return $"{R4WeaponDefinition.PartName(owned)} • HP {PartHealthText(owned.Health)}"+
                 (owned.Health<=0?"\nNajpierw napraw część.":"");
             if(!catalogGroup.HasValue)return "Wybierz część z listy.";
             var entry=BuildCatalogEntries(model).FirstOrDefault(QuickEntrySelected);
@@ -459,7 +466,7 @@ namespace RoboRougelike.R1
 
         static string CatalogItemCaption(R3PartState part,bool compact)
         {
-            string caption=$"T{R3VehicleModel.NormalizedTier(part.Tier)} • {(compact?"":"HP ")}{part.Health*100:0}%";
+            string caption=$"T{R3VehicleModel.NormalizedTier(part.Tier)} • {(compact?"":"HP ")}{PartHealthText(part.Health)}";
             if(part.Kind==R3PartKind.Wheel&&R3VehicleModel.HasSizedSideWheel(part.WheelStyle))
                 caption+=(compact?"\n":" • ")+(part.FootprintRevision==1?"3×3":"1 pole");
             if(part.Kind==R3PartKind.Gun&&R3VehicleModel.SupportsGunScale2(part.Weapon))

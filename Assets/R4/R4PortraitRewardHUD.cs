@@ -106,7 +106,7 @@ namespace RoboRougelike.R1
                 var item=visible[i];var card=PortraitRewardInventoryCard(i);var detail=PortraitRewardInventoryDetails(i);Panel(card);
                 GUI.Label(new Rect(detail.x,card.y+5,detail.width,23),R4WeaponDefinition.PartName(item),body);
                 GUI.Label(new Rect(detail.x,card.y+30,detail.width,28),$"Źródło: {item.Source}",small);
-                GUI.Label(new Rect(detail.x,card.y+59,detail.width,20),$"HP {item.Health*100:0}%",small);
+                GUI.Label(new Rect(detail.x,card.y+59,detail.width,20),$"HP {PartHealthText(item.Health)}",small);
                 string ammo=SalvageAmmoLabel(item);
                 GUI.Label(new Rect(detail.x,card.y+80,detail.width,21),RewardInventoryRepairText(model,item)+(ammo==null?"":" • "+ammo),small);
                 if(rewardDismantleConfirmation==item.Id)

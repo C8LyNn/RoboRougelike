@@ -449,6 +449,17 @@ public sealed class UI943PortraitCatalogActionsTests
         yield return new ExitPlayMode();
     }
 
+    [TestCase(0f,"0%")] [TestCase(.004f,"<1%")] [TestCase(.999f,">99%")] [TestCase(1f,"100%")]
+    public void GarageNeverDisplaysDamagedPartsAsDestroyedOrFullyRepaired(float health,string expected)
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var part=model.Parts.First(p=>p.Kind==R3PartKind.Armor);part.Health=health;
+        var flags=BindingFlags.Static|BindingFlags.NonPublic;
+        var inspection=typeof(R1RunHUD).GetMethod("GarageInspectionSummary",flags);
+        var caption=typeof(R1RunHUD).GetMethod("CatalogItemCaption",flags);
+        Assert.That((string)inspection.Invoke(null,new object[]{model,part}),Does.Contain(expected));
+        Assert.That((string)caption.Invoke(null,new object[]{part,true}),Does.Contain(expected));
+    }
     [Test] public void InspectionSummaryUsesMountedPartHealthAndRepairQuote()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
@@ -727,7 +738,8 @@ public sealed class UI943PortraitCatalogActionsTests
         Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
         text=(string)Invoke(hud,"GarageSelectionSummary",run,null,item);
         Assert.That(text,Does.Contain("Pancerz").And.Contain("60%"));
-        item.Health=0;Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        foreach(var armor in run.VehicleModel.Inventory.Where(p=>p.Kind==R3PartKind.Armor))armor.Health=0;
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
         text=(string)Invoke(hud,"GarageSelectionSummary",run,null,null);
         Assert.That(text,Does.Contain("Pancerz").And.Contain("napraw"));
         yield return new ExitPlayMode();

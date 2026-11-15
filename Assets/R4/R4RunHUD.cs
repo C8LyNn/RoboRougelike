@@ -295,7 +295,7 @@ namespace RoboRougelike.R1
                 var item=visible[i];var part=item.ToPart();int quantity=model.GrantQuantity(part.Kind,part.ArmorShape);
                 float y=top+i*step;Panel(new Rect(left,y,width,height));
                 float buttonWidth=portrait?190:250;
-                GUI.Label(new Rect(left+12,y+5,width-buttonWidth-30,height-10),$"{R4WeaponDefinition.PartName(part)} × {quantity} • HP {part.Health*100:0}%\n{part.Source}",small);
+                GUI.Label(new Rect(left+12,y+5,width-buttonWidth-30,height-10),$"{R4WeaponDefinition.PartName(part)} × {quantity} • HP {PartHealthText(part.Health)}\n{part.Source}",small);
                 bool hasRoom=(long)model.Inventory.Count+quantity<=model.AvailableInventoryCapacity;
                 int price=model.Economy.MissedLootRecoveryCost;bool affordable=price>0&&model.Scrap>=price;
                 bool enabled=GUI.enabled;GUI.enabled=enabled&&hasRoom&&affordable;
@@ -326,7 +326,7 @@ namespace RoboRougelike.R1
                 new Rect(area.x,area.y,confirmWidth,area.height);
         }
         private static string RewardInventoryItemText(R3PartState item) =>
-            $"{R4WeaponDefinition.PartName(item)} • HP {item.Health*100:0}%\nŹródło: {item.Source}";
+            $"{R4WeaponDefinition.PartName(item)} • HP {PartHealthText(item.Health)}\nŹródło: {item.Source}";
         private static string RewardInventoryRepairText(R3VehicleModel model,R3PartState item)
         {
             if(item.Health>=1f)return "Naprawa: niepotrzebna";
@@ -479,7 +479,7 @@ namespace RoboRougelike.R1
             var selected=items.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             if(selected==null)
             {if(items.Length>0)GUI.Label(new Rect(970,400,280,100),"Wybierz egzemplarz z listy. Zielony podgląd oznacza poprawne miejsce montażu.",small);return;}
-            GUI.Label(new Rect(970,395,280,70),$"{R4WeaponDefinition.PartName(selected)} • HP {selected.Health*100:0}%\n"+
+            GUI.Label(new Rect(970,395,280,70),$"{R4WeaponDefinition.PartName(selected)} • HP {PartHealthText(selected.Health)}\n"+
                 (selected.Kind==R3PartKind.BonusModule?BonusInstanceText(selected)+"\n":"")+
                 (selected.Health<=0?"Napraw w wierszu przed montażem.":"Kliknij HP w wierszu, aby montować."),small);
             if(dismantleConfirmation==selected.Id)
@@ -538,8 +538,8 @@ namespace RoboRougelike.R1
         }
         private static string FusionPreviewLabel(int tier,R3PartState[] group)
         {
-            var inputs=string.Join(" / ",group.Select(p=>(p.Health*100).ToString("0")+"%"));
-            return $"3×T{tier} → T{tier+1} • HP {group.Average(p=>p.Health)*100:0}%\nSkładniki: {inputs}";
+            var inputs=string.Join(" / ",group.Select(p=>PartHealthText(p.Health)));
+            return $"3×T{tier} → T{tier+1} • HP {PartHealthText(group.Average(p=>p.Health))}\nSkładniki: {inputs}";
         }
         private void RepairCatalogItem(R1RunController run,string id)
         {

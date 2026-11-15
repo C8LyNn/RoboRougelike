@@ -73,6 +73,13 @@ public sealed class BacklogPartFusionTests
         var text=(string)method.Invoke(null,new object[]{1,items});
         Assert.That(text,Does.Contain("T2"));Assert.That(text,Does.Contain("50%"));
     }
+    [Test] public void FusionPreviewDoesNotRoundDamagedIngredientsOrResultToFullHealth()
+    {
+        var method=typeof(R1RunHUD).GetMethod("FusionPreviewLabel",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        var items=new[]{new R3PartState(default,R3PartKind.Armor,.999f),new R3PartState(default,R3PartKind.Armor,1),new R3PartState(default,R3PartKind.Armor,1)};
+        var text=(string)method.Invoke(null,new object[]{1,items});
+        Assert.That(text,Does.Contain("HP >99%").And.Contain("Składniki: >99% / 100% / 100%"));
+    }
     [Test]
     public void ThreeIdenticalOwnedPartsCanBecomeOneHigherTier()
     {
