@@ -454,6 +454,53 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,Time.time,out var restored,out var error),Is.True,error);
         Assert.That(restored.Charges.Current(pool),Is.EqualTo(3));Assert.That(restored.RechargePulseReadyAt,Is.GreaterThan(Time.time));
     }
+    [UnityTest] public IEnumerator RechargePulseUsesCurrentCapacityImmediatelyAfterModuleLossAndReturn()
+    {
+        run.VehicleModel.Award(3000);
+        FuseAndMount(R3PartKind.AreaEmp);FuseAndMount(R3PartKind.RampDeployer);
+        FuseAndMount(R3PartKind.ChargeCapacity);FuseAndMount(R3PartKind.RechargePulse);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var model=run.VehicleModel;var charges=model.Charges;
+        var capacity=player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.ChargeCapacity);
+        var bank=player.GetComponent<VehicleEnergyBank>();var pulse=player.GetComponent<R3RechargePulse>();
+        Assert.That(charges.Maximum(R3EmpDevices.AreaPool),Is.EqualTo(5));
+        Assert.That(charges.Maximum(R3DeployableService.RampPool),Is.EqualTo(5));
+        Assert.That(charges.TrySpend(R3EmpDevices.AreaPool,2),Is.True);
+        Assert.That(charges.TrySpend(R3DeployableService.RampPool,2),Is.True);
+        float energyBefore=bank.Current;
+        capacity.gameObject.SetActive(false); // No FixedUpdate or explicit bank refresh.
+        Assert.That(pulse.TryActivate(),Is.False,"A newly full pool must not spend energy or start a cooldown.");
+        Assert.That(bank.Current,Is.EqualTo(energyBefore).Within(.001));
+        Assert.That(model.RechargePulseReadyAt,Is.LessThanOrEqualTo(Time.time));
+        Assert.That(charges.Maximum(R3EmpDevices.AreaPool),Is.EqualTo(3));
+        Assert.That(charges.Current(R3EmpDevices.AreaPool),Is.EqualTo(3));
+        Assert.That(charges.Current(R3DeployableService.RampPool),Is.EqualTo(3));
+        capacity.gameObject.SetActive(true); // The previous cached capacity is still three.
+        Assert.That(pulse.TryActivate(),Is.True,"Restored capacity must be usable immediately, without waiting for physics.");
+        Assert.That(charges.Maximum(R3EmpDevices.AreaPool),Is.EqualTo(5));
+        Assert.That(charges.Current(R3EmpDevices.AreaPool),Is.EqualTo(5));
+        Assert.That(charges.Current(R3DeployableService.RampPool),Is.EqualTo(5));
+        Assert.That(bank.Current,Is.LessThan(energyBefore));
+    }
+    [UnityTest] public IEnumerator ChargeStatusesReflectCapacityLossBeforeNextPhysicsTick()
+    {
+        run.VehicleModel.Award(3000);
+        FuseAndMount(R3PartKind.AreaEmp);FuseAndMount(R3PartKind.RampDeployer);
+        FuseAndMount(R3PartKind.ChargeCapacity);FuseAndMount(R3PartKind.RechargePulse);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var charges=run.VehicleModel.Charges;
+        var capacity=player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.ChargeCapacity);
+        var bank=player.GetComponent<VehicleEnergyBank>();var emp=player.GetComponent<R3EmpDevices>();
+        var deploy=player.GetComponent<R3DeployableService>();var pulse=player.GetComponent<R3RechargePulse>();
+        Assert.That(charges.TrySpend(R3EmpDevices.AreaPool,2),Is.True);
+        Assert.That(charges.TrySpend(R3DeployableService.RampPool,2),Is.True);
+        capacity.gameObject.SetActive(false);
+        Assert.That(pulse.Status,Is.EqualTo("brak urządzeń do naładowania"));
+        capacity.gameObject.SetActive(true);bank.Refresh();capacity.gameObject.SetActive(false);
+        Assert.That(emp.Status(R3PartKind.AreaEmp),Does.Contain("3/3"));
+        capacity.gameObject.SetActive(true);bank.Refresh();capacity.gameObject.SetActive(false);
+        Assert.That(deploy.StatusFor(R3PartKind.RampDeployer),Does.Contain("3/3"));
+    }
     [UnityTest] public IEnumerator EmpWithoutChargeOrEnergyCannotConsumeEitherResource()
     {
         FuseAndMount(R3PartKind.AreaEmp);Assert.That(run.EnterTestRange(),Is.True);

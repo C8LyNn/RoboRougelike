@@ -117,6 +117,8 @@ namespace RoboRougelike.R3
                 float remaining=ReadyAt(kind)-Time.time;
                 if(remaining>0)return $"odnowienie {Mathf.CeilToInt(remaining)} s";
                 string pool=Pool(kind);
+                float cost=0;foreach(var part in assembly.Parts)if(Ready(part,kind))cost+=EnergyPerCopy(kind)*R3VehicleModel.TierActivationCost(part.Tier);
+                bool enoughEnergy=energy!=null&&energy.CanSpend(cost); // Refresh capacity before presenting it.
                 int current=assembly.Model.Charges.Current(pool),maximum=assembly.Model.Charges.Maximum(pool);
                 if(current==0)return "brak ładunków";
                 if(IsDrone(kind))
@@ -125,8 +127,7 @@ namespace RoboRougelike.R3
                     int count=0;foreach(var item in spawned)if(item!=null&&item.TryGetComponent<R3FlyingDrone>(out var d)&&!d.IsTurret&&d.GeneratorKind==kind)count++;
                     if(count>=units*System.Math.Max(0,assembly.Model.Economy.DroneActivePerUnit))return "limit aktywnych dronów";
                 }
-                float cost=0;foreach(var part in assembly.Parts)if(Ready(part,kind))cost+=EnergyPerCopy(kind)*R3VehicleModel.TierActivationCost(part.Tier);
-                if(energy==null||!energy.CanSpend(cost))return "brak energii";
+                if(!enoughEnergy)return "brak energii";
                 return !IsDrone(kind)&&!TryTravelDirection(out _)?$"{current}/{maximum} • wymagany ruch":$"gotowy • {current}/{maximum}";
         }
         float EnergyPerCopy(R3PartKind kind)=>kind==R3PartKind.RampDeployer?assembly.Model.Economy.RampEnergyPerCopy:

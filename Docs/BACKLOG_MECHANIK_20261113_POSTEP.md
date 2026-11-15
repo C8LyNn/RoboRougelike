@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 18 i 44. Pojemność ładunków przed impulsem i w statusach
+
+- Impuls ładowania przed sprawdzeniem dostępnego miejsca przelicza aktualną pojemność urządzeń. Jeśli utrata modułu sprawiła, że pule są pełne lub mają nadmiar, impuls nie zużywa energii ani cooldownu; po przywróceniu modułu może od razu użyć zwiększonego limitu. Status impulsu, EMP i generatorów pokazuje stan po przeliczeniu pojemności, a nie wynik poprzedniego kroku fizyki.
+- Unity 6000.3.14f1: `charge_capacity_same_frame_before.xml` — **1 FAIL**, impuls uruchamiał się mimo braku miejsca po wyłączeniu modułu. `charge_capacity_same_frame_after.xml` — **1 PASS**. `charge_capacity_same_frame_final.xml` — **12 PASS**, obejmujące oba przypadki zmiany pojemności bez oczekiwania na fizykę, statusy EMP i rampy, brak kosztu, nadmiarowe ładunki, zapis/odczyt, impuls, EMP oraz rzeczywistą rampę.
+- W nowej próbie zmianę stanu modułu wywołano przez wyłączenie i ponowne włączenie; wcześniejszy test zestawu obejmuje fizyczne zniszczenie i zachowanie nadmiaru. Nie jest to ręczny test w Playerze. Punkt 44 pozostaje otwarty.
+
 ### 30, 41 i 44. Dodatkowa broń przeciwnika i odkrywanie technologii
 
 - Dodatkowe działo przeciwnika rejestruje obsługę fizycznego łupu również wtedy, gdy zostało dołączone po inicjalizacji. Obecna ścieżka montująca je przed inicjalizacją nadal używa tego samego zabezpieczenia przed powtórną rejestracją. Odłączenie lub zniszczenie może utworzyć łup zgodnie ze skonfigurowaną szansą, a zapis walki nie dubluje wcześniej zrzuconej części.

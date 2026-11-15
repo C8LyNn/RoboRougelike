@@ -23,9 +23,11 @@ namespace RoboRougelike.R3
                 foreach(var part in assembly.Parts)if(Ready(part))
                 {copies++;cost+=assembly.Model.Economy.RechargePulseEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier);}
                 if(copies==0)return "niedostępny";
+                // Capacity modules can disappear between physics updates.
+                bool enoughEnergy=energy!=null&&energy.CanSpend(cost);
                 var emp=GetComponent<R3EmpDevices>();var deploy=GetComponent<R3DeployableService>();
                 if((emp==null||!emp.CanRecharge())&&(deploy==null||!deploy.CanRecharge()))return "brak urządzeń do naładowania";
-                return energy!=null&&energy.CanSpend(cost)?"gotowy":"brak energii";
+                return enoughEnergy?"gotowy":"brak energii";
             }
         }
         public bool TryActivate()
@@ -39,6 +41,7 @@ namespace RoboRougelike.R3
             {units+=R3VehicleModel.TierEffectUnits(part.Tier);cost+=economy.RechargePulseEnergyPerCopy*R3VehicleModel.TierActivationCost(part.Tier);}
             if(units==0||float.IsNaN(cost)||float.IsInfinity(cost)||cost<0)return false;
             int amount=(int)System.Math.Min(int.MaxValue,(long)units*System.Math.Max(0,economy.RechargePulseChargesPerUnit));
+            energy.Refresh();
             if(amount==0||((emp==null||!emp.CanRecharge())&&(deploy==null||!deploy.CanRecharge()))||!energy.TrySpend(cost))return false;
             emp?.Recharge(amount);deploy?.Recharge(amount);
             float cooldown=economy.RechargePulseCooldown;

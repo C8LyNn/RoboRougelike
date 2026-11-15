@@ -57,8 +57,9 @@ namespace RoboRougelike.R3
             if(remaining>0)return $"odnowienie {Mathf.CeilToInt(remaining)} s";
             int units=Units(kind,out float cost);if(units==0)return "niedostępny";
             string pool=kind==R3PartKind.TargetedEmp?TargetPool:AreaPool;
+            bool enoughEnergy=energy.CanSpend(cost); // Also refresh the current charge capacity.
             int current=assembly.Model.Charges.Current(pool),maximum=assembly.Model.Charges.Maximum(pool);
-            return current==0?"brak ładunków":!energy.CanSpend(cost)?"brak energii":$"gotowy • {current}/{maximum}";
+            return current==0?"brak ładunków":!enoughEnergy?"brak energii":$"gotowy • {current}/{maximum}";
         }
         bool HasDevice(R3PartKind kind){foreach(var part in assembly.Parts)if(Ready(part,kind))return true;return false;}
         bool CanRecharge(string pool,R3PartKind kind)=>HasDevice(kind)&&assembly.Model.Charges.Current(pool)<assembly.Model.Charges.Maximum(pool);
