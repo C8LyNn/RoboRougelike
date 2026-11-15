@@ -42,7 +42,8 @@ public class RRLW6BeamPhysicalTests
         Assert.That(restoredModule.HeatFraction,Is.EqualTo(heat).Within(.0001),"Rebuild cannot erase heat/lockout");
         float hpAtRelease=hp.CurrentHp;end=Time.time+.1f;while(Time.time<end)yield return null;
         Assert.That(hp.CurrentHp,Is.EqualTo(hpAtRelease),"Release stops continuous damage");
-        gun.Damageable.ApplyDamage(10000,gun.transform.position,Vector3.up);
+        // Destroy the weapon without propagating a huge hit through the whole vehicle.
+        gun.Damageable.ApplyDamage(gun.Damageable.CurrentHp*1.4f,gun.transform.position,Vector3.up);
         module.SetTriggerHeld(true);Assert.That(module.ManualFixedStep(.2f).Status,Is.EqualTo(BeamStepStatus.Inoperable));
         assembly.Capture();Assert.That(model.Repair(gun.Cell),Is.True);Assert.That(model.DeepCopy().Parts.Single(p=>p.Id==state.Id).Weapon,Is.EqualTo(kind));
     }
