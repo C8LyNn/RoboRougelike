@@ -484,14 +484,17 @@ public class R3GaragePlayTests
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));
     }
 
-    [UnityTest] public IEnumerator ActivePhysicalProjectilesAreBounded()
+    [UnityTest] public IEnumerator PhysicalProjectilesRemainIndependentAndAreClearedWithDebris()
     {
-        Run.TogglePause();
+        Run.TogglePause();R1EncounterManager.ClearTransientObjects();
         for(int i=0;i<120;i++)new GameObject("Pocisk testowy "+i).AddComponent<P17PhysicalShell>();
         for(int i=0;i<80;i++)new GameObject("Szczątki testowe "+i).AddComponent<R3Debris>();
         yield return null;yield return null;
-        Assert.That(UnityEngine.Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Length,Is.LessThanOrEqualTo(96));
+        Assert.That(UnityEngine.Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Length,Is.EqualTo(120),"Base projectiles must not be removed at the former global threshold.");
         Assert.That(UnityEngine.Object.FindObjectsByType<R3Debris>(FindObjectsSortMode.None).Length,Is.LessThanOrEqualTo(70));
+        R1EncounterManager.ClearTransientObjects();yield return null;
+        Assert.That(UnityEngine.Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None),Is.Empty,"Encounter cleanup must remove all projectiles beyond the former threshold.");
+        Assert.That(UnityEngine.Object.FindObjectsByType<R3Debris>(FindObjectsSortMode.None),Is.Empty);
     }
 
     [UnityTest] public IEnumerator CoreDeathDropsWeaponAndCleansItWhileAnotherEnemySurvives()

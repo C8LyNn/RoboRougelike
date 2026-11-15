@@ -146,20 +146,23 @@ public class R1PlayIntegrationTests
         Run.Encounter.SetCombatActive(false);
         var wheel = Run.Player.GetComponentsInChildren<P12PipelineSafeFunctionalModule>()
             .First(module => module.ModuleType == P12FunctionalModuleType.Wheel);
+        int initialWheels=Run.Player.Modules.ActiveWheelCount;
         var wheelPart = wheel.GetComponent<P12PipelineSafeDamageable>();
-        wheelPart.ApplyDamage(10000, wheel.transform.position, Vector3.right);
+        wheelPart.ApplyDamageResolvedTyped(wheelPart.CurrentHp/.9f+.01f,wheel.transform.position,Vector3.right,R3DamagePropagation.DamageKind.Piercing);
         yield return Simulate(0.15f);
-        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(5));
+        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(initialWheels-1));
         var part = Run.Player.GetComponentsInChildren<P12_PipelineSafePlayerBlock>()
             .First(block => !block.IsCore).GetComponent<P12PipelineSafeDamageable>();
         part.ApplyDamage(20, part.transform.position, Vector3.forward);
-        Run.Progress.Stats.Apply(Run.Definition.Upgrades.First(item => item.Effect == R1UpgradeEffect.Hull));
+        float originalMax=part.MaxHp,originalRatio=part.CurrentHp/part.MaxHp;
+        var hull=Run.Definition.Upgrades.First(item=>item.Effect==R1UpgradeEffect.Hull&&item.Scope==R1BonusScope.Global&&item.Operation==R1ModifierOperation.Increased);
+        Run.Progress.Stats.Apply(hull);
         Run.Player.Apply(Run.Progress.Stats);
         yield return Simulate(0.1f);
         Assert.That(wheelPart.IsDead, Is.True);
-        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(5));
-        Assert.That(part.MaxHp, Is.EqualTo(120).Within(0.001));
-        Assert.That(part.CurrentHp, Is.EqualTo(96).Within(0.001));
+        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(initialWheels-1));
+        Assert.That(part.MaxHp, Is.EqualTo(originalMax*(1+hull.Amount)).Within(0.001));
+        Assert.That(part.CurrentHp/part.MaxHp, Is.EqualTo(originalRatio).Within(0.001));
     }
 
     [UnityTest]
@@ -179,22 +182,24 @@ public class R1PlayIntegrationTests
         float upgradedDamage = Run.Player.Controller.EffectiveDamage;
         var wheel = Run.Player.GetComponentsInChildren<P12PipelineSafeFunctionalModule>()
             .First(module => module.ModuleType == P12FunctionalModuleType.Wheel);
-        wheel.GetComponent<P12PipelineSafeDamageable>().ApplyDamage(10000, wheel.transform.position, Vector3.right);
+        int initialWheels=Run.Player.Modules.ActiveWheelCount;string wheelId=wheel.GetComponent<R3MountedPart>().Id;
+        var wheelHp=wheel.GetComponent<P12PipelineSafeDamageable>();
+        wheelHp.ApplyDamageResolvedTyped(wheelHp.CurrentHp/.9f+.01f,wheel.transform.position,Vector3.right,R3DamagePropagation.DamageKind.Piercing);
         yield return Simulate(0.15f);
-        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(5));
+        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(initialWheels-1));
         DefeatAllEnemies();
         yield return Until(() => Run.Progress.State == R1RunState.Salvage, "Druga nagroda.");
         var oldPlayer = Run.Player;
-        Run.ConfirmRewards(Array.Empty<string>(),new[]{Run.Progress.Offers.ToList().FindIndex(item => item.Effect == R1UpgradeEffect.Hull)});
-        Assert.That(Run.Player,Is.EqualTo(oldPlayer),"Nagroda sama nie odbudowuje konstrukcji.");
-        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(5));
+        Assert.That(Run.ConfirmRewards(Array.Empty<string>(),new[]{Run.Progress.Offers.ToList().FindIndex(item => item.Effect == R1UpgradeEffect.Hull)}),Is.True);
+        Assert.That(Run.VehicleModel.Parts.Single(p=>p.Id==wheelId).Health,Is.Zero,"The safe zone must not revive a destroyed wheel.");
+        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(initialWheels-1));
         int scrapBefore=Run.VehicleModel.Scrap;
         Assert.That(Run.GarageRepairAffordable(),Is.True);
         Assert.That(Run.VehicleModel.Scrap,Is.LessThan(scrapBefore));
         Run.StartNextEncounter();
         yield return Until(() => !Run.Transitioning, "Naprawa i trzecia walka.");
         Assert.That(Run.Player, Is.Not.EqualTo(oldPlayer));
-        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(6));
+        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(initialWheels));
         Assert.That(Run.Player.Modules.WeaponOnline, Is.True);
         Assert.That(Run.Player.Structure.ConnectedBlockCount, Is.EqualTo(Run.VehicleModel.Parts.Count));
         Assert.That(Run.Player.Controller.EffectiveDamage, Is.EqualTo(upgradedDamage));
@@ -224,12 +229,14 @@ public class R1PlayIntegrationTests
         var core = Run.Player.GetComponentsInChildren<P12_PipelineSafePlayerBlock>()
             .Single(block => block.IsCore).GetComponent<P12PipelineSafeDamageable>();
         float coreHp = core.MaxHp, interval = tank.EffectiveFireInterval, speed = tank.EffectiveForwardSpeed;
-        foreach (var effect in new[] { R1UpgradeEffect.Core, R1UpgradeEffect.Reload, R1UpgradeEffect.Mobility })
-            Run.Progress.Stats.Apply(Run.Definition.Upgrades.Single(item => item.Effect == effect));
+        var coreBonus=Run.Definition.Upgrades.First(item=>item.Effect==R1UpgradeEffect.Core&&item.Scope==R1BonusScope.Global&&item.Operation==R1ModifierOperation.Increased);
+        var reloadBonus=Run.Definition.Upgrades.First(item=>item.Effect==R1UpgradeEffect.Reload&&item.Scope==R1BonusScope.Global&&item.Operation==R1ModifierOperation.Increased);
+        var mobilityBonus=Run.Definition.Upgrades.First(item=>item.Effect==R1UpgradeEffect.Mobility&&item.Scope==R1BonusScope.Global&&item.Operation==R1ModifierOperation.Increased);
+        foreach(var bonus in new[]{coreBonus,reloadBonus,mobilityBonus})Run.Progress.Stats.Apply(bonus);
         Run.Player.Apply(Run.Progress.Stats);
-        Assert.That(core.MaxHp, Is.EqualTo(coreHp * 1.5f).Within(0.001));
-        Assert.That(tank.EffectiveFireInterval, Is.EqualTo(interval * 0.85f).Within(0.001));
-        Assert.That(tank.EffectiveForwardSpeed, Is.EqualTo(speed * 1.15f).Within(0.001));
+        Assert.That(core.MaxHp, Is.EqualTo(coreHp*(1+coreBonus.Amount)).Within(0.001));
+        Assert.That(tank.EffectiveFireInterval, Is.EqualTo(interval*(1-reloadBonus.Amount)).Within(0.001));
+        Assert.That(tank.EffectiveForwardSpeed, Is.EqualTo(speed*(1+mobilityBonus.Amount)).Within(0.001));
         yield return null;
     }
 
@@ -472,7 +479,8 @@ public class R1PlayIntegrationTests
         foreach (var position in new[] { new Vector3Int(-1, 0, 0), new Vector3Int(0, 0, -1), new Vector3Int(-1, -1, -1) })
         {
             var part = parts.Single(item => item.LogicalGridPosition == position);
-            part.GetComponent<P12PipelineSafeDamageable>().ApplyDamage(1000, part.transform.position, Vector3.up);
+            var hp=part.GetComponent<P12PipelineSafeDamageable>();
+            hp.ApplyDamageResolvedTyped(hp.CurrentHp/.9f+.01f,part.transform.position,Vector3.up,R3DamagePropagation.DamageKind.Piercing);
         }
         structure.EvaluateStructure();
         Assert.That(corner.DetachedFromVehicle, Is.True);
