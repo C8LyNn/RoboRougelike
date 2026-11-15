@@ -432,8 +432,9 @@ namespace RoboRougelike.R1
             if(!MapEditorTesting&&Progress.State==R1RunState.TestDrive&&
                 !R1ControlProfile.Current.Binding("ResetRange").StartsWith("Mouse",System.StringComparison.Ordinal)&&
                 R1ControlProfile.Current.Pressed("ResetRange",true)){ResetTestRange();return;}
+            if(PickupGraceRemaining>0&&!R1ControlProfile.Current.Binding("SkipPickup").StartsWith("Mouse",System.StringComparison.Ordinal)&&
+                R1ControlProfile.Current.Pressed("SkipPickup",true)){SkipPickupGrace();return;}
             if (keyboard == null) return;
-            if(PickupGraceRemaining>0&&keyboard.enterKey.wasPressedThisFrame){SkipPickupGrace();return;}
             if (Progress.State == R1RunState.Ready && keyboard.enterKey.wasPressedThisFrame) PrepareUnifiedRun();
             else if(Progress.State==R1RunState.Salvage)GetComponent<R1RunHUD>()?.ReadRewardInput(keyboard);
             else if (Progress.State == R1RunState.UpgradeChoice)

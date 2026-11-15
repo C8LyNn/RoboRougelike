@@ -14,9 +14,9 @@ namespace RoboRougelike.R1
     {
         public static readonly string[] Actions={"MoveForward","MoveBackward","TurnLeft","TurnRight",
             "Weapon1","Weapon2","Weapon3","Weapon4","Active1","Active2","Active3","Active4",
-            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails","ResetRange","WeaponStatusPage","DefenseStatusPage","GarageUnderside","GarageFrame","GarageSearch","GarageBlocks","GarageWheels","GarageWeapons","GarageModules","GarageToolMount","GarageToolInspect","GarageToolRepair","GarageToolRemove","GarageRotateYLeft","GarageRotateYRight","GarageRotateXPositive","GarageRotateXNegative","GarageRotateZNegative","GarageRotateZPositive","Rescue","Interact","Pause"};
+            "Deploy1","Deploy2","Deploy3","Deploy4","Gyro","Reload","SteeringLeft","SteeringRight","SteeringMode","CombatDetails","ResetRange","WeaponStatusPage","DefenseStatusPage","GarageUnderside","GarageFrame","GarageSearch","GarageBlocks","GarageWheels","GarageWeapons","GarageModules","GarageToolMount","GarageToolInspect","GarageToolRepair","GarageToolRemove","GarageRotateYLeft","GarageRotateYRight","GarageRotateXPositive","GarageRotateXNegative","GarageRotateZNegative","GarageRotateZPositive","Rescue","Interact","Pause","SkipPickup"};
         static readonly string[] Defaults={"W","S","A","D","MouseLeft","MouseRight","Q","E",
-            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I","R","Tab","P","U","Home","Slash","Digit5","Digit6","Digit7","Digit8","Digit1","Digit2","Digit3","Digit4","Q","E","R","F","Z","X","H","F","Escape"};
+            "Digit1","Digit2","Digit3","Digit4","Z","X","C","V","G","T","Comma","Period","M","I","R","Tab","P","U","Home","Slash","Digit5","Digit6","Digit7","Digit8","Digit1","Digit2","Digit3","Digit4","Q","E","R","F","Z","X","H","F","Escape","Enter"};
         const int OriginalActionCount=20;
         readonly Dictionary<string,string> bindings=new Dictionary<string,string>();
         readonly string path;
@@ -98,7 +98,8 @@ namespace RoboRougelike.R1
         // Fixed session/UI shortcuts remain reserved until they too are configurable.
         public static bool Reserved(string binding)=>new[]{"Escape","Enter","NumpadEnter",
             "UpArrow","DownArrow","LeftArrow","RightArrow","F4","F8","F10"}.Contains(binding);
-        static bool AllowedActionBinding(string action,string binding)=>action=="Pause"&&binding=="Escape"||ValidBinding(binding)&&!Reserved(binding);
+        static bool AllowedActionBinding(string action,string binding)=>action=="Pause"&&binding=="Escape"||
+            action=="SkipPickup"&&binding=="Enter"||ValidBinding(binding)&&!Reserved(binding);
         // These buttons already place, remove/orbit and pick parts in the garage.
         static bool GarageCategoryAction(string action)=>action=="GarageBlocks"||action=="GarageWheels"||action=="GarageWeapons"||action=="GarageModules";
         static bool GarageToolAction(string action)=>action=="GarageToolMount"||action=="GarageToolInspect"||action=="GarageToolRepair"||action=="GarageToolRemove";
@@ -140,7 +141,7 @@ namespace RoboRougelike.R1
             var old=Binding(action);string conflict=Conflict(action,binding);
             if(GarageMouseReserved(action,binding)){message="Ten przycisk wykonuje już podstawową akcję w garażu.";return false;}
             if(GarageModifierReserved(action,binding)){message="Shift służy w garażu do obrotu zamontowanej części.";return false;}
-            if(Reserved(binding)&&!(action=="Pause"&&binding=="Escape")){message="Ten klawisz jest używany przez inne sterowanie.";return false;}
+            if(Reserved(binding)&&!(action=="Pause"&&binding=="Escape")&&!(action=="SkipPickup"&&binding=="Enter")){message="Ten klawisz jest używany przez inne sterowanie.";return false;}
             if(conflict!=null){message="Ten przycisk jest już używany: "+ActionName(conflict)+".";return false;}
             if(!TryBind(action,binding)){message="Nie można przypisać tego przycisku.";return false;}
             try{Save();message="Zapisano przypisanie.";return true;}
@@ -162,7 +163,7 @@ namespace RoboRougelike.R1
                 case "GarageRotateYLeft":return "Garaż: obrót Y w lewo";case "GarageRotateYRight":return "Garaż: obrót Y w prawo";
                 case "GarageRotateXPositive":return "Garaż: obrót X dodatni";case "GarageRotateXNegative":return "Garaż: obrót X ujemny";
                 case "GarageRotateZNegative":return "Garaż: obrót Z ujemny";case "GarageRotateZPositive":return "Garaż: obrót Z dodatni";
-                case "Rescue":return "Ratunek";case "Interact":return "Interakcja";case "Pause":return "Pauza";}
+                case "Rescue":return "Ratunek";case "Interact":return "Interakcja";case "Pause":return "Pauza";case "SkipPickup":return "Pomiń zbieranie po walce";}
             if(action.StartsWith("Weapon"))return "Broń "+action.Substring(6);
             if(action.StartsWith("Active"))return "Moduł "+action.Substring(6);
             if(action.StartsWith("Deploy"))return "Urządzenie "+action.Substring(6);

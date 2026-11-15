@@ -160,6 +160,50 @@ public sealed class UI943PortraitRewardsActionsTests
         yield return null;
     }
 #if ENABLE_INPUT_SYSTEM
+    [UnityTest] public IEnumerator MouseBoundPickupSkipIgnoresClicksConsumedByUi()
+    {
+        run.Encounter.SetCombatActive(true);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        run.Encounter.SetCombatActive(false);
+        for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
+        Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0));
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("SkipPickup","MouseBack"),Is.True);
+            var handler=typeof(R1RunHUD).GetMethod("TryPickupSkipMouse",BindingFlags.Static|BindingFlags.NonPublic);Assert.That(handler,Is.Not.Null);
+            var used=new Event{type=EventType.MouseDown,button=3};used.Use();handler.Invoke(null,new object[]{run,used});
+            Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0));
+            handler.Invoke(null,new object[]{run,new Event{type=EventType.MouseDown,button=3}});
+            Assert.That(run.PickupGraceRemaining,Is.Zero);
+        }
+        finally {profile.ResetDefaults();}
+    }
+    [UnityTest] public IEnumerator ConfiguredKeySkipsPickupWindowAndUpdatesButtonHint()
+    {
+        run.Encounter.SetCombatActive(true);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        run.Encounter.SetCombatActive(false);
+        for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
+        Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0));
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();Assert.That(profile.TryBind("SkipPickup","K"),Is.True);
+        var caption=typeof(R1RunHUD).GetMethod("PickupSkipCaption",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(caption,Is.Not.Null);Assert.That((string)caption.Invoke(null,null),Does.Contain("K"));
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        InputSystem.settings=settings;settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            var input=typeof(R1RunController).GetMethod("ReadMenuInput",BindingFlags.Instance|BindingFlags.NonPublic);
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));InputSystem.Update();input.Invoke(run,null);
+            Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0),"Changing the binding replaces the old action key.");
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.K));InputSystem.Update();input.Invoke(run,null);
+            Assert.That(run.PickupGraceRemaining,Is.Zero);
+        }
+        finally {profile.ResetDefaults();if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
+    }
     [UnityTest] public IEnumerator PickupWindowCountsRemainingPartsAndEnergyCubes()
     {
         foreach(var pickup in UnityEngine.Object.FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None))pickup.gameObject.SetActive(false);

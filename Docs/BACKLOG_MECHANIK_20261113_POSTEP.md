@@ -968,3 +968,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Przycisk odzysku podaje dokładny brakujący złom albo przyczynę „Brak miejsca” / „Odzysk niedostępny”, zamiast przedstawiać każdą niedostępność jako brak środków. Sam koszt i zasady odzysku nie zostały zmienione. W liczniku po walce doprecyzowano, że wyświetlana liczba dotyczy kostek energii.
 - Unity 6000.3.14f1: **37 PASS, 0 FAIL** (`recovery_caption_release.xml`, `.log`) obejmuje cztery stany przycisku, faktyczny odpłatny odzysk i zapobieganie duplikatom, licznik łupów oraz podpowiedzi sterowania. Wcześniejszy szerszy przebieg miał **36 PASS, 1 FAIL**, ponieważ test próbował przypisać urządzenie do H zajętego obecnie przez ratunek; w teście użyto wolnego N. Wygląd i klikanie w Playerze: **NOT RUN**.
+
+#### 06, 30, 44. Konfigurowalny przycisk pominięcia zbierania
+
+- Akcję pominięcia zbierania można zmienić w ustawieniach sterowania; domyślnie pozostaje Enter, a przycisk w walce pokazuje aktualne przypisanie. Obsługuje klawiaturę i przyciski myszy; kliknięcie już wykorzystane przez UI nie uruchamia jej w tle. Starsze profile dostają domyślną wartość bez zmiany innych przypisań, a konflikt z inną akcją jest odrzucany.
+- Unity 6000.3.14f1: **35 PASS, 0 FAIL** (`pickup_binding_first.xml`, `.log`) dla migracji profilu, zmiany klawisza, syntetycznych zdarzeń myszy, zachowania pauzy i wcześniejszych testów sterowania. Przed implementacją `pickup_binding_red2.xml`: **3 FAIL**, brak przypisania. Pierwsza próba nie dotarła do testów: nowy kod testowy znalazł się przed importami i powodował błąd kompilacji; przeniesiono go do klasy. Rzeczywista mysz i wygląd tekstu w Playerze: **NOT RUN**.

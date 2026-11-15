@@ -13,6 +13,7 @@ namespace RoboRougelike.R1
         private static Rect CombatAbilityStatusRect(int row)=>new Rect(340,90+22*row,190,22);
         private static Rect PickupGraceLabelRect(float y)=>new Rect(36,y,420,22);
         private static Rect PickupGraceButtonRect(float y)=>new Rect(465,y-2,200,25);
+        private static string PickupSkipCaption()=>"Pomiń zbieranie ["+R1ControlProfile.Display(R1ControlProfile.Current.Binding("SkipPickup"))+"]";
         private Texture2D buttonNormal,buttonHover,buttonPressed;
         private bool combatDetailsOpen;
         private readonly System.Collections.Generic.List<Vector3> passiveRadarContacts=new System.Collections.Generic.List<Vector3>();
@@ -239,6 +240,12 @@ namespace RoboRougelike.R1
                !R1ControlProfile.IsBindingMouseDown(input)||!R1ControlProfile.Current.MatchesEvent("Pause",input))return;
             run.HandleEscape();input.Use();
         }
+        static void TryPickupSkipMouse(R1RunController run,Event input)
+        {
+            if(run==null||run.Paused||run.QuitRequested||run.Transitioning||run.Error!=null||
+               !R1ControlProfile.IsBindingMouseDown(input)||!R1ControlProfile.Current.MatchesEvent("SkipPickup",input))return;
+            if(run.SkipPickupGrace())input.Use();
+        }
         private void OnGUI()
         {
             var run = R1RunController.Instance;
@@ -289,7 +296,7 @@ namespace RoboRougelike.R1
                 DrawPassiveRadar(run);
                 if(run.Paused)LightStylePrototype.Instance?.DrawPausePanel();
                 TryPauseMouse(run,Event.current);
-                if(!sessionOverlay){TrySafeZoneInteractMouse(run,Event.current);TryRescueMouse(run,Event.current);}
+                if(!sessionOverlay){TrySafeZoneInteractMouse(run,Event.current);TryRescueMouse(run,Event.current);TryPickupSkipMouse(run,Event.current);}
                 if(quickSearchActive&&!garageSearchKey&&!catalogOpen&&!garageOptionsOpen)
                     HandleQuickGarageKey(run,Event.current,false);
                 quickSearchEditing=quickSearchActive&&!run.Paused&&!catalogOpen&&!garageOptionsOpen&&
@@ -434,7 +441,7 @@ namespace RoboRougelike.R1
                     if(run.PickupGraceRemaining>0)
                     {
                         GUI.Label(PickupGraceLabelRect(noticeY),$"Części: {run.PickupPartsRemaining} • Kostki energii: {run.PickupEnergyRemaining} • {run.PickupGraceRemaining:0.0} s",small);
-                        if(GUI.Button(PickupGraceButtonRect(noticeY),"Pomiń zbieranie [Enter]",compactButton))run.SkipPickupGrace();
+                        if(GUI.Button(PickupGraceButtonRect(noticeY),PickupSkipCaption(),compactButton))run.SkipPickupGrace();
                         GUI.Label(new Rect(640,210,285,55),"ZWYCIĘSTWO",title);
                     }
                 }

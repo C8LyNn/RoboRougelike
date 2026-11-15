@@ -11,6 +11,24 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [Test] public void PickupSkipBindingMigratesAndCanBeChanged()
+    {
+        Assert.That(R1ControlProfile.Actions,Does.Contain("SkipPickup"));
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-pickup-"+Guid.NewGuid()+".json");
+        try
+        {
+            var initial=new R1ControlProfile(path);Assert.That(initial.Binding("SkipPickup"),Is.EqualTo("Enter"));
+            var actions=R1ControlProfile.Actions.Where(a=>a!="SkipPickup").ToArray();
+            var data=new LegacyControlData{actions=actions,bindings=actions.Select(initial.Binding).ToArray()};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            var profile=new R1ControlProfile(path);Assert.That(profile.Error,Is.Null);Assert.That(profile.Binding("SkipPickup"),Is.EqualTo("Enter"));
+            Assert.That(profile.TryBind("SkipPickup","W"),Is.False);Assert.That(profile.TrySaveBinding("SkipPickup","K",out _),Is.True);
+            Assert.That(new R1ControlProfile(path).Binding("SkipPickup"),Is.EqualTo("K"));
+            Assert.That(profile.TrySaveBinding("SkipPickup","Enter",out _),Is.True);
+            Assert.That(profile.TryBind("Weapon1","Enter"),Is.False);
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [Test] public void PauseBindingMigratesAndCanBeChangedWithoutStealingOtherActions()
     {
         Assert.That(R1ControlProfile.Actions,Does.Contain("Pause"));
