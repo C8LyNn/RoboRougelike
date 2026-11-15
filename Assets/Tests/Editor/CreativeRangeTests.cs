@@ -56,6 +56,9 @@ public class CreativeRangeTests
         try
         {
             profile.ResetDefaults();Assert.That(profile.TryBind("GarageUnderside","K"),Is.True);
+            var wheelHint=typeof(R1RunHUD).GetMethod("GarageWheelSelection",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+            var fork=new R3PartState(Vector3Int.zero,R3PartKind.Wheel){WheelStyle=R3WheelStyle.SmallFork};
+            Assert.That((string)wheelHint.Invoke(null,new object[]{fork}),Does.Contain("K: widok od spodu").And.Not.Contain("U: widok od spodu"));
             var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
             var garage=run.Garage;var field=typeof(R3GarageView).GetField("pitch",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
             float before=(float)field.GetValue(garage);

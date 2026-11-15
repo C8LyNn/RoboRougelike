@@ -21,6 +21,7 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Wskazówka przy celu treningowym pokazuje bieżący klawisz pauzy, w której znajduje się sterowanie ostrzałem, zamiast zawsze podawać Esc. Tekst zniszczonego celu pozostał bez zmian.
 - Unity 6000.3.14f1: `range_pause_hint_final2.xml` i `.log`: **2 PASS, 0 FAIL** dla zmienionych przypisań i etykiet broni. Pierwsza próba (`range_pause_hint_final.xml`) miała **1 PASS, 1 FAIL**, bo test próbował użyć F8 zarezerwowanego przez grę; powtórzono z dostępnym F7. Czytelność w Windows Player: **NOT RUN**.
+- Wskazówka wybranego koła z mocowaniem od góry również pokazuje aktualny klawisz widoku od spodu zamiast stałego U. `wheel_underside_hint_after.xml`: **2 PASS, 0 FAIL** dla treści oraz rzeczywistego przestawienia widoku w teście; przed poprawką `wheel_underside_hint_before.xml`: **1 FAIL** z nieaktualnym U. Ręczna ocena: **NOT RUN**.
 
 ### 44. Ładunki na poligonie
 

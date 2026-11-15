@@ -487,7 +487,8 @@ namespace RoboRougelike.R1
                 part.WheelStyle==R3WheelStyle.SpikedFork?"Kolce są wizualne.":
                 (part.WheelStyle==R3WheelStyle.Monster||part.WheelStyle==R3WheelStyle.LargeOffroad)&&part.FootprintRevision==1?"Potrzebuje więcej miejsca.":
                 R3VehicleModel.HasForkMount(part.WheelStyle)?"Mocowanie od góry.":"Kliknij pojazd, aby zamontować.";
-            return GarageWheelStats(part)+". "+hint+(R3VehicleModel.HasForkMount(part.WheelStyle)?" U: widok od spodu.":"");
+            return GarageWheelStats(part)+". "+hint+(R3VehicleModel.HasForkMount(part.WheelStyle)?
+                " "+R1ControlProfile.Display(R1ControlProfile.Current.Binding("GarageUnderside"))+": widok od spodu.":"");
         }
 
         string SimpleGarageFeedback(R1RunController run)
