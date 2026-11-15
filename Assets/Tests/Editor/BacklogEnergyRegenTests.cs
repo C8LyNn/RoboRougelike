@@ -35,6 +35,28 @@ public sealed class BacklogEnergyRegenTests
         Assert.That(model.Energy.TrySpend(.00001f),Is.True);
         var copy=model.DeepCopy();Assert.That(copy.Energy.CanSpend(500),Is.False,"Cloning a vehicle must not restore energy spent below display precision.");
     }
+    [Test] public void CheckpointRetainsEnergyBelowFloatPrecisionAndLoadsLegacyData()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Energy.Fill();
+        float full=model.Energy.Maximum;Assert.That(model.Energy.TrySpend(.00001f),Is.True);
+        var saved=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        restored.Energy.Recharge(.00001f);Assert.That(restored.Energy.CanSpend(full),Is.True,"A checkpoint must not discard the precise fractional balance.");
+        var exact=typeof(R3ModelCheckpoint).GetField("energyTicks");Assert.That(exact,Is.Not.Null,"Older checkpoints need an optional exact-energy field.");
+        exact.SetValue(saved,null);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,0,out var legacy,out error),Is.True,error);
+        Assert.That(legacy.Energy.Current,Is.EqualTo(saved.energy),"A checkpoint without the new field must retain its original float balance.");
+    }
+    [Test] public void CheckpointRejectsMalformedExactEnergyWithoutSilentlyRefilling()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var saved=model.MakeCheckpoint(0);var exact=typeof(R3ModelCheckpoint).GetField("energyTicks");Assert.That(exact,Is.Not.Null);
+        foreach(string invalid in new[]{"-1","not-a-number","0",new string('9',84),new string('9',1000)})
+        {
+            exact.SetValue(saved,invalid);
+            Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,0,out _,out _),Is.False);
+        }
+    }
     [Test] public void SharedShotBudgetKeepsAffordableUnequalCostsAndHugeRequests()
     {
         var state=new VehicleEnergyState();

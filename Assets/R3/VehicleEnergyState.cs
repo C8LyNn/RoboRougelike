@@ -150,6 +150,14 @@ namespace RoboRougelike.R3
             if(source==null)throw new ArgumentNullException(nameof(source));
             currentTicks=System.Numerics.BigInteger.Min(source.currentTicks,DeviceFireSchedule.Ticks(Maximum));
         }
+        internal string ExactTicks => currentTicks.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        internal bool RestoreExact(string text,float reported)
+        {
+            if(string.IsNullOrEmpty(text)||text.Length>84||
+               !System.Numerics.BigInteger.TryParse(text,System.Globalization.NumberStyles.None,System.Globalization.CultureInfo.InvariantCulture,out var ticks)||
+               ticks<0||ticks>DeviceFireSchedule.Ticks(float.MaxValue)||DeviceFireSchedule.FloorFloat(ticks)!=reported)return false;
+            currentTicks=System.Numerics.BigInteger.Min(ticks,DeviceFireSchedule.Ticks(Maximum));return true;
+        }
     }
 
     public static class VehicleEnergyCosts

@@ -71,6 +71,8 @@ namespace RoboRougelike.R3
         // Version 0 checkpoints predate energy and start with the core's charge.
         public int energyVersion;
         public float energy;
+        // Optional exact balance; absent in existing version-1 checkpoints.
+        public string energyTicks;
         // Version 0 saves predate shared device charges.
         public int chargesVersion;
         public VehicleChargePoolCheckpoint[] chargePools;
@@ -156,7 +158,7 @@ namespace RoboRougelike.R3
                 safeVendorExtraSold=safeVendorExtraSold.OrderBy(index=>index).ToArray(),
                 repairPulseRemaining=Remaining(RepairPulseReadyAt,now),boosterRemaining=Remaining(BoosterReadyAt,now),jumpRemaining=Remaining(JumpReadyAt,now),blinkRemaining=Remaining(BlinkReadyAt,now),overdriveRemaining=Remaining(OverdriveReadyAt,now),rapidFireRemaining=Remaining(RapidFireReadyAt,now),doubleShotOverdriveRemaining=Remaining(DoubleShotOverdriveReadyAt,now),targetedEmpRemaining=Remaining(TargetedEmpReadyAt,now),areaEmpRemaining=Remaining(AreaEmpReadyAt,now),
                 scannerPulseRemaining=Remaining(ScannerPulseReadyAt,now),structuralScannerRemaining=Remaining(StructuralScannerReadyAt,now),
-                energyVersion=1,energy=Energy.Current,chargesVersion=1,chargePools=Charges.Snapshot(),hasInitialEnergyPrepared=true,initialEnergyPrepared=InitialEnergyPrepared,
+                energyVersion=1,energy=Energy.Current,energyTicks=Energy.ExactTicks,chargesVersion=1,chargePools=Charges.Snapshot(),hasInitialEnergyPrepared=true,initialEnergyPrepared=InitialEnergyPrepared,
                 rechargePulseRemaining=Remaining(RechargePulseReadyAt,now),
                 rampDeployerRemaining=Remaining(RampDeployerReadyAt,now),
                 wallDeployerRemaining=Remaining(WallDeployerReadyAt,now),jumpPadDeployerRemaining=Remaining(JumpPadDeployerReadyAt,now),
@@ -399,6 +401,7 @@ namespace RoboRougelike.R3
                 (data.energyVersion==1&&(!Finite(data.energy)||data.energy<0)))return false;
             restored.RefreshEnergyLayout();
             restored.Energy.Restore(data.energyVersion==0?VehicleEnergyState.CoreCapacity:data.energy);
+            if(data.energyVersion==1&&!string.IsNullOrEmpty(data.energyTicks)&&!restored.Energy.RestoreExact(data.energyTicks,data.energy))return false;
             if(data.chargesVersion<0||data.chargesVersion>1||
                 (data.chargesVersion==1&&!restored.Charges.Restore(data.chargePools)))return false;
             restored.InitialEnergyPrepared=!data.hasInitialEnergyPrepared||data.initialEnergyPrepared;

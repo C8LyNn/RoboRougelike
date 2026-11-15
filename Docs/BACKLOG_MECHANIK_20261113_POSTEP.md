@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14, 18 i 44. Dokładna energia w checkpointach
+
+- Checkpoint przechowuje dodatkowo dokładne saldo energii, zachowując dotychczasowe pole `energy` dla zgodności. Stare checkpointy bez nowego pola nadal używają swojej zapisanej wartości. Nieprawidłowy, zbyt duży lub niezgodny z polem `energy` nowy zapis jest odrzucany zamiast tworzyć zasoby; odczyt nadal uwzględnia maksymalną pojemność pojazdu.
+- Unity 6000.3.14f1: `energy_checkpoint_exact_before.xml` — **2 FAIL**, brak zachowania ułamka i walidowanego pola. `energy_checkpoint_exact_after.xml` — **29 PASS, 0 FAIL**, w tym serializacja JSON, drobne koszty, brak nowego pola, uszkodzone wartości, starsza migracja części i rzeczywisty zapis/odczyt runu po zwycięstwie.
+- Starsza wersja gry może korzystać z dotychczasowego zaokrąglonego pola; nie sprawdzono wczytania nowego pliku przez starszy build. To celowany test, nie pełna regresja ani ręczna rozgrywka; #14 i #44 pozostają otwarte.
+
 ### 14, 18 i 44. Dokładność rozliczania energii
 
 - Pula energii zachowuje drobne koszty i ładowanie poniżej precyzji pojedynczej liczby `float`, również przy hurtowym rozliczaniu strzałów. Sprawdzanie możliwości wydania korzysta z rzeczywistego salda, a publiczny odczyt nie zawyża go przez zaokrąglenie. Kopia modelu pojazdu zachowuje dokładny stan, z ograniczeniem do nowej maksymalnej pojemności.
