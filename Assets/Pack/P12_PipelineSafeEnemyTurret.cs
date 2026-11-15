@@ -1464,6 +1464,7 @@ namespace RogueMachine.P12PipelineSafe
             var block=gun.AddComponent<P12_PipelineSafePlayerBlock>();
             var module=gun.AddComponent<P12PipelineSafeFunctionalModule>();module.Configure(P12FunctionalModuleType.Weapon,0,block,pivot,transform);
             additionalGuns.Add(new VariantGun{Block=hp,Support=support,Kind=state.Weapon,Pivot=pivot,Muzzle=barrel,NextShot=Time.time+2.2f});
+            if(salvage!=null)HookPhysicalDrop(hp,"extra-gun/"+(additionalGuns.Count-1),R3PartKind.Gun,state.Weapon);
             return true;
         }
         public void ConfigureVariant(R5EnemyVariant variant)

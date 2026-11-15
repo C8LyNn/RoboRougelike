@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 30, 41 i 44. Dodatkowa broń przeciwnika i odkrywanie technologii
+
+- Dodatkowe działo przeciwnika rejestruje obsługę fizycznego łupu również wtedy, gdy zostało dołączone po inicjalizacji. Obecna ścieżka montująca je przed inicjalizacją nadal używa tego samego zabezpieczenia przed powtórną rejestracją. Odłączenie lub zniszczenie może utworzyć łup zgodnie ze skonfigurowaną szansą, a zapis walki nie dubluje wcześniej zrzuconej części.
+- Unity 6000.3.14f1: `enemy_late_gun_before.xml` — **1 PASS, 1 FAIL**: odstrzelony railgun odblokowywał technologię po pokonaniu przeciwnika, ale dodatkowe działo dodane po `Start` nie wypadało po odłączeniu. `enemy_late_gun_after.xml` — **7 PASS**, w tym brak duplikacji, wcześniejsze odłączenie i odpłatny odzysk. `enemy_late_gun_final.xml` — **3 PASS**, obejmujące osobno odłączenie i rzeczywiste zniszczenie dodatkowego działa oraz odkrycie railguna po jego wcześniejszym odstrzeleniu.
+- Późne dołączenie w teście wywołano kontrolowanie przez istniejące API przeciwnika; nie jest to potwierdzenie ręcznej walki ani balansu szansy łupu. Odblokowanie technologii nadal nie przyznaje niezebranego egzemplarza. Punkt 44 pozostaje otwarty.
+
 ### 12–15 i 44. Utrata premii w tej samej klatce
 
 - Fizyczne moduły premii zgłaszają zmianę stanu po zniszczeniu, odłączeniu, wyłączeniu, włączeniu lub zmianie rodzica. Ich właściciel oznacza wynik jako nieaktualny i przelicza go przy najbliższym użyciu, zamiast czekać na następny `Update`; w tym także przed bezpośrednim wystrzałem działa podstawowego oraz odczytem czasu strzału i mobilności. Odczyt bez zmiany stanu nie przegląda ponownie całej konstrukcji. Same zdarzenia nie przeliczają HP w trakcie obsługi obrażeń.
