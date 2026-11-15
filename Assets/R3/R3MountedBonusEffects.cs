@@ -52,6 +52,9 @@ namespace RoboRougelike.R3
         public float ShotgunDamageMultiplier {get;private set;}=1;
         public float RailgunDamageMultiplier {get;private set;}=1;
         public float RocketDamageMultiplier {get;private set;}=1;
+        public float BeamDamageMultiplier {get;private set;}=1;
+        public float SawDamageMultiplier {get;private set;}=1;
+        public float AuraDamageMultiplier {get;private set;}=1;
         public float EnergyDamageMultiplier {get;private set;}=1;
         public float WeaponDamageMultiplier {get;private set;}=1;
         public float ShieldDurabilityMultiplier {get;private set;}=1;
@@ -142,6 +145,7 @@ namespace RoboRougelike.R3
             var blastTrapDamage=new R1ModifierGroup();var piercingDamage=new R1ModifierGroup();var kineticDamage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
             var core=new R1ModifierGroup();var reload=new R1ModifierGroup();var shieldDurability=new R1ModifierGroup();var weaponDamage=new R1ModifierGroup();var automaticDamage=new R1ModifierGroup();var energyDamage=new R1ModifierGroup();var repairEfficiency=new R1ModifierGroup();var constructionHull=new R1ModifierGroup();var driveMobility=new R1ModifierGroup();
             var heavyDamage=new R1ModifierGroup();var shotgunDamage=new R1ModifierGroup();var railgunDamage=new R1ModifierGroup();var rocketDamage=new R1ModifierGroup();
+            var beamDamage=new R1ModifierGroup();var sawDamage=new R1ModifierGroup();var auraDamage=new R1ModifierGroup();
             damage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             weaponDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             automaticDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
@@ -149,6 +153,9 @@ namespace RoboRougelike.R3
             shotgunDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             railgunDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             rocketDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            beamDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            sawDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
+            auraDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             energyDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             basicDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
             basicBlastDamage.Add(R1ModifierOperation.Increased,overdriveIncrease,1);
@@ -196,6 +203,12 @@ namespace RoboRougelike.R3
                         railgunDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                     if(AppliesToWeapon(module.UpgradeScope,R1BonusScope.RocketWeapon,R1BonusScope.BlastDamage))
                         rocketDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(AppliesToWeapon(module.UpgradeScope,R1BonusScope.BeamWeapon,R1BonusScope.EnergyDamage))
+                        beamDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(AppliesToWeapon(module.UpgradeScope,R1BonusScope.SawWeapon,R1BonusScope.KineticDamage))
+                        sawDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                    if(AppliesToWeapon(module.UpgradeScope,R1BonusScope.AuraWeapon,R1BonusScope.EnergyDamage))
+                        auraDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                     if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Weapons||module.UpgradeScope==R1BonusScope.EnergyDamage)
                         energyDamage.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
                 }
@@ -235,6 +248,9 @@ namespace RoboRougelike.R3
             ShotgunDamageMultiplier=shotgunDamage.Apply(baseStats.Damage);
             RailgunDamageMultiplier=railgunDamage.Apply(baseStats.Damage);
             RocketDamageMultiplier=rocketDamage.Apply(baseStats.Damage);
+            BeamDamageMultiplier=beamDamage.Apply(baseStats.Damage);
+            SawDamageMultiplier=sawDamage.Apply(baseStats.Damage);
+            AuraDamageMultiplier=auraDamage.Apply(baseStats.Damage);
             EnergyDamageMultiplier=energyDamage.Apply(baseStats.Damage);
             WeaponDamageMultiplier=weaponDamage.Apply(baseStats.Damage);
             ShieldDurabilityMultiplier=shieldDurability.Apply(1);

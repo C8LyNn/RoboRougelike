@@ -51,7 +51,7 @@ namespace RoboRougelike.WeaponIntegration
                 R3ShieldDome.TryFirstHit(muzzle.position,result.EndPoint,Device.Owner,out var shield,out float distance))
             {
                 var direction=(result.EndPoint-muzzle.position).normalized;interceptionPoint=muzzle.position+direction*distance;
-                float damage=R3MountedBonusEffects.SafeDamageProduct(Module.Settings.damagePerSecond,tank!=null?tank.PackageEnergyDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier),result.ActiveSeconds);
+                float damage=R3MountedBonusEffects.SafeDamageProduct(Module.Settings.damagePerSecond,tank!=null?tank.PackageBeamDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier),result.ActiveSeconds);
                 shield.Absorb(damage,interceptionPoint,direction);intercepted=true;
             }
             if(intercepted&&beamLine!=null&&beamLine.positionCount>=2)beamLine.SetPosition(1,interceptionPoint);
@@ -61,7 +61,7 @@ namespace RoboRougelike.WeaponIntegration
         public void ApplyBeamHit(in BeamHitRequest hit)
         {
             if(!Device.Available||hit.ShooterBody!=Device.Body)return;
-            float damage=R3MountedBonusEffects.SafeDamageProduct(hit.Damage,tank!=null?tank.PackageEnergyDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier));
+            float damage=R3MountedBonusEffects.SafeDamageProduct(hit.Damage,tank!=null?tank.PackageBeamDamageScale:damageScale,R3VehicleModel.TierEffectUnits(State.Tier));
             if(muzzle!=null&&R3ShieldDome.TryFirstHit(muzzle.position,hit.Point,Device.Owner,out var shield,out float distance))
             {
                 var direction=(hit.Point-muzzle.position).normalized;interceptionPoint=muzzle.position+direction*distance;

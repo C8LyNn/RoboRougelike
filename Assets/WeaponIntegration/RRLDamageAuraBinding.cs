@@ -80,7 +80,7 @@ namespace RoboRougelike.WeaponIntegration
                    (collider.ClosestPoint(origin)-origin).sqrMagnitude<(current.ClosestPoint(origin)-origin).sqrMagnitude)
                     targets[root]=collider;
             }
-            float scale=tank!=null?tank.PackageEnergyDamageScale:enemyDamageScale;
+            float scale=tank!=null?tank.PackageAuraDamageScale:enemyDamageScale;
             float damage=R3MountedBonusEffects.SafeDamageProduct(DamagePerSecond,scale,R3VehicleModel.TierEffectUnits(State.Tier),step);
             R3ShieldDome.CollectExposedBlastBoundaries(origin,Radius,Device.Owner,shieldBoundaries,exposedShields);unblockedTargets.Clear();
             foreach(var collider in targets.Values)

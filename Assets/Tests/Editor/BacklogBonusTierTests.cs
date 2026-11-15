@@ -13,6 +13,9 @@ public sealed class BacklogBonusTierTests
     [TestCase(R1BonusScope.ShotgunWeapon,"strzelby")]
     [TestCase(R1BonusScope.RailgunWeapon,"railguna")]
     [TestCase(R1BonusScope.RocketWeapon,"wyrzutni rakiet")]
+    [TestCase(R1BonusScope.BeamWeapon,"wiązki")]
+    [TestCase(R1BonusScope.SawWeapon,"piły")]
+    [TestCase(R1BonusScope.AuraWeapon,"aury")]
     public void NewWeaponScopeSurvivesFusionAndHasSpecificDescription(R1BonusScope scope,string expectedName)
     {
         Assert.That(R3VehicleModel.ValidBonusScope(R1UpgradeEffect.Damage,scope),Is.True);
@@ -786,6 +789,32 @@ public sealed class BacklogBonusTierGameplayTests
         effects.SetOverdriveIncrease(.1f);
         Assert.That(effects.HeavyDamageMultiplier,Is.EqualTo(2.775f).Within(.001));
         Assert.That(effects.RocketDamageMultiplier,Is.EqualTo(2.10f).Within(.001));
+        foreach(var bonus in bonuses)Object.Destroy(bonus);
+    }
+    [UnityTest] public IEnumerator ContinuousScopesCombineEnergyWeaponAndMoreWithoutCrossBuffing()
+    {
+        Assert.That((int)R1BonusScope.RocketWeapon,Is.EqualTo(19),"Existing saved enum values must stay unchanged.");
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var specs=new[]{("global",.2f,R1BonusScope.Global), ("weapons",.1f,R1BonusScope.Weapons),
+            ("energy",.15f,R1BonusScope.EnergyDamage), ("beam",.3f,R1BonusScope.BeamWeapon),
+            ("aura",.25f,R1BonusScope.AuraWeapon)};
+        var bonuses=specs.Select(s=>{var b=BacklogBonusTierTests.OperationBonus("continuous-combo-"+s.Item1,s.Item2,"Increased");b.Scope=s.Item3;return b;}).ToList();
+        bonuses.Add(BacklogBonusTierTests.OperationBonus("continuous-combo-more",.5f,"More"));
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(bonuses.ToArray()),Is.True);
+        foreach(var id in model.Inventory.Select(p=>p.Id).ToArray())
+        {
+            var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            var cell=cells.First(c=>model.OwnedPlacementError(id,c,default)==null);Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var effects=run.Player.GetComponent<R3MountedBonusEffects>();
+        Assert.That(effects.BeamDamageMultiplier,Is.EqualTo(2.625f).Within(.001));
+        Assert.That(effects.AuraDamageMultiplier,Is.EqualTo(2.55f).Within(.001));
+        Assert.That(effects.SawDamageMultiplier,Is.EqualTo(1.95f).Within(.001));
+        Assert.That(effects.AutomaticDamageMultiplier,Is.EqualTo(1.95f).Within(.001));
+        effects.SetOverdriveIncrease(.1f);
+        Assert.That(effects.BeamDamageMultiplier,Is.EqualTo(2.775f).Within(.001));
+        Assert.That(effects.SawDamageMultiplier,Is.EqualTo(2.10f).Within(.001));
         foreach(var bonus in bonuses)Object.Destroy(bonus);
     }
     [UnityTest] public IEnumerator AutomaticScopedBonusAffectsOnlyAutomaticShotsAndCombinesWithGlobalBonuses()

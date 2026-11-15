@@ -17,6 +17,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Unity 6000.3.14f1: `weapon_scopes_release.xml` i `.log`: **10 PASS, 0 FAIL**, w tym rzeczywiste trafienia czterema rodzajami broni, zdjęcie premii, zapis/wczytanie, fuzja, opisy, sumowanie globalne i według typu oraz regresja poprzednich zakresów. Przed zmianą `weapon_scopes_before.xml`: **1 FAIL** z braku zakresu. `weapon_scopes_first.xml`: **6 PASS, 1 FAIL**, bo oczekiwanie testowe nie odczekało cooldownu; `weapon_scopes_combined.xml`: **5 PASS, 1 FAIL** z powodu przekroczenia limitu rodzajów modułów w scenariuszu; po dostosowaniu scenariuszy ponowny przebieg przeszedł.
 - Pozostałe podkategorie oraz ręczny playtest i balans wymagają dalszej pracy; punkt 13 pozostaje otwarty.
 
+### 13. Zakresy wiązki, piły i aury
+
+- Dodano osobne zakresy dla wiązki, piły i aury oraz trzy konfigurowalne nagrody +30%. Premie globalne, broni i właściwego typu obrażeń łączą się z premią danego rodzaju; pozostałe bronie nie otrzymują tej premii. Utrata modułu usuwa jego wkład. Nowe wartości dopisano po poprzednich, zachowując numery istniejących zakresów w zapisach.
+- Unity 6000.3.14f1: `continuous_scopes_first.xml` i `.log`: **11 PASS, 0 FAIL** dla nowych zakresów, fuzji i wcześniejszych premii; `continuous_scopes_combined.xml`: **4 PASS** dla łączenia z premią energetyczną, globalną i `more`; `continuous_scopes_shields.xml`: **6 PASS** dla broni ciągłych i ochrony kopułą. Przed zmianą `continuous_scopes_before.xml`: **1 FAIL** z braku zakresu. Scenariusz nowych premii wywołuje istniejące metody trafienia wiązki i piły oraz krok aury w kontrolowanej scenie; nie jest ręcznym celowaniem ani playtestem.
+- Prototypowe wartości i wpływ trzech nowych nagród na losowanie wymagają oceny w grze. Punkt 13 pozostaje otwarty do pełnej weryfikacji wszystkich wymaganych zakresów.
+
 ### 02, 14 i 44. Wspólny bufor zapytania railguna
 
 - Pociski railguna korzystają ze współdzielonego bufora zapytania fizyki zamiast tworzyć osobną dużą tablicę na każdy pocisk. Zagnieżdżone rozliczenie obrażeń dostaje osobny bufor; przy przepełnieniu nadal następuje pełne zapytanie, bez limitowania wykrywanych przeszkód.

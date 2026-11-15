@@ -38,6 +38,63 @@ public sealed class BacklogEmpTierPhysicsTests
         yield return new EnterPlayMode();
     }
 
+    [UnityTest] public IEnumerator ContinuousWeaponScopesAffectOnlyTheirOwnDamageAndSurviveSave()
+    {
+        var cases=new[]{(R4WeaponKind.BeamCutter,"BeamWeapon","damage_beam_weapon"),
+            (R4WeaponKind.RotarySaw,"SawWeapon","damage_saw_weapon"),
+            (R4WeaponKind.EmpEmitter,"AuraWeapon","damage_aura_weapon")};
+        foreach(var entry in cases)
+        {
+            Assert.That(System.Enum.TryParse(entry.Item2,out R1BonusScope scope),Is.True,"Missing scope "+entry.Item2);
+            var reward=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.Single(p=>p!=null&&p.Id==entry.Item3);
+            Assert.That(reward.Scope,Is.EqualTo(scope));Assert.That(reward.Amount,Is.EqualTo(.3f));
+            var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+            var gunState=model.Parts.First(p=>p.Kind==R3PartKind.Gun);gunState.Weapon=entry.Item1;
+            var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="test-"+entry.Item3;
+            bonus.Effect=R1UpgradeEffect.Damage;bonus.Scope=scope;bonus.Amount=.3f;
+            Assert.That(model.ReceiveBonuses(new[]{bonus}),Is.True);var id=model.Inventory.Single(p=>p.UpgradeId==bonus.Id).Id;
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct().First(c=>model.OwnedPlacementError(id,c,default)==null);
+            Assert.That(model.Mount(id,cell),Is.True);
+            var saved=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+            Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+            Assert.That(restored.Parts.Single(p=>p.Id==id).UpgradeScope,Is.EqualTo(scope));
+            var paletteObject=new GameObject("Continuous scope palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
+            var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
+            for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
+            var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
+            vehicle.GetComponent<Rigidbody>().isKinematic=true;
+            var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==gunState.Id);
+            var enemy=new GameObject("Continuous scope enemy");enemy.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret>().enabled=false;
+            var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.SetParent(enemy.transform);
+            target.transform.position=vehicle.transform.position+Vector3.forward*2;
+            var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(500,false);Physics.SyncTransforms();
+            var aura=gun.GetComponent<RRLDamageAuraBinding>();if(aura!=null)Assert.That(aura.Fire(),Is.True);
+            void Hit()
+            {
+                if(entry.Item1==R4WeaponKind.BeamCutter)
+                {
+                    var beam=gun.GetComponent<RRLBeamBinding>();
+                    var hit=new RoboRougelike.Mechanics.BeamCutter.BeamHitRequest(target.GetComponent<Collider>(),target.transform.position,Vector3.back,Vector3.forward,100,1,vehicle.GetComponent<Rigidbody>(),gun.gameObject);
+                    beam.ApplyBeamHit(hit);
+                }
+                else if(entry.Item1==R4WeaponKind.RotarySaw)
+                {
+                    var saw=gun.GetComponent<RRLSawBinding>();
+                    saw.ApplyDamage(new RoboRougelike.Weapons.RotarySaw.SawDamageEvent(hp.GetInstanceID(),100,target.transform.position,Vector3.up,target.GetComponent<Collider>(),saw.Module));
+                }
+                else typeof(RRLDamageAuraBinding).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(aura,null);
+            }
+            float baseline=entry.Item1==R4WeaponKind.EmpEmitter?RRLDamageAuraBinding.DamagePerSecond*Time.fixedDeltaTime:100;
+            Hit();Assert.That(500-hp.CurrentHp,Is.EqualTo(baseline*1.3f).Within(.01f),entry.Item2);
+            var effects=vehicle.GetComponent<R3MountedBonusEffects>();Assert.That(effects.AutomaticDamageMultiplier,Is.EqualTo(1));
+            target.SetActive(false);vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id).gameObject.SetActive(false);yield return null;
+            target.SetActive(true);hp.RestoreHealthRatio(1);Physics.SyncTransforms();Hit();
+            Assert.That(500-hp.CurrentHp,Is.EqualTo(baseline).Within(.01f),"Disabled "+entry.Item2);
+            Object.Destroy(vehicle.gameObject);Object.Destroy(enemy);Object.Destroy(paletteObject);Object.Destroy(material);Object.Destroy(bonus);yield return null;
+        }
+    }
+
     [UnityTest] public IEnumerator EnergyScopedBonusAffectsAuraAndBeamButNotKineticShots()
     {
         Assert.That(System.Enum.TryParse("EnergyDamage",out R1BonusScope scope),Is.True);
