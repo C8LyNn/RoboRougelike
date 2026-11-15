@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Numerics;
 using RoboRougelike.R1;
 using RogueMachine.P12PipelineSafe;
@@ -12,7 +11,7 @@ namespace RoboRougelike.R3
 {
     // Owned by the vehicle, not the emitter: already due shots survive losing
     // a drone/turret, just as projectiles already in flight do.
-    public sealed class R3DeviceProjectileQueue : MonoBehaviour
+    public sealed class R3DeviceProjectileQueue : MonoBehaviour,IR3ProjectileWork
     {
         internal sealed class Batch
         {
@@ -28,8 +27,6 @@ namespace RoboRougelike.R3
         }
         readonly Queue<Batch> batches=new Queue<Batch>();
         double workBudgetMilliseconds=4d;
-        static int budgetFrame=-1;
-        static long budgetStart;
 
         internal void Enqueue(Batch batch)
         {
@@ -38,38 +35,47 @@ namespace RoboRougelike.R3
             Drain();
         }
         void FixedUpdate(){if(Time.timeScale>0)Drain();}
+        void OnEnable(){if(batches.Count>0)R3ProjectileWorkScheduler.Register(this);}
         void OnDisable()
         {
+            R3ProjectileWorkScheduler.Unregister(this);
             // Active projectiles retire when their owner is deactivated.
             // Do not resurrect shots still awaiting creation on reactivation.
             if(!gameObject.activeInHierarchy)batches.Clear();
         }
+        bool IR3ProjectileWork.HasProjectileWork=>batches.Count>0;
+        bool IR3ProjectileWork.CanProcessProjectileWork
+        {
+            get
+            {
+                var run=R1RunController.Instance;
+                return !(run!=null&&run.Player!=null&&run.Player.transform==transform&&run.EmergencyRescueAttackBlocked);
+            }
+        }
+        bool IR3ProjectileWork.ProcessProjectileWork()=>ProcessOne();
         void Drain()
         {
             if(batches.Count==0)return;
-            var run=R1RunController.Instance;
-            if(run!=null&&run.Player!=null&&run.Player.transform==transform&&run.EmergencyRescueAttackBlocked)return;
-            if(budgetFrame!=Time.frameCount){budgetFrame=Time.frameCount;budgetStart=Stopwatch.GetTimestamp();}
-            // Preserve the previous immediate first-shot behavior. Further
-            // work is time-budgeted and stays queued instead of being dropped.
-            bool attempted=false;
-            while(batches.Count>0&&(!attempted||(Stopwatch.GetTimestamp()-budgetStart)*1000d/Stopwatch.Frequency<workBudgetMilliseconds))
+            if(workBudgetMilliseconds<=0)
             {
-                var batch=batches.Peek();
-                // Existing shells retire when their owner disappears or is disabled.
-                if(batch.Owner==null||!batch.Owner.gameObject.activeInHierarchy){batches.Dequeue();continue;}
-                attempted=true;
-                Collider shot=null;
-                try
-                {
-                    shot=Spawn(batch);
-                    ExcludeSiblings(batch,shot);
-                    batch.Remaining-=BigInteger.One;
-                    batches.Dequeue();
-                    if(!batch.Remaining.IsZero)batches.Enqueue(batch); // Share work among already-pending devices.
-                }
-                catch(Exception e){if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}UnityEngine.Debug.LogException(e,this);break;}
+                if(((IR3ProjectileWork)this).CanProcessProjectileWork)ProcessOne();
+                return;
             }
+            R3ProjectileWorkScheduler.Request(this,workBudgetMilliseconds);
+        }
+        bool ProcessOne()
+        {
+            if(batches.Count==0)return false;
+            var batch=batches.Peek();
+            if(batch.Owner==null||!batch.Owner.gameObject.activeInHierarchy){batches.Dequeue();return true;}
+            Collider shot=null;
+            try
+            {
+                shot=Spawn(batch);ExcludeSiblings(batch,shot);batch.Remaining-=BigInteger.One;
+                batches.Dequeue();if(!batch.Remaining.IsZero)batches.Enqueue(batch);
+                return true;
+            }
+            catch(Exception e){if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}UnityEngine.Debug.LogException(e,this);return false;}
         }
         static bool Live(Collider col)=>col!=null&&col.enabled&&col.gameObject.activeInHierarchy;
         static void ExcludeSiblings(Batch batch,Collider shot)

@@ -96,6 +96,130 @@ public sealed class BacklogWeaponTierPhysicsTests
         {tag.gameObject.SetActive(false);Object.Destroy(tag.gameObject);}
         Object.Destroy(owner);yield return null;
     }
+    [UnityTest] public IEnumerator ProjectileBudgetIsSharedBetweenOwnersAndResumesOnLaterFrames()
+    {
+        var owners=new[]{new GameObject("Budget owner A"),new GameObject("Budget owner B")};
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var rent=typeof(P17PhysicalShell).GetMethod("RentConventional",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        var queues=new R3ConventionalProjectileQueue[2];
+        float oldTimeScale=Time.timeScale;Time.timeScale=0;
+        try
+        {
+            for(int i=0;i<2;i++)
+            {
+                owners[i].AddComponent<Rigidbody>().isKinematic=true;
+                var shell=(P17PhysicalShell)rent.Invoke(null,null);shell.transform.position=new Vector3(1300+i*5,1300,1300);
+                shell.GetComponent<R4ProjectileOrigin>().PartId="budget-owner-"+i;shell.gameObject.SetActive(true);
+                shell.GetComponent<Rigidbody>().linearVelocity=Vector3.forward*20;shell.Configure(owners[i].transform,1,5,Vector3.forward,null);
+                queues[i]=owners[i].AddComponent<R3ConventionalProjectileQueue>();
+                typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queues[i],1e-12d);
+                typeof(R3ConventionalProjectileQueue).GetMethod("Enqueue",flags).Invoke(queues[i],new object[]{shell,2});
+            }
+            int Count(int i)=>Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId=="budget-owner-"+i);
+            Assert.That(Count(0),Is.EqualTo(2));
+            Assert.That(Count(1),Is.EqualTo(1),"Exhausted shared budget must defer the other owner's bonus, not force another shot.");
+            var drain=typeof(R3ConventionalProjectileQueue).GetMethod("Drain",flags);
+            yield return null;drain.Invoke(queues[0],null);
+            yield return null;drain.Invoke(queues[1],null);
+            Assert.That(Count(1),Is.EqualTo(2),"The waiting owner must receive a turn.");
+            yield return null;drain.Invoke(queues[1],null);
+            Assert.That(Count(0),Is.EqualTo(3));Assert.That(Count(1),Is.EqualTo(3),"All due shots must eventually be emitted.");
+        }
+        finally
+        {
+            Time.timeScale=oldTimeScale;
+            foreach(var shot in Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId!=null&&p.PartId.StartsWith("budget-owner-")))
+                if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+            foreach(var owner in owners)Object.Destroy(owner);
+        }
+    }
+    [UnityTest] public IEnumerator DisabledQueueDoesNotBlockOthersAndResumesWhenReenabled()
+    {
+        var owners=new[]{new GameObject("Disabled queue owner A"),new GameObject("Disabled queue owner B")};
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var rent=typeof(P17PhysicalShell).GetMethod("RentConventional",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        var queues=new R3ConventionalProjectileQueue[2];float oldTimeScale=Time.timeScale;Time.timeScale=0;
+        try
+        {
+            for(int i=0;i<2;i++)
+            {
+                owners[i].AddComponent<Rigidbody>().isKinematic=true;
+                var shell=(P17PhysicalShell)rent.Invoke(null,null);shell.transform.position=new Vector3(1500+i*5,1500,1500);
+                shell.GetComponent<R4ProjectileOrigin>().PartId="disabled-queue-"+i;shell.gameObject.SetActive(true);
+                shell.GetComponent<Rigidbody>().linearVelocity=Vector3.forward*20;shell.Configure(owners[i].transform,1,5,Vector3.forward,null);
+                queues[i]=owners[i].AddComponent<R3ConventionalProjectileQueue>();
+                typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queues[i],1e-12d);
+                typeof(R3ConventionalProjectileQueue).GetMethod("Enqueue",flags).Invoke(queues[i],new object[]{shell,i==0?2:1});
+            }
+            int Count(int i)=>Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId=="disabled-queue-"+i);
+            Assert.That(Count(0),Is.EqualTo(2));Assert.That(Count(1),Is.EqualTo(1));
+            queues[0].enabled=false;
+            yield return null;typeof(R3ConventionalProjectileQueue).GetMethod("Drain",flags).Invoke(queues[1],null);
+            Assert.That(Count(1),Is.EqualTo(2),"A disabled queue must not retain the scheduler's turn.");
+            Assert.That(Count(0),Is.EqualTo(2));queues[0].enabled=true;
+            yield return null;typeof(R3ConventionalProjectileQueue).GetMethod("Drain",flags).Invoke(queues[0],null);
+            Assert.That(Count(0),Is.EqualTo(3),"Disabling only the component preserves its queued shot for reenable.");
+        }
+        finally
+        {
+            Time.timeScale=oldTimeScale;
+            foreach(var shot in Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId!=null&&p.PartId.StartsWith("disabled-queue-")))
+                if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+            foreach(var owner in owners)Object.Destroy(owner);
+        }
+    }
+    [UnityTest] public IEnumerator ProjectileBudgetIsSharedAcrossShellRocketAndDeviceQueues()
+    {
+        var owners=new[]{new GameObject("Shared shell owner"),new GameObject("Shared rocket owner"),new GameObject("Shared device owner")};
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var rocketTemplate=new GameObject("Shared budget rocket template");rocketTemplate.SetActive(false);
+        var shooter=GameObject.CreatePrimitive(PrimitiveType.Cube);shooter.transform.position=new Vector3(1400,1400,1400);
+        float oldTimeScale=Time.timeScale;Time.timeScale=0;
+        try
+        {
+            foreach(var owner in owners)owner.AddComponent<Rigidbody>().isKinematic=true;
+            var rent=typeof(P17PhysicalShell).GetMethod("RentConventional",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+            var shell=(P17PhysicalShell)rent.Invoke(null,null);shell.transform.position=new Vector3(1300,1300,1300);
+            shell.GetComponent<R4ProjectileOrigin>().PartId="shared-budget-shell";shell.gameObject.SetActive(true);
+            shell.GetComponent<Rigidbody>().linearVelocity=Vector3.forward*20;shell.Configure(owners[0].transform,1,5,Vector3.forward,null);
+            var conventional=owners[0].AddComponent<R3ConventionalProjectileQueue>();
+            typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(conventional,1e-12d);
+            typeof(R3ConventionalProjectileQueue).GetMethod("Enqueue",flags).Invoke(conventional,new object[]{shell,1});
+
+            rocketTemplate.AddComponent<R4ProjectileOrigin>().PartId="shared-budget-rocket";
+            var template=rocketTemplate.AddComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+            var rockets=owners[1].AddComponent<RoboRougelike.WeaponIntegration.RRLRocketVolleyQueue>();
+            rockets.GetType().GetField("workBudgetMilliseconds",flags).SetValue(rockets,1e-12d);
+            var spec=new RoboRougelike.Mechanics.Rockets.RocketConfig().Snapshot();
+            rockets.GetType().GetMethod("Enqueue",flags).Invoke(rockets,new object[]{1,template,spec,owners[1].GetComponent<Rigidbody>(),owners[1].transform,owners[1],
+                new Vector3(1350,1350,1350),Quaternion.identity,Vector3.forward,null});
+
+            shooter.AddComponent<Rigidbody>().isKinematic=true;
+            var drone=shooter.AddComponent<R3FlyingDrone>();drone.ConfigureTurret(owners[2].transform,.1f,1,40);drone.enabled=false;
+            var batch=typeof(R3FlyingDrone).GetMethod("CaptureShot",flags).Invoke(drone,new object[]{Vector3.forward});
+            batch.GetType().GetField("Remaining").SetValue(batch,System.Numerics.BigInteger.One);
+            var devices=owners[2].AddComponent<R3DeviceProjectileQueue>();
+            typeof(R3DeviceProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(devices,1e-12d);
+            typeof(R3DeviceProjectileQueue).GetMethod("Enqueue",flags).Invoke(devices,new[]{batch});
+            int Shells()=>Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId=="shared-budget-shell");
+            int Rockets()=>Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId=="shared-budget-rocket");
+            int Devices()=>Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Count(p=>p.name=="P17_DronePhysicalShell"&&p.OwnerRoot==owners[2].transform);
+            Assert.That(Shells(),Is.EqualTo(2));Assert.That(Rockets(),Is.Zero);Assert.That(Devices(),Is.Zero);
+            yield return null;rockets.GetType().GetMethod("Drain",flags).Invoke(rockets,null);
+            Assert.That(Rockets(),Is.EqualTo(1));Assert.That(Devices(),Is.Zero);
+            yield return null;typeof(R3DeviceProjectileQueue).GetMethod("Drain",flags).Invoke(devices,null);
+            Assert.That(Devices(),Is.EqualTo(1),"The remaining device shot must be emitted in a later frame.");
+        }
+        finally
+        {
+            Time.timeScale=oldTimeScale;
+            foreach(var shot in Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId!=null&&p.PartId.StartsWith("shared-budget-")))
+                if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+            foreach(var shot in Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Where(p=>p.name=="P17_DronePhysicalShell"&&p.OwnerRoot==owners[2].transform))
+                if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+            Object.Destroy(shooter);Object.Destroy(rocketTemplate);foreach(var owner in owners)Object.Destroy(owner);
+        }
+    }
     [UnityTest] public IEnumerator QueuedRocketBatchesShareEmissionWithoutStarvation()
     {
         var owner=new GameObject("Fair rocket queue owner");var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;

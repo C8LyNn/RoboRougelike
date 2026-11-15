@@ -237,6 +237,40 @@ public sealed class BacklogManualRescueTests
         foreach(var tag in Object.FindObjectsByType<RoboRougelike.R4.R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId=="queued-rescue-rail"))
         {tag.gameObject.SetActive(false);Object.Destroy(tag.gameObject);}
     }
+    [UnityTest] public IEnumerator RescueBlockedQueueDoesNotStopOtherOwnersProjectileWork()
+    {
+        run.Encounter.SetCombatActive(false);run.EmergencyRescueDurationSeconds=.3f;
+        var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+        var rent=typeof(P17PhysicalShell).GetMethod("RentConventional",BindingFlags.Static|BindingFlags.NonPublic);
+        var other=new GameObject("Unblocked projectile owner");other.AddComponent<Rigidbody>().isKinematic=true;
+        string[] ids={"shared-rescue-player","shared-rescue-other"};
+        try
+        {
+            Assert.That(run.TryEmergencyRescue(),Is.True);
+            var owners=new[]{run.Player.transform,other.transform};
+            for(int i=0;i<owners.Length;i++)
+            {
+                var primary=(P17PhysicalShell)rent.Invoke(null,null);primary.transform.position=new Vector3(1700+i*5,1700,1700);
+                primary.GetComponent<RoboRougelike.R4.R4ProjectileOrigin>().PartId=ids[i];primary.gameObject.SetActive(true);
+                primary.GetComponent<Rigidbody>().linearVelocity=Vector3.forward*20;primary.Configure(owners[i],10,3,Vector3.forward,null);
+                var queue=owners[i].gameObject.AddComponent<R3ConventionalProjectileQueue>();
+                typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,1e-12d);
+                typeof(R3ConventionalProjectileQueue).GetMethod("Enqueue",flags).Invoke(queue,new object[]{primary,1});
+            }
+            int Count(int i)=>Object.FindObjectsByType<RoboRougelike.R4.R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId==ids[i]);
+            Assert.That(Count(0),Is.EqualTo(1),"The rescued player's queued shot must remain pending.");
+            Assert.That(Count(1),Is.EqualTo(2),"An unrelated owner's shot must not be blocked by rescue.");
+            float deadline=Time.realtimeSinceStartup+5;
+            while((run.EmergencyRescueAttackBlocked||Count(0)<2)&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(run.EmergencyRescueAttackBlocked,Is.False);Assert.That(Count(0),Is.EqualTo(2),"The player's queued shot must resume after rescue.");
+        }
+        finally
+        {
+            foreach(var shot in Object.FindObjectsByType<RoboRougelike.R4.R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>ids.Contains(p.PartId)))
+                if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+            Object.Destroy(other);
+        }
+    }
     [UnityTest] public IEnumerator QueuedConventionalShotsWaitUntilRescueEnds()
     {
         run.Encounter.SetCombatActive(false);run.EmergencyRescueDurationSeconds=.3f;

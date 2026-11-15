@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using RoboRougelike.Mechanics.Rockets;
 using RoboRougelike.R1;
+using RoboRougelike.R3;
 using UnityEngine;
 using Object=UnityEngine.Object;
 
@@ -10,7 +10,7 @@ namespace RoboRougelike.WeaponIntegration
 {
     // The vehicle owns already-earned bonus rockets, so destroying a launcher
     // does not discard a volley that has already consumed its one shot cost.
-    public sealed class RRLRocketVolleyQueue : MonoBehaviour
+    public sealed class RRLRocketVolleyQueue : MonoBehaviour,IR3ProjectileWork
     {
         sealed class Batch
         {
@@ -26,8 +26,6 @@ namespace RoboRougelike.WeaponIntegration
         }
         readonly Queue<Batch> batches=new Queue<Batch>();
         double workBudgetMilliseconds=4d;
-        static int budgetFrame=-1;
-        static long budgetStart;
 
         internal void Enqueue(int count,RocketProjectile template,RocketSpec spec,Rigidbody body,Transform owner,
             GameObject attacker,Vector3 position,Quaternion rotation,Vector3 direction,Action<RocketProjectile> retirement)
@@ -45,37 +43,51 @@ namespace RoboRougelike.WeaponIntegration
             Drain();
         }
         void FixedUpdate(){if(Time.timeScale>0)Drain();}
-        void OnDisable(){if(!gameObject.activeInHierarchy)Clear();}
+        void OnEnable(){if(batches.Count>0)R3ProjectileWorkScheduler.Register(this);}
+        void OnDisable(){R3ProjectileWorkScheduler.Unregister(this);if(!gameObject.activeInHierarchy)Clear();}
         void OnDestroy()=>Clear();
         void Clear(){while(batches.Count>0){var batch=batches.Dequeue();if(batch.Template!=null)Object.Destroy(batch.Template.gameObject);}}
+        bool IR3ProjectileWork.HasProjectileWork=>batches.Count>0;
+        bool IR3ProjectileWork.CanProcessProjectileWork
+        {
+            get
+            {
+                var run=R1RunController.Instance;
+                return !(run!=null&&run.Player!=null&&run.Player.transform==transform&&run.EmergencyRescueAttackBlocked);
+            }
+        }
+        bool IR3ProjectileWork.ProcessProjectileWork()=>ProcessOne();
         void Drain()
         {
             if(batches.Count==0)return;
-            var run=R1RunController.Instance;
-            if(run!=null&&run.Player!=null&&run.Player.transform==transform&&run.EmergencyRescueAttackBlocked)return;
-            if(budgetFrame!=Time.frameCount){budgetFrame=Time.frameCount;budgetStart=Stopwatch.GetTimestamp();}
-            bool attempted=false;
-            while(batches.Count>0&&(!attempted||(Stopwatch.GetTimestamp()-budgetStart)*1000d/Stopwatch.Frequency<workBudgetMilliseconds))
+            if(workBudgetMilliseconds<=0)
             {
-                var batch=batches.Peek();
-                if(batch.Owner==null||!batch.Owner.gameObject.activeInHierarchy||batch.Body==null)
-                {batches.Dequeue();if(batch.Template!=null)Object.Destroy(batch.Template.gameObject);continue;}
-                attempted=true;RocketProjectile rocket=null;
-                try
-                {
-                    rocket=Object.Instantiate(batch.Template,batch.Position,batch.Rotation);
-                    rocket.SetRetirementHandler(batch.Retirement);
-                    var attacker=batch.Attacker!=null?batch.Attacker:batch.Owner.gameObject;
-                    if(!rocket.TryInitializeWithInheritedVelocity(batch.Spec,batch.Body,batch.Owner,attacker,null,batch.Direction,batch.Inherited))
-                        throw new InvalidOperationException("A queued rocket could not be initialized.");
-                    if(!rocket.gameObject.activeSelf)rocket.gameObject.SetActive(true);
-                    batch.Remaining--;
-                    batches.Dequeue();
-                    if(batch.Remaining==0)Object.Destroy(batch.Template.gameObject);
-                    else batches.Enqueue(batch); // Give other launchers a turn.
-                }
-                catch(Exception e){if(rocket!=null)Object.Destroy(rocket.gameObject);UnityEngine.Debug.LogException(e,this);break;}
+                if(((IR3ProjectileWork)this).CanProcessProjectileWork)ProcessOne();
+                return;
             }
+            R3ProjectileWorkScheduler.Request(this,workBudgetMilliseconds);
+        }
+        bool ProcessOne()
+        {
+            if(batches.Count==0)return false;
+            var batch=batches.Peek();
+            if(batch.Owner==null||!batch.Owner.gameObject.activeInHierarchy||batch.Body==null)
+            {batches.Dequeue();if(batch.Template!=null)Object.Destroy(batch.Template.gameObject);return true;}
+            RocketProjectile rocket=null;
+            try
+            {
+                rocket=Object.Instantiate(batch.Template,batch.Position,batch.Rotation);
+                rocket.SetRetirementHandler(batch.Retirement);
+                var attacker=batch.Attacker!=null?batch.Attacker:batch.Owner.gameObject;
+                if(!rocket.TryInitializeWithInheritedVelocity(batch.Spec,batch.Body,batch.Owner,attacker,null,batch.Direction,batch.Inherited))
+                    throw new InvalidOperationException("A queued rocket could not be initialized.");
+                if(!rocket.gameObject.activeSelf)rocket.gameObject.SetActive(true);
+                batch.Remaining--;batches.Dequeue();
+                if(batch.Remaining==0)Object.Destroy(batch.Template.gameObject);
+                else batches.Enqueue(batch);
+                return true;
+            }
+            catch(Exception e){if(rocket!=null)Object.Destroy(rocket.gameObject);UnityEngine.Debug.LogException(e,this);return false;}
         }
     }
 }

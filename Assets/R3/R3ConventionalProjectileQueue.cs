@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using RoboRougelike.R1;
 using RoboRougelike.R4;
 using RoboRougelike.WPN002Railgun;
@@ -62,7 +61,7 @@ namespace RoboRougelike.R3
         }
     }
     // Bonus shells remain owned by the vehicle even if the physical gun is lost.
-    public sealed class R3ConventionalProjectileQueue : MonoBehaviour
+    public sealed class R3ConventionalProjectileQueue : MonoBehaviour,IR3ProjectileWork
     {
         readonly struct Sibling
         {
@@ -98,8 +97,6 @@ namespace RoboRougelike.R3
         }
         readonly Queue<Batch> batches=new Queue<Batch>();
         double workBudgetMilliseconds=4d;
-        static int budgetFrame=-1;
-        static long budgetStart;
 
         internal void Enqueue(P17PhysicalShell primary,int count)
             =>EnqueueExact(primary,count);
@@ -148,43 +145,59 @@ namespace RoboRougelike.R3
             batches.Enqueue(batch);Drain();
         }
         void FixedUpdate(){if(Time.timeScale>0)Drain();}
-        void OnDisable(){if(!gameObject.activeInHierarchy)batches.Clear();}
+        void OnEnable(){if(batches.Count>0)R3ProjectileWorkScheduler.Register(this);}
+        void OnDisable(){R3ProjectileWorkScheduler.Unregister(this);if(!gameObject.activeInHierarchy)batches.Clear();}
+        bool IR3ProjectileWork.HasProjectileWork=>batches.Count>0;
+        bool IR3ProjectileWork.CanProcessProjectileWork
+        {
+            get
+            {
+                var run=R1RunController.Instance;
+                return !(run!=null&&run.Player!=null&&run.Player.transform==transform&&run.EmergencyRescueAttackBlocked);
+            }
+        }
+        bool IR3ProjectileWork.ProcessProjectileWork()=>ProcessOne();
         void Drain()
         {
             if(batches.Count==0)return;
-            var run=R1RunController.Instance;
-            if(run!=null&&run.Player!=null&&run.Player.transform==transform&&run.EmergencyRescueAttackBlocked)return;
-            if(budgetFrame!=Time.frameCount){budgetFrame=Time.frameCount;budgetStart=Stopwatch.GetTimestamp();}
-            bool attempted=false;
-            while(batches.Count>0&&(!attempted||(Stopwatch.GetTimestamp()-budgetStart)*1000d/Stopwatch.Frequency<workBudgetMilliseconds))
+            if(workBudgetMilliseconds<=0)
             {
-                var batch=batches.Peek();
-                var owner=batch.IsRailgun?(batch.RailShot.OwnerRoot!=null?batch.RailShot.OwnerRoot.transform:null):batch.Shot.Owner;
-                if(owner==null||!owner.gameObject.activeInHierarchy){batches.Dequeue();continue;}
-                attempted=true;P17PhysicalShell shot=null;
-                try
-                {
-                    if(batch.IsRailgun)shot=SpawnRailgun(batch);
-                    else
-                    {
-                        int pellet=-1;
-                        if(batch.IsShotgun)
-                        {
-                            pellet=batch.PelletSchedule.NextPellet;
-                            if(pellet<0)throw new InvalidOperationException("Shotgun bonus count is inconsistent.");
-                        }
-                        shot=Spawn(batch.IsShotgun?batch.Pellets[pellet]:batch.Shot);ExcludeSiblings(batch,shot);
-                        if(batch.IsShotgun)
-                        {batch.PelletSchedule.CommitPellet();batch.ShotgunRemaining-=BigInteger.One;}
-                    }
-                    bool finished;
-                    if(batch.IsShotgun)finished=batch.ShotgunRemaining.IsZero;
-                    else{batch.Remaining--;finished=batch.Remaining==0;}
-                    batches.Dequeue();
-                    if(!finished)batches.Enqueue(batch); // Do not starve another already-queued weapon.
-                }
-                catch(Exception e){if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}UnityEngine.Debug.LogException(e,this);break;}
+                // A zero budget is the existing deterministic single-step test hook.
+                if(((IR3ProjectileWork)this).CanProcessProjectileWork)ProcessOne();
+                return;
             }
+            R3ProjectileWorkScheduler.Request(this,workBudgetMilliseconds);
+        }
+        bool ProcessOne()
+        {
+            if(batches.Count==0)return false;
+            var batch=batches.Peek();
+            var owner=batch.IsRailgun?(batch.RailShot.OwnerRoot!=null?batch.RailShot.OwnerRoot.transform:null):batch.Shot.Owner;
+            if(owner==null||!owner.gameObject.activeInHierarchy){batches.Dequeue();return true;}
+            P17PhysicalShell shot=null;
+            try
+            {
+                if(batch.IsRailgun)shot=SpawnRailgun(batch);
+                else
+                {
+                    int pellet=-1;
+                    if(batch.IsShotgun)
+                    {
+                        pellet=batch.PelletSchedule.NextPellet;
+                        if(pellet<0)throw new InvalidOperationException("Shotgun bonus count is inconsistent.");
+                    }
+                    shot=Spawn(batch.IsShotgun?batch.Pellets[pellet]:batch.Shot);ExcludeSiblings(batch,shot);
+                    if(batch.IsShotgun)
+                    {batch.PelletSchedule.CommitPellet();batch.ShotgunRemaining-=BigInteger.One;}
+                }
+                bool finished;
+                if(batch.IsShotgun)finished=batch.ShotgunRemaining.IsZero;
+                else{batch.Remaining--;finished=batch.Remaining==0;}
+                batches.Dequeue();
+                if(!finished)batches.Enqueue(batch);
+                return true;
+            }
+            catch(Exception e){if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}UnityEngine.Debug.LogException(e,this);return false;}
         }
         static P17PhysicalShell SpawnRailgun(Batch batch)
         {

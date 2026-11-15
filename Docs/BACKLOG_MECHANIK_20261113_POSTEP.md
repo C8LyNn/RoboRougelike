@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14, 21–23, 42 i 44. Wspólny budżet tworzenia pocisków
+
+- Kolejki pocisków konwencjonalnych, rakiet i urządzeń współdzielą orientacyjny budżet pracy 4 ms na klatkę i kolejno obsługują oczekujących właścicieli. Nadmiar pracy pozostaje w kolejce na później. Kolejka gracza wstrzymana podczas ratunku nie blokuje pozostałych; wyłączenie komponentu usuwa go z harmonogramu, a ponowne włączenie przywraca jego oczekujące zadania.
+- Unity 6000.3.14f1: `shared_projectile_budget_before.xml` — **1 FAIL**, niezależny właściciel wymuszał dodatkowy strzał po wyczerpaniu budżetu. `shared_projectile_budget_first.xml` — **3 PASS, 1 FAIL**: sterownik testu z zatrzymanym czasem wywoływał opróżnioną kolejkę zamiast aktywnej; poprawiono sterownik. `shared_projectile_budget_second.xml` — **6 PASS**, `shared_projectile_budget_final.xml` — **13 PASS**, w tym różne typy pocisków, wielu właścicieli, ratunek, wyłączenie i ponowne włączenie komponentu, ostrzał urządzeń oraz rakiety. Scenariusze współdzielenia stosują bardzo mały budżet testowy i ręcznie przechodzą między klatkami.
+- Nie jest to gwarancja czasu klatki ani pomiar FPS: pojedyncze utworzenie pocisku, obsługa jego kolizji i inne operacje mogą przekroczyć budżet; długotrwałe przeciążenie może powiększać kolejki i opóźniać strzały. Nie wykonano pomiaru wydajności ani testu w Playerze. Limit 64 podstawowych śrucin oraz odbiór #44 pozostają otwarte.
+
 ### 14, 21–23, 42 i 44. Kolejność salw urządzeń
 
 - Oczekujące salwy dronów i wieżyczek tego samego właściciela dostają kolejne tury po jednym pocisku, gdy więcej niż jedna porcja czeka na emisję. Wcześniej długa pierwsza salwa zatrzymywała późniejsze aż do swojego zakończenia. Zachowano osobne pociski, zapisane parametry każdej salwy, koszt i wstrzymanie ostrzału podczas ratunku.
