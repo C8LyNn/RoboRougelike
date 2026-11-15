@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02 i 14. Pomocniczy generator kierunków ponad 64
+
+- `ShotgunSpread.BuildDirections` przyjmuje teraz liczbę kierunków większą niż 64, jeśli przygotowany przez wywołującego bufor jest wystarczająco duży. Dla większych wartości używa tego samego indeksowanego wzoru co opis salwy; dotychczasowe obliczenia do 64 pozostają. Wciąż sprawdza poprawność osi, kąta i wielkości bufora.
+- Unity 6000.3.14f1: `spread_large_buffer_before_20261115.xml` — **1 FAIL**, pomocnicza funkcja odrzucała 129 kierunków. `spread_large_buffer_after_20261115.xml` — **42 PASS** dla generatora i konfiguracji; dodatkowe dwa filtry fizycznej strzelby były w tym przebiegu błędnie nazwane i nie uruchomiły się. Po poprawieniu nazw `spread_actual_shots_20261115.xml` — **2 PASS** dla rzeczywistych śrucin, kosztu i Double Shot.
+- To zmiana pomocniczego API, które wykonuje obliczenia synchronicznie i wymaga gotowej tablicy; nie potwierdza salwy ponad 64 fizyczne pociski ani wydajności. Konfiguracja rzeczywistego strzału nadal obcina liczbę do 64, a walidacja i tworzenie podstawowych śrucin nadal wymagają bezpiecznego porcjowania. Punkty 02, 14 i 44 pozostają otwarte.
+
 ### 30–31 i 44. Opis stanu części na ekranie trasy
 
 - Ekran wyboru trasy rozróżnia części z koszyka nagród, które trafiają do magazynu z 100% HP, od łupów zebranych na arenie, które zachowują swój stan. Poprzednia ogólna informacja o sprawnych odzyskanych częściach mogła sugerować naprawę także fizycznego łupu. Zmieniono obie orientacje ekranu, bez zmiany zasad odzysku.

@@ -68,12 +68,20 @@ namespace RoboRougelike.WPN001Shotgun
             uint seed, Vector3[] output)
         {
             if (output == null) throw new ArgumentNullException(nameof(output));
-            if (count < 1 || count > 64 || output.Length < count)
-                throw new ArgumentOutOfRangeException(nameof(count), "count must be 1..64 and fit output");
+            if (count < 1 || output.Length < count)
+                throw new ArgumentOutOfRangeException(nameof(count), "count must be positive and fit output");
             if (!IsFinite(forward.x) || !IsFinite(forward.y) || !IsFinite(forward.z)
                 || forward.sqrMagnitude < 1e-10f)
                 throw new ArgumentException("forward must be a finite, non-zero vector", nameof(forward));
             if (!IsFinite(fullConeDegrees)) throw new ArgumentException("cone must be finite", nameof(fullConeDegrees));
+            if(count>64)
+            {
+                // Use the same stable indexed pattern as the actual shotgun
+                // view; the caller owns and sizes the output buffer.
+                var pattern=new IndexedPattern(forward,count,fullConeDegrees,seed);
+                for(int i=0;i<count;i++)output[i]=pattern.DirectionAt(i);
+                return count;
+            }
             float halfRadians = Mathf.Clamp(fullConeDegrees, 0f, 90f) * Mathf.Deg2Rad * 0.5f;
             Vector3 axis = forward.normalized;
             if (count == 1 || halfRadians <= 0f)
