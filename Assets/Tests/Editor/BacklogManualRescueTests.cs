@@ -281,6 +281,68 @@ public sealed class BacklogManualRescueRangeTests
         }
         finally{if(probe!=null)Object.DestroyImmediate(probe.gameObject);profile.ResetDefaults();}
     }
+    [UnityTest] public IEnumerator CustomPauseKeyOpensAndClosesPauseWithoutOldEscapePausing()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();RC2EditorInputProbe probe=null;
+        try
+        {
+            Assert.That(profile.TryBind("Pause","K"),Is.True);
+            probe=new GameObject("old pause key probe").AddComponent<RC2EditorInputProbe>();probe.InjectKey=UnityEngine.InputSystem.Key.Escape;
+            float deadline=Time.realtimeSinceStartup+5;while(!probe.Sent&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(probe.Sent&&probe.PressObserved,Is.True);Object.DestroyImmediate(probe.gameObject);probe=null;yield return null;
+            Assert.That(run.Paused,Is.False,"Escape remains a cancel key but does not open pause after rebinding.");
+            probe=new GameObject("new pause key probe").AddComponent<RC2EditorInputProbe>();probe.InjectKey=UnityEngine.InputSystem.Key.K;
+            deadline=Time.realtimeSinceStartup+5;while(!probe.Sent&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(probe.Sent&&probe.PressObserved,Is.True);yield return null;Assert.That(run.Paused,Is.True);
+            Object.DestroyImmediate(probe.gameObject);probe=null;yield return null;
+            var hud=run.GetComponent<R1RunHUD>();var hudType=typeof(R1RunHUD);var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+            hudType.GetMethod("OpenPauseControls",flags).Invoke(hud,null);
+            hudType.GetField("controlAwaiting",flags).SetValue(hud,"Pause");
+            probe=new GameObject("capture pause key probe").AddComponent<RC2EditorInputProbe>();probe.InjectKey=UnityEngine.InputSystem.Key.K;
+            deadline=Time.realtimeSinceStartup+5;while(!probe.Sent&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(probe.Sent&&probe.PressObserved,Is.True);yield return null;
+            Assert.That(run.Paused,Is.True);Assert.That(hudType.GetProperty("PauseControlsOpen",flags).GetValue(hud),Is.EqualTo(true),"Binding capture must not close its own settings panel.");
+            Object.DestroyImmediate(probe.gameObject);probe=null;hudType.GetField("controlAwaiting",flags).SetValue(hud,null);yield return null;
+            probe=new GameObject("cancel settings probe").AddComponent<RC2EditorInputProbe>();probe.InjectKey=UnityEngine.InputSystem.Key.Escape;
+            deadline=Time.realtimeSinceStartup+5;while(!probe.Sent&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(probe.Sent&&probe.PressObserved,Is.True);yield return null;
+            Assert.That(run.Paused,Is.True);Assert.That(hudType.GetProperty("PauseControlsOpen",flags).GetValue(hud),Is.EqualTo(false),"Escape still closes settings without resuming.");
+            Object.DestroyImmediate(probe.gameObject);probe=null;yield return null;
+            probe=new GameObject("resume key probe").AddComponent<RC2EditorInputProbe>();probe.InjectKey=UnityEngine.InputSystem.Key.K;
+            deadline=Time.realtimeSinceStartup+5;while(!probe.Sent&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(probe.Sent&&probe.PressObserved,Is.True);yield return null;Assert.That(run.Paused,Is.False);
+        }
+        finally{if(probe!=null)Object.DestroyImmediate(probe.gameObject);profile.ResetDefaults();}
+    }
+    [UnityTest] public IEnumerator DefaultEscapeStillPausesAndResumes()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();RC2EditorInputProbe probe=null;
+        try
+        {
+            for(int i=0;i<2;i++)
+            {
+                probe=new GameObject("default pause probe").AddComponent<RC2EditorInputProbe>();probe.InjectKey=UnityEngine.InputSystem.Key.Escape;
+                float deadline=Time.realtimeSinceStartup+5;while(!probe.Sent&&Time.realtimeSinceStartup<deadline)yield return null;
+                Assert.That(probe.Sent&&probe.PressObserved,Is.True);yield return null;
+                Assert.That(run.Paused,Is.EqualTo(i==0));Object.DestroyImmediate(probe.gameObject);probe=null;yield return null;
+            }
+        }
+        finally{if(probe!=null)Object.DestroyImmediate(probe.gameObject);profile.ResetDefaults();}
+    }
+    [UnityTest] public IEnumerator PauseMouseBindingRespectsUiConsumedEvents()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("Pause","MouseBack"),Is.True);
+            var handler=typeof(R1RunHUD).GetMethod("TryPauseMouse",BindingFlags.Static|BindingFlags.NonPublic);Assert.That(handler,Is.Not.Null);
+            var used=new Event{type=EventType.MouseDown,button=3};used.Use();handler.Invoke(null,new object[]{run,used});Assert.That(run.Paused,Is.False);
+            handler.Invoke(null,new object[]{run,new Event{type=EventType.MouseDown,button=3}});Assert.That(run.Paused,Is.True);
+            yield return null;
+            handler.Invoke(null,new object[]{run,new Event{type=EventType.MouseDown,button=3}});Assert.That(run.Paused,Is.False);
+        }
+        finally{profile.ResetDefaults();}
+    }
     [UnityTest] public IEnumerator GarageRescueProtectsForBoundedRealTimeEvenWithPausedPhysics()
     {
         Assert.That(run.ReturnFromTestRange(),Is.True);

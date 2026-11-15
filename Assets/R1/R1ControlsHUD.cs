@@ -8,6 +8,7 @@ namespace RoboRougelike.R1
         string controlAwaiting,controlFeedback;
         int controlCaptureFrame;
         Vector2 controlScroll;
+        internal bool CapturingControlBinding=>controlAwaiting!=null;
         internal bool PauseControlsOpen {get;private set;}
         internal bool MainControlsOpen {get;private set;}
         void OpenControls(){garageOptionsTab=5;controlAwaiting=null;controlFeedback=null;controlScroll=Vector2.zero;}
@@ -31,7 +32,7 @@ namespace RoboRougelike.R1
             var profile=R1ControlProfile.Current;var input=Event.current;
             if(controlAwaiting!=null&&Time.frameCount>controlCaptureFrame&&R1ControlProfile.IsBindingInput(input))
             {
-                if(input.type==EventType.KeyDown&&input.keyCode==KeyCode.Escape)
+                if(input.type==EventType.KeyDown&&input.keyCode==KeyCode.Escape&&controlAwaiting!="Pause")
                 {controlAwaiting=null;controlFeedback="Anulowano zmianę.";input.Use();}
                 else
                 {

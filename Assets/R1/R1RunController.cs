@@ -446,7 +446,8 @@ namespace RoboRougelike.R1
             PauseSelection = 0;
             SetSimulation(!Paused && (Progress.State == R1RunState.Combat || Progress.State == R1RunState.TestDrive || Progress.State==R1RunState.SafeZone));
         }
-        public void HandleEscape()
+        public void HandleEscape()=>HandleEscapeInput(true);
+        internal void HandleEscapeInput(bool allowPause)
         {
             if(lastEscapeFrame==Time.frameCount)return;
             lastEscapeFrame=Time.frameCount;
@@ -459,7 +460,7 @@ namespace RoboRougelike.R1
             if(Paused&&CreativeWorkshop&&Progress?.State==R1RunState.TestDrive&&hud?.CloseCreativeEnemyMenu()==true)return;
             if(!Paused&&Progress?.State==R1RunState.Salvage&&hud?.CloseRewardInventory()==true)return;
             if(hud?.ClosePartCatalog()==true)return;
-            TogglePause();
+            if(allowPause)TogglePause();
         }
 
         private void SetSimulation(bool active)

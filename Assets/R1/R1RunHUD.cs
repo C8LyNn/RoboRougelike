@@ -18,7 +18,7 @@ namespace RoboRougelike.R1
             var profile=R1ControlProfile.Current;
             string Names(params string[] actions)=>string.Join("/",actions.Select(a=>R1ControlProfile.Display(profile.Binding(a))));
             return Names("MoveForward","MoveBackward","TurnLeft","TurnRight")+" — ruch • Mysz — celowanie • "+
-                Names("Weapon1","Weapon2","Weapon3","Weapon4")+" — broń • "+Names("Active1","Active2","Active3","Active4")+" — moduły • Esc — pauza";
+                Names("Weapon1","Weapon2","Weapon3","Weapon4")+" — broń • "+Names("Active1","Active2","Active3","Active4")+" — moduły • "+Names("Pause")+" — pauza";
         }
         private int[] starterOffers;
         private R3VehicleDesign[] starterDesigns;
@@ -196,6 +196,13 @@ namespace RoboRougelike.R1
                !R1ControlProfile.IsBindingMouseDown(input)||!R1ControlProfile.Current.MatchesEvent("Rescue",input))return;
             if(run.TryEmergencyRescue())input.Use();
         }
+        static void TryPauseMouse(R1RunController run,Event input)
+        {
+            if(run==null||run.QuitRequested||run.Transitioning||run.Error!=null||
+               run.GetComponent<R1RunHUD>()?.CapturingControlBinding==true||
+               !R1ControlProfile.IsBindingMouseDown(input)||!R1ControlProfile.Current.MatchesEvent("Pause",input))return;
+            run.HandleEscape();input.Use();
+        }
         private void OnGUI()
         {
             var run = R1RunController.Instance;
@@ -214,8 +221,8 @@ namespace RoboRougelike.R1
                 if(Event.current.keyCode==KeyCode.Escape){quickSearchEditing=true;run.HandleEscape();}
                 GUI.FocusControl(null);GUIUtility.keyboardControl=0;quickSearchEditing=false;quickSearchReleasePending=false;Event.current.Use();
             }
-            else if(Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.Escape)
-            {run.HandleEscape();Event.current.Use();}
+            else if(!CapturingControlBinding&&Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.Escape)
+            {run.HandleEscapeInput(R1ControlProfile.Current.Binding("Pause")=="Escape");Event.current.Use();}
             var rawPointer=Event.current.mousePosition;
             var previous = GUI.matrix;
             bool portraitReady=UsePortraitReady(Screen.width,Screen.height,run.Progress?.State==R1RunState.Ready&&!run.MapEditing,
@@ -244,6 +251,7 @@ namespace RoboRougelike.R1
             {
                 Draw(run,portraitReady,portraitGarage,portraitRoute,portraitSalvage);
                 if(run.Paused)LightStylePrototype.Instance?.DrawPausePanel();
+                TryPauseMouse(run,Event.current);
                 if(!sessionOverlay){TrySafeZoneInteractMouse(run,Event.current);TryRescueMouse(run,Event.current);}
                 if(quickSearchActive&&!garageSearchKey&&!catalogOpen&&!garageOptionsOpen)
                     HandleQuickGarageKey(run,Event.current,false);
@@ -380,7 +388,7 @@ namespace RoboRougelike.R1
                         int plannedGuns=run.VehicleModel.Parts.FindAll(p=>p.Kind==R3PartKind.Gun).Count;
                         GUI.Label(new Rect(36,120+extraStatusHeight,630,26),$"Konstrukcja: {player.Structure.ConnectedBlockCount}/{player.Structure.InitialStructuralBlockCount} • Koła: {player.Modules.ActiveWheelCount}/{player.Modules.InitialWheelCount} • Bronie: {player.Modules.ActiveWeaponCount}/{plannedGuns}",small);
                         var physicsBody=player.GetComponent<Rigidbody>();
-                        GUI.Label(new Rect(36,148+extraStatusHeight,630,25),$"Masa: {physicsBody.mass:0} kg • Prędkość: {physicsBody.linearVelocity.magnitude:0.0} m/s • Esc — pauza",small);
+                        GUI.Label(new Rect(36,148+extraStatusHeight,630,25),$"Masa: {physicsBody.mass:0} kg • Prędkość: {physicsBody.linearVelocity.magnitude:0.0} m/s • {R1ControlProfile.Display(R1ControlProfile.Current.Binding("Pause"))} — pauza",small);
                     }
                     float noticeY=(combatDetailsOpen?174:121)+extraStatusHeight;
                     if(resourceWarning!=null)
@@ -522,7 +530,7 @@ namespace RoboRougelike.R1
         {
             Panel(new Rect(0,0,1280,720));
             GUI.Label(new Rect(350,130,600,70),"Pauza",title);
-            if(GUI.Button(new Rect(350,220,580,58),PauseCaption(run,0,"Wznów  [Esc]"),button))run.TogglePause();
+            if(GUI.Button(new Rect(350,220,580,58),PauseCaption(run,0,"Wznów  ["+R1ControlProfile.Display(R1ControlProfile.Current.Binding("Pause"))+"]"),button))run.TogglePause();
             if(GUI.Button(new Rect(350,290,580,58),PauseCaption(run,1,run.MapReturnPending?"Potwierdź powrót":"Powrót do menu głównego"),button))run.RestartRun();
             if(GUI.Button(new Rect(350,360,580,58),PauseCaption(run,2,run.MapQuitPending?"Potwierdź wyjście":"Wyjdź z gry"),button))run.RequestQuitFromMenu();
             if(GUI.Button(new Rect(950,220,240,58),PauseCaption(run,3,"Sterowanie"),compactButton))OpenPauseControls();

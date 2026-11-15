@@ -11,6 +11,25 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [Test] public void PauseBindingMigratesAndCanBeChangedWithoutStealingOtherActions()
+    {
+        Assert.That(R1ControlProfile.Actions,Does.Contain("Pause"));
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-pause-"+Guid.NewGuid()+".json");
+        try
+        {
+            var initial=new R1ControlProfile(path);Assert.That(initial.Binding("Pause"),Is.EqualTo("Escape"));
+            var actions=R1ControlProfile.Actions.Where(a=>a!="Pause").ToArray();
+            var data=new LegacyControlData{actions=actions,bindings=actions.Select(initial.Binding).ToArray()};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            var profile=new R1ControlProfile(path);Assert.That(profile.Error,Is.Null);Assert.That(profile.Binding("Pause"),Is.EqualTo("Escape"));
+            Assert.That(profile.TryBind("Pause","W"),Is.False);Assert.That(profile.TrySaveBinding("Pause","K",out _),Is.True);
+            Assert.That(new R1ControlProfile(path).Binding("Pause"),Is.EqualTo("K"));
+            Assert.That(profile.TrySaveBinding("Pause","Escape",out _),Is.True);
+            Assert.That(new R1ControlProfile(path).Binding("Pause"),Is.EqualTo("Escape"));
+            Assert.That(profile.TryBind("Weapon1","Escape"),Is.False);
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [Test] public void InteractionBindingMigratesAndKeepsExistingGameplayKeys()
     {
         Assert.That(R1ControlProfile.Actions,Does.Contain("Interact"));
@@ -190,7 +209,9 @@ public sealed class BacklogControlProfileTests
             var profile=new R1ControlProfile(path);Assert.That(profile.Error,Is.Null);
             Assert.That(profile.Binding("MoveForward"),Is.EqualTo("Home"));
             Assert.That(profile.Binding("GarageFrame"),Is.Not.Null.And.Not.EqualTo("Home"));
-            Assert.That(R1ControlProfile.ValidSnapshot(values),Is.True);
+            var older=R1ControlProfile.Actions.Take(Array.IndexOf(R1ControlProfile.Actions,"GarageFrame")).Select(initial.Binding).ToArray();
+            older[Array.IndexOf(R1ControlProfile.Actions,"MoveForward")]="Home";
+            Assert.That(R1ControlProfile.ValidSnapshot(older),Is.True,"Blueprint snapshots contain a historical prefix, not a nameless array with a gap.");
             Assert.That(profile.TryBind("GarageFrame","MouseMiddle"),Is.False);
             Assert.That(profile.TryBind("GarageFrame","K"),Is.True);profile.Save();
             Assert.That(new R1ControlProfile(path).Binding("GarageFrame"),Is.EqualTo("K"));
@@ -210,7 +231,9 @@ public sealed class BacklogControlProfileTests
             var loaded=new R1ControlProfile(path);Assert.That(loaded.Error,Is.Null);
             Assert.That(loaded.Binding("MoveForward"),Is.EqualTo("U"));
             Assert.That(loaded.Binding("GarageUnderside"),Is.Not.EqualTo("U"));
-            Assert.That(R1ControlProfile.ValidSnapshot(previousBindings),Is.True);
+            var older=R1ControlProfile.Actions.Take(Array.IndexOf(R1ControlProfile.Actions,"GarageUnderside")).Select(initial.Binding).ToArray();
+            older[Array.IndexOf(R1ControlProfile.Actions,"MoveForward")]="U";
+            Assert.That(R1ControlProfile.ValidSnapshot(older),Is.True,"Blueprint snapshots contain a historical prefix, not a nameless array with a gap.");
             Assert.That(loaded.TryBind("GarageUnderside","K"),Is.True);
             Assert.That(loaded.TryBind("MoveBackward","K"),Is.True,"Combat and garage actions have separate contexts.");
             Assert.That(loaded.TryBind("MoveForward","K"),Is.False,"Two combat actions still conflict.");

@@ -81,9 +81,14 @@ namespace RoboRougelike.R1
                 (keys.leftAltKey.isPressed || keys.rightAltKey.isPressed))
             { RequestQuitByShortcut(); return true; }
 #endif
-            if ((keys != null && keys.escapeKey.wasPressedThisFrame) ||
-                (pad != null && pad.startButton.wasPressedThisFrame))
-            { HandleEscape(); return true; }
+            var profile=R1ControlProfile.Current;
+            bool capture=GetComponent<R1RunHUD>()?.CapturingControlBinding==true;
+            if(!capture)
+            {
+                bool configured=!profile.Binding("Pause").StartsWith("Mouse",System.StringComparison.Ordinal)&&profile.Pressed("Pause",true);
+                if(configured||(pad!=null&&pad.startButton.wasPressedThisFrame)){HandleEscape();return true;}
+                if(keys!=null&&keys.escapeKey.wasPressedThisFrame){HandleEscapeInput(false);return true;}
+            }
             if(SafeZoneTrading){if(pad!=null&&pad.buttonEast.wasPressedThisFrame)CloseSafeZoneTrade();return true;}
             if(!Paused&&GetComponent<R1RunHUD>()?.MainControlsOpen==true)
             {if(pad!=null&&pad.buttonEast.wasPressedThisFrame)HandleEscape();return true;}

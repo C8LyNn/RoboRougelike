@@ -51,7 +51,7 @@ namespace RoboRougelike.R1
             return Names("MoveForward","MoveBackward","TurnLeft","TurnRight")+" — napęd • "+
                 Names("SteeringLeft","SteeringRight")+" — osie • "+Names("Weapon1","Weapon2","Weapon3","Weapon4")+" — broń • "+
                 Names("Active1","Active2","Active3","Active4")+" — moduły • "+Names("Deploy1","Deploy2","Deploy3","Deploy4")+" — urządzenia • "+
-                Names("ResetRange")+" — reset • Esc — pauza";
+                Names("ResetRange")+" — reset • "+Names("Pause")+" — pauza";
         }
         private void AdvanceWeaponStatusPage(int count)
         {int pages=WeaponStatusPageCount(count);weaponStatusPage=(Mathf.Clamp(weaponStatusPage,0,pages-1)+1)%pages;}
@@ -84,7 +84,7 @@ namespace RoboRougelike.R1
                         pausedRange.SetTrainingFire(!pausedRange.TrainingFireRequested);
                     GUI.enabled=true;
                 }
-                if(!run.RangeDisabled&&GUI.Button(new Rect(230,325,820,60),PauseCaption(run,0,"Wznów  [Esc]"),button))run.TogglePause();
+                if(!run.RangeDisabled&&GUI.Button(new Rect(230,325,820,60),PauseCaption(run,0,"Wznów  ["+R1ControlProfile.Display(R1ControlProfile.Current.Binding("Pause"))+"]"),button))run.TogglePause();
                 if(GUI.Button(new Rect(230,400,395,60),PauseCaption(run,1,$"Reset próby  [{R1ControlProfile.Display(R1ControlProfile.Current.Binding("ResetRange"))}]"),button))run.ResetTestRange();
                 if(GUI.Button(new Rect(650,400,400,60),PauseCaption(run,2,"Powrót do garażu"),button))run.ReturnFromTestRange();
                 DrawSuspensionPause(run);
