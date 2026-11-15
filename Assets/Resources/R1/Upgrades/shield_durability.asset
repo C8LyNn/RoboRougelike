@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: shield_durability
   m_EditorClassIdentifier: Assembly-CSharp::RoboRougelike.R1.R1UpgradeDefinition
   Id: shield_durability
-  Title: "Wzmocnienie kopuły"
-  Description: "+30% wytrzymałości rozstawianych kopuł osłonowych."
+  Title: "Wzmocnienie osłon"
+  Description: "+30% wytrzymałości kopuł oraz montowanych osłon kierunkowych."
   Effect: 9
   Operation: 0
   Scope: 0

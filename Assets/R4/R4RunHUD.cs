@@ -481,13 +481,14 @@ namespace RoboRougelike.R1
             string name=item.UpgradeEffect switch {
                 R1UpgradeEffect.Hull=>item.UpgradeScope==R1BonusScope.Construction?"Wytrzymałość klocków":"Wytrzymałość",R1UpgradeEffect.Damage=>DamageBonusName(item),
                 R1UpgradeEffect.Reload=>ReloadBonusName(item),R1UpgradeEffect.Mobility=>MobilityBonusName(item),
-                R1UpgradeEffect.Core=>"Rdzeń",R1UpgradeEffect.EnergyCapacity=>EnergyCapacityBonusName(item),R1UpgradeEffect.EnergyRegeneration=>"Regeneracja energii",R1UpgradeEffect.ShieldDurability=>"Wytrzymałość kopuły",R1UpgradeEffect.RepairEfficiency=>RepairBonusName(item),_=>"Bonus"
+                R1UpgradeEffect.Core=>"Rdzeń",R1UpgradeEffect.EnergyCapacity=>EnergyCapacityBonusName(item),R1UpgradeEffect.EnergyRegeneration=>"Regeneracja energii",R1UpgradeEffect.ShieldDurability=>ShieldDurabilityBonusName(item),R1UpgradeEffect.RepairEfficiency=>RepairBonusName(item),_=>"Bonus"
             };
             if(item.UpgradeOperation!=R1ModifierOperation.Increased)return OtherBonusOperationText(item,name,1);
             return name+" "+(item.UpgradeEffect==R1UpgradeEffect.Reload?"−":"+")+
                 ((double)item.UpgradeAmount*100).ToString("0.###")+"%";
         }
         private static string EnergyCapacityBonusName(R3PartState item)=>item.UpgradeScope==R1BonusScope.BatteryCapacity?"Pojemność baterii":"Pojemność energii";
+        private static string ShieldDurabilityBonusName(R3PartState item)=>item.UpgradeScope==R1BonusScope.Turrets?"Wytrzymałość kopuł wieżyczek":"Wytrzymałość osłon";
         private static string RepairBonusName(R3PartState item)=>item.UpgradeScope switch {
             R1BonusScope.Drones=>"Naprawy wykonywane przez drony",R1BonusScope.Turrets=>"Naprawy wykonywane przez wieżyczki",_=>"Skuteczność napraw"};
         private static string DamageBonusName(R3PartState item)=>item.UpgradeScope switch {
@@ -533,7 +534,7 @@ namespace RoboRougelike.R1
                 case R1UpgradeEffect.Core:name="Rdzeń";percent=(double)item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.EnergyCapacity:name=EnergyCapacityBonusName(item);percent=(double)item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.EnergyRegeneration:name="Regeneracja energii";percent=(double)item.UpgradeAmount*units*100;break;
-                case R1UpgradeEffect.ShieldDurability:name="Wytrzymałość kopuły";percent=(double)item.UpgradeAmount*units*100;break;
+                case R1UpgradeEffect.ShieldDurability:name=ShieldDurabilityBonusName(item);percent=(double)item.UpgradeAmount*units*100;break;
                 case R1UpgradeEffect.RepairEfficiency:name=RepairBonusName(item);percent=(double)item.UpgradeAmount*units*100;break;
                 default:return "Nieznany bonus";
             }

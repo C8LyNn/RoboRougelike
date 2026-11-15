@@ -11,6 +11,42 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogDeviceTierTests
 {
+    [Test] public void TurretShieldDurabilityRewardIsSelectableAndPreservesScope()
+    {
+        Assert.That(R3VehicleModel.ValidBonusScope(R1UpgradeEffect.ShieldDurability,R1BonusScope.Turrets),Is.True);
+        var reward=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.SingleOrDefault(u=>u!=null&&u.Id=="shield_turret_durability");
+        Assert.That(reward,Is.Not.Null);Assert.That(reward.Effect,Is.EqualTo(R1UpgradeEffect.ShieldDurability));
+        Assert.That(reward.Scope,Is.EqualTo(R1BonusScope.Turrets));
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        var item=model.Inventory.Single();var blueprint=R3BlueprintPart.FromPart(item,Vector3Int.zero);
+        var checkpoint=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,0,out var restored,out var error),Is.True,error);
+        Assert.That(blueprint.Matches(restored.Inventory.Single()),Is.True);
+        foreach(var name in new[]{"BonusText","BonusInstanceText"})
+        {
+            var method=typeof(R1RunHUD).GetMethod(name,BindingFlags.Static|BindingFlags.NonPublic);
+            Assert.That((string)method.Invoke(null,new object[]{item}),Does.Contain("wieżyczek"));
+        }
+    }
+    [Test] public void TurretShieldRewardCanAppearInActualOffers()
+    {
+        var definition=Resources.Load<R1RunDefinition>("R1/Run");
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        bool found=false;
+        for(int seed=0;seed<512&&!found;seed++)
+        {
+            var progress=new R1RunProgress(3);Assert.That(progress.Start(),Is.True);
+            Assert.That(progress.WinEncounter(definition.Upgrades,new System.Random(seed)),Is.True);
+            for(int i=0;i<progress.Offers.Count;i++)
+                if(progress.Offers[i].Id=="shield_turret_durability")
+                {
+                    Assert.That(model.ReceiveBonuses(new[]{progress.ChooseUpgrade(i)}),Is.True);
+                    Assert.That(model.Inventory.Last().UpgradeScope,Is.EqualTo(R1BonusScope.Turrets));found=true;break;
+                }
+        }
+        Assert.That(found,Is.True,"The reward must be obtainable through ordinary encounter offers.");
+    }
     [TestCase("RadarModule")][TestCase("MinimapModule")]
     public void ProvisionalDetectionModulesArePhysicalPassiveAndPersist(string name)
     {
@@ -181,6 +217,51 @@ public sealed class BacklogDeviceTierTests
 
 public sealed class BacklogDeviceTierGameplayTests
 {
+    [UnityTest] public IEnumerator TurretShieldBonusAffectsRealDomeButNotDirectionalShield()
+    {
+        run.VehicleModel.Award(3000);
+        var shieldState=FuseAndMount(R3PartKind.DirectionalShield);
+        FuseAndMount(R3PartKind.ShieldTurretGenerator);
+        var global=ScriptableObject.CreateInstance<R1UpgradeDefinition>();
+        global.Id="global-shield-scope-qa";global.Effect=R1UpgradeEffect.ShieldDurability;global.Amount=.2f;
+        var scoped=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.Single(u=>u!=null&&u.Id=="shield_turret_durability");
+        var more=ScriptableObject.CreateInstance<R1UpgradeDefinition>();more.Id="turret-shield-more-qa";
+        more.Effect=R1UpgradeEffect.ShieldDurability;more.Scope=R1BonusScope.Turrets;more.Operation=R1ModifierOperation.More;more.Amount=.5f;
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{global,scoped,more}),Is.True);
+        var bonusIds=new[]{global.Id,scoped.Id,more.Id}.Select(id=>model.Inventory.Single(p=>p.UpgradeId==id).Id).ToArray();
+        foreach(var id in bonusIds)
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.OwnedPlacementError(id,c,default)==null);
+            Assert.That(run.GarageMount(id,cell),Is.True);
+        }
+        var zone=model.DeepCopy();typeof(R3VehicleModel).GetProperty("CreativeMode").SetValue(zone,false);
+        Assert.That(zone.TryEnterSafeZone(2),Is.True);
+        Assert.That(zone.Parts.Single(p=>p.Id==shieldState.Id).DefenseCapacity,Is.EqualTo(240).Within(.01),
+            "Refilling a directional shield must not apply turret-only bonuses.");
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var assembly=player.GetComponent<R3VehicleAssembly>();
+        var shield=assembly.Parts.Single(p=>p.Id==shieldState.Id).GetComponent<RoboRougelike.Defenses.DirectionalShield.DirectionalShieldGenerator>();
+        Assert.That(shield.Capacity,Is.EqualTo(240).Within(.01));
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(100,-.5f,100);floor.transform.localScale=new Vector3(100,1,100);
+        body.position=new Vector3(100,2,100);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        yield return MOVSeriesDeviceTests.FixedStep();body.linearVelocity=Vector3.forward*3;
+        Assert.That(player.GetComponent<R3DeployableService>().TryDeploy(R3PartKind.ShieldTurretGenerator),Is.True);
+        var dome=GameObject.Find("Kopuła osłonowa");var hp=dome.GetComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();
+        float baseHp=model.Economy.ShieldTurretHp*2;
+        Assert.That(hp.MaxHp,Is.EqualTo(baseHp*1.5f*1.5f).Within(.01),"Global and turret increased bonuses add before the turret more multiplier.");
+        hp.ApplyDamage(hp.MaxHp*.5f,dome.transform.position,Vector3.up);
+        assembly.Parts.Single(p=>p.Id==bonusIds[1]).gameObject.SetActive(false);
+        yield return null;yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(hp.MaxHp,Is.EqualTo(baseHp*1.2f*1.5f).Within(.01));
+        Assert.That(hp.CurrentHp,Is.EqualTo(hp.MaxHp*.5f).Within(.01));
+        Assert.That(shield.Capacity,Is.EqualTo(240).Within(.01));
+        assembly.Parts.Single(p=>p.Id==bonusIds[2]).gameObject.SetActive(false);
+        yield return null;yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(hp.MaxHp,Is.EqualTo(baseHp*1.2f).Within(.01));
+        Assert.That(shield.Capacity,Is.EqualTo(240).Within(.01));
+        Object.Destroy(floor);Object.Destroy(global);Object.Destroy(more);
+    }
     [UnityTest] public IEnumerator PointDefenseReservesEnergyPerPhysicalPartUntilDestroyed()
     {
         float initial=run.VehicleModel.Energy.Maximum;

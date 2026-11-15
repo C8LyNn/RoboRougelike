@@ -59,6 +59,7 @@ namespace RoboRougelike.R3
         public float EnergyDamageMultiplier {get;private set;}=1;
         public float WeaponDamageMultiplier {get;private set;}=1;
         public float ShieldDurabilityMultiplier {get;private set;}=1;
+        public float TurretShieldDurabilityMultiplier {get;private set;}=1;
         public float RepairEfficiencyMultiplier {get;private set;}=1;
         public float DroneRepairEfficiencyMultiplier {get;private set;}=1;
         public float TurretRepairEfficiencyMultiplier {get;private set;}=1;
@@ -154,7 +155,7 @@ namespace RoboRougelike.R3
             var damage=new R1ModifierGroup();var basicDamage=new R1ModifierGroup();var basicBlastDamage=new R1ModifierGroup();var droneDamage=new R1ModifierGroup();
             var turretDamage=new R1ModifierGroup();var trapDamage=new R1ModifierGroup();var blastDamage=new R1ModifierGroup();
             var blastTrapDamage=new R1ModifierGroup();var piercingDamage=new R1ModifierGroup();var kineticDamage=new R1ModifierGroup();var mobility=new R1ModifierGroup();var hull=new R1ModifierGroup();
-            var core=new R1ModifierGroup();var reload=new R1ModifierGroup();var shieldDurability=new R1ModifierGroup();var weaponDamage=new R1ModifierGroup();var automaticDamage=new R1ModifierGroup();var energyDamage=new R1ModifierGroup();var repairEfficiency=new R1ModifierGroup();var constructionHull=new R1ModifierGroup();var driveMobility=new R1ModifierGroup();
+            var core=new R1ModifierGroup();var reload=new R1ModifierGroup();var shieldDurability=new R1ModifierGroup();var turretShieldDurability=new R1ModifierGroup();var weaponDamage=new R1ModifierGroup();var automaticDamage=new R1ModifierGroup();var energyDamage=new R1ModifierGroup();var repairEfficiency=new R1ModifierGroup();var constructionHull=new R1ModifierGroup();var driveMobility=new R1ModifierGroup();
             var droneRepair=new R1ModifierGroup();var turretRepair=new R1ModifierGroup();
             var droneReload=new R1ModifierGroup();var turretReload=new R1ModifierGroup();
             var heavyDamage=new R1ModifierGroup();var shotgunDamage=new R1ModifierGroup();var railgunDamage=new R1ModifierGroup();var rocketDamage=new R1ModifierGroup();
@@ -252,7 +253,12 @@ namespace RoboRougelike.R3
                         if(AppliesToFireRate(module.UpgradeScope,kind))weaponReload[(int)kind].Add(module.UpgradeOperation,module.UpgradeAmount,units,true);
                 }
                 else if(module.UpgradeEffect==R1UpgradeEffect.ShieldDurability)
-                    shieldDurability.Add(module.UpgradeOperation,module.UpgradeAmount,R3VehicleModel.TierEffectUnits(module.Tier));
+                {
+                    int units=R3VehicleModel.TierEffectUnits(module.Tier);
+                    if(module.UpgradeScope==R1BonusScope.Global)shieldDurability.Add(module.UpgradeOperation,module.UpgradeAmount,units);
+                    if(module.UpgradeScope==R1BonusScope.Global||module.UpgradeScope==R1BonusScope.Turrets)
+                        turretShieldDurability.Add(module.UpgradeOperation,module.UpgradeAmount,units);
+                }
                 else if(module.UpgradeEffect==R1UpgradeEffect.RepairEfficiency)
                 {
                     int units=R3VehicleModel.TierEffectUnits(module.Tier);
@@ -284,6 +290,7 @@ namespace RoboRougelike.R3
             EnergyDamageMultiplier=energyDamage.Apply(baseStats.Damage);
             WeaponDamageMultiplier=weaponDamage.Apply(baseStats.Damage);
             ShieldDurabilityMultiplier=shieldDurability.Apply(1);
+            TurretShieldDurabilityMultiplier=turretShieldDurability.Apply(1);
             RepairEfficiencyMultiplier=repairEfficiency.Apply(1);
             DroneRepairEfficiencyMultiplier=droneRepair.Apply(1);
             TurretRepairEfficiencyMultiplier=turretRepair.Apply(1);

@@ -232,6 +232,7 @@ namespace RoboRougelike.R3
                 (effect==R1UpgradeEffect.Damage&&scope>=R1BonusScope.AutomaticWeapon&&scope<=R1BonusScope.AuraWeapon)||
                 (effect==R1UpgradeEffect.Reload&&(scope==R1BonusScope.Weapons||scope==R1BonusScope.Drones||scope==R1BonusScope.Turrets||scope==R1BonusScope.BasicCannon||scope==R1BonusScope.AutomaticWeapon||scope==R1BonusScope.HeavyWeapon||scope==R1BonusScope.ShotgunWeapon||scope==R1BonusScope.RailgunWeapon||scope==R1BonusScope.RocketWeapon))||
                 (effect==R1UpgradeEffect.RepairEfficiency&&(scope==R1BonusScope.Drones||scope==R1BonusScope.Turrets))||
+                (effect==R1UpgradeEffect.ShieldDurability&&scope==R1BonusScope.Turrets)||
                 (effect==R1UpgradeEffect.EnergyCapacity&&scope==R1BonusScope.BatteryCapacity)||
                 (effect==R1UpgradeEffect.Hull&&scope==R1BonusScope.Construction)||
                 (effect==R1UpgradeEffect.Mobility&&scope>=R1BonusScope.WheelDrive&&scope<=R1BonusScope.HoverDrive));
@@ -472,7 +473,7 @@ namespace RoboRougelike.R3
             foreach(var part in Parts)if(part.Health>0&&part.Health<1)part.Health=Math.Min(1,part.Health+repair);
             var shieldBonus=new R1ModifierGroup();
             foreach(var bonus in Parts)
-                if(bonus.Kind==R3PartKind.BonusModule&&bonus.Health>0&&bonus.UpgradeEffect==R1UpgradeEffect.ShieldDurability)
+                if(bonus.Kind==R3PartKind.BonusModule&&bonus.Health>0&&bonus.UpgradeEffect==R1UpgradeEffect.ShieldDurability&&bonus.UpgradeScope==R1BonusScope.Global)
                     shieldBonus.Add(bonus.UpgradeOperation,bonus.UpgradeAmount,TierEffectUnits(bonus.Tier));
             float shieldMultiplier=shieldBonus.Apply(1);
             foreach(var part in Parts.Concat(inventory))

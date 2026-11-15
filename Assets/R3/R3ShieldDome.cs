@@ -46,7 +46,7 @@ namespace RoboRougelike.R3
         void Update()=>RefreshDurability();
         void RefreshDurability()
         {
-            float multiplier=bonuses!=null?bonuses.ShieldDurabilityMultiplier:1f;
+            float multiplier=bonuses!=null?bonuses.TurretShieldDurabilityMultiplier:1f;
             if(hp==null||multiplier==appliedDurability)return;
             hp.SetDurabilityMultiplier(multiplier);appliedDurability=multiplier;
         }

@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 12–13, 24 i 44. Premia wytrzymałości kopuł wieżyczek
+
+- Dodano konfigurowalną nagrodę +30% wyłącznie dla rozstawianych kopuł wieżyczek. Premie globalne i dotyczące wieżyczek sumują się w grupie `increased/reduced`, a `more/less` są stosowane osobno. Premia wieżyczek nie zwiększa pojemności montowanej osłony kierunkowej ani jej darmowego uzupełnienia w strefie bezpieczeństwa. Dotychczasowa premia globalna nadal działa na oba rodzaje osłon; poprawiono jej opis, aby odpowiadał temu zachowaniu.
+- Unity 6000.3.14f1: **5 PASS, 0 FAIL** (`turret_shield_scope_final.xml`, `.log`) dla faktycznie rozstawionej kopuły, zamontowanej osłony kierunkowej, sumowania i mnożenia premii, wyłączenia modułu, bezpiecznej strefy, zapisu, opisu oraz wylosowania i odbioru nowej nagrody. Przed zmianą `turret_shield_scope_before.xml`: **1 FAIL**, bo zakres wieżyczek nie był dozwolony. Ręczna gra i wpływ nowej nagrody na balans losowania: **NOT RUN**.
+- To uzupełnienie punktu 13; limity dodatkowych pocisków #02/#14 i pełny odbiór #44 pozostają otwarte.
+
 ### 02, 14 i 44. Pamięć zapytań fizycznych rakiet
 
 - Rakiety zachowują osobne stany i fizyczne trafienia, ale współdzielą ograniczone, ponownie używane bufory zapytań lotu. Zagnieżdżone wywołanie otrzymuje własny bufor; przy bardzo wielu kolizjach pełne zapytanie nadal obejmuje wszystkie obiekty. To przygotowanie do dużych salw, nie usunięcie limitów dodatkowych pocisków.
