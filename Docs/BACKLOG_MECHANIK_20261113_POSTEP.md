@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14, 19 i 44. Dokładność impulsu naprawczego
+
+- Impuls rozpoznaje każdą rzeczywistą różnicę między aktualnym i maksymalnym HP, również mniejszą niż 0,001 HP. Przy silnej premii przeznacza niewykorzystany czas kroku na kolejne uszkodzone części, zamiast przerywać po pierwszej szybko naprawionej. Obliczenia czasu korzystają z szerszej precyzji, a brak postępu przerywa pętlę; koszt i czas trwania wspólnego impulsu pozostają takie same.
+- Unity 6000.3.14f1: `repair_precision_before.xml` — **2 FAIL**, niewielkie uszkodzenie blokowało aktywację, a silny impuls pozostawiał drugą część uszkodzoną. `repair_precision_after.xml` — **5 PASS, 0 FAIL**, w tym oba scenariusze na fizycznych częściach, wcześniejszy koszt i szybkość naprawy T2 oraz regresja naprawy pasywnej i osłony.
+- Test dużej premii obejmuje dwie części i kontrolowany krok czasu; nie jest pomiarem FPS ani ręczną grą. Wybór kolejnych celów nadal przeszukuje listę części i wymaga oceny przy wyjątkowo dużych konstrukcjach. Limit podstawowych śrucin i pełny odbiór #14/#44 pozostają otwarte.
+
 ### 12–15 i 44. Procent HP przy maksymalnej wytrzymałości poniżej 1
 
 - Przeliczanie wytrzymałości zachowuje rzeczywisty procent HP również wtedy, gdy maksymalne HP części jest mniejsze od 1. Dzięki temu zmiana innej premii nie uszkadza dodatkowo bardzo osłabionego pancerza. Ten sam odczyt procentu wykorzystują skaner oraz zabarwienie podstawowego i podmienionego modelu.

@@ -57,7 +57,7 @@ namespace RoboRougelike.R3
             return remaining;
         }
         bool Damaged(R3MountedPart part)=>Live(part)&&part.Damageable.MaxHp>0&&
-            part.Damageable.CurrentHp<part.Damageable.MaxHp-.001f;
+            part.Damageable.CurrentHp<part.Damageable.MaxHp;
         R3MountedPart RandomTarget()
         {
             var candidates=assembly.Parts.Where(Damaged).ToArray();
@@ -97,21 +97,23 @@ namespace RoboRougelike.R3
                 var pulse=active[i];
                 int units=0;foreach(var device in pulse.Devices)if(ReadyHardware(device))units+=R3VehicleModel.TierEffectUnits(device.Tier);
                 if(units==0){active.RemoveAt(i);continue;}
-                float frame=Mathf.Min(delta,pulse.Remaining);pulse.Remaining-=frame;
-                while(frame>.00001f)
+                double frame=System.Math.Min(delta,pulse.Remaining);pulse.Remaining-=(float)frame;
+                while(frame>0d)
                 {
                     if(!Damaged(pulse.Target))pulse.Target=RandomTarget();
                     if(pulse.Target==null)break;
                     var hp=pulse.Target.Damageable;
-                    float ratio=hp.CurrentHp/hp.MaxHp;
                     float bonus=GetComponent<R3MountedBonusEffects>()?.RepairEfficiencyMultiplier??1f;
-                    float rate=(float)System.Math.Min(float.MaxValue,(double)RepairRatioPerSecond*units*bonus);
-                    if(rate<=0)break;
-                    float needed=(1f-ratio)/rate;
-                    float used=Mathf.Min(frame,needed);
-                    hp.RestoreHealthRatio(Mathf.Min(1f,ratio+used*rate));
-                    frame-=used;
-                    if(used<=.000001f){pulse.Target=null;break;}
+                    double rate=(double)RepairRatioPerSecond*units*bonus;
+                    if(rate<=0d||double.IsNaN(rate)||double.IsInfinity(rate))break;
+                    double ratio=hp.CurrentHp/(double)hp.MaxHp;
+                    double needed=((double)hp.MaxHp-hp.CurrentHp)/(hp.MaxHp*rate);
+                    bool complete=needed<=frame;
+                    float before=hp.CurrentHp;
+                    hp.RestoreHealthRatio(complete?1f:(float)System.Math.Min(1d,ratio+frame*rate));
+                    if(hp.CurrentHp<=before)break;
+                    if(!complete)break; // The unfinished target used the rest of this step.
+                    frame-=needed;pulse.Target=null;
                 }
                 if(pulse.Remaining<=0)active.RemoveAt(i);
             }

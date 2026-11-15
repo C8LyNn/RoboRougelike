@@ -1902,5 +1902,39 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(armor.Damageable.CurrentHp/armor.Damageable.MaxHp,Is.EqualTo(.6f).Within(.001));
         yield return null;
     }
+    [UnityTest] public IEnumerator RepairPulseRecognizesSmallButRealDamage()
+    {
+        FuseAndMount(R3PartKind.RepairPulse);Assert.That(run.EnterTestRange(),Is.True);
+        for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var pulse=run.Player.GetComponent<R3RepairPulse>();
+        var hp=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational).Damageable;
+        hp.RestoreHealthRatio(.999995f);float missing=hp.MaxHp-hp.CurrentHp;
+        Assert.That(missing,Is.GreaterThan(0).And.LessThan(.001f));
+        Assert.That(pulse.TryActivate(),Is.EqualTo(1),"A real missing amount should remain repairable even below an absolute HP threshold.");
+        typeof(R3RepairPulse).GetMethod("Tick",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(pulse,new object[]{1f});
+        Assert.That(hp.CurrentHp,Is.EqualTo(hp.MaxHp));
+    }
+    [UnityTest] public IEnumerator StrongRepairPulseUsesRemainingTimeOnOtherDamagedParts()
+    {
+        FuseAndMount(R3PartKind.RepairPulse);
+        var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="strong-repair-pulse-test";
+        bonus.Effect=R1UpgradeEffect.RepairEfficiency;bonus.Amount=100000000f;
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{bonus}),Is.True);
+        var id=model.Inventory.Single(p=>p.UpgradeId==bonus.Id).Id;
+        var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+        Assert.That(run.GarageMount(id,cells.First(c=>model.OwnedPlacementError(id,c,default)==null)),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var pulse=run.Player.GetComponent<R3RepairPulse>();
+        var targets=assembly.Parts.Where(p=>p.Kind==R3PartKind.Armor&&p.Operational).Take(2).Select(p=>p.Damageable).ToArray();
+        try
+        {
+            Assert.That(targets.Length,Is.EqualTo(2));foreach(var hp in targets)hp.RestoreHealthRatio(.5f);
+            Assert.That(run.Player.GetComponent<R3MountedBonusEffects>().RepairEfficiencyMultiplier,Is.GreaterThan(1000000));
+            Assert.That(pulse.TryActivate(),Is.EqualTo(1));
+            typeof(R3RepairPulse).GetMethod("Tick",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(pulse,new object[]{1f});
+            Assert.That(targets.All(hp=>hp.CurrentHp==hp.MaxHp),Is.True,"All damaged parts must use the remaining pulse time.");
+        }
+        finally{Object.Destroy(bonus);}
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
