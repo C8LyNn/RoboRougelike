@@ -24,6 +24,7 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Prototypowe wartości i wpływ trzech nowych nagród na losowanie wymagają oceny w grze. Punkt 13 pozostaje otwarty do pełnej weryfikacji wszystkich wymaganych zakresów.
 - `weapon_rewards_flow.xml` i `.log`: **3 PASS, 0 FAIL**. Wszystkie siedem nowych nagród pojawiło się w osobnych symulacjach rzeczywistego wyboru trzech ofert i można je było zamienić na fizyczne moduły z właściwym zakresem; sprawdzono również istniejące ponowne losowanie koszyków. Test tworzy oferty i magazyn przez API, nie rozgrywa siedmiu pełnych wypraw.
 - `weapon_scope_run_save.xml` i `.log`: **2 PASS, 0 FAIL**. Rzeczywisty zapis i wczytanie wyprawy w izolowanym pliku testowym zachowały siedem nowych modułów, ich identyfikatory, zakresy, tiery i HP; zamontowana premia ciężkiego działa działała po wczytaniu. Test przygotował moduły przez API i nie obejmuje ręcznej rozgrywki.
+- `weapon_reward_full_flow.xml` i `.log`: **2 PASS, 0 FAIL**. W kontrolowanym starciu przyznano premię ciężkiego działa, zamontowano fizyczny egzemplarz i sprawdzono jego tożsamość oraz działanie po zapisie i wczytaniu. Katalog ofert ograniczono na czas testu, a przeciwnika pokonano przez API; nie jest to ręczny playtest.
 
 ### 10–13, 30–31 i 44. Rozróżnianie stosów premii
 
