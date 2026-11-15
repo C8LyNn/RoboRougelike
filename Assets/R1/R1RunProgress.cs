@@ -18,20 +18,27 @@ namespace RoboRougelike.R1
     // before the final value is rounded to the representable float range.
     internal sealed class R1ModifierGroup
     {
-        double additive,logMultiplier,logCompensation;
+        double additive,additiveCompensation,logMultiplier,logCompensation;
         bool zeroMultiplier;
-        public void Reset(){additive=0;logMultiplier=0;logCompensation=0;zeroMultiplier=false;}
+        public void Reset(){additive=0;additiveCompensation=0;logMultiplier=0;logCompensation=0;zeroMultiplier=false;}
         public void Add(R1ModifierOperation operation,float amount,int copies,bool inverse=false)
         {
             if(float.IsNaN(amount)||float.IsInfinity(amount)||amount<0||copies<=0)return;
             double sign=inverse?-1d:1d;
             switch(operation)
             {
-                case R1ModifierOperation.Increased:additive+=sign*amount*copies;break;
-                case R1ModifierOperation.Reduced:additive-=sign*amount*copies;break;
+                case R1ModifierOperation.Increased:Additive(sign*amount*copies);break;
+                case R1ModifierOperation.Reduced:Additive(-sign*amount*copies);break;
                 case R1ModifierOperation.More:Multiply(Math.Max(0d,1d+sign*amount),copies);break;
                 case R1ModifierOperation.Less:Multiply(Math.Max(0d,1d-sign*amount),copies);break;
             }
+        }
+        void Additive(double term)
+        {
+            // Preserve small terms even when a much larger pair cancels later.
+            double next=additive+term;
+            additiveCompensation+=Math.Abs(additive)>=Math.Abs(term)?(additive-next)+term:(term-next)+additive;
+            additive=next;
         }
         void Multiply(double factor,int copies)
         {
@@ -44,7 +51,7 @@ namespace RoboRougelike.R1
         }
         public float Apply(float baseline)
         {
-            double sum=Math.Max(0d,1d+additive);
+            double sum=Math.Max(0d,1d+(additive+additiveCompensation));
             if(baseline<=0||float.IsNaN(baseline)||sum==0d||zeroMultiplier)return 0f;
             if(logMultiplier==0d)return (float)Math.Min(float.MaxValue,(double)baseline*sum);
             double resultLog=Math.Log(baseline)+Math.Log(sum)+logMultiplier;

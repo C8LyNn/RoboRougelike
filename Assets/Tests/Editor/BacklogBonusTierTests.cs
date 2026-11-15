@@ -397,6 +397,9 @@ public sealed class BacklogBonusTierTests
         var huge=Group();Add(huge,"More",1,1000000);Assert.That(Value(huge),Is.EqualTo(float.MaxValue));
         Add(huge,"Less",1,1);Assert.That(Value(huge),Is.Zero,"Zero times a huge multiplier must stay finite.");
         var invalid=Group();Add(invalid,"More",float.NaN,1);Assert.That(Value(invalid),Is.EqualTo(1));
+        var cancellation=Group();Add(cancellation,"Increased",float.MaxValue,1);Add(cancellation,"Increased",.5f,1);Add(cancellation,"Reduced",float.MaxValue,1);
+        Assert.That(Value(cancellation),Is.EqualTo(1.5f).Within(.001));
+        type.GetMethod("Reset").Invoke(cancellation,null);Assert.That(Value(cancellation),Is.EqualTo(1),"A reused modifier group must clear its compensation.");
     }
     [Test] public void IdenticalRewardModulesFuseAndPreserveTheirEffect()
     {

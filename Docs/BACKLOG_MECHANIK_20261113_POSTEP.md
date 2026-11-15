@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 12, 14 i 44. Sumowanie przeciwstawnych premii
+
+- Sumowanie `increased/reduced` zachowuje teraz mały składnik, gdy między dużymi przeciwstawnymi wartościami występuje utrata precyzji. Reset używanej ponownie grupy czyści również składnik korekcyjny; zasady grupowania premii pozostają te same.
+- Unity 6000.3.14f1: **61 PASS, 0 FAIL** (`modifier_additive_final.xml`, `.log` w katalogu `Prototypy`) obejmuje sumowanie i mnożenie, reset, energię, rzeczywiste premie broni i baterii oraz działającą tarczę. `modifier_additive_before.xml`: **1 FAIL**, bo model energii zwracał 425 zamiast 675 po zrównoważeniu dużych wartości i zachowaniu dodatkowych +50%. Skrajne wartości są syntetyczne; wydajności i ręcznej gry nie mierzono.
+- Limity dodatkowych pocisków #02/#14 i odbiór #44 pozostają otwarte.
+
 ### 12, 14 i 44. Duże przeciwstawne mnożniki premii
 
 - Wspólny mechanizm `more/less` zachowuje teraz iloczyn w postaci sumy logarytmów i ogranicza dopiero wynik końcowy do zakresu liczby `float`. Duże premie i redukcje mogą się wzajemnie zrównoważyć bez wcześniejszego przepełnienia lub wyzerowania pośredniego wyniku; zerowy mnożnik nadal daje zero. `increased/reduced` i zwykłe wartości zachowują dotychczasowe zasady.

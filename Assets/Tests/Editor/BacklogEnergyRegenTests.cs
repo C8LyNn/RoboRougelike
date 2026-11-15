@@ -10,6 +10,19 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogEnergyRegenTests
 {
+    [Test] public void OpposingLargeAdditiveBonusesDoNotEraseSmallerBonus()
+    {
+        var design=new R3VehicleDesign();design.Parts.Add(new R3PartState(default,R3PartKind.Core));
+        var model=new R3VehicleModel(design);
+        var huge=new R3PartState(default,R3PartKind.BonusModule){UpgradeEffect=R1UpgradeEffect.EnergyCapacity,UpgradeAmount=float.MaxValue};
+        var small=new R3PartState(default,R3PartKind.BonusModule){UpgradeEffect=R1UpgradeEffect.EnergyCapacity,UpgradeAmount=.5f};
+        var reduction=new R3PartState(default,R3PartKind.BonusModule){UpgradeEffect=R1UpgradeEffect.EnergyCapacity,UpgradeOperation=R1ModifierOperation.Reduced,UpgradeAmount=float.MaxValue};
+        model.Parts.Add(huge);model.Parts.Add(small);model.Parts.Add(reduction);
+        const float expected=500*1.5f-3*25;
+        model.RefreshEnergyLayout();Assert.That(model.Energy.Maximum,Is.EqualTo(expected).Within(.001),"Small bonus between opposing large values");
+        model.Parts.Remove(small);model.Parts.Add(small);model.RefreshEnergyLayout();
+        Assert.That(model.Energy.Maximum,Is.EqualTo(expected).Within(.001),"Small bonus after opposing large values");
+    }
     [Test] public void OpposingLargeMultiplierGroupsRemainOrderIndependent()
     {
         var design=new R3VehicleDesign();design.Parts.Add(new R3PartState(default,R3PartKind.Core));
