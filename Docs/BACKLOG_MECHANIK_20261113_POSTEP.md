@@ -1023,3 +1023,7 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Gotowe strzelby tworzą pełne podstawowe salwy, zanim wspólne wolne miejsca zostaną podzielone na śruciny dodatkowe. Opóźnione śruciny nadal ignorują kolizje z pozostałymi śrucinami z tej samej lufy; nie zmieniono kosztu energii ani zużycia amunicji. Limit 96 fizycznych pocisków nadal może zablokować strzał, jeśli nie ma miejsca na całą podstawową salwę.
 - Unity 6000.3.14f1: **6 PASS, 0 FAIL** (`shotgun_fairness_first.xml`, `.log`), w tym dwie strzelby przy 20 wolnych miejscach: po osiem podstawowych śrucin i po dwa bonusy, osobne koszty i magazynki, ignorowanie wzajemnych kolizji oraz rzeczywiste obrażenia obu celów. Sprawdzono też dotychczasowy Double Shot strzelby i salwy innych rodzin. Przed zmianą `shotgun_fairness_red.xml`: bonusy pierwszej strzelby blokowały drugą. Ręczna gra i pomiar wydajności: **NOT RUN**.
+
+#### 14, 20. Opis Double Shot w garażu
+
+- Opisy wybieranej części i oferty wyjaśniają, że każde pełne 100% premii tworzy dodatkowy pocisk, a część ułamkowa jest szansą na kolejny. Informacja o rodzinach broni, rezerwie energii i obecnych limitach pozostaje widoczna. Zmieniono tylko tekst; jego zawijanie i czytelność w Playerze: **NOT RUN**.
