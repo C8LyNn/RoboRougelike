@@ -189,11 +189,6 @@ namespace RoboRougelike.R1
             if(weaponsInactive)return "Uzbrojenie nieaktywne — sprawdź stan broni.";
             return null;
         }
-        private static string ProjectileBudgetWarning(bool shellBudgetFull,bool bonusActive,bool hasShellGun)
-        {
-            return bonusActive&&shellBudgetFull&&hasShellGun?"Dużo strzałów — bonusowe pociski mogą nie powstać.":null;
-        }
-        private static bool ProjectileBonusStillLimited(R4WeaponKind kind)=>kind==R4WeaponKind.Shotgun;
         private static Rect EnemyStatusLabelRect(int row)=>new Rect(940,80+row*24,305,18);
         private static Rect EnemyStatusBarRect(int row)=>new Rect(940,99+row*24,305,4);
         private static Rect CombatEnemyPanelRect(int visibleRows,bool special,bool defeated)
@@ -388,26 +383,6 @@ namespace RoboRougelike.R1
                         modules.SurvivingWheelCount:-1;
                     bool weaponsInactive=modules.ActiveWeaponCount==0&&modules.HasSurvivingWeapon;
                     resourceWarning=CombatEquipmentWarning(drive,modules.InitialWheelCount,surviving,weaponsInactive)??resourceWarning;
-                }
-                bool shellBudgetFull=RogueMachine.P12PipelineSafe.P17PhysicalShell.AvailableSlots==0;
-                if(resourceWarning==null&&player!=null&&shellBudgetFull)
-                {
-                    var mounted=player.GetComponent<R3VehicleAssembly>();
-                    bool bonusActive=offensive!=null&&offensive.AdditionalProjectileUnits>0;
-                    float bonusChance=mounted?.Model?.Economy.DoubleShotChancePerUnit??0;
-                    if(mounted!=null&&!bonusActive&&bonusChance>0&&!float.IsInfinity(bonusChance))
-                        bonusActive=mounted.Parts.Any(part=>part!=null&&part.Kind==R3PartKind.DoubleShot&&part.Operational&&
-                            part.gameObject.activeInHierarchy&&part.transform.IsChildOf(mounted.transform)&&
-                            !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject));
-                    bool shellGun=false;
-                    if(bonusActive&&mounted!=null)
-                        foreach(var part in mounted.Parts)
-                        {
-                            if(part==null||part.Kind!=R3PartKind.Gun||!part.Operational||!part.gameObject.activeInHierarchy||
-                                !part.transform.IsChildOf(mounted.transform)||RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))continue;
-                            if(ProjectileBonusStillLimited(part.Weapon))shellGun=true;
-                        }
-                    resourceWarning=ProjectileBudgetWarning(shellBudgetFull,bonusActive,shellGun);
                 }
                 CombatPanel(new Rect(20,18,660,(combatDetailsOpen?180:125)+extraStatusHeight+(resourceWarning!=null?25:0)+(run.PickupGraceRemaining>0?25:0)),
                     lowCore?new Color(1f,.42f,.32f):new Color(.28f,.76f,.75f));

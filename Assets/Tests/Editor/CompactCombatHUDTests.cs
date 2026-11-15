@@ -85,24 +85,6 @@ public sealed class CompactCombatHUDTests
         Assert.That(Warning(float.NaN,100,float.NaN,500),Is.Null);
         Assert.That(Warning(1,0,1,0),Is.Null,"Missing resource data must not produce a false alert.");
     }
-    [Test] public void ProjectileWarningOnlyAppearsForAffectedActiveBonuses()
-    {
-        var method=typeof(R1RunHUD).GetMethod("ProjectileBudgetWarning",BindingFlags.Static|BindingFlags.NonPublic);
-        Assert.That(method,Is.Not.Null);
-        string Warning(bool shells,bool bonus,bool shellGun)=>(string)method.Invoke(null,new object[]{shells,bonus,shellGun});
-        Assert.That(Warning(true,false,true),Is.Null,"A vehicle without a bonus must not get a false warning.");
-        Assert.That(Warning(true,true,false),Is.Null,"A full shell budget cannot block rocket bonuses.");
-        Assert.That(Warning(false,true,true),Is.Null,"An available shell budget must not produce a warning.");
-        Assert.That(Warning(true,true,true),Does.Contain("bonusowe pociski"));
-        var affected=typeof(R1RunHUD).GetMethod("ProjectileBonusStillLimited",BindingFlags.Static|BindingFlags.NonPublic);
-        Assert.That(affected,Is.Not.Null);
-        bool Limited(RoboRougelike.R4.R4WeaponKind kind)=>(bool)affected.Invoke(null,new object[]{kind});
-        Assert.That(Limited(RoboRougelike.R4.R4WeaponKind.Shotgun),Is.True);
-        Assert.That(Limited(RoboRougelike.R4.R4WeaponKind.Railgun),Is.False);
-        Assert.That(Limited(RoboRougelike.R4.R4WeaponKind.Automatic),Is.False);
-        Assert.That(Limited(RoboRougelike.R4.R4WeaponKind.Basic),Is.False);
-        Assert.That(Limited(RoboRougelike.R4.R4WeaponKind.RocketLauncher),Is.False);
-    }
     [Test] public void EquipmentWarningsDistinguishLastWheelAndInactiveWeapons()
     {
         var method=typeof(R1RunHUD).GetMethod("CombatEquipmentWarning",BindingFlags.Static|BindingFlags.NonPublic);

@@ -1387,6 +1387,7 @@ public float CurrentForwardSpeed =>
         }
         private static readonly VolleyLayerLease[] volleyLayers=new VolleyLayerLease[8];
         private VolleyLayerLease volleyLayer;
+        internal bool HasVolleyLayer=>volleyLayer!=null;
         private int originalVolleyLayer,originalVolleyExclusions;
         internal static bool TryGroupVolley(System.Collections.Generic.IReadOnlyList<GameObject> shots)
             =>TryGroupVolleyInternal(shots,false);
@@ -1554,9 +1555,7 @@ public float CurrentForwardSpeed =>
         private static readonly System.Collections.Generic.List<Collider> projectileColliderBuffer =
             new System.Collections.Generic.List<Collider>();
         private static bool projectileColliderBufferInUse;
-        // The temporary budget limits only additional shots; primary shots
-        // must still exist when unrelated projectiles fill this allowance.
-        public static int AvailableSlots => Mathf.Max(0,96-activeShells.Count);
+        public static int ActiveCount => activeShells.Count;
         private void OnEnable()
         {
             activeShells.Add(this);
@@ -1575,6 +1574,7 @@ public float CurrentForwardSpeed =>
         {
             public Transform Owner,Target;
             public Vector3 Position,Direction,Velocity,Scale;
+            public Quaternion Rotation;
             public float Mass,Lifetime,Range,Damage,Kinetic,Blast;
             public bool Hybrid;
             public Material Material;
@@ -1588,7 +1588,7 @@ public float CurrentForwardSpeed =>
             var origin=GetComponent<RoboRougelike.R4.R4ProjectileOrigin>();
             if(body==null||origin==null)throw new System.InvalidOperationException("A conventional projectile is missing its body or identity.");
             double remaining=cacheableConventional?System.Math.Max(.5d,expiresAt-Time.timeAsDouble):.5d;
-            return new ConventionalSnapshot{Owner=ownerRoot,Target=targetRoot,Position=launchPosition,Direction=launchDirection,
+            return new ConventionalSnapshot{Owner=ownerRoot,Target=targetRoot,Position=launchPosition,Direction=launchDirection,Rotation=transform.rotation,
                 Velocity=body.linearVelocity,Scale=transform.localScale,Mass=body.mass,Lifetime=(float)System.Math.Min(float.MaxValue,remaining),
                 Range=maxTravelDistance,Damage=damage,Kinetic=kineticComponent,Blast=blastComponent,Hybrid=hybridDamage,
                 Material=renderer!=null?renderer.sharedMaterial:null,Weapon=origin.Weapon,PartId=origin.PartId};

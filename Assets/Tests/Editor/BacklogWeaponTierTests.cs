@@ -11,29 +11,6 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogWeaponTierTests
 {
-    [Test] public void BonusAllocationIsFairAndHandlesVeryLargeRequests()
-    {
-        var method=typeof(R3VehicleAssembly).GetMethod("AllocateBonusShots",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
-        Assert.That(method,Is.Not.Null);
-        int[] Allocate(int[] requested,int available)=>(int[])method.Invoke(null,new object[]{requested,available});
-        Assert.That(Allocate(new[]{4,2,8},7),Is.EqualTo(new[]{3,2,2}));
-        Assert.That(Allocate(new[]{0,1,5},4),Is.EqualTo(new[]{0,1,3}));
-        Assert.That(Allocate(new[]{2,3},10),Is.EqualTo(new[]{2,3}));
-        Assert.That(Allocate(new[]{4,2},0),Is.EqualTo(new[]{0,0}));
-        Assert.That(Allocate(new[]{int.MaxValue,int.MaxValue,2},int.MaxValue),Is.EqualTo(new[]{1073741823,1073741822,2}));
-        for(int a=0;a<=4;a++)for(int b=0;b<=4;b++)for(int c=0;c<=4;c++)for(int capacity=0;capacity<=12;capacity++)
-        {
-            var requests=new[]{a,b,c};var expected=new int[3];int remaining=capacity;
-            while(remaining>0)
-            {
-                bool assigned=false;
-                for(int i=0;i<requests.Length&&remaining>0;i++)
-                    if(expected[i]<requests[i]){expected[i]++;remaining--;assigned=true;}
-                if(!assigned)break;
-            }
-            Assert.That(Allocate(requests,capacity),Is.EqualTo(expected),$"requests={a},{b},{c}; capacity={capacity}");
-        }
-    }
     [Test] public void ThreeIdenticalBasicGunsFuseToOneTierTwoGun()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
@@ -56,6 +33,57 @@ public sealed class BacklogWeaponTierTests
 public sealed class BacklogWeaponTierPhysicsTests
 {
     [UnitySetUp] public IEnumerator Setup(){EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();}
+    [UnityTest] public IEnumerator AlreadyQueuedWeaponBatchesShareEmissionWithoutLosingShots()
+    {
+        var owner=new GameObject("Fair bonus queue owner");owner.AddComponent<Rigidbody>().isKinematic=true;
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var rent=typeof(P17PhysicalShell).GetMethod("RentConventional",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        P17PhysicalShell Primary(string id,float x)
+        {
+            var shell=(P17PhysicalShell)rent.Invoke(null,null);shell.transform.position=new Vector3(x,1000,1000);
+            shell.GetComponent<R4ProjectileOrigin>().PartId=id;shell.gameObject.SetActive(true);
+            shell.GetComponent<Rigidbody>().linearVelocity=Vector3.forward*20;shell.Configure(owner.transform,1,5,Vector3.forward,null);return shell;
+        }
+        var first=Primary("fair-A",1000);var second=Primary("fair-B",1010);
+        var queue=owner.AddComponent<R3ConventionalProjectileQueue>();
+        typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        var enqueue=typeof(R3ConventionalProjectileQueue).GetMethod("Enqueue",flags);
+        enqueue.Invoke(queue,new object[]{first,3});enqueue.Invoke(queue,new object[]{second,3});
+        int Count(string id)=>Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId==id);
+        Assert.That(Count("fair-A"),Is.EqualTo(3));Assert.That(Count("fair-B"),Is.EqualTo(1));
+        var drain=typeof(R3ConventionalProjectileQueue).GetMethod("FixedUpdate",flags);drain.Invoke(queue,null);
+        Assert.That(Count("fair-A"),Is.EqualTo(3));Assert.That(Count("fair-B"),Is.EqualTo(2),"The waiting weapon must receive a turn before the first batch finishes.");
+        drain.Invoke(queue,null);drain.Invoke(queue,null);drain.Invoke(queue,null);
+        Assert.That(Count("fair-A"),Is.EqualTo(4));Assert.That(Count("fair-B"),Is.EqualTo(4));
+        foreach(var tag in Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId=="fair-A"||p.PartId=="fair-B"))
+        {tag.gameObject.SetActive(false);Object.Destroy(tag.gameObject);}
+        Object.Destroy(owner);yield return null;
+    }
+    [UnityTest] public IEnumerator ShotgunBonusCountsBeyondInt32RemainQueuedWithoutIteration()
+    {
+        var owner=new GameObject("Large shotgun queue owner");owner.AddComponent<Rigidbody>().isKinematic=true;
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var rent=typeof(P17PhysicalShell).GetMethod("RentConventional",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        var primaries=new GameObject[2];
+        for(int i=0;i<primaries.Length;i++)
+        {
+            var shell=(P17PhysicalShell)rent.Invoke(null,null);shell.transform.position=new Vector3(1000,1000,1000);
+            var tag=shell.GetComponent<R4ProjectileOrigin>();tag.PartId="huge-shotgun-queue";tag.Weapon=R4WeaponKind.Shotgun;
+            shell.gameObject.SetActive(true);shell.GetComponent<Rigidbody>().linearVelocity=Vector3.forward*20;
+            shell.Configure(owner.transform,1,5,Vector3.forward,null);primaries[i]=shell.gameObject;
+        }
+        var queue=owner.AddComponent<R3ConventionalProjectileQueue>();
+        typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        typeof(R3ConventionalProjectileQueue).GetMethod("EnqueueShotgun",flags).Invoke(queue,new object[]{primaries,new[]{int.MaxValue,int.MaxValue}});
+        var batches=(System.Collections.IEnumerable)typeof(R3ConventionalProjectileQueue).GetField("batches",flags).GetValue(queue);
+        var iterator=batches.GetEnumerator();Assert.That(iterator.MoveNext(),Is.True);var batch=iterator.Current;
+        var pending=(System.Numerics.BigInteger)batch.GetType().GetField("ShotgunRemaining").GetValue(batch);
+        Assert.That(pending,Is.EqualTo((System.Numerics.BigInteger)int.MaxValue*2-1),"Only the one emitted bonus may be removed from the exact count.");
+        Assert.That(Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId=="huge-shotgun-queue"),Is.EqualTo(3));
+        foreach(var tag in Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId=="huge-shotgun-queue"))
+        {tag.gameObject.SetActive(false);Object.Destroy(tag.gameObject);}
+        Object.Destroy(owner);yield return null;
+    }
     [UnityTest] public IEnumerator DoubleShotTriggersOnceWithoutExtraEnergyOrRecursiveShots()
     {
         Assert.That(System.Enum.TryParse("DoubleShot",out R3PartKind kind),Is.True);

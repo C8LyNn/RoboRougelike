@@ -249,33 +249,6 @@ namespace RoboRougelike.R3
             public RoboRougelike.WeaponIntegration.RRLRocketBinding Binding;
             public int Requested;
         }
-        private static int[] AllocateBonusShots(IReadOnlyList<int> requested,int available)
-        {
-            var allocated=new int[requested.Count];
-            if(available<=0||requested.Count==0)return allocated;
-            int maximum=0;
-            for(int i=0;i<requested.Count;i++)maximum=Mathf.Max(maximum,requested[i]);
-            long low=0,high=System.Math.Min((long)maximum,available);
-            // Find the greatest complete round that fits. Use long for the
-            // sum because many independent weapons can request int.MaxValue.
-            while(low<high)
-            {
-                long middle=low+(high-low+1)/2,total=0;
-                for(int i=0;i<requested.Count;i++)
-                    total+=System.Math.Min((long)System.Math.Max(0,requested[i]),middle);
-                if(total<=available)low=middle;else high=middle-1;
-            }
-            long used=0;
-            for(int i=0;i<requested.Count;i++)
-            {
-                allocated[i]=(int)System.Math.Min((long)System.Math.Max(0,requested[i]),low);
-                used+=allocated[i];
-            }
-            int remaining=(int)(available-used);
-            for(int i=0;i<requested.Count&&remaining>0;i++)
-                if(allocated[i]<requested[i]){allocated[i]++;remaining--;}
-            return allocated;
-        }
         public int RollDoubleShotExtras(int available)
         {
             if(available<=0||Model==null)return 0;
@@ -317,10 +290,10 @@ namespace RoboRougelike.R3
                         if(binding!=null&&binding.FirePrimary())
                         {
                             part.NextFireTime=binding.State.DeviceReadyAt;
-                            if(binding.AdditionalRequested>0)
+                            if(binding.HasAdditionalRequested)
                             {
                                 if(pending==null)pending=new List<PendingConventionalShot>();
-                                pending.Add(new PendingConventionalShot{Shotgun=binding,Requested=binding.AdditionalRequested});
+                                pending.Add(new PendingConventionalShot{Shotgun=binding});
                             }
                         }
                         continue;
@@ -378,21 +351,10 @@ namespace RoboRougelike.R3
                 foreach(var shot in pendingRockets)shot.Binding.FireAdditional(shot.Requested);
             if(pending==null)return;
             foreach(var shot in pending)
-                if(shot.Rail!=null)shot.Rail.FireAdditional(shot.Requested);
-                else if(shot.Shotgun==null)
+                if(shot.Shotgun!=null)shot.Shotgun.FireAdditional();
+                else if(shot.Rail!=null)shot.Rail.FireAdditional(shot.Requested);
+                else
                     controller.FireAdditionalFrom(shot.Muzzle,shot.Kind,shot.PartId,shot.Primary,shot.Requested);
-            if(P17PhysicalShell.AvailableSlots<=0)
-            {foreach(var shot in pending)if(shot.Shotgun!=null)shot.Shotgun.ClearDeferred();return;}
-            var requests=new int[pending.Count];
-            for(int i=0;i<pending.Count;i++)requests[i]=pending[i].Shotgun!=null?pending[i].Requested:0;
-            var allocated=AllocateBonusShots(requests,P17PhysicalShell.AvailableSlots);
-            for(int i=0;i<pending.Count;i++)
-                if(allocated[i]>0)
-                {
-                    var shot=pending[i];
-                    if(shot.Shotgun!=null)shot.Shotgun.FireAdditional(allocated[i]);
-                }
-                else if(pending[i].Shotgun!=null)pending[i].Shotgun.ClearDeferred();
         }
 
         public static R1VehicleState Build(R3VehicleModel model, R1RunStats stats, R3VisualPalette palette,

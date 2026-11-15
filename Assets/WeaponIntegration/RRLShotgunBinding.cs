@@ -25,10 +25,9 @@ namespace RoboRougelike.WeaponIntegration
         P12PipelineSafeEnemyTurret enemy;
         bool debitPending;
         bool deferExtras;
-        List<ShotgunPelletSpawn> deferredPellets;
         List<int> deferredRequests;
         List<GameObject> deferredCreated;
-        internal int AdditionalRequested { get; private set; }
+        internal bool HasAdditionalRequested { get; private set; }
         float damageScale=1,intervalScale=1;
         RRLDeviceBinding device;
         public bool Available => device!=null&&device.Available;
@@ -80,7 +79,7 @@ namespace RoboRougelike.WeaponIntegration
             return result;
         }
         internal bool FirePrimary()
-        {ClearDeferred();deferExtras=true;try{return Fire();}finally{deferExtras=false;if(AdditionalRequested==0)ClearDeferred();}}
+        {ClearDeferred();deferExtras=true;try{return Fire();}finally{deferExtras=false;if(!HasAdditionalRequested)ClearDeferred();}}
         public bool BeginReload()
         {
             RefreshResources();
@@ -117,59 +116,44 @@ namespace RoboRougelike.WeaponIntegration
                     var range=Mathf.Min(pellet.MaxDistance,velocity.magnitude*pellet.Lifetime);
                     if(!assembly.ClearProjectilePath(part,velocity,range,.05f))return false;
                 }
-            var planned=new List<ShotgunPelletSpawn>(pellets);
-            int extraSlots=Mathf.Max(0,P17PhysicalShell.AvailableSlots-pellets.Count);
-            if(assembly!=null&&!deferExtras)
-                foreach(var pellet in pellets)
-                {
-                    int extras=assembly.RollDoubleShotExtras(extraSlots);
-                    for(int i=0;i<extras;i++)planned.Add(pellet);
-                    extraSlots-=extras;
-                    if(extraSlots<=0)break;
-                }
-            var created=new List<GameObject>(planned.Count);
+            var created=new List<GameObject>(pellets.Count);
             try
             {
-                foreach(var pellet in planned)CreatePellet(pellet,created);
+                foreach(var pellet in pellets)CreatePellet(pellet,created);
+                var requests=new List<int>(pellets.Count);bool any=false;
+                for(int i=0;i<pellets.Count;i++)
+                {
+                    int requested=assembly!=null?assembly.RollDoubleShotExtras(int.MaxValue):0;
+                    requests.Add(requested);any|=requested>0;
+                }
                 if(deferExtras)
                 {
-                    deferredPellets=new List<ShotgunPelletSpawn>(pellets);deferredRequests=new List<int>(pellets.Count);
-                    deferredCreated=created;AdditionalRequested=0;int available=P17PhysicalShell.AvailableSlots;
-                    foreach(var pellet in pellets)
-                    {
-                        int requested=assembly!=null?assembly.RollDoubleShotExtras(available):0;
-                        deferredRequests.Add(requested);AdditionalRequested=(int)System.Math.Min(available,(long)AdditionalRequested+requested);
-                    }
+                    deferredRequests=requests;deferredCreated=created;HasAdditionalRequested=any;
                 }
-                debitPending=false;
                 RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.Shotgun);
+                if(!deferExtras&&any)QueueAdditional(created,requests);
+                debitPending=false;
                 return true;
             }
             catch
             {
+                ClearDeferred();
                 foreach(var shell in created)if(shell!=null){shell.SetActive(false);Destroy(shell);}
                 return false;
             }
         }
-        internal void FireAdditional(int count)
+        internal void FireAdditional()
         {
-            if(!Available||deferredPellets==null||deferredRequests==null||deferredCreated==null){ClearDeferred();return;}
-            int remaining=Mathf.Min(Mathf.Min(Mathf.Max(0,count),AdditionalRequested),P17PhysicalShell.AvailableSlots);
-            int initial=deferredCreated.Count;var allocated=new int[deferredPellets.Count];
-            try
-            {
-                while(remaining>0)
-                {
-                    bool created=false;
-                    for(int i=0;i<allocated.Length&&remaining>0;i++)
-                        if(allocated[i]<deferredRequests[i]){CreatePellet(deferredPellets[i],deferredCreated);allocated[i]++;remaining--;created=true;}
-                    if(!created)break;
-                }
-            }
-            catch{for(int i=initial;i<deferredCreated.Count;i++)if(deferredCreated[i]!=null){deferredCreated[i].SetActive(false);Destroy(deferredCreated[i]);}}
-            ClearDeferred();
+            if(Owner==null||deferredRequests==null||deferredCreated==null){ClearDeferred();return;}
+            try{QueueAdditional(deferredCreated,deferredRequests);}finally{ClearDeferred();}
         }
-        internal void ClearDeferred(){deferredPellets=null;deferredRequests=null;deferredCreated=null;AdditionalRequested=0;}
+        void QueueAdditional(IReadOnlyList<GameObject> created,IReadOnlyList<int> requested)
+        {
+            var queue=Owner.GetComponent<R3ConventionalProjectileQueue>();
+            if(queue==null)queue=Owner.gameObject.AddComponent<R3ConventionalProjectileQueue>();
+            queue.EnqueueShotgun(created,requested);
+        }
+        internal void ClearDeferred(){deferredRequests=null;deferredCreated=null;HasAdditionalRequested=false;}
         void CreatePellet(ShotgunPelletSpawn pellet,List<GameObject> created)
         {
             if(pellet.OwnerRoot!=Owner.gameObject||pellet.OwnerBody!=body)throw new System.InvalidOperationException("Wrong projectile owner");

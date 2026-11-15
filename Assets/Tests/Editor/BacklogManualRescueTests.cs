@@ -156,6 +156,34 @@ public sealed class BacklogManualRescueTests
         float end=Time.time+run.EmergencyRescueDurationSeconds+.1f;while(Time.time<end)yield return null;
         energy=bank.Current;tick.Invoke(aura,null);Assert.That(bank.Current,Is.LessThan(energy),"Aura resumes after protection ends");
     }
+    [UnityTest] public IEnumerator QueuedShotgunBonusesWaitUntilRescueEnds()
+    {
+        run.Encounter.SetCombatActive(false);run.EmergencyRescueDurationSeconds=.3f;
+        var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+        var rent=typeof(P17PhysicalShell).GetMethod("RentConventional",BindingFlags.Static|BindingFlags.NonPublic);
+        var primaries=new GameObject[2];
+        for(int i=0;i<2;i++)
+        {
+            var pellet=(P17PhysicalShell)rent.Invoke(null,null);pellet.transform.position=run.Player.transform.position+Vector3.up*4;
+            var tag=pellet.GetComponent<RoboRougelike.R4.R4ProjectileOrigin>();tag.PartId="queued-rescue-pellet";tag.Weapon=RoboRougelike.R4.R4WeaponKind.Shotgun;
+            pellet.gameObject.SetActive(true);pellet.GetComponent<Rigidbody>().linearVelocity=Vector3.forward*20;
+            pellet.Configure(run.Player.transform,1,3,Vector3.forward,null);primaries[i]=pellet.gameObject;
+        }
+        var queue=run.Player.gameObject.AddComponent<R3ConventionalProjectileQueue>();
+        typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        typeof(R3ConventionalProjectileQueue).GetMethod("EnqueueShotgun",flags).Invoke(queue,new object[]{primaries,new[]{1,1}});
+        var batches=(System.Collections.IEnumerable)typeof(R3ConventionalProjectileQueue).GetField("batches",flags).GetValue(queue);
+        var iterator=batches.GetEnumerator();Assert.That(iterator.MoveNext(),Is.True);var batch=iterator.Current;
+        var remaining=batch.GetType().GetField("ShotgunRemaining");Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.One));
+        Assert.That(run.TryEmergencyRescue(),Is.True);
+        var drain=typeof(R3ConventionalProjectileQueue).GetMethod("FixedUpdate",flags);drain.Invoke(queue,null);
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.One));
+        float deadline=Time.realtimeSinceStartup+5;while(run.EmergencyRescueAttackBlocked&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.EmergencyRescueAttackBlocked,Is.False);drain.Invoke(queue,null);
+        Assert.That((System.Numerics.BigInteger)remaining.GetValue(batch),Is.EqualTo(System.Numerics.BigInteger.Zero));
+        foreach(var tag in Object.FindObjectsByType<RoboRougelike.R4.R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId=="queued-rescue-pellet"))
+        {tag.gameObject.SetActive(false);Object.Destroy(tag.gameObject);}
+    }
     [UnityTest] public IEnumerator QueuedRailShotsWaitUntilRescueEnds()
     {
         run.Encounter.SetCombatActive(false);run.EmergencyRescueDurationSeconds=.3f;

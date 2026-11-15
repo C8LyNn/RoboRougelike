@@ -7,6 +7,7 @@ using RoboRougelike.WPN002Railgun;
 using RogueMachine.P12PipelineSafe;
 using UnityEngine;
 using Object=UnityEngine.Object;
+using BigInteger=System.Numerics.BigInteger;
 
 namespace RoboRougelike.R3
 {
@@ -37,6 +38,11 @@ namespace RoboRougelike.R3
             public float RailDamageScale;
             public Material RailMaterial;
             public string RailPartId;
+            public bool IsShotgun;
+            public P17PhysicalShell.ConventionalSnapshot[] Pellets;
+            public int[] PelletRemaining;
+            public int NextPellet;
+            public BigInteger ShotgunRemaining;
             public readonly List<Sibling> Siblings=new List<Sibling>();
             public LinkedList<Sibling> Group;
             public LinkedListNode<Sibling> Cursor;
@@ -62,6 +68,25 @@ namespace RoboRougelike.R3
             batches.Enqueue(new Batch{Remaining=count,IsRailgun=true,RailShot=shot,RailDamageScale=damageScale,RailMaterial=material,RailPartId=partId});
             Drain();
         }
+        internal void EnqueueShotgun(IReadOnlyList<GameObject> primaries,IReadOnlyList<int> requested)
+        {
+            if(primaries==null||requested==null||primaries.Count==0||primaries.Count!=requested.Count)
+                throw new ArgumentException("Shotgun pellets and bonus requests must match.");
+            var batch=new Batch{IsShotgun=true,Pellets=new P17PhysicalShell.ConventionalSnapshot[primaries.Count],PelletRemaining=new int[primaries.Count]};
+            bool grouped=true;
+            for(int i=0;i<primaries.Count;i++)
+            {
+                var shell=primaries[i]!=null?primaries[i].GetComponent<P17PhysicalShell>():null;
+                if(shell==null||requested[i]<0)throw new ArgumentException("A live primary and non-negative request are required.");
+                batch.Pellets[i]=shell.CaptureConventional();batch.PelletRemaining[i]=requested[i];batch.ShotgunRemaining+=requested[i];
+                var collider=shell.GetComponent<Collider>();if(collider==null)throw new ArgumentException("A pellet needs a collider.");
+                batch.Siblings.Add(new Sibling(collider,shell));grouped &= shell.HasVolleyLayer;
+            }
+            if(batch.ShotgunRemaining.IsZero)return;
+            batch.Shot=batch.Pellets[0];
+            if(grouped){batch.Group=new LinkedList<Sibling>(batch.Siblings);batch.Cursor=batch.Group.First;batch.Siblings.Clear();}
+            batches.Enqueue(batch);Drain();
+        }
         void FixedUpdate(){if(Time.timeScale>0)Drain();}
         void OnDisable(){if(!gameObject.activeInHierarchy)batches.Clear();}
         void Drain()
@@ -80,8 +105,24 @@ namespace RoboRougelike.R3
                 try
                 {
                     if(batch.IsRailgun)shot=SpawnRailgun(batch);
-                    else{shot=Spawn(batch.Shot);ExcludeSiblings(batch,shot);}
-                    batch.Remaining--;if(batch.Remaining==0)batches.Dequeue();
+                    else
+                    {
+                        int pellet=-1;
+                        if(batch.IsShotgun)
+                        {
+                            for(int i=0;i<batch.PelletRemaining.Length;i++)
+                            {int index=(batch.NextPellet+i)%batch.PelletRemaining.Length;if(batch.PelletRemaining[index]>0){pellet=index;break;}}
+                            if(pellet<0)throw new InvalidOperationException("Shotgun bonus count is inconsistent.");
+                        }
+                        shot=Spawn(batch.IsShotgun?batch.Pellets[pellet]:batch.Shot);ExcludeSiblings(batch,shot);
+                        if(batch.IsShotgun)
+                        {batch.PelletRemaining[pellet]--;batch.ShotgunRemaining-=BigInteger.One;batch.NextPellet=(pellet+1)%batch.PelletRemaining.Length;}
+                    }
+                    bool finished;
+                    if(batch.IsShotgun)finished=batch.ShotgunRemaining.IsZero;
+                    else{batch.Remaining--;finished=batch.Remaining==0;}
+                    batches.Dequeue();
+                    if(!finished)batches.Enqueue(batch); // Do not starve another already-queued weapon.
                 }
                 catch(Exception e){if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}UnityEngine.Debug.LogException(e,this);break;}
             }
@@ -111,8 +152,8 @@ namespace RoboRougelike.R3
             P17PhysicalShell shell=null;
             try
             {
-                shell=P17PhysicalShell.RentConventional();var item=shell.gameObject;item.name="P17_PlayerPhysicalShell";
-                item.transform.SetPositionAndRotation(data.Position,Quaternion.identity);item.transform.localScale=data.Scale;
+                shell=P17PhysicalShell.RentConventional();var item=shell.gameObject;item.name=data.Weapon==R4WeaponKind.Shotgun?"WPN001 physical pellet":"P17_PlayerPhysicalShell";
+                item.transform.SetPositionAndRotation(data.Position,data.Rotation);item.transform.localScale=data.Scale;
                 var renderer=item.GetComponent<Renderer>();if(renderer!=null)renderer.sharedMaterial=data.Material!=null?data.Material:shell.DefaultMaterial;
                 var col=item.GetComponent<SphereCollider>();col.enabled=true;col.isTrigger=false;
                 var origin=item.GetComponent<R4ProjectileOrigin>();origin.Weapon=data.Weapon;origin.PartId=data.PartId;
