@@ -30,8 +30,8 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
     Result result=new Result();string output,mode,vehicle;R1RunController run,oldRun;Rigidbody body;R6VehicleDrive drive;
     R3VehicleAssembly assembly;P12PipelineSafeCamera follow;readonly List<Vector3> path=new List<Vector3>();int target,phase,activity;
     float entered,deadline,lastTrace,lastKill,noMotionSince=-1;Vector3 previous;StreamWriter trace,aim;
-    readonly HashSet<int> shots=new HashSet<int>();bool finished;Camera001AimTimeline timeline=new Camera001AimTimeline(65536);
-    readonly HashSet<int> hostileShots=new HashSet<int>();readonly Dictionary<int,Vector3> enemyStarts=new Dictionary<int,Vector3>();bool detached;
+    readonly HashSet<ulong> shots=new HashSet<ulong>();bool finished;Camera001AimTimeline timeline=new Camera001AimTimeline(65536);
+    readonly HashSet<ulong> hostileShots=new HashSet<ulong>();readonly Dictionary<int,Vector3> enemyStarts=new Dictionary<int,Vector3>();bool detached;
     Keyboard keyboard;Mouse mouse;
     static readonly BindingFlags fields=BindingFlags.Instance|BindingFlags.NonPublic;
     static void Field(object obj,string name,object value)=>obj.GetType().GetField(name,fields).SetValue(obj,value);
@@ -182,8 +182,8 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
                 // Orbit inputs are injected into the real facade; source rig still has one automatic writer.
                 float t=Mathf.Min(15,Time.realtimeSinceStartup-entered);Field(follow,"yaw",t*24);Field(follow,"pitch",18+20*(1+Mathf.Sin(t*.6f)));Field(follow,"distance",Mathf.Lerp(3,18,(1+Mathf.Sin(t*.5f))*.5f));
             }
-            foreach(var shot in FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None))if(shot.IsActiveProjectile&&shot.OwnerRoot==body.transform&&shots.Add(shot.GetInstanceID()))result.shots++;
-            foreach(var shot in FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None))if(shot.IsActiveProjectile&&shot.OwnerRoot!=body.transform&&hostileShots.Add(shot.GetInstanceID()))result.enemyShots++;
+            foreach(var shot in FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None))if(shot.IsActiveProjectile&&shot.OwnerRoot==body.transform&&shots.Add(shot.LaunchSequence))result.shots++;
+            foreach(var shot in FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None))if(shot.IsActiveProjectile&&shot.OwnerRoot!=body.transform&&hostileShots.Add(shot.LaunchSequence))result.enemyShots++;
             result.maxAliveEnemies=Mathf.Max(result.maxAliveEnemies,run.Encounter.AliveCount);
             foreach(var enemy in run.Encounter.Enemies.Where(e=>e!=null&&!e.IsDefeated)){
                 int id=enemy.GetInstanceID();if(!enemyStarts.TryGetValue(id,out var start))enemyStarts[id]=start=enemy.transform.position;

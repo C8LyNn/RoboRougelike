@@ -87,6 +87,7 @@ namespace RoboRougelike.R1
         {
             foreach (var shell in Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None))
             { shell.gameObject.SetActive(false); Object.Destroy(shell.gameObject); }
+            P17PhysicalShell.ClearConventionalCache();
             foreach(var rocket in Object.FindObjectsByType<RoboRougelike.Mechanics.Rockets.RocketProjectile>(FindObjectsSortMode.None))
                 if(rocket.IsInitialized){rocket.gameObject.SetActive(false);Object.Destroy(rocket.gameObject);}
             foreach(var interceptor in Object.FindObjectsByType<RoboRougelike.Mechanics.PointDefense.PointDefenseInterceptor>(FindObjectsSortMode.None))

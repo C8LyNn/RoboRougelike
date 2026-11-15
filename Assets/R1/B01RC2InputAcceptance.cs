@@ -23,7 +23,7 @@ namespace RoboRougelike.R1
             public int width,height,physicalShots,rmbNewShots,maxGroundedWheels;public float movedMeters,turnedDegrees;
             public List<Check> checks=new List<Check>();public List<string> errors=new List<string>();
         }
-        readonly Result result=new Result();readonly HashSet<int> seen=new HashSet<int>();
+        readonly Result result=new Result();readonly HashSet<ulong> seen=new HashSet<ulong>();
         R1RunController run;R3VehicleModel model;Rigidbody body;Keyboard keyboard;Mouse mouse;
         string output;int phase;float entered,deadline;Vector3 start,pausedPosition;Quaternion turnStart;int rightStart;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)] static void Install()
@@ -55,7 +55,7 @@ namespace RoboRougelike.R1
             if(body==null)return;
             result.maxGroundedWheels=Mathf.Max(result.maxGroundedWheels,run.Player.GetComponent<R6VehicleDrive>().GroundedWheels);
             foreach(var shot in FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None))
-                if(shot.IsActiveProjectile&&shot.OwnerRoot==run.Player.transform&&seen.Add(shot.GetInstanceID()))
+                if(shot.IsActiveProjectile&&shot.OwnerRoot==run.Player.transform&&seen.Add(shot.LaunchSequence))
                 {
                     var origin=shot.GetComponent<RoboRougelike.R4.R4ProjectileOrigin>();
                     CheckThat(origin!=null&&model.Parts.Any(p=>p.Id==origin.PartId),"Actual player shot has canonical equipped part provenance");result.physicalShots++;

@@ -277,6 +277,140 @@ public sealed class BacklogProjectileTierPhysicsTests
         }
         yield return null;
     }
+    [UnityTest] public IEnumerator ConventionalShellCanBeReusedAfterHitWithoutStaleOwnerOrDamage()
+    {
+        var firstGun=Build(R4WeaponKind.Automatic,out _);var firstAssembly=firstGun.GetComponentInParent<R3VehicleAssembly>();
+        var firstMuzzle=new GameObject("First reused shell muzzle").transform;firstMuzzle.SetParent(firstGun.transform,false);
+        firstMuzzle.position=new Vector3(1000,1000,1000);firstMuzzle.rotation=Quaternion.identity;
+        var firstTarget=GameObject.CreatePrimitive(PrimitiveType.Cube);firstTarget.transform.position=firstMuzzle.position+Vector3.forward*5;
+        firstTarget.transform.localScale=new Vector3(2,2,.5f);var firstHp=firstTarget.AddComponent<P12PipelineSafeDamageable>();firstHp.Configure(500,false);
+        R3VehicleAssembly secondAssembly=null;GameObject secondTarget=null;
+        try
+        {
+            Physics.SyncTransforms();
+            var first=firstAssembly.GetComponent<P12PipelineSafeTankController>().FirePrimaryFrom(firstMuzzle,R4WeaponKind.Automatic,firstGun.Id);
+            Assert.That(first,Is.Not.Null);ulong firstLaunch=first.GetComponent<P17PhysicalShell>().LaunchSequence;
+            Assert.That(firstLaunch,Is.GreaterThan(0));var firstOwnerCollider=firstAssembly.GetComponentsInChildren<Collider>().First(c=>c.enabled&&!c.isTrigger);
+            Assert.That(Physics.GetIgnoreCollision(first,firstOwnerCollider),Is.True);
+            float deadline=Time.realtimeSinceStartup+5;
+            while(Time.realtimeSinceStartup<deadline&&firstHp.CurrentHp>=500)yield return MOVSeriesDeviceTests.FixedStep();
+            Assert.That(firstHp.CurrentHp,Is.EqualTo(476).Within(.2f));yield return null;yield return null;
+            Assert.That(first,Is.Not.Null,"A returned projectile should be available for reuse after its hit.");
+            var secondGun=Build(R4WeaponKind.Automatic,out _);secondGun.Tier=1;secondAssembly=secondGun.GetComponentInParent<R3VehicleAssembly>();
+            var secondMuzzle=new GameObject("Second reused shell muzzle").transform;secondMuzzle.SetParent(secondGun.transform,false);
+            secondMuzzle.position=new Vector3(1010,1000,1000);secondMuzzle.rotation=Quaternion.identity;
+            secondTarget=GameObject.CreatePrimitive(PrimitiveType.Cube);secondTarget.transform.position=secondMuzzle.position+Vector3.forward*5;
+            secondTarget.transform.localScale=new Vector3(2,2,.5f);var secondHp=secondTarget.AddComponent<P12PipelineSafeDamageable>();secondHp.Configure(500,false);
+            Physics.SyncTransforms();
+            var second=secondAssembly.GetComponent<P12PipelineSafeTankController>().FirePrimaryFrom(secondMuzzle,R4WeaponKind.Automatic,secondGun.Id);
+            Assert.That(second,Is.SameAs(first));
+            Assert.That(second.GetComponent<P17PhysicalShell>().LaunchSequence,Is.Not.EqualTo(firstLaunch),"Every reused physical object must represent a new identifiable shot.");
+            Assert.That(second.GetComponent<P17PhysicalShell>().OwnerRoot,Is.EqualTo(secondAssembly.transform));
+            Assert.That(second.GetComponent<R4ProjectileOrigin>().PartId,Is.EqualTo(secondGun.Id));
+            var secondOwnerCollider=secondAssembly.GetComponentsInChildren<Collider>().First(c=>c.enabled&&!c.isTrigger);
+            Assert.That(Physics.GetIgnoreCollision(second,secondOwnerCollider),Is.True,"The new owner must remain protected.");
+            Assert.That(Physics.GetIgnoreCollision(second,firstOwnerCollider),Is.False,"The previous owner's filter must not leak to the new shot.");
+            deadline=Time.realtimeSinceStartup+5;
+            while(Time.realtimeSinceStartup<deadline&&secondHp.CurrentHp>=500)yield return MOVSeriesDeviceTests.FixedStep();
+            Assert.That(secondHp.CurrentHp,Is.EqualTo(488).Within(.2f),"Reused shots must use the new gun's tier and damage.");
+        }
+        finally
+        {
+            if(firstTarget!=null)Object.Destroy(firstTarget);if(secondTarget!=null)Object.Destroy(secondTarget);
+            if(firstAssembly!=null)Object.Destroy(firstAssembly.gameObject);if(secondAssembly!=null)Object.Destroy(secondAssembly.gameObject);
+        }
+        yield return null;
+    }
+    [UnityTest] public IEnumerator CachedShellLifetimePausesAndExpiredShellCanBeReused()
+    {
+        var gun=Build(R4WeaponKind.Automatic,out _);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var muzzle=new GameObject("Lifetime shell muzzle").transform;muzzle.SetParent(gun.transform,false);
+        muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;
+        var controller=assembly.GetComponent<P12PipelineSafeTankController>();
+        typeof(P12PipelineSafeTankController).GetField("projectileLifetime",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).SetValue(controller,.5f);
+        var first=controller.FirePrimaryFrom(muzzle,R4WeaponKind.Automatic,gun.Id);
+        Assert.That(first,Is.Not.Null);run.TogglePause();Assert.That(Time.timeScale,Is.Zero);
+        float pauseDeadline=Time.realtimeSinceStartup+.8f;
+        while(Time.realtimeSinceStartup<pauseDeadline)yield return null;
+        Assert.That(first.gameObject.activeInHierarchy,Is.True,"Pausing must not expire a projectile.");
+        run.TogglePause();float deadline=Time.realtimeSinceStartup+5;
+        while(Time.realtimeSinceStartup<deadline&&first.gameObject.activeInHierarchy)yield return null;
+        Assert.That(first.gameObject.activeInHierarchy,Is.False,"The projectile must expire after its scaled lifetime.");
+        yield return null;
+        var second=controller.FirePrimaryFrom(muzzle,R4WeaponKind.Automatic,gun.Id);
+        Assert.That(second,Is.SameAs(first),"An expired projectile may be reused after its retirement frame.");
+        R1EncounterManager.ClearTransientObjects();if(assembly!=null)Object.Destroy(assembly.gameObject);yield return null;
+    }
+    [UnityTest] public IEnumerator PointDefenseCanInterceptAReusedConventionalShell()
+    {
+        var gun=Build(R4WeaponKind.Automatic,out _);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var muzzle=new GameObject("Defense shell muzzle").transform;muzzle.SetParent(gun.transform,false);
+        muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;
+        var controller=assembly.GetComponent<P12PipelineSafeTankController>();
+        yield return null; // Allow the builder's disabled visual colliders to be destroyed.
+        var first=controller.FirePrimaryFrom(muzzle,R4WeaponKind.Automatic,gun.Id);
+        var threat=first.GetComponent<RRLPointDefenseThreat>();Assert.That(threat.IsActiveThreat,Is.True);
+        Assert.That(threat.TryIntercept(1),Is.True);Assert.That(threat.IsActiveThreat,Is.False);
+        yield return null;yield return null;
+        var second=controller.FirePrimaryFrom(muzzle,R4WeaponKind.Automatic,gun.Id);
+        Assert.That(second,Is.SameAs(first));var secondThreat=second.GetComponent<RRLPointDefenseThreat>();
+        Assert.That(secondThreat.IsActiveThreat,Is.True);Assert.That(secondThreat.TryIntercept(1),Is.True);
+        Assert.That(secondThreat.IsActiveThreat,Is.False);
+        R1EncounterManager.ClearTransientObjects();if(assembly!=null)Object.Destroy(assembly.gameObject);yield return null;
+    }
+    [UnityTest] public IEnumerator ReturnedShellWaitsAFrameAndEncounterCleanupClearsTheCache()
+    {
+        var gun=Build(R4WeaponKind.Automatic,out _);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var muzzle=new GameObject("Same frame shell muzzle").transform;muzzle.SetParent(gun.transform,false);
+        muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;
+        var controller=assembly.GetComponent<P12PipelineSafeTankController>();
+        var first=controller.FirePrimaryFrom(muzzle,R4WeaponKind.Automatic,gun.Id);
+        Assert.That(first.GetComponent<P17PhysicalShell>().Intercept(1),Is.True);
+        var second=controller.FirePrimaryFrom(muzzle,R4WeaponKind.Automatic,gun.Id);
+        Assert.That(second,Is.Not.SameAs(first),"A callback may still hold the previous shot for the rest of this frame.");
+        Assert.That(second.GetComponent<P17PhysicalShell>().Intercept(1),Is.True);
+        R1EncounterManager.ClearTransientObjects();yield return null;
+        Assert.That(first==null&&second==null,Is.True,"Encounter cleanup must also destroy inactive cached projectiles.");
+        if(assembly!=null)Object.Destroy(assembly.gameObject);yield return null;
+    }
+    [UnityTest] public IEnumerator ShellWithInactiveCollisionCounterpartIsDiscardedInsteadOfReused()
+    {
+        var gun=Build(R4WeaponKind.Automatic,out _);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var muzzle=new GameObject("Inactive counterpart muzzle").transform;muzzle.SetParent(gun.transform,false);
+        muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;
+        var controller=assembly.GetComponent<P12PipelineSafeTankController>();
+        var first=controller.FirePrimaryFrom(muzzle,R4WeaponKind.Automatic,gun.Id);
+        var own=assembly.GetComponentsInChildren<Collider>().First(c=>c.enabled&&!c.isTrigger&&Physics.GetIgnoreCollision(first,c));
+        own.enabled=false;
+        Assert.That(first.GetComponent<P17PhysicalShell>().Intercept(1),Is.True);
+        own.enabled=true;yield return null;yield return null;
+        Assert.That(first==null,Is.True,"A shell with an unsafe retained collision filter must be destroyed.");
+        var second=controller.FirePrimaryFrom(muzzle,R4WeaponKind.Automatic,gun.Id);
+        Assert.That(Physics.GetIgnoreCollision(second,own),Is.True,"A fresh shell must still ignore the current owner.");
+        R1EncounterManager.ClearTransientObjects();if(assembly!=null)Object.Destroy(assembly.gameObject);yield return null;
+    }
+    [UnityTest] public IEnumerator ProjectileCacheRetentionDoesNotLimitFuturePrimaryShots()
+    {
+        var gun=Build(R4WeaponKind.Automatic,out _);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var muzzle=new GameObject("Cache capacity muzzle").transform;muzzle.SetParent(gun.transform,false);
+        muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;
+        var controller=assembly.GetComponent<P12PipelineSafeTankController>();yield return null;
+        R1EncounterManager.ClearTransientObjects();
+        for(int i=0;i<260;i++)
+        {
+            var shot=controller.FirePrimaryFrom(muzzle,R4WeaponKind.Automatic,gun.Id);
+            Assert.That(shot,Is.Not.Null);Assert.That(shot.GetComponent<P17PhysicalShell>().Intercept(1),Is.True);
+        }
+        yield return null;
+        var live=new System.Collections.Generic.HashSet<int>();
+        for(int i=0;i<260;i++)
+        {
+            var shot=controller.FirePrimaryFrom(muzzle,R4WeaponKind.Automatic,gun.Id);
+            Assert.That(shot,Is.Not.Null);Assert.That(live.Add(shot.GetInstanceID()),Is.True,"Simultaneous primary shots must remain independent.");
+        }
+        Assert.That(Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId==gun.Id),Is.EqualTo(260));
+        R1EncounterManager.ClearTransientObjects();if(assembly!=null)Object.Destroy(assembly.gameObject);yield return null;
+    }
     [UnityTest] public IEnumerator MoreThanNinetySixRealPrimaryShellsCanHitSeparateTargets()
     {
         var gun=Build(R4WeaponKind.Automatic,out _);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();

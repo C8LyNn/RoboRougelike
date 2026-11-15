@@ -623,7 +623,7 @@ public float CurrentForwardSpeed =>
             float blast=SafeShellDamage(profile.Damage*tier,fraction,basicBlastDamageModifier);
             var first=SpawnPhysicalShell(barrel,kinetic,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId,blast);
             if(first==null)return null;
-            if(existingSibling!=null)Physics.IgnoreCollision(first,existingSibling,true);
+            if(existingSibling!=null)P17PhysicalShell.IgnoreProjectilePair(first,existingSibling);
             if(extraShots<=0)return first;
             var siblings=new System.Collections.Generic.List<Collider>{first};
             if(existingSibling!=null)siblings.Add(existingSibling);
@@ -632,7 +632,7 @@ public float CurrentForwardSpeed =>
             {
                 var extra=SpawnPhysicalShell(barrel,kinetic,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId,blast);
                 if(extra==null)break;
-                foreach(var sibling in siblings)if(sibling!=null)Physics.IgnoreCollision(extra,sibling,true);
+                foreach(var sibling in siblings)if(sibling!=null)P17PhysicalShell.IgnoreProjectilePair(extra,sibling);
                 siblings.Add(extra);
             }
             return first;
@@ -661,19 +661,18 @@ public float CurrentForwardSpeed =>
                     projectileDiameter * 0.75f
                 );
 
-            GameObject shell =
-                GameObject.CreatePrimitive(
-                    PrimitiveType.Sphere
-                );
+            P17PhysicalShell projectile=P17PhysicalShell.RentConventional();
+            GameObject shell=projectile.gameObject;
 
             RoboRougelike.R6.R6CombatFeedback.Muzzle(barrel,kind);
 
             shell.name =
                 "P17_PlayerPhysicalShell";
-            var originTag=shell.AddComponent<RoboRougelike.R4.R4ProjectileOrigin>();originTag.Weapon=kind;originTag.PartId=partId;
+            var originTag=shell.GetComponent<RoboRougelike.R4.R4ProjectileOrigin>();originTag.Weapon=kind;originTag.PartId=partId;
 
             shell.transform.position =
                 origin;
+            shell.transform.rotation=Quaternion.identity;
 
             shell.transform.localScale =
                 Vector3.one *
@@ -682,23 +681,18 @@ public float CurrentForwardSpeed =>
             Renderer shellRenderer =
                 shell.GetComponent<Renderer>();
 
-            if (shellRenderer != null &&
-                projectileMaterial != null)
-            {
-                shellRenderer.sharedMaterial =
-                    projectileMaterial;
-            }
+            if(shellRenderer!=null)shellRenderer.sharedMaterial=projectileMaterial!=null?projectileMaterial:projectile.DefaultMaterial;
 
             SphereCollider sphere =
                 shell.GetComponent<SphereCollider>();
 
             if (sphere != null)
             {
+                sphere.enabled = true;
                 sphere.isTrigger = false;
             }
 
-            Rigidbody projectileBody =
-                shell.AddComponent<Rigidbody>();
+            Rigidbody projectileBody = shell.GetComponent<Rigidbody>();
 
             projectileBody.mass =
                 projectileMass;
@@ -712,6 +706,9 @@ public float CurrentForwardSpeed =>
             projectileBody.collisionDetectionMode =
                 CollisionDetectionMode.ContinuousDynamic;
 
+            shell.SetActive(true);
+            projectileBody.angularVelocity=Vector3.zero;
+
 #if UNITY_6000_0_OR_NEWER
             projectileBody.linearVelocity =
                 direction *
@@ -721,11 +718,6 @@ public float CurrentForwardSpeed =>
                 direction *
                 projectileSpeed;
 #endif
-
-            P17PhysicalShell projectile =
-                shell.AddComponent<
-                    P17PhysicalShell
-                >();
 
             if(blastDamage>0)projectile.ConfigureHybrid(transform,hitDamage,blastDamage,projectileLifetime,direction,null);
             else projectile.Configure(transform,hitDamage,projectileLifetime,direction,null);
@@ -1344,6 +1336,85 @@ public float CurrentForwardSpeed =>
     {
         private static readonly System.Collections.Generic.HashSet<P17PhysicalShell> activeShells =
             new System.Collections.Generic.HashSet<P17PhysicalShell>();
+        private struct CachedConventionalShell
+        {
+            public P17PhysicalShell Shell;
+            public int ReleasedFrame;
+        }
+        // This is a retention limit for inactive objects, not a projectile
+        // limit: excess inactive objects are destroyed and future shots can
+        // always allocate a new one.
+        private const int MaxCachedConventionalShells=256;
+        private static readonly System.Collections.Generic.Queue<CachedConventionalShell> conventionalCache =
+            new System.Collections.Generic.Queue<CachedConventionalShell>();
+        private bool cacheableConventional;
+        private double expiresAt;
+        private static ulong nextLaunchSequence;
+        public ulong LaunchSequence {get;private set;}
+        private System.Collections.Generic.List<Collider> ignoredForFlight;
+        internal Material DefaultMaterial {get;private set;}
+        internal static void IgnoreProjectilePair(Collider first,Collider second)
+        {
+            if(first==null||second==null)return;
+            Physics.IgnoreCollision(first,second,true);
+            var a=first.GetComponent<P17PhysicalShell>();var b=second.GetComponent<P17PhysicalShell>();
+            if(a!=null&&a.cacheableConventional)a.ignoredForFlight.Add(second);
+            if(b!=null&&b.cacheableConventional)b.ignoredForFlight.Add(first);
+        }
+        internal static P17PhysicalShell RentConventional()
+        {
+            while(conventionalCache.Count>0)
+            {
+                var cached=conventionalCache.Peek();
+                if(cached.Shell==null){conventionalCache.Dequeue();continue;}
+                // A collision callback can still hold the old reference this
+                // frame. Only rent it again after that frame has finished.
+                if(cached.ReleasedFrame>=Time.frameCount)break;
+                conventionalCache.Dequeue();
+                var shell=cached.Shell;shell.spent=false;shell.ownerRoot=null;shell.ownerWasAssigned=false;
+                shell.targetRoot=null;shell.damage=0;shell.hybridDamage=false;shell.kineticComponent=0;shell.blastComponent=0;
+                return shell;
+            }
+            var item=GameObject.CreatePrimitive(PrimitiveType.Sphere);item.SetActive(false);
+            var defaultMaterial=item.GetComponent<Renderer>().sharedMaterial;
+            item.AddComponent<Rigidbody>();item.AddComponent<RoboRougelike.R4.R4ProjectileOrigin>();
+            var result=item.AddComponent<P17PhysicalShell>();result.cacheableConventional=true;result.DefaultMaterial=defaultMaterial;
+            result.ignoredForFlight=new System.Collections.Generic.List<Collider>();
+            return result;
+        }
+        internal static void ClearConventionalCache()
+        {
+            while(conventionalCache.Count>0)
+            {
+                var item=conventionalCache.Dequeue().Shell;
+                if(item!=null)Destroy(item.gameObject);
+            }
+        }
+        private void Retire()
+        {
+            // Mark spent before resetting physics pairs; trigger callbacks
+            // caused by a filter change must not process this shot again.
+            spent=true;
+            bool reusable=cacheableConventional;
+            if(reusable)
+            {
+                var own=GetComponent<Collider>();
+                if(own==null||!own.enabled||!own.gameObject.activeInHierarchy)reusable=false;
+                else foreach(var other in ignoredForFlight)
+                {
+                    if(other==null||!Physics.GetIgnoreCollision(own,other))continue;
+                    // Unity can retain ignore pairs across deactivation. If a
+                    // counterpart is inactive we cannot safely reset it.
+                    if(!other.enabled||!other.gameObject.activeInHierarchy){reusable=false;continue;}
+                    Physics.IgnoreCollision(own,other,false);
+                }
+                ignoredForFlight.Clear();
+            }
+            gameObject.SetActive(false);
+            if(reusable&&conventionalCache.Count<MaxCachedConventionalShells)
+                conventionalCache.Enqueue(new CachedConventionalShell{Shell=this,ReleasedFrame=Time.frameCount});
+            else Destroy(gameObject);
+        }
         // Unity physics and component traversal run on the main thread. Keep
         // one reusable scratch list, but isolate a nested setup if a physics
         // callback ever causes another projectile to be configured here.
@@ -1367,14 +1438,21 @@ public float CurrentForwardSpeed =>
         public bool IsActiveProjectile=>isActiveAndEnabled&&!spent&&ownerRoot!=null&&ownerRoot.gameObject.activeInHierarchy;
         public Vector3 FlightVelocity=>railgun!=null?railgun.Velocity:GetComponent<Rigidbody>().linearVelocity;
         public bool Intercept(float amount)
-        {if(!IsActiveProjectile||amount<=0||float.IsNaN(amount)||float.IsInfinity(amount))return false;spent=true;gameObject.SetActive(false);Destroy(gameObject);return true;}
+        {if(!IsActiveProjectile||amount<=0||float.IsNaN(amount)||float.IsInfinity(amount))return false;Retire();return true;}
         private static Mesh shellVisualMesh;
         private Transform shellVisual;
         private Rigidbody shellBody;
         private void CreateShellVisual()
         {
             var original=GetComponent<Renderer>();
-            if(original==null||original.sharedMaterial==null)return;
+            if(original==null)return;
+            if(original.sharedMaterial==null)
+            {if(shellVisual!=null)shellVisual.gameObject.SetActive(false);original.enabled=true;return;}
+            if(shellVisual!=null)
+            {
+                shellVisual.gameObject.SetActive(true);shellVisual.GetComponent<Renderer>().sharedMaterial=original.sharedMaterial;
+                shellBody=GetComponent<Rigidbody>();original.enabled=false;OrientShellVisual(launchDirection);return;
+            }
             if(shellVisualMesh==null)
             {
                 var template=GameObject.CreatePrimitive(PrimitiveType.Capsule);template.SetActive(false);
@@ -1452,6 +1530,8 @@ public float CurrentForwardSpeed =>
             float maxDistance=float.PositiveInfinity)
         {
             if(!isActiveAndEnabled)return;
+            unchecked{nextLaunchSequence++;if(nextLaunchSequence==0)nextLaunchSequence++;}
+            LaunchSequence=nextLaunchSequence;
             hybridDamage=false;kineticComponent=blastComponent=0;
             launchPosition=transform.position;
             maxTravelDistance=float.IsNaN(maxDistance)?0:Mathf.Max(0,maxDistance);
@@ -1467,13 +1547,8 @@ public float CurrentForwardSpeed =>
                 initialDirection.normalized;
             CreateShellVisual();
 
-            Destroy(
-                gameObject,
-                Mathf.Max(
-                    0.5f,
-                    lifetime
-                )
-            );
+            if(cacheableConventional)expiresAt=Time.timeAsDouble+Mathf.Max(.5f,lifetime);
+            else Destroy(gameObject,Mathf.Max(.5f,lifetime));
 
             IgnoreOwnerCollisions();
 
@@ -1509,6 +1584,7 @@ public float CurrentForwardSpeed =>
                 {
                     if (ownerCollider == null || ownerCollider == ownCollider)continue;
                     Physics.IgnoreCollision(ownCollider,ownerCollider,true);
+                    if(cacheableConventional)ignoredForFlight.Add(ownerCollider);
                 }
             }
             finally { ownerColliders.Clear(); if(shared)projectileColliderBufferInUse=false; }
@@ -1517,14 +1593,15 @@ public float CurrentForwardSpeed =>
         private void Update()
         {
             if(RetireLostOwner())return;
+            if(cacheableConventional&&!spent&&Time.timeAsDouble>=expiresAt){Retire();return;}
             if(!spent&&(transform.position-launchPosition).sqrMagnitude>maxTravelDistance*maxTravelDistance)
-            {spent=true;gameObject.SetActive(false);Destroy(gameObject);}
+            {Retire();}
         }
 
         private bool RetireLostOwner()
         {
             if(!ownerWasAssigned||(ownerRoot!=null&&ownerRoot.gameObject.activeInHierarchy))return false;
-            spent=true;gameObject.SetActive(false);Destroy(gameObject);return true;
+            Retire();return true;
         }
 
         private void IgnoreTargetHelpers()
@@ -1550,7 +1627,11 @@ public float CurrentForwardSpeed =>
                     bool damageable=targetCollider.TryGetComponent<P12PipelineSafeDamageable>(out _);
                     for(var parent=targetCollider.transform.parent;!damageable&&parent!=null;parent=parent.parent)
                         if(parent.gameObject.activeInHierarchy&&parent.TryGetComponent<P12PipelineSafeDamageable>(out _))damageable=true;
-                    if(!damageable)Physics.IgnoreCollision(ownCollider,targetCollider,true);
+                    if(!damageable)
+                    {
+                        Physics.IgnoreCollision(ownCollider,targetCollider,true);
+                        if(cacheableConventional)ignoredForFlight.Add(targetCollider);
+                    }
                 }
             }
             finally { targetColliders.Clear(); if(shared)projectileColliderBufferInUse=false; }
@@ -1584,7 +1665,11 @@ public float CurrentForwardSpeed =>
                 !RoboRougelike.WeaponIntegration.RRLHitRouter.CanHit(collision.collider,ownerRoot))
             {
                 var own=GetComponent<Collider>();
-                if(own!=null)Physics.IgnoreCollision(own,collision.collider,true);
+                if(own!=null)
+                {
+                    Physics.IgnoreCollision(own,collision.collider,true);
+                    if(cacheableConventional)ignoredForFlight.Add(collision.collider);
+                }
                 var shellBody=GetComponent<Rigidbody>();
                 if(shellBody!=null)shellBody.linearVelocity=launchDirection*Mathf.Max(
                     shellBody.linearVelocity.magnitude,collision.relativeVelocity.magnitude);
@@ -1620,9 +1705,7 @@ public float CurrentForwardSpeed =>
                 );
             }
 
-            Destroy(
-                gameObject
-            );
+            if(cacheableConventional)Retire();else Destroy(gameObject);
         }
     }
 
