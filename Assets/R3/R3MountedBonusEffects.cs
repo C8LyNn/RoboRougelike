@@ -40,33 +40,43 @@ namespace RoboRougelike.R3
         private float overdriveIncrease;
         private float rapidFireReduction;
         private R3DriveKind lastDrive;
-        public R1RunStats EffectiveStats {get;private set;}
-        public float DroneDamageMultiplier {get;private set;}=1;
-        public float TurretDamageMultiplier {get;private set;}=1;
-        public float TrapDamageMultiplier {get;private set;}=1;
-        public float BlastDamageMultiplier {get;private set;}=1;
-        public float BlastTrapDamageMultiplier {get;private set;}=1;
-        public float PiercingDamageMultiplier {get;private set;}=1;
-        public float KineticDamageMultiplier {get;private set;}=1;
-        public float AutomaticDamageMultiplier {get;private set;}=1;
-        public float HeavyDamageMultiplier {get;private set;}=1;
-        public float ShotgunDamageMultiplier {get;private set;}=1;
-        public float RailgunDamageMultiplier {get;private set;}=1;
-        public float RocketDamageMultiplier {get;private set;}=1;
-        public float BeamDamageMultiplier {get;private set;}=1;
-        public float SawDamageMultiplier {get;private set;}=1;
-        public float AuraDamageMultiplier {get;private set;}=1;
-        public float EnergyDamageMultiplier {get;private set;}=1;
-        public float WeaponDamageMultiplier {get;private set;}=1;
-        public float ShieldDurabilityMultiplier {get;private set;}=1;
-        public float TurretShieldDurabilityMultiplier {get;private set;}=1;
-        public float RepairEfficiencyMultiplier {get;private set;}=1;
-        public float DroneRepairEfficiencyMultiplier {get;private set;}=1;
-        public float TurretRepairEfficiencyMultiplier {get;private set;}=1;
-        public float DroneFireIntervalScale {get;private set;}=1;
-        public float TurretFireIntervalScale {get;private set;}=1;
-        public float ConstructionHullMultiplier {get;private set;}=1;
-        public float DriveMobilityMultiplier {get;private set;}=1;
+        readonly List<R3MountedPart> watched=new List<R3MountedPart>();
+        bool dirty,refreshing;
+        R1RunStats effectiveStats;
+        float droneDamageMultiplier=1,turretDamageMultiplier=1,trapDamageMultiplier=1,blastDamageMultiplier=1,blastTrapDamageMultiplier=1;
+        float piercingDamageMultiplier=1,kineticDamageMultiplier=1,automaticDamageMultiplier=1,heavyDamageMultiplier=1,shotgunDamageMultiplier=1;
+        float railgunDamageMultiplier=1,rocketDamageMultiplier=1,beamDamageMultiplier=1,sawDamageMultiplier=1,auraDamageMultiplier=1;
+        float energyDamageMultiplier=1,weaponDamageMultiplier=1,shieldDurabilityMultiplier=1,turretShieldDurabilityMultiplier=1;
+        float repairEfficiencyMultiplier=1,droneRepairEfficiencyMultiplier=1,turretRepairEfficiencyMultiplier=1;
+        float droneFireIntervalScale=1,turretFireIntervalScale=1,constructionHullMultiplier=1,driveMobilityMultiplier=1;
+        float Read(ref float value){EnsureCurrent();return value;}
+        public R1RunStats EffectiveStats {get{EnsureCurrent();return effectiveStats;}private set=>effectiveStats=value;}
+        public float DroneDamageMultiplier {get=>Read(ref droneDamageMultiplier);private set=>droneDamageMultiplier=value;}
+        public float TurretDamageMultiplier {get=>Read(ref turretDamageMultiplier);private set=>turretDamageMultiplier=value;}
+        public float TrapDamageMultiplier {get=>Read(ref trapDamageMultiplier);private set=>trapDamageMultiplier=value;}
+        public float BlastDamageMultiplier {get=>Read(ref blastDamageMultiplier);private set=>blastDamageMultiplier=value;}
+        public float BlastTrapDamageMultiplier {get=>Read(ref blastTrapDamageMultiplier);private set=>blastTrapDamageMultiplier=value;}
+        public float PiercingDamageMultiplier {get=>Read(ref piercingDamageMultiplier);private set=>piercingDamageMultiplier=value;}
+        public float KineticDamageMultiplier {get=>Read(ref kineticDamageMultiplier);private set=>kineticDamageMultiplier=value;}
+        public float AutomaticDamageMultiplier {get=>Read(ref automaticDamageMultiplier);private set=>automaticDamageMultiplier=value;}
+        public float HeavyDamageMultiplier {get=>Read(ref heavyDamageMultiplier);private set=>heavyDamageMultiplier=value;}
+        public float ShotgunDamageMultiplier {get=>Read(ref shotgunDamageMultiplier);private set=>shotgunDamageMultiplier=value;}
+        public float RailgunDamageMultiplier {get=>Read(ref railgunDamageMultiplier);private set=>railgunDamageMultiplier=value;}
+        public float RocketDamageMultiplier {get=>Read(ref rocketDamageMultiplier);private set=>rocketDamageMultiplier=value;}
+        public float BeamDamageMultiplier {get=>Read(ref beamDamageMultiplier);private set=>beamDamageMultiplier=value;}
+        public float SawDamageMultiplier {get=>Read(ref sawDamageMultiplier);private set=>sawDamageMultiplier=value;}
+        public float AuraDamageMultiplier {get=>Read(ref auraDamageMultiplier);private set=>auraDamageMultiplier=value;}
+        public float EnergyDamageMultiplier {get=>Read(ref energyDamageMultiplier);private set=>energyDamageMultiplier=value;}
+        public float WeaponDamageMultiplier {get=>Read(ref weaponDamageMultiplier);private set=>weaponDamageMultiplier=value;}
+        public float ShieldDurabilityMultiplier {get=>Read(ref shieldDurabilityMultiplier);private set=>shieldDurabilityMultiplier=value;}
+        public float TurretShieldDurabilityMultiplier {get=>Read(ref turretShieldDurabilityMultiplier);private set=>turretShieldDurabilityMultiplier=value;}
+        public float RepairEfficiencyMultiplier {get=>Read(ref repairEfficiencyMultiplier);private set=>repairEfficiencyMultiplier=value;}
+        public float DroneRepairEfficiencyMultiplier {get=>Read(ref droneRepairEfficiencyMultiplier);private set=>droneRepairEfficiencyMultiplier=value;}
+        public float TurretRepairEfficiencyMultiplier {get=>Read(ref turretRepairEfficiencyMultiplier);private set=>turretRepairEfficiencyMultiplier=value;}
+        public float DroneFireIntervalScale {get=>Read(ref droneFireIntervalScale);private set=>droneFireIntervalScale=value;}
+        public float TurretFireIntervalScale {get=>Read(ref turretFireIntervalScale);private set=>turretFireIntervalScale=value;}
+        public float ConstructionHullMultiplier {get=>Read(ref constructionHullMultiplier);private set=>constructionHullMultiplier=value;}
+        public float DriveMobilityMultiplier {get=>Read(ref driveMobilityMultiplier);private set=>driveMobilityMultiplier=value;}
         private static readonly R4WeaponKind[] ProjectileWeapons={R4WeaponKind.Basic,R4WeaponKind.Automatic,R4WeaponKind.Heavy,R4WeaponKind.Shotgun,R4WeaponKind.Railgun,R4WeaponKind.RocketLauncher};
         private readonly float[] weaponIntervalScales=Enumerable.Repeat(1f,System.Enum.GetValues(typeof(R4WeaponKind)).Length).ToArray();
         internal void ApplyWeaponIntervals(P12PipelineSafeTankController controller)
@@ -127,10 +137,33 @@ namespace RoboRougelike.R3
 
         public void Configure(R3VehicleAssembly owner,R1VehicleState vehicle,R1RunStats baseline)
         {
+            UnwatchParts();
             assembly=owner;player=vehicle;baseStats=(baseline??new R1RunStats()).Copy();
+            if(assembly!=null)foreach(var part in assembly.Parts)
+            {
+                if(part==null||part.Kind!=R3PartKind.BonusModule)continue;
+                watched.Add(part);part.EligibilityChanged+=MarkDirty;
+                if(part.Damageable!=null)part.Damageable.Died+=MarkDirty;
+                if(part.Block!=null)part.Block.Detached+=MarkDirty;
+            }
             snapshot.Clear();lastRepairPulse=Time.time;
             Refresh(true);
         }
+        void MarkDirty()=>dirty=true;
+        internal void EnsureCurrent()
+        {if(dirty&&!refreshing&&assembly!=null&&player!=null)Refresh(false);}
+        void UnwatchParts()
+        {
+            foreach(var part in watched)
+            {
+                if(part==null)continue;
+                part.EligibilityChanged-=MarkDirty;
+                if(part.Damageable!=null)part.Damageable.Died-=MarkDirty;
+                if(part.Block!=null)part.Block.Detached-=MarkDirty;
+            }
+            watched.Clear();
+        }
+        void OnDestroy()=>UnwatchParts();
         // Disabled components must not accumulate repair time to apply later.
         private void OnEnable(){lastRepairPulse=Time.time;}
         private void Update()
@@ -141,6 +174,10 @@ namespace RoboRougelike.R3
         }
         private void Refresh(bool force)
         {
+            if(refreshing){dirty=true;return;}
+            refreshing=true;dirty=false;
+            try
+            {
             nextActive.Clear();
             foreach(var part in assembly.Parts)
                 if(part!=null&&part.gameObject.activeInHierarchy&&part.Kind==R3PartKind.BonusModule&&part.Operational&&part.transform.IsChildOf(assembly.transform))
@@ -300,6 +337,8 @@ namespace RoboRougelike.R3
             DriveMobilityMultiplier=driveMobility.Apply(baseStats.Mobility);
             player.Apply(stats,ConstructionHullMultiplier,DriveMobilityMultiplier);
             player.Controller.SetBasicDamageProfile(basicDamage.Apply(baseStats.Damage),basicBlastDamage.Apply(baseStats.Damage),(float)System.Math.Min(1d,hybridShare));
+            }
+            finally{refreshing=false;}
         }
         private static bool AppliesToWeapon(R1BonusScope scope,R1BonusScope weapon,R1BonusScope damageType)=>
             scope==R1BonusScope.Global||scope==R1BonusScope.Weapons||scope==weapon||scope==damageType;

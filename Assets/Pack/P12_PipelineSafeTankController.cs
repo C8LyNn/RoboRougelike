@@ -87,11 +87,12 @@ namespace RogueMachine.P12PipelineSafe
         private bool hasScopedWeaponIntervals;
         private float mobilityModifier = 1f;
 
-        public float EffectiveDamage => (float)System.Math.Min(float.MaxValue,(double)shotDamage*((1d-basicBlastFraction)*basicDamageModifier+basicBlastFraction*basicBlastDamageModifier));
-        public float EffectiveFireInterval => RoboRougelike.R3.R3MountedBonusEffects.SafeIntervalProduct(fireInterval,intervalModifier);
-        public float EffectiveForwardSpeed => (float)System.Math.Min(float.MaxValue,(double)forwardSpeed * mobilityModifier);
-        public float EffectiveReverseSpeed => (float)System.Math.Min(float.MaxValue,(double)reverseSpeed * mobilityModifier);
-        public float EffectiveTurnSpeed => (float)System.Math.Min(float.MaxValue,(double)turnSpeed*mobilityModifier);
+        void EnsureMountedBonuses()=>GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.EnsureCurrent();
+        public float EffectiveDamage {get{EnsureMountedBonuses();return (float)System.Math.Min(float.MaxValue,(double)shotDamage*((1d-basicBlastFraction)*basicDamageModifier+basicBlastFraction*basicBlastDamageModifier));}}
+        public float EffectiveFireInterval {get{EnsureMountedBonuses();return RoboRougelike.R3.R3MountedBonusEffects.SafeIntervalProduct(fireInterval,intervalModifier);}}
+        public float EffectiveForwardSpeed {get{EnsureMountedBonuses();return (float)System.Math.Min(float.MaxValue,(double)forwardSpeed*mobilityModifier);}}
+        public float EffectiveReverseSpeed {get{EnsureMountedBonuses();return (float)System.Math.Min(float.MaxValue,(double)reverseSpeed*mobilityModifier);}}
+        public float EffectiveTurnSpeed {get{EnsureMountedBonuses();return (float)System.Math.Min(float.MaxValue,(double)turnSpeed*mobilityModifier);}}
         public bool GameplayInputEnabled => gameplayInputEnabled;
 
         public void SetRunModifiers(float damage, float interval, float mobility)
@@ -601,6 +602,7 @@ public float CurrentForwardSpeed =>
 
         public void FireFrom(Transform barrel)
         {
+            EnsureMountedBonuses();
             float kinetic=SafeShellDamage(shotDamage,1-basicBlastFraction,basicDamageModifier);
             float blast=SafeShellDamage(shotDamage,basicBlastFraction,basicBlastDamageModifier);
             SpawnPhysicalShell(barrel,kinetic,projectileSpeed,projectileDiameter,projectileMass,
@@ -628,6 +630,7 @@ public float CurrentForwardSpeed =>
         }
         private Collider FireFromInternal(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId,int extraShots,Collider existingSibling)
         {
+            EnsureMountedBonuses();
             var profile=RoboRougelike.R4.R4WeaponDefinition.Get(kind);
             var mounted=barrel!=null?barrel.GetComponentInParent<RoboRougelike.R3.R3MountedPart>():null;
             float tier=mounted!=null&&mounted.Kind==RoboRougelike.R3.R3PartKind.Gun&&mounted.Id==partId?
@@ -652,6 +655,7 @@ public float CurrentForwardSpeed =>
         }
         public float WeaponIntervalScale(RoboRougelike.R4.R4WeaponKind kind)
         {
+            EnsureMountedBonuses();
             int index=(int)kind;
             return hasScopedWeaponIntervals&&index>=0&&index<scopedWeaponIntervals.Length?scopedWeaponIntervals[index]:intervalModifier;
         }
@@ -666,7 +670,7 @@ public float CurrentForwardSpeed =>
         public float PackageSawDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.SawDamageMultiplier??damageModifier;
         public float PackageAuraDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.AuraDamageMultiplier??damageModifier;
         public float PackageEnergyDamageScale => GetComponent<RoboRougelike.R3.R3MountedBonusEffects>()?.EnergyDamageMultiplier??damageModifier;
-        public float PackageIntervalScale => intervalModifier;
+        public float PackageIntervalScale {get{EnsureMountedBonuses();return intervalModifier;}}
         private Collider SpawnPhysicalShell(Transform barrel,float hitDamage,float projectileSpeed,float projectileDiameter,
             float projectileMass,RoboRougelike.R4.R4WeaponKind kind,string partId,float blastDamage=0)
         {

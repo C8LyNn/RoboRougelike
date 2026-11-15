@@ -23,5 +23,9 @@ namespace RoboRougelike.R3
         public P12_PipelineSafePlayerBlock Block;
         public Transform GunPivot, Muzzle;
         public bool Operational => Damageable != null && !Damageable.IsDead && Block != null && !Block.DetachedFromVehicle;
+        internal event System.Action EligibilityChanged;
+        void OnEnable()=>EligibilityChanged?.Invoke();
+        void OnDisable()=>EligibilityChanged?.Invoke();
+        void OnTransformParentChanged()=>EligibilityChanged?.Invoke();
     }
 }

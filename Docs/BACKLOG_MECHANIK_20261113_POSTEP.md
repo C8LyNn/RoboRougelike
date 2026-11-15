@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 12–15 i 44. Utrata premii w tej samej klatce
+
+- Fizyczne moduły premii zgłaszają zmianę stanu po zniszczeniu, odłączeniu, wyłączeniu, włączeniu lub zmianie rodzica. Ich właściciel oznacza wynik jako nieaktualny i przelicza go przy najbliższym użyciu, zamiast czekać na następny `Update`; w tym także przed bezpośrednim wystrzałem działa podstawowego oraz odczytem czasu strzału i mobilności. Odczyt bez zmiany stanu nie przegląda ponownie całej konstrukcji. Same zdarzenia nie przeliczają HP w trakcie obsługi obrażeń.
+- Unity 6000.3.14f1: `bonus_same_frame_before.xml` — **1 FAIL**, zniszczony moduł podwyższał salwę strzelby z 144 do 201,6. `bonus_same_frame_more_before.xml` — **2 FAIL**, działa podstawowego i odłączenia. `bonus_same_frame_after.xml` — **3 PASS** po poprawce. `bonus_same_frame_regression.xml` — **11 PASS**, w tym wszystkie trzy przypadki, częściowe HP, wyłączenie i ponowne włączenie, premie i tiery, trafienie hybrydowe, drony, naprawa, pancerz oraz ratunek.
+- Próby używają rzeczywistych elementów i pocisków w kontrolowanej scenie Unity; nie są pomiarem FPS ani ręczną rozgrywką. Zmiana właściwości istniejącego modułu bez zdarzenia nadal jest wychwytywana przez zwykłe odświeżenie w `Update`. Punkt 44 pozostaje otwarty.
+
 ### 06 i 44. Przypisywanie klawiszy o różnych nazwach w Unity
 
 - Okno sterowania rozpoznaje zdarzenia klawiszy tyldy, lewego i prawego Ctrl, Num Lock oraz klawisza menu kontekstowego według nazw używanych przez system wejścia. Sam Ctrl można przypisać do akcji rozgrywki, zapis zostaje odczytany ponownie, a kombinacje Ctrl z innym klawiszem nie są mylone z pojedynczym przyciskiem. W garażu Ctrl pozostaje modyfikatorem naprawy i nowe przypisania akcji garażowych nie mogą go przejąć; dotychczasowe pliki nie są automatycznie zmieniane.

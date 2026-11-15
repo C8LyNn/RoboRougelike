@@ -1914,6 +1914,95 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(baseline,Is.GreaterThan(0));Assert.That(boosted,Is.EqualTo(baseline*1.4f).Within(.2f),"Every real pellet must receive the kinetic bonus.");
         Object.Destroy(bonus);Object.Destroy(target1.gameObject);Object.Destroy(target2.gameObject);
     }
+    [UnityTest] public IEnumerator DestroyedShotgunBonusStopsAffectingShotsInTheSameFrame()
+    {
+        var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="shotgun-immediate-loss";
+        bonus.Effect=R1UpgradeEffect.Damage;bonus.Scope=R1BonusScope.ShotgunWeapon;bonus.Amount=.4f;
+        var gun=Build(R4WeaponKind.Shotgun,out _,bonus:bonus);
+        var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var module=assembly.Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeScope==R1BonusScope.ShotgunWeapon);
+        var target=Target(gun,6);
+        try
+        {
+            Assert.That(assembly.GetComponent<R3MountedBonusEffects>().ShotgunDamageMultiplier,Is.EqualTo(1.4f).Within(.001));
+            module.Damageable.RestoreHealthRatio(.01f);
+            module.Damageable.ApplyDamage(module.Damageable.CurrentHp*2,module.transform.position,Vector3.up);
+            Assert.That(module.Damageable.IsDead,Is.True);
+            Assert.That(gun.GetComponent<RRLShotgunBinding>().Fire(),Is.True);
+            float deadline=Time.realtimeSinceStartup+5;
+            while(500-target.CurrentHp<143&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+            Assert.That(500-target.CurrentHp,Is.EqualTo(144).Within(.2),
+                "A physically destroyed bonus must not affect a shot fired before the next Update.");
+        }
+        finally
+        {
+            if(target!=null)Object.Destroy(target.gameObject);
+            if(assembly!=null)Object.Destroy(assembly.gameObject);
+            if(bonus!=null)Object.Destroy(bonus);
+        }
+    }
+    [UnityTest] public IEnumerator DestroyedGlobalBonusStopsAffectingBasicShotInTheSameFrame()
+    {
+        var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="basic-immediate-loss";
+        bonus.Effect=R1UpgradeEffect.Damage;bonus.Scope=R1BonusScope.Global;bonus.Amount=.4f;
+        var gun=Build(R4WeaponKind.Basic,out _,bonus:bonus);
+        var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var module=assembly.Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeScope==R1BonusScope.Global);
+        var target=Target(gun,6);
+        try
+        {
+            module.Damageable.RestoreHealthRatio(.01f);
+            module.Damageable.ApplyDamage(module.Damageable.CurrentHp*2,module.transform.position,Vector3.up);
+            Assert.That(module.Damageable.IsDead,Is.True);
+            assembly.GetComponent<P12PipelineSafeTankController>().FireFrom(gun.Muzzle,R4WeaponKind.Basic,gun.Id);
+            float deadline=Time.realtimeSinceStartup+5;
+            while(500-target.CurrentHp<79&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+            Assert.That(500-target.CurrentHp,Is.EqualTo(80).Within(.2),
+                "The basic weapon's cached profile must drop the destroyed bonus before it fires.");
+        }
+        finally
+        {
+            if(target!=null)Object.Destroy(target.gameObject);
+            if(assembly!=null)Object.Destroy(assembly.gameObject);
+            if(bonus!=null)Object.Destroy(bonus);
+        }
+    }
+    [UnityTest] public IEnumerator DetachedBonusIsNotIncludedInSameFrameMultiplier()
+    {
+        var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="shotgun-immediate-detach";
+        bonus.Effect=R1UpgradeEffect.Damage;bonus.Scope=R1BonusScope.ShotgunWeapon;bonus.Amount=.4f;
+        var gun=Build(R4WeaponKind.Shotgun,out _,bonus:bonus);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        try
+        {
+            var module=assembly.Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeScope==R1BonusScope.ShotgunWeapon);
+            var effects=assembly.GetComponent<R3MountedBonusEffects>();
+            Assert.That(effects.ShotgunDamageMultiplier,Is.EqualTo(1.4f).Within(.001));
+            module.Block.MarkDetached();
+            Assert.That(effects.ShotgunDamageMultiplier,Is.EqualTo(1).Within(.001),
+                "An independently detached module stops contributing before the next Update.");
+        }
+        finally{if(assembly!=null)Object.Destroy(assembly.gameObject);if(bonus!=null)Object.Destroy(bonus);}
+        yield return null;
+    }
+    [UnityTest] public IEnumerator BonusKeepsFullPowerWhenDamagedAndRefreshesOnDisableAndReenable()
+    {
+        var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="shotgun-live-toggle";
+        bonus.Effect=R1UpgradeEffect.Damage;bonus.Scope=R1BonusScope.ShotgunWeapon;bonus.Amount=.4f;
+        var gun=Build(R4WeaponKind.Shotgun,out _,bonus:bonus);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        try
+        {
+            var module=assembly.Parts.Single(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeScope==R1BonusScope.ShotgunWeapon);
+            var effects=assembly.GetComponent<R3MountedBonusEffects>();
+            module.Damageable.RestoreHealthRatio(.5f);
+            Assert.That(effects.ShotgunDamageMultiplier,Is.EqualTo(1.4f).Within(.001),"A damaged living module retains its full contribution.");
+            module.gameObject.SetActive(false);
+            Assert.That(effects.ShotgunDamageMultiplier,Is.EqualTo(1).Within(.001));
+            module.gameObject.SetActive(true);
+            Assert.That(effects.ShotgunDamageMultiplier,Is.EqualTo(1.4f).Within(.001));
+        }
+        finally{if(assembly!=null)Object.Destroy(assembly.gameObject);if(bonus!=null)Object.Destroy(bonus);}
+        yield return null;
+    }
     [UnityTest] public IEnumerator DoubleShotRocketsAreNotLostWhenOldCapacityIsFull()
     {
         var gun=Build(R4WeaponKind.RocketLauncher,out var energy,true);var hp=Target(gun,6,2);float before=energy.Current;
