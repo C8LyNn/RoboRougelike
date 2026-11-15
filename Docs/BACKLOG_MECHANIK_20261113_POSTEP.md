@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 06, 40 i 44. Konflikt pauzy ze skrótami garażu
+
+- Ustawienia zapobiegają nowemu przypisaniu tego samego klawisza lub przycisku myszy do pauzy i akcji garażowej, która działa na tym samym ekranie. Przy uzupełnianiu brakującego skrótu starszego profilu wybierają inny klawisz, jeżeli domyślny służy już do pauzy. Dawne zapisane profile i konfiguracje blueprintów z konfliktem nadal się wczytują bez automatycznej zmiany; ekran ustawień wskazuje konflikt do rozwiązania przez gracza.
+- Unity 6000.3.14f1: `pause_garage_before.xml` — **1 PASS, 2 FAIL**, nowe konflikty były dopuszczane i brakowało ostrzeżenia. `pause_garage_migration_before.xml` — **1 FAIL**, brakujący obrót garażowy przejmował klawisz pauzy. Pierwszy przebieg po poprawce `pause_garage_after.xml` — **54 PASS, 1 FAIL**: dane scenariusza miały osobny konflikt pauzy z nagrodami; poprawiono dane. `pause_garage_final.xml` — **55 PASS, 0 FAIL**, w tym wszystkie akcje garażowe w obu kierunkach, starszy profil, migracja, ustawienia oraz nawigacja pauzy.
+- Próby używają zdarzeń syntetycznych i wirtualnych urządzeń; nie sprawdzono fizycznego wejścia ani widocznego interfejsu w Windows Playerze. Inne zarezerwowane klawisze oraz odbiór #06 i #44 pozostają otwarte.
+
 ### 02, 14, 21–23 i 44. Pomiar wspólnego czasu kolejek pocisków
 
 - Wspólny budżet pracy pocisków, rakiet i urządzeń sumuje czas spędzony w harmonogramie w danej klatce. Czas innych operacji między osobnymi wywołaniami nie jest już błędnie liczony jako emisja pocisków. Kolejki nadal współdzielą budżet i przekazują sobie kolejność; duże salwy nadal mogą się opóźnić.

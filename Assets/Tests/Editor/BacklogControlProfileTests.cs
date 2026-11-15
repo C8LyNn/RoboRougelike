@@ -138,6 +138,59 @@ public sealed class BacklogControlProfileTests
         }
         finally{profile.ResetDefaults();UnityEngine.Object.DestroyImmediate(vehicle);InputSystem.RemoveDevice(keyboard);}
     }
+    [Test] public void PauseAndGarageBindingsRejectConflictsInEitherOrder()
+    {
+        var profile=new R1ControlProfile(Path.Combine(Path.GetTempPath(),"RRL-garage-pause-"+Guid.NewGuid()+".json"));
+        var actions=R1ControlProfile.Actions.Where(a=>a.StartsWith("Garage",StringComparison.Ordinal)).ToArray();
+        Assert.That(actions.Length,Is.GreaterThan(10));
+        foreach(var action in actions)
+        {
+            profile.ResetDefaults();Assert.That(profile.TryBind("Pause","K"),Is.True);
+            Assert.That(profile.TrySaveBinding(action,"K",out var message),Is.False,action);
+            Assert.That(message,Does.Contain("Pauza"));
+            profile.ResetDefaults();Assert.That(profile.TryBind(action,"K"),Is.True,action);
+            Assert.That(profile.TrySaveBinding("Pause","K",out message),Is.False,action);
+            Assert.That(message,Does.Contain("Garaż"));
+        }
+        profile.ResetDefaults();Assert.That(profile.TryBind("Pause","Home"),Is.False,"Home already frames the garage camera.");
+        profile.ResetDefaults();Assert.That(profile.TryBind("Pause","MouseBack"),Is.True);
+        Assert.That(profile.TryBind("GarageFrame","MouseBack"),Is.False);
+    }
+    [Test] public void ExistingPauseGarageConflictIsPreservedAndReported()
+    {
+        string path=Path.Combine(Path.GetTempPath(),"RRL-legacy-garage-pause-"+Guid.NewGuid()+".json");
+        try
+        {
+            var initial=new R1ControlProfile(path);var actions=R1ControlProfile.Actions.ToArray();
+            var values=actions.Select(initial.Binding).ToArray();values[Array.IndexOf(actions,"Pause")]="Home";
+            var data=new LegacyControlData{actions=actions,bindings=values};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            string original=File.ReadAllText(path);var profile=new R1ControlProfile(path);
+            Assert.That(profile.Error,Is.Null);Assert.That(profile.Binding("Pause"),Is.EqualTo("Home"));
+            Assert.That(profile.Binding("GarageFrame"),Is.EqualTo("Home"));Assert.That(File.ReadAllText(path),Is.EqualTo(original));
+            Assert.That(R1ControlProfile.ValidSnapshot(values),Is.True,"Older profiles and blueprints remain readable.");
+            Assert.That(profile.ExistingConflictNotice,Does.Contain("Pauza").And.Contain("Garaż"));
+            Assert.That(profile.TryBind("GarageFrame","K"),Is.True);Assert.That(profile.ExistingConflictNotice,Is.Null);
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
+    [Test] public void MigratingMissingGarageBindingAvoidsExistingPauseKey()
+    {
+        string path=Path.Combine(Path.GetTempPath(),"RRL-migrate-garage-pause-"+Guid.NewGuid()+".json");
+        try
+        {
+            var initial=new R1ControlProfile(path);
+            var actions=R1ControlProfile.Actions.Where(a=>a!="GarageRotateYLeft").ToArray();
+            var values=actions.Select(a=>a=="Pause"?"Q":a=="Weapon3"?"K":a=="RewardBasket1"?"J":initial.Binding(a)).ToArray();
+            var data=new LegacyControlData{actions=actions,bindings=values};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            var profile=new R1ControlProfile(path);Assert.That(profile.Error,Is.Null);
+            Assert.That(profile.Binding("Pause"),Is.EqualTo("Q"));
+            Assert.That(profile.Binding("GarageRotateYLeft"),Is.Not.EqualTo("Q"));
+            Assert.That(profile.ExistingConflictNotice,Is.Null);
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [Test] public void PauseAndRewardBindingsRejectNewConflictsInEitherOrder()
     {
         var profile=new R1ControlProfile(Path.Combine(Path.GetTempPath(),"RRL-reward-pause-"+Guid.NewGuid()+".json"));

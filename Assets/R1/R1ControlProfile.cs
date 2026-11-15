@@ -72,7 +72,9 @@ namespace RoboRougelike.R1
                 var candidates=new[]{Defaults[i],"F5","F6","F7","F9","F11","F12"}.Concat(Enum.GetNames(typeof(Key)));
                 string chosen=candidates.FirstOrDefault(key=>AllowedActionBinding(Actions[i],key)&&!GarageModifierReserved(Actions[i],key)&&
                     !(PauseNavigation(Actions[i])?pauseUsed:MenuAction(Actions[i])?menuUsed:RewardAction(Actions[i])?rewardUsed:GarageToolAction(Actions[i])||GarageRotationAction(Actions[i])?garageUsed:Actions[i]=="Interact"||Actions[i]=="Pause"||Actions[i]=="SkipPickup"?gameplayUsed:used).Contains(key)&&
-                    !((Actions[i]=="Pause"||Actions[i]=="ResetRange")&&pauseUsed.Contains(key))&&!(Actions[i]=="Pause"&&menuUsed.Contains(key)));
+                    !((Actions[i]=="Pause"||Actions[i]=="ResetRange")&&pauseUsed.Contains(key))&&!(Actions[i]=="Pause"&&menuUsed.Contains(key))&&
+                    !(Actions[i]=="Pause"&&garageUsed.Contains(key))&&
+                    !(GarageAction(Actions[i])&&string.Equals(values[Array.IndexOf(Actions,"Pause")],key,StringComparison.OrdinalIgnoreCase)));
                 values[i]=chosen;if(chosen!=null){if(PauseNavigation(Actions[i]))pauseUsed.Add(chosen);else if(MenuAction(Actions[i]))menuUsed.Add(chosen);else{used.Add(chosen);if(RewardAction(Actions[i]))rewardUsed.Add(chosen);else if(GarageAction(Actions[i]))garageUsed.Add(chosen);else gameplayUsed.Add(chosen);if(Actions[i]=="Pause"||Actions[i]=="ResetRange")pauseUsed.Add(chosen);if(Actions[i]=="Pause")menuUsed.Add(chosen);}}
             }
         }
@@ -96,17 +98,19 @@ namespace RoboRougelike.R1
         // make the existing one visible until the player resolves it.
         static bool PauseRewardConflict(string left,string right)=>
             left=="Pause"&&RewardAction(right)||right=="Pause"&&RewardAction(left);
+        static bool PauseGarageConflict(string left,string right)=>
+            left=="Pause"&&GarageAction(right)||right=="Pause"&&GarageAction(left);
         public string ExistingConflictNotice
         {
             get
             {
                 var pause=Binding("Pause");
-                var reward=Actions.FirstOrDefault(action=>RewardAction(action)&&
+                var conflict=Actions.FirstOrDefault(action=>(RewardAction(action)||GarageAction(action))&&
                     string.Equals(Binding(action),pause,StringComparison.OrdinalIgnoreCase));
-                return reward==null?null:"Konflikt: Pauza / "+ActionName(reward)+". Zmień jedno przypisanie.";
+                return conflict==null?null:"Konflikt: Pauza / "+ActionName(conflict)+". Zmień jedno przypisanie.";
             }
         }
-        public string Conflict(string action,string binding)=>bindings.FirstOrDefault(x=>x.Key!=action&&(SameContext(x.Key,action)||PauseRewardConflict(x.Key,action))&&
+        public string Conflict(string action,string binding)=>bindings.FirstOrDefault(x=>x.Key!=action&&(SameContext(x.Key,action)||PauseRewardConflict(x.Key,action)||PauseGarageConflict(x.Key,action))&&
             string.Equals(x.Value,binding,StringComparison.OrdinalIgnoreCase)).Key;
         public static bool ValidBinding(string binding)
         {
