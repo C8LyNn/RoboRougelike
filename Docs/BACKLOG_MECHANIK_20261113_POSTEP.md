@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 12–15 i 44. Procent HP przy maksymalnej wytrzymałości poniżej 1
+
+- Przeliczanie wytrzymałości zachowuje rzeczywisty procent HP również wtedy, gdy maksymalne HP części jest mniejsze od 1. Dzięki temu zmiana innej premii nie uszkadza dodatkowo bardzo osłabionego pancerza. Ten sam odczyt procentu wykorzystują skaner oraz zabarwienie podstawowego i podmienionego modelu.
+- Unity 6000.3.14f1: `low_health_before.xml` — **3 FAIL**, m.in. pancerz spadał z 50% do 25% po wyłączeniu niezwiązanej premii, a skaner pokazywał 5% zamiast 50%. `low_health_after.xml` — **8 PASS, 0 FAIL**, w tym fizyczny pancerz i ponowne przeliczenia, bardzo duża wytrzymałość, skaner, zabarwienie modelu i kopuła.
+- Próby korzystają z kontrolowanych modułów i wywołań; nie są ręcznym playtestem ani pomiarem wydajności. Dotychczasowe minimalne ograniczenie mnożnika wytrzymałości nie zostało w tej zmianie usunięte; punkty #14 i #44 pozostają otwarte.
+
 ### 12–13, 15, 24 i 44. Zmiana premii osłon przed trafieniem
 
 - Osłona kierunkowa przelicza pojemność podczas odświeżania dostępności przed pochłonięciem obrażeń. Kopuła przelicza wytrzymałość przed sprawdzeniem, czy nadal chroni i może pochłonąć trafienie. Wyłączenie lub ponowne włączenie modułu premii w tej samej klatce nie pozostawia poprzedniego mnożnika podczas kolejnego trafienia; procent ładunku lub HP pozostaje zachowany.

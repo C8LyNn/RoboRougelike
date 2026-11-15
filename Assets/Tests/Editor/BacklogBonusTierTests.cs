@@ -9,6 +9,45 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogBonusTierTests
 {
+    [Test] public void RepeatedDurabilityRecalculationPreservesFractionBelowOneHp()
+    {
+        var item=new GameObject("Low health fraction");
+        try
+        {
+            var hp=item.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(100,false);
+            hp.SetDurabilityMultiplier(.002f);hp.RestoreHealthRatio(.5f);
+            hp.SetDurabilityMultiplier(.004f);
+            Assert.That(hp.MaxHp,Is.EqualTo(.4f).Within(.0001f));
+            Assert.That(hp.CurrentHp,Is.EqualTo(.2f).Within(.0001f));
+            hp.SetDurabilityMultiplier(1f);Assert.That(hp.CurrentHp,Is.EqualTo(50).Within(.001f));
+        }
+        finally{Object.DestroyImmediate(item);}
+    }
+    [Test] public void LowMaximumHealthKeepsItsFractionAcrossRecalculationAndVisuals()
+    {
+        var root=new GameObject("Low health owner");root.AddComponent<Rigidbody>();
+        try
+        {
+            var part=new GameObject("Low health part");part.transform.SetParent(root.transform);
+            var hp=part.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(1,false);
+            hp.SetDurabilityMultiplier(.0001f);hp.RestoreHealthRatio(.5f);
+            var scan=part.AddComponent<RoboRougelike.R6.COM001LiveScanPartAdapter>();
+            scan.Bind(root.transform,hp,1,2,RoboRougelike.Mechanics.StructuralScan.StructuralPartType.Armor);
+            Assert.That(scan.HealthFraction,Is.EqualTo(.5f).Within(.0001f),"The scanner must use actual maximum HP.");
+            var visual=new GameObject("Existing model");visual.transform.SetParent(part.transform);
+            RoboRougelike.R4_1.R4ReplacementDamageVisual.Attach(visual,part.transform);
+            var view=visual.GetComponent<RoboRougelike.R4_1.R4ReplacementDamageVisual>();
+            var tint=typeof(RoboRougelike.R4_1.R4ReplacementDamageVisual).GetMethod("Tint",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            Color expected=Color.Lerp(Color.white,new Color(.16f,.09f,.06f,1),.4f);
+            Assert.That(((Color)tint.Invoke(view,new object[]{Color.white})).r,Is.EqualTo(expected.r).Within(.0001f));
+            hp.SetDurabilityMultiplier(.0002f);
+            Assert.That(hp.MaxHp,Is.EqualTo(.0002f).Within(.00000001f));
+            Assert.That(hp.CurrentHp/hp.MaxHp,Is.EqualTo(.5f).Within(.0001f),"Recalculating durability must preserve the percentage.");
+            hp.SetDurabilityMultiplier(1f);
+            Assert.That(hp.CurrentHp,Is.EqualTo(.5f).Within(.0001f));
+        }
+        finally{Object.DestroyImmediate(root);}
+    }
     [Test] public void AutomaticFireRateRewardIsAvailableAndExplainsItsScope()
     {
         var upgrade=Resources.Load<R1RunDefinition>("R1/Run").Upgrades.Single(u=>u!=null&&u.Id=="rate_automatic_weapon");
@@ -442,6 +481,31 @@ public sealed class BacklogBonusTierTests
 
 public sealed class BacklogBonusTierGameplayTests
 {
+    [UnityTest] public IEnumerator UnrelatedBonusChangesDoNotDamageLowHealthArmor()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var fragile=BacklogBonusTierTests.OperationBonus("fragile-armor-test",.995f,"Less",R1UpgradeEffect.Hull);
+        var damage=BacklogBonusTierTests.OperationBonus("unrelated-damage-test",.2f,"Increased",R1UpgradeEffect.Damage);
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{fragile,damage}),Is.True);
+        var damageId=model.Inventory.Single(p=>p.UpgradeId==damage.Id).Id;
+        foreach(var item in model.Inventory.ToArray())
+        {
+            var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+            Assert.That(run.GarageMount(item.Id,cells.First(c=>model.OwnedPlacementError(item.Id,c,default)==null)),Is.True);
+        }
+        yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var armor=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor).Damageable;
+        var bonus=assembly.Parts.Single(p=>p.Id==damageId);var effects=run.Player.GetComponent<R3MountedBonusEffects>();
+        try
+        {
+            Assert.That(armor.MaxHp,Is.LessThan(1));armor.RestoreHealthRatio(.5f);
+            bonus.gameObject.SetActive(false);Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1).Within(.001));
+            Assert.That(armor.CurrentHp/armor.MaxHp,Is.EqualTo(.5f).Within(.001),"Removing a damage bonus must not alter armor health.");
+            bonus.gameObject.SetActive(true);Assert.That(effects.EffectiveStats.Damage,Is.GreaterThan(1));
+            Assert.That(armor.CurrentHp/armor.MaxHp,Is.EqualTo(.5f).Within(.001));
+        }
+        finally{Object.Destroy(fragile);Object.Destroy(damage);}
+    }
     [UnityTest] public IEnumerator DriveSpecificMobilitySurvivesActualNextEncounter()
     {
         var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.StartRun(),Is.True);

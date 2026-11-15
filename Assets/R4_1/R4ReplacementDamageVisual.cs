@@ -51,7 +51,7 @@ namespace RoboRougelike.R4_1
         {
             if(owner.IsDead)return new Color(.12f,.1f,.09f,original.a);
             if(owner.VisualFlashing)return Color.Lerp(original,Color.red,.72f);
-            float damage=Mathf.Clamp01(1-owner.CurrentHp/Mathf.Max(1,owner.MaxHp))*.8f;
+            float damage=(1-owner.HealthFraction)*.8f;
             return Color.Lerp(original,new Color(.16f,.09f,.06f,original.a),damage);
         }
         private void Refresh()

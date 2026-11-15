@@ -42,8 +42,7 @@ namespace RoboRougelike.R6
                 return module==null||(!module.ModuleLost&&module.DamageableAlive);
             }
         }
-        public float HealthFraction => damageable == null || damageable.IsDead ? 0f :
-            Mathf.Clamp01(damageable.CurrentHp / Mathf.Max(0.001f, damageable.MaxHp));
+        public float HealthFraction => damageable == null ? 0f : damageable.HealthFraction;
         public float StructuralImportance => 0f; // Real graph importance is not computed.
         public StructuralPartType PartType => type;
         public Transform ScanPoint => transform;

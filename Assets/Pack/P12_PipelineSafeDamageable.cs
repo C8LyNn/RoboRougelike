@@ -36,6 +36,7 @@ namespace RogueMachine.P12PipelineSafe
         public bool IsDead => dead;
         public float MaxHp => maxHp;
         public float CurrentHp => currentHp;
+        public float HealthFraction => dead||maxHp<=0f?0f:Mathf.Clamp01(currentHp/maxHp);
         public void RestoreHealthRatio(float ratio)
         {
             if (!dead && !float.IsNaN(ratio) && !float.IsInfinity(ratio))
@@ -47,7 +48,7 @@ namespace RogueMachine.P12PipelineSafe
         {
             if (dead) return;
             if (baseMaxHp <= 0f) baseMaxHp = Mathf.Max(1f, maxHp);
-            float ratio = Mathf.Clamp01(currentHp / Mathf.Max(1f, maxHp));
+            float ratio = HealthFraction;
             if(float.IsNaN(multiplier)||float.IsInfinity(multiplier))return;
             maxHp = (float)System.Math.Min(float.MaxValue,(double)baseMaxHp*Mathf.Max(.0001f,multiplier));
             currentHp = maxHp * ratio;
@@ -185,7 +186,7 @@ namespace RogueMachine.P12PipelineSafe
             flashRoutine = null;
         }
 
-        private Color DamagedColor()=>Color.Lerp(ReadBaseColor(),new Color(.16f,.09f,.06f),Mathf.Clamp01(1-currentHp/Mathf.Max(1,maxHp))*.8f);
+        private Color DamagedColor()=>Color.Lerp(ReadBaseColor(),new Color(.16f,.09f,.06f),(1-HealthFraction)*.8f);
         private void SetColor(Color color)
         {
             if (cachedRenderer == null)
