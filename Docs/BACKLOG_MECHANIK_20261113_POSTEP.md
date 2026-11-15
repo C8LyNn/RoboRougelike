@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 06, 39–40 i 44. Przypisanie akcji menu
+
+- Rozpoczęcie wyprawy z ekranu wyboru oraz powrót z ekranu wyniku mają teraz wspólną pozycję w ustawieniach sterowania. Domyślnie jest to Enter; można wybrać inny klawisz albo obsługiwany przycisk myszy. Podpisy pokazują aktualne przypisanie. Akcja ma osobny kontekst od jazdy i nagród, lecz nie może kolidować z pauzą działającą także w menu. Wpisywanie znaku przypisanego do akcji w polu ziarna nie powinno rozpoczynać gry; domyślny Enter zachowuje poprzednie działanie.
+- Starsze profile i zapisane konfiguracje projektów dostają brakującą akcję z domyślnym Enter; projekt przywraca nowy klawisz tylko po jawnym wyborze przywrócenia globalnych ustawień. Unity 6000.3.14f1: `menu_confirm_before.xml` — **2 FAIL**, akcja nie istniała. `menu_confirm_full.xml` — **36 PASS**, w tym migracje profili, rozpoczęcie i powrót klawiszem K, dawny Enter, test chronionego pola ziarna oraz syntetyczne zdarzenie myszy. `menu_confirm_blueprint_final.xml` — **6 PASS**, w tym stary projekt i jawne przywracanie przypisań.
+- W teście pola ziarna stan fokusu ustawiono kontrolowanie; nie jest to rzeczywiste wpisywanie w widocznym Playerze. Interakcja myszy używa syntetycznych zdarzeń IMGUI, a nie fizycznego kliknięcia. Inne stałe skróty oraz pełny odbiór sterowania pozostają otwarte w #06 i #44.
+
 ### 30–31, 36 i 44. Pominięta odłączona broń po walce
 
 - Rozszerzono test integracyjny o cały łańcuch: sprawna dodatkowa broń przeciwnika zostaje odłączona z 45% HP, jej łup pozostaje niezebrany, przeciwnicy zostają pokonani, a gracz odzyskuje tę część za złom i zatwierdza nagrody. Test sprawdza ten sam identyfikator i rodzaj broni, zachowany stan, pojedyncze pobranie opłaty, brak drugiego egzemplarza i usunięcie łupu z areny przy końcu walki.

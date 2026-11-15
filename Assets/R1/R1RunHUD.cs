@@ -84,8 +84,11 @@ namespace RoboRougelike.R1
             int selected=(int)run.SelectedVehicle*4+run.SelectedVehicleVariant;
             int index=starterOffers==null?-1:System.Array.IndexOf(starterOffers,selected);
             string name=index>=0&&starterDesigns!=null&&index<starterDesigns.Length?starterDesigns[index]?.Name:null;
-            return string.IsNullOrEmpty(name)?"Przygotuj pojazd  [Enter]":$"Przygotuj: {name}  [Enter]";
+            string key=R1ControlProfile.Display(R1ControlProfile.Current.Binding("MenuConfirm"));
+            return string.IsNullOrEmpty(name)?$"Przygotuj pojazd  [{key}]":$"Przygotuj: {name}  [{key}]";
         }
+        private const string SeedControlName="RRLReadySeed";
+        internal bool SeedInputFocused {get;private set;}
 
         private readonly Color panel = new Color(0.04f, 0.06f, 0.08f, 0.94f);
         private static bool UsePortraitReady(int width,int height,bool ready,bool overlay)
@@ -255,6 +258,14 @@ namespace RoboRougelike.R1
                !R1ControlProfile.IsBindingMouseDown(input)||!R1ControlProfile.Current.MatchesEvent("SkipPickup",input))return;
             if(run.SkipPickupGrace())input.Use();
         }
+        void TryMenuConfirmMouse(R1RunController run,Event input)
+        {
+            if(run==null||run.Paused||run.QuitRequested||run.Transitioning||run.MapEditing||run.Error!=null||MainControlsOpen||
+               (run.Progress?.State!=R1RunState.Ready&&run.Progress?.State!=R1RunState.Won&&run.Progress?.State!=R1RunState.Lost)||
+               !R1ControlProfile.IsBindingMouseDown(input)||!R1ControlProfile.Current.MatchesEvent("MenuConfirm",input))return;
+            if(run.Progress.State==R1RunState.Ready){if(run.PrepareUnifiedRun())input.Use();}
+            else{input.Use();run.RestartRun();}
+        }
         private void OnGUI()
         {
             var run = R1RunController.Instance;
@@ -302,10 +313,11 @@ namespace RoboRougelike.R1
             try
             {
                 Draw(run,portraitReady,portraitGarage,portraitRoute,portraitSalvage);
+                SeedInputFocused=run.Progress?.State==R1RunState.Ready&&!run.MapEditing&&!sessionOverlay&&!MainControlsOpen&&GUI.GetNameOfFocusedControl()==SeedControlName;
                 DrawPassiveRadar(run);
                 if(run.Paused)LightStylePrototype.Instance?.DrawPausePanel();
                 TryPauseMouse(run,Event.current);
-                if(!sessionOverlay){TrySafeZoneInteractMouse(run,Event.current);TryRescueMouse(run,Event.current);TryPickupSkipMouse(run,Event.current);}
+                if(!sessionOverlay){TrySafeZoneInteractMouse(run,Event.current);TryRescueMouse(run,Event.current);TryPickupSkipMouse(run,Event.current);TryMenuConfirmMouse(run,Event.current);}
                 if(quickSearchActive&&!garageSearchKey&&!catalogOpen&&!garageOptionsOpen)
                     HandleQuickGarageKey(run,Event.current,false);
                 quickSearchEditing=quickSearchActive&&!run.Paused&&!catalogOpen&&!garageOptionsOpen&&
@@ -505,7 +517,7 @@ namespace RoboRougelike.R1
                 }
                 GUI.Label(ReadyIntroRect(),"6 starć • 3 areny • elity • Oblężnik • nagrody: 1 bonus i do 3 części",small);
                 GUI.Label(new Rect(90,570,110,28),"Seed:",body);
-                seedText=GUI.TextField(new Rect(200,568,230,28),seedText,11);
+                GUI.SetNextControlName(SeedControlName);seedText=GUI.TextField(new Rect(200,568,230,28),seedText,11);
                 if(int.TryParse(seedText,out int seed))run.RequestedSeed=seed;
                 DrawSeedWarning(ReadySeedWarningRect(),run.RequestedSeed);
                 if(GUI.Button(new Rect(450,548,170,38),"Wczytaj wyprawę",compactButton))run.LoadRunCheckpoint();
@@ -540,7 +552,7 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(160, 130, 1050, 80), won ? "ZWYCIĘSTWO" : "PORAŻKA", title);
                 GUI.Label(new Rect(160, 235, 960, 70), RunEndOutcome(won,progress.DefeatReason), heading);
                 GUI.Label(new Rect(160, 325, 960, 200), $"Walki: {progress.CompletedEncounters}/{progress.TotalEncounters}  •  Pojazd: {run.VehicleModel.Design.Name}\nPokonani: {run.DefeatedEnemies}  •  Zdobyty Złom: {run.EarnedScrap}  •  Saldo: {run.VehicleModel.Scrap}\n{RunEndRecovery(run.RecoveredModules)}  •  Części końcowe: {run.VehicleModel.Parts.FindAll(p=>p.Health>0).Count}\nZdobyte moduły bonusów: {progress.Acquired.Count}  •  Seed: {run.Seed}\n{RunEndNewRunNote()}", body);
-                if (GUI.Button(new Rect(160, 535, 500, 70), "Wróć do menu  [Enter]", button)) run.RestartRun();
+                if (GUI.Button(new Rect(160, 535, 500, 70), "Wróć do menu  ["+R1ControlProfile.Display(R1ControlProfile.Current.Binding("MenuConfirm"))+"]", button)) run.RestartRun();
             }
         }
 
@@ -560,7 +572,7 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(card.x+475,card.y+96,225,52),run.SelectedVehicle==kind&&run.SelectedVehicleVariant==variant?"WYBRANY":"Wybierz",button))run.SelectVehicle(kind,variant);
             }
             GUI.Label(new Rect(24,704,75,30),"Seed:",body);
-            seedText=GUI.TextField(new Rect(105,704,205,32),seedText,11);
+            GUI.SetNextControlName(SeedControlName);seedText=GUI.TextField(new Rect(105,704,205,32),seedText,11);
             if(int.TryParse(seedText,out int seed))run.RequestedSeed=seed;
             DrawSeedWarning(new Rect(600,700,144,42),run.RequestedSeed);
             if(GUI.Button(new Rect(340,700,250,40),"Wczytaj wyprawę",compactButton))run.LoadRunCheckpoint();

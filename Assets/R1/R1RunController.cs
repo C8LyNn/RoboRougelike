@@ -446,17 +446,23 @@ namespace RoboRougelike.R1
                 R1ControlProfile.Current.Pressed("ResetRange",true)){ResetTestRange();return;}
             if(PickupGraceRemaining>0&&!R1ControlProfile.Current.Binding("SkipPickup").StartsWith("Mouse",System.StringComparison.Ordinal)&&
                 R1ControlProfile.Current.Pressed("SkipPickup",true)){SkipPickupGrace();return;}
+            var profile=R1ControlProfile.Current;string confirm=profile.Binding("MenuConfirm");
+            bool menuState=!MapEditing&&(Progress.State==R1RunState.Ready||Progress.State==R1RunState.Won||Progress.State==R1RunState.Lost);
+            bool editingSeed=Progress.State==R1RunState.Ready&&GetComponent<R1RunHUD>()?.SeedInputFocused==true;
+            if(menuState&&!confirm.StartsWith("Mouse",System.StringComparison.Ordinal)&&
+                (!editingSeed||confirm=="Enter"||confirm=="NumpadEnter")&&profile.Pressed("MenuConfirm",true))
+            {
+                if(Progress.State==R1RunState.Ready)PrepareUnifiedRun();else RestartRun();
+                return;
+            }
             if (keyboard == null) return;
-            if (Progress.State == R1RunState.Ready && keyboard.enterKey.wasPressedThisFrame) PrepareUnifiedRun();
-            else if(Progress.State==R1RunState.Salvage)GetComponent<R1RunHUD>()?.ReadRewardInput(keyboard);
+            if(Progress.State==R1RunState.Salvage)GetComponent<R1RunHUD>()?.ReadRewardInput(keyboard);
             else if (Progress.State == R1RunState.UpgradeChoice)
             {
                 if (keyboard.digit1Key.wasPressedThisFrame) ChooseUpgrade(0);
                 else if (keyboard.digit2Key.wasPressedThisFrame) ChooseUpgrade(1);
                 else if (keyboard.digit3Key.wasPressedThisFrame) ChooseUpgrade(2);
             }
-            else if ((Progress.State == R1RunState.Won || Progress.State == R1RunState.Lost) &&
-                keyboard.enterKey.wasPressedThisFrame) RestartRun();
 #endif
         }
 

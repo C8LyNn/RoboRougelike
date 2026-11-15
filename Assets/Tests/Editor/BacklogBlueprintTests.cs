@@ -303,12 +303,15 @@ public sealed class BacklogBlueprintGarageTests
         {
             profile.ResetDefaults();var blueprint=R3BlueprintLibrary.Capture(run.VehicleModel,"Klawisze");
             Assert.That(profile.TryBind("MoveForward","K"),Is.True);
+            Assert.That(profile.TryBind("MenuConfirm","K"),Is.True);
             Assert.That(run.StartApplyBlueprint(blueprint),Is.True);
             float deadline=Time.realtimeSinceStartup+30;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
             Assert.That(run.BlueprintApplyMessage,Does.Contain("Odtworzono"));Assert.That(profile.Binding("MoveForward"),Is.EqualTo("K"));
+            Assert.That(profile.Binding("MenuConfirm"),Is.EqualTo("K"));
             Assert.That(run.StartApplyBlueprintWithControls(blueprint),Is.True);
             deadline=Time.realtimeSinceStartup+30;while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
             Assert.That(run.BlueprintApplyMessage,Does.Contain("Odtworzono"));Assert.That(profile.Binding("MoveForward"),Is.EqualTo("W"));
+            Assert.That(profile.Binding("MenuConfirm"),Is.EqualTo("Enter"));
         }
         finally{profile.TryRestoreSnapshot(original,out _);}
     }

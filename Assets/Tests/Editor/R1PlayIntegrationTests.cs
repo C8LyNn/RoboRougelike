@@ -347,6 +347,62 @@ public class R1PlayIntegrationTests
     }
 
     [UnityTest]
+    public IEnumerator ReassignedMenuConfirmationStartsAndRestartsWithoutOldKey()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("MenuConfirm","K"),Is.True);
+            var old=Run;Run.RestartRun();yield return Until(()=>Run!=null&&Run!=old&&Run.Progress!=null,"Ready after restart.");
+            ConfigureVirtualInput();
+            var hud=Run.GetComponent<R1RunHUD>();
+            var caption=typeof(R1RunHUD).GetMethod("StarterActionCaption",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            Assert.That((string)caption.Invoke(hud,new object[]{Run}),Does.Contain("[K]"));
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));yield return null;
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState());yield return null;
+            Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Ready),"The old key must no longer start a run.");
+            var focus=typeof(R1RunHUD).GetProperty("SeedInputFocused",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            Assert.That(focus,Is.Not.Null);hud.enabled=false;focus.SetValue(hud,true);
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.K));yield return null;
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState());yield return null;
+            Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Ready),"Typing in the seed field must not start a run.");
+            focus.SetValue(hud,false);hud.enabled=true;
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.K));
+            yield return Until(()=>Run.Progress.State==R1RunState.Garage,"The reassigned key should prepare the garage.");
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState());yield return null;
+            Assert.That(Run.StartNextEncounter()&&Run.ChooseRoute(0),Is.True);
+            yield return Until(()=>!Run.Transitioning,"Combat initialized.");Run.Encounter.SetCombatActive(false);
+            Run.Player.Core.ApplyDamage(100000,Run.Player.Core.transform.position,Vector3.up);
+            yield return Until(()=>Run.Progress.State==R1RunState.Lost,"The result screen should appear.");
+            old=Run;InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.K));
+            yield return Until(()=>Run!=null&&Run!=old&&Run.Progress?.State==R1RunState.Ready,"The reassigned key should return to the main menu.");
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState());
+        }
+        finally{profile.ResetDefaults();}
+    }
+    [UnityTest]
+    public IEnumerator MouseMenuConfirmationDoesNotStealUiOrControlsOverlayInput()
+    {
+        var profile=R1ControlProfile.Current;profile.ResetDefaults();
+        try
+        {
+            Assert.That(profile.TryBind("MenuConfirm","MouseBack"),Is.True);
+            var old=Run;Run.RestartRun();yield return Until(()=>Run!=null&&Run!=old&&Run.Progress!=null,"Ready after restart.");
+            var hud=Run.GetComponent<R1RunHUD>();var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+            var handle=typeof(R1RunHUD).GetMethod("TryMenuConfirmMouse",flags);
+            var open=typeof(R1RunHUD).GetMethod("OpenMainControls",flags);var close=typeof(R1RunHUD).GetMethod("CloseMainControls",flags);
+            Assert.That(handle,Is.Not.Null);Assert.That(open,Is.Not.Null);Assert.That(close,Is.Not.Null);
+            open.Invoke(hud,null);handle.Invoke(hud,new object[]{Run,new Event{type=EventType.MouseDown,button=3}});
+            Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Ready),"An open settings panel owns the input.");close.Invoke(hud,null);
+            var used=new Event{type=EventType.MouseDown,button=3};used.Use();handle.Invoke(hud,new object[]{Run,used});
+            Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Ready),"A click already used by the UI must not start a run.");
+            var input=new Event{type=EventType.MouseDown,button=3};handle.Invoke(hud,new object[]{Run,input});
+            Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(input.type,Is.EqualTo(EventType.Used));
+        }
+        finally{profile.ResetDefaults();}
+        yield return null;
+    }
+    [UnityTest]
     public IEnumerator KeyboardEnterStartsRunWithoutPrematureDefeat()
     {
         var old = Run; Run.RestartRun();

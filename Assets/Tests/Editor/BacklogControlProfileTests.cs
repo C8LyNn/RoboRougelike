@@ -11,6 +11,30 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [Test] public void MainMenuConfirmMigratesPersistsAndUsesItsOwnContext()
+    {
+        Assert.That(R1ControlProfile.Actions,Does.Contain("MenuConfirm"));
+        string path=Path.Combine(Path.GetTempPath(),"RRL-controls-menu-"+Guid.NewGuid()+".json");
+        try
+        {
+            var original=new R1ControlProfile(path);
+            var old=R1ControlProfile.Actions.Where(a=>a!="MenuConfirm").ToArray();
+            var data=new LegacyControlData{actions=old,bindings=old.Select(original.Binding).ToArray()};
+            typeof(R1RunCheckpointStorage).GetMethod("WritePayload",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{path,JsonUtility.ToJson(data)});
+            var migrated=new R1ControlProfile(path);Assert.That(migrated.Error,Is.Null);
+            Assert.That(migrated.Binding("MenuConfirm"),Is.EqualTo("Enter"));
+            Assert.That(R1ControlProfile.ValidSnapshot(migrated.Snapshot()),Is.True);
+            Assert.That(migrated.TrySaveBinding("MenuConfirm","W",out _),Is.True,"Movement and main-menu actions have separate contexts.");
+            Assert.That(new R1ControlProfile(path).Binding("MenuConfirm"),Is.EqualTo("W"));
+            Assert.That(migrated.TryBind("Pause","W"),Is.False,"Pause is also active in the menu and must not steal its action.");
+            Assert.That(migrated.TryBind("Pause","K"),Is.True);
+            Assert.That(migrated.TryBind("MenuConfirm","K"),Is.False,"Conflict detection must work in both assignment orders.");
+            Assert.That(migrated.TrySaveBinding("MenuConfirm","MouseBack",out _),Is.True);
+            Assert.That(new R1ControlProfile(path).Binding("MenuConfirm"),Is.EqualTo("MouseBack"));
+            Assert.That(migrated.TrySaveBinding("MenuConfirm","Enter",out _),Is.True);
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+    }
     [Test] public void RewardBindingsMigratePersistAndHaveTheirOwnContext()
     {
         string[] names={"RewardBonus1","RewardBonus2","RewardBonus3","RewardBasket1","RewardBasket2","RewardBasket3","RewardConfirm"};
