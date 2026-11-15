@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14, 19 i 44. Wybór wielu celów impulsu naprawczego
+
+- W trakcie jednego kroku impulsu kolejne uszkodzone części są wybierane z ponownie używanej listy kandydatów. Każda jest ponownie sprawdzana przed naprawą; po wyczerpaniu listy system ponownie sprawdza konstrukcję, aby uwzględnić nowe uszkodzenia. Typowa naprawa wielu części nie tworzy już nowej tablicy i nie przeszukuje całego pojazdu dla każdego kolejnego celu.
+- Unity 6000.3.14f1: `repair_candidates_after.xml` — **7 PASS, 0 FAIL**, w tym do 12 fizycznych części, kontrolowane nowe uszkodzenie podczas kroku, niewielkie i duże premie, koszt, wspólny cooldown oraz utrata urządzenia. Nie porównywano czasu wykonania ani liczby alokacji w Playerze; scenariusz nowego uszkodzenia korzysta z kontrolowanego wywołania podczas zdarzenia zmiany wyglądu.
+- Lista może wymagać dodatkowego przeszukania, gdy części zmieniają stan podczas naprawy. Nie jest to gwarancja czasu klatki ani rozwiązanie limitu 64 podstawowych śrucin; #14 i #44 pozostają otwarte.
+
 ### 14, 19 i 44. Sumowanie małych kroków naprawy
 
 - Impuls naprawczy zachowuje dokładniejszy postęp bieżącego celu między krokami. Bardzo małe, ale dodatnie porcje naprawy nie znikają przez zaokrąglenie pojedynczej klatki; przy zmianie HP lub maksimum celu postęp odnosi się do nowego stanu. Koszt, cooldown i wspólne działanie kopii pozostają bez zmian.

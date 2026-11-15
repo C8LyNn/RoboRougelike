@@ -16,6 +16,7 @@ namespace RoboRougelike.R3
         sealed class Pulse
         {
             public readonly List<R3MountedPart> Devices=new List<R3MountedPart>();
+            public readonly List<R3MountedPart> Candidates=new List<R3MountedPart>();
             public R3MountedPart Target,ProgressTarget;
             public float Remaining,ObservedHp,ObservedMax;
             public double PreciseRatio;
@@ -69,6 +70,23 @@ namespace RoboRougelike.R3
             var candidates=assembly.Parts.Where(Damaged).ToArray();
             return candidates.Length==0?null:candidates[Random.Range(0,candidates.Length)];
         }
+        R3MountedPart NextTarget(Pulse pulse)
+        {
+            while(true)
+            {
+                if(pulse.Candidates.Count==0)
+                {
+                    // Re-scan when exhausted so callbacks that damaged a new
+                    // part during this step do not make that repair disappear.
+                    foreach(var part in assembly.Parts)if(Damaged(part))pulse.Candidates.Add(part);
+                    if(pulse.Candidates.Count==0)return null;
+                }
+                int index=Random.Range(0,pulse.Candidates.Count),last=pulse.Candidates.Count-1;
+                var selected=pulse.Candidates[index];
+                pulse.Candidates[index]=pulse.Candidates[last];pulse.Candidates.RemoveAt(last);
+                if(Damaged(selected))return selected;
+            }
+        }
         public int TryActivate()
         {
             var run=R1RunController.Instance;
@@ -104,9 +122,10 @@ namespace RoboRougelike.R3
                 int units=0;foreach(var device in pulse.Devices)if(ReadyHardware(device))units+=R3VehicleModel.TierEffectUnits(device.Tier);
                 if(units==0){active.RemoveAt(i);continue;}
                 double frame=System.Math.Min(delta,pulse.Remaining);pulse.Remaining-=(float)frame;
+                pulse.Candidates.Clear();
                 while(frame>0d)
                 {
-                    if(!Damaged(pulse.Target))pulse.Target=RandomTarget();
+                    if(!Damaged(pulse.Target))pulse.Target=NextTarget(pulse);
                     if(pulse.Target==null)break;
                     var hp=pulse.Target.Damageable;
                     float bonus=GetComponent<R3MountedBonusEffects>()?.RepairEfficiencyMultiplier??1f;

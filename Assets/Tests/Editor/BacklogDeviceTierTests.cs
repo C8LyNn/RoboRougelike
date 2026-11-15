@@ -1964,5 +1964,36 @@ public sealed class BacklogDeviceTierGameplayTests
         }
         finally{Object.Destroy(bonus);}
     }
+    [UnityTest] public IEnumerator StrongPulseRepairsManyPartsIncludingDamageCreatedDuringTheStep()
+    {
+        FuseAndMount(R3PartKind.RepairPulse);
+        var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="repair-many-parts-test";
+        bonus.Effect=R1UpgradeEffect.RepairEfficiency;bonus.Amount=100000000f;
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{bonus}),Is.True);
+        var id=model.Inventory.Single(p=>p.UpgradeId==bonus.Id).Id;
+        var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+        Assert.That(run.GarageMount(id,cells.First(c=>model.OwnedPlacementError(id,c,default)==null)),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var pulse=run.Player.GetComponent<R3RepairPulse>();
+        var targets=assembly.Parts.Where(p=>p.Kind==R3PartKind.Armor&&p.Operational).Take(12).Select(p=>p.Damageable).ToArray();
+        Assert.That(targets.Length,Is.GreaterThanOrEqualTo(4));
+        var initial=targets.Take(targets.Length-1).ToArray();var later=targets.Last();
+        foreach(var hp in initial)hp.RestoreHealthRatio(.5f);
+        bool added=false;
+        System.Action onHealthChange=()=>
+        {
+            if(!added&&initial.Count(hp=>hp.CurrentHp==hp.MaxHp)>=2)
+            {added=true;later.RestoreHealthRatio(.5f);}
+        };
+        foreach(var hp in initial)hp.VisualDamageChanged+=onHealthChange;
+        try
+        {
+            Assert.That(pulse.TryActivate(),Is.EqualTo(1));
+            typeof(R3RepairPulse).GetMethod("Tick",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(pulse,new object[]{1f});
+            Assert.That(added,Is.True,"The additional damage must occur during repair, after target selection began.");
+            Assert.That(targets.All(hp=>hp.CurrentHp==hp.MaxHp),Is.True,"All targets, including the newly damaged part, must be repaired.");
+        }
+        finally{foreach(var hp in initial)hp.VisualDamageChanged-=onHealthChange;Object.Destroy(bonus);}
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
