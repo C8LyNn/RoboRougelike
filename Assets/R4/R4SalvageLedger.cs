@@ -61,6 +61,7 @@ namespace RoboRougelike.R4
         public IEnumerable<R4SalvageItem> RewardItems => items.Where(p=>!physicalDrops.Contains(p.Id));
         public IEnumerable<R4SalvageItem> MissedPhysicalItems => items.Where(p=>physicalDrops.Contains(p.Id));
         public int Limit { get; }
+        public long BasketRevision { get; private set; }
         public bool Closed { get; private set; }
         public int DismantledScrap { get; private set; }
         public R4SalvageLedger(int limit=2){Limit=Math.Max(0,Math.Min(8,limit));}
@@ -76,9 +77,13 @@ namespace RoboRougelike.R4
         public bool HasEarlyDrop(string id)=>!string.IsNullOrWhiteSpace(id)&&earlyOwners.ContainsKey(id);
         public bool MarkPhysicalDrop(string id)
         {
-            if(Closed||string.IsNullOrWhiteSpace(id)||!items.Any(p=>p.Id==id&&p.PhysicalLootEligible))return false;
-            return physicalDrops.Add(id);
+            if(Closed||string.IsNullOrWhiteSpace(id))return false;
+            var item=items.FirstOrDefault(p=>p.Id==id&&p.PhysicalLootEligible);
+            if(item==null||!physicalDrops.Add(id))return false;
+            if(item.Selectable&&HasBasketSource(id))BasketRevision++;
+            return true;
         }
+        bool HasBasketSource(string id)=>basketSources.Any(source=>source.Parts.Any(part=>part.Id==id));
         public bool TryRecoverMissed(R3VehicleModel model,string id)
         {
             if(Closed||model==null||!physicalDrops.Contains(id)||!items.Any(p=>p.Id==id))return false;
@@ -99,7 +104,8 @@ namespace RoboRougelike.R4
             var batch=new List<R3PartState>{part};
             for(int i=1;i<count;i++){var copy=part.Copy();copy.Id=Guid.NewGuid().ToString("N");batch.Add(copy);}
             if(!model.ReceivePhysicalSalvage(batch))return false;
-            collected.Add(id);items.Remove(item);return true;
+            bool changesBaskets=item.Selectable&&!physicalDrops.Contains(id)&&HasBasketSource(id);
+            collected.Add(id);items.Remove(item);if(changesBaskets)BasketRevision++;return true;
         }
         private bool RecordCore(string enemyId,IEnumerable<R4SalvageItem> equipment,R3EnemyArchetype? archetype)
         {
@@ -116,6 +122,7 @@ namespace RoboRougelike.R4
                 var source=batch.Select(p=>earlyItems.TryGetValue(p.Id,out var earlier)?earlier:p)
                     .Concat(earlyOwners.Where(p=>p.Value==enemyId&&!seen.Contains(p.Key)).Select(p=>earlyItems[p.Key])).ToArray();
                 basketSources.Add((archetype.Value,source));
+                if(source.Any(p=>p.Selectable&&!collected.Contains(p.Id)&&!physicalDrops.Contains(p.Id)))BasketRevision++;
             }
             return true;
         }

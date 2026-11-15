@@ -84,7 +84,7 @@ namespace RoboRougelike.R1
                 $"Bonus: {(selectedBonus>=0?"wybrany":"wymagany")} • Zestaw: {(selectedBasket>=0?rewardPartCount+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n"+
                 $"Niewybrane części → +{run.VehicleModel.PreviewAward(ledger.PreviewScrap(run.VehicleModel,lootSelection))} Z. Bonus jest nieaktywny do montażu.\n"+
                 (!room?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. Otwórz magazyn, aby je zwolnić.":rewardClaimFeedback??""),small);
-            GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount);
+            GUI.enabled=rewardBasketRefreshFrame!=Time.frameCount&&RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount);
             if(GUI.Button(PortraitRewardConfirm(),RewardActionCaption(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount),button))PortraitRewardConfirm(run);
             GUI.enabled=true;
         }

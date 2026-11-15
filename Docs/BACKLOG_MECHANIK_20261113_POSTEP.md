@@ -42,6 +42,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Unity 6000.3.14f1: `legacy_part_health_labels.xml` i `.log`: **4 PASS, 0 FAIL** dla istniejących kontroli wspólnego formatowania HP w katalogu i inspekcji. Test nie klika ani nie sprawdza wyglądu starszych paneli w Playerze; kompilacja projektu w Unity przeszła.
 - Komunikat po fuzji również używa tego formatu: wynik o HP mniejszym od 100% nie jest przedstawiany jako w pełni sprawny. `fusion_message_after.xml` i `.log`: **7 PASS, 0 FAIL**, w tym fuzja w rzeczywistym garażu, montaż wyniku i podgląd; `fusion_message_before.xml`: **1 FAIL**, komunikat pokazywał 100% mimo uszkodzenia.
 
+### 30–31, 44. Odświeżanie nieaktualnych zestawów
+
+- Gdy część z przygotowanych zestawów stanie się niedostępna albo do rejestru dojdzie nowe źródło, ekran odtwarza oferty z aktualnym ziarnem, usuwa nieaktualny wybór zestawu i prosi o ponowny wybór. Zachowuje wybrany bonus, otwarte panele i opłacony wynik wcześniejszego losowania. Zebranie łupu już wcześniej wykluczonego z zestawów nie resetuje wyboru. Zmiana nie pobiera ponownie złomu.
+- W klatce odświeżenia stary klik lub klawisz nie wybiera, nie przelosowuje ani nie zatwierdza innego zestawu; kolejne świadome potwierdzenie działa normalnie. Unity 6000.3.14f1: `basket_refresh_complete.xml` i `.log`: **33 PASS, 0 FAIL**, w tym faktyczny Enter, płatny reroll, ponowny odbiór i zachowanie ID. `basket_refresh_before.xml`: **1 PASS, 1 FAIL** — stary zestaw pozostawał dostępny; `basket_refresh_input_before.xml`: **1 FAIL** — Enter zatwierdzał wynik w klatce zmiany. Scenariusze sterowane testem; ręczna obsługa i wygląd komunikatu: **NOT RUN**.
+
 ### 14, 30–32, 44. Dalsze strony przy wyczerpywaniu kombinacji
 
 - Generator wznawia przeszukiwanie kombinacji w miejscu, do którego dotarł, zamiast od początku sprawdzać wcześniej wykorzystane zestawy. Gdy dostępność części źródła się zmieni, jego przeszukiwanie jest odtwarzane; całkowicie niedostępne źródła są pomijane. Nie dodano limitu liczby ofert ani nie zmieniono zasad wyboru fizycznych części.

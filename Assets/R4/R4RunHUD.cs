@@ -41,6 +41,9 @@ namespace RoboRougelike.R1
         private int selectedBasket=-1;
         private int selectedBonus=-1;
         private R4SalvageLedger displayedLedger;
+        private long displayedBasketRevision;
+        private int rewardBasketSeed;
+        private int rewardBasketRefreshFrame=-1;
         private int lootPage,inventoryPage,basketPage;
         private bool inventoryOpen;
         private string dismantleConfirmation;
@@ -74,16 +77,33 @@ namespace RoboRougelike.R1
         }
         private void TrackRewardLedger(R4SalvageLedger ledger)
         {
-            if(displayedLedger==ledger)return;
-            displayedLedger=ledger;lootSelection.Clear();selectedBonus=-1;lootPage=0;basketPage=0;basketRerollCount=0;
             var run=R1RunController.Instance;
-            rewardBasketStream?.Dispose();
-            rewardBasketStream=ledger==null?null:new RewardBasketStream(ledger.EnumerateBasketOffers(
-                (run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397),run?.Progress?.EncounterIndex??0,run?.VehicleModel?.RewardBasketOfferCount??3));
-            rewardBasketStream?.LoadThrough(6);
-            rewardBaskets=rewardBasketStream!=null?rewardBasketStream.Items:System.Array.Empty<R4SalvageBasket>();
+            if(displayedLedger==ledger)
+            {
+                if(ledger==null||displayedBasketRevision==ledger.BasketRevision)return;
+                // A prepared or selected basket may now contain a collected
+                // part. Keep the bonus and open panels, but require a new basket.
+                RebuildRewardBasketStream(ledger,run,rewardBasketSeed);
+                lootSelection.Clear();selectedBasket=-1;basketPage=0;
+                rewardBasketRefreshFrame=Time.frameCount;
+                rewardClaimFeedback="Dostępne części się zmieniły. Wybierz zestaw ponownie.";
+                return;
+            }
+            displayedLedger=ledger;lootSelection.Clear();selectedBonus=-1;lootPage=0;basketPage=0;basketRerollCount=0;
+            rewardBasketRefreshFrame=-1;
+            rewardBasketSeed=(run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397);
+            RebuildRewardBasketStream(ledger,run,rewardBasketSeed);
             selectedBasket=-1;
             rewardInventoryOpen=false;rewardMissedOpen=false;rewardMissedPage=0;rewardMissedFeedback=null;rewardInventoryDamagedOnly=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;rewardClaimFeedback=null;
+        }
+        private void RebuildRewardBasketStream(R4SalvageLedger ledger,R1RunController run,int seed)
+        {
+            rewardBasketStream?.Dispose();
+            rewardBasketStream=ledger==null?null:new RewardBasketStream(ledger.EnumerateBasketOffers(
+                seed,run?.Progress?.EncounterIndex??0,run?.VehicleModel?.RewardBasketOfferCount??3));
+            rewardBasketStream?.LoadThrough(6);
+            rewardBaskets=rewardBasketStream!=null?rewardBasketStream.Items:System.Array.Empty<R4SalvageBasket>();
+            displayedBasketRevision=ledger?.BasketRevision??0;
         }
         internal bool CloseRewardInventory()
         {
@@ -105,7 +125,7 @@ namespace RoboRougelike.R1
         }
         private void ChooseRewardBasket(int index)
         {
-            if(index<0||index>=rewardBaskets.Count)return;
+            if(rewardBasketRefreshFrame==Time.frameCount||index<0||index>=rewardBaskets.Count)return;
             selectedBasket=index;rewardClaimFeedback=null;lootSelection.Clear();
             foreach(var item in rewardBaskets[index].Items)lootSelection.Add(item.Id);
         }
@@ -144,22 +164,23 @@ namespace RoboRougelike.R1
         private bool RerollRewardBaskets(R1RunController run)
         {
             if(run==null||run.VehicleModel==null||run.Definition==null||run.Progress?.State!=R1RunState.Salvage||
-                run.Salvage==null||run.Salvage!=displayedLedger||run.Salvage.Closed||rewardBaskets.Count==0)return false;
+                run.Salvage==null||run.Salvage!=displayedLedger||run.Salvage.Closed||rewardBaskets.Count==0||rewardBasketRefreshFrame==Time.frameCount)return false;
             int price=Mathf.Max(0,run.Definition.RewardBasketRerollCost);
             if(run.VehicleModel.Scrap<price){rewardClaimFeedback=$"Brakuje {price-run.VehicleModel.Scrap} Z na losowanie.";return false;}
             RewardBasketStream next=null;
+            int nextSeed=0;
             int stage=run.Progress.EncounterIndex;
             for(int attempt=1;attempt<=16;attempt++)
             {
                 int seed=unchecked((run.Seed^(stage*397))+((basketRerollCount*16+attempt)*7919));
                 var candidate=new RewardBasketStream(run.Salvage.EnumerateBasketOffers(seed,stage,run.VehicleModel.RewardBasketOfferCount));
                 candidate.LoadThrough(System.Math.Max(6,rewardBaskets.Count));
-                if(candidate.Items.Count>0&&!SameRewardBaskets(rewardBaskets,candidate.Items)){next=candidate;break;}
+                if(candidate.Items.Count>0&&!SameRewardBaskets(rewardBaskets,candidate.Items)){next=candidate;nextSeed=seed;break;}
                 candidate.Dispose();
             }
             if(next==null){rewardClaimFeedback="Brak innego zestawu na dostępnych stronach.";return false;}
             if(!run.VehicleModel.TrySpendScrap(price)){next.Dispose();return false;}
-            rewardBasketStream?.Dispose();rewardBasketStream=next;
+            rewardBasketStream?.Dispose();rewardBasketStream=next;rewardBasketSeed=nextSeed;displayedBasketRevision=run.Salvage.BasketRevision;
             basketRerollCount++;rewardBaskets=next.Items;basketPage=0;selectedBasket=-1;lootSelection.Clear();
             rewardClaimFeedback=$"Nowe zestawy • koszt {price} Z. Wybierz zestaw.";return true;
         }
@@ -175,6 +196,7 @@ namespace RoboRougelike.R1
         private void SelectRewardBonus(int index){selectedBonus=index;rewardClaimFeedback=null;}
         private bool ConfirmSelectedRewards(R1RunController run)
         {
+            if(rewardBasketRefreshFrame==Time.frameCount)return false;
             bool accepted=run.ConfirmRewards(lootSelection,selectedBonus>=0?new[]{selectedBonus}:System.Array.Empty<int>());
             if(accepted){rewardBasketStream?.Dispose();rewardBasketStream=null;}
             rewardClaimFeedback=accepted?null:"Nie udało się odebrać nagród. Spróbuj ponownie.";
@@ -233,6 +255,7 @@ namespace RoboRougelike.R1
             var run=R1RunController.Instance;
             if(run?.Progress?.State!=R1RunState.Salvage||run.Transitioning||run.Paused||run.QuitRequested||run.Salvage==null)return;
             TrackRewardLedger(run.Salvage);
+            if(rewardBasketRefreshFrame==Time.frameCount)return;
             if(rewardInventoryOpen||rewardMissedOpen)return;
             int index=keyboard.digit1Key.wasPressedThisFrame?0:keyboard.digit2Key.wasPressedThisFrame?1:keyboard.digit3Key.wasPressedThisFrame?2:-1;
             if(index>=0&&index<run.Progress.Offers.Count)
@@ -302,7 +325,7 @@ namespace RoboRougelike.R1
                 $"Moduł: {(selectedBonus>=0?"wybrany":"wymagany")}  •  Zestaw: {(selectedBasket>=0?rewardPartCount+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n" +
                 $"Niewybrane części → +{run.VehicleModel.PreviewAward(ledger.PreviewScrap(run.VehicleModel,lootSelection))} Z.\n" +
                 "Bonusy trafiają do magazynu i pozostają NIEAKTYWNE do montażu.",small);
-            GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount);
+            GUI.enabled=rewardBasketRefreshFrame!=Time.frameCount&&RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount);
             if(GUI.Button(new Rect(805,610,420,68),RewardActionCaption(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,rewardPartCount),button))
                 ConfirmSelectedRewards(run);
             GUI.enabled=true;
