@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 18, 28 i 44. Aktualizacja testów energii do obecnych zasad
+
+- Zaktualizowano pięć niezaliczonych wcześniej scenariuszy: pojemność uwzględnia pasywny moduł pojazdu startowego, stary checkpoint zachowuje poprawną pojemność, a bezpłatny strzał jest sprawdzany po rzeczywistym upływie cooldownu. Test broni pociskowej obejmuje pięć rodzajów broni; osobne scenariusze sprawdzają przełączaną aurę i jej ciągły koszt. Scenariusz zniszczenia baterii używa trafienia uwzględniającego propagację obrażeń i montuje żyroskop przed baterią, aby ich utrata była rozróżnialna.
+- Unity 6000.3.14f1: wcześniejszy `energy_precision_verified.xml` — **41 PASS, 6 FAIL**. W pierwszym przebiegu zmienionych scenariuszy `energy_suite_current_first.xml` — **14 PASS, 1 FAIL**: dawne trafienie o wartości 100000 niszczyło przez połączenia również pozostałą konstrukcję; poprawiono siłę trafienia. Końcowy `energy_suite_current_final.xml` — **17 PASS, 0 FAIL**, w tym cała klasa `UnitCellEnergyTests`, oba osobne testy aury i dokładność checkpointu. W pierwszym przebiegu dwa filtry aury miały błędne nazwy klas i nie uruchomiły testów; końcowy wynik zawiera oba prawidłowo nazwane scenariusze.
+- To zmiana testów, nie nowe zachowanie gry. Zniszczenie baterii sprawdzono w kontrolowanej scenie, a użycie aury w osobnych testach fizycznych. Pełna regresja i ręczny odbiór punktu #44 pozostają otwarte.
+
 ### 14, 18 i 44. Dokładna energia w checkpointach
 
 - Checkpoint przechowuje dodatkowo dokładne saldo energii, zachowując dotychczasowe pole `energy` dla zgodności. Stare checkpointy bez nowego pola nadal używają swojej zapisanej wartości. Nieprawidłowy, zbyt duży lub niezgodny z polem `energy` nowy zapis jest odrzucany zamiast tworzyć zasoby; odczyt nadal uwzględnia maksymalną pojemność pojazdu.
