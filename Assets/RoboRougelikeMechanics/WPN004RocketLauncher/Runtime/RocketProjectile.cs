@@ -20,7 +20,22 @@ namespace RoboRougelike.Mechanics.Rockets
         private SphereCollider sphere;
         private RaycastHit[] castBuffer;
         private Collider[] blastBuffer;
-        private RaycastHit[] occlusionBuffer;
+        private sealed class BlastQueryBuffers
+        {
+            public Collider[] Overlaps=new Collider[32];
+            public RaycastHit[] Rays=new RaycastHit[32];
+            public bool Grow(RocketSpec spec)
+            {
+                bool grew=false;
+                if(Overlaps.Length<spec.MaxBlastColliders)
+                {System.Array.Resize(ref Overlaps,Mathf.Min(Overlaps.Length*2,spec.MaxBlastColliders));grew=true;}
+                if(Rays.Length<spec.MaxCastHits)
+                {System.Array.Resize(ref Rays,Mathf.Min(Rays.Length*2,spec.MaxCastHits));grew=true;}
+                return grew;
+            }
+        }
+        private static readonly BlastQueryBuffers sharedBlastBuffers=new BlastQueryBuffers();
+        private static bool sharedBlastBuffersInUse;
         private RocketSpec spec;
         private Transform ownerRoot;
         private Transform guidedTarget;
@@ -79,7 +94,6 @@ namespace RoboRougelike.Mechanics.Rockets
             // when an explosion actually needs it.
             castBuffer = new RaycastHit[Mathf.Min(32,spec.MaxCastHits)];
             blastBuffer = new Collider[Mathf.Min(32,spec.MaxBlastColliders)];
-            occlusionBuffer = null;
             flightBoundary = GetComponent<IRocketFlightBoundary>();
             initialized = true;
             if(isActiveAndEnabled)activeFlights.Add(this);
@@ -201,18 +215,7 @@ namespace RoboRougelike.Mechanics.Rockets
             activeFlights.Remove(this);
             if (dealDamage)
             {
-                if(blastBuffer.Length<spec.MaxBlastColliders)System.Array.Resize(ref blastBuffer,spec.MaxBlastColliders);
-                if(occlusionBuffer==null)occlusionBuffer=new RaycastHit[spec.MaxCastHits];
-                RocketBlastResult result = RocketBlastResolver.Resolve(point, normal, spec,
-                    ownerRoot, attacker, blastBuffer, occlusionBuffer,flightBoundary as IRocketBlastBoundary);
-                if(result.Overflow)
-                {
-                    // Retry atomically with enough room for every active collider in the scene.
-                    // The resolver applies no damage before returning overflow.
-                    int capacity=Object.FindObjectsByType<Collider>(FindObjectsSortMode.None).Length+1;
-                    result=RocketBlastResolver.Resolve(point,normal,spec,ownerRoot,attacker,
-                        new Collider[capacity],new RaycastHit[capacity],flightBoundary as IRocketBlastBoundary);
-                }
+                RocketBlastResult result=ResolveBlast(point,normal);
                 if (result.Overflow)
                     Debug.LogWarning("WPN-004: blast overlap overflow; no explosion damage applied.", this);
                 try{Detonated?.Invoke(this,point,normal);}catch(System.Exception error){Debug.LogException(error);}
@@ -220,6 +223,35 @@ namespace RoboRougelike.Mechanics.Rockets
             if (optionalExplosionVfxPrefab != null)
                 Instantiate(optionalExplosionVfxPrefab, point, Quaternion.identity);
             Destroy(gameObject);
+        }
+
+        private RocketBlastResult ResolveBlast(Vector3 point,Vector3 normal)
+        {
+            // Damage callbacks can trigger another explosion before this one
+            // finishes; that nested blast must never overwrite our results.
+            bool shared=!sharedBlastBuffersInUse;
+            var buffers=shared?sharedBlastBuffers:new BlastQueryBuffers();
+            if(shared)sharedBlastBuffersInUse=true;
+            try
+            {
+                RocketBlastResult result;
+                do
+                {
+                    result=RocketBlastResolver.Resolve(point,normal,spec,ownerRoot,attacker,
+                        buffers.Overlaps,buffers.Rays,flightBoundary as IRocketBlastBoundary);
+                    if(!result.Overflow)return result;
+                }while(buffers.Grow(spec));
+                // Each incomplete attempt is atomic. If configured buffers
+                // still overflow, retry with space for every active collider.
+                int capacity=Object.FindObjectsByType<Collider>(FindObjectsSortMode.None).Length+1;
+                return RocketBlastResolver.Resolve(point,normal,spec,ownerRoot,attacker,
+                    new Collider[capacity],new RaycastHit[capacity],flightBoundary as IRocketBlastBoundary);
+            }
+            finally
+            {
+                System.Array.Clear(buffers.Overlaps,0,buffers.Overlaps.Length);
+                if(shared)sharedBlastBuffersInUse=false;
+            }
         }
 
         private bool RetireLostOwner()

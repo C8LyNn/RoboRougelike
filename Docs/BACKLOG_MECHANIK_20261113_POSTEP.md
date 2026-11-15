@@ -17,6 +17,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - Unity 6000.3.14f1: `rail_scratch_after.xml` i `.log`: **7 PASS, 0 FAIL**, w tym zagnieżdżony strzał podczas śmierci celu, ściana, kopuła, Double Shot oraz ponad 4096 colliderów. Pomiar edytora dla utworzenia 100 komponentów: około 596 KB przed zmianą (`rail_scratch_before.xml`: **1 FAIL**), około 35 KB po zmianie; kontrola wykryła 1 MB.
 - Jest to przygotowanie wydajnościowe, a nie usunięcie limitu bonusowych pocisków ani pomiar FPS w Windows Player. Ręczny playtest: **NOT RUN**.
 
+### 02, 14 i 44. Bufory wybuchu rakiet
+
+- Bufory kolizji i widoczności wybuchu są współdzielone między wybuchami i zwiększane w razie potrzeby. Zagnieżdżony wybuch korzysta z osobnych buforów. Niepełne zapytanie jest ponawiane przed zadaniem obrażeń; jeśli ustawiony rozmiar nadal nie wystarcza, następuje pełna próba dla wszystkich aktywnych colliderów. Bufory lotu pozostają osobne dla każdej rakiety.
+- Unity 6000.3.14f1: `rocket_blast_shared_final.xml` i `.log`: **6 PASS, 0 FAIL**, w tym dwa zagnieżdżone rzeczywiste wybuchy, 4100 colliderów, pojedyncze obrażenia części, kopuła i pamięć podczas lotu. `rocket_blast_shared_package.xml`: **6 PASS** PlayMode, w tym przechwycenie, ściana, wyjątek odbiornika oraz przepełnienie. Wcześniejszy `rocket_blast_alloc_after.xml`: **3 PASS** dla rzeczywistych strzałów i pomiaru; pozostałe wybrane nazwy miały niewłaściwą klasę i nie zostały w tym przebiegu wykonane.
+- Pomiar edytora dla 50 rzeczywistych wybuchów: około 1,70 MB przed zmianą (`rocket_blast_alloc_before.xml`: **1 FAIL**), około 170 KB po zmianie; kontrola wykryła 1 MB. `rocket_blast_shared_stress.xml`: **5 PASS, 1 FAIL**, bo cele testu zagnieżdżonego częściowo się zasłaniały; po zmianie ustawienia ponowny przebieg przeszedł. Pomiar FPS i ręczna gra Windows: **NOT RUN**. Limit bonusowych rakiet pozostaje otwarty.
+
 ### 02, 14 i 44. Ponowne użycie fizycznych pocisków railguna
 
 - Railgun korzysta z istniejącej puli nieaktywnych pocisków. Przy kolejnym strzale czyści historię przebitych celów i dystans; przejście między railgunem a zwykłym pociskiem przywraca odpowiednio tryb kolizji i fizykę. Pula przechowuje ograniczoną liczbę nieaktywnych obiektów, ale nie ogranicza podstawowych strzałów.

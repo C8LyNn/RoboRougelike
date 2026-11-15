@@ -105,11 +105,9 @@ public class RRLW6RocketPhysicalTests
             for(int i=count;i<rockets.Length;i++)Assert.That(rockets[i].TryInitialize(large,body,owner.transform,owner,null,Vector3.forward),Is.True);
             var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
             var cast=typeof(RocketProjectile).GetField("castBuffer",flags);var blast=typeof(RocketProjectile).GetField("blastBuffer",flags);
-            var occlusion=typeof(RocketProjectile).GetField("occlusionBuffer",flags);
-            Assert.That(cast,Is.Not.Null);Assert.That(blast,Is.Not.Null);Assert.That(occlusion,Is.Not.Null);
+            Assert.That(cast,Is.Not.Null);Assert.That(blast,Is.Not.Null);
             int hitSize=System.Runtime.InteropServices.Marshal.SizeOf(typeof(RaycastHit));
             Func<RocketProjectile,long> bytes=rocket=>((cast.GetValue(rocket) as RaycastHit[])?.Length??0)*(long)hitSize+
-                ((occlusion.GetValue(rocket) as RaycastHit[])?.Length??0)*(long)hitSize+
                 ((blast.GetValue(rocket) as Collider[])?.Length??0)*(long)IntPtr.Size;
             long smallBytes=rockets.Take(count).Sum(bytes);long largeBytes=rockets.Skip(count).Sum(bytes);
             Assert.That(largeBytes-smallBytes,Is.LessThan(1024L*1024),$"The uncommon large collision capacity should not allocate an extra MiB while {count} rockets are only flying (small={smallBytes}, large={largeBytes}).");
