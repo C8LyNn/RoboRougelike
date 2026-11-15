@@ -13,7 +13,7 @@ namespace RoboRougelike.WPN002Railgun
         [Min(0f)] public float energyLossPerMeter = 0.4f;
         [Min(0.01f)] public float damagePerEnergy = 0.65f;
         [Min(1f)] public float maximumDamagePerPart = 75f;
-        [Range(1, 24)] public int maximumDistinctParts = 6;
+        [Min(1)] public int maximumDistinctParts = 6;
         [Min(0f)] public float minimumEnergyToContinue = 2f;
         [Min(0f)] public float cooldownSeconds = 2.4f;
         [Min(0f)] public float recoilImpulse = 48f;
@@ -24,11 +24,11 @@ namespace RoboRougelike.WPN002Railgun
             RailgunRules.ClampFinite(projectileSpeed, 1f, 600f, 85f),
             RailgunRules.ClampFinite(maximumRange, 1f, 1500f, 120f),
             RailgunRules.ClampFinite(projectileRadius, 0.005f, 1f, 0.075f),
-            RailgunRules.ClampFinite(initialPenetrationEnergy, 1f, 10000f, 100f),
+            RailgunRules.Finite(initialPenetrationEnergy)?Mathf.Max(1f,initialPenetrationEnergy):100f,
             RailgunRules.ClampFinite(energyLossPerMeter, 0f, 100f, 0.4f),
             RailgunRules.ClampFinite(damagePerEnergy, 0.001f, 100f, 0.65f),
             RailgunRules.ClampFinite(maximumDamagePerPart, 0.01f, 5000f, 75f),
-            Mathf.Clamp(maximumDistinctParts, 1, 24),
+            Mathf.Max(1,maximumDistinctParts),
             RailgunRules.ClampFinite(minimumEnergyToContinue, 0f, 9999f, 2f),
             RailgunRules.NonNegativeCooldown(cooldownSeconds, 2.4f),
             RailgunRules.ClampFinite(recoilImpulse, 0f, 50000f, 48f),

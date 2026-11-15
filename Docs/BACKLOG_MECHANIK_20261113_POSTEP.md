@@ -875,3 +875,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 #### 43. Czytelność prototypu minimapy
 
 - Licznik opisano jako liczbę wrogów, a pod mapą dodano krótką legendę kolorów gracza i przeciwnika. Układ wizualny w Windows Playerze nadal wymaga ręcznego sprawdzenia; zmiana nie modyfikuje wykrywania. Testów automatycznych wyłącznie dla tekstu i znaczników nie uruchamiano.
+
+#### 14. Penetracja railguna
+
+- Konfiguracja nie obcina już maksymalnej liczby przebijanych części do 24 ani początkowej energii penetracji do 10 000. Oba parametry gracza są dostępne w konfiguracji ekonomii, kopiowane przez model i domyślnie pozostają na poprzednich wartościach 6 oraz 100; przeciwnik zachowuje dotychczasowe ustawienia. Pocisk wciąż traci energię na przelot i opór części oraz zatrzymuje się zgodnie z ustawionym limitem i światem fizyki. Dodano ochronę przed przepełnieniem licznika na granicy `int`.
+- Unity 6000.3.14f1: **26 PASS, 0 FAIL** (`railgun_parts_release.xml`, `.log`) obejmuje 30 faktycznie trafionych odrębnych części, poprzedni strzał, konfigurację 999 części i 50 000 energii, wartości istniejącego zasobu, kopię ustawień i skrajny licznik. Przed zmianą `railgun_parts_red2.xml`: **2 FAIL** — obcięcie do 24 i brak konfiguracji. Pierwsza próba testu nie kompilowała się z powodu niejednoznacznego `Object`; kolejne dwie poprawiono odpowiednio o wywołanie rzeczywistej ścieżki strzału i sprzątanie już zniszczonych celów. Większe scenariusze niż 30 celów, balans i ręczna gra: **NOT RUN**. Globalne limity liczby jednoczesnych pocisków i rakiet nadal obowiązują.

@@ -9,7 +9,13 @@ namespace RoboRougelike.WPN002Railgun.Tests.EditMode
         [Test] public void DefaultHasPositiveRange() => Assert.That(new RailgunConfig().Snapshot().Range, Is.GreaterThan(0));
         [Test] public void DefaultPenetratesMultipleParts() => Assert.That(new RailgunConfig().Snapshot().MaxDistinctParts, Is.GreaterThan(1));
         [Test] public void DefaultHasRecoil() => Assert.That(new RailgunConfig().Snapshot().RecoilImpulse, Is.GreaterThan(0));
-        [Test] public void HugeMaximumPartCountIsCapped() => Assert.That(new RailgunConfig { maximumDistinctParts = 999 }.Snapshot().MaxDistinctParts, Is.EqualTo(24));
+        [Test] public void LargeMaximumPartCountIsPreserved() => Assert.That(new RailgunConfig { maximumDistinctParts = 999 }.Snapshot().MaxDistinctParts, Is.EqualTo(999));
+        [Test] public void LargeFinitePenetrationEnergyIsPreserved() => Assert.That(new RailgunConfig { initialPenetrationEnergy = 50000 }.Snapshot().InitialEnergy, Is.EqualTo(50000));
+        [Test] public void MaximumPartCountDoesNotOverflowAtItsLastImpact()
+        {
+            var result=RailgunRules.Evaluate(100,1,1,100,int.MaxValue,int.MaxValue,1,true);
+            Assert.That(result.Continues,Is.False);
+        }
         [Test] public void TooSmallPartCountIsRaised() => Assert.That(new RailgunConfig { maximumDistinctParts = -1 }.Snapshot().MaxDistinctParts, Is.EqualTo(1));
         [Test] public void NanSpeedUsesFallback() => Assert.That(new RailgunConfig { projectileSpeed = float.NaN }.Snapshot().Speed, Is.EqualTo(85f));
         [Test] public void NegativeEnergyIsClamped() => Assert.That(new RailgunConfig { initialPenetrationEnergy = -4f }.Snapshot().InitialEnergy, Is.GreaterThan(0));

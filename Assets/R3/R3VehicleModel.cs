@@ -107,6 +107,8 @@ namespace RoboRougelike.R3
         public int CargoUplinkCost=40;
         public float RadarRangePerUnit=50f,MinimapRangePerUnit=50f;
         public int RadarModuleCost=40,MinimapModuleCost=40;
+        public int RailgunMaxPenetratedParts=6;
+        public float RailgunInitialPenetrationEnergy=100f;
         public float StructuralScanRange=60f,StructuralScanEnergy=5f,StructuralScanCooldown=8f;
         [Min(1)] public int StructuralScanMaxParts=16;
         public int MissedLootRecoveryCost=10;
@@ -506,6 +508,7 @@ namespace RoboRougelike.R3
             copy.Economy.StructuralScanRange=Economy.StructuralScanRange;copy.Economy.StructuralScanEnergy=Economy.StructuralScanEnergy;copy.Economy.StructuralScanCooldown=Economy.StructuralScanCooldown;copy.Economy.StructuralScanMaxParts=Economy.StructuralScanMaxParts;
             copy.Economy.DroneAttackRange=Economy.DroneAttackRange;copy.Economy.TurretAttackRange=Economy.TurretAttackRange;copy.Economy.DroneFollowRadius=Economy.DroneFollowRadius;copy.Economy.DroneHoverHeight=Economy.DroneHoverHeight;
             copy.Economy.RadarRangePerUnit=Economy.RadarRangePerUnit;copy.Economy.MinimapRangePerUnit=Economy.MinimapRangePerUnit;copy.Economy.RadarModuleCost=Economy.RadarModuleCost;copy.Economy.MinimapModuleCost=Economy.MinimapModuleCost;
+            copy.Economy.RailgunMaxPenetratedParts=Economy.RailgunMaxPenetratedParts;copy.Economy.RailgunInitialPenetrationEnergy=Economy.RailgunInitialPenetrationEnergy;
             copy.Economy.CargoPickupRangePerUnit=Economy.CargoPickupRangePerUnit;copy.Economy.CargoUplinkCost=Economy.CargoUplinkCost;
             copy.Economy.BlueprintSlotCount=Economy.BlueprintSlotCount;
             copy.Economy.HealingDroneRadius=Economy.HealingDroneRadius;copy.Economy.HealingDroneRate=Economy.HealingDroneRate;copy.Economy.HealingDroneDamage=Economy.HealingDroneDamage;
