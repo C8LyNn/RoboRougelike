@@ -962,6 +962,45 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(run.VehicleModel.Inventory.Count(p=>p.Id==item.Id),Is.EqualTo(1));
         Assert.That(run.Salvage.RewardItems.Any(p=>p.Id==item.Id),Is.False);
     }
+    [UnityTest] public IEnumerator MissedDetachedEnemyGunKeepsIdentityAndHealthThroughPaidRecoveryAndRewards()
+    {
+        run.VehicleModel.Economy.PhysicalLootDropChance=1;
+        run.Encounter.SetCombatActive(true);
+        var enemy=run.Encounter.Enemies.First();
+        Assert.That(enemy.AdditionalWeapons,Is.Not.Empty);
+        var weapon=enemy.AdditionalWeapons.First();var hp=weapon.Block;hp.RestoreHealthRatio(.45f);
+        var block=hp.GetComponent<P12_PipelineSafePlayerBlock>();Assert.That(block,Is.Not.Null);
+        var structure=enemy.GetComponent<P12PipelineSafeVehicleStructure>();
+        var detach=typeof(P12PipelineSafeVehicleStructure).GetMethod("DetachAsChunk",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(detach,Is.Not.Null);
+        detach.Invoke(structure,new object[]{new System.Collections.Generic.List<P12_PipelineSafePlayerBlock>{block},false});
+        Assert.That(block.DetachedFromVehicle,Is.True);Assert.That(enemy.Core.IsDead,Is.False);
+        var original=run.Salvage.Items.Single(p=>p.Kind==R3PartKind.Gun);
+        string id=original.Id;Assert.That(original.Weapon,Is.EqualTo(weapon.Kind));Assert.That(original.Health,Is.EqualTo(.45f).Within(.001f));
+        var drop=Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Single(p=>p.ItemId==id);
+        drop.transform.position+=Vector3.up*1000;Physics.SyncTransforms();
+        foreach(var opponent in run.Encounter.Enemies.ToArray())opponent.Core.ApplyDamage(100000,opponent.Core.transform.position,Vector3.up);
+        Assert.That(run.Salvage.Items.Count(p=>p.Id==id),Is.EqualTo(1));
+        Assert.That(Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Count(p=>p.ItemId==id),Is.EqualTo(1));
+        yield return null;
+        typeof(R1RunController).GetField("pickupGraceDeadline",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).SetValue(run,Time.time);
+        float deadline=Time.realtimeSinceStartup+8;
+        while(Time.realtimeSinceStartup<deadline&&run.Progress.State!=R1RunState.Salvage)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        Assert.That(Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Any(p=>p.ItemId==id),Is.False,
+            "An uncollected world pickup must disappear when the encounter ends.");
+        Assert.That(run.Salvage.MissedPhysicalItems.Count(p=>p.Id==id),Is.EqualTo(1));
+        Assert.That(run.RecoveryWindow.VisibleOptions.Any(p=>p.InstanceId==id),Is.False);
+        run.VehicleModel.Award(100);int before=run.VehicleModel.Scrap;
+        Assert.That(run.TryRecoverMissedLoot(id),Is.True);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-run.VehicleModel.Economy.MissedLootRecoveryCost));
+        var recovered=run.VehicleModel.Inventory.Single(p=>p.Id==id);
+        Assert.That(recovered.Weapon,Is.EqualTo(weapon.Kind));Assert.That(recovered.Health,Is.EqualTo(.45f).Within(.001f));
+        Assert.That(run.TryRecoverMissedLoot(id),Is.False);
+        Assert.That(run.ConfirmRewards(System.Array.Empty<string>(),new[]{0}),Is.True);
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
+        Assert.That(run.VehicleModel.Inventory.Count(p=>p.Id==id),Is.EqualTo(1));
+    }
     [UnityTest] public IEnumerator ZeroDropChanceKeepsExistingRewardLedgerWithoutWorldLoot()
     {
         run.VehicleModel.Economy.PhysicalLootDropChance=0;

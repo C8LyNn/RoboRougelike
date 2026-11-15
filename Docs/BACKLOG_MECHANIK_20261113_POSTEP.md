@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 30–31, 36 i 44. Pominięta odłączona broń po walce
+
+- Rozszerzono test integracyjny o cały łańcuch: sprawna dodatkowa broń przeciwnika zostaje odłączona z 45% HP, jej łup pozostaje niezebrany, przeciwnicy zostają pokonani, a gracz odzyskuje tę część za złom i zatwierdza nagrody. Test sprawdza ten sam identyfikator i rodzaj broni, zachowany stan, pojedyncze pobranie opłaty, brak drugiego egzemplarza i usunięcie łupu z areny przy końcu walki.
+- Unity 6000.3.14f1: `detached_missed_reward_final.xml` — **3 PASS**, obejmujące nowy łańcuch oraz dwa wcześniejsze scenariusze zebranego i pominiętego łupu. W teście odłączenie i pokonanie przeciwników wywołano kontrolowanie, łup przeniesiono daleko od gracza, a koniec czasu zbierania przyspieszono. Nie jest to ręczna walka ani potwierdzenie balansu ceny; punkt 44 pozostaje otwarty.
+
 ### 42 i 44. Ratunek przy zablokowanym punkcie startowym
 
 - Ratunek nadal najpierw szuka miejsca wokół punktu startowego. Jeżeli te miejsca są zablokowane, sprawdza również okolice obecnej pozycji pojazdu, stosując tę samą kontrolę nachylenia, podłoża oraz kolizji całej konstrukcji. Jeśli obie okolice są niedostępne, nadal odmawia bez uruchomienia cooldownu i ochrony.
