@@ -468,14 +468,22 @@ namespace RoboRougelike.R3
             if(pendingRockets!=null)
                 foreach(var shot in pendingRockets)shot.Binding.FireAdditionalExact(shot.Requested);
             if(pending==null)return;
-            foreach(var shot in pending)
+            System.Numerics.BigInteger[] paid=null;bool hasCadence=false;
+            foreach(var shot in pending)if(shot.CadenceShots>0){hasCadence=true;break;}
+            if(hasCadence)
+            {
+                var costs=new float[pending.Count];var requests=new System.Numerics.BigInteger[pending.Count];
+                for(int i=0;i<pending.Count;i++){costs[i]=pending[i].CadenceCost;requests[i]=pending[i].CadenceShots;}
+                var energyBank=GetComponent<VehicleEnergyBank>();paid=energyBank!=null?energyBank.SpendFair(costs,requests):requests;
+            }
+            for(int i=0;i<pending.Count;i++)
+            {
+                var shot=pending[i];
                 if(shot.Shotgun!=null)shot.Shotgun.FireAdditional();
                 else if(shot.Rail!=null)shot.Rail.FireAdditionalExact(shot.Requested);
                 else
                 {
-                    var energy=GetComponent<VehicleEnergyBank>();
-                    var cadenceShots=shot.CadenceShots;
-                    if(energy!=null&&cadenceShots>0)cadenceShots=energy.SpendUpTo(shot.CadenceCost,cadenceShots);
+                    var cadenceShots=paid!=null?paid[i]:shot.CadenceShots;
                     if(cadenceShots>0&&shot.Primary!=null)
                     {
                         var queue=GetComponent<R3ConventionalProjectileQueue>();
@@ -484,6 +492,7 @@ namespace RoboRougelike.R3
                     }
                     else controller.FireAdditionalExact(shot.Muzzle,shot.Kind,shot.PartId,shot.Primary,shot.Requested);
                 }
+            }
         }
 
         public static R1VehicleState Build(R3VehicleModel model, R1RunStats stats, R3VisualPalette palette,

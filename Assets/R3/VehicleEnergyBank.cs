@@ -123,6 +123,8 @@ namespace RoboRougelike.R3
         public bool TrySpend(float amount){Refresh();return state.TrySpend(amount);}
         internal System.Numerics.BigInteger SpendUpTo(float unitCost,System.Numerics.BigInteger requested)
         {Refresh();return state.SpendUpTo(unitCost,requested);}
+        internal System.Numerics.BigInteger[] SpendFair(float[] unitCosts,System.Numerics.BigInteger[] requested)
+        {Refresh();return state.SpendFair(unitCosts,requested);}
         public bool TryConsume(float amount)=>TrySpend(amount);
         public bool TryConsumeEnergy(float amount)=>TrySpend(amount);
         public bool TrySpendEnergy(float amount)=>TrySpend(amount);

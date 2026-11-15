@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 44. Podział energii szybkich dział
+
+- Po pierwszym strzale gotowych kopii należne dalsze strzały są rozliczane kolejkami: każda kopia otrzymuje kolejną opłaconą porcję przed następną porcją innej kopii. Przy różnych kosztach system nadal opłaca tańsze strzały, jeśli pozostałej energii nie wystarcza na droższe; darmowe strzały nie blokują pozostałych. Duże liczby są rozdzielane matematycznie, bez pętli dla każdego strzału. Zwykłe dodatkowe pociski bez zaległej szybkostrzelności nie uruchamiają tego rozdziału.
+- Unity 6000.3.14f1: `weapon_cadence_fair_before.xml` — **1 FAIL**, dwie kopie przy sześciu opłaconych strzałach oddawały odpowiednio pięć i jeden. `weapon_cadence_fair_after.xml` — **13 PASS**, w tym po trzy strzały z każdej kopii, różne koszty, darmowe strzały i bardzo duże liczniki. `weapon_cadence_fair_final.xml` — **7 PASS** po ograniczeniu pracy w zwykłej ścieżce, w tym wcześniejsze salwy i Double Shot.
+- Test różnych kosztów i skrajnego licznika dotyczy rozliczenia energii, a nie fizycznego utworzenia takiej liczby pocisków. Pierwsze strzały i niepełna ostatnia kolejka nadal korzystają z kolejności części, a stan energii zachowuje ograniczoną precyzję `float`. Strzelba, railgun, rakiety, pełny odbiór i pomiar wydajności pozostają otwarte; brak ręcznego playtestu.
+
 ### 02, 14 i 44. Szybki ostrzał płatnych dział
 
 - Wspólny harmonogram strzałów obejmuje również karabin automatyczny i ciężką armatę. Każdy zlecony podstawowy strzał zużywa energię zgodnie z tierem; gdy energii brakuje, system opłaca tylko dostępną liczbę, a czas bez energii nie tworzy salwy na później. Double Shot nie pobiera drugiej opłaty. Najpierw szansę na pierwszy strzał otrzymuje każda gotowa kopia broni; późniejsze strzały są rozliczane w kolejności kopii.

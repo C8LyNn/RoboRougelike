@@ -403,6 +403,44 @@ public sealed class BacklogProjectileTierPhysicsTests
             Object.Destroy(assembly.gameObject);
         }
     }
+    [UnityTest] public IEnumerator TwoRapidAutomaticGunsShareScarceEnergy()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(2000);
+        model.Parts.First(p=>p.Kind==R3PartKind.Gun).Weapon=R4WeaponKind.Automatic;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.Gun,false,R4WeaponKind.Automatic)==null);
+        Assert.That(model.Buy(cell,R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;var assembly=vehicle.GetComponent<R3VehicleAssembly>();
+        var controller=vehicle.GetComponent<P12PipelineSafeTankController>();controller.SetRunModifiers(1,.01f,1);controller.enabled=false;
+        AllowOneFrameForConventionalCollisionFixture(assembly);
+        var guns=assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Automatic).ToArray();Assert.That(guns.Length,Is.EqualTo(2));
+        var muzzles=new Transform[guns.Length];
+        for(int i=0;i<guns.Length;i++)
+        {
+            muzzles[i]=new GameObject("Shared energy muzzle").transform;muzzles[i].SetParent(guns[i].transform,false);
+            muzzles[i].position=new Vector3(1000+i*3,1000,1000);muzzles[i].rotation=Quaternion.identity;
+            guns[i].GunPivot=muzzles[i];guns[i].Muzzle=muzzles[i];
+        }
+        Physics.SyncTransforms();Assert.That(guns.All(assembly.ClearProjectilePath),Is.True);
+        int slot=System.Array.FindIndex(model.GetWeaponSlots(),w=>w==R4WeaponKind.Automatic);
+        void Hold()=>assembly.SetSlotTriggers(slot==0,slot==1,slot==2,slot==3);
+        R4ProjectileOrigin[] Shots()=>Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>guns.Any(g=>g.Id==p.PartId)).ToArray();
+        try
+        {
+            float interval=controller.WeaponInterval(R4WeaponKind.Automatic);Hold();assembly.FireSlot(slot);float start=Time.time;
+            Assert.That(Shots().Length,Is.EqualTo(2));
+            foreach(var shot in Shots()){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+            yield return new WaitForFixedUpdate();for(int i=0;i<guns.Length;i++)guns[i].Muzzle=muzzles[i];
+            Assert.That(Time.time-start,Is.GreaterThan(interval*4));
+            float cost=VehicleEnergyCosts.ConventionalShot(R4WeaponKind.Automatic);model.Energy.Restore(cost*6);
+            Hold();assembly.FireSlot(slot);var shots=Shots();
+            Assert.That(shots.Length,Is.EqualTo(6));
+            foreach(var gun in guns)Assert.That(shots.Count(p=>p.PartId==gun.Id),Is.EqualTo(3),"Each gun receives equal rounds before another receives an extra one.");
+            Assert.That(vehicle.GetComponent<VehicleEnergyBank>().Current,Is.EqualTo(0).Within(.001));
+        }
+        finally{foreach(var shot in Shots())if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}Object.Destroy(vehicle.gameObject);}
+    }
     [UnityTest] public IEnumerator TwoBasicGunsKeepSeparateRapidCadences()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(2000);

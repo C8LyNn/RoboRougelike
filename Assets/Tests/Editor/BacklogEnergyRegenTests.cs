@@ -10,6 +10,19 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogEnergyRegenTests
 {
+    [Test] public void SharedShotBudgetKeepsAffordableUnequalCostsAndHugeRequests()
+    {
+        var state=new VehicleEnergyState();
+        var method=typeof(VehicleEnergyState).GetMethod("SpendFair",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        var huge=System.Numerics.BigInteger.One<<149;
+        System.Numerics.BigInteger[] Spend(float[] costs,System.Numerics.BigInteger[] requests)=>(System.Numerics.BigInteger[])method.Invoke(state,new object[]{costs,requests});
+        state.Restore(7);var paid=Spend(new[]{4f,1f},new[]{huge,huge});
+        Assert.That(paid,Is.EqualTo(new[]{new System.Numerics.BigInteger(1),new System.Numerics.BigInteger(3)}));
+        Assert.That(state.Current,Is.Zero);
+        state.Restore(5);paid=Spend(new[]{0f,2.5f},new[]{huge,huge});
+        Assert.That(paid,Is.EqualTo(new[]{huge,new System.Numerics.BigInteger(2)}));Assert.That(state.Current,Is.Zero);
+    }
     [Test] public void BulkShotCostHandlesExactEnergyAndExtremelyLargeCounts()
     {
         var state=new VehicleEnergyState();

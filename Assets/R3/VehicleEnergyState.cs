@@ -60,6 +60,47 @@ namespace RoboRougelike.R3
             return count;
         }
 
+        internal System.Numerics.BigInteger[] SpendFair(float[] unitCosts,System.Numerics.BigInteger[] requested)
+        {
+            if(unitCosts==null||requested==null||unitCosts.Length!=requested.Length)throw new ArgumentException("Shot costs and requests must match.");
+            var paid=new System.Numerics.BigInteger[requested.Length];
+            var remaining=new System.Numerics.BigInteger[requested.Length];
+            var costs=new System.Numerics.BigInteger[requested.Length];
+            for(int i=0;i<requested.Length;i++)
+            {
+                float cost=unitCosts[i];
+                if(requested[i]<=0||float.IsNaN(cost)||float.IsInfinity(cost)||cost<0)continue;
+                if(cost==0){paid[i]=requested[i];continue;}
+                costs[i]=DeviceFireSchedule.Ticks(cost);remaining[i]=requested[i];
+            }
+            var available=DeviceFireSchedule.Ticks(Current);
+            while(available>0)
+            {
+                var max=System.Numerics.BigInteger.Zero;var minCost=System.Numerics.BigInteger.Zero;
+                for(int i=0;i<remaining.Length;i++)
+                    if(remaining[i]>0&&costs[i]<=available)
+                    {max=System.Numerics.BigInteger.Max(max,remaining[i]);if(minCost.IsZero||costs[i]<minCost)minCost=costs[i];}
+                if(minCost.IsZero)break;
+                var low=System.Numerics.BigInteger.Zero;var high=System.Numerics.BigInteger.Min(max,available/minCost);
+                while(low<high)
+                {
+                    var middle=(low+high+1)>>1;var total=System.Numerics.BigInteger.Zero;
+                    for(int i=0;i<remaining.Length&&total<=available;i++)
+                        if(remaining[i]>0&&costs[i]<=available)total+=System.Numerics.BigInteger.Min(remaining[i],middle)*costs[i];
+                    if(total<=available)low=middle;else high=middle-1;
+                }
+                if(low>0)
+                    for(int i=0;i<remaining.Length;i++)
+                        if(remaining[i]>0&&costs[i]<=available)
+                        {var count=System.Numerics.BigInteger.Min(remaining[i],low);remaining[i]-=count;paid[i]+=count;available-=count*costs[i];}
+                for(int i=0;i<remaining.Length;i++)
+                    if(remaining[i]>0&&costs[i]<=available)
+                    {remaining[i]--;paid[i]++;available-=costs[i];}
+            }
+            Current=(float)((double)available*1.401298464324817e-45d);
+            return paid;
+        }
+
         public void Advance(float seconds) => AdvanceWithMotion(seconds, false);
 
         public void AdvanceWithMotion(float seconds, bool stationary)
