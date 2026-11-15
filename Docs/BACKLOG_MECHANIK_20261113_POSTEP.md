@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02 i 14. Konfiguracja liczby śrucin — etap przygotowawczy
+
+- W ustawieniach ekonomii pojazdu dodano `ShotgunPelletCount`: domyślnie 8, kopiowane również do pojazdu poligonowego. Rzeczywista strzelba gracza używa tej wartości, zachowując jeden koszt i jeden nabój za salwę. To ustawienie projektowe, nie nowa premia gracza; przeciwnicy bez konfiguracji pojazdu zachowują poprzednią wartość.
+- Unity 6000.3.14f1: `shotgun_count_before.xml` — **1 FAIL**, brak ustawienia. `shotgun_count_after.xml` — **5 PASS**, w tym skopiowanie wartości 16, stworzenie i niezależne trafienia 16 fizycznych śrucin, zużycie jednego naboju, poprzednie obrażenia i prędkość oraz kolejka bonusów podczas ratunku. Filtr zawierał także jedną niepasującą nazwę testu, której nie wliczono do wyniku.
+- **Limit 64 podstawowych śrucin nadal obowiązuje**, ponieważ walidacja torów i tworzenie podstawowej salwy są synchroniczne. Dodane ustawienie go nie usuwa: jest oznaczony w Inspectorze i nadal wymaga bezpiecznego porcjowania, ochrony transakcji zasobów i pomiaru obciążenia. Ręczny Player i FPS **NOT RUN**; punkty 02, 14 i 44 pozostają otwarte.
+
 ### 21–23, 42 i 44. Status urządzeń podczas ratunku
 
 - Status urządzenia ofensywnego pokazuje „atak wstrzymany”, kiedy reguły ratunku lub strefy bez walki blokują jego uruchomienie. Status i faktyczna aktywacja korzystają z tego samego sprawdzenia; urządzenia wspierające zachowują dotychczasowe zasady. Po ustaniu blokady wraca właściwy status zasobów i cooldownu.

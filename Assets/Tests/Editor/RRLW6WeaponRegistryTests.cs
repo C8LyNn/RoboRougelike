@@ -61,6 +61,33 @@ public class RRLW6WeaponRegistryTests
 
 public class RRLW6ShotgunPhysicalTests
 {
+    [UnityTest] public IEnumerator ConfiguredPelletCountSurvivesCopyAndFiresPhysicalVolley()
+    {
+        var field=typeof(R3GarageEconomy).GetField("ShotgunPelletCount");Assert.That(field,Is.Not.Null);
+        Assert.That(field.GetValue(Resources.Load<R1RunDefinition>("R1/Run").GaragePrices),Is.EqualTo(8));
+        var economy=new R3GarageEconomy();field.SetValue(economy,16);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard),economy);
+        Assert.That(field.GetValue(model.DeepCopy().Economy),Is.EqualTo(16));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6;
+        target.transform.localScale=new Vector3(6,6,1);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(10000,false);
+        Physics.SyncTransforms();
+        try
+        {
+            var binding=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
+            int ammo=state.Ammo;Assert.That(binding.Fire(),Is.True);
+            Assert.That(binding.Module.CurrentSpec.PelletCount,Is.EqualTo(16));Assert.That(state.Ammo,Is.EqualTo(ammo-1));
+            var pellets=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==state.Id).ToArray();
+            Assert.That(pellets.Length,Is.EqualTo(16));
+            float deadline=Time.realtimeSinceStartup+5;while(10000f-hp.CurrentHp<143f&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(10000f-hp.CurrentHp,Is.EqualTo(144f).Within(1f),"Each configured pellet must hit independently.");
+        }
+        finally{if(target!=null)UnityEngine.Object.Destroy(target);if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
     [UnityTest] public IEnumerator ConfiguredShotgunSpeedDrivesRealPelletsAboveOldCeiling()
     {
         var field=typeof(R3GarageEconomy).GetField("ShotgunProjectileSpeed");Assert.That(field,Is.Not.Null);
