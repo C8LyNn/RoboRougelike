@@ -199,18 +199,54 @@ namespace RoboRougelike.R3
             if(!ValidShotDirection(direction,range)||!PrepareShotPath(part,radius,out var origin))return false;
             return ClearPreparedShotPath(part,origin,direction,range,radius);
         }
+        // A bounded step makes it possible to spread directional checks over
+        // several updates. The current firing path still completes them at once.
+        // A caller yielding between steps must also handle changes to the world,
+        // gun and owner before committing the shot.
+        internal sealed class ShotgunVolleyPathCheck
+        {
+            readonly R3VehicleAssembly assembly;
+            readonly R3MountedPart part;
+            readonly IReadOnlyList<RoboRougelike.WPN001Shotgun.ShotgunPelletSpawn> pellets;
+            readonly Vector3 origin;
+            readonly float radius;
+            public int CheckedCount { get; private set; }
+            public bool Finished { get; private set; }
+            public bool Clear { get; private set; }
+            internal ShotgunVolleyPathCheck(R3VehicleAssembly assembly,R3MountedPart part,
+                IReadOnlyList<RoboRougelike.WPN001Shotgun.ShotgunPelletSpawn> pellets,float radius,Vector3 origin,bool ready)
+            {this.assembly=assembly;this.part=part;this.pellets=pellets;this.radius=radius;this.origin=origin;Finished=!ready;}
+            public void Advance(int maxChecks)
+            {
+                if(maxChecks<=0)throw new System.ArgumentOutOfRangeException(nameof(maxChecks));
+                if(Finished)return;
+                if(assembly==null||part==null){Finished=true;return;}
+                int end=(int)System.Math.Min(pellets.Count,(long)CheckedCount+maxChecks);
+                while(CheckedCount<end)
+                {
+                    var pellet=pellets[CheckedCount++];
+                    var velocity=pellet.Direction*pellet.ProjectileSpeed+pellet.InheritedVelocity;
+                    float range=Mathf.Min(pellet.MaxDistance,velocity.magnitude*pellet.Lifetime);
+                    if(!ValidShotDirection(velocity,range)||!assembly.ClearPreparedShotPath(part,origin,velocity,range,radius))
+                    {Finished=true;return;}
+                }
+                if(CheckedCount==pellets.Count){Clear=true;Finished=true;}
+            }
+        }
+        internal ShotgunVolleyPathCheck BeginShotgunVolleyPathCheck(R3MountedPart part,
+            IReadOnlyList<RoboRougelike.WPN001Shotgun.ShotgunPelletSpawn> pellets,float radius)
+        {
+            Vector3 origin=default;
+            bool ready=pellets!=null&&pellets.Count>0&&PrepareShotPath(part,radius,out origin);
+            return new ShotgunVolleyPathCheck(this,part,pellets,radius,origin,ready);
+        }
         // All directions in a volley use the same muzzle and barrel. Keep the
         // per-pellet cast, but do the shared overlap/barrel checks only once.
         public bool ClearShotgunVolley(R3MountedPart part,IReadOnlyList<RoboRougelike.WPN001Shotgun.ShotgunPelletSpawn> pellets,float radius)
         {
-            if(pellets==null||pellets.Count==0||!PrepareShotPath(part,radius,out var origin))return false;
-            for(int i=0;i<pellets.Count;i++)
-            {
-                var pellet=pellets[i];var velocity=pellet.Direction*pellet.ProjectileSpeed+pellet.InheritedVelocity;
-                float range=Mathf.Min(pellet.MaxDistance,velocity.magnitude*pellet.Lifetime);
-                if(!ValidShotDirection(velocity,range)||!ClearPreparedShotPath(part,origin,velocity,range,radius))return false;
-            }
-            return true;
+            var check=BeginShotgunVolleyPathCheck(part,pellets,radius);
+            check.Advance(int.MaxValue);
+            return check.Clear;
         }
         static bool ValidShotDirection(Vector3 direction,float range)=>direction.sqrMagnitude>=.000001f&&
             range>0&&!float.IsNaN(range)&&!float.IsInfinity(range);

@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 44. Wznawianie kontroli kierunków salwy — przygotowanie
+
+- Kontrola torów śrucin ma wewnętrzny stan pozwalający sprawdzać ograniczoną liczbę kolejnych kierunków i wznowić pracę w tym samym miejscu. Wspólne sprawdzenie lufy i jej otoczenia nadal wykonywane jest raz, a napotkanie własnego pancerza kończy kontrolę całej salwy. Istniejąca ścieżka strzału korzysta z tej samej kontroli, ale nadal wykonuje ją synchronicznie.
+- Unity 6000.3.14f1: `shotgun_path_resume_before.xml` — **1 FAIL**, brak kontroli z możliwością wznowienia. `shotgun_path_resume_after.xml` — **11 PASS**, w tym 80 drożnych kierunków i zablokowany 81., ponowne sprawdzenie po usunięciu przeszkody, rzeczywiste strzały oraz kolejka dodatkowych śrucin. Po ograniczeniu widoczności kodu `shotgun_path_resume_final.xml` — **3 PASS**, w tym nowe sprawdzenie i dwa scenariusze fizycznych salw.
+- **To jeszcze nie rozkłada strzału na klatki ani nie usuwa limitu 64.** Przed użyciem między klatkami trzeba rozwiązać zmianę pozycji broni, pojazdu i przeszkód, transakcyjne rozliczenie zasobów oraz porcjowanie tworzenia pocisków. Nowy stan jest alokowany raz dla kontroli salwy; kosztu w Playerze nie zmierzono. Punkty 02, 14 i 44 pozostają otwarte.
+
 ### 31 i 44. Zestawy części wszystkich napotkanych przeciwników
 
 - Generator zestawów nie odrzuca już czwartego rodzaju pokonanego przeciwnika. Dodatkowe oferty mogą obejmować wszystkie napotkane rodzaje, a przelosowania trzech podstawowych ofert mogą pokazać każdy z nich. Losowanie z tym samym ziarnem jest powtarzalne; dotychczasowa sekwencja przy maksymalnie trzech rodzajach pozostaje zachowana. Zestawy nadal zawierają rzeczywiste, nieodebrane części i zachowują ich tożsamość.

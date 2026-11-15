@@ -61,6 +61,46 @@ public class RRLW6WeaponRegistryTests
 
 public class RRLW6ShotgunPhysicalTests
 {
+    [UnityTest] public IEnumerator VolleyPathCheckCanResumeAndRejectALateBlockedPellet()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=true;
+        var assembly=vehicle.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.Single(p=>p.Id==state.Id);
+        yield return null;
+        var blockedDirection=Quaternion.AngleAxis(7,gun.Muzzle.up)*gun.Muzzle.forward;
+        var blocker=GameObject.CreatePrimitive(PrimitiveType.Cube);blocker.transform.SetParent(vehicle.transform,true);
+        blocker.transform.position=gun.Muzzle.position+blockedDirection*5f;blocker.transform.localScale=Vector3.one*.25f;
+        Physics.SyncTransforms();
+        try
+        {
+            var clear=new ShotgunPelletSpawn(0,1,gun.Muzzle.position,gun.Muzzle.forward,Vector3.zero,58,9,40,2,body,vehicle.gameObject);
+            var blocked=new ShotgunPelletSpawn(80,1,gun.Muzzle.position,blockedDirection,Vector3.zero,58,9,40,2,body,vehicle.gameObject);
+            var pellets=Enumerable.Repeat(clear,80).Concat(new[]{blocked}).ToArray();
+            var begin=typeof(R3VehicleAssembly).GetMethod("BeginShotgunVolleyPathCheck",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            Assert.That(begin,Is.Not.Null,"A large volley must support checking a bounded number of paths per step.");
+            var check=begin.Invoke(assembly,new object[]{gun,pellets,.05f});
+            var type=check.GetType();var advance=type.GetMethod("Advance");var checkedCount=type.GetProperty("CheckedCount");
+            var finished=type.GetProperty("Finished");var clearResult=type.GetProperty("Clear");
+            Assert.That((bool)finished.GetValue(check),Is.False);
+            advance.Invoke(check,new object[]{7});
+            Assert.That((int)checkedCount.GetValue(check),Is.EqualTo(7));Assert.That((bool)finished.GetValue(check),Is.False);
+            advance.Invoke(check,new object[]{73});
+            Assert.That((int)checkedCount.GetValue(check),Is.EqualTo(80));Assert.That((bool)finished.GetValue(check),Is.False);
+            advance.Invoke(check,new object[]{1});
+            Assert.That((bool)finished.GetValue(check),Is.True);Assert.That((bool)clearResult.GetValue(check),Is.False);
+            advance.Invoke(check,new object[]{1});Assert.That((int)checkedCount.GetValue(check),Is.EqualTo(pellets.Length));
+            Assert.That(assembly.ClearShotgunVolley(gun,pellets,.05f),Is.False,"The ordinary firing path must agree.");
+            blocker.SetActive(false);Physics.SyncTransforms();
+            check=begin.Invoke(assembly,new object[]{gun,pellets,.05f});advance.Invoke(check,new object[]{int.MaxValue});
+            Assert.That((bool)finished.GetValue(check),Is.True);Assert.That((bool)clearResult.GetValue(check),Is.True);
+            Assert.That((int)checkedCount.GetValue(check),Is.EqualTo(pellets.Length));
+            Assert.That(assembly.ClearShotgunVolley(gun,pellets,.05f),Is.True);
+        }
+        finally{if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
     [UnityTest] public IEnumerator BlockedLaterPelletRejectsWholeVolleyAndClearVolleySpawns()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
