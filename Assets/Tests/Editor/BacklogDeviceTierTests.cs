@@ -1936,5 +1936,33 @@ public sealed class BacklogDeviceTierGameplayTests
         }
         finally{Object.Destroy(bonus);}
     }
+    [UnityTest] public IEnumerator SmallRepairStepsAccumulateUntilTheyChangePhysicalHealth()
+    {
+        FuseAndMount(R3PartKind.RepairPulse);
+        var bonus=ScriptableObject.CreateInstance<R1UpgradeDefinition>();bonus.Id="tiny-repair-steps-test";
+        bonus.Effect=R1UpgradeEffect.RepairEfficiency;bonus.Operation=R1ModifierOperation.Less;bonus.Amount=.999999f;
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{bonus}),Is.True);
+        var id=model.Inventory.Single(p=>p.UpgradeId==bonus.Id).Id;
+        var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+        Assert.That(run.GarageMount(id,cells.First(c=>model.OwnedPlacementError(id,c,default)==null)),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var pulse=run.Player.GetComponent<R3RepairPulse>();
+        var hp=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational).Damageable;
+        try
+        {
+            hp.RestoreHealthRatio(.5f);float before=hp.CurrentHp;
+            Assert.That(pulse.TryActivate(),Is.EqualTo(1));
+            var tick=typeof(R3RepairPulse).GetMethod("Tick",BindingFlags.Instance|BindingFlags.NonPublic);
+            for(int i=0;i<150;i++)tick.Invoke(pulse,new object[]{.02f});
+            Assert.That(pulse.ActiveCount,Is.EqualTo(1));
+            Assert.That(hp.CurrentHp,Is.GreaterThan(before),"Small valid repair steps must accumulate across frames rather than disappear in rounding.");
+            Assert.That(hp.CurrentHp/hp.MaxHp,Is.EqualTo(.5000003f).Within(.0000001f));
+            hp.RestoreHealthRatio(.25f);before=hp.CurrentHp; // A separate impact changes the target mid-pulse.
+            for(int i=0;i<80;i++)tick.Invoke(pulse,new object[]{.02f});
+            Assert.That(hp.CurrentHp,Is.GreaterThan(before));
+            Assert.That(hp.CurrentHp/hp.MaxHp,Is.EqualTo(.25000016f).Within(.0000001f),"The pulse must continue from the changed HP without undoing the impact.");
+        }
+        finally{Object.Destroy(bonus);}
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

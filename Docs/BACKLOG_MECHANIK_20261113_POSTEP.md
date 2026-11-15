@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14, 19 i 44. Sumowanie małych kroków naprawy
+
+- Impuls naprawczy zachowuje dokładniejszy postęp bieżącego celu między krokami. Bardzo małe, ale dodatnie porcje naprawy nie znikają przez zaokrąglenie pojedynczej klatki; przy zmianie HP lub maksimum celu postęp odnosi się do nowego stanu. Koszt, cooldown i wspólne działanie kopii pozostają bez zmian.
+- Unity 6000.3.14f1: `repair_small_steps_before.xml` — **1 FAIL**, 150 niewielkich kroków nie zmieniało HP. `repair_small_steps_after.xml` — **7 PASS, 0 FAIL**, w tym słaby i silny impuls, koszt i cooldown dwóch kopii oraz utrata działającego modułu. `repair_small_steps_final.xml` — **1 PASS** po dodaniu kontrolowanej zmiany HP podczas trwającego impulsu.
+- Zmianę HP w ostatnim scenariuszu wywołano bezpośrednio, bez fizycznego trafienia. To nie jest test ręczny ani pomiar wydajności; wielokrotne przeszukiwanie części przy silnej naprawie nadal wymaga poprawy. Limit śrucin i odbiór #14/#44 pozostają otwarte.
+
 ### 14, 19 i 44. Dokładność impulsu naprawczego
 
 - Impuls rozpoznaje każdą rzeczywistą różnicę między aktualnym i maksymalnym HP, również mniejszą niż 0,001 HP. Przy silnej premii przeznacza niewykorzystany czas kroku na kolejne uszkodzone części, zamiast przerywać po pierwszej szybko naprawionej. Obliczenia czasu korzystają z szerszej precyzji, a brak postępu przerywa pętlę; koszt i czas trwania wspólnego impulsu pozostają takie same.

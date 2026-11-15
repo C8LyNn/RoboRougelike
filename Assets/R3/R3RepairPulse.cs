@@ -13,7 +13,13 @@ namespace RoboRougelike.R3
     public sealed class R3RepairPulse : MonoBehaviour
     {
         public const float EnergyCost=15f, Duration=5f, Cooldown=15f, RepairRatioPerSecond=.05f;
-        sealed class Pulse { public readonly List<R3MountedPart> Devices=new List<R3MountedPart>(); public R3MountedPart Target; public float Remaining; }
+        sealed class Pulse
+        {
+            public readonly List<R3MountedPart> Devices=new List<R3MountedPart>();
+            public R3MountedPart Target,ProgressTarget;
+            public float Remaining,ObservedHp,ObservedMax;
+            public double PreciseRatio;
+        }
         readonly List<Pulse> active=new List<Pulse>();
         R3VehicleAssembly assembly;
         VehicleEnergyBank energy;
@@ -106,14 +112,24 @@ namespace RoboRougelike.R3
                     float bonus=GetComponent<R3MountedBonusEffects>()?.RepairEfficiencyMultiplier??1f;
                     double rate=(double)RepairRatioPerSecond*units*bonus;
                     if(rate<=0d||double.IsNaN(rate)||double.IsInfinity(rate))break;
-                    double ratio=hp.CurrentHp/(double)hp.MaxHp;
-                    double needed=((double)hp.MaxHp-hp.CurrentHp)/(hp.MaxHp*rate);
+                    double actual=hp.CurrentHp/(double)hp.MaxHp;
+                    if(pulse.ProgressTarget!=pulse.Target)
+                    {pulse.ProgressTarget=pulse.Target;pulse.PreciseRatio=actual;}
+                    else if(pulse.ObservedHp!=hp.CurrentHp||pulse.ObservedMax!=hp.MaxHp)
+                    {
+                        double remainder=pulse.ObservedMax>0?pulse.PreciseRatio-pulse.ObservedHp/(double)pulse.ObservedMax:0d;
+                        pulse.PreciseRatio=System.Math.Max(0d,System.Math.Min(1d,actual+remainder));
+                    }
+                    double ratio=pulse.PreciseRatio;
+                    double needed=(1d-ratio)/rate;
                     bool complete=needed<=frame;
                     float before=hp.CurrentHp;
-                    hp.RestoreHealthRatio(complete?1f:(float)System.Math.Min(1d,ratio+frame*rate));
+                    pulse.PreciseRatio=complete?1d:System.Math.Min(1d,ratio+frame*rate);
+                    hp.RestoreHealthRatio((float)pulse.PreciseRatio);
+                    pulse.ObservedHp=hp.CurrentHp;pulse.ObservedMax=hp.MaxHp;
+                    if(!complete)break; // Retain sub-float progress for the next step.
                     if(hp.CurrentHp<=before)break;
-                    if(!complete)break; // The unfinished target used the rest of this step.
-                    frame-=needed;pulse.Target=null;
+                    frame-=needed;pulse.Target=null;pulse.ProgressTarget=null;
                 }
                 if(pulse.Remaining<=0)active.RemoveAt(i);
             }
