@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14, 24 i 44. Zapytania toru pocisku przed kopułą
+
+- Zwykły fizyczny pocisk ponownie wykorzystuje bufory wykrywania przeszkód na starcie i przed granicą kopuły, zamiast tworzyć dwie nowe tablice dla każdego takiego sprawdzenia. Bufory rosną w razie potrzeby; po ich zapełnieniu wykonywane jest pełne zapytanie. Zagnieżdżone sprawdzenie dostaje osobne bufory. Ściany, filtry kolizji, trafienie kopuły i niezależne pociski pozostają zachowane.
+- Unity 6000.3.14f1: **7 PASS, 0 FAIL** (`dome_scratch_first.xml`, `.log` w katalogu `Prototypy`), w tym ponad 300 colliderów w obu zapytaniach, ściana przed kopułą, szybki pocisk oraz osobne trafienia salw automatu i strzelby. W kontrolowanym pomiarze 50 powtórzeń z 90 colliderami przydział ponad tło wynosił około **210 400 B przed** (`dome_scratch_before.xml`: **1 FAIL**) i **4 400 B po**; kontrolna alokacja 1 MiB była wykrywana w obu próbach. To pomiar tego scenariusza w edytorze, nie FPS ani całościowych kosztów walki.
+- Zmiana przygotowuje obsługę większych salw, ale **nie usuwa** obecnych progów bonusowych pocisków i rakiet #02/#14. Ręczny playtest i pomiar Windows Player: **NOT RUN**.
+
 ### 12, 14 i 44. Sumowanie przeciwstawnych premii
 
 - Sumowanie `increased/reduced` zachowuje teraz mały składnik, gdy między dużymi przeciwstawnymi wartościami występuje utrata precyzji. Reset używanej ponownie grupy czyści również składnik korekcyjny; zasady grupowania premii pozostają te same.

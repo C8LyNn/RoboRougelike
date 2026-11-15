@@ -1617,6 +1617,12 @@ public float CurrentForwardSpeed =>
         private float kineticComponent,blastComponent;
         private Vector3 launchPosition;
         private float maxTravelDistance=float.PositiveInfinity;
+        // Shield path checks run for every approaching projectile. Reuse the
+        // common buffers while retaining a complete fallback for dense scenes.
+        private const int DomeQueryBufferLimit=256;
+        private static Collider[] domeOverlapBuffer=new Collider[16];
+        private static RaycastHit[] domeSweepBuffer=new RaycastHit[16];
+        private static bool domeQueryInUse;
         private RoboRougelike.WeaponIntegration.RRLRailPenetration railgun;
         public void ConfigureRailgun(RoboRougelike.WPN002Railgun.RailgunShot shot,float damageScale)
         {
@@ -1649,9 +1655,43 @@ public float CurrentForwardSpeed =>
             var sphere=own as SphereCollider;
             float radius=sphere!=null?sphere.radius*Mathf.Max(Mathf.Abs(transform.lossyScale.x),Mathf.Abs(transform.lossyScale.y),Mathf.Abs(transform.lossyScale.z)):.01f;
             radius=Mathf.Max(.001f,radius);
-            foreach(var overlap in Physics.OverlapSphere(start,radius,~0,QueryTriggerInteraction.Ignore))if(Blocks(overlap))return;
-            foreach(var hit in Physics.SphereCastAll(start,radius,direction,shieldDistance,~0,QueryTriggerInteraction.Ignore))
-                if(Blocks(hit.collider))return;
+            bool shared=!domeQueryInUse;
+            var overlaps=shared?domeOverlapBuffer:new Collider[16];
+            var hits=shared?domeSweepBuffer:new RaycastHit[16];
+            if(shared)domeQueryInUse=true;
+            try
+            {
+                int count;
+                while(true)
+                {
+                    count=Physics.OverlapSphereNonAlloc(start,radius,overlaps,~0,QueryTriggerInteraction.Ignore);
+                    if(count<overlaps.Length)break;
+                    if(overlaps.Length>=DomeQueryBufferLimit)
+                    {overlaps=Physics.OverlapSphere(start,radius,~0,QueryTriggerInteraction.Ignore);count=overlaps.Length;break;}
+                    System.Array.Resize(ref overlaps,Mathf.Min(DomeQueryBufferLimit,overlaps.Length*2));
+                    if(shared)domeOverlapBuffer=overlaps;
+                }
+                for(int i=0;i<count;i++)if(Blocks(overlaps[i]))return;
+                while(true)
+                {
+                    count=Physics.SphereCastNonAlloc(start,radius,direction,hits,shieldDistance,~0,QueryTriggerInteraction.Ignore);
+                    if(count<hits.Length)break;
+                    if(hits.Length>=DomeQueryBufferLimit)
+                    {hits=Physics.SphereCastAll(start,radius,direction,shieldDistance,~0,QueryTriggerInteraction.Ignore);count=hits.Length;break;}
+                    System.Array.Resize(ref hits,Mathf.Min(DomeQueryBufferLimit,hits.Length*2));
+                    if(shared)domeSweepBuffer=hits;
+                }
+                for(int i=0;i<count;i++)if(Blocks(hits[i].collider))return;
+            }
+            finally
+            {
+                if(shared)
+                {
+                    System.Array.Clear(domeOverlapBuffer,0,domeOverlapBuffer.Length);
+                    System.Array.Clear(domeSweepBuffer,0,domeSweepBuffer.Length);
+                    domeQueryInUse=false;
+                }
+            }
             float amount=damage;Vector3 point=start+direction*shieldDistance;
             if(Intercept(1f))dome.Absorb(amount,point,direction);
         }

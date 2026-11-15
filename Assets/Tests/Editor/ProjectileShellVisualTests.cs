@@ -10,6 +10,48 @@ using UnityEngine.TestTools;
 public sealed class ProjectileShellVisualTests
 {
     [UnitySetUp] public IEnumerator Setup(){EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();}
+    [UnityTest] public IEnumerator DomePathQueriesReuseMemoryWithoutIgnoringSolidCover()
+    {
+        var center=new Vector3(1000,1000,1000);var start=center+Vector3.left*8;
+        var owner=new GameObject("Dome query hostile owner");owner.AddComponent<P12PipelineSafeEnemyTurret>().enabled=false;
+        var fixtures=new GameObject("Ignored owner colliders");fixtures.transform.SetParent(owner.transform);fixtures.transform.position=start+Vector3.right*4;
+        for(int i=0;i<90;i++)fixtures.AddComponent<BoxCollider>().size=Vector3.one*.02f;
+        var dome=new GameObject("Dome query shield");dome.transform.position=center;
+        dome.AddComponent<SphereCollider>().isTrigger=true;var shield=dome.AddComponent<P12PipelineSafeDamageable>();shield.Configure(500,false);
+        dome.AddComponent<RoboRougelike.R3.R3ShieldDome>().Configure(1,2);
+        var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=start+Vector3.right*3;wall.transform.localScale=new Vector3(.2f,3,3);
+        var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);shell.transform.position=start;shell.transform.localScale=Vector3.one*.16f;
+        var body=shell.AddComponent<Rigidbody>();body.useGravity=false;body.linearVelocity=Vector3.right*2000;
+        var projectile=shell.AddComponent<P17PhysicalShell>();projectile.Configure(owner.transform,20,60,Vector3.right,null);
+        var step=(System.Action)System.Delegate.CreateDelegate(typeof(System.Action),projectile,typeof(P17PhysicalShell).GetMethod("FixedUpdate",BindingFlags.Instance|BindingFlags.NonPublic));
+        try
+        {
+            Time.timeScale=0;Physics.SyncTransforms();
+            Assert.That(Physics.SphereCastAll(start,.08f,Vector3.right,6,~0,QueryTriggerInteraction.Ignore).Length,Is.GreaterThan(90));
+            step();Assert.That(shield.CurrentHp,Is.EqualTo(500),"Solid cover must block the projectile before the dome.");
+            for(int i=0;i<3;i++)step();
+            using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+            {
+                Assert.That(recorder.Valid,Is.True);yield return null;yield return null;long idle=recorder.LastValue;
+                for(int i=0;i<50;i++)step();
+                yield return null;long sample=recorder.LastValue;
+                var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;System.GC.KeepAlive(control);
+                Debug.Log($"[DOME_PATH_ALLOC] queries=50 colliders=90 idle={idle} sample={sample} control={controlBytes}");
+                Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024));
+                Assert.That(sample-idle,Is.LessThan(20000),"Repeated dome path queries should reuse their hit buffers.");
+            }
+            for(int i=0;i<220;i++)fixtures.AddComponent<BoxCollider>().size=Vector3.one*.02f;
+            var overlapFixture=new GameObject("Dense ignored overlaps");overlapFixture.transform.SetParent(owner.transform);overlapFixture.transform.position=start;
+            for(int i=0;i<300;i++)overlapFixture.AddComponent<BoxCollider>().size=Vector3.one*.02f;
+            Physics.SyncTransforms();
+            Assert.That(Physics.OverlapSphere(start,.08f,~0,QueryTriggerInteraction.Ignore).Length,Is.GreaterThan(300));
+            Assert.That(Physics.SphereCastAll(start,.08f,Vector3.right,6,~0,QueryTriggerInteraction.Ignore).Length,Is.GreaterThan(300));
+            step();Assert.That(shield.CurrentHp,Is.EqualTo(500),"Cover must still win after both buffers overflow.");
+            Object.Destroy(wall);yield return null;Physics.SyncTransforms();step();
+            Assert.That(shield.CurrentHp,Is.EqualTo(480).Within(.001),"With cover gone, the physical shell must hit the dome.");
+        }
+        finally{Time.timeScale=1;if(shell!=null)Object.Destroy(shell);Object.Destroy(dome);Object.Destroy(wall);Object.Destroy(owner);}
+    }
     [UnityTest] public IEnumerator ShellUsesElongatedVisualButKeepsOnePhysicalCollider()
     {
         var shell=GameObject.CreatePrimitive(PrimitiveType.Sphere);shell.transform.localScale=Vector3.one*.2f;
