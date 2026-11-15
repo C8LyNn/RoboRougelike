@@ -940,3 +940,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Podczas pauzy klawisze nie zatwierdzają już nagród pod otwartym menu ani nie przerywają czasu na zebranie fizycznych łupów po walce. Po wznowieniu można normalnie potwierdzić wybór. Osobny punkt wejścia obsługi klawiszy nagród także respektuje pauzę.
 - Unity 6000.3.14f1: **10 PASS, 0 FAIL** (`pause_rewards_release.xml`, `.log`) dla faktycznego ekranu nagród, przerwy na łupy i istniejących testów strefy. Przed zmianą `pause_rewards_red.xml`: **1 FAIL**, Enter zatwierdzał wybór mimo otwartej pauzy. Testy używają wirtualnej klawiatury; fizyczna klawiatura i ręczna gra: **NOT RUN**.
+
+#### 30, 44. Wygodniejsze przejście do nagród
+
+- W czasie na zbieranie energii i łupów po walce pojawia się przycisk „Pomiń zbieranie [Enter]”. Przejście można wybrać myszą lub dotychczasowym klawiszem; pominięte części korzystają z istniejącego odpłatnego odzysku. Przycisk nie działa podczas pauzy, a ponowne wywołanie nie inicjuje następnego przejścia.
+- Unity 6000.3.14f1: **48 PASS, 0 FAIL** (`pickup_qol_release.xml`, `.log`) obejmuje stan rzeczywistej przerwy na łupy, pauzę, wcześniejsze zatwierdzanie nagród i geometrię HUD. `pickup_qol_red.xml`: **2 FAIL**, brak operacji i miejsca dla przycisku. Test geometrii nie jest oceną wizualną; kliknięcie i wygląd w Playerze: **NOT RUN**.

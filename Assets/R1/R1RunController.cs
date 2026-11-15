@@ -51,6 +51,11 @@ namespace RoboRougelike.R1
         private int lastEscapeFrame=-1;
         float pickupGraceDeadline=-1;
         public float PickupGraceRemaining=>Progress?.State!=R1RunState.Combat||pickupGraceDeadline<0?0:Mathf.Max(0,pickupGraceDeadline-Time.time);
+        public bool SkipPickupGrace()
+        {
+            if(Paused||QuitRequested||Transitioning||Error!=null||PickupGraceRemaining<=0)return false;
+            pickupGraceDeadline=Time.time;return true;
+        }
 
         private void Awake() { Instance = this; }
 
@@ -423,7 +428,7 @@ namespace RoboRougelike.R1
                 !R1ControlProfile.Current.Binding("ResetRange").StartsWith("Mouse",System.StringComparison.Ordinal)&&
                 R1ControlProfile.Current.Pressed("ResetRange",true)){ResetTestRange();return;}
             if (keyboard == null) return;
-            if(PickupGraceRemaining>0&&keyboard.enterKey.wasPressedThisFrame){pickupGraceDeadline=Time.time;return;}
+            if(PickupGraceRemaining>0&&keyboard.enterKey.wasPressedThisFrame){SkipPickupGrace();return;}
             if (Progress.State == R1RunState.Ready && keyboard.enterKey.wasPressedThisFrame) PrepareUnifiedRun();
             else if(Progress.State==R1RunState.Salvage)GetComponent<R1RunHUD>()?.ReadRewardInput(keyboard);
             else if (Progress.State == R1RunState.UpgradeChoice)

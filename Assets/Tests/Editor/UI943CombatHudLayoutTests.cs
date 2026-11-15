@@ -5,6 +5,15 @@ using UnityEngine;
 
 public sealed class UI943CombatHudLayoutTests
 {
+    [Test] public void PickupNoticeAndSkipButtonFitWithoutOverlapping()
+    {
+        var flags=BindingFlags.NonPublic|BindingFlags.Static;
+        var label=typeof(R1RunHUD).GetMethod("PickupGraceLabelRect",flags);
+        var button=typeof(R1RunHUD).GetMethod("PickupGraceButtonRect",flags);
+        Assert.That(label,Is.Not.Null);Assert.That(button,Is.Not.Null);
+        var a=(Rect)label.Invoke(null,new object[]{121f});var b=(Rect)button.Invoke(null,new object[]{121f});
+        Assert.That(a.Overlaps(b),Is.False);Assert.That(a.xMin,Is.GreaterThanOrEqualTo(20));Assert.That(b.xMax,Is.LessThanOrEqualTo(680));
+    }
     [TestCase(1)][TestCase(2)][TestCase(3)][TestCase(4)]
     public void MultipleActiveAbilityRowsDoNotOverlapDetailsOrButton(int count)
     {

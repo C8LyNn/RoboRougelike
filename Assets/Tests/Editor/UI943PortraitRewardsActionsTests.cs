@@ -160,6 +160,18 @@ public sealed class UI943PortraitRewardsActionsTests
         yield return null;
     }
 #if ENABLE_INPUT_SYSTEM
+    [UnityTest] public IEnumerator PlayerCanSkipThePickupWindowButNotWhilePaused()
+    {
+        run.Encounter.SetCombatActive(true);
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        run.Encounter.SetCombatActive(false);
+        for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
+        Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0));
+        var skip=typeof(R1RunController).GetMethod("SkipPickupGrace");Assert.That(skip,Is.Not.Null);
+        run.TogglePause();Assert.That((bool)skip.Invoke(run,null),Is.False);Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0));
+        run.TogglePause();Assert.That((bool)skip.Invoke(run,null),Is.True);Assert.That(run.PickupGraceRemaining,Is.Zero);
+        Assert.That((bool)skip.Invoke(run,null),Is.False,"The transition can only be requested once.");
+    }
     [UnityTest] public IEnumerator PauseDoesNotSkipThePostBattlePickupWindow()
     {
         run.Encounter.SetCombatActive(true);

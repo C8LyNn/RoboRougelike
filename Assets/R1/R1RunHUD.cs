@@ -11,6 +11,8 @@ namespace RoboRougelike.R1
         private GUIStyle title, heading, body, small, button, compactButton;
         private static int CombatAbilityExtraHeight(int count)=>Mathf.Max(0,count-1)*22;
         private static Rect CombatAbilityStatusRect(int row)=>new Rect(340,90+22*row,190,22);
+        private static Rect PickupGraceLabelRect(float y)=>new Rect(36,y,420,22);
+        private static Rect PickupGraceButtonRect(float y)=>new Rect(465,y-2,200,25);
         private Texture2D buttonNormal,buttonHover,buttonPressed;
         private bool combatDetailsOpen;
         private readonly System.Collections.Generic.List<Vector3> passiveRadarContacts=new System.Collections.Generic.List<Vector3>();
@@ -431,7 +433,8 @@ namespace RoboRougelike.R1
                      GUI.Label(new Rect(36,noticeY,630,22),resourceWarning,small);GUI.contentColor=before;noticeY+=25;}
                     if(run.PickupGraceRemaining>0)
                     {
-                        GUI.Label(new Rect(36,noticeY,630,22),$"Zbierz łupy i energię: {run.PickupGraceRemaining:0.0} s • Enter — nagrody",small);
+                        GUI.Label(PickupGraceLabelRect(noticeY),$"Zbierz łupy i energię: {run.PickupGraceRemaining:0.0} s",small);
+                        if(GUI.Button(PickupGraceButtonRect(noticeY),"Pomiń zbieranie [Enter]",compactButton))run.SkipPickupGrace();
                         GUI.Label(new Rect(640,210,285,55),"ZWYCIĘSTWO",title);
                     }
                 }
