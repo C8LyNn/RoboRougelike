@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14, 21–23 i 44. Pomiar wspólnego czasu kolejek pocisków
+
+- Wspólny budżet pracy pocisków, rakiet i urządzeń sumuje czas spędzony w harmonogramie w danej klatce. Czas innych operacji między osobnymi wywołaniami nie jest już błędnie liczony jako emisja pocisków. Kolejki nadal współdzielą budżet i przekazują sobie kolejność; duże salwy nadal mogą się opóźnić.
+- Unity 6000.3.14f1: `projectile_work_timing_before.xml` — **1 FAIL**, druga kolejka nie emitowała pocisku po kontrolowanej przerwie poza harmonogramem. `projectile_work_timing_after.xml` — **7 PASS, 0 FAIL**: rzeczywiste pociski po tej samej przerwie, wspólny budżet wielu właścicieli, rakiet i urządzeń, wznowienie wyłączonej kolejki oraz kolejność salw strzelby i rakiet.
+- Test wstrzymuje wątek na 600 ms wyłącznie w kontrolowanym scenariuszu, aby odróżnić czas poza harmonogramem od jego pracy; nie jest pomiarem FPS. Pojedyncza operacja i inna praca gry nadal mogą przekroczyć budżet klatki. Limit 64 podstawowych śrucin, ręczny playtest i pomiar wydajności pozostają otwarte.
+
 ### 14 i 44. Konfigurowalny kąt rozrzutu strzelby
 
 - Konfiguracja rzeczywistej strzelby pozwala ustawić pełny kąt rozrzutu od 0 do 360 stopni; 360 stopni obejmuje całą sferę kierunków. Dotychczasowa wartość domyślna 14 stopni pozostaje. Parametr jest kopiowany z konfiguracją pojazdu; generatory kierunków i konfiguracja nie ucinają już wartości powyżej 90 stopni. Istniejąca kontrola toru nadal może odrzucić całą salwę, jeśli przecina własną konstrukcję.

@@ -21,12 +21,12 @@ namespace RoboRougelike.R3
         static readonly Dictionary<IR3ProjectileWork,LinkedListNode<IR3ProjectileWork>> nodes=
             new Dictionary<IR3ProjectileWork,LinkedListNode<IR3ProjectileWork>>();
         static int budgetFrame=-1;
-        static long budgetStart;
+        static long spentTicks;
         static bool workedThisFrame,pumping;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Reset()
-        {pending.Clear();nodes.Clear();budgetFrame=-1;budgetStart=0;workedThisFrame=false;pumping=false;}
+        {pending.Clear();nodes.Clear();budgetFrame=-1;spentTicks=0;workedThisFrame=false;pumping=false;}
 
         internal static void Register(IR3ProjectileWork work)
         {
@@ -42,13 +42,14 @@ namespace RoboRougelike.R3
         {
             Register(work);if(pumping)return;
             if(budgetFrame!=Time.frameCount)
-            {budgetFrame=Time.frameCount;budgetStart=Stopwatch.GetTimestamp();workedThisFrame=false;}
+            {budgetFrame=Time.frameCount;spentTicks=0;workedThisFrame=false;}
+            long requestStart=Stopwatch.GetTimestamp();
             pumping=true;
             try
             {
                 int stalled=0;
                 while(pending.Count>0&&(!workedThisFrame||
-                    (Stopwatch.GetTimestamp()-budgetStart)*1000d/Stopwatch.Frequency<budgetMilliseconds))
+                    (spentTicks+Stopwatch.GetTimestamp()-requestStart)*1000d/Stopwatch.Frequency<budgetMilliseconds))
                 {
                     var next=pending.First.Value;Unregister(next);
                     var component=next as MonoBehaviour;
@@ -61,7 +62,7 @@ namespace RoboRougelike.R3
                     else if(++stalled>=pending.Count)break;
                 }
             }
-            finally{pumping=false;}
+            finally{spentTicks+=Stopwatch.GetTimestamp()-requestStart;pumping=false;}
         }
     }
 }

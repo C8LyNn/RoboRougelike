@@ -33,6 +33,46 @@ public sealed class BacklogWeaponTierTests
 public sealed class BacklogWeaponTierPhysicsTests
 {
     [UnitySetUp] public IEnumerator Setup(){EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();}
+    [UnityTest] public IEnumerator ProjectileBudgetExcludesTimeOutsideSchedulerWithinSameFrame()
+    {
+        var owners=new[]{new GameObject("Budget timing A"),new GameObject("Budget timing B")};
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var rent=typeof(P17PhysicalShell).GetMethod("RentConventional",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        var queues=new R3ConventionalProjectileQueue[2];
+        float oldTimeScale=Time.timeScale;Time.timeScale=0;
+        try
+        {
+            for(int i=0;i<2;i++)
+            {
+                owners[i].AddComponent<Rigidbody>().isKinematic=true;
+                var shell=(P17PhysicalShell)rent.Invoke(null,null);shell.transform.position=new Vector3(2100+i*5,2100,2100);
+                shell.GetComponent<R4ProjectileOrigin>().PartId="budget-timing-"+i;shell.gameObject.SetActive(true);
+                shell.GetComponent<Rigidbody>().linearVelocity=Vector3.forward*20;shell.Configure(owners[i].transform,1,5,Vector3.forward,null);
+                queues[i]=owners[i].AddComponent<R3ConventionalProjectileQueue>();
+                typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queues[i],500d);
+            }
+            var enqueue=typeof(R3ConventionalProjectileQueue).GetMethod("Enqueue",flags);
+            int Count(int i)=>Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId=="budget-timing-"+i);
+            var first=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Single(p=>p.PartId=="budget-timing-0").GetComponent<P17PhysicalShell>();
+            var second=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Single(p=>p.PartId=="budget-timing-1").GetComponent<P17PhysicalShell>();
+            int frame=Time.frameCount;var timer=System.Diagnostics.Stopwatch.StartNew();
+            enqueue.Invoke(queues[0],new object[]{first,1});timer.Stop();
+            Assert.That(Count(0),Is.EqualTo(2));
+            Assert.That(timer.ElapsedMilliseconds,Is.LessThan(400),"This timing fixture needs headroom in the scheduler budget.");
+            System.Threading.Thread.Sleep(600); // Other work, deliberately outside the projectile scheduler.
+            Assert.That(Time.frameCount,Is.EqualTo(frame));
+            enqueue.Invoke(queues[1],new object[]{second,1});
+            Assert.That(Count(1),Is.EqualTo(2),"Unrelated work between requests must not consume the projectile budget.");
+        }
+        finally
+        {
+            Time.timeScale=oldTimeScale;
+            foreach(var shot in Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId!=null&&p.PartId.StartsWith("budget-timing-")))
+                if(shot!=null){shot.gameObject.SetActive(false);Object.Destroy(shot.gameObject);}
+            foreach(var owner in owners)Object.Destroy(owner);
+        }
+        yield return null;
+    }
     [UnityTest] public IEnumerator DoubleShotVolleySnapshotKeepsIndependentRollsAndModuleStateAtFireTime()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(1000);
