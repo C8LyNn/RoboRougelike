@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14 i 44. Liczenie należnych strzałów urządzeń — przygotowanie
+
+- Dodano osobny licznik naliczający należne strzały bez pętli po każdym z nich. Pozwala odbierać je porcjami i zachowuje niewybrane strzały po utracie celu, nie naliczając nowych w czasie braku możliwości ognia. Skończone czasy i odstępy `float` są przeliczane na dokładne jednostki całkowite, a liczba oczekujących strzałów nie jest ograniczana typem `int`. Dla zerowego odstępu liczona jest najwyżej jedna aktywacja na wartość zegara, aby nie tworzyć nieskończonej liczby strzałów.
+- Unity 6000.3.14f1: `device_fire_schedule_final.xml` — **5 PASS** dla odbierania porcjami, przerwania i wznowienia, zmiany odstępu, zera oraz dokładnego naliczenia przypadku `float.Epsilon` bez iteracji po strzałach. Przed implementacją `device_fire_schedule_before.xml` — **5 FAIL** z powodu braku licznika.
+- **Licznik nie jest jeszcze podłączony do dronów ani wieżyczek.** Nie tworzy pocisków, nie zapisuje ich pozycji, właściciela ani celu i nie zarządza czasem tworzenia obiektów; nie rozwiązuje jeszcze limitu jednego strzału na krok fizyki. Konieczne pozostają bezpieczna kolejka opisów rzeczywistych strzałów, ich osobne kolizje i pomiar obciążenia. Punkty 14 i 44 nadal są otwarte.
+
 ### 14 i 44. Potwierdzony limit tempa urządzeń
 
 - Dodano scenariusz `DeviceCanFireSeveralPhysicalShotsPerPhysicsStep` jako test **Explicit**: nie jest automatycznie zaliczany jako przechodzący test i należy go uruchomić bezpośrednio po naprawie. Urządzenie z odstępem 0,005 s obserwuje nieruchomy, widoczny cel; liczone są aktywne, osobne fizyczne pociski po 20 rzeczywistych krokach fizyki.
