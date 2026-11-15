@@ -184,5 +184,14 @@ public sealed class BacklogPartFusionGarageTests
         Assert.That(actual.Tier,Is.EqualTo(2));Assert.That(actual.Damageable.MaxHp,Is.EqualTo(160).Within(.001));
         yield return null;
     }
+    [UnityTest] public IEnumerator FusionConfirmationDoesNotClaimDamagedResultIsFullyRepaired()
+    {
+        for(int i=0;i<2;i++)Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);
+        var inputs=run.VehicleModel.Inventory.Take(3).ToArray();
+        inputs[0].Health=.999f;inputs[1].Health=1f;inputs[2].Health=1f;
+        Assert.That(run.GarageFuse(inputs.Select(p=>p.Id)),Is.True);
+        Assert.That(run.Garage.Message,Does.Contain("HP >99%"));
+        yield return null;
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

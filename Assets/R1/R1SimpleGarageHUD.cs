@@ -426,7 +426,7 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(x,y+296,width,42),"Kliknij rodzaj, aby przenieść go do kolejnego slotu. Zajęte sloty zamienią się miejscami.",small);
         }
 
-        static string PartHealthText(float health)
+        internal static string PartHealthText(float health)
         {
             if(float.IsNaN(health)||float.IsInfinity(health))return "—";
             if(health>0&&health<.01f)return "<1%";

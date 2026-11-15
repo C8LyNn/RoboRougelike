@@ -40,6 +40,7 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Starsze panele zaznaczonej części korzystają z tego samego formatowania HP co katalog: wartości bliskie pełnego i zerowego stanu są przedstawiane jako `>99%` i `<1%`. Zamontowana część z HP poniżej 100% jest opisywana jako uszkodzona. Nie zmieniono stanu części ani kosztu naprawy.
 - Unity 6000.3.14f1: `legacy_part_health_labels.xml` i `.log`: **4 PASS, 0 FAIL** dla istniejących kontroli wspólnego formatowania HP w katalogu i inspekcji. Test nie klika ani nie sprawdza wyglądu starszych paneli w Playerze; kompilacja projektu w Unity przeszła.
+- Komunikat po fuzji również używa tego formatu: wynik o HP mniejszym od 100% nie jest przedstawiany jako w pełni sprawny. `fusion_message_after.xml` i `.log`: **7 PASS, 0 FAIL**, w tym fuzja w rzeczywistym garażu, montaż wyniku i podgląd; `fusion_message_before.xml`: **1 FAIL**, komunikat pokazywał 100% mimo uszkodzenia.
 
 ### 02, 14 i 44. Wspólny bufor zapytania railguna
 
