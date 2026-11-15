@@ -11,6 +11,11 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 25–26 i 44. Przeszkoda połączona z podłożem
+
+- Kontrola wolnego miejsca urządzenia uwzględnia także collider podłoża, gdy jego geometria faktycznie wchodzi w zajmowaną przestrzeń. Przeszkoda połączona z podłogą w jedną siatkę nie jest więc pomijana tylko dlatego, że środkowy promień rozpoznał ten sam collider jako podparcie. Wolna podłoga siatkowa nadal pozwala na ustawienie rampy; przy odmowie zasoby i cooldown pozostają bez zmian.
+- Unity 6000.3.14f1: `terrain_combined_mesh_before.xml` — **1 FAIL**, rampa powstawała w przeszkodzie połączonej z podłożem. `terrain_combined_mesh_after.xml` — **7 PASS**, w tym rzeczywisty połączony MeshCollider, ponowna próba na wolnej podłodze, dach, brak podparcia, ruch, kontakt kół z rampą, murek, jump pad i pułapki. Sceny są kontrolowane przez test; ręczne sprawdzenie nachylonych i nieregularnych map **NOT RUN**.
+
 ### 25–26 i 44. Podłoże pod zadaszeniem
 
 - Przy szukaniu podparcia dla ramp, murków, jump padów i pułapek powierzchnie ponad pojazdem są pomijane przed wyborem podłoża. Dzięki temu dach nie zasłania prawidłowej podłogi. Kontrola przeszkód oraz odmowa stawiania nad zbyt głębokim spadkiem pozostają zachowane.

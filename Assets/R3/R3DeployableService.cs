@@ -169,7 +169,7 @@ namespace RoboRougelike.R3
             float lift=(length*Mathf.Sin(angle*Mathf.Deg2Rad)+thickness*Mathf.Cos(angle*Mathf.Deg2Rad))*.5f;
             Vector3 center=groundPoint+Vector3.up*(lift+.02f);
             foreach(var hit in Physics.OverlapBox(center,new Vector3(width,thickness,length)*.49f,rotation,~0,QueryTriggerInteraction.Ignore))
-                if(hit!=null&&hit!=ground)return false;
+                if(hit!=null)return false;
             float lifetime=Lifetime(kind),cooldown=Cooldown(kind),launch=assembly.Model.Economy.JumpPadLaunchSpeed;
             if(float.IsNaN(lifetime)||float.IsInfinity(lifetime)||lifetime<=0||float.IsNaN(cooldown)||float.IsInfinity(cooldown)||cooldown<0)return false;
             if(kind==R3PartKind.JumpPadDeployer&&(float.IsNaN(launch)||float.IsInfinity(launch)||launch<=0))return false;

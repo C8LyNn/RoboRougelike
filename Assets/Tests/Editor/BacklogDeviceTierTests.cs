@@ -562,6 +562,29 @@ public sealed class BacklogDeviceTierGameplayTests
         Assert.That(bank.Current,Is.EqualTo(before));Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.RampPool),Is.EqualTo(3));
         Assert.That(run.VehicleModel.RampDeployerReadyAt,Is.LessThanOrEqualTo(Time.time));Object.Destroy(platform);
     }
+    [UnityTest] public IEnumerator RampCannotSpawnInsideObstacleThatSharesGroundMesh()
+    {
+        run.VehicleModel.Award(2000);FuseAndMount(R3PartKind.RampDeployer);
+        Assert.That(run.EnterTestRange(),Is.True);for(int i=0;i<300&&!run.CanUseMovement;i++)yield return null;yield return null;
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var service=player.GetComponent<R3DeployableService>();
+        var source=GameObject.CreatePrimitive(PrimitiveType.Cube);var cube=source.GetComponent<MeshFilter>().sharedMesh;source.SetActive(false);
+        var mesh=new Mesh();mesh.CombineMeshes(new[]{
+            new CombineInstance{mesh=cube,transform=Matrix4x4.TRS(new Vector3(0,-.5f,0),Quaternion.identity,new Vector3(80,1,80))},
+            new CombineInstance{mesh=cube,transform=Matrix4x4.TRS(new Vector3(1.5f,.7f,-4),Quaternion.identity,new Vector3(1,1.4f,1))}
+        },true,true);
+        var terrain=new GameObject("Floor and obstacle in one mesh");terrain.transform.position=new Vector3(1500,0,1500);terrain.AddComponent<MeshCollider>().sharedMesh=mesh;
+        body.position=new Vector3(1500,2,1500);body.rotation=Quaternion.identity;body.linearVelocity=Vector3.forward*3;Physics.SyncTransforms();
+        var bank=player.GetComponent<VehicleEnergyBank>();float energy=bank.Current;
+        Assert.That(service.TryDeployRamp(),Is.False,"An obstacle in the same collider as the supporting floor must still block placement.");
+        Assert.That(bank.Current,Is.EqualTo(energy));Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.RampPool),Is.EqualTo(3));
+        Assert.That(run.VehicleModel.RampDeployerReadyAt,Is.LessThanOrEqualTo(Time.time));
+        terrain.SetActive(false);
+        var clear=new GameObject("Clear mesh floor");clear.transform.position=new Vector3(1500,-.5f,1500);clear.transform.localScale=new Vector3(80,1,80);
+        clear.AddComponent<MeshCollider>().sharedMesh=cube;Physics.SyncTransforms();
+        Assert.That(service.TryDeployRamp(),Is.True,"A clear mesh floor must remain usable after the obstacle is removed.");
+        Assert.That(run.VehicleModel.Charges.Current(R3DeployableService.RampPool),Is.EqualTo(2));
+        Object.Destroy(clear);Object.Destroy(terrain);Object.Destroy(mesh);Object.Destroy(source);
+    }
     [UnityTest] public IEnumerator WallAndJumpPadUseIndependentChargesAndLaunchARealVehicle()
     {
         run.VehicleModel.Award(2000);FuseAndMount(R3PartKind.WallDeployer);FuseAndMount(R3PartKind.JumpPadDeployer);
