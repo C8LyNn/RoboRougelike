@@ -166,6 +166,12 @@ namespace RoboRougelike.R1
             if(float.IsNaN(current)||float.IsInfinity(current)||float.IsNaN(maximum)||float.IsInfinity(maximum)||maximum<=0)return 0;
             return Mathf.Clamp01(current/maximum);
         }
+        private static string ResourceValueLabel(float value)
+        {
+            if(float.IsNaN(value)||float.IsInfinity(value))return "—";
+            if(value>0&&value<1)return "<1";
+            return $"{Mathf.Max(0,value):0}";
+        }
         private static bool CombatResourceLow(float current,float maximum,float threshold)=>
             !float.IsNaN(current)&&!float.IsInfinity(current)&&!float.IsNaN(maximum)&&!float.IsInfinity(maximum)&&
             maximum>0&&current<=maximum*threshold;
@@ -413,14 +419,14 @@ namespace RoboRougelike.R1
                 {
                     var beforeText=GUI.contentColor;
                     if(lowCore)GUI.contentColor=new Color(1f,.52f,.42f);
-                    GUI.Label(new Rect(36,58,175,28),$"RDZEŃ{(lowCore?"!":":")} {hp:0}/{maxHp:0}",body);
+                    GUI.Label(new Rect(36,58,175,28),$"RDZEŃ{(lowCore?"!":":")} {ResourceValueLabel(hp)}/{ResourceValueLabel(maxHp)}",body);
                     GUI.contentColor=beforeText;
                     DrawResourceBar(new Rect(215,65,110,12),hp,maxHp,lowCore?new Color(1f,.35f,.25f):new Color(.35f,.85f,.67f));
                     GUI.Label(new Rect(340,58,325,28),ActivityGoal(run),small);
                     if(energy!=null)
                     {
                         if(lowEnergy)GUI.contentColor=new Color(1f,.78f,.38f);
-                        GUI.Label(new Rect(36,90,175,25),$"Energia{(lowEnergy?"!":":")} {currentEnergy:0}/{maxEnergy:0}",small);
+                        GUI.Label(new Rect(36,90,175,25),$"Energia{(lowEnergy?"!":":")} {ResourceValueLabel(currentEnergy)}/{ResourceValueLabel(maxEnergy)}",small);
                         GUI.contentColor=beforeText;
                         DrawResourceBar(new Rect(215,95,110,12),currentEnergy,maxEnergy,lowEnergy?new Color(1f,.68f,.24f):new Color(.25f,.65f,.95f));
                         int statusRow=0;

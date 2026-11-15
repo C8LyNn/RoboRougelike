@@ -6,6 +6,16 @@ using UnityEngine;
 
 public sealed class CompactCombatHUDTests
 {
+    [TestCase(0f,"0")]
+    [TestCase(.01f,"<1")]
+    [TestCase(.4f,"<1")]
+    [TestCase(10f,"10")]
+    public void ResourceLabelsDistinguishEmptyFromPositiveFraction(float amount,string expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("ResourceValueLabel",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((string)method.Invoke(null,new object[]{amount}),Is.EqualTo(expected));
+    }
     [TestCase(20,12,true,"Brakuje 8 Z")]
     [TestCase(0,100,true,"Odzysk niedostępny")]
     [TestCase(20,100,false,"Brak miejsca")]

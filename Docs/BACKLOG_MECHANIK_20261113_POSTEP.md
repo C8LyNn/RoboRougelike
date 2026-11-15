@@ -27,6 +27,7 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Oddzielono energię od liczników ładunków; liczniki mają cztery miejsca w osobnym panelu. Przy większej liczbie rodzajów przycisk przełącza strony, a po usunięciu części bieżąca strona jest dostosowywana do pozostałych.
 - Unity 6000.3.14f1: `range_charges_pages.xml` i `.log`: **3 PASS, 0 FAIL**, w tym sprawdzenie stron, geometrii, przypisań i wejścia na poligon kreatywny ze spawnem przeciwników. Test geometrii nie ocenia czytelności tekstu ani klikania w Windows Player: **NOT RUN**.
+- W walce i na poligonie dodatnia ilość HP rdzenia lub energii poniżej 1 jest pokazywana jako `<1`, a prawdziwe zero jako `0`. To zmiana tekstu, nie wartości zasobów. `resource_label_after.xml` i `.log`: **6 PASS, 0 FAIL**, w tym granice wyświetlania i poprzednie sprawdzenia HUD; `resource_label_before.xml`: **4 FAIL** z braku nowego formatowania. Ręczna ocena: **NOT RUN**.
 
 ### 02, 14 i 44. Ponowne użycie śrucin strzelby
 

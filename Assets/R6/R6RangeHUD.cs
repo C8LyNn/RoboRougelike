@@ -104,7 +104,7 @@ namespace RoboRougelike.R1
             Panel(new Rect(18,18,610,175));
             GUI.Label(new Rect(34,26,580,34),run.CreativeWorkshop?"POLIGON KREATYWNY • kopia konstrukcji":"POLIGON • kopia konstrukcji",heading);
             var drive=run.Player.GetComponent<R6VehicleDrive>();var bodyRb=run.Player.GetComponent<Rigidbody>();
-            GUI.Label(new Rect(34,65,580,90),$"Prędkość: {bodyRb.linearVelocity.magnitude:0.0} m/s • Masa: {bodyRb.mass:0} kg\nKoła: {drive?.Wheels??0}/{run.Player.Modules.InitialWheelCount} • Broń: {run.Player.Modules.ActiveWeaponCount}\nRdzeń: {run.Player.Core?.CurrentHp??0:0} HP • HP ocalałych części: {run.Player.HealthFraction*100:0}%",small);
+            GUI.Label(new Rect(34,65,580,90),$"Prędkość: {bodyRb.linearVelocity.magnitude:0.0} m/s • Masa: {bodyRb.mass:0} kg\nKoła: {drive?.Wheels??0}/{run.Player.Modules.InitialWheelCount} • Broń: {run.Player.Modules.ActiveWeaponCount}\nRdzeń: {ResourceValueLabel(run.Player.Core?.CurrentHp??0)} HP • HP ocalałych części: {run.Player.HealthFraction*100:0}%",small);
             var energy=run.Player.GetComponent<VehicleEnergyBank>();
             if(energy!=null)
             {
@@ -136,7 +136,7 @@ namespace RoboRougelike.R1
                     if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.SupportTurretGenerator))charges+=$" • Wsparcie {bank.Current(R3DeployableService.SupportTurretPool)}/{bank.Maximum(R3DeployableService.SupportTurretPool)}";
                     if(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.ShieldTurretGenerator))charges+=$" • Kopuła {bank.Current(R3DeployableService.ShieldTurretPool)}/{bank.Maximum(R3DeployableService.ShieldTurretPool)}";
                 }
-                GUI.Label(new Rect(34,151,435,22),$"Energia: {energy.Current:0}/{energy.Maximum:0}",small);
+                GUI.Label(new Rect(34,151,435,22),$"Energia: {ResourceValueLabel(energy.Current)}/{ResourceValueLabel(energy.Maximum)}",small);
                 var entries=charges.Split(new[]{" • "},System.StringSplitOptions.RemoveEmptyEntries);
                 if(entries.Length>0)
                 {
