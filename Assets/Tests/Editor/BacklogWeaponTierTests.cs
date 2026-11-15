@@ -11,6 +11,29 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogWeaponTierTests
 {
+    [Test] public void BonusAllocationIsFairAndHandlesVeryLargeRequests()
+    {
+        var method=typeof(R3VehicleAssembly).GetMethod("AllocateBonusShots",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        int[] Allocate(int[] requested,int available)=>(int[])method.Invoke(null,new object[]{requested,available});
+        Assert.That(Allocate(new[]{4,2,8},7),Is.EqualTo(new[]{3,2,2}));
+        Assert.That(Allocate(new[]{0,1,5},4),Is.EqualTo(new[]{0,1,3}));
+        Assert.That(Allocate(new[]{2,3},10),Is.EqualTo(new[]{2,3}));
+        Assert.That(Allocate(new[]{4,2},0),Is.EqualTo(new[]{0,0}));
+        Assert.That(Allocate(new[]{int.MaxValue,int.MaxValue,2},int.MaxValue),Is.EqualTo(new[]{1073741823,1073741822,2}));
+        for(int a=0;a<=4;a++)for(int b=0;b<=4;b++)for(int c=0;c<=4;c++)for(int capacity=0;capacity<=12;capacity++)
+        {
+            var requests=new[]{a,b,c};var expected=new int[3];int remaining=capacity;
+            while(remaining>0)
+            {
+                bool assigned=false;
+                for(int i=0;i<requests.Length&&remaining>0;i++)
+                    if(expected[i]<requests[i]){expected[i]++;remaining--;assigned=true;}
+                if(!assigned)break;
+            }
+            Assert.That(Allocate(requests,capacity),Is.EqualTo(expected),$"requests={a},{b},{c}; capacity={capacity}");
+        }
+    }
     [Test] public void ThreeIdenticalBasicGunsFuseToOneTierTwoGun()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);

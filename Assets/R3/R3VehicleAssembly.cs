@@ -249,6 +249,33 @@ namespace RoboRougelike.R3
             public RoboRougelike.WeaponIntegration.RRLRocketBinding Binding;
             public int Requested;
         }
+        private static int[] AllocateBonusShots(IReadOnlyList<int> requested,int available)
+        {
+            var allocated=new int[requested.Count];
+            if(available<=0||requested.Count==0)return allocated;
+            int maximum=0;
+            for(int i=0;i<requested.Count;i++)maximum=Mathf.Max(maximum,requested[i]);
+            long low=0,high=System.Math.Min((long)maximum,available);
+            // Find the greatest complete round that fits. Use long for the
+            // sum because many independent weapons can request int.MaxValue.
+            while(low<high)
+            {
+                long middle=low+(high-low+1)/2,total=0;
+                for(int i=0;i<requested.Count;i++)
+                    total+=System.Math.Min((long)System.Math.Max(0,requested[i]),middle);
+                if(total<=available)low=middle;else high=middle-1;
+            }
+            long used=0;
+            for(int i=0;i<requested.Count;i++)
+            {
+                allocated[i]=(int)System.Math.Min((long)System.Math.Max(0,requested[i]),low);
+                used+=allocated[i];
+            }
+            int remaining=(int)(available-used);
+            for(int i=0;i<requested.Count&&remaining>0;i++)
+                if(allocated[i]<requested[i]){allocated[i]++;remaining--;}
+            return allocated;
+        }
         public int RollDoubleShotExtras(int available)
         {
             if(available<=0||Model==null)return 0;
@@ -355,28 +382,17 @@ namespace RoboRougelike.R3
                 }
             if(pendingRockets!=null&&RoboRougelike.WeaponIntegration.RRLRocketBinding.AvailableRocketSlots>0)
             {
-                var rocketAllocation=new int[pendingRockets.Count];int rocketAvailable=RoboRougelike.WeaponIntegration.RRLRocketBinding.AvailableRocketSlots;
-                while(rocketAvailable>0)
-                {
-                    bool assigned=false;
-                    for(int i=0;i<pendingRockets.Count&&rocketAvailable>0;i++)
-                        if(rocketAllocation[i]<pendingRockets[i].Requested){rocketAllocation[i]++;rocketAvailable--;assigned=true;}
-                    if(!assigned)break;
-                }
+                var rocketRequests=new int[pendingRockets.Count];
+                for(int i=0;i<pendingRockets.Count;i++)rocketRequests[i]=pendingRockets[i].Requested;
+                var rocketAllocation=AllocateBonusShots(rocketRequests,RoboRougelike.WeaponIntegration.RRLRocketBinding.AvailableRocketSlots);
                 for(int i=0;i<pendingRockets.Count;i++)if(rocketAllocation[i]>0)pendingRockets[i].Binding.FireAdditional(rocketAllocation[i]);
             }
             if(pending==null)return;
             if(P17PhysicalShell.AvailableSlots<=0)
             {foreach(var shot in pending)if(shot.Shotgun!=null)shot.Shotgun.ClearDeferred();return;}
-            var allocated=new int[pending.Count];
-            int available=P17PhysicalShell.AvailableSlots;
-            while(available>0)
-            {
-                bool assigned=false;
-                for(int i=0;i<pending.Count&&available>0;i++)
-                    if(allocated[i]<pending[i].Requested){allocated[i]++;available--;assigned=true;}
-                if(!assigned)break;
-            }
+            var requests=new int[pending.Count];
+            for(int i=0;i<pending.Count;i++)requests[i]=pending[i].Requested;
+            var allocated=AllocateBonusShots(requests,P17PhysicalShell.AvailableSlots);
             for(int i=0;i<pending.Count;i++)
                 if(allocated[i]>0)
                 {
