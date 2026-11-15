@@ -74,6 +74,22 @@ public sealed class BacklogProjectileTierPhysicsTests
         }
         yield return null;
     }
+    [UnityTest] public IEnumerator ConventionalProjectileLaunchedInsideOwnerReachesTargetWithoutDamagingOwner()
+    {
+        var gun=Build(R4WeaponKind.Basic,out _);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
+        var core=assembly.GetComponent<R1VehicleState>().Core;float initial=core.CurrentHp;
+        var muzzle=new GameObject("Owner interior muzzle").transform;muzzle.SetParent(core.transform,false);
+        muzzle.position=core.transform.position;muzzle.rotation=Quaternion.identity;
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=muzzle.position+Vector3.forward*6;
+        target.transform.localScale=new Vector3(3,3,.5f);
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);Physics.SyncTransforms();
+        assembly.GetComponent<P12PipelineSafeTankController>().FireFrom(muzzle,R4WeaponKind.Basic,"owner-safety");
+        float deadline=Time.realtimeSinceStartup+5;
+        while(hp.CurrentHp>=500&&Time.realtimeSinceStartup<deadline)yield return MOVSeriesDeviceTests.FixedStep();
+        Assert.That(hp.CurrentHp,Is.LessThan(500),"A shot must be able to leave its own physical construction.");
+        Assert.That(core.CurrentHp,Is.EqualTo(initial),"The shooter's core must remain undamaged.");
+        Object.Destroy(target);Object.Destroy(assembly.gameObject);yield return null;
+    }
     R3MountedPart Build(R4WeaponKind weapon,out VehicleEnergyBank bank,bool doubleShot=false,R1UpgradeDefinition bonus=null)
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));

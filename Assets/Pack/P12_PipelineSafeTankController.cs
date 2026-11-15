@@ -720,37 +720,7 @@ public float CurrentForwardSpeed =>
             if(blastDamage>0)projectile.ConfigureHybrid(transform,hitDamage,blastDamage,projectileLifetime,direction,null);
             else projectile.Configure(transform,hitDamage,projectileLifetime,direction,null);
 
-            IgnoreOwnerColliders(
-                sphere
-            );
             return sphere;
-        }
-
-        private void IgnoreOwnerColliders(
-            Collider projectileCollider)
-        {
-            if (projectileCollider == null)
-                return;
-
-            Collider[] ownerColliders =
-                GetComponentsInChildren<
-                    Collider
-                >(true);
-
-            foreach (Collider ownerCollider
-                     in ownerColliders)
-            {
-                if (ownerCollider == null ||
-                    ownerCollider ==
-                    projectileCollider)
-                    continue;
-
-                Physics.IgnoreCollision(
-                    projectileCollider,
-                    ownerCollider,
-                    true
-                );
-            }
         }
 
         private void EnsureProjectileMaterial()

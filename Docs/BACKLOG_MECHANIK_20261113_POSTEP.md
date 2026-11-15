@@ -866,3 +866,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - Wiązka i aura otrzymują osobny rodzaj obrażeń energetycznych oraz właściwy zakres fizycznej premii. Tymczasowa nagroda +40% łączy się z ogólnymi i broni, nie wzmacnia pocisków kinetycznych. Działa również przy bezpośrednim trafieniu kopuły. Nowy rodzaj początkowo przekazuje po połączeniach 25% obrażeń, tak jak poprzednio te bronie; osobny balans propagacji pozostaje do playtestu. Zmiana nie dodaje zakłócenia EMP do aury.
 - Unity 6000.3.14f1: **58 PASS, 0 FAIL, 0 SKIP** (`energy_scope_final.xml`, `.log`) obejmuje fizyczną aurę i trafienie wiązką z premią i po jej usunięciu, brak premii kinetycznej, dane nagrody i checkpoint, wcześniejszą aurę, piłę, wiązkę, osłony i propagację. Przed implementacją `energy_scope_red.xml`: brak rodzaju premii. W teście wiązki wywołano jej istniejącą metodę trafienia bezpośrednio; ręczne celowanie, balans i wpływ dodatkowej nagrody na losowanie: **NOT RUN**.
+
+#### 14. Przygotowanie strzałów — usunięcie zbędnej pracy
+
+- Zwykły pocisk ustawiał ignorowanie kolizji z własnym pojazdem dwa razy, osobno przez ten sam pocisk oraz ponownie przez sterownik. Usunięto drugie przejście i jego alokację tablicy; pierwsze pozostaje. To drobne przygotowanie do zwiększania skali ostrzału, a nie usunięcie limitów 96 pocisków i 32 rakiet ani obietnica konkretnego wzrostu FPS.
+- Unity 6000.3.14f1: **7 PASS, 0 FAIL** (`projectile_owner_optimization_first.xml`, `.log`), w tym rzeczywisty strzał spod powierzchni własnego pojazdu do celu bez uszkodzenia rdzenia, poprzednie premie, pocisk i rakieta. Profilowanie wydajności oraz ręczna gra: **NOT RUN**.
