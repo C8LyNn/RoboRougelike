@@ -130,6 +130,8 @@ namespace RoboRougelike.R3
             snapshot.Clear();lastRepairPulse=Time.time;
             Refresh(true);
         }
+        // Disabled components must not accumulate repair time to apply later.
+        private void OnEnable(){lastRepairPulse=Time.time;}
         private void Update()
         {
             if(assembly==null||player==null)return;
@@ -308,7 +310,7 @@ namespace RoboRougelike.R3
             (scope==R1BonusScope.HoverDrive&&drive==R3DriveKind.Hover);
         private void ApplyRepairPulse()
         {
-            float elapsed=Mathf.Clamp(Time.time-lastRepairPulse,0,0.5f);
+            float elapsed=Mathf.Max(0,Time.time-lastRepairPulse);
             lastRepairPulse=Time.time;
             // The legacy 'field repair' bonus had no actual stat implementation.
             // As a physical module it regenerates ALIVE connected parts while operational.

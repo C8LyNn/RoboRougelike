@@ -816,6 +816,27 @@ public sealed class BacklogBonusTierGameplayTests
         yield return new EnterPlayMode();
         for (int i = 0; i < 300 && R1RunController.Instance?.Progress == null; i++) yield return null;
     }
+    [UnityTest] public IEnumerator FieldRepairCountsLongFrameButNotDisabledTime()
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var reward=ScriptableObject.CreateInstance<R1UpgradeDefinition>();reward.Id="field-repair-clock-qa";reward.Effect=R1UpgradeEffect.Repair;
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);string id=model.Inventory.Single().Id;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.OwnedPlacementError(id,c,default)==null);
+        Assert.That(run.GarageMount(id,cell),Is.True);Assert.That(run.EnterTestRange(),Is.True);
+        while(run.Transitioning)yield return null;yield return null;
+        var effects=run.Player.GetComponent<R3MountedBonusEffects>();
+        var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational);
+        part.Damageable.RestoreHealthRatio(.3f);
+        var clock=typeof(R3MountedBonusEffects).GetField("lastRepairPulse",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        var apply=typeof(R3MountedBonusEffects).GetMethod("ApplyRepairPulse",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        clock.SetValue(effects,Time.time-2f);apply.Invoke(effects,null);
+        Assert.That(part.Damageable.CurrentHp/part.Damageable.MaxHp,Is.EqualTo(.35f).Within(.001),"Two active seconds must provide two seconds of repair.");
+        effects.enabled=false;yield return new WaitForSeconds(.8f);
+        float before=part.Damageable.CurrentHp;effects.enabled=true;apply.Invoke(effects,null);
+        Assert.That(part.Damageable.CurrentHp,Is.EqualTo(before).Within(.001),"Disabled time must not be converted to healing.");
+        Object.Destroy(reward);
+    }
     [UnityTest] public IEnumerator MountedTierTwoDamageRewardWorksAndStopsWhenDestroyed()
     {
         var run = R1RunController.Instance;

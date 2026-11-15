@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 12, 14, 19 i 44. Czas działania naprawy polowej
+
+- Pasywna naprawa polowa nalicza cały upływający czas gry również po dłuższej klatce, zamiast ucinać go do 0,5 s. Po ponownym włączeniu komponentu zegar jest resetowany, więc czas jego wyłączenia nie jest później zamieniany na darmową naprawę. Zdrowie części nadal nie przekracza maksimum; normalne zasady działania modułu i aktywnego Repair Pulse nie uległy zmianie.
+- Unity 6000.3.14f1: **5 PASS, 0 FAIL** (`field_repair_time_final.xml`, `.log` w katalogu `Prototypy`) dla rzeczywistej zamontowanej części, dwóch sekund aktywnej naprawy, wyłączenia i ponownego włączenia oraz wcześniejszych scenariuszy premii i naprawy aktywnej. `field_repair_time_before.xml`: **1 FAIL**, po dwóch sekundach naliczano tylko 0,5 s. Opóźnienie zasymulowano ustawieniem zegara w teście; nie jest to pomiar rzeczywistych spadków FPS ani ręczna gra.
+- Limity dodatkowych pocisków #02/#14 oraz pełny odbiór #44 pozostają otwarte.
+
 ### 02, 14, 24 i 44. Zapytania toru pocisku przed kopułą
 
 - Zwykły fizyczny pocisk ponownie wykorzystuje bufory wykrywania przeszkód na starcie i przed granicą kopuły, zamiast tworzyć dwie nowe tablice dla każdego takiego sprawdzenia. Bufory rosną w razie potrzeby; po ich zapełnieniu wykonywane jest pełne zapytanie. Zagnieżdżone sprawdzenie dostaje osobne bufory. Ściany, filtry kolizji, trafienie kopuły i niezależne pociski pozostają zachowane.
