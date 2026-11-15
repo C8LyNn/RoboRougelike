@@ -138,8 +138,9 @@ namespace RoboRougelike.R1
             PauseNavigation(left)&&(right=="Pause"||right=="ResetRange")||PauseNavigation(right)&&(left=="Pause"||left=="ResetRange");
         static bool GarageMouseReserved(string action,string binding)=>GarageAction(action)&&
             (binding=="MouseLeft"||binding=="MouseRight"||binding=="MouseMiddle");
-        // Shift is the existing modifier for editing an already mounted part.
-        static bool GarageModifierReserved(string action,string binding)=>GarageAction(action)&&(binding=="LeftShift"||binding=="RightShift");
+        // Shift rotates/removes and Ctrl modifies repair clicks in the garage.
+        static bool GarageModifierReserved(string action,string binding)=>GarageAction(action)&&
+            (binding=="LeftShift"||binding=="RightShift"||binding=="LeftCtrl"||binding=="RightCtrl");
         public static string Display(string binding)=>binding=="Escape"?"Esc":binding=="MouseLeft"?"LPM":binding=="MouseRight"?"PPM":
             binding=="MouseMiddle"?"ŚPM":binding=="MouseForward"?"Mysz 4":binding=="MouseBack"?"Mysz 5":
             binding=="UpArrow"?"↑":binding=="DownArrow"?"↓":binding=="LeftArrow"?"←":binding=="RightArrow"?"→":
@@ -154,11 +155,17 @@ namespace RoboRougelike.R1
             if(e==null)return null;
             if(IsBindingMouseDown(e))return e.button==0?"MouseLeft":e.button==1?"MouseRight":
                 e.button==2?"MouseMiddle":e.button==3?"MouseBack":e.button==4?"MouseForward":null;
-            if(e.type!=EventType.KeyDown||e.alt||e.control||e.command)return null;
+            bool controlKey=e.keyCode==KeyCode.LeftControl||e.keyCode==KeyCode.RightControl;
+            if(e.type!=EventType.KeyDown||e.alt||e.command||e.control&&!controlKey)return null;
             string name=e.keyCode.ToString();
             if(name.StartsWith("Alpha",StringComparison.Ordinal))return "Digit"+name.Substring(5);
             if(name.StartsWith("Keypad",StringComparison.Ordinal))return "Numpad"+name.Substring(6);
             if(name=="Return")return "Enter";
+            if(name=="BackQuote")return "Backquote";
+            if(name=="LeftControl")return "LeftCtrl";
+            if(name=="RightControl")return "RightCtrl";
+            if(name=="Numlock")return "NumLock";
+            if(name=="Menu")return "ContextMenu";
             return name;
         }
         public bool MatchesEvent(string action,Event e)=>string.Equals(Binding(action),FromEvent(e),StringComparison.Ordinal);
@@ -171,7 +178,7 @@ namespace RoboRougelike.R1
         {
             var old=Binding(action);string conflict=Conflict(action,binding);
             if(GarageMouseReserved(action,binding)){message="Ten przycisk wykonuje już podstawową akcję w garażu.";return false;}
-            if(GarageModifierReserved(action,binding)){message="Shift służy w garażu do obrotu zamontowanej części.";return false;}
+            if(GarageModifierReserved(action,binding)){message="Shift i Ctrl służą do działań na częściach w garażu.";return false;}
             if(Reserved(binding)&&!(action=="Pause"&&binding=="Escape")&&!(action=="SkipPickup"&&binding=="Enter")&&!((RewardAction(action)||MenuAction(action))&&(binding=="Enter"||binding=="NumpadEnter"))&&!(PauseNavigation(action)&&PauseNavigationReserved(binding))){message="Ten klawisz jest używany przez inne sterowanie.";return false;}
             if(conflict!=null){message="Ten przycisk jest już używany: "+ActionName(conflict)+".";return false;}
             if(!TryBind(action,binding)){message="Nie można przypisać tego przycisku.";return false;}

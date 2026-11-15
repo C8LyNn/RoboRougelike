@@ -11,6 +11,61 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class BacklogControlProfileTests
 {
+    [TestCase(KeyCode.BackQuote,"Backquote",Key.Backquote,false)]
+    [TestCase(KeyCode.LeftControl,"LeftCtrl",Key.LeftCtrl,true)]
+    [TestCase(KeyCode.RightControl,"RightCtrl",Key.RightCtrl,true)]
+    [TestCase(KeyCode.Numlock,"NumLock",Key.NumLock,false)]
+    [TestCase(KeyCode.Menu,"ContextMenu",Key.ContextMenu,false)]
+    public void CapturedPhysicalKeysUseInputSystemNames(KeyCode key,string expected,Key physical,bool control)
+    {
+        var input=new Event{type=EventType.KeyDown,keyCode=key,control=control};
+        var captured=R1ControlProfile.FromEvent(input);
+        Assert.That(captured,Is.EqualTo(expected));
+        var profile=new R1ControlProfile(Path.Combine(Path.GetTempPath(),"RRL-key-capture-"+Guid.NewGuid()+".json"));
+        Assert.That(profile.TryBind("MoveForward",captured),Is.True);
+        Assert.That(profile.MatchesEvent("MoveForward",input),Is.True);
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(physical));InputSystem.Update();
+            Assert.That(profile.Pressed("MoveForward"),Is.True,"The captured key must also work through gameplay input.");
+        }
+        finally{InputSystem.RemoveDevice(keyboard);}
+    }
+    [Test] public void CapturedControlKeyReadsPhysicalInputAndDoesNotAcceptModifiedShortcuts()
+    {
+        string path=Path.Combine(Path.GetTempPath(),"RRL-control-key-"+Guid.NewGuid()+".json");
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            var profile=new R1ControlProfile(path);
+            var ctrl=new Event{type=EventType.KeyDown,keyCode=KeyCode.LeftControl,control=true};
+            Assert.That(profile.TrySaveBinding("MoveForward",R1ControlProfile.FromEvent(ctrl),out _),Is.True);
+            Assert.That(new R1ControlProfile(path).Binding("MoveForward"),Is.EqualTo("LeftCtrl"));
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.LeftCtrl));InputSystem.Update();
+            Assert.That(profile.Pressed("MoveForward"),Is.True);
+            Assert.That(R1ControlProfile.FromEvent(new Event{type=EventType.KeyDown,keyCode=KeyCode.K,control=true}),Is.Null);
+            Assert.That(profile.TryBind("GarageToolMount","LeftCtrl"),Is.False,"Ctrl is already the garage repair modifier.");
+        }
+        finally{InputSystem.RemoveDevice(keyboard);if(File.Exists(path))File.Delete(path);}
+    }
+    [Test] public void CapturedControlKeyDrivesTheActualPlayerController()
+    {
+        var keyboard=InputSystem.AddDevice<Keyboard>();var vehicle=new GameObject("Control key player");
+        var profile=R1ControlProfile.Current;
+        try
+        {
+            profile.ResetDefaults();
+            var input=new Event{type=EventType.KeyDown,keyCode=KeyCode.LeftControl,control=true};
+            Assert.That(profile.TryBind("MoveForward",R1ControlProfile.FromEvent(input)),Is.True);
+            var controller=vehicle.AddComponent<P12PipelineSafeTankController>();
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.LeftCtrl));InputSystem.Update();
+            const BindingFlags flags=BindingFlags.NonPublic|BindingFlags.Instance;
+            typeof(P12PipelineSafeTankController).GetMethod("Update",flags).Invoke(controller,null);
+            Assert.That((float)typeof(P12PipelineSafeTankController).GetField("moveInput",flags).GetValue(controller),Is.EqualTo(1));
+        }
+        finally{profile.ResetDefaults();UnityEngine.Object.DestroyImmediate(vehicle);InputSystem.RemoveDevice(keyboard);}
+    }
     [Test] public void PauseAndRewardBindingsRejectNewConflictsInEitherOrder()
     {
         var profile=new R1ControlProfile(Path.Combine(Path.GetTempPath(),"RRL-reward-pause-"+Guid.NewGuid()+".json"));

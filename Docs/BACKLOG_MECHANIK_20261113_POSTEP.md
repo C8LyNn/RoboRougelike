@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 06 i 44. Przypisywanie klawiszy o różnych nazwach w Unity
+
+- Okno sterowania rozpoznaje zdarzenia klawiszy tyldy, lewego i prawego Ctrl, Num Lock oraz klawisza menu kontekstowego według nazw używanych przez system wejścia. Sam Ctrl można przypisać do akcji rozgrywki, zapis zostaje odczytany ponownie, a kombinacje Ctrl z innym klawiszem nie są mylone z pojedynczym przyciskiem. W garażu Ctrl pozostaje modyfikatorem naprawy i nowe przypisania akcji garażowych nie mogą go przejąć; dotychczasowe pliki nie są automatycznie zmieniane.
+- Unity 6000.3.14f1: `controls_physical_key_before.xml` — **6 FAIL**, różnice nazw i odrzucenie zdarzenia Ctrl. `controls_physical_key_after.xml` — **44 PASS**, obejmujące profil, zapis, odczyt wirtualnej klawiatury i skróty garażu. `controls_physical_key_final.xml` — **10 PASS**, w tym przypisany Ctrl w rzeczywistym komponencie sterującym pojazdem, pięć mapowań i poprzednie skróty garażu.
+- Próbę wykonano na zdarzeniach IMGUI i wirtualnej klawiaturze Input System; fizyczne klawisze, różne układy klawiatury i wygląd okna w Windows Playerze **NOT RUN**. To poprawia część punktu 06, ale nie jest dowodem pełnej konfigurowalności wszystkich działań ani odbioru #44.
+
 ### 02, 14 i 44. Nieaktualna pozycja podczas kontroli salwy
 
 - Wznawiana kontrola torów salwy zapamiętuje położenie pojazdu, wylotu i osi obrotu broni. Jeśli w momencie następnego kroku lub odczytu pozytywnego wyniku ustawienie się różni albo broń nie jest już aktywna i przyłączona, wynik zostaje odrzucony. Unika to wykorzystania wcześniej sprawdzonych torów z nieaktualnej pozycji; zmiana przygotowuje dalszą pracę nad dzieleniem dużych salw na klatki.
