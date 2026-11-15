@@ -92,6 +92,48 @@ public sealed class BacklogWeaponTierPhysicsTests
         {tag.gameObject.SetActive(false);Object.Destroy(tag.gameObject);}
         Object.Destroy(owner);yield return null;
     }
+    [UnityTest] public IEnumerator UnevenShotgunBonusesEmitInOrderWithoutLosingDirections()
+    {
+        var owner=new GameObject("Uneven shotgun queue owner");owner.AddComponent<Rigidbody>().isKinematic=true;
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var rent=typeof(P17PhysicalShell).GetMethod("RentConventional",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        var primaries=new GameObject[5];string Prefix(int i)=>"uneven-shotgun-"+i;
+        Vector3 Direction(int i)=>Quaternion.AngleAxis(i*10,Vector3.up)*Vector3.forward;
+        for(int i=0;i<primaries.Length;i++)
+        {
+            var shell=(P17PhysicalShell)rent.Invoke(null,null);shell.transform.position=new Vector3(1000+i*5,1000,1000);
+            var tag=shell.GetComponent<R4ProjectileOrigin>();tag.PartId=Prefix(i);tag.Weapon=R4WeaponKind.Shotgun;
+            shell.gameObject.SetActive(true);shell.GetComponent<Rigidbody>().linearVelocity=Direction(i)*20;
+            shell.Configure(owner.transform,1,5,Direction(i),null);primaries[i]=shell.gameObject;
+        }
+        var queue=owner.AddComponent<R3ConventionalProjectileQueue>();
+        typeof(R3ConventionalProjectileQueue).GetField("workBudgetMilliseconds",flags).SetValue(queue,0d);
+        var drain=typeof(R3ConventionalProjectileQueue).GetMethod("Drain",flags);
+        int Count(int i)=>Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.PartId==Prefix(i));
+        try
+        {
+            typeof(R3ConventionalProjectileQueue).GetMethod("EnqueueShotgun",flags).Invoke(queue,new object[]{primaries,new[]{0,2,0,1,3}});
+            var expectedCounts=new[]{1,1,1,1,1};int[] order={1,3,4,1,4,4};
+            for(int turn=0;turn<order.Length;turn++)
+            {
+                expectedCounts[order[turn]]++;
+                for(int p=0;p<primaries.Length;p++)Assert.That(Count(p),Is.EqualTo(expectedCounts[p]),"Each emitted pellet must use the expected original direction.");
+                if(turn+1<order.Length)drain.Invoke(queue,null);
+            }
+            drain.Invoke(queue,null);
+            for(int p=0;p<primaries.Length;p++)Assert.That(Count(p),Is.EqualTo(expectedCounts[p]),"A completed batch cannot emit extra pellets.");
+            for(int p=0;p<primaries.Length;p++)
+                foreach(var tag in Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(item=>item.PartId==Prefix(p)))
+                    Assert.That(Vector3.Dot(tag.GetComponent<Rigidbody>().linearVelocity.normalized,Direction(p)),Is.GreaterThan(.9999f));
+        }
+        finally
+        {
+            foreach(var tag in Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId!=null&&p.PartId.StartsWith("uneven-shotgun-")))
+            {tag.gameObject.SetActive(false);Object.Destroy(tag.gameObject);}
+            Object.Destroy(owner);
+        }
+        yield return null;
+    }
     [UnityTest] public IEnumerator ShotgunBonusCountsBeyondInt32RemainQueuedWithoutIteration()
     {
         var owner=new GameObject("Large shotgun queue owner");owner.AddComponent<Rigidbody>().isKinematic=true;

@@ -18,6 +18,33 @@ public sealed class RailgunWallFixture : MonoBehaviour,IRRLHitReceiver
     public bool ReceiveHit(float damage,Vector3 point,Vector3 direction,Transform source){HitCount++;return true;}
 }
 
+public sealed class BacklogShotgunBonusScheduleTests
+{
+    static System.Type ScheduleType()
+    {
+        var type=typeof(R3ConventionalProjectileQueue).Assembly.GetType("RoboRougelike.R3.ShotgunBonusSchedule");
+        Assert.That(type,Is.Not.Null,"The queue needs a bounded-work round-robin selector.");return type;
+    }
+    [Test] public void SkipsEmptyPelletsAndKeepsRoundRobinOrder()
+    {
+        var type=ScheduleType();var schedule=System.Activator.CreateInstance(type,new object[]{new[]{0,2,0,1,3}});
+        var next=type.GetProperty("NextPellet");var commit=type.GetMethod("CommitPellet");
+        foreach(int expected in new[]{1,3,4,1,4,4})
+        {Assert.That((int)next.GetValue(schedule),Is.EqualTo(expected));commit.Invoke(schedule,null);}
+        Assert.That((int)next.GetValue(schedule),Is.EqualTo(-1));
+    }
+    [Test] public void PreservesVeryLargeCountsWithoutExpandingThem()
+    {
+        var type=ScheduleType();var schedule=System.Activator.CreateInstance(type,new object[]{new[]{int.MaxValue,0,1}});
+        var next=type.GetProperty("NextPellet");var commit=type.GetMethod("CommitPellet");
+        Assert.That((int)next.GetValue(schedule),Is.Zero);commit.Invoke(schedule,null);
+        Assert.That((int)next.GetValue(schedule),Is.EqualTo(2));commit.Invoke(schedule,null);
+        Assert.That((int)next.GetValue(schedule),Is.Zero);
+        for(int i=0;i<20;i++)commit.Invoke(schedule,null);
+        Assert.That((int)next.GetValue(schedule),Is.Zero,"A large remaining count must not overflow or disappear.");
+    }
+}
+
 public sealed class BacklogProjectileTierTests
 {
     [TestCase(R4WeaponKind.Shotgun)]

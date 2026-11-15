@@ -11,6 +11,39 @@ using BigInteger=System.Numerics.BigInteger;
 
 namespace RoboRougelike.R3
 {
+    // Circular list of only the pellet directions which still have bonuses.
+    // Peek does not consume a shot: the queue commits only after spawn succeeds.
+    internal sealed class ShotgunBonusSchedule
+    {
+        readonly int[] remaining,next;
+        int current=-1,previous=-1;
+        public int NextPellet=>current;
+        public ShotgunBonusSchedule(IReadOnlyList<int> requested)
+        {
+            if(requested==null)throw new ArgumentNullException(nameof(requested));
+            remaining=new int[requested.Count];next=new int[requested.Count];
+            int first=-1,last=-1;
+            for(int i=0;i<requested.Count;i++)
+            {
+                int count=requested[i];if(count<0)throw new ArgumentException("A bonus count cannot be negative.",nameof(requested));
+                remaining[i]=count;if(count==0)continue;
+                if(first<0)first=i;else next[last]=i;
+                last=i;
+            }
+            if(first>=0){next[last]=first;current=first;previous=last;}
+        }
+        public void CommitPellet()
+        {
+            if(current<0)throw new InvalidOperationException("No shotgun bonus remains.");
+            int after=next[current];
+            if(--remaining[current]==0)
+            {
+                if(after==current){current=previous=-1;return;}
+                next[previous]=after;current=after;
+            }
+            else{previous=current;current=after;}
+        }
+    }
     // Bonus shells remain owned by the vehicle even if the physical gun is lost.
     public sealed class R3ConventionalProjectileQueue : MonoBehaviour
     {
@@ -40,8 +73,7 @@ namespace RoboRougelike.R3
             public string RailPartId;
             public bool IsShotgun;
             public P17PhysicalShell.ConventionalSnapshot[] Pellets;
-            public int[] PelletRemaining;
-            public int NextPellet;
+            public ShotgunBonusSchedule PelletSchedule;
             public BigInteger ShotgunRemaining;
             public readonly List<Sibling> Siblings=new List<Sibling>();
             public LinkedList<Sibling> Group;
@@ -72,17 +104,18 @@ namespace RoboRougelike.R3
         {
             if(primaries==null||requested==null||primaries.Count==0||primaries.Count!=requested.Count)
                 throw new ArgumentException("Shotgun pellets and bonus requests must match.");
-            var batch=new Batch{IsShotgun=true,Pellets=new P17PhysicalShell.ConventionalSnapshot[primaries.Count],PelletRemaining=new int[primaries.Count]};
+            var batch=new Batch{IsShotgun=true,Pellets=new P17PhysicalShell.ConventionalSnapshot[primaries.Count]};
             bool grouped=true;
             for(int i=0;i<primaries.Count;i++)
             {
                 var shell=primaries[i]!=null?primaries[i].GetComponent<P17PhysicalShell>():null;
                 if(shell==null||requested[i]<0)throw new ArgumentException("A live primary and non-negative request are required.");
-                batch.Pellets[i]=shell.CaptureConventional();batch.PelletRemaining[i]=requested[i];batch.ShotgunRemaining+=requested[i];
+                batch.Pellets[i]=shell.CaptureConventional();batch.ShotgunRemaining+=requested[i];
                 var collider=shell.GetComponent<Collider>();if(collider==null)throw new ArgumentException("A pellet needs a collider.");
                 batch.Siblings.Add(new Sibling(collider,shell));grouped &= shell.HasVolleyLayer;
             }
             if(batch.ShotgunRemaining.IsZero)return;
+            batch.PelletSchedule=new ShotgunBonusSchedule(requested);
             batch.Shot=batch.Pellets[0];
             if(grouped){batch.Group=new LinkedList<Sibling>(batch.Siblings);batch.Cursor=batch.Group.First;batch.Siblings.Clear();}
             batches.Enqueue(batch);Drain();
@@ -110,13 +143,12 @@ namespace RoboRougelike.R3
                         int pellet=-1;
                         if(batch.IsShotgun)
                         {
-                            for(int i=0;i<batch.PelletRemaining.Length;i++)
-                            {int index=(batch.NextPellet+i)%batch.PelletRemaining.Length;if(batch.PelletRemaining[index]>0){pellet=index;break;}}
+                            pellet=batch.PelletSchedule.NextPellet;
                             if(pellet<0)throw new InvalidOperationException("Shotgun bonus count is inconsistent.");
                         }
                         shot=Spawn(batch.IsShotgun?batch.Pellets[pellet]:batch.Shot);ExcludeSiblings(batch,shot);
                         if(batch.IsShotgun)
-                        {batch.PelletRemaining[pellet]--;batch.ShotgunRemaining-=BigInteger.One;batch.NextPellet=(pellet+1)%batch.PelletRemaining.Length;}
+                        {batch.PelletSchedule.CommitPellet();batch.ShotgunRemaining-=BigInteger.One;}
                     }
                     bool finished;
                     if(batch.IsShotgun)finished=batch.ShotgunRemaining.IsZero;
