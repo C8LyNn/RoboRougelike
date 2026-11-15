@@ -242,6 +242,11 @@ namespace RoboRougelike.R3
             public Collider Primary;
             public int Requested;
         }
+        struct PendingRocketShot
+        {
+            public RoboRougelike.WeaponIntegration.RRLRocketBinding Binding;
+            public int Requested;
+        }
         public int RollDoubleShotExtras(int available)
         {
             if(available<=0||Model==null)return 0;
@@ -267,6 +272,7 @@ namespace RoboRougelike.R3
             if(run!=null&&run.Player!=null&&run.Player.gameObject==gameObject&&run.EmergencyRescueAttackBlocked)return;
             var slots=Model.GetWeaponSlots();if(slot<0||slot>=4||!slots[slot].HasValue)return;
             List<PendingConventionalShot> pending=null;
+            List<PendingRocketShot> pendingRockets=null;
             foreach(var part in Parts)
                 if(part!=null && part.Kind==R3PartKind.Gun && R3VehicleModel.MatchesWeaponSlot(part.Weapon,slot,slots,Model.CreativeMode) && part.Operational && part.gameObject.activeInHierarchy && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
                 {
@@ -285,7 +291,19 @@ namespace RoboRougelike.R3
                     if(part.Weapon==R4WeaponKind.RocketLauncher)
                     {
                         var rocket=part.GetComponent<RoboRougelike.WeaponIntegration.RRLRocketBinding>();
-                        if(rocket!=null&&rocket.Fire())part.NextFireTime=rocket.State.DeviceReadyAt;
+                        if(rocket!=null&&rocket.FirePrimary())
+                        {
+                            part.NextFireTime=rocket.State.DeviceReadyAt;
+                            if(RoboRougelike.WeaponIntegration.RRLRocketBinding.AvailableRocketSlots>0)
+                            {
+                                int requested=RollDoubleShotExtras(int.MaxValue);
+                                if(requested>0)
+                                {
+                                    if(pendingRockets==null)pendingRockets=new List<PendingRocketShot>();
+                                    pendingRockets.Add(new PendingRocketShot{Binding=rocket,Requested=requested});
+                                }
+                            }
+                        }
                         continue;
                     }
                     if(part.Weapon==R4WeaponKind.Railgun)
@@ -316,6 +334,18 @@ namespace RoboRougelike.R3
                     var art=part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>();
                     if(art!=null){art.AdvanceMuzzle();part.Muzzle=art.Muzzle;}
                 }
+            if(pendingRockets!=null&&RoboRougelike.WeaponIntegration.RRLRocketBinding.AvailableRocketSlots>0)
+            {
+                var rocketAllocation=new int[pendingRockets.Count];int rocketAvailable=RoboRougelike.WeaponIntegration.RRLRocketBinding.AvailableRocketSlots;
+                while(rocketAvailable>0)
+                {
+                    bool assigned=false;
+                    for(int i=0;i<pendingRockets.Count&&rocketAvailable>0;i++)
+                        if(rocketAllocation[i]<pendingRockets[i].Requested){rocketAllocation[i]++;rocketAvailable--;assigned=true;}
+                    if(!assigned)break;
+                }
+                for(int i=0;i<pendingRockets.Count;i++)if(rocketAllocation[i]>0)pendingRockets[i].Binding.FireAdditional(rocketAllocation[i]);
+            }
             if(pending==null||P17PhysicalShell.AvailableSlots<=0)return;
             var allocated=new int[pending.Count];
             int available=P17PhysicalShell.AvailableSlots;

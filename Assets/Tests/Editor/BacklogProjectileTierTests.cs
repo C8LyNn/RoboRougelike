@@ -46,6 +46,55 @@ public sealed class BacklogProjectileTierPhysicsTests
         run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
         while(run.Transitioning)yield return null;run.Encounter.SetCombatActive(false);
     }
+    [UnityTest] public IEnumerator RocketLauncherCopiesFireBeforeBonusRocketsConsumeRemainingSlots()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(2000);
+        var firstState=model.Parts.First(p=>p.Kind==R3PartKind.Gun);firstState.Weapon=R4WeaponKind.RocketLauncher;
+        var gunCell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.Gun,false,R4WeaponKind.RocketLauncher)==null);
+        Assert.That(model.Buy(gunCell,R3PartKind.Gun,R4WeaponKind.RocketLauncher),Is.True);
+        var bonusCell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.DoubleShot)==null);
+        Assert.That(model.Buy(bonusCell,R3PartKind.DoubleShot),Is.True);model.Economy.DoubleShotChancePerUnit=100;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
+        var body=vehicle.GetComponent<Rigidbody>();body.isKinematic=true;var assembly=vehicle.GetComponent<R3VehicleAssembly>();
+        var guns=assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.RocketLauncher).ToArray();Assert.That(guns.Length,Is.EqualTo(2));
+        for(int i=0;i<guns.Length;i++)
+        {
+            var muzzle=new GameObject("Unblocked rocket muzzle").transform;muzzle.SetParent(guns[i].transform,false);
+            muzzle.position=new Vector3(1000+i*8,1000,1000);muzzle.rotation=Quaternion.identity;guns[i].GunPivot=muzzle;guns[i].Muzzle=muzzle;
+            var binding=guns[i].GetComponent<RRLRocketBinding>();Assert.That(binding,Is.Not.Null);
+            typeof(RRLRocketBinding).GetField("muzzle",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).SetValue(binding,muzzle);
+            binding.Module.Bind(body,vehicle.transform,muzzle);
+        }
+        var targets=guns.Select(g=>{var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=g.Muzzle.position+Vector3.forward*5;
+            target.transform.localScale=new Vector3(2,2,.5f);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);target.AddComponent<RRLRocketDamageReceiver>();return hp;}).ToArray();
+        Physics.SyncTransforms();Assert.That(guns.All(assembly.ClearProjectilePath),Is.True);
+        var fixtureOwner=new GameObject("Rocket pool fixture owner");var fixtureBody=fixtureOwner.AddComponent<Rigidbody>();fixtureBody.isKinematic=true;
+        var dummies=new System.Collections.Generic.List<GameObject>();
+        try
+        {
+            var spec=new RoboRougelike.Mechanics.Rockets.RocketConfig().Snapshot();
+            for(int i=0;i<28;i++)
+            {
+                var dummy=new GameObject("Rocket pool fixture");dummies.Add(dummy);dummy.transform.position=new Vector3(2000+i*3,2000,2000);
+                var rocket=dummy.AddComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+                Assert.That(rocket.TryInitialize(spec,fixtureBody,fixtureOwner.transform,fixtureOwner,null,Vector3.forward),Is.True);
+            }
+            int slot=System.Array.FindIndex(model.GetWeaponSlots(),w=>w==R4WeaponKind.RocketLauncher);Assert.That(slot,Is.GreaterThanOrEqualTo(0));
+            float before=vehicle.GetComponent<VehicleEnergyBank>().Current;assembly.FireSlot(slot);
+            Assert.That(guns.All(g=>g.NextFireTime>Time.time),Is.True,"Each ready launcher must fire before bonus rockets fill the pool.");
+            Assert.That(guns.All(g=>g.GetComponent<RRLRocketBinding>().State.Ammo==RRLRocketBinding.Magazine-1),Is.True);
+            Assert.That(before-vehicle.GetComponent<VehicleEnergyBank>().Current,Is.EqualTo(2*VehicleEnergyCosts.Rocket).Within(.001));
+            var origins=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>guns.Any(g=>g.Id==p.PartId)).ToArray();
+            foreach(var gun in guns)Assert.That(origins.Count(p=>p.PartId==gun.Id),Is.EqualTo(2),"Bonus rockets must be shared across launchers.");
+            float deadline=Time.realtimeSinceStartup+5;
+            while(Time.realtimeSinceStartup<deadline&&targets.Any(target=>target.CurrentHp>=500))yield return MOVSeriesDeviceTests.FixedStep();
+            Assert.That(targets.All(target=>target.CurrentHp<500),Is.True,"Both launchers must physically hit their targets.");
+        }
+        finally{foreach(var target in targets)if(target!=null)Object.Destroy(target.gameObject);foreach(var dummy in dummies)if(dummy!=null)Object.Destroy(dummy);if(fixtureOwner!=null)Object.Destroy(fixtureOwner);if(vehicle!=null)Object.Destroy(vehicle.gameObject);}
+        yield return null;
+    }
     [UnityTest] public IEnumerator ConventionalWeaponCopiesFireBeforeExtraShotsConsumeRemainingSlots()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(2000);

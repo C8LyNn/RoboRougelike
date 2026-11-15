@@ -47,13 +47,18 @@ namespace RoboRougelike.WeaponIntegration
             if(State.ReloadReadyAt>0&&Time.time>=State.ReloadReadyAt){State.Ammo=Magazine;State.ReloadReadyAt=0;}
             Module.SetOperational(Device.Available&&State.ReloadReadyAt<=Time.time);
         }
-        public bool Fire()
+        internal static int AvailableRocketSlots
+        {
+            get {int live=0;foreach(var rocket in Object.FindObjectsByType<RocketProjectile>(FindObjectsSortMode.None))if(rocket.IsInitialized&&!rocket.IsResolved)live++;return Mathf.Max(0,32-live);}
+        }
+        public bool Fire()=>FireCore(false);
+        internal bool FirePrimary()=>FireCore(true);
+        bool FireCore(bool deferExtras)
         {
             Refresh();if(!Device.Available||Time.time<State.DeviceReadyAt)return false;
             var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>()))return false;
-            int live=0;foreach(var rocket in Object.FindObjectsByType<RocketProjectile>(FindObjectsSortMode.None))if(rocket.IsInitialized&&!rocket.IsResolved)live++;
-            if(live>=32)return false;
+            int available=AvailableRocketSlots;if(available<=0)return false;
             // The package fails closed on an incomplete physics query. The
             // integrated game admits large multi-collider vehicles, so size
             // both bounded buffers for that workload without weakening it.
@@ -66,7 +71,14 @@ namespace RoboRougelike.WeaponIntegration
             if(energy!=null&&!energy.TrySpend(cost))return false;
             if(Module.TryFire()!=RocketFireResult.Fired){if(energy!=null)energy.Refund(cost);return false;}
             State.DeviceReadyAt=Module.NextReadyTime;
-            int extras=assembly!=null?assembly.RollDoubleShotExtras(Mathf.Max(0,31-live)):0;
+            int extras=!deferExtras&&assembly!=null?assembly.RollDoubleShotExtras(available-1):0;
+            if(extras>0)FireAdditional(extras);
+            RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.RocketLauncher);return true;
+        }
+        internal void FireAdditional(int count)
+        {
+            if(Device?.Owner==null||muzzle==null||projectileTemplate==null||Module==null)return;
+            int extras=Mathf.Min(Mathf.Max(0,count),AvailableRocketSlots);
             for(int i=0;i<extras;i++)
             {
                 RocketProjectile extra=null;
@@ -80,7 +92,6 @@ namespace RoboRougelike.WeaponIntegration
                 catch(System.Exception problem)
                 {if(extra!=null)Object.Destroy(extra.gameObject);Debug.LogException(problem,this);}
             }
-            RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.RocketLauncher);return true;
         }
         public bool BeginReload(){Refresh();if(!Device.Available||State.Ammo>=Magazine||State.ReloadReadyAt>0)return false;State.ReloadReadyAt=Time.time+2.2f;return true;}
         public bool TrySpendAmmo(int units)
