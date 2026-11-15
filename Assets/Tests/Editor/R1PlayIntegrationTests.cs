@@ -175,7 +175,9 @@ public class R1PlayIntegrationTests
         DefeatAllEnemies();
         yield return Until(() => Run.Progress.State == R1RunState.Salvage, "Pierwsza nagroda.");
         Run.ConfirmRewards(Array.Empty<string>(),new[]{Run.Progress.Offers.ToList().FindIndex(item => item.Effect == R1UpgradeEffect.Damage)});
-        var bonusId=Run.VehicleModel.Inventory.Single(p=>p.Kind==R3PartKind.BonusModule).Id;var bonusCell=new Vector3Int(0,2,-2);
+        var bonusId=Run.VehicleModel.Inventory.Single(p=>p.Kind==R3PartKind.BonusModule).Id;
+        var bonusCell=Run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(cell=>Run.VehicleModel.OwnedPlacementError(bonusId,cell,Vector3Int.zero)==null);
         Assert.That(Run.GarageMount(bonusId,bonusCell),Is.True,Run.VehicleModel.OwnedPlacementError(bonusId,bonusCell,Vector3Int.zero));
         Run.StartNextEncounter();
         yield return Until(() => !Run.Transitioning, "Druga walka.");
@@ -393,15 +395,20 @@ public class R1PlayIntegrationTests
             // The real pause/transition guard requires a release before the next press.
             InputSystem.QueueStateEvent(mouse, new MouseState());
             yield return null;yield return null;
-            InputSystem.QueueStateEvent(mouse, new MouseState().WithButton(MouseButton.Left));
+            InputSystem.QueueStateEvent(mouse, new MouseState().WithButton(MouseButton.Left).WithButton(MouseButton.Right));
             yield return null;
             P12PipelineSafeEnemyTurret enemy = null;
             Rigidbody body = null;
             Vector3 previous = Vector3.zero, velocity = Vector3.zero;
+            var firedWeapons=new System.Collections.Generic.HashSet<string>();
             float deadline = Time.realtimeSinceStartup + 110;
             while (Run.Progress.State == R1RunState.Combat && Time.realtimeSinceStartup < deadline)
             {
-                // Automated pilot uses WASD, camera aim and LMB with live AI and physical rounds.
+                var liveAssembly=Run.Player!=null?Run.Player.GetComponent<R3VehicleAssembly>():null;
+                if(liveAssembly!=null)
+                    foreach(var gun in liveAssembly.Parts)
+                        if(gun!=null&&gun.Kind==R3PartKind.Gun&&gun.NextFireTime>0)firedWeapons.Add(gun.Id);
+                // Automated pilot uses WASD, camera aim and both weapon slots with live AI and physical rounds.
                 if(enemy==null||enemy.IsDefeated)
                 {
                     enemy=Run.Encounter.Enemies.Where(e=>e!=null&&!e.IsDefeated)
@@ -443,7 +450,7 @@ public class R1PlayIntegrationTests
                 var bank=Run.Player.GetComponent<VehicleEnergyBank>();
                 var remaining=Run.Encounter.Enemies.Where(e=>e!=null&&!e.IsDefeated).ToArray();
                 var guns=assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun)
-                    .Select(p=>$"{p.Id}:{p.Weapon} hp={p.Damageable.CurrentHp:0.0} active={p.Operational} readyAt={p.NextFireTime:0.00}");
+                    .Select(p=>$"{p.Id}:{p.Weapon} hp={p.Damageable.CurrentHp:0.0} active={p.Operational} fired={firedWeapons.Contains(p.Id)} readyAt={p.NextFireTime:0.00}");
                 var targets=remaining.Select(e=>$"{e.name} pos={e.transform.position} coreHp={e.Core.CurrentHp:0.0} distance={Vector3.Distance(e.transform.position,Run.Player.transform.position):0.0}");
                 var hits=Physics.RaycastAll(camera.transform.position,camera.transform.forward,200,~0,QueryTriggerInteraction.Ignore)
                     .OrderBy(h=>h.distance).Take(8).Select(h=>$"{h.collider.name}@{h.distance:0.0}");
