@@ -69,5 +69,14 @@ namespace RoboRougelike.R3
             uint mantissa=bits&0x7fffffu;
             return exponent==0?new BigInteger(mantissa):new BigInteger(mantissa|0x800000u)<<(exponent-1);
         }
+        internal static float FloorFloat(BigInteger ticks)
+        {
+            if(ticks<=0)return 0;
+            float value=(float)((double)ticks*1.401298464324817e-45d);
+            if(float.IsPositiveInfinity(value))return float.MaxValue;
+            var bits=new FloatBits{Value=value};
+            if(Ticks(value)>ticks)bits.Bits--;
+            return bits.Value;
+        }
     }
 }

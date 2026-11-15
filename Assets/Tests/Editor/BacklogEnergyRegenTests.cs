@@ -10,6 +10,31 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogEnergyRegenTests
 {
+    [Test] public void SmallCostsAccumulateEvenWhenCurrentDisplayCannotRepresentEachDeduction()
+    {
+        var state=new VehicleEnergyState();state.Fill();
+        for(int i=0;i<10;i++)Assert.That(state.TrySpend(.00001f),Is.True);
+        Assert.That(state.TrySpend(500),Is.False,"Small real costs cannot disappear because the displayed balance rounds to 500.");
+        Assert.That(state.CanSpend(state.Current),Is.True,"The reported available energy must itself be spendable.");
+        Assert.That(state.TrySpend(499.9998f),Is.True);
+    }
+    [Test] public void SmallCostsAndRechargeRemainExactAcrossBulkTransactions()
+    {
+        var state=new VehicleEnergyState();state.Fill();
+        var method=typeof(VehicleEnergyState).GetMethod("SpendFair",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        var requested=new[]{new System.Numerics.BigInteger(10)};
+        var paid=(System.Numerics.BigInteger[])method.Invoke(state,new object[]{new[]{.00001f},requested});
+        Assert.That(paid,Is.EqualTo(requested));Assert.That(state.CanSpend(500),Is.False);
+        for(int i=0;i<10;i++)state.Recharge(.00001f);
+        Assert.That(state.CanSpend(500),Is.True);Assert.That(state.TrySpend(500),Is.True);
+    }
+    [Test] public void CopyOfVehicleRetainsCostsSmallerThanDisplayPrecision()
+    {
+        var design=new R3VehicleDesign();design.Parts.Add(new R3PartState(default,R3PartKind.Core));
+        var model=new R3VehicleModel(design);model.RefreshEnergyLayout();model.Energy.Fill();
+        Assert.That(model.Energy.TrySpend(.00001f),Is.True);
+        var copy=model.DeepCopy();Assert.That(copy.Energy.CanSpend(500),Is.False,"Cloning a vehicle must not restore energy spent below display precision.");
+    }
     [Test] public void SharedShotBudgetKeepsAffordableUnequalCostsAndHugeRequests()
     {
         var state=new VehicleEnergyState();

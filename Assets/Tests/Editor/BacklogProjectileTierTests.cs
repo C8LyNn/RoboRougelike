@@ -364,7 +364,7 @@ public sealed class BacklogProjectileTierPhysicsTests
     IEnumerator RapidPaidConventional(R4WeaponKind weapon,bool doubleShot=false)
     {
         var gun=Build(weapon,out var bank,doubleShot);var assembly=gun.GetComponentInParent<R3VehicleAssembly>();
-        var controller=assembly.GetComponent<P12PipelineSafeTankController>();controller.SetRunModifiers(1,.01f,1);controller.enabled=false;
+        var controller=assembly.GetComponent<P12PipelineSafeTankController>();controller.SetRunModifiers(1,.001f,1);controller.enabled=false;
         var muzzle=new GameObject("Paid cadence muzzle").transform;muzzle.SetParent(gun.transform,false);
         muzzle.position=new Vector3(1000,1000,1000);muzzle.rotation=Quaternion.identity;gun.GunPivot=muzzle;gun.Muzzle=muzzle;
         AllowOneFrameForConventionalCollisionFixture(assembly);Physics.SyncTransforms();

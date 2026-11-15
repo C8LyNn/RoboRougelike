@@ -28,7 +28,10 @@ namespace RoboRougelike.R3
             float.IsNaN(amount)||float.IsInfinity(amount)?0:Math.Max(0,amount);
         readonly List<float> pickups = new List<float>();
         public float Maximum { get; private set; } = CoreCapacity;
-        public float Current { get; private set; } = CoreCapacity;
+        // Store exact units of the smallest positive float; the public float is
+        // only a display/compatibility view and may round small differences.
+        System.Numerics.BigInteger currentTicks=DeviceFireSchedule.Ticks(CoreCapacity);
+        public float Current => DeviceFireSchedule.FloorFloat(currentTicks);
 
         public void Refresh(int batteries, int passiveModules, bool coreAlive)
         {
@@ -37,14 +40,17 @@ namespace RoboRougelike.R3
                     - Math.Max(0, (double)passiveModules) * PassiveReservation-additionalPassiveReservation
                 : 0d;
             Maximum = (float)Math.Min(float.MaxValue, Math.Max(0d, available));
-            Current = Math.Min(Current, Maximum);
+            currentTicks=System.Numerics.BigInteger.Min(currentTicks,DeviceFireSchedule.Ticks(Maximum));
         }
 
+        public bool CanSpend(float amount)
+        {
+            return !float.IsNaN(amount)&&!float.IsInfinity(amount)&&amount>=0f&&DeviceFireSchedule.Ticks(amount)<=currentTicks;
+        }
         public bool TrySpend(float amount)
         {
-            if (float.IsNaN(amount) || float.IsInfinity(amount) || amount < 0f || amount > Current)
-                return false;
-            Current -= amount;
+            if(!CanSpend(amount))return false;
+            currentTicks-=DeviceFireSchedule.Ticks(amount);
             return true;
         }
 
@@ -52,11 +58,11 @@ namespace RoboRougelike.R3
         {
             if(requested<=0||float.IsNaN(unitCost)||float.IsInfinity(unitCost)||unitCost<0)return System.Numerics.BigInteger.Zero;
             if(unitCost==0)return requested;
-            var available=DeviceFireSchedule.Ticks(Current);
+            var available=currentTicks;
             var cost=DeviceFireSchedule.Ticks(unitCost);
             var count=System.Numerics.BigInteger.Min(requested,available/cost);
             var remainder=available-count*cost;
-            Current=(float)((double)remainder*1.401298464324817e-45d);
+            currentTicks=remainder;
             return count;
         }
 
@@ -73,7 +79,7 @@ namespace RoboRougelike.R3
                 if(cost==0){paid[i]=requested[i];continue;}
                 costs[i]=DeviceFireSchedule.Ticks(cost);remaining[i]=requested[i];
             }
-            var available=DeviceFireSchedule.Ticks(Current);
+            var available=currentTicks;
             while(available>0)
             {
                 var max=System.Numerics.BigInteger.Zero;var minCost=System.Numerics.BigInteger.Zero;
@@ -97,7 +103,7 @@ namespace RoboRougelike.R3
                     if(remaining[i]>0&&costs[i]<=available)
                     {remaining[i]--;paid[i]++;available-=costs[i];}
             }
-            Current=(float)((double)available*1.401298464324817e-45d);
+            currentTicks=available;
             return paid;
         }
 
@@ -128,15 +134,21 @@ namespace RoboRougelike.R3
         public void Recharge(float amount)
         {
             if (float.IsNaN(amount) || amount <= 0f) return;
-            Current = (float)Math.Min(Maximum, (double)Current + amount);
+            if(float.IsPositiveInfinity(amount)){Fill();return;}
+            currentTicks=System.Numerics.BigInteger.Min(DeviceFireSchedule.Ticks(Maximum),currentTicks+DeviceFireSchedule.Ticks(amount));
         }
 
-        public void Fill() => Current = Maximum;
+        public void Fill() => currentTicks=DeviceFireSchedule.Ticks(Maximum);
 
         public void Restore(float amount)
         {
-            Current = float.IsNaN(amount) || float.IsInfinity(amount)
-                ? 0f : Math.Max(0f, Math.Min(Maximum, amount));
+            float restored=float.IsNaN(amount)||float.IsInfinity(amount)?0f:Math.Max(0f,Math.Min(Maximum,amount));
+            currentTicks=DeviceFireSchedule.Ticks(restored);
+        }
+        internal void RestoreFrom(VehicleEnergyState source)
+        {
+            if(source==null)throw new ArgumentNullException(nameof(source));
+            currentTicks=System.Numerics.BigInteger.Min(source.currentTicks,DeviceFireSchedule.Ticks(Maximum));
         }
     }
 

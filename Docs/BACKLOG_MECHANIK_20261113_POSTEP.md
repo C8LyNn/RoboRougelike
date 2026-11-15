@@ -11,6 +11,13 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14, 18 i 44. Dokładność rozliczania energii
+
+- Pula energii zachowuje drobne koszty i ładowanie poniżej precyzji pojedynczej liczby `float`, również przy hurtowym rozliczaniu strzałów. Sprawdzanie możliwości wydania korzysta z rzeczywistego salda, a publiczny odczyt nie zawyża go przez zaokrąglenie. Kopia modelu pojazdu zachowuje dokładny stan, z ograniczeniem do nowej maksymalnej pojemności.
+- Unity 6000.3.14f1: `energy_small_cost_before.xml` — **1 FAIL**, drobne koszty znikały. Po zmianie `energy_small_cost_after.xml` — **24 PASS**. `energy_copy_precision_before.xml` — **1 FAIL**, kopia odtwarzała zaokrągloną energię; poprawiono kopiowanie. `energy_view_before.xml` — **1 FAIL**, odczyt mógł zawyżać dostępne saldo; poprawiono odczyt. `energy_precision_release.xml` — **34 PASS, 0 FAIL**, w tym testy energii, kopii i checkpointów, rzeczywistych baterii i regeneracji oraz broni.
+- Dodatkowy szerszy przebieg `energy_precision_verified.xml` dał **41 PASS, 6 FAIL**: jeden test ciężkiej armaty wymagał większego niż zapewniony kroku czasu i poprawiono jego dane; trzy stare testy pojemności miały identyczne błędy już w `RoboRougelike-Nightly-QA-20261110/EditMode.xml`; dwa inne nadal oczekują natychmiastowego ponownego strzału i dawnego działania broni EMP. Nie poprawiono ani nie uznano za zaliczone tych pięciu starszych testów. Nowe celowane uruchomienie nie zastępuje pełnej regresji.
+- Zapis checkpointu nadal przechowuje energię jako `float`, więc bardzo mały ułamek może zostać zaokrąglony w dół po zapisie i odczycie. Nie zmieniono formatu starszych zapisów. Nie zmierzono kosztu wydajnościowego dokładniejszej arytmetyki ani nie wykonano ręcznej rozgrywki; #14 i #44 pozostają otwarte.
+
 ### 02, 14 i 44. Podział energii szybkich dział
 
 - Po pierwszym strzale gotowych kopii należne dalsze strzały są rozliczane kolejkami: każda kopia otrzymuje kolejną opłaconą porcję przed następną porcją innej kopii. Przy różnych kosztach system nadal opłaca tańsze strzały, jeśli pozostałej energii nie wystarcza na droższe; darmowe strzały nie blokują pozostałych. Duże liczby są rozdzielane matematycznie, bez pętli dla każdego strzału. Zwykłe dodatkowe pociski bez zaległej szybkostrzelności nie uruchamiają tego rozdziału.
