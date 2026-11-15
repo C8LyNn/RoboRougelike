@@ -945,3 +945,8 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 
 - W czasie na zbieranie energii i łupów po walce pojawia się przycisk „Pomiń zbieranie [Enter]”. Przejście można wybrać myszą lub dotychczasowym klawiszem; pominięte części korzystają z istniejącego odpłatnego odzysku. Przycisk nie działa podczas pauzy, a ponowne wywołanie nie inicjuje następnego przejścia.
 - Unity 6000.3.14f1: **48 PASS, 0 FAIL** (`pickup_qol_release.xml`, `.log`) obejmuje stan rzeczywistej przerwy na łupy, pauzę, wcześniejsze zatwierdzanie nagród i geometrię HUD. `pickup_qol_red.xml`: **2 FAIL**, brak operacji i miejsca dla przycisku. Test geometrii nie jest oceną wizualną; kliknięcie i wygląd w Playerze: **NOT RUN**.
+
+#### 30, 44. Liczba łupów pozostałych na arenie
+
+- Komunikat podczas zbierania pokazuje osobno liczbę widocznych w świecie części i kostek energii oraz pozostały czas. Liczby są aktualizowane na podstawie aktywnych obiektów, więc zniknięcie zebranego przedmiotu zmniejsza właściwy licznik. Oba typy są wyszukiwane w trakcie istniejącej przerwy po walce; nie profilowano kosztu dodatkowego wyszukiwania.
+- Unity 6000.3.14f1: **5 PASS, 0 FAIL** (`pickup_counts_release.xml`, `.log`), w tym aktywne obiekty obu typów, zmiana liczby po dezaktywacji, przejście do nagród i pauza. W scenariuszu licznika użyto obiektów testowych z komponentami łupu i energii; automatyczny test nie sprawdzał wizualnej czytelności HUD ani całego przebiegu zbierania. Przed zmianą `pickup_counts_red.xml`: brak liczników.

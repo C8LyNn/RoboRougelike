@@ -50,7 +50,10 @@ namespace RoboRougelike.R1
         private Quaternion playerRotation;
         private int lastEscapeFrame=-1;
         float pickupGraceDeadline=-1;
+        int pickupPartsRemaining,pickupEnergyRemaining;
         public float PickupGraceRemaining=>Progress?.State!=R1RunState.Combat||pickupGraceDeadline<0?0:Mathf.Max(0,pickupGraceDeadline-Time.time);
+        public int PickupPartsRemaining=>PickupGraceRemaining>0?pickupPartsRemaining:0;
+        public int PickupEnergyRemaining=>PickupGraceRemaining>0?pickupEnergyRemaining:0;
         public bool SkipPickupGrace()
         {
             if(Paused||QuitRequested||Transitioning||Error!=null||PickupGraceRemaining<=0)return false;
@@ -379,7 +382,9 @@ namespace RoboRougelike.R1
             {
                 if(Encounter.Cleared&&CheckpointRace?.Won!=true&&RoadChallenge?.Status!=RoboRougelike.MapSystemR4.MapR4Status.Completed)
                 {
-                    bool drops=FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None).Length>0||FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Length>0;
+                    pickupEnergyRemaining=FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None).Length;
+                    pickupPartsRemaining=FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None).Length;
+                    bool drops=pickupEnergyRemaining>0||pickupPartsRemaining>0;
                     if(drops&&pickupGraceDeadline<0)pickupGraceDeadline=Time.time+8f;
                     if(drops&&Time.time<pickupGraceDeadline)return;
                 }

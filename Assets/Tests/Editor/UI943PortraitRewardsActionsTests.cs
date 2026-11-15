@@ -160,6 +160,22 @@ public sealed class UI943PortraitRewardsActionsTests
         yield return null;
     }
 #if ENABLE_INPUT_SYSTEM
+    [UnityTest] public IEnumerator PickupWindowCountsRemainingPartsAndEnergyCubes()
+    {
+        foreach(var pickup in UnityEngine.Object.FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None))pickup.gameObject.SetActive(false);
+        foreach(var pickup in UnityEngine.Object.FindObjectsByType<R3PhysicalLoot>(FindObjectsSortMode.None))pickup.gameObject.SetActive(false);
+        var parts=Enumerable.Range(0,3).Select(i=>new GameObject("Pickup part fixture "+i)).ToArray();
+        var energy=Enumerable.Range(0,2).Select(i=>new GameObject("Pickup energy fixture "+i)).ToArray();
+        foreach(var p in parts)p.AddComponent<R3PhysicalLoot>();foreach(var e in energy)e.AddComponent<EnergyPickup>();
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.PickupGraceRemaining<=0;i++)yield return null;
+        var partCount=typeof(R1RunController).GetProperty("PickupPartsRemaining");var energyCount=typeof(R1RunController).GetProperty("PickupEnergyRemaining");
+        Assert.That(partCount,Is.Not.Null);Assert.That(energyCount,Is.Not.Null);
+        Assert.That((int)partCount.GetValue(run),Is.EqualTo(3));Assert.That((int)energyCount.GetValue(run),Is.EqualTo(2));
+        parts[0].SetActive(false);energy[0].SetActive(false);yield return null;
+        Assert.That((int)partCount.GetValue(run),Is.EqualTo(2));Assert.That((int)energyCount.GetValue(run),Is.EqualTo(1));
+        foreach(var p in parts)UnityEngine.Object.Destroy(p);foreach(var e in energy)UnityEngine.Object.Destroy(e);
+    }
     [UnityTest] public IEnumerator PlayerCanSkipThePickupWindowButNotWhilePaused()
     {
         run.Encounter.SetCombatActive(true);
