@@ -399,6 +399,16 @@ public sealed class BacklogDeviceTierGameplayTests
         receiver.ClearEmp();
         var all=enemy.GetComponentsInChildren<RoboRougelike.Mechanics.EMP.EmpReceiver>();
         foreach(var r in all)r.ClearEmp();
+        // Force the same saturation path as a dense arena without requiring
+        // thousands of objects; these trigger colliders cannot occlude rays.
+        var area=(RoboRougelike.Mechanics.EMP.EmpEmitter)typeof(R3EmpDevices).GetField("area",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(device);
+        area.ConfigurePhysics(~0,~0,16,8);
+        for(int i=0;i<20;i++)
+        {
+            var extra=new GameObject("Dense EMP own trigger");extra.transform.SetParent(run.Player.transform,false);
+            extra.AddComponent<SphereCollider>().isTrigger=true;
+        }
+        Physics.SyncTransforms();
         Assert.That(device.TryArea(),Is.True);
         Assert.That(all.Any(r=>r.IsDisrupted),Is.True,"Area pulse must reach at least one electronic component");
         Assert.That(device.TryArea(),Is.False);

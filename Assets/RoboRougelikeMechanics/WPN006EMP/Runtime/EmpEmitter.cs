@@ -112,13 +112,18 @@ namespace RoboRougelike.Mechanics.EMP
             Vector3 source = Origin;
             int count = Physics.OverlapSphereNonAlloc(source, radius, overlapBuffer,
                 receiverLayers, QueryTriggerInteraction.Collide);
-            // When full, there may be additional targets; refuse pulse before spending energy.
-            if (count >= overlapBuffer.Length)
-                return Fail(ref report, EmpPulseFailure.ColliderQueryOverflow);
+            Collider[] overlaps=overlapBuffer;
+            if(count>=overlapBuffer.Length)
+            {
+                // A full NonAlloc result is ambiguous; resolve all candidates
+                // before committing energy, cooldown, or receiver effects.
+                overlaps=Physics.OverlapSphere(source,radius,receiverLayers,QueryTriggerInteraction.Collide);
+                count=overlaps.Length;
+            }
 
             for (int i = 0; i < count; i++)
             {
-                Collider collider = overlapBuffer[i];
+                Collider collider = overlaps[i];
                 if (collider == null) continue;
                 EmpTargetCollider mapping = collider.GetComponent<EmpTargetCollider>();
                 if (mapping == null) mapping = collider.GetComponentInParent<EmpTargetCollider>();
@@ -187,11 +192,17 @@ namespace RoboRougelike.Mechanics.EMP
             if (distance < 0.001f) return true;
             int hits = Physics.RaycastNonAlloc(origin, travel / distance, lineOfSightBuffer,
                 distance, occlusionLayers, QueryTriggerInteraction.Ignore);
-            // Conservative: unknown hits may hide a wall.
-            if (hits >= lineOfSightBuffer.Length) return false;
+            RaycastHit[] occluders=lineOfSightBuffer;
+            if(hits>=lineOfSightBuffer.Length)
+            {
+                // Do not mistake a full buffer of the shooter's own parts for
+                // a wall, and do not miss a real obstacle behind those parts.
+                occluders=Physics.RaycastAll(origin,travel/distance,distance,occlusionLayers,QueryTriggerInteraction.Ignore);
+                hits=occluders.Length;
+            }
             for (int i = 0; i < hits; i++)
             {
-                Collider obstacle = lineOfSightBuffer[i].collider;
+                Collider obstacle = occluders[i].collider;
                 if (obstacle == null) continue;
                 // The emitting vehicle and the target's own colliders must not shadow their EMP.
                 Transform occluder = obstacle.transform;

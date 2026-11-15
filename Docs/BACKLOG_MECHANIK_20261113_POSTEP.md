@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14, 25, 27 i 44. EMP w gęstej scenie
+
+- Istniejący obszarowy EMP, używany również przez pułapkę, po zapełnieniu bufora wyszukuje pełny zestaw koliderów i sprawdza pełną linię widzenia. Nie odrzuca już impulsu tylko dlatego, że przekroczono rozmiar bufora, ani nie traktuje nadmiaru własnych części jako ściany. Nadal rozpoznaje prawdziwe przeszkody, usuwa duplikaty odbiorników i pobiera energię oraz cooldown tylko po poprawnej walidacji.
+- Unity 6000.3.14f1: `emp_dense_before.xml` — **1 PASS, 2 FAIL**: pełny bufor blokował impuls i własne kolidery ukrywały widoczny cel; przeszkoda nadal chroniła cel. `emp_dense_after.xml` — **23 PASS** w PlayMode, w tym 21 odbiorników, jeden koszt, cooldown, właściciel, sojusznicy i rzeczywista ściana. `emp_dense_integration.xml` — **4 PASS** w EditMode z Play Mode: zamontowany moduł na prawdziwym pojeździe i przeciwniku, pułapka, ładunki i brak energii. Bufor testu zamontowanego modułu celowo zmniejszono, aby odtworzyć zapełnienie; to nie test 8192 obiektów.
+- Pełne zapytania w przypadku zapełnienia bufora alokują pamięć i pozostają synchroniczne; skrajnych scen i FPS nie profilowano. Ręczna gra pozostaje **NOT RUN**, a punkty 14 i 44 pozostają otwarte.
+
 ### 14, 17 i 44. Pełny wynik skanera impulsowego w gęstej scenie
 
 - Skaner SEN001 używa wcześniej istniejącego zapytania bez alokacji dla zwykłych scen. Gdy jego bufor 128 koliderów się zapełni, ponawia zapytanie o wszystkie kolidery zamiast przyjmować niepełny wynik. Deduplicacja sygnałów, rodzaje, koszt i cooldown pozostają takie same. To poprawka istniejącego aktywnego impulsu, nie analizator słabych punktów #45.
