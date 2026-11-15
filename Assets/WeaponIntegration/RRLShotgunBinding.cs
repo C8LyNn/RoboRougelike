@@ -57,9 +57,11 @@ namespace RoboRougelike.WeaponIntegration
         {
             var economy=Owner!=null?Owner.GetComponent<R3VehicleAssembly>()?.Model?.Economy:null;
             float range=economy?.ShotgunRange??40f;
+            float speed=economy?.ShotgunProjectileSpeed??58f;
             double safeRange=float.IsNaN(range)||float.IsInfinity(range)?40d:System.Math.Max(.1d,range);
-            return new ShotgunConfig{cooldownSeconds=R3MountedBonusEffects.SafeIntervalProduct(.85f,interval),maxTravelDistance=range,damagePerPellet=economy?.ShotgunDamagePerPellet??9f,
-                projectileLifetime=(float)System.Math.Min(float.MaxValue,System.Math.Max(2d,safeRange/58d+1d))};
+            double safeSpeed=float.IsNaN(speed)||float.IsInfinity(speed)?58d:System.Math.Max(.1d,speed);
+            return new ShotgunConfig{cooldownSeconds=R3MountedBonusEffects.SafeIntervalProduct(.85f,interval),maxTravelDistance=range,damagePerPellet=economy?.ShotgunDamagePerPellet??9f,projectileSpeed=speed,
+                projectileLifetime=(float)System.Math.Min(float.MaxValue,System.Math.Max(2d,safeRange/safeSpeed+1d))};
         }
         public bool Fire()
         {

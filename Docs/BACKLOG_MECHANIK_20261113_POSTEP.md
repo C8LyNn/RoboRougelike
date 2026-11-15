@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14 i 44. Konfiguracja prędkości śrucin
+
+- Konfiguracja strzelby nie obcina już prędkości śrucin do 250. Prędkość jest polem ustawień gry, jest zachowywana przy kopiowaniu konfiguracji i służy również do wyznaczania czasu życia niezbędnego do osiągnięcia skonfigurowanego zasięgu. Wartość domyślna pozostaje **58**; wartości nieskończone i NaN wracają do domyślnej, a wartości ujemne do minimum 0,1. To ustawienie projektowe, nie nowe ulepszenie gracza.
+- Unity 6000.3.14f1: `shotgun_speed_final.xml` — **25 PASS**, w tym osiem rzeczywistych śrucin wystrzelonych z prędkością 500, trafienie w cel, kopiowanie i domyślne ustawienia oraz pierwotna salwa. Przed zmianą `shotgun_speed_before.xml` — **2 PASS, 2 FAIL** dla brakującego ustawienia i obcięcia wartości 500 do 250.
+- Skrajnych wartości prędkości w fizyce Unity, wydajności i balansu nie sprawdzono. Liczba śrucin pozostaje ograniczona do 64; progi dodatkowych pocisków oraz pełny odbiór #44 pozostają otwarte.
+
 ### 02, 14 i 44. Przygotowanie salwy strzelby
 
 - Moduł strzelby wylicza opis śrucin na żądanie, bez dwóch własnych tablic o długości salwy. Wzór rozrzutu dla dotychczasowych rozmiarów pozostaje zgodny z poprzednim, a dane wystrzału są ustalane przed przekazaniem salwy do synchronicznego odbiorcy. To przygotowanie do dalszej przebudowy, nie zniesienie limitu.

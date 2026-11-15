@@ -61,6 +61,34 @@ public class RRLW6WeaponRegistryTests
 
 public class RRLW6ShotgunPhysicalTests
 {
+    [UnityTest] public IEnumerator ConfiguredShotgunSpeedDrivesRealPelletsAboveOldCeiling()
+    {
+        var field=typeof(R3GarageEconomy).GetField("ShotgunProjectileSpeed");Assert.That(field,Is.Not.Null);
+        Assert.That(field.GetValue(Resources.Load<R1RunDefinition>("R1/Run").GaragePrices),Is.EqualTo(58f));
+        var economy=new R3GarageEconomy{ShotgunRange=1200f};field.SetValue(economy,500f);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard),economy);
+        Assert.That(field.GetValue(model.DeepCopy().Economy),Is.EqualTo(500f));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Shotgun;
+        var run=R1RunController.Instance;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,10,100),Quaternion.identity);
+        vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=gun.Muzzle.position+gun.Muzzle.forward*10;
+        target.transform.localScale=new Vector3(4,4,1);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);
+        Physics.SyncTransforms();
+        try
+        {
+            var binding=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();Assert.That(binding.Fire(),Is.True);
+            Assert.That(binding.Module.CurrentSpec.ProjectileSpeed,Is.EqualTo(500f));
+            Assert.That(binding.Module.CurrentSpec.ProjectileLifetime,Is.EqualTo(3.4f).Within(.001f));
+            var pellets=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Where(p=>p.PartId==state.Id).ToArray();
+            Assert.That(pellets.Length,Is.EqualTo(8));
+            foreach(var pellet in pellets)Assert.That(pellet.GetComponent<Rigidbody>().linearVelocity.magnitude,Is.EqualTo(500f).Within(.01f));
+            float deadline=Time.realtimeSinceStartup+5;while(hp.CurrentHp>=500&&Time.realtimeSinceStartup<deadline)yield return null;
+            Assert.That(hp.CurrentHp,Is.LessThan(500),"The fast physical pellets must also hit the target.");
+        }
+        finally{if(target!=null)UnityEngine.Object.Destroy(target);if(vehicle!=null)UnityEngine.Object.Destroy(vehicle.gameObject);}
+    }
     [UnityTest] public IEnumerator ConfiguredShotgunDealsDamageAboveOldPelletCap()
     {
         var field=typeof(R3GarageEconomy).GetField("ShotgunDamagePerPellet");Assert.That(field,Is.Not.Null);

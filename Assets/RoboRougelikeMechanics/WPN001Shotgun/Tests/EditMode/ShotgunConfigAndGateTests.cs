@@ -10,6 +10,9 @@ namespace RoboRougelike.WPN001Shotgun.Tests.EditMode
         [Test] public void PelletCountClampedAtOne() => Assert.AreEqual(1, new ShotgunConfig { pelletCount = -10 }.Snapshot().PelletCount);
         [Test] public void ConeAngleClampedTo90() => Assert.AreEqual(90f, new ShotgunConfig { fullConeAngleDegrees = 180f }.Snapshot().FullConeAngleDegrees);
         [Test] public void NonFiniteDamageFallsBack() => Assert.AreEqual(9f, new ShotgunConfig { damagePerPellet = float.NaN }.Snapshot().DamagePerPellet);
+        [Test] public void ProjectileSpeedAboveOldCeilingIsPreserved() => Assert.AreEqual(500f, new ShotgunConfig { projectileSpeed = 500f }.Snapshot().ProjectileSpeed);
+        [Test] public void NonFiniteProjectileSpeedFallsBack() => Assert.AreEqual(58f, new ShotgunConfig { projectileSpeed = float.PositiveInfinity }.Snapshot().ProjectileSpeed);
+        [Test] public void NegativeProjectileSpeedUsesMinimum() => Assert.AreEqual(.1f, new ShotgunConfig { projectileSpeed = -1f }.Snapshot().ProjectileSpeed);
         [Test] public void NegativeDamageClampedToZero() => Assert.AreEqual(0f, new ShotgunConfig { damagePerPellet = -2f }.Snapshot().DamagePerPellet);
         [Test] public void CooldownMayBeZero() => Assert.AreEqual(0f, new ShotgunConfig { cooldownSeconds = 0f }.Snapshot().CooldownSeconds);
         [Test] public void RecoilImpulseClampedToTen() => Assert.AreEqual(10f, new ShotgunConfig { recoilImpulse = 50f }.Snapshot().RecoilImpulse);

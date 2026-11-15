@@ -45,7 +45,7 @@ namespace RoboRougelike.WPN001Shotgun
         {
             PelletCount = Mathf.Clamp(pelletCount, 1, 64);
             FullConeAngleDegrees = ClampFinite(fullConeAngleDegrees, 0f, 90f, 14f);
-            ProjectileSpeed = ClampFinite(projectileSpeed, 0.1f, 250f, 58f);
+            ProjectileSpeed = FiniteMinimum(projectileSpeed, 0.1f, 58f);
             DamagePerPellet = FiniteMinimum(damagePerPellet, 0f, 9f);
             MaxTravelDistance = FiniteMinimum(maxTravelDistance, 0.1f, 40f);
             ProjectileLifetime = FiniteMinimum(projectileLifetime, 0.01f, 2f);
