@@ -34,6 +34,37 @@ public class RRLW6RocketPhysicalTests
         var binding=gun.GetComponents<MonoBehaviour>().Single(p=>p.GetType().Name=="RRLRocketBinding");
         return (bool)binding.GetType().GetMethod("Fire").Invoke(binding,null);
     }
+    [UnityTest] public IEnumerator MoreThanThirtyTwoRealRocketsHitSeparateTargets()
+    {
+        var owner=new GameObject("Many rockets owner");var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        var rockets=new System.Collections.Generic.List<RocketProjectile>();var targets=new System.Collections.Generic.List<P12PipelineSafeDamageable>();
+        int initialActive=RocketProjectile.ActiveFlightCount;
+        try
+        {
+            var spec=new RocketConfig{initialSpeed=18,maxSpeed=18,acceleration=0,explosionRadius=3,maxBlastColliders=1024,maxCastHits=512}.Snapshot();
+            for(int i=0;i<33;i++)
+            {
+                Vector3 origin=new Vector3(1000+i*10,1000,1000);
+                var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=origin+Vector3.forward*5;
+                target.transform.localScale=new Vector3(2,2,.5f);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);
+                target.AddComponent<RRLRocketDamageReceiver>();targets.Add(hp);
+                var item=new GameObject("Real rocket stress fixture");item.transform.position=origin;var rocket=item.AddComponent<RocketProjectile>();rockets.Add(rocket);
+                Assert.That(rocket.TryInitialize(spec,body,owner.transform,owner,null,Vector3.forward),Is.True);
+            }
+            Physics.SyncTransforms();Assert.That(RocketProjectile.ActiveFlightCount,Is.EqualTo(initialActive+33));
+            float deadline=Time.realtimeSinceStartup+8;
+            while(Time.realtimeSinceStartup<deadline&&targets.Any(t=>t.CurrentHp>=500))yield return MOVSeriesDeviceTests.FixedStep();
+            Assert.That(targets.Count(t=>t.CurrentHp<500),Is.EqualTo(33),"Each real rocket must explode against its own target.");
+            Assert.That(RocketProjectile.ActiveFlightCount,Is.EqualTo(initialActive),"All resolved flights must leave the registry.");
+        }
+        finally
+        {
+            foreach(var rocket in rockets)if(rocket!=null)UnityEngine.Object.Destroy(rocket.gameObject);
+            foreach(var target in targets)if(target!=null)UnityEngine.Object.Destroy(target.gameObject);
+            if(owner!=null)UnityEngine.Object.Destroy(owner);
+        }
+        yield return null;
+    }
     [UnityTest] public IEnumerator RocketBonusCapacityTracksOnlyActiveUnresolvedFlight()
     {
         var property=typeof(RRLRocketBinding).GetProperty("AvailableRocketSlots",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
