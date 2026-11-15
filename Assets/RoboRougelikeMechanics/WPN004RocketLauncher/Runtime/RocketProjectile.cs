@@ -99,14 +99,15 @@ namespace RoboRougelike.Mechanics.Rockets
                 checkedLaunchClearance = true;
                 int initialCount = Physics.OverlapSphereNonAlloc(body.position, spec.CollisionRadius,
                     blastBuffer, spec.ImpactMask, QueryTriggerInteraction.Ignore);
+                Collider[] initialHits=blastBuffer;
                 if (initialCount >= blastBuffer.Length)
                 {
-                    Resolve(body.position, Vector3.up, false);
-                    return;
+                    initialHits=Physics.OverlapSphere(body.position,spec.CollisionRadius,spec.ImpactMask,QueryTriggerInteraction.Ignore);
+                    initialCount=initialHits.Length;
                 }
                 for (int i = 0; i < initialCount; i++)
                 {
-                    if (!IgnoreFlyingCollision(blastBuffer[i]))
+                    if (!IgnoreFlyingCollision(initialHits[i]))
                     {
                         Resolve(body.position, Vector3.up, false); // no through-wall launch
                         return;
@@ -115,29 +116,29 @@ namespace RoboRougelike.Mechanics.Rockets
             }
             int count = Physics.SphereCastNonAlloc(body.position, spec.CollisionRadius,
                 direction, castBuffer, distance, spec.ImpactMask, QueryTriggerInteraction.Ignore);
+            RaycastHit[] impactHits=castBuffer;
             if (count >= castBuffer.Length)
             {
-                Debug.LogWarning("WPN-004: impact query overflow; rocket removed without damage.", this);
-                Resolve(body.position, Vector3.up, false);
-                return;
+                impactHits=Physics.SphereCastAll(body.position,spec.CollisionRadius,direction,distance,spec.ImpactMask,QueryTriggerInteraction.Ignore);
+                count=impactHits.Length;
             }
             int nearest = -1;
             float nearestDistance = float.PositiveInfinity;
             for (int i = 0; i < count; i++)
             {
-                Collider other = castBuffer[i].collider;
+                Collider other = impactHits[i].collider;
                 if (IgnoreFlyingCollision(other)) continue;
-                if (castBuffer[i].distance < nearestDistance)
+                if (impactHits[i].distance < nearestDistance)
                 {
                     nearest = i;
-                    nearestDistance = castBuffer[i].distance;
+                    nearestDistance = impactHits[i].distance;
                 }
             }
             float boundaryDistance=nearest>=0?Mathf.Max(0f,nearestDistance-.0001f):distance;
             if(boundaryDistance>0f&&flightBoundary!=null&&flightBoundary.TryIntercept(this,body.position,direction,boundaryDistance))return;
             if (nearest >= 0)
             {
-                RaycastHit hit = castBuffer[nearest];
+                RaycastHit hit = impactHits[nearest];
                 Resolve(hit.point + hit.normal * 0.02f, hit.normal, true);
                 return;
             }
@@ -179,6 +180,14 @@ namespace RoboRougelike.Mechanics.Rockets
             {
                 RocketBlastResult result = RocketBlastResolver.Resolve(point, normal, spec,
                     ownerRoot, attacker, blastBuffer, occlusionBuffer,flightBoundary as IRocketBlastBoundary);
+                if(result.Overflow)
+                {
+                    // Retry atomically with enough room for every active collider in the scene.
+                    // The resolver applies no damage before returning overflow.
+                    int capacity=Object.FindObjectsByType<Collider>(FindObjectsSortMode.None).Length+1;
+                    result=RocketBlastResolver.Resolve(point,normal,spec,ownerRoot,attacker,
+                        new Collider[capacity],new RaycastHit[capacity],flightBoundary as IRocketBlastBoundary);
+                }
                 if (result.Overflow)
                     Debug.LogWarning("WPN-004: blast overlap overflow; no explosion damage applied.", this);
                 try{Detonated?.Invoke(this,point,normal);}catch(System.Exception error){Debug.LogException(error);}

@@ -34,6 +34,83 @@ public class RRLW6RocketPhysicalTests
         var binding=gun.GetComponents<MonoBehaviour>().Single(p=>p.GetType().Name=="RRLRocketBinding");
         return (bool)binding.GetType().GetMethod("Fire").Invoke(binding,null);
     }
+    [UnityTest] public IEnumerator DenseBlastStillDamagesOneActualPart()
+    {
+        var owner=new GameObject("Rocket overflow owner");owner.transform.position=new Vector3(1000,1000,1000);
+        var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=owner.transform.position+Vector3.forward;
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);target.AddComponent<RRLRocketDamageReceiver>();
+        for(int i=0;i<10;i++)target.AddComponent<SphereCollider>().radius=.45f;
+        var rocketObject=new GameObject("Dense explosion projectile");rocketObject.transform.position=owner.transform.position;
+        var rocket=rocketObject.AddComponent<RocketProjectile>();
+        var spec=new RocketConfig{maxBlastColliders=8,maxCastHits=8,explosionRadius=3}.Snapshot();
+        Assert.That(rocket.TryInitialize(spec,body,owner.transform,owner,null,Vector3.forward),Is.True);Physics.SyncTransforms();
+        typeof(RocketProjectile).GetMethod("Resolve",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic)
+            .Invoke(rocket,new object[]{owner.transform.position,Vector3.up,true});
+        Assert.That(hp.CurrentHp,Is.LessThan(500),"A full overlap buffer must not cancel the whole real explosion.");
+        Assert.That(500-hp.CurrentHp,Is.LessThanOrEqualTo(spec.CenterDamage),"Multiple colliders cannot multiply damage to the same part.");
+        if(target!=null)UnityEngine.Object.Destroy(target);if(owner!=null)UnityEngine.Object.Destroy(owner);yield return null;
+    }
+    [UnityTest] public IEnumerator DenseBlastStillRespectsShield()
+    {
+        var owner=new GameObject("Dense blast protected owner");owner.transform.position=new Vector3(1000,1000,1000);
+        var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=owner.transform.position+Vector3.forward*2;
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);target.AddComponent<RRLRocketDamageReceiver>();
+        for(int i=0;i<10;i++)target.AddComponent<SphereCollider>().radius=.4f;
+        var shield=new GameObject("Dense blast shield");shield.transform.position=target.transform.position;
+        shield.AddComponent<SphereCollider>().isTrigger=true;var shieldHp=shield.AddComponent<P12PipelineSafeDamageable>();shieldHp.Configure(500,false);
+        shield.AddComponent<R3ShieldDome>().Configure(2,.8f);
+        var rocketObject=new GameObject("Dense protected explosion");rocketObject.transform.position=owner.transform.position;
+        rocketObject.AddComponent<R3ShieldRocketPayload>();var rocket=rocketObject.AddComponent<RocketProjectile>();
+        var spec=new RocketConfig{maxBlastColliders=8,maxCastHits=8,explosionRadius=3}.Snapshot();
+        Assert.That(rocket.TryInitialize(spec,body,owner.transform,owner,null,Vector3.forward),Is.True);Physics.SyncTransforms();
+        typeof(RocketProjectile).GetMethod("Resolve",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic)
+            .Invoke(rocket,new object[]{owner.transform.position,Vector3.up,true});
+        Assert.That(hp.CurrentHp,Is.EqualTo(500),"A saturated query must not bypass the hostile dome.");
+        Assert.That(shieldHp.CurrentHp,Is.LessThan(500));Assert.That(500-shieldHp.CurrentHp,Is.LessThanOrEqualTo(spec.CenterDamage));
+        if(shield!=null)UnityEngine.Object.Destroy(shield);if(target!=null)UnityEngine.Object.Destroy(target);if(owner!=null)UnityEngine.Object.Destroy(owner);yield return null;
+    }
+    [UnityTest] public IEnumerator DenseOwnerCollisionSweepStillHitsEnemy()
+    {
+        var owner=new GameObject("Crowded rocket owner");owner.transform.position=new Vector3(1000,1000,1000);
+        var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        for(int i=0;i<10;i++)
+        {
+            var own=GameObject.CreatePrimitive(PrimitiveType.Cube);own.transform.SetParent(owner.transform,false);
+            own.transform.localPosition=Vector3.forward*.2f;own.transform.localScale=Vector3.one*.05f;
+        }
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=owner.transform.position+Vector3.forward*.34f;
+        target.transform.localScale=Vector3.one*.08f;var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);
+        target.AddComponent<RRLRocketDamageReceiver>();
+        var rocketObject=new GameObject("Crowded sweep projectile");rocketObject.transform.position=owner.transform.position;
+        var rocket=rocketObject.AddComponent<RocketProjectile>();
+        var spec=new RocketConfig{maxBlastColliders=8,maxCastHits=8,initialSpeed=18,maxSpeed=18,acceleration=0,explosionRadius=3}.Snapshot();
+        Assert.That(rocket.TryInitialize(spec,body,owner.transform,owner,null,Vector3.forward),Is.True);Physics.SyncTransforms();
+        typeof(RocketProjectile).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(rocket,null);
+        Assert.That(hp.CurrentHp,Is.LessThan(500),"Ignored owner colliders cannot remove a rocket before it reaches the enemy.");
+        if(target!=null)UnityEngine.Object.Destroy(target);if(owner!=null)UnityEngine.Object.Destroy(owner);yield return null;
+    }
+    [UnityTest] public IEnumerator DenseOwnerLaunchOverlapStillHitsEnemy()
+    {
+        var owner=new GameObject("Crowded launch owner");owner.transform.position=new Vector3(1000,1000,1000);
+        var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        for(int i=0;i<10;i++)
+        {
+            var own=GameObject.CreatePrimitive(PrimitiveType.Cube);own.transform.SetParent(owner.transform,false);
+            own.transform.localPosition=Vector3.zero;own.transform.localScale=Vector3.one*.05f;
+        }
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=owner.transform.position+Vector3.forward*.34f;
+        target.transform.localScale=Vector3.one*.08f;var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);
+        target.AddComponent<RRLRocketDamageReceiver>();
+        var rocketObject=new GameObject("Crowded launch projectile");rocketObject.transform.position=owner.transform.position;
+        var rocket=rocketObject.AddComponent<RocketProjectile>();
+        var spec=new RocketConfig{maxBlastColliders=8,maxCastHits=8,initialSpeed=18,maxSpeed=18,acceleration=0,explosionRadius=3}.Snapshot();
+        Assert.That(rocket.TryInitialize(spec,body,owner.transform,owner,null,Vector3.forward),Is.True);Physics.SyncTransforms();
+        typeof(RocketProjectile).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(rocket,null);
+        Assert.That(hp.CurrentHp,Is.LessThan(500),"Owner colliders at the muzzle cannot cancel a valid launch.");
+        if(target!=null)UnityEngine.Object.Destroy(target);if(owner!=null)UnityEngine.Object.Destroy(owner);yield return null;
+    }
     [UnityTest] public IEnumerator EmptyPlayerLauncherAutomaticallyReloadsWithoutInput()
     {
         var gun=Build(out var state);var binding=gun.GetComponent<RRLRocketBinding>();
