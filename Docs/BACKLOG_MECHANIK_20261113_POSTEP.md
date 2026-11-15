@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 14, 17 i 44. Pełny wynik skanera impulsowego w gęstej scenie
+
+- Skaner SEN001 używa wcześniej istniejącego zapytania bez alokacji dla zwykłych scen. Gdy jego bufor 128 koliderów się zapełni, ponawia zapytanie o wszystkie kolidery zamiast przyjmować niepełny wynik. Deduplicacja sygnałów, rodzaje, koszt i cooldown pozostają takie same. To poprawka istniejącego aktywnego impulsu, nie analizator słabych punktów #45.
+- Unity 6000.3.14f1: `scanner_dense_before.xml` — **1 FAIL**, w scenie ze 181 sygnałami i dodatkowymi koliderami wykryto 96. `scanner_dense_after.xml` — **14 PASS**, m.in. komplet 181 sygnałów, wielokrotne kolidery i powtórny impuls, filtr warstw i rodzajów, EMP, pauza oraz rzeczywisty zamontowany skaner ze 160 testowymi sygnałami, jednym kosztem energii i cooldownem. Po końcowej korekcie `scanner_dense_recheck.xml` — **2 PASS** dla obu gęstych scen.
+- Pełne zapytanie i obsługa wszystkich wyników pozostają synchroniczne i alokują tablicę, gdy bufor jest pełny. Nie zmierzono wydajności przy skrajnej liczbie koliderów ani nie wykonano ręcznego playtestu; punkty 14 i 44 nadal pozostają otwarte.
+
 ### 14 i 20. Wspólne przygotowanie losowań bonusów salwy
 
 - Strzelba zbiera stan aktywnego Double Shot Overdrive oraz szansę żywych modułów Double Shot raz dla salwy, zamiast ponawiać przegląd części dla każdej śruciny. Nadal losuje każdą podstawową śrucinę osobno, nie losuje ponownie bonusów i nie pobiera za nie dodatkowej amunicji ani energii. Ujęty stan można zachować po późniejszej zmianie wyposażenia; sumowanie jednostek pasywnych wykorzystuje `long`.

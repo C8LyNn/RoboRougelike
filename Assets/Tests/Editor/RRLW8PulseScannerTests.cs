@@ -232,6 +232,29 @@ public class RRLW8PulseScannerTests
         Assert.That(pulse.IsRevealed(signal),Is.True);Assert.That(parts.Select(p=>p.CurrentHp),Is.EqualTo(hp));
         Assert.That(pulse.Revealed.Any(p=>p.transform.IsChildOf(run.Player.transform)),Is.False);
     }
+    [UnityTest] public IEnumerator MountedPulseFindsEverySignalInDenseRangeForOneEnergyCost()
+    {
+        kind=R3PartKind.ScannerPulse;yield return Build();
+        var group=new GameObject("Dense pulse signals");
+        var markers=new System.Collections.Generic.List<ScannerDetectable>();
+        try
+        {
+            for(int i=0;i<160;i++)
+            {
+                var item=new GameObject("Dense signal "+i);item.layer=RRLPulseSignal.SignalLayer;item.transform.SetParent(group.transform);
+                item.transform.position=module.transform.position+new Vector3((i%10)*.3f,.5f,(i/10)*.3f);
+                var marker=item.AddComponent<ScannerDetectable>();marker.SetSignalKind(ScannerSignalKind.Enemy);markers.Add(marker);
+                item.AddComponent<SphereCollider>().isTrigger=true;
+            }
+            var bank=run.Player.GetComponent<VehicleEnergyBank>();float before=bank.Current;Physics.SyncTransforms();
+            Assert.That(Activate(),Is.True);
+            Assert.That(markers.All(pulse.IsRevealed),Is.True,"All in-range signals must be revealed even when the physics buffer fills.");
+            Assert.That(pulse.LastPulseTruncated,Is.False);
+            Assert.That(before-bank.Current,Is.EqualTo(RRLPulseScannerBinding.EnergyPerCopy).Within(.01));
+            Assert.That(Activate(),Is.False,"A dense pulse must still enforce the normal cooldown.");
+        }
+        finally{UnityEngine.Object.Destroy(group);}
+    }
     [UnityTest] public IEnumerator DensePhysicalVehiclesDoNotTruncateSignalsOrAlterOwnerPhysics()
     {
         Assert.That(Enum.TryParse("ScannerPulse",out kind),Is.True,"SEN must be an owned physical garage module");

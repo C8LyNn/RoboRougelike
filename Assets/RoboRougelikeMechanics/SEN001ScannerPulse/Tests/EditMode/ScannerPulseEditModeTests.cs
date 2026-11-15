@@ -51,6 +51,38 @@ namespace RoboRougelike.Mechanics.SEN001.Tests
         }
 
         [Test]
+        public void DenseSceneFindsEverySignalAndDeduplicatesColliders()
+        {
+            var group = new GameObject("Dense scanner targets");
+            int events=0;
+            try
+            {
+                for(int i=0;i<180;i++)
+                {
+                    var item=new GameObject("Signal "+i);item.transform.SetParent(group.transform);
+                    item.transform.position=new Vector3((i%12)*.3f,0,(i/12)*.3f);
+                    item.AddComponent<ScannerDetectable>();item.AddComponent<SphereCollider>();
+                    if(i%3==0)item.AddComponent<BoxCollider>();
+                }
+                for(int i=0;i<40;i++)
+                {
+                    var item=new GameObject("Unmarked "+i);item.transform.SetParent(group.transform);
+                    item.transform.position=Vector3.one;item.AddComponent<SphereCollider>();
+                }
+                scanner.OnDetected+=_=>events++;
+                Physics.SyncTransforms();
+                Assert.AreEqual(181,scanner.TryPulse(Vector3.zero));
+                Assert.AreEqual(181,scanner.Revealed.Count);
+                Assert.AreEqual(181,events,"Multiple colliders must not duplicate notifications.");
+                Assert.IsFalse(scanner.LastPulseTruncated,"The scanner must report complete results after a dense query.");
+                Assert.AreEqual(181,scanner.TryPulse(Vector3.zero));
+                Assert.AreEqual(181,scanner.Revealed.Count,"A repeated pulse refreshes existing signals without duplicating them.");
+                Assert.AreEqual(362,events);
+            }
+            finally{Object.DestroyImmediate(group);}
+        }
+
+        [Test]
         public void LayerMaskExcludesTargetsOutsideMask()
         {
             targetObject.layer = 9;
