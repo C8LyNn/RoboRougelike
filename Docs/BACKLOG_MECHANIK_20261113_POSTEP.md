@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 02, 14 i 44. Pamięć zapytań fizycznych rakiet
+
+- Rakiety zachowują osobne stany i fizyczne trafienia, ale współdzielą ograniczone, ponownie używane bufory zapytań lotu. Zagnieżdżone wywołanie otrzymuje własny bufor; przy bardzo wielu kolizjach pełne zapytanie nadal obejmuje wszystkie obiekty. To przygotowanie do dużych salw, nie usunięcie limitów dodatkowych pocisków.
+- Unity 6000.3.14f1: **24 PASS, 0 FAIL** PlayMode (`rocket_query_shared_final.xml`, `.log`) obejmuje lot, przeszkody, przechwycenie, 300 własnych kolizji oraz zagnieżdżone zapytanie. **4 PASS** (`rocket_query_shared_integration.xml`, `.log`) obejmuje integrację, ponad 32 prawdziwe rakiety, ponowne użycie i gęsty tor lotu; **2 PASS** (`rocket_query_shared_combat.xml`, `.log`) obejmuje Double Shot i osłonę. W pomiarze inicjalizacji 100 przygotowanych rakiet alokacje ponad tło spadły z **242 464 B** (`rocket_query_alloc_before_v2.xml`, `.log`, 1 FAIL przed zmianą) do **69 760 B** (`rocket_query_shared_final.log`); kontrolny przydział 1 MiB został wykryty. Pierwszy pomiar z `GC.GetAllocatedBytesForCurrentThread` zwracał zero i został zastąpiony sprawdzonym `ProfilerRecorder`, dlatego `rocket_query_alloc_before.xml` nie jest dowodem wydajności.
+- To pomiar alokacji podczas inicjalizacji, bez tworzenia obiektów, a nie pomiar FPS ani obciążenia całej walki. Limity dodatkowych pocisków #02/#14 i pełny odbiór #44 pozostają otwarte; brak nowego buildu i ręcznego playtestu.
+
 ### 14, 29 i 44. Dokładność przewidywania obrony punktowej
 
 - Usunięto próg odrzucający przechwytywacze o dodatniej prędkości nie większej niż 0,001. Obliczenia zagrożenia i wyprzedzenia wykorzystują dokładniejsze wartości pośrednie i stabilny wzór na czas przechwycenia; niepoprawne, nieskończone lub NaN dane są odrzucane.

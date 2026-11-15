@@ -21,6 +21,16 @@ namespace RoboRougelike.WPN004.Tests.PlayMode
         }
     }
 
+    public sealed class TestRocketFlightBoundary : MonoBehaviour, IRocketFlightBoundary
+    {
+        public System.Action OnQuery;
+        public bool TryIntercept(RocketProjectile projectile, Vector3 origin, Vector3 direction, float distance)
+        {
+            var action = OnQuery; OnQuery = null; action?.Invoke();
+            return false;
+        }
+    }
+
     public sealed class RocketIntegrationTests
     {
         private GameObject owner;
@@ -149,6 +159,50 @@ namespace RoboRougelike.WPN004.Tests.PlayMode
         }
 
         [UnityTest]
+        public IEnumerator InitializingLargeSalvoDoesNotAllocatePerRocketQueryBuffers()
+        {
+            const int count = 100;
+            var rockets = new RocketProjectile[count];
+            for (int i = 0; i < count; i++)
+            {
+                var go = new GameObject("Precreated rocket " + i);
+                go.AddComponent<SphereCollider>();
+                go.AddComponent<Rigidbody>();
+                rockets[i] = go.AddComponent<RocketProjectile>();
+                go.SetActive(false);
+            }
+            try
+            {
+                var spec = config.Snapshot();
+                // Warm up runtime calls outside the measurement; no physics step occurs here.
+                prefab.TryInitialize(spec, vehicleBody, owner.transform, launcher.gameObject, null, Vector3.forward);
+                using (var recorder = Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory, "GC Allocated In Frame", 16))
+                {
+                    Assert.IsTrue(recorder.Valid);
+                    yield return null; yield return null;
+                    long idle = recorder.LastValue;
+                    bool initialized = true;
+                    foreach (var rocket in rockets)
+                        initialized &= rocket.TryInitialize(spec, vehicleBody, owner.transform, launcher.gameObject, null, Vector3.forward);
+                    yield return null;
+                    long allocated = recorder.LastValue;
+                    var control = new byte[1024 * 1024]; control[0] = 1;
+                    yield return null;
+                    long controlBytes = recorder.LastValue;
+                    System.GC.KeepAlive(control);
+                    Debug.Log($"[ROCKET_INIT_ALLOC] rockets={count} idle={idle} sample={allocated} control={controlBytes}");
+                    Assert.IsTrue(initialized);
+                    Assert.That(controlBytes, Is.GreaterThanOrEqualTo(1024 * 1024), "The recorder must observe a real allocation.");
+                    Assert.Less(allocated - idle, 100000, "Each rocket should not allocate its own flight query arrays.");
+                }
+            }
+            finally
+            {
+                foreach (var rocket in rockets) if (rocket != null) Object.DestroyImmediate(rocket.gameObject);
+            }
+        }
+
+        [UnityTest]
         public IEnumerator RocketMovesForwardInPhysicsTime()
         {
             Assert.AreEqual(RocketFireResult.Fired, launcher.TryFire());
@@ -180,6 +234,47 @@ namespace RoboRougelike.WPN004.Tests.PlayMode
             Assert.AreEqual(RocketFireResult.Fired, launcher.TryFire());
             for (int i = 0; i < 14; i++) yield return new WaitForFixedUpdate();
             Assert.AreEqual(0, target.Hits);
+        }
+
+        [UnityTest]
+        public IEnumerator CrowdedOwnerGeometryDoesNotHideSolidWall()
+        {
+            var own = new GameObject("Crowded own geometry");
+            own.transform.SetParent(owner.transform, false);
+            own.transform.localPosition = new Vector3(0, 0, 1.15f);
+            for (int i = 0; i < 300; i++) own.AddComponent<BoxCollider>().size = Vector3.one * .1f;
+            var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.name = "OcclusionWall";
+            wall.transform.position = new Vector3(0, 0, 2.6f);
+            wall.transform.localScale = new Vector3(5f, 5f, .3f);
+            var target = CreateTarget(new Vector3(0, 0, 4.4f));
+            Physics.SyncTransforms();
+            Assert.AreEqual(RocketFireResult.Fired, launcher.TryFire());
+            var missile = SpawnedRocket();
+            for (int i = 0; i < 14; i++) yield return new WaitForFixedUpdate();
+            Assert.IsTrue(missile == null || missile.IsResolved, "The wall must still resolve the shot after the complete query fallback.");
+            Assert.AreEqual(0, target.Hits, "Saturated queries must not permit shooting through a wall.");
+        }
+
+        [Test]
+        public void NestedFlightQueryDoesNotReplaceOuterRocketHit()
+        {
+            var targetA = CreateTarget(new Vector3(0, 0, 1.85f));
+            var targetB = CreateTarget(new Vector3(10, 0, 1.85f));
+            var outer = Object.Instantiate(prefab, new Vector3(0, 0, 1), Quaternion.identity);
+            var inner = Object.Instantiate(prefab, new Vector3(10, 0, 1), Quaternion.identity);
+            var boundary = outer.gameObject.AddComponent<TestRocketFlightBoundary>();
+            var step = typeof(RocketProjectile).GetMethod("FixedUpdate", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            bool nested = false;
+            boundary.OnQuery = () => { nested = true; step.Invoke(inner, null); };
+            var spec = config.Snapshot();
+            Assert.IsTrue(outer.TryInitialize(spec, vehicleBody, owner.transform, launcher.gameObject, null, Vector3.forward));
+            Assert.IsTrue(inner.TryInitialize(spec, vehicleBody, owner.transform, launcher.gameObject, null, Vector3.forward));
+            Physics.SyncTransforms();
+            step.Invoke(outer, null);
+            Assert.IsTrue(nested, "The inner flight must run before the outer collision is resolved.");
+            Assert.Greater(targetA.Hits, 0, "The outer shot must retain its own collision result.");
+            Assert.Greater(targetB.Hits, 0, "The nested shot must retain its own collision result.");
         }
 
         [UnityTest]

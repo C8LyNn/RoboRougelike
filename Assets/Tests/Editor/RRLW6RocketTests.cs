@@ -158,16 +158,19 @@ public class RRLW6RocketPhysicalTests
             }
             var small=new RocketConfig{maxBlastColliders=32,maxCastHits=32}.Snapshot();
             var large=new RocketConfig{maxBlastColliders=1024,maxCastHits=512}.Snapshot();
-            for(int i=0;i<count;i++)Assert.That(rockets[i].TryInitialize(small,body,owner.transform,owner,null,Vector3.forward),Is.True);
-            for(int i=count;i<rockets.Length;i++)Assert.That(rockets[i].TryInitialize(large,body,owner.transform,owner,null,Vector3.forward),Is.True);
-            var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
-            var cast=typeof(RocketProjectile).GetField("castBuffer",flags);var blast=typeof(RocketProjectile).GetField("blastBuffer",flags);
-            Assert.That(cast,Is.Not.Null);Assert.That(blast,Is.Not.Null);
-            int hitSize=System.Runtime.InteropServices.Marshal.SizeOf(typeof(RaycastHit));
-            Func<RocketProjectile,long> bytes=rocket=>((cast.GetValue(rocket) as RaycastHit[])?.Length??0)*(long)hitSize+
-                ((blast.GetValue(rocket) as Collider[])?.Length??0)*(long)IntPtr.Size;
-            long smallBytes=rockets.Take(count).Sum(bytes);long largeBytes=rockets.Skip(count).Sum(bytes);
-            Assert.That(largeBytes-smallBytes,Is.LessThan(1024L*1024),$"The uncommon large collision capacity should not allocate an extra MiB while {count} rockets are only flying (small={smallBytes}, large={largeBytes}).");
+            using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+            {
+                Assert.That(recorder.Valid,Is.True);yield return null;yield return null;
+                bool initialized=true;
+                for(int i=0;i<count;i++)initialized &= rockets[i].TryInitialize(small,body,owner.transform,owner,null,Vector3.forward);
+                yield return null;long smallBytes=recorder.LastValue;
+                for(int i=count;i<rockets.Length;i++)initialized &= rockets[i].TryInitialize(large,body,owner.transform,owner,null,Vector3.forward);
+                yield return null;long largeBytes=recorder.LastValue;
+                var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;GC.KeepAlive(control);
+                Assert.That(initialized,Is.True);
+                Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024),"The recorder must observe allocations.");
+                Assert.That(largeBytes-smallBytes,Is.LessThan(1024L*1024),$"The uncommon large collision capacity should not allocate an extra MiB while {count} rockets are only flying (small={smallBytes}, large={largeBytes}).");
+            }
         }
         finally
         {
@@ -229,9 +232,10 @@ public class RRLW6RocketPhysicalTests
         var rocket=rocketObject.AddComponent<RocketProjectile>();
         var spec=new RocketConfig{maxBlastColliders=1024,maxCastHits=512,initialSpeed=18,maxSpeed=18,acceleration=0,explosionRadius=3}.Snapshot();
         Assert.That(rocket.TryInitialize(spec,body,owner.transform,owner,null,Vector3.forward),Is.True);Physics.SyncTransforms();
+        Assert.That(Physics.SphereCastAll(rocket.transform.position,spec.CollisionRadius,Vector3.forward,
+            18*Time.fixedDeltaTime,spec.ImpactMask,QueryTriggerInteraction.Ignore).Length,Is.GreaterThan(32),
+            "The scenario must contain more hits than the initial query capacity.");
         typeof(RocketProjectile).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(rocket,null);
-        var hits=(RaycastHit[])typeof(RocketProjectile).GetField("castBuffer",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(rocket);
-        Assert.That(hits.Length,Is.GreaterThan(32),"The scenario must exercise a growing sweep buffer.");
         Assert.That(hp.CurrentHp,Is.LessThan(500),"Ignored owner colliders must not hide the enemy after buffer growth.");
         if(target!=null)UnityEngine.Object.Destroy(target);if(owner!=null)UnityEngine.Object.Destroy(owner);yield return null;
     }

@@ -18,8 +18,16 @@ namespace RoboRougelike.Mechanics.Rockets
         [SerializeField] private GameObject optionalExplosionVfxPrefab;
         private Rigidbody body;
         private SphereCollider sphere;
-        private RaycastHit[] castBuffer;
-        private Collider[] blastBuffer;
+        // Flight queries execute on Unity's main thread. Share bounded scratch
+        // storage, but isolate a nested physics callback if one reenters flight.
+        private const int FlightQueryRetentionLimit = 256;
+        private sealed class FlightQueryBuffers
+        {
+            public RaycastHit[] Casts = new RaycastHit[32];
+            public Collider[] Overlaps = new Collider[32];
+        }
+        private static readonly FlightQueryBuffers sharedFlightBuffers = new FlightQueryBuffers();
+        private static bool sharedFlightBuffersInUse;
         private sealed class BlastQueryBuffers
         {
             public Collider[] Overlaps=new Collider[32];
@@ -56,8 +64,6 @@ namespace RoboRougelike.Mechanics.Rockets
             initialized=false;resolved=false;checkedLaunchClearance=false;
             ownerRoot=null;guidedTarget=null;attacker=null;flightBoundary=null;
             forward=Vector3.zero;inheritedVelocity=Vector3.zero;speed=age=hitPoints=0;
-            if(blastBuffer!=null)System.Array.Clear(blastBuffer,0,blastBuffer.Length);
-            if(castBuffer!=null)System.Array.Clear(castBuffer,0,castBuffer.Length);
             return true;
         }
 
@@ -104,11 +110,6 @@ namespace RoboRougelike.Mechanics.Rockets
             body.useGravity = false;
             body.detectCollisions = true;
             body.interpolation = RigidbodyInterpolation.Interpolate;
-            // Most rockets encounter few colliders while flying. Grow these
-            // buffers on demand, and reserve blast/occlusion capacity only
-            // when an explosion actually needs it.
-            if(castBuffer==null||castBuffer.Length<Mathf.Min(32,spec.MaxCastHits))castBuffer = new RaycastHit[Mathf.Min(32,spec.MaxCastHits)];
-            if(blastBuffer==null||blastBuffer.Length<Mathf.Min(32,spec.MaxBlastColliders))blastBuffer = new Collider[Mathf.Min(32,spec.MaxBlastColliders)];
             flightBoundary = GetComponent<IRocketFlightBoundary>();
             initialized = true;
             if(isActiveAndEnabled)activeFlights.Add(this);
@@ -134,72 +135,79 @@ namespace RoboRougelike.Mechanics.Rockets
             if (step.sqrMagnitude < 1e-8f) return;
             float distance = step.magnitude;
             Vector3 direction = step / distance;
-            // SphereCast does not detect colliders already containing the origin.
-            if (!checkedLaunchClearance)
+            bool shared = !sharedFlightBuffersInUse;
+            var buffers = shared ? sharedFlightBuffers : new FlightQueryBuffers();
+            if (shared) sharedFlightBuffersInUse = true;
+            try
             {
-                checkedLaunchClearance = true;
-                int initialCount;Collider[] initialHits;
+                // SphereCast does not detect colliders already containing the origin.
+                if (!checkedLaunchClearance)
+                {
+                    checkedLaunchClearance = true;
+                    int initialCount;Collider[] initialHits;
+                    while(true)
+                    {
+                        initialCount=Physics.OverlapSphereNonAlloc(body.position,spec.CollisionRadius,
+                            buffers.Overlaps,spec.ImpactMask,QueryTriggerInteraction.Ignore);
+                        if(initialCount<buffers.Overlaps.Length){initialHits=buffers.Overlaps;break;}
+                        if(buffers.Overlaps.Length>=Mathf.Min(spec.MaxBlastColliders,FlightQueryRetentionLimit))
+                        {
+                            initialHits=Physics.OverlapSphere(body.position,spec.CollisionRadius,spec.ImpactMask,QueryTriggerInteraction.Ignore);
+                            initialCount=initialHits.Length;break;
+                        }
+                        System.Array.Resize(ref buffers.Overlaps,Mathf.Min(Mathf.Min(spec.MaxBlastColliders,FlightQueryRetentionLimit),buffers.Overlaps.Length*2));
+                    }
+                    for (int i = 0; i < initialCount; i++)
+                    {
+                        if (!IgnoreFlyingCollision(initialHits[i]))
+                        {
+                            Resolve(body.position, Vector3.up, false); // no through-wall launch
+                            return;
+                        }
+                    }
+                }
+                int count;RaycastHit[] impactHits;
                 while(true)
                 {
-                    initialCount=Physics.OverlapSphereNonAlloc(body.position,spec.CollisionRadius,
-                        blastBuffer,spec.ImpactMask,QueryTriggerInteraction.Ignore);
-                    if(initialCount<blastBuffer.Length){initialHits=blastBuffer;break;}
-                    if(blastBuffer.Length>=spec.MaxBlastColliders)
+                    count=Physics.SphereCastNonAlloc(body.position,spec.CollisionRadius,
+                        direction,buffers.Casts,distance,spec.ImpactMask,QueryTriggerInteraction.Ignore);
+                    if(count<buffers.Casts.Length){impactHits=buffers.Casts;break;}
+                    if(buffers.Casts.Length>=Mathf.Min(spec.MaxCastHits,FlightQueryRetentionLimit))
                     {
-                        initialHits=Physics.OverlapSphere(body.position,spec.CollisionRadius,spec.ImpactMask,QueryTriggerInteraction.Ignore);
-                        initialCount=initialHits.Length;break;
+                        impactHits=Physics.SphereCastAll(body.position,spec.CollisionRadius,direction,distance,spec.ImpactMask,QueryTriggerInteraction.Ignore);
+                        count=impactHits.Length;break;
                     }
-                    System.Array.Resize(ref blastBuffer,Mathf.Min(spec.MaxBlastColliders,blastBuffer.Length*2));
+                    System.Array.Resize(ref buffers.Casts,Mathf.Min(Mathf.Min(spec.MaxCastHits,FlightQueryRetentionLimit),buffers.Casts.Length*2));
                 }
-                for (int i = 0; i < initialCount; i++)
+                int nearest = -1;
+                float nearestDistance = float.PositiveInfinity;
+                for (int i = 0; i < count; i++)
                 {
-                    if (!IgnoreFlyingCollision(initialHits[i]))
+                    Collider other = impactHits[i].collider;
+                    if (IgnoreFlyingCollision(other)) continue;
+                    if (impactHits[i].distance < nearestDistance)
                     {
-                        Resolve(body.position, Vector3.up, false); // no through-wall launch
-                        return;
+                        nearest = i;
+                        nearestDistance = impactHits[i].distance;
                     }
                 }
-            }
-            int count;RaycastHit[] impactHits;
-            while(true)
-            {
-                count=Physics.SphereCastNonAlloc(body.position,spec.CollisionRadius,
-                    direction,castBuffer,distance,spec.ImpactMask,QueryTriggerInteraction.Ignore);
-                if(count<castBuffer.Length){impactHits=castBuffer;break;}
-                if(castBuffer.Length>=spec.MaxCastHits)
+                float boundaryDistance=nearest>=0?Mathf.Max(0f,nearestDistance-.0001f):distance;
+                if(boundaryDistance>0f&&flightBoundary!=null&&flightBoundary.TryIntercept(this,body.position,direction,boundaryDistance))return;
+                if (nearest >= 0)
                 {
-                    impactHits=Physics.SphereCastAll(body.position,spec.CollisionRadius,direction,distance,spec.ImpactMask,QueryTriggerInteraction.Ignore);
-                    count=impactHits.Length;break;
+                    RaycastHit hit = impactHits[nearest];
+                    Resolve(hit.point + hit.normal * 0.02f, hit.normal, true);
+                    return;
                 }
-                System.Array.Resize(ref castBuffer,Mathf.Min(spec.MaxCastHits,castBuffer.Length*2));
-            }
-            int nearest = -1;
-            float nearestDistance = float.PositiveInfinity;
-            for (int i = 0; i < count; i++)
-            {
-                Collider other = impactHits[i].collider;
-                if (IgnoreFlyingCollision(other)) continue;
-                if (impactHits[i].distance < nearestDistance)
+                body.MovePosition(body.position + step);
+                if (forward.sqrMagnitude > 0.0001f)
                 {
-                    nearest = i;
-                    nearestDistance = impactHits[i].distance;
+                    Vector3 up = Mathf.Abs(Vector3.Dot(forward.normalized, Vector3.up)) > 0.98f
+                        ? Vector3.forward : Vector3.up;
+                    body.MoveRotation(Quaternion.LookRotation(forward, up));
                 }
             }
-            float boundaryDistance=nearest>=0?Mathf.Max(0f,nearestDistance-.0001f):distance;
-            if(boundaryDistance>0f&&flightBoundary!=null&&flightBoundary.TryIntercept(this,body.position,direction,boundaryDistance))return;
-            if (nearest >= 0)
-            {
-                RaycastHit hit = impactHits[nearest];
-                Resolve(hit.point + hit.normal * 0.02f, hit.normal, true);
-                return;
-            }
-            body.MovePosition(body.position + step);
-            if (forward.sqrMagnitude > 0.0001f)
-            {
-                Vector3 up = Mathf.Abs(Vector3.Dot(forward.normalized, Vector3.up)) > 0.98f
-                    ? Vector3.forward : Vector3.up;
-                body.MoveRotation(Quaternion.LookRotation(forward, up));
-            }
+            finally { if (shared) sharedFlightBuffersInUse = false; }
         }
 
         private bool IgnoreFlyingCollision(Collider other)
