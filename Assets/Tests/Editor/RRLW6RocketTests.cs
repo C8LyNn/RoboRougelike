@@ -34,6 +34,40 @@ public class RRLW6RocketPhysicalTests
         var binding=gun.GetComponents<MonoBehaviour>().Single(p=>p.GetType().Name=="RRLRocketBinding");
         return (bool)binding.GetType().GetMethod("Fire").Invoke(binding,null);
     }
+    [UnityTest] public IEnumerator InFlightRocketMemoryDoesNotScaleWithRareWorstCaseBuffers()
+    {
+        const int count=64;
+        var owner=new GameObject("Rocket memory fixture owner");var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        var rockets=new RocketProjectile[count*2];
+        try
+        {
+            for(int i=0;i<rockets.Length;i++)
+            {
+                var item=new GameObject("Rocket memory fixture");item.SetActive(false);
+                rockets[i]=item.AddComponent<RocketProjectile>();
+            }
+            var small=new RocketConfig{maxBlastColliders=32,maxCastHits=32}.Snapshot();
+            var large=new RocketConfig{maxBlastColliders=1024,maxCastHits=512}.Snapshot();
+            for(int i=0;i<count;i++)Assert.That(rockets[i].TryInitialize(small,body,owner.transform,owner,null,Vector3.forward),Is.True);
+            for(int i=count;i<rockets.Length;i++)Assert.That(rockets[i].TryInitialize(large,body,owner.transform,owner,null,Vector3.forward),Is.True);
+            var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+            var cast=typeof(RocketProjectile).GetField("castBuffer",flags);var blast=typeof(RocketProjectile).GetField("blastBuffer",flags);
+            var occlusion=typeof(RocketProjectile).GetField("occlusionBuffer",flags);
+            Assert.That(cast,Is.Not.Null);Assert.That(blast,Is.Not.Null);Assert.That(occlusion,Is.Not.Null);
+            int hitSize=System.Runtime.InteropServices.Marshal.SizeOf(typeof(RaycastHit));
+            Func<RocketProjectile,long> bytes=rocket=>((cast.GetValue(rocket) as RaycastHit[])?.Length??0)*(long)hitSize+
+                ((occlusion.GetValue(rocket) as RaycastHit[])?.Length??0)*(long)hitSize+
+                ((blast.GetValue(rocket) as Collider[])?.Length??0)*(long)IntPtr.Size;
+            long smallBytes=rockets.Take(count).Sum(bytes);long largeBytes=rockets.Skip(count).Sum(bytes);
+            Assert.That(largeBytes-smallBytes,Is.LessThan(1024L*1024),$"The uncommon large collision capacity should not allocate an extra MiB while {count} rockets are only flying (small={smallBytes}, large={largeBytes}).");
+        }
+        finally
+        {
+            foreach(var rocket in rockets)if(rocket!=null)UnityEngine.Object.Destroy(rocket.gameObject);
+            UnityEngine.Object.Destroy(owner);
+        }
+        yield return null;
+    }
     [UnityTest] public IEnumerator DenseBlastStillDamagesOneActualPart()
     {
         var owner=new GameObject("Rocket overflow owner");owner.transform.position=new Vector3(1000,1000,1000);
@@ -70,6 +104,28 @@ public class RRLW6RocketPhysicalTests
         Assert.That(hp.CurrentHp,Is.EqualTo(500),"A saturated query must not bypass the hostile dome.");
         Assert.That(shieldHp.CurrentHp,Is.LessThan(500));Assert.That(500-shieldHp.CurrentHp,Is.LessThanOrEqualTo(spec.CenterDamage));
         if(shield!=null)UnityEngine.Object.Destroy(shield);if(target!=null)UnityEngine.Object.Destroy(target);if(owner!=null)UnityEngine.Object.Destroy(owner);yield return null;
+    }
+    [UnityTest] public IEnumerator GrowingRocketSweepBufferStillFindsEnemyBehindOwnerColliders()
+    {
+        var owner=new GameObject("Growing rocket sweep owner");owner.transform.position=new Vector3(1000,1000,1000);
+        var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        for(int i=0;i<40;i++)
+        {
+            var own=GameObject.CreatePrimitive(PrimitiveType.Cube);own.transform.SetParent(owner.transform,false);
+            own.transform.localPosition=Vector3.forward*.2f;own.transform.localScale=Vector3.one*.05f;
+        }
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=owner.transform.position+Vector3.forward*.34f;
+        target.transform.localScale=Vector3.one*.08f;var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);
+        target.AddComponent<RRLRocketDamageReceiver>();
+        var rocketObject=new GameObject("Growing sweep projectile");rocketObject.transform.position=owner.transform.position;
+        var rocket=rocketObject.AddComponent<RocketProjectile>();
+        var spec=new RocketConfig{maxBlastColliders=1024,maxCastHits=512,initialSpeed=18,maxSpeed=18,acceleration=0,explosionRadius=3}.Snapshot();
+        Assert.That(rocket.TryInitialize(spec,body,owner.transform,owner,null,Vector3.forward),Is.True);Physics.SyncTransforms();
+        typeof(RocketProjectile).GetMethod("FixedUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(rocket,null);
+        var hits=(RaycastHit[])typeof(RocketProjectile).GetField("castBuffer",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(rocket);
+        Assert.That(hits.Length,Is.GreaterThan(32),"The scenario must exercise a growing sweep buffer.");
+        Assert.That(hp.CurrentHp,Is.LessThan(500),"Ignored owner colliders must not hide the enemy after buffer growth.");
+        if(target!=null)UnityEngine.Object.Destroy(target);if(owner!=null)UnityEngine.Object.Destroy(owner);yield return null;
     }
     [UnityTest] public IEnumerator DenseOwnerCollisionSweepStillHitsEnemy()
     {

@@ -68,9 +68,12 @@ namespace RoboRougelike.Mechanics.Rockets
             body.useGravity = false;
             body.detectCollisions = true;
             body.interpolation = RigidbodyInterpolation.Interpolate;
-            castBuffer = new RaycastHit[spec.MaxCastHits];
-            blastBuffer = new Collider[spec.MaxBlastColliders];
-            occlusionBuffer = new RaycastHit[spec.MaxCastHits];
+            // Most rockets encounter few colliders while flying. Grow these
+            // buffers on demand, and reserve blast/occlusion capacity only
+            // when an explosion actually needs it.
+            castBuffer = new RaycastHit[Mathf.Min(32,spec.MaxCastHits)];
+            blastBuffer = new Collider[Mathf.Min(32,spec.MaxBlastColliders)];
+            occlusionBuffer = null;
             flightBoundary = GetComponent<IRocketFlightBoundary>();
             initialized = true;
             return true;
@@ -99,13 +102,18 @@ namespace RoboRougelike.Mechanics.Rockets
             if (!checkedLaunchClearance)
             {
                 checkedLaunchClearance = true;
-                int initialCount = Physics.OverlapSphereNonAlloc(body.position, spec.CollisionRadius,
-                    blastBuffer, spec.ImpactMask, QueryTriggerInteraction.Ignore);
-                Collider[] initialHits=blastBuffer;
-                if (initialCount >= blastBuffer.Length)
+                int initialCount;Collider[] initialHits;
+                while(true)
                 {
-                    initialHits=Physics.OverlapSphere(body.position,spec.CollisionRadius,spec.ImpactMask,QueryTriggerInteraction.Ignore);
-                    initialCount=initialHits.Length;
+                    initialCount=Physics.OverlapSphereNonAlloc(body.position,spec.CollisionRadius,
+                        blastBuffer,spec.ImpactMask,QueryTriggerInteraction.Ignore);
+                    if(initialCount<blastBuffer.Length){initialHits=blastBuffer;break;}
+                    if(blastBuffer.Length>=spec.MaxBlastColliders)
+                    {
+                        initialHits=Physics.OverlapSphere(body.position,spec.CollisionRadius,spec.ImpactMask,QueryTriggerInteraction.Ignore);
+                        initialCount=initialHits.Length;break;
+                    }
+                    System.Array.Resize(ref blastBuffer,Mathf.Min(spec.MaxBlastColliders,blastBuffer.Length*2));
                 }
                 for (int i = 0; i < initialCount; i++)
                 {
@@ -116,13 +124,18 @@ namespace RoboRougelike.Mechanics.Rockets
                     }
                 }
             }
-            int count = Physics.SphereCastNonAlloc(body.position, spec.CollisionRadius,
-                direction, castBuffer, distance, spec.ImpactMask, QueryTriggerInteraction.Ignore);
-            RaycastHit[] impactHits=castBuffer;
-            if (count >= castBuffer.Length)
+            int count;RaycastHit[] impactHits;
+            while(true)
             {
-                impactHits=Physics.SphereCastAll(body.position,spec.CollisionRadius,direction,distance,spec.ImpactMask,QueryTriggerInteraction.Ignore);
-                count=impactHits.Length;
+                count=Physics.SphereCastNonAlloc(body.position,spec.CollisionRadius,
+                    direction,castBuffer,distance,spec.ImpactMask,QueryTriggerInteraction.Ignore);
+                if(count<castBuffer.Length){impactHits=castBuffer;break;}
+                if(castBuffer.Length>=spec.MaxCastHits)
+                {
+                    impactHits=Physics.SphereCastAll(body.position,spec.CollisionRadius,direction,distance,spec.ImpactMask,QueryTriggerInteraction.Ignore);
+                    count=impactHits.Length;break;
+                }
+                System.Array.Resize(ref castBuffer,Mathf.Min(spec.MaxCastHits,castBuffer.Length*2));
             }
             int nearest = -1;
             float nearestDistance = float.PositiveInfinity;
@@ -180,6 +193,8 @@ namespace RoboRougelike.Mechanics.Rockets
             resolved = true;
             if (dealDamage)
             {
+                if(blastBuffer.Length<spec.MaxBlastColliders)System.Array.Resize(ref blastBuffer,spec.MaxBlastColliders);
+                if(occlusionBuffer==null)occlusionBuffer=new RaycastHit[spec.MaxCastHits];
                 RocketBlastResult result = RocketBlastResolver.Resolve(point, normal, spec,
                     ownerRoot, attacker, blastBuffer, occlusionBuffer,flightBoundary as IRocketBlastBoundary);
                 if(result.Overflow)
