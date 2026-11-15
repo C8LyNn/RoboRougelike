@@ -11,6 +11,12 @@ Lista poniżej opisuje tylko faktycznie sprawdzone fragmenty, nie zastępuje źr
 - **44 pozostaje otwarty:** celowane testy Unity opisano przy poszczególnych zmianach, ale nie oznaczają one pełnego, ręcznego odbioru, pomiarów wydajności ani zweryfikowanego nowego buildu.
 - **45 pozostaje ostatni:** analizatora słabych punktów nie oznaczono jako zakończonego i nie wyprzedza on pozostałych zadań.
 
+### 38 i 44. Sześć starć z automatycznym pilotem
+
+- Pilot testowy może wyznaczyć drogę wokół prostokątnej przeszkody i wykorzystuje wyłącznie sterowanie wirtualne. Między walkami korzysta z prawdziwych operacji garażu, naprawia, montuje nagrody i kupuje do sześciu dział za zdobyty złom, w granicach budżetu i reguł montażu. Test wymaga obserwacji aktywnego fizycznego pocisku lub rakiety należącej do gracza w każdym starciu oraz zakończenia sześciu walk zwycięstwem.
+- Unity 6000.3.14f1: `physical_pilot_route_second.xml` — **5 PASS**, w tym sześć zwycięstw i cztery geometryczne przypadki trasy; `physical_pilot_route_firing.xml` — **1 PASS**, sześć zwycięstw z wcześniejszą kontrolą czasu ostrzału; `physical_pilot_route_projectiles.xml` — **1 PASS**, sześć zwycięstw z obserwacją rzeczywistych aktywnych pocisków gracza. Ostatni log potwierdza stopniowy zakup trzech, pięciu i sześciu dział. Wcześniejsza `physical_pilot_route_run.xml` — **4 PASS, 1 FAIL**: utrata trzech dział w piątej walce. Przed dodaniem trasy `physical_pilot_route_before.xml` — **4 FAIL** dla bezpośrednich kierunków przechodzących przez halę.
+- W dwóch pierwszych zwycięskich próbach licznik objazdów wyniósł zero; w ostatniej pilot używał wyznaczonego objazdu przez **281 klatek** piątej walki, którą następnie wygrał. Test nie zapisuje trajektorii pozwalającej ocenić każdy manewr. Steruje kamerą z pozycji nad pojazdem i nie przypisuje każdego obrażenia do konkretnego źródła; fizyczne trafienia i urządzenia sprawdzano także osobnymi wcześniejszymi testami. Ręczna gra, zwykła kamera, różne ziarna i pomiar wydajności pozostają **NOT RUN**. Punkt 44 nadal jest otwarty.
+
 ### 12–13, 24 i 44. Premia wytrzymałości kopuł wieżyczek
 
 - Dodano konfigurowalną nagrodę +30% wyłącznie dla rozstawianych kopuł wieżyczek. Premie globalne i dotyczące wieżyczek sumują się w grupie `increased/reduced`, a `more/less` są stosowane osobno. Premia wieżyczek nie zwiększa pojemności montowanej osłony kierunkowej ani jej darmowego uzupełnienia w strefie bezpieczeństwa. Dotychczasowa premia globalna nadal działa na oba rodzaje osłon; poprawiono jej opis, aby odpowiadał temu zachowaniu.

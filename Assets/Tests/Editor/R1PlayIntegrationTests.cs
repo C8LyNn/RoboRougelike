@@ -13,6 +13,80 @@ using RoboRougelike.R3;
 using RogueMachine.P12PipelineSafe;
 using Object = UnityEngine.Object;
 
+// Test-only navigation; production driving and aim are not altered.
+internal static class R1PhysicalPilotRouting
+{
+    internal static Vector3 NextWaypoint(Vector3 start, Vector3 target, Bounds obstacle)
+    {
+        // Four corners outside the hall form a tiny visibility graph. The
+        // vehicle receives only a waypoint and still moves via normal input.
+        var safe=obstacle;safe.Expand(new Vector3(1f,0f,1f));
+        const float clearance=2f;
+        float left=safe.min.x-clearance,right=safe.max.x+clearance;
+        float near=safe.min.z-clearance,far=safe.max.z+clearance;
+        var nodes=new[]{new Vector3(start.x,0,start.z),new Vector3(target.x,0,target.z),
+            new Vector3(left,0,near),new Vector3(left,0,far),new Vector3(right,0,near),new Vector3(right,0,far)};
+        var distance=Enumerable.Repeat(float.PositiveInfinity,nodes.Length).ToArray();
+        var previous=Enumerable.Repeat(-1,nodes.Length).ToArray();var visited=new bool[nodes.Length];
+        distance[0]=0;
+        for(int iteration=0;iteration<nodes.Length;iteration++)
+        {
+            int best=-1;
+            for(int i=0;i<nodes.Length;i++)if(!visited[i]&&(best<0||distance[i]<distance[best]))best=i;
+            if(best<0||float.IsPositiveInfinity(distance[best]))break;
+            if(best==1)break;
+            visited[best]=true;
+            for(int next=0;next<nodes.Length;next++)
+            {
+                if(next==best||visited[next]||(next>=2&&Vector3.Distance(nodes[0],nodes[next])<1f)||Crosses(nodes[best],nodes[next],safe))continue;
+                float candidate=distance[best]+Vector3.Distance(nodes[best],nodes[next]);
+                if(candidate<distance[next]){distance[next]=candidate;previous[next]=best;}
+            }
+        }
+        if(previous[1]<0)return target; // The vehicle or destination is already inside the obstacle.
+        int waypoint=1;
+        while(previous[waypoint]>0)waypoint=previous[waypoint];
+        var result=nodes[waypoint];result.y=start.y;return result;
+    }
+    private static bool Crosses(Vector3 start,Vector3 end,Bounds bounds)
+    {
+        float enter=0,exit=1;
+        if(!Clip(start.x,end.x-start.x,bounds.min.x,bounds.max.x,ref enter,ref exit)||
+           !Clip(start.z,end.z-start.z,bounds.min.z,bounds.max.z,ref enter,ref exit))return false;
+        return enter<.99999f&&exit>.00001f;
+    }
+    private static bool Clip(float origin,float delta,float min,float max,ref float enter,ref float exit)
+    {
+        if(Mathf.Abs(delta)<.00001f)return origin>=min&&origin<=max;
+        float a=(min-origin)/delta,b=(max-origin)/delta;
+        if(a>b){float swap=a;a=b;b=swap;}
+        enter=Mathf.Max(enter,a);exit=Mathf.Min(exit,b);return enter<=exit;
+    }
+}
+
+public sealed class R1PhysicalPilotRoutingTests
+{
+    [TestCase(-13.5f,0f,-13.2f,18f)]
+    [TestCase(-13.2f,18f,-13.5f,0f)]
+    [TestCase(-28f,7f,-8f,7f)]
+    [TestCase(-8f,7f,-28f,7f)]
+    public void PilotCanRouteAroundIndustrialHallWithoutCrossingIt(float sx,float sz,float tx,float tz)
+    {
+        var obstacle=new Bounds(new Vector3(-17,2.5f,7),new Vector3(10,5,9));
+        var current=new Vector3(sx,2.5f,sz);var destination=new Vector3(tx,2.5f,tz);
+        for(int i=0;i<4&&Vector3.Distance(current,destination)>.01f;i++)
+        {
+            var next=R1PhysicalPilotRouting.NextWaypoint(current,destination,obstacle);
+            var delta=next-current;
+            Assert.That(delta.magnitude,Is.GreaterThan(.01f),"The route must make progress.");
+            Assert.That(obstacle.IntersectRay(new Ray(current,delta.normalized),out float hit)&&hit<delta.magnitude-.001f,Is.False,
+                "The next leg must not pass through the actual hall.");
+            current=next;
+        }
+        Assert.That(Vector3.Distance(current,destination),Is.LessThan(.01f),"The route must reach the opponent side.");
+    }
+}
+
 public class R1PlayIntegrationTests
 {
     private Keyboard keyboard;
@@ -97,9 +171,9 @@ public class R1PlayIntegrationTests
             foreach(var cell in cells)
                 if(model.OwnedPlacementError(bonus.Id,cell,default)==null&&Run.GarageMount(bonus.Id,cell))break;
         }
-        // A few independent copies make losing one gun survivable. Never grant
-        // currency, alter damage or bypass technology and mounting rules.
-        while(model.Parts.Count(p=>p.Kind==R3PartKind.Gun&&p.Health>0)<3)
+        // Spend earned currency on independent copies when mounting and the
+        // construction budget permit it. Never grant currency or alter damage.
+        while(model.Parts.Count(p=>p.Kind==R3PartKind.Gun&&p.Health>0)<6)
         {
             var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
                 .Where(c=>model.PlacementError(c,R3PartKind.Gun,false)==null)
@@ -414,7 +488,7 @@ public class R1PlayIntegrationTests
     }
 
     [UnityTest,Timeout(720000)]
-    public IEnumerator SixEncountersCanBeWonWithActualPlayerGunAndPhysicalHits()
+    public IEnumerator SixEncountersCanBeWonWhileFiringRealPlayerWeapons()
     {
         // Enemy discovery during this long scenario must not modify the real profile.
         pilotTechnologyPath=System.IO.Path.Combine(System.IO.Path.GetTempPath(),"robo-pilot-"+Guid.NewGuid().ToString("N")+".json");
@@ -423,6 +497,11 @@ public class R1PlayIntegrationTests
         var follow = Object.FindFirstObjectByType<P12PipelineSafeCamera>();
         follow.enabled = false;
         var camera = Camera.main;
+        var shells=(System.Collections.Generic.HashSet<P17PhysicalShell>)typeof(P17PhysicalShell)
+            .GetField("activeShells",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic).GetValue(null);
+        var rockets=(System.Collections.Generic.HashSet<RoboRougelike.Mechanics.Rockets.RocketProjectile>)
+            typeof(RoboRougelike.Mechanics.Rockets.RocketProjectile)
+                .GetField("activeFlights",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic).GetValue(null);
         for (int stage = 0; stage < 6; stage++)
         {
             // The real pause/transition guard requires a release before the next press.
@@ -433,20 +512,35 @@ public class R1PlayIntegrationTests
             P12PipelineSafeEnemyTurret enemy = null;
             Rigidbody body = null;
             Vector3 previous = Vector3.zero, velocity = Vector3.zero;
+            var arena=Object.FindFirstObjectByType<RoboRougelike.R5.R5Arena>();
+            Bounds? sightObstacle=null;float nextObstacleScan=0;
+            int detourFrames=0;
             var firedWeapons=new System.Collections.Generic.HashSet<string>();
             float deadline = Time.realtimeSinceStartup + 110;
             while (Run.Progress.State == R1RunState.Combat && Time.realtimeSinceStartup < deadline)
             {
-                var liveAssembly=Run.Player!=null?Run.Player.GetComponent<R3VehicleAssembly>():null;
-                if(liveAssembly!=null)
-                    foreach(var gun in liveAssembly.Parts)
-                        if(gun!=null&&gun.Kind==R3PartKind.Gun&&gun.NextFireTime>0)firedWeapons.Add(gun.Id);
+                var playerRoot=Run.Player!=null?Run.Player.transform:null;
+                if(playerRoot!=null)
+                {
+                    foreach(var shell in shells)
+                        if(shell!=null&&shell.IsActiveProjectile&&shell.OwnerRoot==playerRoot&&shell.LaunchSequence!=0)
+                        {
+                            var origin=shell.GetComponent<RoboRougelike.R4.R4ProjectileOrigin>();
+                            if(origin!=null&&!string.IsNullOrEmpty(origin.PartId))firedWeapons.Add(origin.PartId);
+                        }
+                    foreach(var rocket in rockets)
+                        if(rocket!=null&&rocket.IsInitialized&&!rocket.IsResolved&&rocket.OwnerRoot==playerRoot)
+                        {
+                            var origin=rocket.GetComponent<RoboRougelike.R4.R4ProjectileOrigin>();
+                            if(origin!=null&&!string.IsNullOrEmpty(origin.PartId))firedWeapons.Add(origin.PartId);
+                        }
+                }
                 // Automated pilot uses WASD, camera aim and both weapon slots with live AI and physical rounds.
                 if(enemy==null||enemy.IsDefeated)
                 {
                     enemy=Run.Encounter.Enemies.Where(e=>e!=null&&!e.IsDefeated)
                         .OrderBy(e=>Vector3.Distance(e.transform.position,Run.Player.transform.position)).FirstOrDefault();
-                    if(enemy!=null){body=enemy.GetComponent<Rigidbody>();previous=body.position;velocity=Vector3.zero;}
+                    if(enemy!=null){body=enemy.GetComponent<Rigidbody>();previous=body.position;velocity=Vector3.zero;sightObstacle=null;nextObstacleScan=0;}
                 }
                 if (enemy != null && enemy.Core != null)
                 {
@@ -468,17 +562,34 @@ public class R1PlayIntegrationTests
                     Vector3 waypoint = distance < 16
                         ? position + away.normalized * 11 + Vector3.Cross(Vector3.up, away.normalized) * 7
                         : position;
+                    // Only arena geometry between camera and target triggers a
+                    // detour. Moving vehicles and the ground are not walls.
+                    if(Time.time>=nextObstacleScan)
+                    {
+                        nextObstacleScan=Time.time+.5f;sightObstacle=null;
+                        var aim=target-camera.transform.position;
+                        if(arena!=null&&arena.Layout!=null&&aim.sqrMagnitude>.01f)
+                            foreach(var hit in Physics.RaycastAll(camera.transform.position,aim.normalized,aim.magnitude,~0,QueryTriggerInteraction.Ignore).OrderBy(h=>h.distance))
+                            {
+                                if(hit.collider==null||hit.collider.transform.IsChildOf(Run.Player.transform))continue;
+                                if(hit.collider.transform.IsChildOf(enemy.transform))break;
+                                if(hit.collider.transform.IsChildOf(arena.Layout)){sightObstacle=hit.collider.bounds;break;}
+                            }
+                    }
+                    if(sightObstacle.HasValue)
+                    {waypoint=R1PhysicalPilotRouting.NextWaypoint(Run.Player.transform.position,position,sightObstacle.Value);detourFrames++;}
                     Vector3 direction = Vector3.ProjectOnPlane(waypoint - Run.Player.transform.position, Vector3.up);
                     float angle = Vector3.SignedAngle(Run.Player.transform.forward, direction, Vector3.up);
                     var keys = new System.Collections.Generic.List<Key>();
                     if (angle > 4) keys.Add(Key.D); else if (angle < -4) keys.Add(Key.A);
-                    if (distance < 6) keys.Add(Key.S); else if (Mathf.Abs(angle) < 65) keys.Add(Key.W);
+                    if (!sightObstacle.HasValue&&distance < 6) keys.Add(Key.S); else if (Mathf.Abs(angle) < 65) keys.Add(Key.W);
                     InputSystem.QueueStateEvent(keyboard, new KeyboardState(keys.ToArray()));
                 }
                 else InputSystem.QueueStateEvent(keyboard, new KeyboardState());
                 yield return null;
             }
             InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+            Debug.Log($"[R1_PHYSICAL_PILOT_STAGE] stage={stage+1} state={Run.Progress.State} detourFrames={detourFrames} firedWeapons={firedWeapons.Count}");
             if(Run.Progress.State==R1RunState.Salvage)Assert.That(RRLW2TestFlow.Claim(Run,Array.Empty<string>()),Is.True);
             if(Run.Progress.State!=R1RunState.Garage&&Run.Progress.State!=R1RunState.Won&&Run.Player!=null)
             {
@@ -494,6 +605,7 @@ public class R1PlayIntegrationTests
                     $"energy={bank?.Current:0.0}/{bank?.Maximum:0.0} now={Time.time:0.00} guns=[{string.Join(",",guns)}] " +
                     $"alive=[{string.Join(";",targets)}] cameraRay=[{string.Join(",",hits)}]");
             }
+            Assert.That(firedWeapons.Count,Is.GreaterThan(0),"The player must actually fire a weapon during each encounter.");
             Assert.That(Run.Progress.State, Is.EqualTo(stage == 5 ? R1RunState.Won : R1RunState.Garage),
                 "Fizyczna broń powinna pozwalać wygrać pojedynek " + (stage + 1));
             if (stage == 5) break;
