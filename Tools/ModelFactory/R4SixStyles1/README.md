@@ -8,9 +8,12 @@ Elementy: działo `R4W_Basic`, koło `R4M_Wheel`, wyrzutnik `R4X_FlyingDroneDepl
 Style w stałej kolejności: 01 Clean Futuristic, 02 Brutal Industrial, 03 Arcade Low-Poly, 04 Gritty Industrial,
 05 Comic Outline, 06 R41 Modular Tech.
 
-Ta wersja to druga dostawa serii:
+Ta wersja to trzecia dostawa serii:
 1. Poprawki po odczytaniu moodboardu `rr-style-directions` i atlasu odpowiedników.
-2. Kontrola sensu każdego modelu (`scripts/s6sense.py`), czyli czy każda część się czegoś trzyma i czy ruchome części mijają resztę. Poprawiono wszystkie znalezione błędy poza dwoma, które opisuję niżej.
+2. Kontrola sensu każdego modelu (`scripts/s6sense.py`): czy każda część się czegoś trzyma i czy ruchome części mijają resztę.
+3. Druga kontrola, funkcji: czy koło stoi na ziemi, czy strzał wychodzi z lufy, czy dron stoi na swoim gnieździe i może wystartować, czy LOD1 trzyma się w całości. Do tego naprawione dwa przypadki zostawione w drugiej dostawie (działa 05 i 06), oliwka w 04 i oznaczenia kierunku w 06.
+
+Wynik końcowy: wszystkie 53 raporty kontroli (24 modele, 23 pliki LOD1, 6 par) są OK - `qa_sense/`.
 
 ## Plansze (`boards/`)
 
@@ -39,9 +42,9 @@ Reguły wziąłem z kart DNA SYLWETKI, PALETA i GRANICA każdego stylu.
 | 01 | wydłużona, gładka sylwetka; panele ukrywają mechanikę; paleta biel / stal / cyjan / granat; bez rdzy, odsłoniętych tłoków i konturu; test 128 px: smukły kadłub i światło | koło 01 zbudowane od nowa: slick, zamknięta tarcza z cyjanowym pierścieniem, owiewka z linią światła (wg „świetlne obręcze kół przechodzą w cienkie linie owiewek”); kolor dodatkowy pomarańcz → granat |
 | 02 | symetria, ogromny pancerz, widoczne siłowniki, duże nity; grafit + stal + BHP; bez łat, rdzy i brudu | zgodne - bez zmian stylu |
 | 03 | kostki i kliny; matowe płaskie pola; błękit / turkus / limonka / żółty; bez cienkich śrub, rdzy i konturu | paleta przestawiona: kremowa baza i pomarańcz → turkus, błękit, limonka, żółty (pomarańcz należy do 05); dron 03 zbudowany od nowa jako klockowy śmigłowiec (ref. Trailmakers), bo stary trikopter z pierścieniami był w szarości jak dron 06 (granica 03 ↔ 06) |
-| 04 | nieregularna, asymetryczna, łatana; rdza, wypłowiały metal; węgiel / metal / rdza / ziemia + oliwka, brudny pomarańcz; bez nowego gładkiego pancerza i fabrycznej symetrii | geometria zgodna; paleta czerwono-tlenkowa z Pass 4 zostawiona (zatwierdzona, pasuje do działa 04); brak oliwki - **do decyzji** |
+| 04 | nieregularna, asymetryczna, łatana; rdza, wypłowiały metal; węgiel / metal / rdza / ziemia + oliwka, brudny pomarańcz; bez nowego gładkiego pancerza i fabrycznej symetrii | geometria zgodna; czerwono-tlenkowa baza z Pass 4 zostawiona (pasuje do działa 04); oliwka dodana jako kolor łat zastępczych: płyta i taśmy wyrzutnika, łata i taśma koła, bateria drona (wcześniej szary podkład) |
 | 05 | mocne czarne obrysy, przerysowane bronie; czarny / pomarańcz / błękit / fiolet; test 128 px: kreska widoczna bez koloru | kontur 7,5 → 12 mm, bo 7,5 mm znikał w teście 128 px; kremowy kolor dodatkowy → fiolet (koło, wyrzutnik, dron). Cel shading i malowane plamy cienia to shader w Unity - nie robione |
-| 06 | widoczne pojedyncze moduły; grafit + stal, czerwone paski, żółte BHP; pierścienie, porty, śruby; bez owiewek 01, pancernych brył 02, rdzy 04 | zgodne; „oznaczenia kierunku” z moodboardu - do dodania w następnej serii |
+| 06 | widoczne pojedyncze moduły; grafit + stal, czerwone paski, żółte BHP; pierścienie, porty, śruby; oznaczenia kierunku; bez owiewek 01, pancernych brył 02, rdzy 04 | zgodne; oznaczenia kierunku: żółta strzałka do przodu (−Y) na lądowisku wyrzutnika i na włazie drona (działo i koło 06 to oryginały R4) |
 
 **Atlas odpowiedników - referencje elementów tej serii:**
 - działo `R4W_Basic` ↔ Crossout Avenger 57mm / TerraTech GSO 3-Pound Cannon;
@@ -52,6 +55,8 @@ Reguły wziąłem z kart DNA SYLWETKI, PALETA i GRANICA każdego stylu.
 W atlasie `FlyingDrone` ma etykietę „Moduł pojazdu” i jest sparowany z wyrzutnikiem, czyli identyfikator pochodzi z kodu gry. Modelu 3D nie ma jednak nigdzie. W sprawdzonych gałęziach (`main`, `feature/catalog-cell-port-mapping-20261109`) nie znalazłem też kodu drona. Kontrakt drona zostaje PROPOSAL.
 
 ## Kontrola sensu (`scripts/s6sense.py`, wyniki w `qa_sense/`)
+
+### Pierwsza kontrola: czy to się trzyma i czy się nie zderza
 
 Każdy z 24 modeli i każda z 6 par wyrzutnik + dron przechodzi automatyczną kontrolę „czy to ma sens mechanicznie”:
 
@@ -76,8 +81,8 @@ Pierwsze przejście znalazło błędy w 19 z 24 modeli i we wszystkich 6 parach.
 | działo 02 (Pass 4 B) | - | - | OK |
 | działo 03 | odbiornik wisiał między policzkami bez czopów; bieżnia obrotnicy 4 mm pod pierścieniem | heksagonalne czopy z policzków do odbiornika z limonkowymi kapslami; bieżnia podniesiona do 2 mm szczeliny z kontraktu | OK |
 | działo 04 (Pass 4 D) | cała kołyska wisiała 40-70 mm między wspornikami bez niczego na osi pochylenia; kosz wylotu 5 mm od lufy; osłona termiczna kończyła się 20 mm przed odbiornikiem; paski nie dochodziły do osłony; osłona boczna 18 mm od szyny; lewy wspornik poza obrotnicą; luźna pokrywa 4 mm nad szynami | osie ze wsporników do czopa zamka; obejma kosza; opaska osłony; łączniki pasków; 4 przekładki; stopa kątowa; pokrywa położona na szynach (nadal grzechocze przy Fire) | OK |
-| działo 05 (Pass 4 E + kontur) | 4 trójkąty policzka ocierają o czop przy pełnym podniesieniu (klatka 83, +35°) - odziedziczone z Pass 4 | **zostawione do decyzji** | 4 trójkąty |
-| działo 06 (oryginał #939) | kratka z tyłu obrotnicy odstaje 10 mm | **zostawione** - oryginał R4 | 10 mm |
+| działo 05 (Pass 4 E + kontur) | przy pełnym podniesieniu (+35°, klatka 83) dolny przedni róg bocznej płyty odbiornika wchodził w policzek jarzma - odziedziczone z Pass 4 | w trzeciej dostawie: części płyt i listew wystające poza 129,5 mm od osi cofnięte do 132 mm (6 mm luzu), po obu stronach; strefa czopów nietknięta | OK |
+| działo 06 (oryginał #939) | pasiasta płyta ostrzegawcza z tyłu głowicy wisiała 16 mm za tylną płytą i 10 mm od policzków | w trzeciej dostawie: dwie listwy dystansowe od tylnej płyty do płyty ostrzegawczej (kopia - oryginał na `art/938` nietknięty) | OK |
 | koło 01 | silnik i oś piasty nie dochodziły do wirnika | piasta i oś dociągnięte do tarczy | OK |
 | koło 02 | tarcza hamulcowa wisiała obok wirnika | tuleja piasty w wirniku + czop osi w mocowaniu | OK |
 | koło 03 | oś i kołki obręczy wisiały | kołki wpuszczone w oponę; heksagonalna oś w mocowaniu | OK |
@@ -98,21 +103,51 @@ Pierwsze przejście znalazło błędy w 19 z 24 modeli i we wszystkich 6 parach.
 | dron 06 | osłony wirników oderwane od ramion; łopata uderzała w osłonę | ramiona od kadłuba, silnik jako część korpusu, osłony na silnikach, łopata r 49 mm | OK |
 | pary 1-6 | dron wisiał nad gniazdem albo w nie wchodził | `dock_z` ustawione z `free_drop_mm` (tabela niżej) | OK |
 
-Poprawki działa 01 i 04 są zrobione na zachowanych plikach Pass 4 (`scripts/s6fix.py`, operacje w `scripts/fix_gun1c.json` i `scripts/fix_gun4b.json`). Każda nowa część bierze UV z najbliższej ściany węzła, do którego jest dołączona, więc ma ten sam materiał.
+Poprawki dział 01, 04, 05 i 06 są zrobione na istniejących plikach (`scripts/s6fix.py`, operacje w `scripts/fix_gun1c.json`, `fix_gun4b.json`, `fix_gun5.json`, `fix_gun6.json`). Każda nowa część bierze UV z najbliższej ściany węzła, do którego jest dołączona, więc ma ten sam materiał.
+
+### Druga kontrola: czy część robi to, do czego służy (`s6sense.py` v2) i LOD1
+
+4. **Koło stoi na ziemi i toczy się równo.** Opona w pozie spoczynkowej dotyka ziemi w `GroundProbe` (z −0,65; ±3 mm), wirnik jest wyśrodkowany na osi (±2 mm), a przy toczeniu (klip Roll) opona nie skacze więcej niż 5 mm. Tyle daje opona z klockami, która przetacza się po klockach.
+5. **Strzał wychodzi z lufy.**
+   - `Muzzle` działa leży na osi lufy, 0-50 mm przed jej końcem (oryginał #939 ma 40 mm), a linia strzału jest wolna w spoczynku i w klipach celowania.
+   - `Muzzle` drona leży 0-45 mm przed jego bronią, z wolną linią strzału, która nie przecina tarczy wirnika.
+6. **Dron stoi na swoim gnieździe** (`Socket_Dock`, ±2 mm), a jego wirniki obracają się wokół własnych piast (±3 mm).
+7. **Przysłona wyrzutnika obraca się wokół osi startu** (±3 mm).
+8. **Dron naprawdę może wystartować.** Dron jest odtwarzany przez klip Launch i podnoszony pionowo 0-300 mm nad obracającą się przysłoną. Każde przecięcie z wyrzutnikiem to błąd.
+9. **LOD1 też trzyma się w całości.** Plik LOD1 to jedna statyczna siatka bez rigu. Przechodzi test „nic nie wisi” z tolerancją ruchomych złączy (4,5 mm), a koło LOD1 dotyka ziemi.
+
+| model | co znalazła druga kontrola | poprawka | wynik |
+|---|---|---|---|
+| koło 02 | bieżnik Pass 4 sięgał r 0,386, ziemia kontraktu jest na r 0,390 - opona wisiała 4,5 mm nad ziemią | wirnik przeskalowany promieniowo ×1,0097 (szerokość bez zmian) i obrócony tak, że w spoczynku na ziemi stoi klocek bieżnika | ziemia 0,0 mm, toczenie 2,4 mm |
+| koło 04 | bieżnik kończył się na r 0,380 - koło stało tylko na trzech stalowych listwach: 10 mm nad ziemią w spoczynku, skok 10 mm przy toczeniu | bieżnik ×1,0171 do r 0,389, listwy cofnięte tak, że wystają 1 mm (r 0,390), klocek w dół | 1,0 mm, 1,8 mm |
+| koło 05 | balon z siedmioma klockami stał 10 mm nad ziemią | wirnik ×1,0138, klocek w dół | 0,0 mm, 2,0 mm |
+| koło 01 | w LOD1 pierścień światła, szew i szczeliny tarczy odstawały 6-18 mm (uproszczenie spłaszcza kopułę tarczy) | wpuszczone 10-15 mm w tarczę | OK |
+| dron 01 | `Muzzle` leżał w środku płyty kadłuba | `Muzzle` 10 mm przed okiem w nosie, oko jest emiterem | OK |
+| dron 02 | `Muzzle` był w oku czujnika - dron nie miał broni | ciężka lufa z kołnierzem i hamulcem wylotowym pod okiem. Pierwsza wersja (zasobnik pod kadłubem) była cięta przy starcie przez obracające się szczęki wyrzutnika, więc lufa jest 3 mm nad nimi | OK, start bez kolizji |
+| dron 04 | `Muzzle` był na reflektorze; obejma bębna schodziła 2-3 mm pod `Socket_Dock` | rurowe działko przypięte dwiema obejmami z prawej strony bębna (asymetria 04); bęben 10 mm wyżej, dron stoi na płozach | OK |
+| dron 05 | dron stał 4 mm nad `Socket_Dock` | cały dron 4 mm niżej; `Muzzle` na osi oka (oko jest bronią - promień) | OK |
+| dron 06 | `Muzzle` przed okiem bez lufy | krótka lufa w pomarańczowym pierścieniu oka | OK |
+| działa 01-06 | `Muzzle` 40-42 mm przed lufą we wszystkich (tak jak oryginał #939) | - (to punkt pojawienia się pocisku) | OK |
+| LOD1 dział 01 i 04 | stare LOD1 z Pass 4 nie miały napraw sensu (3 i 4 części w powietrzu) | LOD1 odbudowane z naprawionych LOD0 (`scripts/s6lod.py`): 04 regułą generatora; 01 jako siatka gry bez uproszczenia, bo każde rozpuszczenie 14/9/5° odrywało cokół od stopy | OK |
+| LOD1 dział 05 i 06 | - | odbudowane z naprawionych modeli: 05 regułą generatora bez konturu, 06 regułą oryginału (DECIMATE collapse 0,5) | OK |
+| pary 4 i 5 | po zmianie dronów 04 i 05 | nowe `dock_z` | OK |
 
 **Dokowanie (`dock_z` w `meta` QA każdego wyrzutnika):**
 
 | para | 01 | 02 | 03 | 04 | 05 | 06 |
 |---|---|---|---|---|---|---|
-| `dock_z` [m] | 0,0230 | 0,0740 | 0,0245 | −0,0035 | 0,0305 | 0,0660 |
-| swobodny opad drona [mm] | 0,2 | 0,0 | 0,5 | 0,5 | 0,5 | 0,0 |
+| `dock_z` [m] | 0,0230 | 0,0740 | 0,0245 | −0,0060 | 0,0345 | 0,0660 |
+| swobodny opad drona [mm] | 0,2 | 0,0 | 0,5 | 0,1 | 0,5 | 0,0 |
+| start (klip Launch + pionowo 0-300 mm) | bez kolizji | bez kolizji | bez kolizji | bez kolizji | bez kolizji | bez kolizji |
+
+Geometria wyrzutników 04 i 05 się nie zmieniła; w QA tych wyrzutników zmieniło się tylko `meta.dock_z` (z notatką).
 
 ## Od czego zacząłem (stan wyjściowy)
 
 | źródło | gałąź | użyte jako |
 |---|---|---|
-| `R4StyleAtlas5/hero4` (Pass 4, PR #1294) | `art/1239-atlas5-hero4` | działo B zachowane; działa A/D naprawione; działo E + kontur; wirniki kół B/D/E; palety |
-| `R4Weapons938/R4W_Basic` (PR #939) | `art/938-r4-weapon-models` | działo 06 zachowane; kontrakt działa |
+| `R4StyleAtlas5/hero4` (Pass 4, PR #1294) | `art/1239-atlas5-hero4` | działo B zachowane; działa A/D/E naprawione (E + kontur); wirniki kół B/D/E; palety |
+| `R4Weapons938/R4W_Basic` (PR #939) | `art/938-r4-weapon-models` | działo 06 (kopia naprawiona, oryginał nietknięty); kontrakt działa |
 | `R4Movement940/R4M_Wheel` (PR #941) | `art/940-r4-movement-models` | koło 06 zachowane; kontrakt koła |
 | `R4ModulesSleek1x1` / atlas A-E wyrzutnika | `art/1239-atlas5-w4-modules-deployers` | kontrakt wyrzutnika; idea H-pada i przysłony (06) |
 | `R4StyleAtlas5/hero1` v3 `R4B_Cube` | `art/1239-atlas5-hero1` | kostki pancerza pojazdu na planszy 2 (01-05) |
@@ -140,23 +175,30 @@ Zachowane w każdym wariancie:
 - punkty montażu i osie obrotu;
 - wymagane nazwy węzłów i klipy.
 
-Naprawy sensu nie przesunęły żadnego pivota, osi ani punktu montażu.
+Naprawy sensu nie przesunęły żadnego pivota, osi ani punktu montażu. Wirniki kół 02/04/05 są większe o 1-1,7 % w promieniu (dalej w obrysie Rotor ±0,39) i obrócone wokół własnej osi. `Muzzle` dronów został przesunięty na ich broń (kontrakt drona to PROPOSAL).
 
 ## 24 pozycje
 
 | | 01 Clean Futuristic | 02 Brutal Industrial | 03 Arcade Low-Poly | 04 Gritty Industrial | 05 Comic Outline | 06 R41 Modular Tech |
 |---|---|---|---|---|---|---|
-| działo | PRZEROBIONY (Pass 4 A + naprawy sensu) | ZACHOWANY (Pass 4 B) | **NOWY** | PRZEROBIONY (Pass 4 D + naprawy sensu) | PRZEROBIONY (Pass 4 E + kontur 12 mm) | ZACHOWANY (oryginał #939) |
+| działo | PRZEROBIONY (Pass 4 A + naprawy sensu) | ZACHOWANY (Pass 4 B) | **NOWY** | PRZEROBIONY (Pass 4 D + naprawy sensu) | PRZEROBIONY (Pass 4 E + naprawa sensu + kontur 12 mm) | PRZEROBIONY (kopia oryginału #939 + listwy płyty) |
 | koło | **NOWY** | PRZEROBIONY | **NOWY** | PRZEROBIONY | PRZEROBIONY | ZACHOWANY (oryginał #941) |
 | wyrzutnik | **NOWY** | **NOWY** | **NOWY** | **NOWY** | **NOWY** | PRZEROBIONY |
 | dron | **NOWY** | **NOWY** | **NOWY** | **NOWY** | **NOWY** | **NOWY** |
 
-Razem: **3 ZACHOWANE, 7 PRZEROBIONYCH, 14 NOWYCH.** Uzasadnienia są pełne w `status.json`.
+Razem: **2 ZACHOWANE, 8 PRZEROBIONYCH, 14 NOWYCH.** Uzasadnienia są pełne w `status.json`.
 
 Zmiany względem pierwszej dostawy:
 - Działo 01 i 04: ZACHOWANY → PRZEROBIONY (naprawy sensu).
 - Koło 01: PRZEROBIONY → NOWY (moodboard 01 i granica 01 ↔ 02).
 - Dron 03: zbudowany od nowa jako śmigłowiec.
+
+Zmiany w trzeciej dostawie:
+- Działo 06: ZACHOWANY → PRZEROBIONY (listwy dystansowe płyty ostrzegawczej).
+- Działo 05: naprawa policzków.
+- Koła 02/04/05 stoją na ziemi.
+- Drony 01/02/04/05/06 mają broń, z której wychodzi `Muzzle`.
+- Oliwka w 04, strzałki kierunku w 06.
 
 Pozostałe uzasadnienia:
 - **Działo 03 i koło 03 od nowa.** Poprzednie C_Arcade w szarości były bliźniacze z E_Toon (te same zaokrąglone skorupy). Nowe działo ma heksagonalny cokół, klinowe policzki i trójkątną płetwę celownika. Nowe koło ma 12-kątną oponę ze szprychami.
@@ -200,11 +242,11 @@ Sprawdzone dla każdego nowego i przerobionego modelu (szczegóły: `models/<STY
 - GLB i FBX zaimportowane z powrotem;
 - porównane nazwy, rodzice, obrysy (odchyłka ≤ 0,05 mm) i macierze świata w klatkach testowych (odchyłka animacji 0,0 mm);
 - sprawdzona lista materiałów, skala 1,0 i zakresy klipów.
-- Wynik: **BLENDER_PASS 21/21** (wszystkie nowe i przerobione).
+- Wynik: **BLENDER_PASS 22/22** (wszystkie nowe i przerobione).
+- Odbudowane LOD1 dział: ponowny import GLB i FBX, trójkąty, materiały, obrys (`<CID>_LOD1_info.json`).
 
-**Kontrola sensu:**
-- 28 z 30 raportów OK (24 modele + 6 par);
-- 2 z uwagami: działo 05 i działo 06, opisane wyżej.
+**Kontrola sensu i funkcji:**
+- **53 z 53 raportów OK**: 24 modele, 23 pliki LOD1 (koło 06 ma LOD1 tylko w FBX), 6 par z dokowaniem i startem.
 
 **Modele zachowane (ZACHOWANY):**
 - import GLB, wymagane węzły, obrysy węzłów, akcje - `contract_ok: true`;
@@ -219,24 +261,24 @@ Trójkąty LOD0 / LOD1:
 
 | | 01 | 02 | 03 | 04 | 05 | 06 |
 |---|---|---|---|---|---|---|
-| działo | 3244 / 2844† | 2976 / 2912 (Pass 4) | 360 / 348 | 1834 / 1340† | 2576* / 1834 | 12752 (oryginał) |
-| koło | 3576 / 1716 | 6176 / 4656 | 776 / 700 | 5700 / 3826 | 4340* / 5248 | oryginał |
-| wyrzutnik | 2996 / 1748 | 1732 / 1660 | 260 / 260 | 1876 / 1646 | 2792* / 3668 | 1288 / 1268 |
-| dron | 5072 / 3438 | 1684 / 1684 | 288 / 288 | 1804 / 1488 | 2448* / 3196 | 1656 / 1600 |
+| działo | 3244 / 3212† | 2976 / 2912 (Pass 4) | 380 / 348 | 1834 / 1784 | 2576* / 1840 | 12776 / 6298 |
+| koło | 3576 / 1720 | 6176 / 4658 | 776 / 700 | 5700 / 3846 | 4340* / 2594* | oryginał |
+| wyrzutnik | 2996 / 1748 | 1732 / 1660 | 260 / 260 | 1876 / 1646 | 2792* / 1774* | 1308 / 1288 |
+| dron | 5072 / 3438 | 1784 / 1784 | 288 / 288 | 1868 / 1564 | 2448* / 1524* | 1704 / 1672 |
 
-\* 05: liczba LOD0 bez powłoki konturu. Z konturem jest 2× tyle (działo 5120 w GLB). LOD1 koła, wyrzutnika i drona 05 zawiera kontur, dlatego ma więcej trójkątów niż LOD0 bez niego. LOD1 działa 05 to niezmieniony LOD1 E_Toon z Pass 4, bez konturu.
+Liczby z plików GLB, LOD0 działa razem z płaszczyzną błysku wylotu.
 
-† Działa 01 i 04: LOD1 to niezmieniony plik Pass 4. Naprawy sensu są tylko w LOD0 (do zrobienia przy następnym przejściu LOD).
+\* 05: bez powłoki konturu. Z konturem jest 2× tyle, np. koło 8680 / 5200. LOD1 działa 05 jest bez konturu.
+
+† Działo 01: LOD1 = siatka gry bez uproszczenia. Rozpuszczenie płaszczyzn dawało tylko 2-4 % mniej trójkątów i odrywało cokół od stopy w kontroli LOD1.
 
 ## Pozostało do decyzji
 
-1. **Działo 05** - 4 trójkąty policzka ocierają o czop przy +35°. Odziedziczone z Pass 4 E_Toon; poprawka to podcięcie policzka o kilka mm.
-2. **Działo 06** - kratka z tyłu obrotnicy odstaje 10 mm. To oryginał R4 #939, więc zostawiłem go bez zmian.
-3. **04 bez oliwki** - paleta z Pass 4 zatwierdzona; moodboard wymienia oliwkę.
-4. **06 bez „oznaczeń kierunku”** z moodboardu.
-5. **LOD1 dział 01 i 04 bez napraw sensu.**
-6. **Cel shading 05** - to shader w Unity, nie geometria.
-7. **Kontrakt `FlyingDrone`** - PROPOSAL do zatwierdzenia po stronie gry.
+1. **LOD1 to statyczna siatka bez rigu** (tak jak w Pass 4 i w oryginale #939). W Unity działo na odległości LOD1 nie będzie celować, a koło nie będzie się obracać. Trzeba zdecydować, czy LOD1 ma być podpięty pod węzły rigu, czy zostaje tak.
+2. **Działo 06 to teraz kopia oryginału z dwiema listwami.** Jeśli oryginał #939 ma zostać wzorcem bez zmian, wystarczy wrócić do pliku z `art/938`; poprawka to tylko te dwie listwy.
+3. **Koło 05 przy toczeniu podskakuje najmocniej w serii.** Ma siedem dużych klocków. Z rozkładu podpór wychodzi do 4,8 mm, a w klatkach klipu Roll zmierzone jest 2,0 mm. Mieści się w przyjętym progu 5 mm.
+4. **Cel shading 05** - to shader w Unity, nie geometria.
+5. **Kontrakt `FlyingDrone`** - PROPOSAL do zatwierdzenia po stronie gry, razem z nowymi położeniami `Muzzle` i bronią dronów.
 
 ## Ocena po przeglądzie
 
@@ -264,13 +306,15 @@ Trójkąty LOD0 / LOD1:
 boards/                    plansze (jpg)
 renders/                   pojedyncze rendery użyte na planszach (el_*, pair_*, launch_*, veh_*, r41_*, before_*)
 renders/inspekcja/         widoki kontroli sensu (przód, bok, tył, drugi bok) - plansze 07a-d
-qa_sense/                  raporty kontroli sensu (24 modele + 6 par), wynik końcowy
+qa_sense/                  raporty kontroli sensu i funkcji: 24 modele (<el>_<styl>.json), 23 LOD1 (<el>_lod1_<styl>.json), 6 par
 models/<STYL>/<CID>/       <CID>.glb, <CID>.fbx, <CID>_LOD1.glb, <CID>_LOD1.fbx, <CID>_QA.json, <CID>_manifest.json
                            ZACHOWANE: kopie plików oryginału + <CID>_QA_source.json, tekstury w textures/
-                           działa 01/04/05: <CID>_SOURCE.blend obok (edytowalny plik naprawionego modelu); LOD1 i textures/ z Pass 4
+                           działa 01/04/05/06: <CID>_SOURCE.blend obok (edytowalny plik naprawionego modelu), <CID>_LOD1_info.json (odbudowany LOD1);
+                           textures/ i <CID>_QA_source.json = pliki źródła (Pass 4 / #939)
 source/<STYL>/<CID>_SOURCE.blend   edytowalne źródła nowych modeli: kolekcje SOURCE_highpoly / GAME_rig / LOD1
 textures/<CID>_<styl>_{base,orm,normal,emission}.png   2048 px, jeden zestaw na model
-scripts/                   generator serii (s6*.py), naprawy (s6fix.py + fix_gun*.json), kontrola sensu (s6sense.py), plansze (boards.py)
+scripts/                   generator serii (s6*.py), naprawy (s6fix.py + fix_gun*.json), LOD1 (s6lod.py), kontrola sensu i funkcji (s6sense.py),
+                           sonda części (s6probe2.py), plansze (boards.py)
                            + kopie modułów Pass 4 bez zmian (hf, hbake, hskin, hlod, h2defs, h2pal, h4defs, h4pal)
 status.json                ZACHOWANY / PRZEROBIONY / NOWY + źródło i uzasadnienie dla 24 pozycji
 ```
@@ -279,15 +323,16 @@ status.json                ZACHOWANY / PRZEROBIONY / NOWY + źródło i uzasadni
 
 ```
 blender -b --factory-startup --python scripts/s6model.py -- OUT_DIR <CID> <STYL 1-6> 2048           # nowy / przerobiony model
-blender -b --factory-startup --python scripts/s6outline.py -- SRC.glb OUT_DIR R4W_Basic 0.012        # działo 05 (kontur 12 mm)
-blender -b --factory-startup --python scripts/s6fix.py -- SRC.glb OUT_DIR R4W_Basic scripts/fix_gun1c.json   # naprawa działa 01 (04: fix_gun4b.json)
+blender -b --factory-startup --python scripts/s6fix.py -- SRC.glb OUT_DIR R4W_Basic scripts/fix_gun1c.json   # naprawa działa 01 (04: fix_gun4b.json, 06: fix_gun6.json)
+blender -b --factory-startup --python scripts/s6fix.py -- E_Toon.glb OUT_DIR R4W_Basic scripts/fix_gun5.json 0.012   # działo 05: naprawa + kontur 12 mm
+blender -b --factory-startup --python scripts/s6lod.py -- MODEL.glb OUT_DIR R4W_Basic [keep|dissolve:A|collapse:0.5]  # LOD1 z naprawionego modelu
 blender -b --factory-startup --python scripts/s6keep.py -- SRC_DIR TEX_DIR OUT_DIR <CID> "notatka"   # kopia zachowanego modelu + QA
 blender -b --factory-startup --python scripts/s6sense.py -- MODEL <CID>.glb <CID> OUT.json           # kontrola sensu modelu
 blender -b --factory-startup --python scripts/s6sense.py -- PAIR DEP.glb DRONE.glb DOCK_Z OUT.json   # kontrola pary wyrzutnik + dron
-blender -b --factory-startup --python scripts/s6render.py -- scripts/render_specs/<spec>.json       # rendery
+blender -b --factory-startup --python scripts/s6render.py -- scripts/render_specs/<spec>.json       # rendery (final2_spec, insp2_spec)
 python3 scripts/boards.py renders boards                                                         # plansze
 ```
 
 Ścieżki w `render_specs` wskazują na katalogi stacji roboczej (zastąpione `<WORKDIR>`); po przeniesieniu trzeba je podmienić.
 Kopia robocza na stacji: `C01-Blender-Automation\R4_Six1\f1\` (modele, źródła, tekstury), `R4_Six1\rf\` (rendery),
-`R4_Six1\insp\` (widoki kontroli) i `R4_Six1\sense\` (raporty).
+`R4_Six1\insp\` (widoki kontroli) i `R4_Six1\sense_final\` (raporty); działa 05/06 i LOD1 dział także w `R4_Six1\f2\`.

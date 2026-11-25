@@ -5,31 +5,48 @@
  "islands": 236,
  "groups": 1,
  "floating": [],
- "collisions_worst": [
-  {
-   "frame": 83,
-   "a": "Pitch",
-   "b": "Yaw",
-   "n": 4,
-   "at_mm": [
-    -135,
-    -38,
-    182
-   ],
-   "poly_centres_mm": {
-    "Pitch": [
-     -131,
-     -71,
-     168
-    ],
-    "Yaw": [
-     -138,
-     -54,
-     184
-    ]
+ "collisions_worst": [],
+ "collision_frames": 0,
+ "function": {
+  "muzzle": [
+   {
+    "frame": 1,
+    "muzzle_ahead_mm": 42.0,
+    "muzzle_off_axis_mm": 0.2,
+    "line_of_fire": null
+   },
+   {
+    "frame": 51,
+    "muzzle_ahead_mm": 42.0,
+    "muzzle_off_axis_mm": 0.2,
+    "line_of_fire": null
+   },
+   {
+    "frame": 95,
+    "muzzle_ahead_mm": 42.0,
+    "muzzle_off_axis_mm": 0.2,
+    "line_of_fire": null
+   },
+   {
+    "frame": 104,
+    "muzzle_ahead_mm": 42.0,
+    "muzzle_off_axis_mm": 0.2,
+    "line_of_fire": null
+   },
+   {
+    "frame": 113,
+    "muzzle_ahead_mm": 42.0,
+    "muzzle_off_axis_mm": 0.2,
+    "line_of_fire": null
+   },
+   {
+    "frame": 128,
+    "muzzle_ahead_mm": 87.0,
+    "muzzle_off_axis_mm": 0.2,
+    "line_of_fire": null
    }
-  }
- ],
- "collision_frames": 4,
- "status": "ISSUES"
+  ],
+  "issues": []
+ },
+ "status": "OK"
 }

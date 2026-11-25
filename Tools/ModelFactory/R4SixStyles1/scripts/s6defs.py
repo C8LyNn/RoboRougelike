@@ -24,8 +24,11 @@ def ring(B, node, zone, r0, r1, t0, t1, seg=(48, 16), axis="z", at=(0, 0, 0), na
 def disc(B, node, zone, r, t0, t1, seg=(48, 16), axis="z", at=(0, 0, 0), name="disc", phase=0.0, kind="solid"): return B.rev(node, zone, [(0.0, t0), (r, t0), (r, t1), (0.0, t1)], seg, axis, at, False, kind, name, phase=phase)
 def bev(B, o, w, seg=(3, 1), ang=30): return B.bevel(o, w, seg, ang)
 def poly_at(poly, cx, cy): return [(x + cx, y + cy) for (x, y) in poly]
+def chevron(y_tip, w, d, t): return [(0.0, y_tip), (w, y_tip + d), (w, y_tip + d + t), (0.0, y_tip + t), (-w, y_tip + d + t), (-w, y_tip + d)]   # a V pointing to -Y
 
 # ================================================================================================ palettes (linear RGB, metallic, roughness)
+# 04 alt2: faded olive drab (moodboard 04 palette: charcoal / metal / rust / earth + OLIVE, dirty orange) - the salvaged replacement plates,
+# tape and the drone battery are army-surplus olive; it was a grey primer before
 PAL = {
  "1": dict(base=((0.72, 0.73, 0.74), 0.0, 0.26), sec=((0.010, 0.022, 0.085), 0.2, 0.36), dark=((0.026, 0.030, 0.038), 0.85, 0.40), metal=((0.17, 0.18, 0.20), 1.0, 0.30),
            bare=((0.72, 0.73, 0.75), 1.0, 0.16), rubber=((0.013, 0.013, 0.015), 0.0, 0.80), glow=((0.02, 0.72, 1.0), 0.0, 0.3), glass=((0.01, 0.05, 0.07), 0.0, 0.06), alt=((0.55, 0.57, 0.60), 0.0, 0.30)),
@@ -33,7 +36,7 @@ PAL = {
            bare=((0.70, 0.70, 0.71), 1.0, 0.18), rubber=((0.013, 0.013, 0.014), 0.0, 0.86), glow=((1.0, 0.30, 0.02), 0.0, 0.3), glass=((0.10, 0.04, 0.01), 0.0, 0.08), rust=((0.07, 0.035, 0.02), 0.3, 0.8), alt=((0.20, 0.205, 0.21), 0.8, 0.5)),
  "3": dict(base=((0.040, 0.48, 0.42), 0.0, 0.66), sec=((0.30, 0.62, 0.020), 0.0, 0.62), dark=((0.010, 0.030, 0.140), 0.0, 0.66), metal=((0.020, 0.140, 0.62), 0.0, 0.60),
            bare=((0.40, 0.46, 0.56), 0.3, 0.45), rubber=((0.03, 0.032, 0.058), 0.0, 0.78), glow=((0.02, 0.75, 1.0), 0.0, 0.3), glass=((0.03, 0.20, 0.30), 0.0, 0.15), alt=((0.95, 0.62, 0.02), 0.0, 0.55)),
- "4": dict(base=((0.185, 0.042, 0.028), 0.3, 0.80), sec=((0.165, 0.080, 0.045), 0.3, 0.84), alt=((0.125, 0.036, 0.026), 0.3, 0.86), alt2=((0.20, 0.195, 0.175), 0.3, 0.70), dark=((0.016, 0.014, 0.012), 0.6, 0.82),
+ "4": dict(base=((0.185, 0.042, 0.028), 0.3, 0.80), sec=((0.165, 0.080, 0.045), 0.3, 0.84), alt=((0.125, 0.036, 0.026), 0.3, 0.86), alt2=((0.105, 0.112, 0.036), 0.3, 0.74), dark=((0.016, 0.014, 0.012), 0.6, 0.82),
            metal=((0.105, 0.098, 0.090), 1.0, 0.55), bare=((0.34, 0.32, 0.30), 1.0, 0.42), rust=((0.06, 0.028, 0.014), 0.1, 0.92), rubber=((0.018, 0.016, 0.014), 0.0, 0.90), glow=((1.0, 0.36, 0.03), 0.0, 0.3), glass=((0.12, 0.05, 0.01), 0.0, 0.10)),
  "5": dict(base=((0.88, 0.20, 0.012), 0.0, 0.50), sec=((0.20, 0.035, 0.45), 0.0, 0.52), dark=((0.022, 0.026, 0.085), 0.0, 0.58), metal=((0.075, 0.10, 0.24), 0.1, 0.48),
            bare=((0.52, 0.58, 0.72), 0.5, 0.35), rubber=((0.035, 0.030, 0.055), 0.0, 0.78), glow=((0.02, 0.55, 1.0), 0.0, 0.3), glass=((0.02, 0.10, 0.22), 0.0, 0.10), alt=((0.95, 0.72, 0.03), 0.0, 0.5)),
@@ -125,7 +128,7 @@ def dep_1(B):
 def drone_1(B):
     """Clean Futuristic drone: a blended flying wing - one calm rounded-square slab with the four fans sunk into it (no arms, nothing exposed),
     a low canopy with a cyan visor; every fan opening is rimmed with the same turned profile and cyan ring as the launch well of the deployer"""
-    zc = 0.040; B.meta = dict(body_pivot=(0, 0, zc), rotors={}, muzzle=(0, -0.150, zc), dock_z=0.0)
+    zc = 0.040; B.meta = dict(body_pivot=(0, 0, zc), rotors={}, muzzle=(0, -0.216, zc - 0.006), dock_z=0.0)   # the nose eye is the emitter: Muzzle 10 mm ahead of it
     sl = B.hull("Body", "base", [(zc - 0.020, 0, 0, 0.180, 0.180, 4.0), (zc - 0.012, 0, 0, 0.198, 0.198, 4.2), (zc + 0.004, 0, 0, 0.202, 0.202, 4.2), (zc + 0.016, 0, 0, 0.192, 0.192, 4.0), (zc + 0.020, 0, 0, 0.176, 0.176, 3.8)],
                 n=(64, 24), m=(6, 3), axis="z", name="slab")
     F = [(-0.108, -0.108), (0.108, -0.108), (-0.108, 0.108), (0.108, 0.108)]
@@ -136,7 +139,7 @@ def drone_1(B):
            n=(40, 16), m=(6, 2), axis="y", name="canopy")
     v = B.box("Body", "glow", (-0.026, -0.068, zc + 0.026), (0.026, -0.060, zc + 0.030), name="visor"); bev(B, v, 0.002, (2, 1))
     s1 = B.box("Body", "glow", (-0.090, -0.2005, zc - 0.002), (0.090, -0.1975, zc + 0.002), name="frontlight")
-    B.cyl("Body", "glass", (0, -0.186, zc - 0.006), (0, -0.204, zc - 0.006), 0.010, (24, 12), name="eye")
+    B.cyl("Body", "glass", (0, -0.186, zc - 0.006), (0, -0.206, zc - 0.006), 0.010, (24, 12), name="eye")
     B.hull("Body", "dark", [(-0.110, 0, zc - 0.022, 0.050, 0.008, 3), (0.110, 0, zc - 0.022, 0.050, 0.008, 3)], n=(32, 12), m=(4, 2), axis="y", name="belly")
     for sx in (-1, 1):
         B.hull("Body", "dark", [(-0.080, sx*0.060, 0.006, 0.006, 0.006, 3), (0.080, sx*0.060, 0.006, 0.006, 0.006, 3)], n=(16, 8), m=(4, 2), axis="y", name="skid")
@@ -197,8 +200,8 @@ def dep_2(B):
 def drone_2(B):
     """Brutal Industrial drone: an H-frame heavy lifter - two thick box rails carry the four rotors at their ends, the armoured box hangs between
     the rails on two cross beams, four clamp lugs under the box (what the launcher's jaws hold), square guard frames with yellow hazard
-    corners, a heavy sensor block in front"""
-    zc = 0.064; B.meta = dict(body_pivot=(0, 0, zc), rotors={}, muzzle=(0, -0.112, zc - 0.004), dock_z=0.0)
+    corners, a heavy sensor block in front with a heavy barrel under its eye"""
+    zc = 0.064; B.meta = dict(body_pivot=(0, 0, zc), rotors={}, muzzle=(0, -0.182, 0.042), dock_z=0.0)
     for sx in (-1, 1):
         r = B.box("Body", "base", (sx*0.118 - 0.020, -0.168, zc + 0.004), (sx*0.118 + 0.020, 0.168, zc + 0.040), name="rail"); bev(B, r, 0.005, (3, 1))
         for sy in (-1, 1):
@@ -207,7 +210,13 @@ def drone_2(B):
         cb = B.box("Body", "base", (-0.100, y - 0.016, zc + 0.008), (0.100, y + 0.016, zc + 0.034), name="crossbeam"); bev(B, cb, 0.004, (2, 1))
     b = B.prism("Body", "alt", chamf(0.070, 0.080, 0.020), zc - 0.044, zc + 0.012, ("x", "y", "z"), name="box"); bev(B, b, 0.006, (3, 1))
     s = B.box("Body", "dark", (-0.036, -0.112, zc - 0.034), (0.036, -0.078, zc + 0.004), name="sensorblock"); bev(B, s, 0.005, (2, 1))
-    B.cyl("Body", "glow", (0, -0.108, zc - 0.014), (0, -0.116, zc - 0.014), 0.011, (20, 10), name="eye")
+    B.cyl("Body", "glow", (0, -0.108, zc - 0.005), (0, -0.116, zc - 0.005), 0.008, (20, 10), name="eye")
+    # function check v2: the Muzzle sat inside the sensor eye - the drone had no weapon. A heavy barrel out of the sensor block under the
+    # eye, with a collar and a box muzzle brake; the Muzzle is 10 mm ahead of the brake. The barrel stays 3 mm above the clamp jaws of the
+    # launcher (they turn under it in the Active loop - a gun pod under the box was cut by them at launch)
+    B.cyl("Body", "dark", (0, -0.110, 0.042), (0, -0.122, 0.042), 0.0085, (16, 8), name="guncollar")
+    B.cyl("Body", "metal", (0, -0.112, 0.042), (0, -0.160, 0.042), 0.007, (16, 8), name="gunbarrel")
+    mb = B.box("Body", "base", (-0.011, -0.172, 0.033), (0.011, -0.160, 0.051), name="muzzlebrake"); bev(B, mb, 0.002, (2, 1))
     for (sx, sy) in ((-1, -1), (1, -1), (-1, 1), (1, 1)):
         lug = B.box("Body", "dark", (sx*0.058 - 0.012, sy*0.058 - 0.012, 0.0), (sx*0.058 + 0.012, sy*0.058 + 0.012, zc - 0.044), name="lug"); bev(B, lug, 0.003, (2, 1))
     k = 0
@@ -315,14 +324,14 @@ def dep_4(B):
         h = B.cyl("Iris", "dark", (0.085*math.cos(TAU*i/5), 0.085*math.sin(TAU*i/5), -0.030), (0.085*math.cos(TAU*i/5), 0.085*math.sin(TAU*i/5), 0.0), 0.012, (12, 6), "cutter")
         B.cut(rim, h)
     ring(B, "Iris", "alt2", 0.100, 0.126, -0.007, -0.0062, (48, 16), name="paintring")
-    B.meta = dict(dock_z=-0.0035, family="oil drum with two ribs, hose clamp, primer patch")
+    B.meta = dict(dock_z=-0.0070, family="oil drum with two ribs, hose clamp, primer patch")
 
 
 def drone_4(B):
     """Gritty Industrial drone: a small drum lying along the flight axis (same ribs and hose clamp as the launch tube), a welded roll bar over
     it, four pipe arms of different length welded on, mismatched rotors (two big two-blade props, one three-blade, one inside a bent wire
-    guard), a scavenged battery strapped on top, a hook underneath, a bent antenna - asymmetric on purpose"""
-    zc = 0.070; B.meta = dict(body_pivot=(0, 0, zc), rotors={}, muzzle=(0, -0.130, zc), dock_z=0.0)
+    guard), a scavenged battery strapped on top, a hook underneath, a bent antenna, a pipe gun strapped to one side - asymmetric on purpose"""
+    zc = 0.070; B.meta = dict(body_pivot=(0, 0, zc), rotors={}, muzzle=(0.072, -0.170, zc - 0.020), dock_z=0.0)
     prof = [(0.0, -0.115), (0.056, -0.115), (0.064, -0.108), (0.064, -0.082), (0.069, -0.077), (0.069, -0.067), (0.064, -0.062), (0.064, 0.058), (0.069, 0.063), (0.069, 0.073), (0.064, 0.078), (0.064, 0.108), (0.056, 0.115), (0.0, 0.115)]
     B.rev("Body", "base", prof, (40, 14), "y", (0, 0, zc), name="can")
     ring(B, "Body", "metal", 0.065, 0.072, -0.012, 0.006, (40, 14), "y", (0, 0, zc), name="clamp")
@@ -332,9 +341,14 @@ def drone_4(B):
     bt = B.box("Body", "alt2", (-0.036, -0.030, zc + 0.058), (0.032, 0.060, zc + 0.092), name="battery"); B.bevel(bt, 0.003, (2, 1))
     B.box("Body", "dark", (-0.040, 0.004, zc + 0.050), (0.036, 0.020, zc + 0.096), name="strap")
     B.pipe("Body", "bare", [(0.022, 0.090, zc + 0.060), (0.034, 0.110, zc + 0.120), (0.066, 0.120, zc + 0.150)], 0.0022, (6, 4), (6, 3), name="antenna")
-    B.pipe("Body", "metal", [(0.0, 0.020, zc - 0.064), (0.0, 0.020, 0.012), (0.0, 0.004, 0.004), (0.0, -0.010, 0.012)], 0.004, (8, 6), (5, 3), name="hook")
-    for x in (-0.040, 0.040):
-        B.pipe("Body", "dark", [(x, -0.080, zc - 0.050), (x, -0.080, 0.004), (x, 0.080, 0.004), (x, 0.080, zc - 0.050)], 0.005, (8, 6), (4, 2), name="skid")
+    B.pipe("Body", "metal", [(0.0, 0.020, zc - 0.064), (0.0, 0.020, 0.017), (0.0, 0.004, 0.009), (0.0, -0.010, 0.017)], 0.004, (8, 6), (5, 3), name="hook")
+    for x in (-0.040, 0.040):   # the bent pipe skids: the bends sag 4 mm below the path, so the path is at 9 mm and the skids stand on z 0
+        B.pipe("Body", "dark", [(x, -0.080, zc - 0.050), (x, -0.080, 0.009), (x, 0.080, 0.009), (x, 0.080, zc - 0.050)], 0.005, (8, 6), (4, 2), name="skid")
+    # function check v2: the Muzzle sat on the headlamp - no weapon. A pipe gun strapped to the right of the drum with two straps (asymmetric
+    # like the rest), a thicker muzzle collar; the Muzzle is 10 mm ahead of it
+    B.cyl("Body", "metal", (0.072, -0.030, zc - 0.020), (0.072, -0.152, zc - 0.020), 0.008, (12, 6), name="pipegun")
+    B.cyl("Body", "dark", (0.072, -0.152, zc - 0.020), (0.072, -0.160, zc - 0.020), 0.011, (12, 6), name="guncollar")
+    for y in (-0.045, -0.100): B.box("Body", "dark", (0.050, y - 0.005, zc - 0.031), (0.083, y + 0.005, zc - 0.009), name="gunstrap")
     spec = [((-1, -1), 0.150, 0.074, 2, False), ((1, -1), 0.148, 0.064, 3, False), ((-1, 1), 0.140, 0.060, 2, True), ((1, 1), 0.156, 0.076, 2, False)]
     for k, ((sx, sy), Rr, rr, nb, wire) in enumerate(spec):
         a = math.atan2(sy, sx); c = (Rr*math.cos(a), Rr*math.sin(a), zc + 0.076 + (0.008 if k % 2 else 0.0)); nm = "Rotor_%d" % (k + 1)
@@ -369,13 +383,13 @@ def dep_5(B):
     st = B.prism("Body", "alt", star(0.024, 0.056, 5, math.pi/2), -0.010, 0.010, ("x", "z", "y"), name="star", at=(0, -0.236, -0.140)); bev(B, st, 0.004, (2, 1))
     for (sx, sy) in ((-1, -1), (1, -1), (-1, 1), (1, 1)):
         ft = B.rev("Body", "metal", spl([(0.0, -0.240, 'c'), (0.040, -0.240), (0.048, -0.226), (0.040, -0.212), (0.0, -0.210, 'c')], B.q(5, 2)), (24, 10), "z", (sx*0.170, sy*0.170, 0), name="toe")
-    B.meta = dict(dock_z=0.0305, family="fat navy bumper ring with orange inner band = the drone's eye ring")
+    B.meta = dict(dock_z=0.0345, family="fat navy bumper ring with orange inner band = the drone's eye ring")
 
 
 def drone_5(B):
     """Comic Outline drone: a bubble body with ONE huge eye (the same fat ring as the launcher's porthole), two oversized rotors on short
     stalks like ears (a bicopter), stubby fins; the function part - the eye and the rotors - is drawn bigger than it would be"""
-    zc = 0.078; B.meta = dict(body_pivot=(0, 0, zc), rotors={}, muzzle=(0, -0.110, zc), dock_z=0.0)
+    zc = 0.074; B.meta = dict(body_pivot=(0, 0, zc), rotors={}, muzzle=(0, -0.100, zc + 0.002), dock_z=0.0)   # the huge eye is the weapon (eye beam): Muzzle 10 mm ahead of the pupil
     B.rev("Body", "base", spl([(0.0, zc - 0.074, 'c'), (0.052, zc - 0.064), (0.080, zc - 0.030), (0.084, zc + 0.004), (0.074, zc + 0.040), (0.044, zc + 0.066), (0.0, zc + 0.072, 'c')], B.q(6, 3)), (48, 20), "z", name="bubble")
     eye = B.tor("Body", "dark", 0.050, 0.016, (48, 20), (12, 6), "y", (0, -0.070, zc + 0.002), name="eyering")
     B.tor("Body", "sec", 0.040, 0.0045, (48, 20), (8, 4), "y", (0, -0.080, zc + 0.002), name="eyeband")
@@ -429,6 +443,7 @@ def dep_6(B):
     for (a, b) in (((-0.072, -0.090, 0.062), (-0.040, 0.090, 0.066)), ((0.040, -0.090, 0.062), (0.072, 0.090, 0.066)), ((-0.040, -0.016, 0.062), (0.040, 0.016, 0.066))):
         B.box("Body", "alt", a, b, name="H")
     ring(B, "Body", "glow", 0.126, 0.134, 0.062, 0.064, (64, 20), name="padring")
+    B.prism("Body", "alt2", chevron(-0.124, 0.030, 0.022, 0.008), 0.0615, 0.0645, ("x", "y", "z"), name="arrow")     # moodboard 06: direction marking (forward = -Y)
     ring(B, "Iris", "alt2", 0.172, 0.198, 0.0605, 0.078, (64, 20), name="guidering")
     for i in range(4):
         g = B.prism("Iris", "base", chamf(0.018, 0.022, 0.006), 0.078, 0.100, ("x", "y", "z"), name="guide"); bev(B, g, 0.003, (2, 1)); B.move(g, RZ(TAU*i/4 + math.pi/4) @ T(0.186, 0, 0))
@@ -439,13 +454,15 @@ def dep_6(B):
 def drone_6(B):
     """R41 Modular Tech drone: a flat octagonal chamfered gunmetal body (the turret-head shape of R41_Turret_v6.1 laid flat), team-red band,
     orange eye ring in front, four chamfered box arms, rotors inside eight-sided guard rings with yellow hazard tips, black skids"""
-    zc = 0.058; B.meta = dict(body_pivot=(0, 0, zc), rotors={}, muzzle=(0, -0.104, zc), dock_z=0.0)
+    zc = 0.058; B.meta = dict(body_pivot=(0, 0, zc), rotors={}, muzzle=(0, -0.122, zc - 0.002), dock_z=0.0)
     oc = lambda r, z: [(x, y, z) for (x, y) in ngon(r, 8, TAU/16)]
     B.loft("Body", "base", [oc(0.070, zc - 0.034), oc(0.090, zc - 0.014), oc(0.090, zc + 0.012), oc(0.068, zc + 0.034)], name="body")
     B.loft("Body", "sec", [oc(0.0915, zc - 0.006), oc(0.0915, zc + 0.006)], name="redband")
     B.loft("Body", "alt", [oc(0.050, zc + 0.034), oc(0.040, zc + 0.044)], name="hatch")
+    B.prism("Body", "alt2", chevron(-0.030, 0.016, 0.014, 0.006), zc + 0.0435, zc + 0.0465, ("x", "y", "z"), name="arrow")   # moodboard 06: direction marking
     ring(B, "Body", "glow", 0.014, 0.022, -0.094, -0.088, (24, 10), "y", (0, 0, zc - 0.002), name="eyering")
     B.cyl("Body", "dark", (0, -0.084, zc - 0.002), (0, -0.093, zc - 0.002), 0.014, (16, 8), name="eye")
+    B.cyl("Body", "metal", (0, -0.086, zc - 0.002), (0, -0.112, zc - 0.002), 0.006, (16, 8), name="barrel")   # function check v2: a barrel in the eye ring, Muzzle 10 mm ahead
     for sx in (-1, 1):
         sk = B.box("Body", "dark", (sx*0.050 - 0.006, -0.066, 0.0), (sx*0.050 + 0.006, 0.066, 0.008), name="skid"); bev(B, sk, 0.003, (2, 1))
         for y in (-0.040, 0.040): B.box("Body", "dark", (sx*0.050 - 0.004, y - 0.004, 0.008), (sx*0.050 + 0.004, y + 0.004, zc - 0.030), name="strut")
@@ -474,15 +491,55 @@ RECIPES.update({("FlyingDrone", s): f for s, f in zip("123456", (drone_1, drone_
 # R4M_Wheel contract: Mount = the static fork under a block (top plate = Socket_Mount face, +Z), rotor axis X at z -0.26, tyre r 0.39, half width
 # 0.184, ground at z -0.65. Outer face +X (L/R mirror by scale X -1). The Pass 4 rotors were made for the side-mounted R4M_WheelM_Side_Offroad
 # (same 0.39 radius, axis X, outer face +X, x -0.142..0.188): they are moved by (-0.023, 0, -0.26) and keep their Pass 4 geometry.
-def port_rotor(B, fn, dx=-0.023, sleeve=None):
+_FIT = {}
+
+
+def port_rotor(B, fn, dx=-0.023, sleeve=None, fit=None, inlays=("cleat", "cleatbolt")):
     """runs a Pass 4 side-wheel recipe and keeps only its Rotor, moved onto the R4M_Wheel axle. sleeve=(x0, r): a hub sleeve from x0 to the
-    rim face (x 0.020) - it carries the brake discs and takes the axle stub of the new mount (sense check: without it the discs float)"""
+    rim face (x 0.020) - it carries the brake discs and takes the axle stub of the new mount (sense check: without it the discs float).
+    fit=r: function check v2 - the Pass 4 treads end at r 0.380-0.386 while the R4M_Wheel contract puts the ground at r 0.390 (GroundProbe
+    z -0.65), so the tyre floated 4-10 mm above the ground. The rotor is scaled radially about the axle (width kept) so its tread reaches r;
+    parts named in inlays (the bolted steel cleats of the scrap wheel) are then pushed back in so nothing passes r 0.390 (the Rotor bound),
+    and the rotor is turned about the axle so a tread block, not a groove, is at the bottom in the rest pose"""
     n0 = len(B.objs); c0 = len(B.cutters); fn(B); M = T(dx, 0, -0.26); keep = []
     for o in B.objs[n0:]:
         if o["node"] == "Rotor": o.data.transform(M); keep.append(o)
         else: bpy.data.objects.remove(o, do_unlink=True)
     B.objs[n0:] = keep
     for c in B.cutters[c0:]: c.data.transform(M)
+    if fit:
+        rad = lambda v: math.hypot(v.co.y, v.co.z + 0.26)
+        part = lambda o: o.name.split(".")[0].split("_", 1)[-1]                  # HI_cleat.003 -> cleat
+        tread = [o for o in keep if part(o) not in inlays]; inl = [o for o in keep if part(o) in inlays]
+        key = (fn.__name__, fit)
+        if key not in _FIT:
+            # worked out ONCE on the low-poly game mesh as it comes out of the modifier stack (bevels, cuts) - that mesh is what touches the
+            # ground - and the same scale and turn are used for both passes so the bake still lines up. The ground height of a tyre turned
+            # by t is its support h(t) = max(v . down(t)); flat tread blocks reach furthest at their corners, so h, not the radius, is used:
+            # scale so max h = fit, and turn the rotor so that direction points down in the rest pose
+            import hf
+            tb = hf.Builder(False, B.style, B.col); tb.meta = {}; fn(tb)
+            for o in tb.objs:
+                if o["node"] == "Rotor": o.data.transform(M)
+            for c in tb.cutters: c.data.transform(M)
+            bpy.context.view_layer.update(); dg = bpy.context.evaluated_depsgraph_get(); P = []
+            for o in tb.objs:
+                if o["node"] != "Rotor" or part(o) in inlays: continue
+                oe = o.evaluated_get(dg); me = oe.to_mesh(); P += [(v.co.y, v.co.z + 0.26) for v in me.vertices if math.hypot(v.co.y, v.co.z + 0.26) > 0.33]; oe.to_mesh_clear()
+            hs = [(max(y*math.sin(a_) - z*math.cos(a_) for (y, z) in P), a_) for a_ in (math.radians(0.25*i) for i in range(1440))]
+            hmax, amax = max(hs); hmin = min(hs)[0]
+            k = fit/hmax; _FIT[key] = (k, amax, round(1000*(hmax - hmin)*k, 2))
+            for o in tb.objs + tb.cutters: bpy.data.objects.remove(o, do_unlink=True)
+        k, a, var = _FIT[key]
+        S = T(0, 0, -0.26) @ RX(-a) @ Matrix.Diagonal((1, k, k, 1)) @ T(0, 0, 0.26)  # scale radially, then turn that tread top to straight down
+        for o in keep: o.data.transform(S)
+        for c in B.cutters[c0:]: c.data.transform(S)
+        over = max([rad(v) for o in inl for v in o.data.vertices] + [0.0]) - 0.390       # one push for all inlays: a cleat and its bolts stay together
+        if over > 0:
+            for o in inl:
+                for v in o.data.vertices:
+                    r = rad(v); s = (r - over)/r; v.co.y *= s; v.co.z = -0.26 + (v.co.z + 0.26)*s
+        B.meta["rotor_fit"] = dict(scale=round(k, 4), tread_r=fit, turned_deg=round(math.degrees(a), 2), rolling_var_mm=var, inlays_pushed_in=sorted(set(part(o) for o in inl)))
     if sleeve: B.cyl("Rotor", "metal", (sleeve[0], 0, -0.26), (0.020, 0, -0.26), sleeve[1], (32, 10), name="hubsleeve")
 
 
@@ -509,11 +566,13 @@ def wheel_1(B):
     B.rev("Rotor", "rubber", spl([(0.262, -0.166, 'c'), (0.322, -0.170), (0.364, -0.164), (0.384, -0.140), (0.390, -0.090), (0.390, 0.080), (0.384, 0.128),
                                   (0.364, 0.150), (0.322, 0.156), (0.262, 0.152, 'c')], B.q(6, 2)), (96, 28), "x", at, True, name="tyre")
     B.rev("Rotor", "base", spl([(0.0, 0.176, 'c'), (0.120, 0.173), (0.220, 0.165), (0.266, 0.156, 'c'), (0.266, 0.138, 'c'), (0.0, 0.138, 'c')], B.q(6, 2)), (96, 28), "x", at, name="disc")
-    ring(B, "Rotor", "glow", 0.236, 0.250, 0.1625, 0.1660, (96, 28), "x", at, name="rimlight")
-    ring(B, "Rotor", "dark", 0.084, 0.090, 0.1735, 0.1755, (48, 16), "x", at, name="discseam")
+    # the light ring and the seam ring are inlays sunk 10-15 mm into the disc: in LOD1 the planar dissolve flattens the domed disc by up to
+    # 18 mm and rings that only sat on its surface came loose (function check v2, LOD1)
+    ring(B, "Rotor", "glow", 0.236, 0.250, 0.1500, 0.1660, (96, 28), "x", at, name="rimlight")
+    ring(B, "Rotor", "dark", 0.084, 0.090, 0.1500, 0.1755, (48, 16), "x", at, name="discseam")
     B.rev("Rotor", "dark", [(0.0, -0.150), (0.266, -0.150), (0.266, -0.120), (0.0, -0.120)], (64, 16), "x", at, True, name="innerdisc")
     for i in range(3):
-        n = B.prism("Rotor", "dark", [(0.110, 0.160), (0.200, 0.160), (0.200, 0.1677), (0.110, 0.1745)], -0.0035, 0.0035, ("z", "x", "y"), name="seam"); B.move(n, T(*at) @ RX(TAU*i/3))
+        n = B.prism("Rotor", "dark", [(0.110, 0.150), (0.200, 0.150), (0.200, 0.1677), (0.110, 0.1745)], -0.0035, 0.0035, ("z", "x", "y"), name="seam"); B.move(n, T(*at) @ RX(TAU*i/3))
     top_plate(B, "base", 0.014)
     B.box("Mount", "dark", (-0.240, -0.240, 0.214), (0.240, 0.240, 0.226), name="gasket")
     f = B.hull("Mount", "base", [(0.226, -0.214, 0, 0.032, 0.150, 4.0), (0.120, -0.218, 0, 0.026, 0.110, 3.6), (-0.080, -0.218, 0, 0.022, 0.076, 3.2), (-0.230, -0.214, 0, 0.026, 0.060, 3.0)],
@@ -532,7 +591,7 @@ def wheel_2(B):
     new - the load path is the shape: a thick plate, one massive box arm with two gussets straight down to a big axle boss, a coil-over
     damper beside it from plate to boss, a brake caliper on the inner disc, hazard bands on the arm"""
     import h4defs as H4
-    port_rotor(B, H4.wheel_B_new, sleeve=(-0.150, 0.072))
+    port_rotor(B, H4.wheel_B_new, sleeve=(-0.150, 0.072), fit=0.390)
     top_plate(B, "dark", 0.008, 0.040)
     B.cyl("Mount", "metal", (-0.192, 0, -0.26), (-0.146, 0, -0.26), 0.030, (16, 8), name="axlestub")
     for (x, y) in ((-0.200, -0.200), (0.200, -0.200), (-0.200, 0.200), (0.200, 0.200)): B.cyl("Mount", "bare", (x, y, 0.214), (x, y, 0.221), 0.012, (6, 6), "detail", "bolt")
@@ -580,7 +639,7 @@ def wheel_4(B):
     moved onto the axle. Mount: new, readable history - an original angle-iron bracket, a leaf-spring pack added later with two U-bolts,
     a primer repair plate welded over a crack in the top plate, a taped cable, one bolt missing on the plate"""
     import h4defs as H4
-    port_rotor(B, H4.wheel_D)
+    port_rotor(B, H4.wheel_D, fit=0.389)
     top_plate(B, "metal", 0.004, 0.030, [(-0.250, -0.250), (0.250, -0.250), (0.250, 0.206), (0.214, 0.250), (-0.250, 0.250)])
     for (x, y) in ((-0.210, -0.210), (0.210, -0.210), (-0.210, 0.210)): B.cyl("Mount", "bare", (x, y, 0.222), (x, y, 0.230), 0.012, (6, 6), "detail", "bolt")
     for sy in (-1, 1):
@@ -622,7 +681,7 @@ def wheel_5(B):
     onto the axle - the hub is the part that decides the function, and it stays oversized. Mount: new - a fat rounded arm curving down to a big
     round boss with a star cap, a rounded plate. The outline is checked on the hub and in the tyre gap at game distance"""
     import h4defs as H4
-    port_rotor(B, H4.wheel_E, sleeve=(-0.181, 0.072))
+    port_rotor(B, H4.wheel_E, sleeve=(-0.181, 0.072), fit=0.390)
     top_plate(B, "dark", 0.028, 0.040)
     B.pipe("Mount", "base", [(-0.212, 0.0, 0.222), (-0.220, 0.0, 0.120), (-0.220, 0.0, -0.060), (-0.216, 0.0, -0.244)], 0.034, (24, 10), (8, 3), name="arm")
     B.rev("Mount", "metal", spl([(0.0, -0.250, 'c'), (0.036, -0.248), (0.048, -0.234), (0.050, -0.204), (0.042, -0.184, 'c'), (0.0, -0.184, 'c')], B.q(6, 2)), (40, 16), "x", (0, 0, -0.26), name="boss")

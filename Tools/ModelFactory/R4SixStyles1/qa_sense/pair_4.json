@@ -2,38 +2,40 @@
  "mode": "PAIR",
  "dep": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
  "drone": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\FlyingDrone\\FlyingDrone.glb",
- "dock_z": -0.0035,
- "drone_min_z_mm": -6.5,
- "free_drop_mm": 0.5,
- "touch_gap_mm": 0.5,
+ "dock_z": -0.006,
+ "drone_min_z_mm": -6.9,
+ "free_drop_mm": 0.1,
+ "touch_gap_mm": 0.1,
  "overlap_tris": 0,
  "overlap_at_mm": null,
  "closest": [
   [
-   0.5,
+   0.1,
    "FlyingDrone_Body",
    "R4X_FlyingDroneDeployer_Iris"
   ],
   [
-   0.5,
+   0.1,
    "FlyingDrone_Body",
    "R4X_FlyingDroneDeployer_Iris"
   ],
   [
-   0.5,
+   0.1,
    "FlyingDrone_Body",
    "R4X_FlyingDroneDeployer_Iris"
   ],
   [
-   0.5,
+   0.1,
    "FlyingDrone_Body",
    "R4X_FlyingDroneDeployer_Iris"
   ],
   [
-   1.5,
+   2.6,
    "FlyingDrone_Body",
    "R4X_FlyingDroneDeployer_Iris"
   ]
  ],
+ "launch_clip_cuts": [],
+ "straight_lift_cuts": [],
  "status": "OK"
 }

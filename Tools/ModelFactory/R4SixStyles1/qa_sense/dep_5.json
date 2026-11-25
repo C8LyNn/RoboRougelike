@@ -7,5 +7,9 @@
  "floating": [],
  "collisions_worst": [],
  "collision_frames": 0,
+ "function": {
+  "iris_centre_off_mm": 1.7,
+  "issues": []
+ },
  "status": "OK"
 }

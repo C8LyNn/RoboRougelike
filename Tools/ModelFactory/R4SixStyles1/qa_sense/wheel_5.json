@@ -2,10 +2,21 @@
  "mode": "MODEL",
  "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\R4M_Wheel\\R4M_Wheel.glb",
  "cid": "R4M_Wheel",
- "islands": 407,
+ "islands": 408,
  "groups": 1,
  "floating": [],
  "collisions_worst": [],
  "collision_frames": 0,
+ "function": {
+  "ground_gap_mm": 0.0,
+  "rotor_centre_off_mm": [
+   0.0,
+   0.0
+  ],
+  "roll_ground_var_mm": 2.0,
+  "roll_ground_gap_max_mm": 2.0,
+  "mount_clearance_mm": 339.7,
+  "issues": []
+ },
  "status": "OK"
 }

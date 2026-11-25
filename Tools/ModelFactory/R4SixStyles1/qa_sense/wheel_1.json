@@ -7,5 +7,16 @@
  "floating": [],
  "collisions_worst": [],
  "collision_frames": 0,
+ "function": {
+  "ground_gap_mm": -0.8,
+  "rotor_centre_off_mm": [
+   0.0,
+   0.0
+  ],
+  "roll_ground_var_mm": 1.1,
+  "roll_ground_gap_max_mm": 0.3,
+  "mount_clearance_mm": 340.0,
+  "issues": []
+ },
  "status": "OK"
 }

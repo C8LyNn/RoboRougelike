@@ -3,7 +3,7 @@
   "1": {
    "status": "PRZEROBIONY",
    "src": "Pass 4 hero4 R4W_Basic A_Sleek (PR #1294) + naprawa sensu (scripts/s6fix.py, scripts/fix_gun1c.json)",
-   "why": "kontrola sensu: odbiornik wisiał 18 mm od obu ramion jarzma na niewidocznej osi - dodane łożyska czopów z jarzma do boku odbiornika (3 mm luzu); boczne żaluzje przy Recoil odchylały się o 20° i wchodziły 2 cm w ramię jarzma - teraz są nieruchome; przy +35° tył odbiornika wchodził w przeciwwagę - blok przeciwwagi krótszy o 18 mm z przodu; reszta bez zmian (LOD1 nienaprawiony)"
+   "why": "kontrola sensu: odbiornik wisiał 18 mm od obu ramion jarzma na niewidocznej osi - dodane łożyska czopów z jarzma do boku odbiornika (3 mm luzu); boczne żaluzje przy Recoil odchylały się o 20° i wchodziły 2 cm w ramię jarzma - teraz są nieruchome; przy +35° tył odbiornika wchodził w przeciwwagę - blok przeciwwagi krótszy o 18 mm z przodu; reszta bez zmian (LOD1 nienaprawiony); LOD1 odbudowany z naprawionego LOD0 (s6lod.py, siatka gry bez uproszczenia - każde rozpuszczenie odrywało cokół od stopy w kontroli LOD1)"
   },
   "2": {
    "status": "ZACHOWANY",
@@ -18,29 +18,29 @@
   "4": {
    "status": "PRZEROBIONY",
    "src": "Pass 4 hero4 R4W_Basic D_Scrap (PR #1294) + naprawy sensu (scripts/s6fix.py, scripts/fix_gun4b.json)",
-   "why": "kontrola sensu: cała kołyska wisiała 40-70 mm między wspornikami bez niczego na osi pochylenia, kosz wylotu 5 mm od lufy, osłona boczna 18 mm od szyny, osłona termiczna kończyła się 20 mm przed odbiornikiem, lewy wspornik stał poza obrotnicą, luźna pokrywa unosiła się 4 mm - dodane osie ze wsporników do czopa zamka, obejma, opaska, łączniki pasów, przekładki, stopa kątowa; pokrywa położona na szynach (LOD1 nienaprawiony)"
+   "why": "kontrola sensu: cała kołyska wisiała 40-70 mm między wspornikami bez niczego na osi pochylenia, kosz wylotu 5 mm od lufy, osłona boczna 18 mm od szyny, osłona termiczna kończyła się 20 mm przed odbiornikiem, lewy wspornik stał poza obrotnicą, luźna pokrywa unosiła się 4 mm - dodane osie ze wsporników do czopa zamka, obejma, opaska, łączniki pasów, przekładki, stopa kątowa; pokrywa położona na szynach (LOD1 nienaprawiony); LOD1 odbudowany z naprawionego LOD0 (s6lod.py, reguła generatora)"
   },
   "5": {
    "status": "PRZEROBIONY",
-   "src": "Pass 4 hero4 R4W_Basic E_Toon + kontur inverted hull 12 mm (s6outline.py)",
-   "why": "dodany kontur 12 mm (7,5 mm znikał w TEŚCIE 128 PX z moodboardu); geometria i animacje bez zmian"
+   "src": "Pass 4 hero4 R4W_Basic E_Toon + naprawa sensu (scripts/fix_gun5.json) + kontur inverted hull 12 mm (s6fix.py)",
+   "why": "kontur 12 mm (7,5 mm znikał w TEŚCIE 128 PX z moodboardu); kontrola sensu: przy pełnym podniesieniu (+35°) dolny przedni róg bocznej płyty odbiornika wchodził w policzek jarzma - wystające części płyt i listew po obu stronach cofnięte do 132 mm od osi (6 mm luzu); LOD1 odbudowany z naprawionego modelu (bez konturu)"
   },
   "6": {
-   "status": "ZACHOWANY",
-   "src": "oryginał R4Weapons938/R4W_Basic (PR #939)",
-   "why": "rzeczywisty model R4 - wzorzec stylu 06; zostawiony bez zmian (kontrola sensu: kratka z tyłu obrotnicy odstaje 10 mm - do poprawy w oryginale, jeśli chcesz)"
+   "status": "PRZEROBIONY",
+   "src": "kopia oryginału R4Weapons938/R4W_Basic (PR #939) + naprawa sensu (scripts/fix_gun6.json); oryginał na gałęzi art/938 nietknięty",
+   "why": "rzeczywisty model R4 - wzorzec stylu 06; kontrola sensu: pasiasta płyta ostrzegawcza z tyłu głowicy wisiała 16 mm za tylną płytą i 10 mm od policzków - dwie listwy dystansowe ją niosą; LOD1 odbudowany regułą oryginału (DECIMATE collapse 0,5)"
   }
  },
  "wheel": {
   "1": {
    "status": "NOWY",
    "src": "nowa receptura wheel_1 po moodboardzie: opona slick z zaokrąglonymi barkami, zamknięta tarcza z cyjanowym pierścieniem przy obręczy, owiewka i prawie pełny błotnik z cyjanową krawędzią",
-   "why": "moodboard 01 (smukły profil, panele ukrywają mechanikę, świetlne obręcze kół przechodzą w linie owiewek; TEST 128 PX: smukły kadłub i światło) + granica 01<->02: wirnik Pass 4 z jodełką był w szarości identyczny z kołem 02"
+   "why": "moodboard 01 (smukły profil, panele ukrywają mechanikę, świetlne obręcze kół przechodzą w linie owiewek; TEST 128 PX: smukły kadłub i światło) + granica 01<->02: wirnik Pass 4 z jodełką był w szarości identyczny z kołem 02; kontrola LOD1: pierścień światła, szew i trzy szczeliny tarczy odrywały się w LOD1 (uproszczenie spłaszcza kopułę tarczy) - są teraz wpuszczone w tarczę"
   },
   "2": {
    "status": "PRZEROBIONY",
    "src": "wirnik Pass 4 wheel_B + ciężka płyta, ramię skrzynkowe, amortyzator, błotnik żebrowany",
-   "why": "przeniesione na kontrakt R4M_Wheel"
+   "why": "przeniesione na kontrakt R4M_Wheel; kontrola funkcji: bieżnik Pass 4 sięgał r 0,386, a ziemia kontraktu jest na r 0,390 (GroundProbe) - opona wisiała 4,5 mm nad ziemią; wirnik przeskalowany promieniowo (1,0097, szerokość bez zmian) i obrócony tak, że w pozie spoczynkowej na ziemi stoi klocek bieżnika"
   },
   "3": {
    "status": "NOWY",
@@ -50,12 +50,12 @@
   "4": {
    "status": "PRZEROBIONY",
    "src": "wirnik Pass 4 wheel_D + złomowa płyta, kątowniki, resor, łata naprawcza",
-   "why": "przeniesione na kontrakt R4M_Wheel"
+   "why": "przeniesione na kontrakt R4M_Wheel; kontrola funkcji: bieżnik kończył się na r 0,380 - koło stało tylko na trzech stalowych listwach, w spoczynku 10 mm nad ziemią, a przy toczeniu skakało o 10 mm; bieżnik przeskalowany do r 0,389, listwy cofnięte tak, że wystają 1 mm do r 0,390, wirnik obrócony klockiem w dół; łaty i taśma w oliwce (moodboard 04)"
   },
   "5": {
    "status": "PRZEROBIONY",
    "src": "wirnik Pass 4 wheel_E + zaokrąglona płyta, ramię rurowe, gruby błotnik, kontur",
-   "why": "przeniesione na kontrakt R4M_Wheel"
+   "why": "przeniesione na kontrakt R4M_Wheel; kontrola funkcji: balon z siedmioma klockami stał 10 mm nad ziemią - wirnik przeskalowany promieniowo (1,0138) i obrócony klockiem w dół"
   },
   "6": {
    "status": "ZACHOWANY",
@@ -82,29 +82,29 @@
   "4": {
    "status": "NOWY",
    "src": "nowa receptura dep_4 (s6defs.py)",
-   "why": "poprzednie warianty A-E to ta sama rama 1x1 z czterema słupkami różniąca się tylko kolorem"
+   "why": "poprzednie warianty A-E to ta sama rama 1x1 z czterema słupkami różniąca się tylko kolorem; oliwkowa płyta zastępcza i taśmy (moodboard 04); dock_z -0,0060 (dron 04 stoi teraz na płozach na Socket_Dock)"
   },
   "5": {
    "status": "NOWY",
    "src": "nowa receptura dep_5 (s6defs.py)",
-   "why": "poprzednie warianty A-E to ta sama rama 1x1 z czterema słupkami różniąca się tylko kolorem"
+   "why": "poprzednie warianty A-E to ta sama rama 1x1 z czterema słupkami różniąca się tylko kolorem; dock_z 0,0345 (dron 05 obniżony o 4 mm na Socket_Dock)"
   },
   "6": {
    "status": "PRZEROBIONY",
    "src": "dep_6: koncepcja lądowiska H i przysłony z R4ModulesSleek1x1 przeniesiona na cokół R4.1",
-   "why": "zachowana idea H-pada i Iris, nowa bryła w cechach R4.1"
+   "why": "zachowana idea H-pada i Iris, nowa bryła w cechach R4.1; żółta strzałka kierunku na lądowisku (moodboard 06)"
   }
  },
  "drone": {
   "1": {
    "status": "NOWY",
    "src": "nowa receptura drone_1 (s6defs.py), kontrakt PROPOSAL",
-   "why": "dron nie istnieje w repozytorium ani w kodzie gry"
+   "why": "dron nie istnieje w repozytorium ani w kodzie gry; kontrola funkcji: Muzzle leżał w środku płyty kadłuba - teraz 10 mm przed okiem-emiterem w nosie"
   },
   "2": {
    "status": "NOWY",
    "src": "nowa receptura drone_2 (s6defs.py), kontrakt PROPOSAL",
-   "why": "dron nie istnieje w repozytorium ani w kodzie gry"
+   "why": "dron nie istnieje w repozytorium ani w kodzie gry; kontrola funkcji: Muzzle był w oku czujnika, dron nie miał broni - dodana ciężka lufa z hamulcem wylotowym pod okiem (3 mm nad szczękami wyrzutnika, które obracają się pod nią w Active)"
   },
   "3": {
    "status": "NOWY",
@@ -114,17 +114,17 @@
   "4": {
    "status": "NOWY",
    "src": "nowa receptura drone_4 (s6defs.py), kontrakt PROPOSAL",
-   "why": "dron nie istnieje w repozytorium ani w kodzie gry"
+   "why": "dron nie istnieje w repozytorium ani w kodzie gry; kontrola funkcji: Muzzle był na lampie, a obejma bębna schodziła 2-3 mm pod Socket_Dock - rurowe działko przypięte z boku bębna, bęben 10 mm wyżej, dron stoi na płozach; bateria w oliwce (moodboard 04)"
   },
   "5": {
    "status": "NOWY",
    "src": "nowa receptura drone_5 (s6defs.py), kontrakt PROPOSAL",
-   "why": "dron nie istnieje w repozytorium ani w kodzie gry"
+   "why": "dron nie istnieje w repozytorium ani w kodzie gry; kontrola funkcji: dron stał 4 mm nad Socket_Dock - obniżony; Muzzle na osi oka (oko-promień)"
   },
   "6": {
    "status": "NOWY",
    "src": "nowa receptura drone_6 (s6defs.py), kontrakt PROPOSAL",
-   "why": "dron nie istnieje w repozytorium ani w kodzie gry"
+   "why": "dron nie istnieje w repozytorium ani w kodzie gry; kontrola funkcji: Muzzle bez lufy - krótka lufa w pomarańczowym pierścieniu oka; żółta strzałka kierunku na włazie (moodboard 06)"
   }
  }
 }

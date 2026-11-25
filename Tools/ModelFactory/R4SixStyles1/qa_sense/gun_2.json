@@ -7,5 +7,46 @@
  "floating": [],
  "collisions_worst": [],
  "collision_frames": 0,
+ "function": {
+  "muzzle": [
+   {
+    "frame": 1,
+    "muzzle_ahead_mm": 42.0,
+    "muzzle_off_axis_mm": 0.0,
+    "line_of_fire": null
+   },
+   {
+    "frame": 51,
+    "muzzle_ahead_mm": 42.0,
+    "muzzle_off_axis_mm": 0.0,
+    "line_of_fire": null
+   },
+   {
+    "frame": 95,
+    "muzzle_ahead_mm": 42.0,
+    "muzzle_off_axis_mm": 0.0,
+    "line_of_fire": null
+   },
+   {
+    "frame": 104,
+    "muzzle_ahead_mm": 42.0,
+    "muzzle_off_axis_mm": 0.0,
+    "line_of_fire": null
+   },
+   {
+    "frame": 113,
+    "muzzle_ahead_mm": 42.0,
+    "muzzle_off_axis_mm": 0.0,
+    "line_of_fire": null
+   },
+   {
+    "frame": 128,
+    "muzzle_ahead_mm": 87.0,
+    "muzzle_off_axis_mm": 0.0,
+    "line_of_fire": null
+   }
+  ],
+  "issues": []
+ },
  "status": "OK"
 }

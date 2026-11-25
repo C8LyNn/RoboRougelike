@@ -1,0 +1,6 @@
+[
+ {"op": "box", "node": "R4W_Basic_Yaw", "min": [-0.058, 0.2385, 0.047], "max": [-0.052, 0.2555, 0.070],
+  "why": "the striped hazard plate on the back of the turret head stood 16 mm behind the back plate and 10 mm from both side cheeks with nothing holding it: two standoff rails from the back plate carry it (left)"},
+ {"op": "box", "node": "R4W_Basic_Yaw", "min": [0.052, 0.2385, 0.047], "max": [0.058, 0.2555, 0.070],
+  "why": "standoff rail (right)"}
+]

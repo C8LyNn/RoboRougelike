@@ -2,10 +2,21 @@
  "mode": "MODEL",
  "file": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\R4M_Wheel\\R4M_Wheel.glb",
  "cid": "R4M_Wheel",
- "islands": 929,
+ "islands": 941,
  "groups": 1,
  "floating": [],
  "collisions_worst": [],
  "collision_frames": 0,
+ "function": {
+  "ground_gap_mm": 1.0,
+  "rotor_centre_off_mm": [
+   0.0,
+   0.0
+  ],
+  "roll_ground_var_mm": 1.8,
+  "roll_ground_gap_max_mm": 2.7,
+  "mount_clearance_mm": 344.0,
+  "issues": []
+ },
  "status": "OK"
 }

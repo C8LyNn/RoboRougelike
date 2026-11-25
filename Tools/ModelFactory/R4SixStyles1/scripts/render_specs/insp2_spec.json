@@ -1,0 +1,3364 @@
+{
+ "shots": [
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_1_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.40265592590225,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Atlas5_hero4\\m1\\variants\\A_Sleek\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_1_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.1308896779192497,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Atlas5_hero4\\m1\\variants\\A_Sleek\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_1_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.4508896779192495,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Atlas5_hero4\\m1\\variants\\A_Sleek\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_1_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.21000000000000002,
+     2.3
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Atlas5_hero4\\m1\\variants\\A_Sleek\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_1_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_1_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_1_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_1_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.0999999999999996
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_1_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_1_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_1_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_1_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.28
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_1_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_1_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_1_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_1_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.3899999999999997
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_2_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.40265592590225,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Atlas5_hero4\\m1\\variants\\B_Brutal\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_2_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.1308896779192497,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Atlas5_hero4\\m1\\variants\\B_Brutal\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_2_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.4508896779192495,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Atlas5_hero4\\m1\\variants\\B_Brutal\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_2_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.21000000000000002,
+     2.3
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Atlas5_hero4\\m1\\variants\\B_Brutal\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_2_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\02_BrutalIndustrial\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_2_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\02_BrutalIndustrial\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_2_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\02_BrutalIndustrial\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_2_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.0999999999999996
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\02_BrutalIndustrial\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_2_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\02_BrutalIndustrial\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_2_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\02_BrutalIndustrial\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_2_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\02_BrutalIndustrial\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_2_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.28
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\02_BrutalIndustrial\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_2_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\02_BrutalIndustrial\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_2_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\02_BrutalIndustrial\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_2_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\02_BrutalIndustrial\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_2_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.3899999999999997
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\02_BrutalIndustrial\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_3_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.40265592590225,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_3_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.1308896779192497,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_3_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.4508896779192495,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_3_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.21000000000000002,
+     2.3
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_3_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_3_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_3_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_3_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.0999999999999996
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_3_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_3_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_3_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_3_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.28
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_3_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_3_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_3_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_3_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.3899999999999997
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_4_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.40265592590225,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Atlas5_hero4\\m1\\variants\\D_Scrap\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_4_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.1308896779192497,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Atlas5_hero4\\m1\\variants\\D_Scrap\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_4_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.4508896779192495,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Atlas5_hero4\\m1\\variants\\D_Scrap\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_4_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.21000000000000002,
+     2.3
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Atlas5_hero4\\m1\\variants\\D_Scrap\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_4_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_4_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_4_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_4_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.0999999999999996
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_4_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_4_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_4_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_4_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.28
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_4_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_4_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_4_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_4_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.3899999999999997
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_5_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.40265592590225,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f2\\models\\05_ComicOutline\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_5_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.1308896779192497,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f2\\models\\05_ComicOutline\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_5_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.4508896779192495,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f2\\models\\05_ComicOutline\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_5_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.21000000000000002,
+     2.3
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f2\\models\\05_ComicOutline\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_5_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_5_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_5_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_5_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.0999999999999996
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_5_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_5_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_5_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_5_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.28
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_5_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_5_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_5_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_5_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.3899999999999997
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_6_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.40265592590225,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f2\\models\\06_R41ModularTech\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_6_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.1308896779192497,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f2\\models\\06_R41ModularTech\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_6_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.4508896779192495,
+     1.087064991932
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f2\\models\\06_R41ModularTech\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_gun_6_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.21000000000000002,
+     2.3
+    ],
+    "target": [
+     0,
+     -0.16,
+     0.0
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f2\\models\\06_R41ModularTech\\R4W_Basic\\R4W_Basic.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_6_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_1232_pilot\\ref\\movement\\Tools\\ModelFactory\\R4Movement940\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_6_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_1232_pilot\\ref\\movement\\Tools\\ModelFactory\\R4Movement940\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_6_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     0.887064991932
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_1232_pilot\\ref\\movement\\Tools\\ModelFactory\\R4Movement940\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_wheinsp_6_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.0999999999999996
+    ],
+    "target": [
+     0,
+     0,
+     -0.2
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.65,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_1232_pilot\\ref\\movement\\Tools\\ModelFactory\\R4Movement940\\R4M_Wheel\\R4M_Wheel.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_6_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\06_R41ModularTech\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_6_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\06_R41ModularTech\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_6_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     1.0670649919319999
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\06_R41ModularTech\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_dep_6_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.28
+    ],
+    "target": [
+     0,
+     0,
+     -0.02
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.26,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\06_R41ModularTech\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 1
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_6_back.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.2908896779192494,
+     1.5626559259022499,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\06_R41ModularTech\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_6_side.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     1.5626559259022497,
+     1.2908896779192496,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\06_R41ModularTech\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_6_sideL.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     -1.5626559259022497,
+     -1.2908896779192496,
+     1.177064991932
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\06_R41ModularTech\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  },
+  {
+   "out": "<WORKDIR>\\R4_Six1\\insp\\insp_drone_6_top.jpg",
+   "res": [
+    640,
+    640
+   ],
+   "cam": {
+    "loc": [
+     0,
+     -0.05,
+     2.3899999999999997
+    ],
+    "target": [
+     0,
+     0,
+     0.09
+    ],
+    "lens": 50
+   },
+   "mode": "color",
+   "outline": true,
+   "ground_z": -0.3,
+   "items": [
+    {
+     "file": "<WORKDIR>\\R4_Six1\\f1\\models\\06_R41ModularTech\\FlyingDrone\\FlyingDrone.glb",
+     "loc": [
+      0,
+      0,
+      0
+     ],
+     "frame": 60
+    }
+   ],
+   "samples": 24
+  }
+ ]
+}

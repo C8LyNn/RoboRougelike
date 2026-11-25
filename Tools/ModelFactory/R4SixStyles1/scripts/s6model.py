@@ -96,7 +96,7 @@ def main():
     fn = D.RECIPES[(CID, STYLE)]; T["construction"] = " ".join((fn.__doc__ or "").split())
     Bh = hf.Builder(True, STYLE, col); Bh.meta = {}; fn(Bh); meta = dict(Bh.meta); hi = hf.finish(Bh)
     Bl = hf.Builder(False, STYLE, col); Bl.meta = {}; fn(Bl); lo = hf.finish(Bl, 12 if STYLE == "3" else 38)
-    T["meta"] = {k: (v if not isinstance(v, dict) else {kk: list(vv) for kk, vv in v.items()}) for k, v in meta.items()}
+    T["meta"] = {k: (v if not isinstance(v, dict) else {kk: (list(vv) if isinstance(vv, (list, tuple)) else vv) for kk, vv in v.items()}) for k, v in meta.items()}
     T["tris_hi"] = {n: sum(hf.tris(o) for o in v) for n, v in hi.items()}; T["tris_lo"] = {n: hf.tris(o) for n, o in lo.items()}
     T["s_build"] = round(time.time() - t0, 1); t = time.time()
     # ---- contract: nodes, pivots, parents
