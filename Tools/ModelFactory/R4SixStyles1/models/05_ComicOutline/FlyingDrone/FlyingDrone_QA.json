@@ -39,7 +39,7 @@
   "Rotor_1": 296,
   "Rotor_2": 296
  },
- "s_build": 0.3,
+ "s_build": 0.2,
  "violations": [],
  "bounds": {
   "Body": [
@@ -51,7 +51,7 @@
    [
     0.1527000069618225,
     0.10610000044107437,
-    0.16050000488758087
+    0.15629999339580536
    ]
   ],
   "Rotor_1": [
@@ -79,12 +79,12 @@
    ]
   ]
  },
- "s_bake": 136.7,
+ "s_bake": 212.7,
  "outline": {
   "method": "inverted hull in the node mesh, material R4P_Outline (back-face culled)",
-  "width_m": 0.0075
+  "width_m": 0.012
  },
- "s_skin": 316.0,
+ "s_skin": 477.2,
  "animated_nodes": [
   "FlyingDrone_Body",
   "FlyingDrone_Rotor_1",
@@ -119,11 +119,11 @@
  "lod1": {
   "method": "planar dissolve",
   "angle_deg": 14.0,
-  "triangles": 3158,
-  "of_lod0": 0.645
+  "triangles": 3196,
+  "of_lod0": 0.653
  },
- "tris_lod1": 3158,
- "s_export": 1.1,
+ "tris_lod1": 3196,
+ "s_export": 1.3,
  "port_contact": [],
  "reimport": {
   ".glb": {
@@ -188,23 +188,23 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "FlyingDrone.fbx": {
-   "sha256": "f98a2f7b22a94188a0288a169060a2f9791af7fd7d92ef45addb5b846b5017a9",
-   "bytes": 4320668
+   "sha256": "37077b67bccdbc66bd117cb45767b782016a7a0b26f68d36f3b02d5c7e5a33ec",
+   "bytes": 4182508
   },
   "FlyingDrone.glb": {
-   "sha256": "019162dbfb57a15073cd395e9a5dfb99352251eaa7354d861c985beadd4d09b6",
-   "bytes": 6483360
+   "sha256": "d992adfe23de15b684ea68c80d272ce23c6ab4acac7d2f3f5486386ce345d294",
+   "bytes": 6315016
   },
   "FlyingDrone_LOD1.fbx": {
-   "sha256": "81a88a568a10083e7a21589469b545ef204de70b68877e3e3da9c48bb55f2b1b",
-   "bytes": 4215724
+   "sha256": "e067ffeb0fcd4c163c7ffdb5d8caf113fbb1f3df15130277d8dcef0cefaf006d",
+   "bytes": 4078332
   },
   "FlyingDrone_LOD1.glb": {
-   "sha256": "b36b3375902ed3537224a6b0267da778ffa530e0eff5af928aa5a14aa9ef10fb",
-   "bytes": 6431288
+   "sha256": "c9c8e1ea3ad95c25f2a932aaf15d9885e258c11a4e414d5c4a10f17099e27ead",
+   "bytes": 6262480
   }
  },
  "triangles": 2448,
- "s_qa": 0.6,
+ "s_qa": 0.8,
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

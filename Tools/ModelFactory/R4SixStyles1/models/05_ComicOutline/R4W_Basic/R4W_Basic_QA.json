@@ -1,7 +1,7 @@
 {
  "cid": "R4W_Basic",
  "source": "Pass 4 hero4 E_Toon R4W_Basic.glb (PR #1294)",
- "change": "Comic Outline contour added (inverted hull 0.0075 m, material R4P_Outline, back-face culled); geometry, rig and animation of the source kept",
+ "change": "Comic Outline contour added (inverted hull 0.0120 m, material R4P_Outline, back-face culled); geometry, rig and animation of the source kept",
  "meshes_outlined": 6,
  "reimport": {
   ".glb": {
@@ -37,12 +37,12 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4W_Basic.fbx": {
-   "sha256": "6dbf031b4552051b1ab7fddfe07b0bebf8e016c51e0c1d60a86359aabb15a81b",
-   "bytes": 3069292
+   "sha256": "217017821a56d171f22fc1daf660ff66f4380a6d3f8a172846f56386f34c3379",
+   "bytes": 3069692
   },
   "R4W_Basic.glb": {
-   "sha256": "cd174e5a8716b2a1d522b97093cf2e1acda53599d80e8525efa9f534e33d974f",
-   "bytes": 3479452
+   "sha256": "cf710aa82ae6a8ea8aa111b92a9f149cc7eacd45da49368d00db5ac68d70f3ba",
+   "bytes": 3480612
   },
   "R4W_Basic_LOD1.fbx": {
    "sha256": "9a43da6a339e730e04396db9d8a37aa07a27e740b71e29fa893adbac85f07331",
@@ -53,10 +53,11 @@
    "bytes": 396816
   },
   "R4W_Basic_SOURCE.blend": {
-   "sha256": "a92ce23e4ad1326e770afd447790ec25643c22d51ac56dbffcdfe78cf36445eb",
-   "bytes": 3402667
+   "sha256": "ad5307d6fed36e06ee391081687f9bd3e81c589099ac213c162e745a3d3c6de9",
+   "bytes": 3402753
   }
  },
- "lod1": "R4W_Basic_LOD1.glb / .fbx copied unchanged from Pass 4 E_Toon (#1294), WITHOUT the outline shell - at LOD1 distance the 7.5 mm shell is under one pixel; textures/ = the Pass 4 E_Toon texture set (the GLB and FBX of LOD0 embed their textures)",
+ "lod1": "R4W_Basic_LOD1.glb / .fbx copied unchanged from Pass 4 E_Toon (#1294), WITHOUT the outline shell - LOD1 is seen from a distance where the line is drawn by the Unity outline pass, not by the hull; textures/ = the Pass 4 E_Toon texture set (the GLB and FBX of LOD0 embed their textures)",
+ "sense_note": "sense check: 4 polygons of the cheek plate brush the trunnion at frame 83 (pitch +35 deg) - inherited from Pass 4, left for decision",
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

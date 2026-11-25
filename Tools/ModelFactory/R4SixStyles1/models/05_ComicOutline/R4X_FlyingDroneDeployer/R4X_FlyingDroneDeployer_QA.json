@@ -5,8 +5,9 @@
  "size": 2048,
  "construction": "Comic Outline: exaggerated function - a squat rounded bun with a huge tilted launch porthole (fat navy bumper ring, oversized petal shutter that spins), a star badge on the front, stubby feet; proportions pushed: the porthole is almost the full width of the cell",
  "meta": {
-  "dock_z": 0.022,
-  "family": "fat navy bumper ring with orange inner band = the drone's eye ring"
+  "dock_z": 0.0305,
+  "family": "fat navy bumper ring with orange inner band = the drone's eye ring",
+  "dock_z_note": "set from the sense check (s6sense PAIR: free drop / penetration of the docked drone)"
  },
  "tris_hi": {
   "Body": 13056,
@@ -16,7 +17,7 @@
   "Body": 2488,
   "Iris": 304
  },
- "s_build": 0.4,
+ "s_build": 0.1,
  "violations": [],
  "bounds": {
   "Body": [
@@ -28,28 +29,28 @@
    [
     0.24400000274181366,
     0.24400000274181366,
-    0.07680000364780426
+    0.03200000151991844
    ]
   ],
   "Iris": [
    [
-    -0.1459999978542328,
-    -0.14010000228881836,
-    -0.037700001150369644
+    -0.12849999964237213,
+    -0.13699999451637268,
+    -0.0020000000949949026
    ],
    [
-    0.15000000596046448,
-    0.1624000072479248,
-    0.05090000107884407
+    0.13199999928474426,
+    0.13699999451637268,
+    0.03400000184774399
    ]
   ]
  },
- "s_bake": 168.9,
+ "s_bake": 84.1,
  "outline": {
   "method": "inverted hull in the node mesh, material R4P_Outline (back-face culled)",
-  "width_m": 0.0075
+  "width_m": 0.012
  },
- "s_skin": 428.7,
+ "s_skin": 190.2,
  "animated_nodes": [
   "R4X_FlyingDroneDeployer_Iris"
  ],
@@ -64,11 +65,11 @@
  "lod1": {
   "method": "planar dissolve",
   "angle_deg": 14.0,
-  "triangles": 3644,
-  "of_lod0": 0.653
+  "triangles": 3668,
+  "of_lod0": 0.657
  },
- "tris_lod1": 3644,
- "s_export": 1.6,
+ "tris_lod1": 3668,
+ "s_export": 0.7,
  "port_contact": [
   {
    "dir": "down",
@@ -139,23 +140,23 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4X_FlyingDroneDeployer.fbx": {
-   "sha256": "e9f27dc4ac855549f642a77deeffb0cabbc8e9666acee8dc36dda8b94565f4d9",
-   "bytes": 4024572
+   "sha256": "5275f130a0118aa617ab6f1975183b5be1bd95b16899548dbde109f4eff230f8",
+   "bytes": 3800540
   },
   "R4X_FlyingDroneDeployer.glb": {
-   "sha256": "d85c5d8876e164dbe0695bd47131444f3f49644eb8ca0374b5e2c50ae1629100",
-   "bytes": 6574184
+   "sha256": "c645e9a7d2bc3729d46b93702dc0db2b166646304c26b534b0570ab22ee95b09",
+   "bytes": 6160460
   },
   "R4X_FlyingDroneDeployer_LOD1.fbx": {
-   "sha256": "590c2207d7f07f0d48a8b2b46ba76c5980e926c5738a965f2bc02b96c8c3de2f",
-   "bytes": 3943212
+   "sha256": "6a79b94e04cbe3f2554f7896ed3b472986646bb94982630b2364187463d3a699",
+   "bytes": 3723052
   },
   "R4X_FlyingDroneDeployer_LOD1.glb": {
-   "sha256": "f84854243224f4799ede36c783ea1ed07d4b7a7087d24b0fe33108f6724c80f3",
-   "bytes": 6508136
+   "sha256": "54cb74d70ff56905e596d2b4b7716abb59b2bc9621b0309958673091819d9ae1",
+   "bytes": 6096052
   }
  },
  "triangles": 2792,
- "s_qa": 0.7,
+ "s_qa": 0.4,
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

@@ -74,7 +74,7 @@
  },
  "construction": "Comic Outline: exaggerated function - a squat rounded bun with a huge tilted launch porthole (fat navy bumper ring, oversized petal shutter that spins), a star badge on the front, stubby feet; proportions pushed: the porthole is almost the full width of the cell",
  "meta": {
-  "dock_z": 0.022,
+  "dock_z": 0.0245,
   "family": "fat navy bumper ring with orange inner band = the drone's eye ring"
  },
  "gameplay": "visual only: no gameplay capability, timing or collider is added"

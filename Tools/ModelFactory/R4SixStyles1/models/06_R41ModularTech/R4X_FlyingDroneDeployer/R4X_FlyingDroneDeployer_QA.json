@@ -16,7 +16,7 @@
   "Body": 712,
   "Iris": 576
  },
- "s_build": 0.7,
+ "s_build": 0.3,
  "violations": [],
  "bounds": {
   "Body": [
@@ -35,17 +35,17 @@
    [
     -0.1979999989271164,
     -0.1979999989271164,
-    0.0560000017285347
+    0.060499999672174454
    ],
    [
     0.1979999989271164,
     0.1979999989271164,
-    0.11599999666213989
+    0.10300000011920929
    ]
   ]
  },
- "s_bake": 328.9,
- "s_skin": 579.5,
+ "s_bake": 51.0,
+ "s_skin": 81.2,
  "animated_nodes": [
   "R4X_FlyingDroneDeployer_Iris"
  ],
@@ -64,7 +64,7 @@
   "of_lod0": 0.984
  },
  "tris_lod1": 1268,
- "s_export": 1.0,
+ "s_export": 0.3,
  "port_contact": [
   {
    "dir": "down",
@@ -133,23 +133,23 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4X_FlyingDroneDeployer.fbx": {
-   "sha256": "ba39ff90982f02c118164218dd14295dd5374f8522261fb2df3b068957ebd1fc",
-   "bytes": 2435692
+   "sha256": "cc2b45b1e6d6ca897abbd6665e5f8160fc89640fa2af95e558dc00b1fc77bca0",
+   "bytes": 2382364
   },
   "R4X_FlyingDroneDeployer.glb": {
-   "sha256": "d414a60c3eca9bdcacf15f11c9cdb6aa785f4aae4e4ca57d7ee2a9cacc238351",
-   "bytes": 4916060
+   "sha256": "0aa580df810c73f34e6ed15c8eb74795c73976baad24b31b50c930c6c9425af0",
+   "bytes": 4845628
   },
   "R4X_FlyingDroneDeployer_LOD1.fbx": {
-   "sha256": "da03248402ae5b53d4d4a2aba1830353d03bff0cfe6519929f1a36012204bda4",
-   "bytes": 2384396
+   "sha256": "d4c6acf9d4f8a1eaee152bf0c0e1ec8debf1c18372b54b0ca1a23f012928e664",
+   "bytes": 2330716
   },
   "R4X_FlyingDroneDeployer_LOD1.glb": {
-   "sha256": "1c363cb09174638f6b3c8e9cafcca795dc296affb53f46a44affb3668ad40aa4",
-   "bytes": 4914616
+   "sha256": "e98c5a4f7c6d017962dd9ad1a19bf132fe5ad7566cc547867df6006194631819",
+   "bytes": 4841752
   }
  },
  "triangles": 1288,
- "s_qa": 0.5,
+ "s_qa": 0.2,
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }
