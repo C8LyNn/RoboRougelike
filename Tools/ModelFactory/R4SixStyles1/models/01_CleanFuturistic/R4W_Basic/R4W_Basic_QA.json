@@ -1,0 +1,52 @@
+{
+ "cid": "R4W_Basic",
+ "status": "KEPT",
+ "note": "kept unchanged from Hero Benchmark Pass 4 (PR #1294, A_Sleek proposal P)",
+ "files": {
+  "R4W_Basic.blend": {
+   "sha256": "49ab2db45fb153ed9b8e16a7184d93a54d13206b3ec17d3bec9b620ac838e5c6",
+   "bytes": 251108
+  },
+  "R4W_Basic.fbx": {
+   "sha256": "677fe52b042a3990e026ee1197be90c091de7515357bbd5ac517e4d55c3e1666",
+   "bytes": 279020
+  },
+  "R4W_Basic.glb": {
+   "sha256": "a7891b9edacd9f0005a3ffc94639d9ff86698a032106115ddbef98a556ba096d",
+   "bytes": 3783992
+  },
+  "R4W_Basic_LOD1.fbx": {
+   "sha256": "b6eecbdf02b560f7c361c9e573f7e32eaf3a03a860c2b32becfcb5475e0cde1e",
+   "bytes": 110508
+  },
+  "R4W_Basic_LOD1.glb": {
+   "sha256": "08471073aea7f530d1463fe9a4276f02780d5459c0cbc3796d60a1cd27900144",
+   "bytes": 507216
+  }
+ },
+ "required_nodes_missing": [],
+ "node_bounds_violations": [],
+ "extra_mesh_nodes": [
+  "MuzzleFlash",
+  "R4W_Basic_Ring",
+  "R4W_Basic_VentL",
+  "R4W_Basic_VentR"
+ ],
+ "actions": [
+  [
+   1.0,
+   139.0
+  ]
+ ],
+ "contract_ok": true,
+ "sha": {
+  "R4W_Basic.blend": "49ab2db45fb153ed",
+  "R4W_Basic.fbx": "677fe52b042a3990",
+  "R4W_Basic.glb": "a7891b9edacd9f00",
+  "R4W_Basic_LOD1.fbx": "b6eecbdf02b560f7",
+  "R4W_Basic_LOD1.glb": "08471073aea7f530"
+ },
+ "unity": "UNITY_NOT_RUN",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files",
+ "sha_note": "hashes of the delivered copies; the FBX of the Pass 4 guns are the repository (path-scrubbed) versions, byte-identical to the files on art/1239-atlas5-hero4; R4W_Basic / R4M_Wheel of 06 are byte-identical to art/938 / art/940"
+}

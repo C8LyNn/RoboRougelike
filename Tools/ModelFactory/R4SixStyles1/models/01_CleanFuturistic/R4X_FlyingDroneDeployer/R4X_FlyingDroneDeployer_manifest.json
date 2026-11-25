@@ -1,0 +1,80 @@
+{
+ "id": "R4X_FlyingDroneDeployer",
+ "style": "01_CleanFuturistic",
+ "units": "metre 1:1",
+ "axes": "file/Unity +Z forward, +Y up (Blender -Y forward, Z up)",
+ "source_contract": "Tools/ModelFactory/R4ModulesSleek1x1/modules/R4X_FlyingDroneDeployer (PR #1238) + atlas A-E (R4StyleAtlas5/atlas)",
+ "hierarchy": {
+  "R4X_FlyingDroneDeployer_ROOT": null,
+  "R4X_FlyingDroneDeployer_Body": "R4X_FlyingDroneDeployer_ROOT",
+  "R4X_FlyingDroneDeployer_Iris": "R4X_FlyingDroneDeployer_ROOT",
+  "Port_down_000": "R4X_FlyingDroneDeployer_ROOT",
+  "Socket_Mount": "R4X_FlyingDroneDeployer_ROOT",
+  "Deploy_Out": "R4X_FlyingDroneDeployer_ROOT"
+ },
+ "pivots": {
+  "R4X_FlyingDroneDeployer_Body": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "R4X_FlyingDroneDeployer_Iris": [
+   0.0,
+   0.0,
+   0.10000000149011612
+  ]
+ },
+ "empties": {
+  "Port_down_000": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.25999999046325684
+   ]
+  },
+  "Socket_Mount": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.25999999046325684
+   ]
+  },
+  "Deploy_Out": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    0.25999999046325684
+   ]
+  }
+ },
+ "clips": [
+  {
+   "name": "Active",
+   "start": 1,
+   "end": 49,
+   "loop": true
+  }
+ ],
+ "fps": 24,
+ "animated_nodes": [
+  "R4X_FlyingDroneDeployer_Iris"
+ ],
+ "materials": [
+  "R4X_FlyingDroneDeployer_01_CleanFuturistic"
+ ],
+ "textures": {
+  "base": "R4X_FlyingDroneDeployer_1_base.png",
+  "orm": "R4X_FlyingDroneDeployer_1_orm.png",
+  "normal": "R4X_FlyingDroneDeployer_1_normal.png",
+  "emission": "R4X_FlyingDroneDeployer_1_emission.png"
+ },
+ "construction": "Clean Futuristic: low ceramic pod, the launch well is sunk flush into one calm shell (narrow seam, no frame around it); six thin iris shutters slide in a slot of the top skin; mechanism hidden; one cyan light ring at the bottom of the well and one along the front seam",
+ "meta": {
+  "dock_z": 0.0418,
+  "family": "turned duct profile + thin cyan ring = launch-well rim"
+ },
+ "gameplay": "visual only: no gameplay capability, timing or collider is added"
+}

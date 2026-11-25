@@ -1,0 +1,95 @@
+{
+ "id": "R4M_Wheel",
+ "style": "01_CleanFuturistic",
+ "units": "metre 1:1",
+ "axes": "file/Unity +Z forward, +Y up (Blender -Y forward, Z up)",
+ "source_contract": "Tools/ModelFactory/R4Movement940/R4M_Wheel (PR #941, branch art/940-r4-movement-models)",
+ "hierarchy": {
+  "R4M_Wheel_ROOT": null,
+  "R4M_Wheel_Mount": "R4M_Wheel_ROOT",
+  "R4M_Wheel_Rotor": "R4M_Wheel_ROOT",
+  "Wheel_Axle": "R4M_Wheel_ROOT",
+  "Socket_Mount": "R4M_Wheel_ROOT",
+  "GroundProbe": "R4M_Wheel_ROOT"
+ },
+ "pivots": {
+  "R4M_Wheel_Mount": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "R4M_Wheel_Rotor": [
+   0.0,
+   0.0,
+   -0.25999999046325684
+  ]
+ },
+ "empties": {
+  "Wheel_Axle": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.25999999046325684
+   ]
+  },
+  "Socket_Mount": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    0.25999999046325684
+   ]
+  },
+  "GroundProbe": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.6499999761581421
+   ]
+  }
+ },
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "Roll",
+   "start": 27,
+   "end": 51,
+   "loop": true
+  },
+  {
+   "name": "Reverse",
+   "start": 53,
+   "end": 77,
+   "loop": true
+  },
+  {
+   "name": "Brake",
+   "start": 79,
+   "end": 103,
+   "loop": false
+  }
+ ],
+ "fps": 24,
+ "animated_nodes": [
+  "R4M_Wheel_Rotor"
+ ],
+ "materials": [
+  "R4M_Wheel_01_CleanFuturistic"
+ ],
+ "textures": {
+  "base": "R4M_Wheel_1_base.png",
+  "orm": "R4M_Wheel_1_orm.png",
+  "normal": "R4M_Wheel_1_normal.png",
+  "emission": "R4M_Wheel_1_emission.png"
+ },
+ "construction": "Clean Futuristic wheel. Rotor: the Pass 4 Sleek rotor (chevron tread, turbine hub) moved onto the R4M_Wheel axle, and closed - a flush ceramic aero cover with one cyan ring hides the hub (enclosed hub). Mount: new - one smooth single-sided fairing from the plate down to an enclosed motor housing on the inner side; narrow seams, one cyan line",
+ "meta": {},
+ "gameplay": "visual only: no gameplay capability, timing or collider is added"
+}
