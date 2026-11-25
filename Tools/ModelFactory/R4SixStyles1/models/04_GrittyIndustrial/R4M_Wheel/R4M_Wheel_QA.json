@@ -13,7 +13,7 @@
   "Rotor": 4816,
   "Mount": 884
  },
- "s_build": 1.2,
+ "s_build": 1.3,
  "violations": [],
  "bounds": {
   "Rotor": [
@@ -41,8 +41,8 @@
    ]
   ]
  },
- "s_bake": 191.6,
- "s_skin": 228.5,
+ "s_bake": 398.4,
+ "s_skin": 439.6,
  "animated_nodes": [
   "R4M_Wheel_Rotor"
  ],
@@ -75,10 +75,10 @@
  "lod1": {
   "method": "planar dissolve",
   "angle_deg": 14.0,
-  "triangles": 3844,
-  "of_lod0": 0.674
+  "triangles": 3826,
+  "of_lod0": 0.671
  },
- "tris_lod1": 3844,
+ "tris_lod1": 3826,
  "s_export": 0.5,
  "port_contact": [
   {
@@ -148,20 +148,20 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4M_Wheel.fbx": {
-   "sha256": "850242cefb1e3401d6c712996b4ed0e56529ea0b392683d64debf8c1f58ba197",
-   "bytes": 6197548
+   "sha256": "9055a47882ffaa8e501041581b2db7e41a6fba99703bb159604c14a6d2985394",
+   "bytes": 6219628
   },
   "R4M_Wheel.glb": {
-   "sha256": "a85720825253fcfd2af4bbfd74f448ad4631d966128ad731e8f0118b720198ec",
-   "bytes": 9188920
+   "sha256": "3124c50d7e19939b5ab1e763667d3ba9fed8dfafcfd7d0e304c713b0b9790bf5",
+   "bytes": 9224976
   },
   "R4M_Wheel_LOD1.fbx": {
-   "sha256": "777bf4fb1992397cacff574bd316945959598a8f3e6196831fc5ca7ba8b947cf",
-   "bytes": 6091564
+   "sha256": "44cc0e33fedd98e306c2f76871f1bd5ceef60aaa9e90d16f128ac0896161a484",
+   "bytes": 6113036
   },
   "R4M_Wheel_LOD1.glb": {
-   "sha256": "b5af8518b2f000907905121aeab38e6bb4171825203c1e3b7ca10eb029bfe24d",
-   "bytes": 9132068
+   "sha256": "9daa44f0682faf577cf437cca3638875ce5c91905e42345d281d4fb3b5138ab3",
+   "bytes": 9167632
   }
  },
  "triangles": 5700,
