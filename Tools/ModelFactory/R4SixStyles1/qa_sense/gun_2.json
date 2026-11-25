@@ -1,0 +1,11 @@
+{
+ "mode": "MODEL",
+ "file": "<WORKDIR>\\R4_Atlas5_hero4\\m1\\variants\\B_Brutal\\R4W_Basic\\R4W_Basic.glb",
+ "cid": "R4W_Basic",
+ "islands": 683,
+ "groups": 1,
+ "floating": [],
+ "collisions_worst": [],
+ "collision_frames": 0,
+ "status": "OK"
+}

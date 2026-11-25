@@ -1,0 +1,11 @@
+{
+ "mode": "MODEL",
+ "file": "<WORKDIR>\\R4_1232_pilot\\ref\\movement\\Tools\\ModelFactory\\R4Movement940\\R4M_Wheel\\R4M_Wheel.glb",
+ "cid": "R4M_Wheel",
+ "islands": 1429,
+ "groups": 1,
+ "floating": [],
+ "collisions_worst": [],
+ "collision_frames": 0,
+ "status": "OK"
+}

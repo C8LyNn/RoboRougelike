@@ -1,14 +1,14 @@
 {
  "gun": {
   "1": {
-   "status": "ZACHOWANY",
-   "src": "Pass 4 hero4 R4W_Basic A_Sleek (PR #1294)",
-   "why": "spełnia kryteria 01: dopasowane skorupy, wąskie linie paneli, częściowo ukryty mechanizm"
+   "status": "PRZEROBIONY",
+   "src": "Pass 4 hero4 R4W_Basic A_Sleek (PR #1294) + naprawa sensu (scripts/s6fix.py, scripts/fix_gun1c.json)",
+   "why": "kontrola sensu: odbiornik wisiał 18 mm od obu ramion jarzma na niewidocznej osi - dodane łożyska czopów z jarzma do boku odbiornika (3 mm luzu); boczne żaluzje przy Recoil odchylały się o 20° i wchodziły 2 cm w ramię jarzma - teraz są nieruchome; przy +35° tył odbiornika wchodził w przeciwwagę - blok przeciwwagi krótszy o 18 mm z przodu; reszta bez zmian (LOD1 nienaprawiony)"
   },
   "2": {
    "status": "ZACHOWANY",
    "src": "Pass 4 hero4 R4W_Basic B_Brutal (PR #1294)",
-   "why": "ciężar z konstrukcji, widoczna ścieżka obciążeń (kolumna, żebra)"
+   "why": "ciężar z konstrukcji, widoczna ścieżka obciążeń (kolumna, żebra); kontrola sensu bez uwag"
   },
   "3": {
    "status": "NOWY",
@@ -16,26 +16,26 @@
    "why": "poprzedni C_Arcade był w szarości prawie identyczny z E_Toon (okrągłe skorupy, ta sama paleta) - zastąpiony heksagonalnym low-poly z klinami i szczelinami"
   },
   "4": {
-   "status": "ZACHOWANY",
-   "src": "Pass 4 hero4 R4W_Basic D_Scrap (PR #1294)",
-   "why": "czytelna historia: rama, łaty, zużycie w punktach serwisowych"
+   "status": "PRZEROBIONY",
+   "src": "Pass 4 hero4 R4W_Basic D_Scrap (PR #1294) + naprawy sensu (scripts/s6fix.py, scripts/fix_gun4b.json)",
+   "why": "kontrola sensu: cała kołyska wisiała 40-70 mm między wspornikami bez niczego na osi pochylenia, kosz wylotu 5 mm od lufy, osłona boczna 18 mm od szyny, osłona termiczna kończyła się 20 mm przed odbiornikiem, lewy wspornik stał poza obrotnicą, luźna pokrywa unosiła się 4 mm - dodane osie ze wsporników do czopa zamka, obejma, opaska, łączniki pasów, przekładki, stopa kątowa; pokrywa położona na szynach (LOD1 nienaprawiony)"
   },
   "5": {
    "status": "PRZEROBIONY",
-   "src": "Pass 4 hero4 R4W_Basic E_Toon + kontur inverted hull (s6outline.py)",
-   "why": "dodany kontur 7,5 mm; geometria i animacje bez zmian"
+   "src": "Pass 4 hero4 R4W_Basic E_Toon + kontur inverted hull 12 mm (s6outline.py)",
+   "why": "dodany kontur 12 mm (7,5 mm znikał w TEŚCIE 128 PX z moodboardu); geometria i animacje bez zmian"
   },
   "6": {
    "status": "ZACHOWANY",
    "src": "oryginał R4Weapons938/R4W_Basic (PR #939)",
-   "why": "rzeczywisty model R4 - wzorzec stylu 06"
+   "why": "rzeczywisty model R4 - wzorzec stylu 06; zostawiony bez zmian (kontrola sensu: kratka z tyłu obrotnicy odstaje 10 mm - do poprawy w oryginale, jeśli chcesz)"
   }
  },
  "wheel": {
   "1": {
-   "status": "PRZEROBIONY",
-   "src": "wirnik Pass 4 wheel_A przeniesiony na oś R4M_Wheel + nowe mocowanie, osłona piasty, błotnik",
-   "why": "Pass 4 to inna część (R4M_WheelM_Side_Offroad); piasta zamknięta pokrywą"
+   "status": "NOWY",
+   "src": "nowa receptura wheel_1 po moodboardzie: opona slick z zaokrąglonymi barkami, zamknięta tarcza z cyjanowym pierścieniem przy obręczy, owiewka i prawie pełny błotnik z cyjanową krawędzią",
+   "why": "moodboard 01 (smukły profil, panele ukrywają mechanikę, świetlne obręcze kół przechodzą w linie owiewek; TEST 128 PX: smukły kadłub i światło) + granica 01<->02: wirnik Pass 4 z jodełką był w szarości identyczny z kołem 02"
   },
   "2": {
    "status": "PRZEROBIONY",
@@ -108,8 +108,8 @@
   },
   "3": {
    "status": "NOWY",
-   "src": "nowa receptura drone_3 (s6defs.py), kontrakt PROPOSAL",
-   "why": "dron nie istnieje w repozytorium ani w kodzie gry"
+   "src": "nowa receptura drone_3 po moodboardzie: klockowy śmigłowiec z dwoma współosiowymi wirnikami",
+   "why": "moodboard 03 (kostki i kliny, ref. Trailmakers) + granica 03<->06: trikopter z pierścieniami był w szarości jak dron 06"
   },
   "4": {
    "status": "NOWY",

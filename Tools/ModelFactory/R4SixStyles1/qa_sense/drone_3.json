@@ -1,0 +1,11 @@
+{
+ "mode": "MODEL",
+ "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\FlyingDrone\\FlyingDrone.glb",
+ "cid": "FlyingDrone",
+ "islands": 135,
+ "groups": 1,
+ "floating": [],
+ "collisions_worst": [],
+ "collision_frames": 0,
+ "status": "OK"
+}

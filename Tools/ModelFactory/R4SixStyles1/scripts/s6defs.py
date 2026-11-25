@@ -27,15 +27,15 @@ def poly_at(poly, cx, cy): return [(x + cx, y + cy) for (x, y) in poly]
 
 # ================================================================================================ palettes (linear RGB, metallic, roughness)
 PAL = {
- "1": dict(base=((0.72, 0.73, 0.74), 0.0, 0.26), sec=((0.72, 0.13, 0.008), 0.1, 0.36), dark=((0.026, 0.030, 0.038), 0.85, 0.40), metal=((0.17, 0.18, 0.20), 1.0, 0.30),
+ "1": dict(base=((0.72, 0.73, 0.74), 0.0, 0.26), sec=((0.010, 0.022, 0.085), 0.2, 0.36), dark=((0.026, 0.030, 0.038), 0.85, 0.40), metal=((0.17, 0.18, 0.20), 1.0, 0.30),
            bare=((0.72, 0.73, 0.75), 1.0, 0.16), rubber=((0.013, 0.013, 0.015), 0.0, 0.80), glow=((0.02, 0.72, 1.0), 0.0, 0.3), glass=((0.01, 0.05, 0.07), 0.0, 0.06), alt=((0.55, 0.57, 0.60), 0.0, 0.30)),
  "2": dict(base=((0.090, 0.093, 0.098), 0.88, 0.50), sec=((0.70, 0.40, 0.015), 0.15, 0.50), dark=((0.022, 0.022, 0.026), 0.8, 0.60), metal=((0.24, 0.24, 0.25), 1.0, 0.40),
            bare=((0.70, 0.70, 0.71), 1.0, 0.18), rubber=((0.013, 0.013, 0.014), 0.0, 0.86), glow=((1.0, 0.30, 0.02), 0.0, 0.3), glass=((0.10, 0.04, 0.01), 0.0, 0.08), rust=((0.07, 0.035, 0.02), 0.3, 0.8), alt=((0.20, 0.205, 0.21), 0.8, 0.5)),
- "3": dict(base=((0.80, 0.78, 0.72), 0.0, 0.62), sec=((0.85, 0.20, 0.010), 0.0, 0.58), dark=((0.012, 0.024, 0.085), 0.0, 0.62), metal=((0.025, 0.070, 0.22), 0.0, 0.55),
+ "3": dict(base=((0.040, 0.48, 0.42), 0.0, 0.66), sec=((0.30, 0.62, 0.020), 0.0, 0.62), dark=((0.010, 0.030, 0.140), 0.0, 0.66), metal=((0.020, 0.140, 0.62), 0.0, 0.60),
            bare=((0.40, 0.46, 0.56), 0.3, 0.45), rubber=((0.03, 0.032, 0.058), 0.0, 0.78), glow=((0.02, 0.75, 1.0), 0.0, 0.3), glass=((0.03, 0.20, 0.30), 0.0, 0.15), alt=((0.95, 0.62, 0.02), 0.0, 0.55)),
  "4": dict(base=((0.185, 0.042, 0.028), 0.3, 0.80), sec=((0.165, 0.080, 0.045), 0.3, 0.84), alt=((0.125, 0.036, 0.026), 0.3, 0.86), alt2=((0.20, 0.195, 0.175), 0.3, 0.70), dark=((0.016, 0.014, 0.012), 0.6, 0.82),
            metal=((0.105, 0.098, 0.090), 1.0, 0.55), bare=((0.34, 0.32, 0.30), 1.0, 0.42), rust=((0.06, 0.028, 0.014), 0.1, 0.92), rubber=((0.018, 0.016, 0.014), 0.0, 0.90), glow=((1.0, 0.36, 0.03), 0.0, 0.3), glass=((0.12, 0.05, 0.01), 0.0, 0.10)),
- "5": dict(base=((0.88, 0.20, 0.012), 0.0, 0.50), sec=((0.85, 0.78, 0.62), 0.0, 0.55), dark=((0.022, 0.026, 0.085), 0.0, 0.58), metal=((0.075, 0.10, 0.24), 0.1, 0.48),
+ "5": dict(base=((0.88, 0.20, 0.012), 0.0, 0.50), sec=((0.20, 0.035, 0.45), 0.0, 0.52), dark=((0.022, 0.026, 0.085), 0.0, 0.58), metal=((0.075, 0.10, 0.24), 0.1, 0.48),
            bare=((0.52, 0.58, 0.72), 0.5, 0.35), rubber=((0.035, 0.030, 0.055), 0.0, 0.78), glow=((0.02, 0.55, 1.0), 0.0, 0.3), glass=((0.02, 0.10, 0.22), 0.0, 0.10), alt=((0.95, 0.72, 0.03), 0.0, 0.5)),
  "6": dict(base=((0.16, 0.17, 0.18), 0.35, 0.55), alt=((0.27, 0.28, 0.285), 0.3, 0.58), dark=((0.035, 0.038, 0.045), 0.55, 0.45), sec=((0.60, 0.035, 0.025), 0.35, 0.38), alt2=((0.95, 0.60, 0.03), 0.15, 0.50),
            metal=((0.55, 0.62, 0.68), 0.9, 0.25), bare=((0.55, 0.62, 0.68), 0.9, 0.25), rubber=((0.02, 0.021, 0.024), 0.0, 0.85), glow=((1.0, 0.38, 0.06), 0.0, 0.25), glass=((0.10, 0.04, 0.01), 0.0, 0.10)),
@@ -51,7 +51,7 @@ FX = {
  "6": {"cavity": (0.40, (0.42, 0.42, 0.45)), "edge_wear": (0.25, (0.45, 0.47, 0.50), 1.0, 0.30), "scratches": 0.35, "zones_paint": ["base", "alt", "sec", "alt2"], "seed": 6},
 }
 GLOW_K = {"1": 3.0, "2": 2.5, "3": 2.0, "4": 2.5, "5": 2.5, "6": 2.5}
-OUTLINE = {"5": dict(width=0.0075, rgb=(0.006, 0.006, 0.012))}            # Comic Outline: inverted-hull contour, part of the mesh (works in Unity URP Lit with back-face culling)
+OUTLINE = {"5": dict(width=0.012, rgb=(0.006, 0.006, 0.012))}             # Comic Outline (12 mm after the moodboard TEST 128 PX - 7.5 mm vanished at 128 px): inverted-hull contour, part of the mesh (works in Unity URP Lit with back-face culling)
 
 # ================================================================================================ contracts (from the source GLBs)
 H = 0.26
@@ -114,12 +114,12 @@ def dep_1(B):
     ring(B, "Body", "alt", 0.050, 0.110, -0.040, -0.037, (64, 24), name="padmark")
     disc(B, "Body", "glass", 0.030, -0.040, -0.034, (48, 16), name="lens")
     ring(B, "Body", "dark", 0.1705, 0.2105, 0.026, 0.031, (96, 32), name="slot")
-    for o in B.arcs("Iris", "base", 0.173, 0.208, 0.030, 0.041, 6, 0.035, axis="z", seg=(96, 30), phase=15): bev(B, o, 0.003, (2, 1), 30)
-    ring(B, "Iris", "glow", 0.194, 0.199, 0.0411, 0.0418, (96, 30), name="irislight")
+    for o in B.arcs("Iris", "base", 0.173, 0.208, 0.0312, 0.0422, 6, 0.035, axis="z", seg=(96, 30), phase=15): bev(B, o, 0.003, (2, 1), 30)
+    ring(B, "Iris", "glow", 0.194, 0.199, 0.0420, 0.0428, (96, 30), name="irislight")
     s = B.box("Body", "glow", (-0.140, -0.2495, -0.212), (0.140, -0.2440, -0.204), name="frontlight"); bev(B, s, 0.002, (2, 1))
     for x in (-0.180, 0.180):
-        l = B.cyl("Body", "glass", (x, -0.236, -0.020), (x, -0.252, -0.020), 0.012, (24, 12), name="sensor")
-    B.meta = dict(dock_z=0.0418, family="turned duct profile + thin cyan ring = launch-well rim")
+        l = B.cyl("Body", "glass", (x, -0.224, -0.020), (x, -0.244, -0.020), 0.012, (24, 12), name="sensor")
+    B.meta = dict(dock_z=0.0230, family="turned duct profile + thin cyan ring = launch-well rim")
 
 
 def drone_1(B):
@@ -138,7 +138,9 @@ def drone_1(B):
     s1 = B.box("Body", "glow", (-0.090, -0.2005, zc - 0.002), (0.090, -0.1975, zc + 0.002), name="frontlight")
     B.cyl("Body", "glass", (0, -0.186, zc - 0.006), (0, -0.204, zc - 0.006), 0.010, (24, 12), name="eye")
     B.hull("Body", "dark", [(-0.110, 0, zc - 0.022, 0.050, 0.008, 3), (0.110, 0, zc - 0.022, 0.050, 0.008, 3)], n=(32, 12), m=(4, 2), axis="y", name="belly")
-    for sx in (-1, 1): B.hull("Body", "dark", [(-0.080, sx*0.060, 0.006, 0.006, 0.006, 3), (0.080, sx*0.060, 0.006, 0.006, 0.006, 3)], n=(16, 8), m=(4, 2), axis="y", name="skid")
+    for sx in (-1, 1):
+        B.hull("Body", "dark", [(-0.080, sx*0.060, 0.006, 0.006, 0.006, 3), (0.080, sx*0.060, 0.006, 0.006, 0.006, 3)], n=(16, 8), m=(4, 2), axis="y", name="skid")
+        for y in (-0.050, 0.050): B.box("Body", "dark", (sx*0.060 - 0.004, y - 0.004, 0.008), (sx*0.060 + 0.004, y + 0.004, 0.024), name="skidstrut")
     for k, (x, y) in enumerate(F):
         c = (x, y, zc); nm = "Rotor_%d" % (k + 1)
         B.rev("Body", "base", spl([(r, t) for (r, t) in DUCT1] + [DUCT1[0]], B.q(4, 1)), (96, 32), "z", c, True, name="duct")
@@ -185,10 +187,10 @@ def dep_2(B):
         for (sx, sy, rot) in ((t, -0.144, 0), (t, 0.144, 0), (-0.144, t, 1), (0.144, t, 1)):
             st = B.box("Body", "dark", (-0.005, -0.016, 0.054), (0.005, 0.016, 0.0548), "detail", "stripe")
             B.move(st, T(sx, sy, 0) @ RZ(math.pi/4 + rot*math.pi/2))
-    tt = ring(B, "Iris", "metal", 0.060, 0.118, 0.054, 0.074, (64, 24), name="turntable"); bev(B, tt, 0.004, (2, 1))
+    tt = ring(B, "Iris", "metal", 0.060, 0.126, 0.0505, 0.074, (64, 24), name="turntable"); bev(B, tt, 0.004, (2, 1))
     for i in range(4):
-        j = B.box("Iris", "sec", (0.096, -0.020, 0.074), (0.124, 0.020, 0.104), name="jaw"); bev(B, j, 0.004, (2, 1)); B.move(j, RZ(TAU*i/4 + math.pi/4))
-        jd = B.box("Iris", "dark", (0.090, -0.012, 0.080), (0.097, 0.012, 0.100), name="jawpad"); B.move(jd, RZ(TAU*i/4 + math.pi/4))
+        j = B.box("Iris", "sec", (0.108, -0.020, 0.074), (0.136, 0.020, 0.104), name="jaw"); bev(B, j, 0.004, (2, 1)); B.move(j, RZ(TAU*i/4 + math.pi/4))
+        jd = B.box("Iris", "dark", (0.102, -0.012, 0.080), (0.109, 0.012, 0.100), name="jawpad"); B.move(jd, RZ(TAU*i/4 + math.pi/4))
     B.meta = dict(dock_z=0.074, family="square frame + hazard edges; 4 clamp jaws = 4 clamp lugs of the drone")
 
 
@@ -226,7 +228,7 @@ def drone_2(B):
 # family cue: the hexagon and the big orange triangle; everything is a few large flat facets
 def dep_3(B):
     """Arcade Low-Poly: a hexagonal deck on three wedge legs with open gaps between them (light shows through), a square foot plate for the
-    port; the pad is a sunk hexagon with ONE big orange triangle pointing forward; six wedge petals round the pad spin; every surface is a
+    port; the pad is a sunk hexagon with ONE big lime triangle pointing forward (orange before the moodboard palette review); six wedge petals round the pad spin; every surface is a
     flat facet - no bevel smoothing, segment counts of 6"""
     f = B.prism("Body", "metal", chamf(0.250, 0.250, 0.060), -0.260, -0.226, ("x", "y", "z"), name="foot")
     B.loft("Body", "dark", [[(x, y, -0.226) for (x, y) in ngon(0.240, 6, TAU/12)], [(x, y, -0.200) for (x, y) in ngon(0.225, 6, TAU/12)]], name="hexplate")
@@ -240,35 +242,40 @@ def dep_3(B):
     B.cut(dk, B.loft("Body", "base", [[(x, y, 0.022) for (x, y) in ngon(0.165, 6, TAU/12)], [(x, y, 0.080) for (x, y) in ngon(0.165, 6, TAU/12)]], kind="cutter"))
     B.loft("Body", "sec", [[(x, y, -0.012) for (x, y) in ngon(0.2465, 6, TAU/12)], [(x, y, 0.004) for (x, y) in ngon(0.2465, 6, TAU/12)]], name="band")
     B.loft("Body", "dark", [[(x, y, 0.018) for (x, y) in ngon(0.166, 6, TAU/12)], [(x, y, 0.024) for (x, y) in ngon(0.166, 6, TAU/12)]], name="padwell")
-    tri = B.prism("Body", "sec", [(0.0, -0.120), (0.104, 0.060), (-0.104, 0.060)], 0.024, 0.031, ("x", "y", "z"), name="triangle")
+    tri = B.prism("Body", "sec", [(0.0, -0.120), (0.104, 0.060), (-0.104, 0.060)], 0.018, 0.0242, ("x", "y", "z"), name="triangle")          # flush with the pad: the skids stand on it
     for i in range(6):
         a = TAU*i/6 + TAU/12; ca, sa = math.cos(a), math.sin(a)
         pts = [(0.168, -0.040), (0.222, -0.062), (0.222, 0.062), (0.168, 0.040)]
-        p = B.prism("Iris", "base" if i % 2 else "metal", [(ca*x - sa*y, sa*x + ca*y) for (x, y) in pts], 0.040, 0.066, ("x", "y", "z"), name="petal")
+        p = B.prism("Iris", "base" if i % 2 else "metal", [(ca*x - sa*y, sa*x + ca*y) for (x, y) in pts], 0.0405, 0.066, ("x", "y", "z"), name="petal")
         B.move(p, T(0, 0, 0))
-    B.meta = dict(dock_z=0.031, family="hexagon + big orange triangle")
+    B.meta = dict(dock_z=0.0245, family="hexagon + big lime triangle")
 
 
 def drone_3(B):
-    """Arcade Low-Poly drone: a faceted gem (hexagonal waist, pyramid top and bottom), three wedge arms at 120 degrees (a tri-copter - a
-    different count from the other styles), three-blade flat props inside hexagonal guard rings, the same orange triangle on top"""
-    zc = 0.060; B.meta = dict(body_pivot=(0, 0, zc), rotors={}, muzzle=(0, -0.090, zc), dock_z=0.0)
-    w = [(x, y, zc) for (x, y) in ngon(0.080, 6, TAU/12)]; top = [(x, y, zc + 0.030) for (x, y) in ngon(0.050, 6, TAU/12)]; bot = [(x, y, zc - 0.034) for (x, y) in ngon(0.040, 6, TAU/12)]
-    B.loft("Body", "base", [bot, w, top], name="gem")
-    B.loft("Body", "metal", [[(x, y, zc - 0.060) for (x, y) in ngon(0.022, 6, TAU/12)], bot], name="keel")
-    tri = B.prism("Body", "sec", [(0.0, -0.046), (0.040, 0.023), (-0.040, 0.023)], zc + 0.030, zc + 0.036, ("x", "y", "z"), name="triangle")
-    B.prism("Body", "glow", [(-0.018, 0.0), (0.018, 0.0), (0.0, 0.012)], -0.006, 0.006, ("x", "z", "y"), name="eye", at=(0, -0.081, zc + 0.004))
-    for i in range(3):
-        a = -math.pi/2 + TAU*i/3 + math.pi; c = (0.150*math.cos(a), 0.150*math.sin(a), zc + 0.016); nm = "Rotor_%d" % (i + 1)
-        ca, sa = math.cos(a), math.sin(a)
-        arm = [(0.060, -0.022), (0.100, -0.012), (0.100, 0.012), (0.060, 0.022)]
-        B.prism("Body", "base", [(ca*x - sa*y, sa*x + ca*y) for (x, y) in arm], zc - 0.006, zc + 0.012, ("x", "y", "z"), name="arm")
-        g = [[(c[0] + x, c[1] + y, c[2] - 0.010) for (x, y) in ngon(0.074, 6, a)], [(c[0] + x, c[1] + y, c[2] + 0.010) for (x, y) in ngon(0.074, 6, a)]]
-        gi = [[(c[0] + x, c[1] + y, c[2] - 0.010) for (x, y) in ngon(0.062, 6, a)], [(c[0] + x, c[1] + y, c[2] + 0.010) for (x, y) in ngon(0.062, 6, a)]]
-        o = B.loft("Body", "metal", g, name="guard"); ci = B.loft("Body", "metal", gi, name="guardcut", kind="cutter"); B.cut(o, ci)
-        B.prism(nm, "dark", ngon(0.012, 6), c[2] - 0.010, c[2] + 0.008, ("x", "y", "z"), name="hub", at=(c[0], c[1], 0))
-        for k in range(3):
-            bl = B.prism(nm, "sec", [(0.010, -0.010), (0.056, -0.004), (0.056, 0.006)], -0.002, 0.002, ("x", "y", "z"), name="blade"); B.move(bl, T(*c) @ RZ(TAU*k/3))
+    """Arcade Low-Poly drone - rebuilt after the moodboard review: a blocky toy helicopter (moodboard 03: modules read as cubes and wedges;
+    ref. Trailmakers helicopter). A box cabin with a wedge nose, a hexagonal mast with TWO stacked two-blade rotors (coaxial, counter-rotating,
+    so no tail rotor is needed), a tail boom ending in the big lime triangle fin, block skids. Family cue with the launcher: the hexagon
+    (mast, roof plate) and the lime triangle. (The earlier gem tri-copter with ring guards read like the 06 quad in greyscale at 128 px -
+    moodboard boundary 03 <-> 06.)"""
+    zc = 0.075; B.meta = dict(body_pivot=(0, 0, zc), rotors={}, muzzle=(0, -0.152, 0.060), dock_z=0.0)
+    for sx in (-1, 1):
+        B.box("Body", "dark", (sx*0.058, -0.105, 0.000), (sx*0.074, 0.100, 0.012), name="skid")
+        for y in (-0.050, 0.050): B.box("Body", "dark", (sx*0.060, y - 0.008, 0.012), (sx*0.068, y + 0.008, 0.037), name="strut")
+    B.box("Body", "base", (-0.062, -0.062, 0.035), (0.062, 0.072, 0.118), name="cabin")
+    B.prism("Body", "metal", [(-0.062, 0.035), (-0.062, 0.118), (-0.128, 0.078), (-0.128, 0.046)], -0.052, 0.052, ("y", "z", "x"), name="nose")
+    B.prism("Body", "glass", [(-0.066, 0.1196), (-0.110, 0.0929), (-0.110, 0.0849), (-0.066, 0.1116)], -0.040, 0.040, ("y", "z", "x"), name="windscreen")
+    B.prism("Body", "dark", ngon(0.011, 6, TAU/12), -0.152, -0.124, ("x", "z", "y"), name="gun", at=(0, 0, 0.060))
+    B.prism("Body", "dark", ngon(0.046, 6, TAU/12), 0.118, 0.126, ("x", "y", "z"), name="roofhex", at=(0, 0.004, 0))
+    B.prism("Body", "dark", ngon(0.018, 6, TAU/12), 0.126, 0.212, ("x", "y", "z"), name="mast")
+    B.box("Body", "base", (-0.017, 0.072, 0.074), (0.017, 0.196, 0.098), name="boom")
+    B.prism("Body", "sec", [(0.140, 0.098), (0.205, 0.098), (0.205, 0.160)], -0.005, 0.005, ("y", "z", "x"), name="triangle")
+    B.prism("Body", "metal", [(-0.052, 0.166), (0.052, 0.166), (0.034, 0.196), (-0.034, 0.196)], 0.083, 0.090, ("x", "y", "z"), name="stabiliser")
+    for k, (zr, rad, zone) in enumerate(((0.176, 0.212, "sec"), (0.206, 0.196, "alt"))):
+        nm = "Rotor_%d" % (k + 1); c = (0.0, 0.0, zr)
+        B.prism(nm, "dark", ngon(0.026, 6, TAU/12), zr - 0.007, zr + 0.007, ("x", "y", "z"), name="hub")
+        for b in range(2):
+            bl = B.prism(nm, zone, [(0.022, -0.015), (rad, -0.019), (rad, 0.019), (0.022, 0.015)], -0.003, 0.003, ("x", "y", "z"), name="blade")
+            B.move(bl, T(*c) @ RZ(math.pi*b + (math.pi/2)*k))
         B.meta["rotors"][nm] = c
 
 
@@ -308,7 +315,7 @@ def dep_4(B):
         h = B.cyl("Iris", "dark", (0.085*math.cos(TAU*i/5), 0.085*math.sin(TAU*i/5), -0.030), (0.085*math.cos(TAU*i/5), 0.085*math.sin(TAU*i/5), 0.0), 0.012, (12, 6), "cutter")
         B.cut(rim, h)
     ring(B, "Iris", "alt2", 0.100, 0.126, -0.007, -0.0062, (48, 16), name="paintring")
-    B.meta = dict(dock_z=-0.007, family="oil drum with two ribs, hose clamp, primer patch")
+    B.meta = dict(dock_z=-0.0035, family="oil drum with two ribs, hose clamp, primer patch")
 
 
 def drone_4(B):
@@ -321,16 +328,16 @@ def drone_4(B):
     ring(B, "Body", "metal", 0.065, 0.072, -0.012, 0.006, (40, 14), "y", (0, 0, zc), name="clamp")
     B.box("Body", "metal", (0.064, -0.012, zc - 0.006), (0.084, 0.006, zc + 0.008), name="clampscrew")
     B.cyl("Body", "glass", (0, -0.110, zc), (0, -0.128, zc), 0.022, (16, 8), name="lamp"); ring(B, "Body", "metal", 0.022, 0.029, -0.130, -0.114, (16, 8), "y", (0, 0, zc), name="lampring")
-    B.pipe("Body", "metal", [(-0.066, -0.060, zc), (-0.050, -0.060, zc + 0.070), (0.050, -0.060, zc + 0.070), (0.066, -0.060, zc)], 0.006, (10, 6), (6, 3), name="rollbar")
+    B.pipe("Body", "metal", [(-0.066, -0.060, zc), (-0.050, -0.060, zc + 0.058), (0.050, -0.060, zc + 0.058), (0.066, -0.060, zc)], 0.006, (10, 6), (6, 3), name="rollbar")
     bt = B.box("Body", "alt2", (-0.036, -0.030, zc + 0.058), (0.032, 0.060, zc + 0.092), name="battery"); B.bevel(bt, 0.003, (2, 1))
     B.box("Body", "dark", (-0.040, 0.004, zc + 0.050), (0.036, 0.020, zc + 0.096), name="strap")
     B.pipe("Body", "bare", [(0.022, 0.090, zc + 0.060), (0.034, 0.110, zc + 0.120), (0.066, 0.120, zc + 0.150)], 0.0022, (6, 4), (6, 3), name="antenna")
     B.pipe("Body", "metal", [(0.0, 0.020, zc - 0.064), (0.0, 0.020, 0.012), (0.0, 0.004, 0.004), (0.0, -0.010, 0.012)], 0.004, (8, 6), (5, 3), name="hook")
     for x in (-0.040, 0.040):
         B.pipe("Body", "dark", [(x, -0.080, zc - 0.050), (x, -0.080, 0.004), (x, 0.080, 0.004), (x, 0.080, zc - 0.050)], 0.005, (8, 6), (4, 2), name="skid")
-    spec = [((-1, -1), 0.172, 0.074, 2, False), ((1, -1), 0.160, 0.064, 3, False), ((-1, 1), 0.150, 0.060, 2, True), ((1, 1), 0.176, 0.076, 2, False)]
+    spec = [((-1, -1), 0.150, 0.074, 2, False), ((1, -1), 0.148, 0.064, 3, False), ((-1, 1), 0.140, 0.060, 2, True), ((1, 1), 0.156, 0.076, 2, False)]
     for k, ((sx, sy), Rr, rr, nb, wire) in enumerate(spec):
-        a = math.atan2(sy, sx); c = (Rr*math.cos(a), Rr*math.sin(a), zc + 0.036 + (0.008 if k % 2 else 0.0)); nm = "Rotor_%d" % (k + 1)
+        a = math.atan2(sy, sx); c = (Rr*math.cos(a), Rr*math.sin(a), zc + 0.076 + (0.008 if k % 2 else 0.0)); nm = "Rotor_%d" % (k + 1)
         B.pipe("Body", "metal", [(0.040*sx, 0.050*sy, zc + 0.010), (0.55*c[0], 0.55*c[1], zc + 0.020), (c[0], c[1], c[2] - 0.024)], 0.009, (10, 6), (5, 3), name="arm")
         B.weld("Body", [(0.044*sx, 0.050*sy - 0.012, zc + 0.020), (0.044*sx, 0.050*sy + 0.012, zc + 0.020)], 0.004)
         B.cyl("Body", "dark", (c[0], c[1], c[2] - 0.030), (c[0], c[1], c[2] - 0.006), 0.022, (16, 8), name="motor")
@@ -351,18 +358,18 @@ def dep_5(B):
     f = B.box("Body", "dark", (-0.240, -0.240, -0.260), (0.240, 0.240, -0.236), name="foot"); bev(B, f, 0.018, (4, 2))
     bun = B.rev("Body", "base", spl([(0.0, -0.236, 'c'), (0.200, -0.236), (0.236, -0.205), (0.244, -0.150), (0.236, -0.090), (0.214, -0.050), (0.180, -0.030), (0.0, -0.030, 'c')], B.q(6, 3)),
                 (64, 24), "z", name="bun")
-    tilt = RX(math.radians(-14)); at = T(0, 0.008, -0.006)
+    tilt = RX(0.0); at = T(0, 0.0, -0.006)
     for (o, M) in ((B.tor("Body", "dark", 0.190, 0.038, (64, 24), (16, 8), "z", (0, 0, 0), name="bumper"), None), (B.tor("Body", "sec", 0.152, 0.010, (64, 24), (10, 6), "z", (0, 0, 0.012), name="innerband"), None),
                    (disc(B, "Body", "metal", 0.160, -0.030, 0.004, (64, 24), name="bay"), None)):
         B.move(o, at @ tilt)
     for i in range(5):
-        p = B.prism("Iris", "alt" if i % 2 == 0 else "sec", [(0.0, 0.0), (0.150, -0.050), (0.150, 0.050)], 0.004, 0.022, ("x", "y", "z"), name="petal")
+        p = B.prism("Iris", "alt" if i % 2 == 0 else "sec", [(0.0, 0.0), (0.132, -0.045), (0.132, 0.045)], 0.0045, 0.022, ("x", "y", "z"), name="petal")
         bev(B, p, 0.008, (3, 1), 30); B.move(p, at @ tilt @ RZ(TAU*i/5))
     hub = B.rev("Iris", "dark", spl([(0.0, 0.040, 'c'), (0.030, 0.034), (0.040, 0.020), (0.040, 0.004, 'c'), (0.0, 0.004, 'c')], B.q(5, 2)), (32, 12), "z", name="hub"); B.move(hub, at @ tilt)
     st = B.prism("Body", "alt", star(0.024, 0.056, 5, math.pi/2), -0.010, 0.010, ("x", "z", "y"), name="star", at=(0, -0.236, -0.140)); bev(B, st, 0.004, (2, 1))
     for (sx, sy) in ((-1, -1), (1, -1), (-1, 1), (1, 1)):
         ft = B.rev("Body", "metal", spl([(0.0, -0.240, 'c'), (0.040, -0.240), (0.048, -0.226), (0.040, -0.212), (0.0, -0.210, 'c')], B.q(5, 2)), (24, 10), "z", (sx*0.170, sy*0.170, 0), name="toe")
-    B.meta = dict(dock_z=0.022, family="fat navy bumper ring with orange inner band = the drone's eye ring")
+    B.meta = dict(dock_z=0.0305, family="fat navy bumper ring with orange inner band = the drone's eye ring")
 
 
 def drone_5(B):
@@ -378,7 +385,7 @@ def drone_5(B):
         fin = B.prism("Body", "dark", [(0.0, 0.0), (0.060, -0.010), (0.070, 0.030), (0.0, 0.040)], -0.008, 0.008, ("y", "z", "x"), name="fin"); bev(B, fin, 0.006, (3, 1))
         B.move(fin, T(sx*0.060, 0.040, zc - 0.060) @ RZ(sx*0.3))
         c = (sx*0.128, 0.010, zc + 0.084); nm = "Rotor_%d" % (1 if sx < 0 else 2)
-        B.pipe("Body", "metal", [(sx*0.050, 0.010, zc + 0.050), (sx*0.095, 0.010, zc + 0.070), (c[0], c[1], c[2] - 0.014)], 0.011, (16, 8), (5, 3), name="stalk")
+        B.pipe("Body", "metal", [(sx*0.050, 0.010, zc + 0.050), (sx*0.098, 0.010, zc + 0.058), (c[0], c[1], c[2] - 0.016)], 0.011, (16, 8), (5, 3), name="stalk")
         B.rev("Body", "dark", spl([(0.0, -0.030, 'c'), (0.020, -0.028), (0.026, -0.014), (0.022, -0.006, 'c'), (0.0, -0.006, 'c')], B.q(5, 2)), (24, 10), "z", c, name="pod")
         B.rev(nm, "alt", spl([(0.0, 0.010, 'c'), (0.016, 0.008), (0.020, 0.0, 'c'), (0.0, -0.006, 'c')], B.q(5, 2)), (24, 10), "z", c, name="cap")
         for i in range(2):
@@ -422,10 +429,10 @@ def dep_6(B):
     for (a, b) in (((-0.072, -0.090, 0.062), (-0.040, 0.090, 0.066)), ((0.040, -0.090, 0.062), (0.072, 0.090, 0.066)), ((-0.040, -0.016, 0.062), (0.040, 0.016, 0.066))):
         B.box("Body", "alt", a, b, name="H")
     ring(B, "Body", "glow", 0.126, 0.134, 0.062, 0.064, (64, 20), name="padring")
-    ring(B, "Iris", "alt2", 0.170, 0.198, 0.056, 0.074, (64, 20), name="guidering")
+    ring(B, "Iris", "alt2", 0.172, 0.198, 0.0605, 0.078, (64, 20), name="guidering")
     for i in range(4):
-        g = B.prism("Iris", "base", chamf(0.018, 0.022, 0.006), 0.074, 0.112, ("x", "y", "z"), name="guide"); bev(B, g, 0.003, (2, 1)); B.move(g, RZ(TAU*i/4 + math.pi/4) @ T(0.186, 0, 0))
-        tip = B.box("Iris", "glow", (0.176, -0.010, 0.112), (0.196, 0.010, 0.116), name="guidelight"); B.move(tip, RZ(TAU*i/4 + math.pi/4))
+        g = B.prism("Iris", "base", chamf(0.018, 0.022, 0.006), 0.078, 0.100, ("x", "y", "z"), name="guide"); bev(B, g, 0.003, (2, 1)); B.move(g, RZ(TAU*i/4 + math.pi/4) @ T(0.186, 0, 0))
+        tip = B.box("Iris", "glow", (0.176, -0.010, 0.100), (0.196, 0.010, 0.103), name="guidelight"); B.move(tip, RZ(TAU*i/4 + math.pi/4))
     B.meta = dict(dock_z=0.066, family="orange eye ring + team-red band + octagonal chamfered gunmetal")
 
 
@@ -445,15 +452,16 @@ def drone_6(B):
     k = 0
     for (sx, sy) in ((-1, -1), (1, -1), (-1, 1), (1, 1)):
         k += 1; c = (sx*0.145, sy*0.145, zc + 0.012); nm = "Rotor_%d" % k
-        arm = B.prism("Body", "base", chamf(0.5, 0.014, 0.006), zc - 0.006, zc + 0.012, ("x", "y", "z"), name="arm")
-        L = math.hypot(c[0], c[1]) - 0.11; B.move(arm, T(sx*0.080, sy*0.080, 0) @ RZ(math.atan2(sy, sx)) @ T(L/2, 0, 0) @ Matrix.Diagonal((L, 1, 1, 1)))
-        go = B.loft("Body", "base", [[(c[0] + x, c[1] + y, c[2] - 0.010) for (x, y) in ngon(0.068, 8, TAU/16)], [(c[0] + x, c[1] + y, c[2] + 0.010) for (x, y) in ngon(0.068, 8, TAU/16)]], name="guard")
-        gi = B.loft("Body", "base", [[(c[0] + x, c[1] + y, c[2] - 0.012) for (x, y) in ngon(0.058, 8, TAU/16)], [(c[0] + x, c[1] + y, c[2] + 0.012) for (x, y) in ngon(0.058, 8, TAU/16)]], name="gcut", kind="cutter")
+        arm = B.prism("Body", "base", chamf(0.5, 0.014, 0.006), zc - 0.016, zc - 0.002, ("x", "y", "z"), name="arm")
+        L = math.hypot(c[0], c[1]) - 0.075; B.move(arm, T(sx*0.053, sy*0.053, 0) @ RZ(math.atan2(sy, sx)) @ T(L/2, 0, 0) @ Matrix.Diagonal((L, 1, 1, 1)))
+        B.cyl("Body", "dark", (c[0], c[1], zc - 0.016), (c[0], c[1], c[2] - 0.012), 0.016, (16, 8), name="motor")
+        go = B.loft("Body", "base", [[(c[0] + x, c[1] + y, c[2] - 0.016) for (x, y) in ngon(0.068, 8, TAU/16)], [(c[0] + x, c[1] + y, c[2] + 0.010) for (x, y) in ngon(0.068, 8, TAU/16)]], name="guard")
+        gi = B.loft("Body", "base", [[(c[0] + x, c[1] + y, c[2] - 0.018) for (x, y) in ngon(0.058, 8, TAU/16)], [(c[0] + x, c[1] + y, c[2] + 0.012) for (x, y) in ngon(0.058, 8, TAU/16)]], name="gcut", kind="cutter")
         B.cut(go, gi); bev(B, go, 0.002, (2, 1))
-        tp = B.box("Body", "alt2", (-0.012, -0.004, -0.010), (0.012, 0.004, 0.010), name="hazardtip"); B.move(tp, T(c[0], c[1], c[2]) @ RZ(math.atan2(sy, sx) - math.pi/2) @ T(0, 0.069, 0))
+        tp = B.box("Body", "alt2", (-0.012, -0.004, -0.010), (0.012, 0.004, 0.010), name="hazardtip"); B.move(tp, T(c[0], c[1], c[2]) @ RZ(math.atan2(sy, sx) - math.pi/2) @ T(0, 0.064, 0))
         B.cyl(nm, "metal", (c[0], c[1], c[2] - 0.012), (c[0], c[1], c[2] + 0.008), 0.012, (16, 8), name="hub")
         for i in range(3):
-            bl = B.prism(nm, "dark", [(0.010, -0.009), (0.054, -0.007), (0.054, 0.007), (0.010, 0.009)], -0.0018, 0.0018, ("x", "y", "z"), name="blade")
+            bl = B.prism(nm, "dark", [(0.010, -0.009), (0.049, -0.007), (0.049, 0.007), (0.010, 0.009)], -0.0018, 0.0018, ("x", "y", "z"), name="blade")
             B.move(bl, T(*c) @ RZ(TAU*i/3 + 0.2) @ RX(0.2))
         B.meta["rotors"][nm] = c
 
@@ -466,13 +474,16 @@ RECIPES.update({("FlyingDrone", s): f for s, f in zip("123456", (drone_1, drone_
 # R4M_Wheel contract: Mount = the static fork under a block (top plate = Socket_Mount face, +Z), rotor axis X at z -0.26, tyre r 0.39, half width
 # 0.184, ground at z -0.65. Outer face +X (L/R mirror by scale X -1). The Pass 4 rotors were made for the side-mounted R4M_WheelM_Side_Offroad
 # (same 0.39 radius, axis X, outer face +X, x -0.142..0.188): they are moved by (-0.023, 0, -0.26) and keep their Pass 4 geometry.
-def port_rotor(B, fn, dx=-0.023):
+def port_rotor(B, fn, dx=-0.023, sleeve=None):
+    """runs a Pass 4 side-wheel recipe and keeps only its Rotor, moved onto the R4M_Wheel axle. sleeve=(x0, r): a hub sleeve from x0 to the
+    rim face (x 0.020) - it carries the brake discs and takes the axle stub of the new mount (sense check: without it the discs float)"""
     n0 = len(B.objs); c0 = len(B.cutters); fn(B); M = T(dx, 0, -0.26); keep = []
     for o in B.objs[n0:]:
         if o["node"] == "Rotor": o.data.transform(M); keep.append(o)
         else: bpy.data.objects.remove(o, do_unlink=True)
     B.objs[n0:] = keep
     for c in B.cutters[c0:]: c.data.transform(M)
+    if sleeve: B.cyl("Rotor", "metal", (sleeve[0], 0, -0.26), (0.020, 0, -0.26), sleeve[1], (32, 10), name="hubsleeve")
 
 
 def top_plate(B, zone, rad=0.012, th=0.036, poly=None):
@@ -489,24 +500,31 @@ def fender(B, zone, x0, x1, r0, r1, a=33, seg=(64, 16), bv=0.004):
 
 
 def wheel_1(B):
-    """Clean Futuristic wheel. Rotor: the Pass 4 Sleek rotor (chevron tread, turbine hub) moved onto the R4M_Wheel axle, and closed - a flush
-    ceramic aero cover with one cyan ring hides the hub (enclosed hub). Mount: new - one smooth single-sided fairing from the plate down to an
-    enclosed motor housing on the inner side; narrow seams, one cyan line"""
-    import h4defs as H4
-    port_rotor(B, H4.wheel_A)
-    B.rev("Rotor", "base", spl([(0.0, 0.181, 'c'), (0.060, 0.180), (0.140, 0.172), (0.196, 0.160), (0.212, 0.150, 'c'), (0.212, 0.144, 'c'), (0.0, 0.144, 'c')], B.q(6, 2)), (96, 28), "x", (0, 0, -0.26), name="aerocover")
-    ring(B, "Rotor", "glow", 0.166, 0.174, 0.1630, 0.1670, (96, 28), "x", (0, 0, -0.26), name="coverlight")
-    ring(B, "Rotor", "dark", 0.040, 0.046, 0.1795, 0.1815, (48, 16), "x", (0, 0, -0.26), name="coverseam")
+    """Clean Futuristic wheel - rebuilt after the moodboard review (rr-style-directions: one long smooth profile, panels hide the mechanism,
+    'light rims of the wheels run into thin fairing lines', test 128 px = slim body + light). Rotor: new - a smooth slick tyre with rounded
+    shoulders, a closed ceramic disc with a cyan light ring at the rim and three narrow seams (spin cue). Mount: one smooth fairing from the
+    plate down to an enclosed motor; a near full-width aero fender whose outer edge is a thin cyan line - the light ring continues in it.
+    (The Pass 4 chevron rotor read exactly like the 02 wheel in greyscale - moodboard boundary 01 <-> 02.)"""
+    at = (0, 0, -0.26)
+    B.rev("Rotor", "rubber", spl([(0.262, -0.166, 'c'), (0.322, -0.170), (0.364, -0.164), (0.384, -0.140), (0.390, -0.090), (0.390, 0.080), (0.384, 0.128),
+                                  (0.364, 0.150), (0.322, 0.156), (0.262, 0.152, 'c')], B.q(6, 2)), (96, 28), "x", at, True, name="tyre")
+    B.rev("Rotor", "base", spl([(0.0, 0.176, 'c'), (0.120, 0.173), (0.220, 0.165), (0.266, 0.156, 'c'), (0.266, 0.138, 'c'), (0.0, 0.138, 'c')], B.q(6, 2)), (96, 28), "x", at, name="disc")
+    ring(B, "Rotor", "glow", 0.236, 0.250, 0.1625, 0.1660, (96, 28), "x", at, name="rimlight")
+    ring(B, "Rotor", "dark", 0.084, 0.090, 0.1735, 0.1755, (48, 16), "x", at, name="discseam")
+    B.rev("Rotor", "dark", [(0.0, -0.150), (0.266, -0.150), (0.266, -0.120), (0.0, -0.120)], (64, 16), "x", at, True, name="innerdisc")
+    for i in range(3):
+        n = B.prism("Rotor", "dark", [(0.110, 0.160), (0.200, 0.160), (0.200, 0.1677), (0.110, 0.1745)], -0.0035, 0.0035, ("z", "x", "y"), name="seam"); B.move(n, T(*at) @ RX(TAU*i/3))
     top_plate(B, "base", 0.014)
     B.box("Mount", "dark", (-0.240, -0.240, 0.214), (0.240, 0.240, 0.226), name="gasket")
-    f = B.hull("Mount", "base", [(0.226, -0.214, 0, 0.032, 0.150, 4.0), (0.120, -0.218, 0, 0.026, 0.110, 3.6), (-0.080, -0.218, 0, 0.022, 0.076, 3.2), (-0.200, -0.214, 0, 0.026, 0.070, 3.0)],
+    f = B.hull("Mount", "base", [(0.226, -0.214, 0, 0.032, 0.150, 4.0), (0.120, -0.218, 0, 0.026, 0.110, 3.6), (-0.080, -0.218, 0, 0.022, 0.076, 3.2), (-0.230, -0.214, 0, 0.026, 0.060, 3.0)],
                n=(48, 16), m=(6, 3), axis="z", name="fairing")
-    B.rev("Mount", "base", spl([(0.0, -0.250, 'c'), (0.034, -0.248), (0.046, -0.236), (0.050, -0.216), (0.048, -0.190, 'c'), (0.0, -0.190, 'c')], B.q(6, 2)), (64, 24), "x", (0, 0, -0.26), name="motor")
-    ring(B, "Mount", "glow", 0.032, 0.038, -0.2505, -0.2490, (64, 24), "x", (0, 0, -0.26), name="motorlight")
-    B.cyl("Mount", "metal", (-0.192, 0, -0.26), (-0.168, 0, -0.26), 0.030, (32, 12), name="axle")
-    l = B.box("Mount", "glow", (-0.2475, -0.004, -0.150), (-0.2445, 0.004, 0.160), name="line")
-    fender(B, "base", -0.206, -0.010, 0.404, 0.418, 33, (96, 24), 0.005)
-    B.rev("Mount", "glow", [(0.4185, -0.0125), (0.4195, -0.0125), (0.4195, -0.0105), (0.4185, -0.0105)], (96, 24), "x", (0, 0, -0.26), True, name="fenderlight", arc=(60, 120))
+    B.rev("Mount", "base", spl([(0.0, -0.250, 'c'), (0.034, -0.248), (0.046, -0.236), (0.050, -0.216), (0.048, -0.190, 'c'), (0.0, -0.190, 'c')], B.q(6, 2)), (64, 24), "x", at, name="motor")
+    B.cyl("Rotor", "dark", (-0.170, 0, -0.26), (-0.148, 0, -0.26), 0.042, (48, 12), name="hubboss")
+    ring(B, "Mount", "glow", 0.032, 0.038, -0.2505, -0.2490, (64, 24), "x", at, name="motorlight")
+    B.cyl("Mount", "metal", (-0.192, 0, -0.26), (-0.160, 0, -0.26), 0.030, (32, 12), name="axle")
+    B.box("Mount", "glow", (-0.2475, -0.004, -0.150), (-0.2445, 0.004, 0.160), name="line")
+    fender(B, "base", -0.206, 0.160, 0.404, 0.416, 36, (96, 24), 0.005)
+    B.rev("Mount", "glow", [(0.405, 0.160), (0.4165, 0.160), (0.4165, 0.1645), (0.405, 0.1645)], (96, 24), "x", at, True, name="fenderlight", arc=(55, 125))
 
 
 def wheel_2(B):
@@ -514,8 +532,9 @@ def wheel_2(B):
     new - the load path is the shape: a thick plate, one massive box arm with two gussets straight down to a big axle boss, a coil-over
     damper beside it from plate to boss, a brake caliper on the inner disc, hazard bands on the arm"""
     import h4defs as H4
-    port_rotor(B, H4.wheel_B_new)
+    port_rotor(B, H4.wheel_B_new, sleeve=(-0.150, 0.072))
     top_plate(B, "dark", 0.008, 0.040)
+    B.cyl("Mount", "metal", (-0.192, 0, -0.26), (-0.146, 0, -0.26), 0.030, (16, 8), name="axlestub")
     for (x, y) in ((-0.200, -0.200), (0.200, -0.200), (-0.200, 0.200), (0.200, 0.200)): B.cyl("Mount", "bare", (x, y, 0.214), (x, y, 0.221), 0.012, (6, 6), "detail", "bolt")
     a = B.box("Mount", "base", (-0.252, -0.066, -0.250), (-0.192, 0.066, 0.220), name="arm"); bev(B, a, 0.008, (3, 1))
     for sy in (-1, 1):
@@ -538,7 +557,7 @@ def wheel_3(B):
     at = (0, 0, -0.26)
     B.rev("Rotor", "rubber", [(0.300, -0.158), (0.368, -0.158), (0.372, -0.120), (0.372, 0.120), (0.368, 0.158), (0.300, 0.158)], (12, 12), "x", at, True, name="tyre", phase=TAU/24)
     for i in range(12):
-        lg = B.prism("Rotor", "rubber", [(-0.150, -0.050), (0.150, -0.050), (0.120, 0.050), (-0.120, 0.050)], 0.366, 0.389, ("x", "y", "z"), name="lug")
+        lg = B.prism("Rotor", "rubber", [(-0.150, -0.050), (0.150, -0.050), (0.120, 0.050), (-0.120, 0.050)], 0.352, 0.389, ("x", "y", "z"), name="lug")
         B.move(lg, T(*at) @ RX(TAU*i/12) @ Matrix.Diagonal((1, 0.92, 1, 1)))
     B.rev("Rotor", "base", [(0.180, -0.120), (0.302, -0.130), (0.302, 0.150), (0.180, 0.136)], (12, 12), "x", at, True, name="rim", phase=TAU/24)
     for i in range(6):
@@ -551,6 +570,7 @@ def wheel_3(B):
     B.prism("Mount", "base", [(-0.110, 0.214), (0.110, 0.214), (0.052, -0.250), (-0.052, -0.250)], -0.250, -0.196, ("y", "z", "x"), name="arm")
     B.prism("Mount", "sec", [(-0.075, 0.100), (0.072, 0.100), (0.062, 0.020), (-0.064, 0.020)], -0.254, -0.249, ("y", "z", "x"), name="stripe")
     bo = B.prism("Mount", "metal", ngon(0.060, 6, 0.0), -0.252, -0.172, ("y", "z", "x"), name="boss"); B.move(bo, T(0, 0, -0.26))
+    ax = B.prism("Mount", "dark", ngon(0.028, 6, 0.0), -0.176, -0.136, ("y", "z", "x"), name="axle"); B.move(ax, T(0, 0, -0.26))
     fender(B, "base", -0.206, -0.010, 0.402, 0.426, 33, (6, 6), 0)
     B.rev("Mount", "sec", [(0.426, -0.120), (0.430, -0.120), (0.430, -0.060), (0.426, -0.060)], (6, 6), "x", (0, 0, -0.26), True, name="fenderstripe", arc=(57, 123))
 
@@ -568,16 +588,16 @@ def wheel_4(B):
         B.move(a, T(-0.250, sy*0.030, 0) @ Matrix.Diagonal((1, sy, 1, 1)))
         B.weld("Mount", [(-0.250, sy*0.030, 0.230), (-0.200, sy*0.030, 0.230)], 0.004)
     for i in range(4):
-        B.box("Mount", "rust" if i % 2 else "metal", (-0.196 + 0.0, -0.150 + i*0.020, 0.150 - i*0.012), (-0.176, 0.150 - i*0.020, 0.160 - i*0.012), name="leaf")
-    for sy in (-1, 1): B.pipe("Mount", "bare", [(-0.200, sy*0.060, 0.212), (-0.200, sy*0.060, 0.106), (-0.172, sy*0.060, 0.106), (-0.172, sy*0.060, 0.212)], 0.005, (8, 6), (3, 2), name="ubolt")
+        B.box("Mount", "rust" if i % 2 else "metal", (-0.238, -0.150 + i*0.020, 0.150 - i*0.012), (-0.218, 0.150 - i*0.020, 0.160 - i*0.012), name="leaf")
+    for sy in (-1, 1): B.pipe("Mount", "bare", [(-0.244, sy*0.060, 0.212), (-0.244, sy*0.060, 0.106), (-0.216, sy*0.060, 0.106), (-0.216, sy*0.060, 0.212)], 0.005, (8, 6), (3, 2), name="ubolt")
     pt = B.prism("Mount", "alt2", [(-0.060, 0.060), (0.070, 0.050), (0.080, 0.130), (-0.050, 0.140)], -0.256, -0.250, ("y", "z", "x"), name="repair")
     B.weld("Mount", [(-0.256, -0.060, 0.060), (-0.256, 0.070, 0.050), (-0.256, 0.080, 0.130)], 0.004)
     B.cyl("Mount", "metal", (-0.250, 0, -0.26), (-0.190, 0, -0.26), 0.046, (8, 6), name="boss")
     B.cyl("Mount", "bare", (-0.190, 0, -0.26), (-0.174, 0, -0.26), 0.028, (6, 6), name="nut")
     B.pipe("Mount", "rubber", [(-0.240, -0.150, 0.222), (-0.246, -0.110, 0.120), (-0.246, -0.070, -0.050), (-0.226, -0.040, -0.200)], 0.008, (8, 6), (5, 3), name="cable")
     for z in (0.140, -0.020): B.cyl("Mount", "alt2", (-0.246, -0.100 + 0.0*z, z - 0.012), (-0.246, -0.100, z + 0.012), 0.012, (8, 6), name="tape")
-    fender(B, "metal", -0.204, 0.020, 0.404, 0.410, 30, (24, 8), 0.002)
-    fp = B.rev("Mount", "alt", [(0.410, -0.120), (0.413, -0.120), (0.413, -0.030), (0.410, -0.030)], (12, 6), "x", (0, 0, -0.26), True, name="fenderpatch", arc=(78, 104))
+    fender(B, "metal", -0.204, 0.020, 0.420, 0.426, 30, (24, 8), 0.002)
+    fp = B.rev("Mount", "alt", [(0.426, -0.120), (0.429, -0.120), (0.429, -0.030), (0.426, -0.030)], (12, 6), "x", (0, 0, -0.26), True, name="fenderpatch", arc=(78, 104))
     # added later (greyscale review: from the outer side 02 and 04 had the same silhouette): a crude bolted-on side shield over the upper
     # front quadrant of the OUTER face, hung on an exposed strap and a bent rod brace; one segment is a primer replacement plate.
     # Clearance: the rotor ends at x 0.161, the shield starts at x 0.186; it stays above the axle (z >= -0.245), inside the Mount bounds
@@ -602,9 +622,9 @@ def wheel_5(B):
     onto the axle - the hub is the part that decides the function, and it stays oversized. Mount: new - a fat rounded arm curving down to a big
     round boss with a star cap, a rounded plate. The outline is checked on the hub and in the tyre gap at game distance"""
     import h4defs as H4
-    port_rotor(B, H4.wheel_E)
+    port_rotor(B, H4.wheel_E, sleeve=(-0.181, 0.072))
     top_plate(B, "dark", 0.028, 0.040)
-    B.pipe("Mount", "base", [(-0.212, 0.0, 0.222), (-0.220, 0.0, 0.120), (-0.220, 0.0, -0.060), (-0.214, 0.0, -0.200)], 0.034, (24, 10), (8, 3), name="arm")
+    B.pipe("Mount", "base", [(-0.212, 0.0, 0.222), (-0.220, 0.0, 0.120), (-0.220, 0.0, -0.060), (-0.216, 0.0, -0.244)], 0.034, (24, 10), (8, 3), name="arm")
     B.rev("Mount", "metal", spl([(0.0, -0.250, 'c'), (0.036, -0.248), (0.048, -0.234), (0.050, -0.204), (0.042, -0.184, 'c'), (0.0, -0.184, 'c')], B.q(6, 2)), (40, 16), "x", (0, 0, -0.26), name="boss")
     st = B.prism("Mount", "alt", star(0.016, 0.040, 5, math.pi/2), 0.249, 0.256, ("y", "z", "x"), name="star"); B.move(st, T(0, 0, -0.26) @ Matrix.Diagonal((-1, 1, 1, 1)))
     fender(B, "base", -0.206, -0.006, 0.404, 0.436, 32, (48, 16), 0.012)
@@ -619,12 +639,15 @@ def gun_3(B):
     B.prism("Base", "metal", chamf(0.250, 0.250, 0.050), -0.260, -0.234, ("x", "y", "z"), name="foot")
     B.loft("Base", "base", [[(x, y, -0.234) for (x, y) in ngon(0.236, 6, TAU/12)], [(x, y, -0.120) for (x, y) in ngon(0.220, 6, TAU/12)], [(x, y, -0.040) for (x, y) in ngon(0.176, 6, TAU/12)]], name="pedestal")
     B.loft("Base", "sec", [[(x, y, -0.040) for (x, y) in ngon(0.178, 6, TAU/12)], [(x, y, -0.010) for (x, y) in ngon(0.178, 6, TAU/12)]], name="band")
-    B.loft("Base", "metal", [[(x, y, -0.010) for (x, y) in ngon(0.160, 6, TAU/12)], [(x, y, 0.014) for (x, y) in ngon(0.150, 6, TAU/12)]], name="race")
+    B.loft("Base", "metal", [[(x, y, -0.010) for (x, y) in ngon(0.160, 6, TAU/12)], [(x, y, 0.016) for (x, y) in ngon(0.150, 6, TAU/12)]], name="race")
     B.loft("Yaw", "base", [[(x, y, 0.018) for (x, y) in ngon(0.172, 6, TAU/12)], [(x, y, 0.052) for (x, y) in ngon(0.160, 6, TAU/12)]], name="ring")
     for sx in (-1, 1):
         ch = B.prism("Yaw", "base", [(-0.150, 0.052), (0.120, 0.052), (0.070, 0.215), (-0.060, 0.215)], 0.150, 0.186, ("y", "z", "x"), name="cheek"); B.move(ch, Matrix.Diagonal((sx, 1, 1, 1)))
         st = B.prism("Yaw", "sec", [(-0.100, 0.110), (0.060, 0.110), (0.040, 0.150), (-0.080, 0.150)], 0.1862, 0.1905, ("y", "z", "x"), name="stripe"); B.move(st, Matrix.Diagonal((sx, 1, 1, 1)))
     B.prism("Yaw", "metal", [(-0.150, 0.052), (0.150, 0.052), (0.150, 0.110), (-0.150, 0.150)], 0.120, 0.250, ("x", "z", "y"), name="counterweight")
+    for sx in (-1, 1):
+        B.prism("Yaw", "dark", ngon(0.026, 6, 0.0), *sorted((sx*0.104, sx*0.168)), ("y", "z", "x"), name="trunnion", at=(0, 0, BZ))
+        B.prism("Yaw", "sec", ngon(0.036, 6, 0.0), *sorted((sx*0.1855, sx*0.1910)), ("y", "z", "x"), name="trunnioncap", at=(0, 0, BZ))
     hx = lambda w, z0, z1, y: [(w, y, (z0 + z1)/2), (w*0.58, y, z1), (-w*0.58, y, z1), (-w, y, (z0 + z1)/2), (-w*0.58, y, z0), (w*0.58, y, z0)]
     B.loft("Pitch", "base", [hx(0.122, 0.092, 0.226, 0.070), hx(0.122, 0.092, 0.226, -0.020), hx(0.090, 0.098, 0.214, -0.205)], name="receiver")
     tri = B.prism("Pitch", "sec", [(-0.070, 0.060), (0.070, 0.060), (0.0, -0.190)], BZ + 0.092, BZ + 0.100, ("x", "y", "z"), name="triangle")

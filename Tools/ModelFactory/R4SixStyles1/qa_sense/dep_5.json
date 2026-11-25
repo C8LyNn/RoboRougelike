@@ -1,0 +1,11 @@
+{
+ "mode": "MODEL",
+ "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+ "cid": "R4X_FlyingDroneDeployer",
+ "islands": 244,
+ "groups": 1,
+ "floating": [],
+ "collisions_worst": [],
+ "collision_frames": 0,
+ "status": "OK"
+}

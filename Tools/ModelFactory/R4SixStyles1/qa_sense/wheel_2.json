@@ -1,0 +1,11 @@
+{
+ "mode": "MODEL",
+ "file": "<WORKDIR>\\R4_Six1\\f1\\models\\02_BrutalIndustrial\\R4M_Wheel\\R4M_Wheel.glb",
+ "cid": "R4M_Wheel",
+ "islands": 1114,
+ "groups": 1,
+ "floating": [],
+ "collisions_worst": [],
+ "collision_frames": 0,
+ "status": "OK"
+}

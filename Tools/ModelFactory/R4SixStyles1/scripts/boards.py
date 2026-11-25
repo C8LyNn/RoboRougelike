@@ -2,10 +2,11 @@
 scale, place and label. usage: python3 boards.py RENDERS_DIR OUT_DIR"""
 import os, json, sys
 from PIL import Image, ImageDraw, ImageFont, ImageOps
-R = sys.argv[1] if len(sys.argv) > 1 else "/home/claude/p5/final"; OUT = sys.argv[2] if len(sys.argv) > 2 else "/home/claude/p5/boards"; os.makedirs(OUT, exist_ok=True)
+R = sys.argv[1] if len(sys.argv) > 1 else "renders"; OUT = sys.argv[2] if len(sys.argv) > 2 else "boards"; os.makedirs(OUT, exist_ok=True)
 STY = [("1", "01 Clean Futuristic"), ("2", "02 Brutal Industrial"), ("3", "03 Arcade Low-Poly"), ("4", "04 Gritty Industrial"), ("5", "05 Comic Outline"), ("6", "06 R41 Modular Tech")]
 EL = [("gun", "Działo", "R4W_Basic"), ("wheel", "Koło", "R4M_Wheel"), ("dep", "Wyrzutnik", "R4X_FlyingDroneDeployer"), ("drone", "Dron", "FlyingDrone")]
-STATUS = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "status.json"), encoding="utf-8"))
+_H = os.path.dirname(os.path.abspath(__file__)); _SP = [q for q in (os.path.join(_H, "status.json"), os.path.join(_H, "..", "status.json")) if os.path.exists(q)][0]
+STATUS = json.load(open(_SP, encoding="utf-8"))
 COL = {"ZACHOWANY": (120, 200, 255), "PRZEROBIONY": (255, 200, 90), "NOWY": (120, 230, 140)}
 BG = (22, 23, 26); FG = (235, 236, 238); MUT = (150, 154, 162); LINE = (60, 62, 68)
 
@@ -19,6 +20,7 @@ def font(sz, bold=True):
 
 def img(name, grey=False):
     p = os.path.join(R, name)
+    if not os.path.exists(p) and name.endswith(".png"): p = p[:-4] + ".jpg"   # renders/ in the repository holds jpg copies
     if not os.path.exists(p): return None
     im = Image.open(p)
     if im.mode == "RGBA": b = Image.new("RGB", im.size, (170, 172, 176)); b.paste(im, mask=im.split()[3]); im = b
@@ -103,7 +105,7 @@ def board_pair(name="03_wyrzutnik_i_dron.jpg"):
     S = Image.new("RGB", (W, H), BG); d = ImageDraw.Draw(S)
     SHARED = {"1": "Wspólna cecha: wtopiony wentylator w gładkiej skorupie z cyjanowym pierścieniem - pierścień gniazda powtarza pierścienie dysz drona.",
               "2": "Wspólna cecha: kwadratowa rama z profili z żółtymi narożnikami - klatka wyrzutnika i rama H drona z tych samych belek.",
-              "3": "Wspólna cecha: heksagon + pomarańczowy trójkąt - pokład gniazda i osłony wirników to te same sześciokąty.",
+              "3": "Wspólna cecha: heksagon + limonkowy trójkąt - sześciokątny pokład i maszt drona, trójkąt na gnieździe i statecznik drona.",
               "4": "Wspólna cecha: bęben/beczka z żebrami, obejmą i taśmą - pół-beczka wyrzutnika i bęben korpusu drona.",
               "5": "Wspólna cecha: gruby torus-bulaj - pokrywa gniazda i ogromne oko drona to ta sama forma.",
               "6": "Wspólna cecha: gunmetalowy ośmiokąt + czerwony pas + pomarańczowe oko (cechy R4.1) na obu."}
@@ -186,6 +188,51 @@ def board_before_after(name="00_przed_i_po.jpg", cell=380):
     S.save(os.path.join(OUT, name), quality=90); return S.size
 
 
+# ------------------------------------------------------------------ moodboard TEST 128 PX: every object cropped and scaled to 128 px, shown 2x (nearest)
+def board_128(name="06_test_128px.jpg"):
+    CROP = {"gun": 0.78, "wheel": 0.80, "dep": 0.72, "drone": 0.42}; Z = 2; C = 128*Z + 8; LW = 200; HH = 150
+    rows = [("veh", "Pojazd")] + [(e, a) for (e, a, b) in EL]; BW = LW + 6*C
+    S = Image.new("RGB", (BW, HH + 2*(len(rows)*C + 60) + 20), BG); d = ImageDraw.Draw(S)
+    d.text((22, 16), "TEST 128 PX (moodboard): obiekt przeskalowany do 128 px, pokazany 2x", fill=FG, font=font(30))
+    wrap(d, (22, 60), "Kryteria z moodboardu: 01 smukły kadłub i światło · 02 masywne krawędzie i tłoki · 03 prosty układ kolorowych klocków · 04 zarysowane płyty, różne koła, chaotyczna sylwetka · 05 komiksowa kreska widoczna bez koloru · 06 modułowość czytelna bez barwy.", font(16, False), MUT, BW - 44)
+    for i, (s_, lab) in enumerate(STY): d.text((LW + i*C + 6, HH - 34), lab[:2] + " " + lab[3:].split()[0], fill=FG, font=font(20))
+    for blk, grey in enumerate((False, True)):
+        y0 = HH + blk*(len(rows)*C + 60)
+        d.text((22, y0 + 6), "w szarości" if grey else "w kolorze", fill=(255, 210, 90), font=font(22))
+        for r, (el, lab) in enumerate(rows):
+            y = y0 + 40 + r*C; d.text((22, y + 50), lab, fill=FG, font=font(22))
+            for i, (s_, _l) in enumerate(STY):
+                if el == "veh": im = img("veh_close_%s.jpg" % s_, grey)
+                else: im = img("el_%s_%s_color.jpg" % (el, s_), grey)
+                if im is None: continue
+                if el == "veh":
+                    w, h = im.size; cw = int(w*0.56); cx0 = int(w*0.08); cy0 = int(h*0.16); im = im.crop((cx0, cy0, cx0 + cw, cy0 + cw))
+                else: im = centre_crop(im, CROP[el])
+                im = im.resize((128, 128), Image.LANCZOS).resize((128*Z, 128*Z), Image.NEAREST)
+                S.paste(im, (LW + i*C + 4, y + 4))
+    S.save(os.path.join(OUT, name), quality=92); return S.size
+
+
+# ------------------------------------------------------------------ board 7: every model from five sides (sense review)
+def board_insp(el, name):
+    INS = os.path.join(R, "inspekcja") if os.path.isdir(os.path.join(R, "inspekcja")) else os.path.join(os.path.dirname(R.rstrip("/")), "insp"); C = 400; LW = 300; HH = 120
+    views = [("color", "przód 3/4"), ("back", "tył 3/4"), ("side", "bok zewn."), ("sideL", "bok wewn."), ("top", "z góry")]
+    S = Image.new("RGB", (LW + 5*C, HH + 6*C + 20), BG); d = ImageDraw.Draw(S)
+    lab = {e: a for (e, a, b) in EL}[el]
+    d.text((22, 16), "%s - każdy model z pięciu stron (przegląd sensu)" % lab, fill=FG, font=font(32))
+    d.text((22, 60), "Po kontroli s6sense: nic nie wisi w powietrzu, ruchome części nie przechodzą przez resztę, dron leży na gnieździe.", fill=MUT, font=font(17, False))
+    for i, (v, t) in enumerate(views): d.text((LW + i*C + 10, HH - 32), t, fill=FG, font=font(20))
+    for r, (s_, sl) in enumerate(STY):
+        y = HH + r*C; d.text((18, y + 20), sl, fill=FG, font=font(20)); tag(d, 18, y + 56, STATUS[el][s_]["status"])
+        for i, (v, t) in enumerate(views):
+            fn_ = os.path.join(R, "el_%s_%s_color.jpg" % (el, s_)) if v == "color" else os.path.join(INS, "insp_%s_%s_%s.jpg" % (el, s_, v))
+            if not os.path.exists(fn_): continue
+            im = Image.open(fn_).convert("RGB"); w, h = im.size; k = 0.62 if el != "drone" else 0.46
+            im = im.crop((int(w*(1 - k)/2), int(h*(1 - k)/2), int(w*(1 + k)/2), int(h*(1 + k)/2)))
+            S.paste(im.resize((C - 4, C - 4), Image.LANCZOS), (LW + i*C + 2, y + 2))
+    S.save(os.path.join(OUT, name), quality=88); return S.size
+
+
 if __name__ == "__main__":
     print(board_before_after())
     print(board_compare("01_porownanie_6_stylow.jpg", title="RoboRougelike - seria 1: cztery elementy w sześciu stylach",
@@ -193,4 +240,5 @@ if __name__ == "__main__":
     print(board_compare("01g_szarosc_bez_podpisow.jpg", grey=True, labels=False, cell=420, mode="clay", status=False))
     print(board_compare("01b_przed.jpg", cell=420, status=False, before=True, title="Stan wyjściowy (przed zmianami): najlepsze istniejące modele",
                         sub="Działo: Pass 4 (#1294) A/B/C/D/E + oryginał R4 (#939). Koło: Pass 4 R4M_WheelM_Side_Offroad (inna część) + oryginał R4M_Wheel (#941). Wyrzutnik: atlas A-E + 1x1. Dron: nie istnieje."))
-    print(board_player()); print(board_pair()); print(board_r41()); print(board_outline())
+    print(board_player()); print(board_pair()); print(board_r41()); print(board_outline()); print(board_128())
+    for el, nm in (("gun", "07a_inspekcja_dzialo.jpg"), ("wheel", "07b_inspekcja_kolo.jpg"), ("dep", "07c_inspekcja_wyrzutnik.jpg"), ("drone", "07d_inspekcja_dron.jpg")): print(board_insp(el, nm))

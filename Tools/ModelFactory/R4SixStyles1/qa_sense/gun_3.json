@@ -1,0 +1,11 @@
+{
+ "mode": "MODEL",
+ "file": "<WORKDIR>\\R4_Six1\\f1\\models\\03_ArcadeLowPoly\\R4W_Basic\\R4W_Basic.glb",
+ "cid": "R4W_Basic",
+ "islands": 147,
+ "groups": 1,
+ "floating": [],
+ "collisions_worst": [],
+ "collision_frames": 0,
+ "status": "OK"
+}

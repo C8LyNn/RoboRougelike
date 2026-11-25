@@ -1,0 +1,42 @@
+{
+ "mode": "MODEL",
+ "file": "<WORKDIR>\\R4_1232_pilot\\ref\\weapons\\Tools\\ModelFactory\\R4Weapons938\\R4W_Basic\\R4W_Basic.glb",
+ "cid": "R4W_Basic",
+ "islands": 1729,
+ "groups": 2,
+ "floating": [
+  {
+   "nodes": [
+    "Yaw"
+   ],
+   "objs": [
+    "R4W_Basic_Yaw"
+   ],
+   "n_parts": 66,
+   "center_mm": [
+    0,
+    256,
+    58
+   ],
+   "size_mm": [
+    120,
+    2,
+    27
+   ],
+   "gap_mm": 10.0,
+   "nearest_mm": 10.0,
+   "nearest": [
+    "Yaw",
+    "R4W_Basic_Yaw",
+    [
+     -73,
+     255,
+     52
+    ]
+   ]
+  }
+ ],
+ "collisions_worst": [],
+ "collision_frames": 0,
+ "status": "ISSUES"
+}
