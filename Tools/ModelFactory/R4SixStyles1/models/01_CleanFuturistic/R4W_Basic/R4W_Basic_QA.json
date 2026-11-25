@@ -1,19 +1,91 @@
 {
  "cid": "R4W_Basic",
- "status": "KEPT",
- "note": "kept unchanged from Hero Benchmark Pass 4 (PR #1294, A_Sleek proposal P)",
- "files": {
-  "R4W_Basic.blend": {
-   "sha256": "49ab2db45fb153ed9b8e16a7184d93a54d13206b3ec17d3bec9b620ac838e5c6",
-   "bytes": 251108
+ "source": "Pass 4 hero4 A_Sleek R4W_Basic.glb (PR #1294)",
+ "change": "sense repair of the kept model: 5 parts added / moved so every part holds on to the structure",
+ "ops": [
+  {
+   "node": "R4W_Basic_VentL",
+   "animation": "removed - the part now only follows its parent",
+   "why": "on Recoil the side vent swung 20 deg outwards on a hinge at its back edge and went 2 cm into the yoke arm: the vents are fixed now",
+   "op": "freeze"
   },
+  {
+   "node": "R4W_Basic_VentR",
+   "animation": "removed - the part now only follows its parent",
+   "why": "on Recoil the side vent swung 20 deg outwards on a hinge at its back edge and went 2 cm into the yoke arm: the vents are fixed now",
+   "op": "freeze"
+  },
+  {
+   "node": "R4W_Basic_Yaw",
+   "faces": 64,
+   "donor_face": 616,
+   "centre_mm": [
+    -140,
+    0,
+    135
+   ],
+   "why": "the receiver hung 18 mm clear of both yoke arms on an invisible axis: bearing bosses from the yoke reach the receiver side (3 mm running clearance)",
+   "op": "tube"
+  },
+  {
+   "node": "R4W_Basic_Yaw",
+   "faces": 64,
+   "donor_face": 623,
+   "centre_mm": [
+    141,
+    0,
+    135
+   ],
+   "why": "the receiver hung 18 mm clear of both yoke arms on an invisible axis: bearing bosses from the yoke reach the receiver side (3 mm running clearance)",
+   "op": "tube"
+  },
+  {
+   "node": "R4W_Basic_Yaw",
+   "verts": 126,
+   "why": "at full elevation (+35 deg) the tail of the receiver went into the front of the counterweight: the counterweight block is 18 mm shorter at the front (back face kept)",
+   "op": "squash"
+  }
+ ],
+ "meshes_outlined": 0,
+ "gltf_animation_mode": "ACTIONS",
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "anim_pos_dev_mm": 0.0,
+   "frame_offset": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "anim_pos_dev_mm": 0.0,
+   "frame_offset": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
   "R4W_Basic.fbx": {
-   "sha256": "677fe52b042a3990e026ee1197be90c091de7515357bbd5ac517e4d55c3e1666",
-   "bytes": 279020
+   "sha256": "daf132bbd060f2664a570633a08629b7dd75369ecf5b8ff49f88d0af340c6712",
+   "bytes": 3074652
   },
   "R4W_Basic.glb": {
-   "sha256": "a7891b9edacd9f0005a3ffc94639d9ff86698a032106115ddbef98a556ba096d",
-   "bytes": 3783992
+   "sha256": "010863d2ae844d9f34d5881ebe764cbfde0399cc7f88121904a5fff456c01a14",
+   "bytes": 3794788
   },
   "R4W_Basic_LOD1.fbx": {
    "sha256": "b6eecbdf02b560f7c361c9e573f7e32eaf3a03a860c2b32becfcb5475e0cde1e",
@@ -22,31 +94,12 @@
   "R4W_Basic_LOD1.glb": {
    "sha256": "08471073aea7f530d1463fe9a4276f02780d5459c0cbc3796d60a1cd27900144",
    "bytes": 507216
+  },
+  "R4W_Basic_SOURCE.blend": {
+   "sha256": "3dcf4b99d9009b832156a5ac1b9e5d4ad9bc5cc0b9b4b082e750b1f75275e588",
+   "bytes": 3683089
   }
  },
- "required_nodes_missing": [],
- "node_bounds_violations": [],
- "extra_mesh_nodes": [
-  "MuzzleFlash",
-  "R4W_Basic_Ring",
-  "R4W_Basic_VentL",
-  "R4W_Basic_VentR"
- ],
- "actions": [
-  [
-   1.0,
-   139.0
-  ]
- ],
- "contract_ok": true,
- "sha": {
-  "R4W_Basic.blend": "49ab2db45fb153ed",
-  "R4W_Basic.fbx": "677fe52b042a3990",
-  "R4W_Basic.glb": "a7891b9edacd9f00",
-  "R4W_Basic_LOD1.fbx": "b6eecbdf02b560f7",
-  "R4W_Basic_LOD1.glb": "08471073aea7f530"
- },
- "unity": "UNITY_NOT_RUN",
- "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files",
- "sha_note": "hashes of the delivered copies; the FBX of the Pass 4 guns are the repository (path-scrubbed) versions, byte-identical to the files on art/1239-atlas5-hero4; R4W_Basic / R4M_Wheel of 06 are byte-identical to art/938 / art/940"
+ "lod1": "R4W_Basic_LOD1.glb / .fbx and textures/ are the Pass 4 files, NOT repaired (the sense fixes are in LOD0 only); R4W_Basic_QA_source.json = QA of the Pass 4 source; the Pass 4 R4W_Basic.blend is not copied here, the editable file of the repaired model is R4W_Basic_SOURCE.blend",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

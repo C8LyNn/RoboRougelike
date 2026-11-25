@@ -5,8 +5,9 @@
  "size": 2048,
  "construction": "Clean Futuristic: low ceramic pod, the launch well is sunk flush into one calm shell (narrow seam, no frame around it); six thin iris shutters slide in a slot of the top skin; mechanism hidden; one cyan light ring at the bottom of the well and one along the front seam",
  "meta": {
-  "dock_z": 0.0418,
-  "family": "turned duct profile + thin cyan ring = launch-well rim"
+  "dock_z": 0.023,
+  "family": "turned duct profile + thin cyan ring = launch-well rim",
+  "dock_z_note": "set from the sense check (s6sense PAIR: free drop / penetration of the docked drone)"
  },
  "tris_hi": {
   "Body": 8832,
@@ -22,7 +23,7 @@
   "Body": [
    [
     -0.25,
-    -0.25200000405311584,
+    -0.25,
     -0.25999999046325684
    ],
    [
@@ -35,17 +36,17 @@
    [
     -0.2078000009059906,
     -0.2078000009059906,
-    0.029999999329447746
+    0.031199999153614044
    ],
    [
     0.2078000009059906,
     0.2078000009059906,
-    0.04179999977350235
+    0.04280000180006027
    ]
   ]
  },
- "s_bake": 149.0,
- "s_skin": 331.3,
+ "s_bake": 227.2,
+ "s_skin": 533.7,
  "animated_nodes": [
   "R4X_FlyingDroneDeployer_Iris"
  ],
@@ -60,11 +61,11 @@
  "lod1": {
   "method": "planar dissolve",
   "angle_deg": 14.0,
-  "triangles": 1740,
-  "of_lod0": 0.581
+  "triangles": 1748,
+  "of_lod0": 0.583
  },
- "tris_lod1": 1740,
- "s_export": 1.1,
+ "tris_lod1": 1748,
+ "s_export": 1.2,
  "port_contact": [
   {
    "dir": "down",
@@ -133,23 +134,23 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4X_FlyingDroneDeployer.fbx": {
-   "sha256": "26736a30b748c4aaeeaf30cb0a7e5ade709eff1369922b5564cf184400450d89",
-   "bytes": 2593708
+   "sha256": "f627c64c91cf7a2275e0cf5389cb351b60a66a109b91433827c5c7fced8d2657",
+   "bytes": 2478460
   },
   "R4X_FlyingDroneDeployer.glb": {
-   "sha256": "c3f0d37744dec1f849c62046138167e968fb6564f5a23479b5f50eca449cc116",
-   "bytes": 4762584
+   "sha256": "272839a044525de1f29850e8828d33209c18d7ac0367472c989b9ee71d367e4b",
+   "bytes": 4610796
   },
   "R4X_FlyingDroneDeployer_LOD1.fbx": {
-   "sha256": "4133ff4234d6d3cbd5ac6b3e95190fc9a3ebd8c0cafd3b8069a3d9e806dfe692",
-   "bytes": 2521612
+   "sha256": "c8a69a05d3cc818614f8975ac6c31357328f59ae529393e1512f8989084529ff",
+   "bytes": 2406540
   },
   "R4X_FlyingDroneDeployer_LOD1.glb": {
-   "sha256": "3ef6317ad4a8b164d342c0bd1a4744323a695f0820e16324e148d5a0cc935847",
-   "bytes": 4717228
+   "sha256": "d774165ba1b556a7a71a463b1157397365bedc9840847fdfcb11c4daf5da9c43",
+   "bytes": 4565712
   }
  },
  "triangles": 2996,
- "s_qa": 0.6,
+ "s_qa": 0.8,
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

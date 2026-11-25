@@ -3,29 +3,29 @@
  "style": "1",
  "label": "01_CleanFuturistic",
  "size": 2048,
- "construction": "Clean Futuristic wheel. Rotor: the Pass 4 Sleek rotor (chevron tread, turbine hub) moved onto the R4M_Wheel axle, and closed - a flush ceramic aero cover with one cyan ring hides the hub (enclosed hub). Mount: new - one smooth single-sided fairing from the plate down to an enclosed motor housing on the inner side; narrow seams, one cyan line",
+ "construction": "Clean Futuristic wheel - rebuilt after the moodboard review (rr-style-directions: one long smooth profile, panels hide the mechanism, 'light rims of the wheels run into thin fairing lines', test 128 px = slim body + light). Rotor: new - a smooth slick tyre with rounded shoulders, a closed ceramic disc with a cyan light ring at the rim and three narrow seams (spin cue). Mount: one smooth fairing from the plate down to an enclosed motor; a near full-width aero fender whose outer edge is a thin cyan line - the light ring continues in it. (The Pass 4 chevron rotor read exactly like the 02 wheel in greyscale - moodboard boundary 01 <-> 02.)",
  "meta": {},
  "tris_hi": {
-  "Rotor": 38740,
+  "Rotor": 15840,
   "Mount": 8912
  },
  "tris_lo": {
-  "Rotor": 6928,
+  "Rotor": 1952,
   "Mount": 1624
  },
- "s_build": 1.8,
+ "s_build": 0.3,
  "violations": [],
  "bounds": {
   "Rotor": [
    [
-    -0.16899999976158142,
-    -0.38769999146461487,
-    -0.6460000276565552
+    -0.17000000178813934,
+    -0.39079999923706055,
+    -0.6507999897003174
    ],
    [
-    0.18150000274181366,
-    0.38769999146461487,
-    0.12600000202655792
+    0.17599999904632568,
+    0.39079999923706055,
+    0.13079999387264252
    ]
   ],
   "Mount": [
@@ -41,8 +41,8 @@
    ]
   ]
  },
- "s_bake": 594.6,
- "s_skin": 647.9,
+ "s_bake": 230.8,
+ "s_skin": 508.9,
  "animated_nodes": [
   "R4M_Wheel_Rotor"
  ],
@@ -75,11 +75,11 @@
  "lod1": {
   "method": "planar dissolve",
   "angle_deg": 14.0,
-  "triangles": 5574,
-  "of_lod0": 0.652
+  "triangles": 1716,
+  "of_lod0": 0.48
  },
- "tris_lod1": 5574,
- "s_export": 0.4,
+ "tris_lod1": 1716,
+ "s_export": 1.4,
  "port_contact": [
   {
    "dir": "up",
@@ -92,7 +92,7 @@
    "missing": [],
    "parents_ok": true,
    "frame_offset": 0,
-   "bounds_dev_mm": 0.03,
+   "bounds_dev_mm": 0.05,
    "anim_pos_dev_mm": 0.0,
    "materials": [
     "R4M_Wheel_01_CleanFuturistic"
@@ -108,7 +108,7 @@
     "R4M_Wheel_1_orm.png"
    ],
    "actions": 2,
-   "triangles": 8552,
+   "triangles": 3576,
    "scale": [
     1.0
    ],
@@ -118,7 +118,7 @@
    "missing": [],
    "parents_ok": true,
    "frame_offset": 0,
-   "bounds_dev_mm": 0.03,
+   "bounds_dev_mm": 0.05,
    "anim_pos_dev_mm": 0.0,
    "materials": [
     "R4M_Wheel_01_CleanFuturistic"
@@ -137,7 +137,7 @@
     "R4M_Wheel_1_orm.png"
    ],
    "actions": 8,
-   "triangles": 8552,
+   "triangles": 3576,
    "scale": [
     1.0
    ],
@@ -148,23 +148,23 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4M_Wheel.fbx": {
-   "sha256": "336ca7604b13c768aaa5047ca5546d18967b52aa5be2554ad87a03e79483d044",
-   "bytes": 4741820
+   "sha256": "07310fdce0b9c68a64e3cb0e3b9b1769b157cc4c69da81c8539d42d1866a0605",
+   "bytes": 2735260
   },
   "R4M_Wheel.glb": {
-   "sha256": "f69c94d1f0ca5d203a184d5f189a1cce773ac7f99f5f96208e7ef12a54fd31a2",
-   "bytes": 7756052
+   "sha256": "4dcaca9656e1b063c17151d4cef582daf0b83ab4c733b6554ac72bb4803e2682",
+   "bytes": 5124128
   },
   "R4M_Wheel_LOD1.fbx": {
-   "sha256": "f0f5ce6fba1cd59883df19a70b91ccbfa7aeeb301ade95f49c1a15a378ea733a",
-   "bytes": 4627244
+   "sha256": "b990935c9f6e37e15f705625f6527dea13086e7b66b74d23a7663923777e95a1",
+   "bytes": 2634044
   },
   "R4M_Wheel_LOD1.glb": {
-   "sha256": "deec2211ea04bdd0884c7e5ef5786e692473d46476473b2a6d84fb10d29f27e5",
-   "bytes": 7656116
+   "sha256": "82f74d94d349de93f1e2343ab22e55ae7be7df0c51b32d20ac278c9b3ec12bc6",
+   "bytes": 5068756
   }
  },
- "triangles": 8552,
- "s_qa": 0.4,
+ "triangles": 3576,
+ "s_qa": 0.6,
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

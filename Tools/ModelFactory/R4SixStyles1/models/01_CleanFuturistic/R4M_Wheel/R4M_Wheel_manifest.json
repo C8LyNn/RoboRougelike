@@ -89,7 +89,7 @@
   "normal": "R4M_Wheel_1_normal.png",
   "emission": "R4M_Wheel_1_emission.png"
  },
- "construction": "Clean Futuristic wheel. Rotor: the Pass 4 Sleek rotor (chevron tread, turbine hub) moved onto the R4M_Wheel axle, and closed - a flush ceramic aero cover with one cyan ring hides the hub (enclosed hub). Mount: new - one smooth single-sided fairing from the plate down to an enclosed motor housing on the inner side; narrow seams, one cyan line",
+ "construction": "Clean Futuristic wheel - rebuilt after the moodboard review (rr-style-directions: one long smooth profile, panels hide the mechanism, 'light rims of the wheels run into thin fairing lines', test 128 px = slim body + light). Rotor: new - a smooth slick tyre with rounded shoulders, a closed ceramic disc with a cyan light ring at the rim and three narrow seams (spin cue). Mount: one smooth fairing from the plate down to an enclosed motor; a near full-width aero fender whose outer edge is a thin cyan line - the light ring continues in it. (The Pass 4 chevron rotor read exactly like the 02 wheel in greyscale - moodboard boundary 01 <-> 02.)",
  "meta": {},
  "gameplay": "visual only: no gameplay capability, timing or collider is added"
 }
