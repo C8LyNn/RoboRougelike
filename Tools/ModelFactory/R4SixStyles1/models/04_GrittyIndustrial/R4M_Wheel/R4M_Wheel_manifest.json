@@ -90,6 +90,17 @@
   "emission": "R4M_Wheel_4_emission.png"
  },
  "construction": "Gritty Industrial wheel. Rotor: the Pass 4 Scrap rotor (bolted steel cleats, rim with a welded patch, a drum from another vehicle) moved onto the axle. Mount: new, readable history - an original angle-iron bracket, a leaf-spring pack added later with two U-bolts, a primer repair plate welded over a crack in the top plate, a taped cable, one bolt missing on the plate",
- "meta": {},
+ "meta": {
+  "rotor_fit": {
+   "scale": 1.0171,
+   "tread_r": 0.389,
+   "turned_deg": 212.25,
+   "rolling_var_mm": 2.44,
+   "inlays_pushed_in": [
+    "cleat",
+    "cleatbolt"
+   ]
+  }
+ },
  "gameplay": "visual only: no gameplay capability, timing or collider is added"
 }

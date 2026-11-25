@@ -4,7 +4,18 @@
  "label": "04_GrittyIndustrial",
  "size": 2048,
  "construction": "Gritty Industrial wheel. Rotor: the Pass 4 Scrap rotor (bolted steel cleats, rim with a welded patch, a drum from another vehicle) moved onto the axle. Mount: new, readable history - an original angle-iron bracket, a leaf-spring pack added later with two U-bolts, a primer repair plate welded over a crack in the top plate, a taped cable, one bolt missing on the plate",
- "meta": {},
+ "meta": {
+  "rotor_fit": {
+   "scale": 1.0171,
+   "tread_r": 0.389,
+   "turned_deg": 212.25,
+   "rolling_var_mm": 2.44,
+   "inlays_pushed_in": [
+    "cleat",
+    "cleatbolt"
+   ]
+  }
+ },
  "tris_hi": {
   "Rotor": 26036,
   "Mount": 3240
@@ -13,19 +24,19 @@
   "Rotor": 4816,
   "Mount": 884
  },
- "s_build": 1.3,
+ "s_build": 3.4,
  "violations": [],
  "bounds": {
   "Rotor": [
    [
     -0.17299999296665192,
-    -0.3801000118255615,
-    -0.6401000022888184
+    -0.3889999985694885,
+    -0.6489999890327454
    ],
    [
     0.16899999976158142,
-    0.3880999982357025,
-    0.1200999990105629
+    0.3889999985694885,
+    0.1289999932050705
    ]
   ],
   "Mount": [
@@ -41,8 +52,8 @@
    ]
   ]
  },
- "s_bake": 398.4,
- "s_skin": 439.6,
+ "s_bake": 375.8,
+ "s_skin": 420.2,
  "animated_nodes": [
   "R4M_Wheel_Rotor"
  ],
@@ -75,10 +86,10 @@
  "lod1": {
   "method": "planar dissolve",
   "angle_deg": 14.0,
-  "triangles": 3826,
-  "of_lod0": 0.671
+  "triangles": 3846,
+  "of_lod0": 0.675
  },
- "tris_lod1": 3826,
+ "tris_lod1": 3846,
  "s_export": 0.5,
  "port_contact": [
   {
@@ -92,7 +103,7 @@
    "missing": [],
    "parents_ok": true,
    "frame_offset": 0,
-   "bounds_dev_mm": 0.03,
+   "bounds_dev_mm": 0.01,
    "anim_pos_dev_mm": 0.0,
    "materials": [
     "R4M_Wheel_04_GrittyIndustrial"
@@ -118,7 +129,7 @@
    "missing": [],
    "parents_ok": true,
    "frame_offset": 0,
-   "bounds_dev_mm": 0.03,
+   "bounds_dev_mm": 0.01,
    "anim_pos_dev_mm": 0.0,
    "materials": [
     "R4M_Wheel_04_GrittyIndustrial"
@@ -148,20 +159,20 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4M_Wheel.fbx": {
-   "sha256": "9055a47882ffaa8e501041581b2db7e41a6fba99703bb159604c14a6d2985394",
-   "bytes": 6219628
+   "sha256": "1c5615b781a086cba09bc6da72610de75d2e3c46a80699817254dfe06a68413c",
+   "bytes": 6253804
   },
   "R4M_Wheel.glb": {
-   "sha256": "3124c50d7e19939b5ab1e763667d3ba9fed8dfafcfd7d0e304c713b0b9790bf5",
-   "bytes": 9224976
+   "sha256": "afce72ec9dea696655aefd9bc2aa81f3dc61778d00d57f8c8baa7e8baa87846b",
+   "bytes": 9198204
   },
   "R4M_Wheel_LOD1.fbx": {
-   "sha256": "44cc0e33fedd98e306c2f76871f1bd5ceef60aaa9e90d16f128ac0896161a484",
-   "bytes": 6113036
+   "sha256": "7c28abe43ab175d06ef6810496a9cbb5268292720d8d82dee8dc58443a711fae",
+   "bytes": 6146028
   },
   "R4M_Wheel_LOD1.glb": {
-   "sha256": "9daa44f0682faf577cf437cca3638875ce5c91905e42345d281d4fb3b5138ab3",
-   "bytes": 9167632
+   "sha256": "ae31bd953945c9576c55b5606d56e8d8c6da334fd23e4694a2eb83030a6ee817",
+   "bytes": 9141296
   }
  },
  "triangles": 5700,

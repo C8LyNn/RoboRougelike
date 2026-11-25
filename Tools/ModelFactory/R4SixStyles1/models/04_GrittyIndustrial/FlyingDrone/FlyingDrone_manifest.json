@@ -18,27 +18,27 @@
   "FlyingDrone_Body": [
    0.0,
    0.0,
-   0.07000000029802322
+   0.07999999821186066
   ],
   "FlyingDrone_Rotor_1": [
    -0.1060660183429718,
    -0.1060660183429718,
-   0.1459999978542328
+   0.15600000321865082
   ],
   "FlyingDrone_Rotor_2": [
    0.1046518012881279,
    -0.1046518012881279,
-   0.15399999916553497
+   0.164000004529953
   ],
   "FlyingDrone_Rotor_3": [
    -0.09899494796991348,
    0.09899494796991348,
-   0.1459999978542328
+   0.15600000321865082
   ],
   "FlyingDrone_Rotor_4": [
    0.11030865460634232,
    0.11030865460634232,
-   0.15399999916553497
+   0.164000004529953
   ]
  },
  "empties": {
@@ -53,9 +53,9 @@
   "Muzzle": {
    "parent": "Body",
    "loc": [
-    0.0,
-    -0.12999999523162842,
-    0.07000000029802322
+    0.07199999690055847,
+    -0.17000000178813934,
+    0.05999999865889549
    ]
   }
  },
@@ -102,39 +102,39 @@
   "normal": "FlyingDrone_4_normal.png",
   "emission": "FlyingDrone_4_emission.png"
  },
- "construction": "Gritty Industrial drone: a small drum lying along the flight axis (same ribs and hose clamp as the launch tube), a welded roll bar over it, four pipe arms of different length welded on, mismatched rotors (two big two-blade props, one three-blade, one inside a bent wire guard), a scavenged battery strapped on top, a hook underneath, a bent antenna - asymmetric on purpose",
+ "construction": "Gritty Industrial drone: a small drum lying along the flight axis (same ribs and hose clamp as the launch tube), a welded roll bar over it, four pipe arms of different length welded on, mismatched rotors (two big two-blade props, one three-blade, one inside a bent wire guard), a scavenged battery strapped on top, a hook underneath, a bent antenna, a pipe gun strapped to one side - asymmetric on purpose",
  "meta": {
   "body_pivot": [
    0,
    0,
-   0.07
+   0.08
   ],
   "rotors": {
    "Rotor_1": [
     -0.10606601717798211,
     -0.10606601717798213,
-    0.14600000000000002
+    0.156
    ],
    "Rotor_2": [
     0.10465180361560904,
     -0.10465180361560904,
-    0.15400000000000003
+    0.164
    ],
    "Rotor_3": [
     -0.09899494936611665,
     0.09899494936611666,
-    0.14600000000000002
+    0.156
    ],
    "Rotor_4": [
     0.11030865786510143,
     0.11030865786510143,
-    0.15400000000000003
+    0.164
    ]
   },
   "muzzle": [
-   0,
-   -0.13,
-   0.07
+   0.072,
+   -0.17,
+   0.06
   ],
   "dock_z": 0.0
  },

@@ -5,9 +5,8 @@
  "size": 2048,
  "construction": "Gritty Industrial: readable history - angle-iron carrier frame (original), half an oil drum stood on it as the launch tube (re-used), an old wheel rim inside as the pad turntable (Iris), a bent shield plate bolted on later in front, one replaced side plate in primer, a hose clamp and a taped cable run up the side, a scavenged battery box strapped on one corner; asymmetric outline",
  "meta": {
-  "dock_z": -0.0035,
-  "family": "oil drum with two ribs, hose clamp, primer patch",
-  "dock_z_note": "set from the sense check (s6sense PAIR: free drop / penetration of the docked drone)"
+  "dock_z": -0.006,
+  "family": "oil drum with two ribs, hose clamp, primer patch"
  },
  "tris_hi": {
   "Body": 12696,
@@ -17,7 +16,7 @@
   "Body": 1288,
   "Iris": 588
  },
- "s_build": 1.1,
+ "s_build": 1.3,
  "violations": [],
  "bounds": {
   "Body": [
@@ -45,8 +44,8 @@
    ]
   ]
  },
- "s_bake": 370.4,
- "s_skin": 755.3,
+ "s_bake": 316.6,
+ "s_skin": 507.1,
  "animated_nodes": [
   "R4X_FlyingDroneDeployer_Iris"
  ],
@@ -65,7 +64,7 @@
   "of_lod0": 0.877
  },
  "tris_lod1": 1646,
- "s_export": 1.2,
+ "s_export": 0.9,
  "port_contact": [
   {
    "dir": "down",
@@ -134,23 +133,26 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4X_FlyingDroneDeployer.fbx": {
-   "sha256": "1a3eac962f0fcb2c5ce7f9358e149dd106e14e95d54c906189be30ef3047f3ee",
-   "bytes": 4923692
+   "sha256": "e438ce216cd862cb5319765f9d23672f87d6b29fcd5c8bdf761ae74f9fdb120b",
+   "bytes": 4918860
   },
   "R4X_FlyingDroneDeployer.glb": {
-   "sha256": "78d9b26b3f9873b4a4cb63830f2832028f45e89b8da7606263bc3630f1cf694d",
-   "bytes": 8637232
+   "sha256": "d1e365a80e4b064c86c89d8ee20ae3165cccb1dd07c05f6c49d84a2832d27ce8",
+   "bytes": 8632460
   },
   "R4X_FlyingDroneDeployer_LOD1.fbx": {
-   "sha256": "f43174b5d3dafb917618bdd1b0b2d05486761c69eafe7e512d722ec49a0ed4a1",
-   "bytes": 4866140
+   "sha256": "6cae5bf041392310b1089902293c57162e7750ee14f525b4df2bcf2d1d466911",
+   "bytes": 4861292
   },
   "R4X_FlyingDroneDeployer_LOD1.glb": {
-   "sha256": "5ca0740656d61b91dc751114ceb8421ce8ae4c7f38f2066f8535e5f160b494df",
-   "bytes": 8626168
+   "sha256": "237bde54a2a26cd58fe9a0554faeff77b79e46c27b7ead85a1445727f63b851b",
+   "bytes": 8621396
   }
  },
  "triangles": 1876,
- "s_qa": 0.8,
+ "s_qa": 0.5,
+ "notes": [
+  "meta.dock_z -0.0065 -> -0.0060 after the function check v2 of the pair (the drone 04 drum was raised 10 mm and the drone stands on its skids on its Socket_Dock; geometry of this launcher unchanged)"
+ ],
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

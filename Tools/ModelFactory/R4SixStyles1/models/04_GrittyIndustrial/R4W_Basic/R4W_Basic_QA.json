@@ -212,18 +212,18 @@
    "bytes": 2776444
   },
   "R4W_Basic_LOD1.fbx": {
-   "sha256": "fbd807180edacaef9e5749307ba63cb69d8d19b3a4dee836a6be5f641c6b9988",
-   "bytes": 67724
+   "sha256": "19a3099ae3669ca3bb742fed47490672c6efba4029788cbb99f6c0bec2bd0f7e",
+   "bytes": 1921036
   },
   "R4W_Basic_LOD1.glb": {
-   "sha256": "5280fce6611d8f01b71251ca54b7946e4386c19dd4cb7c649962b6bb32fe54e9",
-   "bytes": 305600
+   "sha256": "098f19dc2d096fdafc817346586cc00ad747c6384f44cf9e673c57eda110d6df",
+   "bytes": 2735480
   },
   "R4W_Basic_SOURCE.blend": {
    "sha256": "a2b2e34170480a5966e7fe6a69424e378565c98ed6595e6997f82ecf54afc733",
    "bytes": 2723402
   }
  },
- "lod1": "R4W_Basic_LOD1.glb / .fbx and textures/ are the Pass 4 files, NOT repaired (the sense fixes are in LOD0 only); R4W_Basic_QA_source.json = QA of the Pass 4 source; the Pass 4 R4W_Basic.blend is not copied here, the editable file of the repaired model is R4W_Basic_SOURCE.blend",
+ "lod1": "R4W_Basic_LOD1.glb / .fbx rebuilt from the repaired LOD0 (scripts/s6lod.py, the generator rule: rest pose, joined, planar dissolve) - details in R4W_Basic_LOD1_info.json; textures/ = the Pass 4 D_Scrap texture set; R4W_Basic_QA_source.json = QA of the Pass 4 source; the editable file of the repaired model is R4W_Basic_SOURCE.blend",
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

@@ -73,7 +73,7 @@
  },
  "construction": "Gritty Industrial: readable history - angle-iron carrier frame (original), half an oil drum stood on it as the launch tube (re-used), an old wheel rim inside as the pad turntable (Iris), a bent shield plate bolted on later in front, one replaced side plate in primer, a hose clamp and a taped cable run up the side, a scavenged battery box strapped on one corner; asymmetric outline",
  "meta": {
-  "dock_z": -0.007,
+  "dock_z": -0.0065,
   "family": "oil drum with two ribs, hose clamp, primer patch"
  },
  "gameplay": "visual only: no gameplay capability, timing or collider is added"
