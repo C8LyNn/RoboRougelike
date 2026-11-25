@@ -1,0 +1,170 @@
+{
+ "cid": "R4M_Wheel",
+ "style": "4",
+ "label": "04_GrittyIndustrial",
+ "size": 2048,
+ "construction": "Gritty Industrial wheel. Rotor: the Pass 4 Scrap rotor (bolted steel cleats, rim with a welded patch, a drum from another vehicle) moved onto the axle. Mount: new, readable history - an original angle-iron bracket, a leaf-spring pack added later with two U-bolts, a primer repair plate welded over a crack in the top plate, a taped cable, one bolt missing on the plate",
+ "meta": {},
+ "tris_hi": {
+  "Rotor": 26036,
+  "Mount": 3240
+ },
+ "tris_lo": {
+  "Rotor": 4816,
+  "Mount": 884
+ },
+ "s_build": 1.2,
+ "violations": [],
+ "bounds": {
+  "Rotor": [
+   [
+    -0.17299999296665192,
+    -0.3801000118255615,
+    -0.6401000022888184
+   ],
+   [
+    0.16899999976158142,
+    0.3880999982357025,
+    0.1200999990105629
+   ]
+  ],
+  "Mount": [
+   [
+    -0.2563999891281128,
+    -0.25,
+    -0.3059999942779541
+   ],
+   [
+    0.25,
+    0.25,
+    0.25999999046325684
+   ]
+  ]
+ },
+ "s_bake": 191.6,
+ "s_skin": 228.5,
+ "animated_nodes": [
+  "R4M_Wheel_Rotor"
+ ],
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "Roll",
+   "start": 27,
+   "end": 51,
+   "loop": true
+  },
+  {
+   "name": "Reverse",
+   "start": 53,
+   "end": 77,
+   "loop": true
+  },
+  {
+   "name": "Brake",
+   "start": 79,
+   "end": 103,
+   "loop": false
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 3844,
+  "of_lod0": 0.674
+ },
+ "tris_lod1": 3844,
+ "s_export": 0.5,
+ "port_contact": [
+  {
+   "dir": "up",
+   "flush_pct": 100.0,
+   "PASS": true
+  }
+ ],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.03,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4M_Wheel_04_GrittyIndustrial"
+   ],
+   "textures": [
+    "R4M_Wheel_4_base",
+    "R4M_Wheel_4_base.png",
+    "R4M_Wheel_4_emission",
+    "R4M_Wheel_4_emission.png",
+    "R4M_Wheel_4_normal",
+    "R4M_Wheel_4_normal.png",
+    "R4M_Wheel_4_orm",
+    "R4M_Wheel_4_orm.png"
+   ],
+   "actions": 2,
+   "triangles": 5700,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.03,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4M_Wheel_04_GrittyIndustrial"
+   ],
+   "textures": [
+    "R4M_Wheel_4_base",
+    "R4M_Wheel_4_base.png",
+    "R4M_Wheel_4_base.png.001",
+    "R4M_Wheel_4_emission",
+    "R4M_Wheel_4_emission.png",
+    "R4M_Wheel_4_emission.png.001",
+    "R4M_Wheel_4_normal",
+    "R4M_Wheel_4_normal.png",
+    "R4M_Wheel_4_normal.png.001",
+    "R4M_Wheel_4_orm",
+    "R4M_Wheel_4_orm.png"
+   ],
+   "actions": 8,
+   "triangles": 5700,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4M_Wheel.fbx": {
+   "sha256": "850242cefb1e3401d6c712996b4ed0e56529ea0b392683d64debf8c1f58ba197",
+   "bytes": 6197548
+  },
+  "R4M_Wheel.glb": {
+   "sha256": "a85720825253fcfd2af4bbfd74f448ad4631d966128ad731e8f0118b720198ec",
+   "bytes": 9188920
+  },
+  "R4M_Wheel_LOD1.fbx": {
+   "sha256": "777bf4fb1992397cacff574bd316945959598a8f3e6196831fc5ca7ba8b947cf",
+   "bytes": 6091564
+  },
+  "R4M_Wheel_LOD1.glb": {
+   "sha256": "b5af8518b2f000907905121aeab38e6bb4171825203c1e3b7ca10eb029bfe24d",
+   "bytes": 9132068
+  }
+ },
+ "triangles": 5700,
+ "s_qa": 0.4,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

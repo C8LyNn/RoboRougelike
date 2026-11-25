@@ -1,0 +1,142 @@
+{
+ "id": "FlyingDrone",
+ "style": "04_GrittyIndustrial",
+ "units": "metre 1:1",
+ "axes": "file/Unity +Z forward, +Y up (Blender -Y forward, Z up)",
+ "source_contract": "NEW - no drone model exists in the repository or in the game code (catalogue #57: 'wypuszcza drony latajace'). Contract = PROPOSAL.",
+ "hierarchy": {
+  "FlyingDrone_ROOT": null,
+  "FlyingDrone_Body": "FlyingDrone_ROOT",
+  "FlyingDrone_Rotor_1": "FlyingDrone_Body",
+  "FlyingDrone_Rotor_2": "FlyingDrone_Body",
+  "FlyingDrone_Rotor_3": "FlyingDrone_Body",
+  "FlyingDrone_Rotor_4": "FlyingDrone_Body",
+  "Socket_Dock": "FlyingDrone_ROOT",
+  "Muzzle": "FlyingDrone_Body"
+ },
+ "pivots": {
+  "FlyingDrone_Body": [
+   0.0,
+   0.0,
+   0.07000000029802322
+  ],
+  "FlyingDrone_Rotor_1": [
+   -0.12162236869335175,
+   -0.12162236869335175,
+   0.10599999874830246
+  ],
+  "FlyingDrone_Rotor_2": [
+   0.11313708126544952,
+   -0.11313708126544952,
+   0.11400000005960464
+  ],
+  "FlyingDrone_Rotor_3": [
+   -0.1060660183429718,
+   0.1060660183429718,
+   0.10599999874830246
+  ],
+  "FlyingDrone_Rotor_4": [
+   0.12445079535245895,
+   0.12445079535245895,
+   0.11400000005960464
+  ]
+ },
+ "empties": {
+  "Socket_Dock": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  "Muzzle": {
+   "parent": "Body",
+   "loc": [
+    0.0,
+    -0.12999999523162842,
+    0.07000000029802322
+   ]
+  }
+ },
+ "clips": [
+  {
+   "name": "Docked",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "Launch",
+   "start": 27,
+   "end": 51,
+   "loop": false
+  },
+  {
+   "name": "Hover",
+   "start": 53,
+   "end": 77,
+   "loop": true
+  },
+  {
+   "name": "Fly",
+   "start": 79,
+   "end": 103,
+   "loop": true
+  }
+ ],
+ "fps": 24,
+ "animated_nodes": [
+  "FlyingDrone_Body",
+  "FlyingDrone_Rotor_1",
+  "FlyingDrone_Rotor_2",
+  "FlyingDrone_Rotor_3",
+  "FlyingDrone_Rotor_4"
+ ],
+ "materials": [
+  "FlyingDrone_04_GrittyIndustrial"
+ ],
+ "textures": {
+  "base": "FlyingDrone_4_base.png",
+  "orm": "FlyingDrone_4_orm.png",
+  "normal": "FlyingDrone_4_normal.png",
+  "emission": "FlyingDrone_4_emission.png"
+ },
+ "construction": "Gritty Industrial drone: a small drum lying along the flight axis (same ribs and hose clamp as the launch tube), a welded roll bar over it, four pipe arms of different length welded on, mismatched rotors (two big two-blade props, one three-blade, one inside a bent wire guard), a scavenged battery strapped on top, a hook underneath, a bent antenna - asymmetric on purpose",
+ "meta": {
+  "body_pivot": [
+   0,
+   0,
+   0.07
+  ],
+  "rotors": {
+   "Rotor_1": [
+    -0.12162236636408616,
+    -0.12162236636408617,
+    0.10600000000000001
+   ],
+   "Rotor_2": [
+    0.11313708498984762,
+    -0.11313708498984762,
+    0.11400000000000002
+   ],
+   "Rotor_3": [
+    -0.10606601717798211,
+    0.10606601717798213,
+    0.10600000000000001
+   ],
+   "Rotor_4": [
+    0.12445079348883237,
+    0.12445079348883237,
+    0.11400000000000002
+   ]
+  },
+  "muzzle": [
+   0,
+   -0.13,
+   0.07
+  ],
+  "dock_z": 0.0
+ },
+ "gameplay": "visual only: no gameplay capability, timing or collider is added"
+}

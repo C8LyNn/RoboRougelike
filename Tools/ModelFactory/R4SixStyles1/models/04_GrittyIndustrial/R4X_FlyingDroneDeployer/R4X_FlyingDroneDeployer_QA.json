@@ -1,0 +1,155 @@
+{
+ "cid": "R4X_FlyingDroneDeployer",
+ "style": "4",
+ "label": "04_GrittyIndustrial",
+ "size": 2048,
+ "construction": "Gritty Industrial: readable history - angle-iron carrier frame (original), half an oil drum stood on it as the launch tube (re-used), an old wheel rim inside as the pad turntable (Iris), a bent shield plate bolted on later in front, one replaced side plate in primer, a hose clamp and a taped cable run up the side, a scavenged battery box strapped on one corner; asymmetric outline",
+ "meta": {
+  "dock_z": -0.007,
+  "family": "oil drum with two ribs, hose clamp, primer patch"
+ },
+ "tris_hi": {
+  "Body": 12696,
+  "Iris": 1596
+ },
+ "tris_lo": {
+  "Body": 1288,
+  "Iris": 588
+ },
+ "s_build": 1.1,
+ "violations": [],
+ "bounds": {
+  "Body": [
+   [
+    -0.25,
+    -0.25,
+    -0.25999999046325684
+   ],
+   [
+    0.25,
+    0.25,
+    0.12790000438690186
+   ]
+  ],
+  "Iris": [
+   [
+    -0.1679999977350235,
+    -0.1679999977350235,
+    -0.023000000044703484
+   ],
+   [
+    0.1679999977350235,
+    0.1679999977350235,
+    0.008999999612569809
+   ]
+  ]
+ },
+ "s_bake": 370.4,
+ "s_skin": 755.3,
+ "animated_nodes": [
+  "R4X_FlyingDroneDeployer_Iris"
+ ],
+ "clips": [
+  {
+   "name": "Active",
+   "start": 1,
+   "end": 49,
+   "loop": true
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 1646,
+  "of_lod0": 0.877
+ },
+ "tris_lod1": 1646,
+ "s_export": 1.2,
+ "port_contact": [
+  {
+   "dir": "down",
+   "flush_pct": 100.0,
+   "PASS": true
+  }
+ ],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.05,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4X_FlyingDroneDeployer_04_GrittyIndustrial"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_4_base",
+    "R4X_FlyingDroneDeployer_4_base.png",
+    "R4X_FlyingDroneDeployer_4_emission",
+    "R4X_FlyingDroneDeployer_4_emission.png",
+    "R4X_FlyingDroneDeployer_4_normal",
+    "R4X_FlyingDroneDeployer_4_normal.png",
+    "R4X_FlyingDroneDeployer_4_orm",
+    "R4X_FlyingDroneDeployer_4_orm.png"
+   ],
+   "actions": 2,
+   "triangles": 1876,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.05,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4X_FlyingDroneDeployer_04_GrittyIndustrial"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_4_base",
+    "R4X_FlyingDroneDeployer_4_base.png",
+    "R4X_FlyingDroneDeployer_4_base.png.001",
+    "R4X_FlyingDroneDeployer_4_emission",
+    "R4X_FlyingDroneDeployer_4_emission.png",
+    "R4X_FlyingDroneDeployer_4_emission.png.001",
+    "R4X_FlyingDroneDeployer_4_normal",
+    "R4X_FlyingDroneDeployer_4_normal.png",
+    "R4X_FlyingDroneDeployer_4_normal.png.001",
+    "R4X_FlyingDroneDeployer_4_orm",
+    "R4X_FlyingDroneDeployer_4_orm.png"
+   ],
+   "actions": 8,
+   "triangles": 1876,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4X_FlyingDroneDeployer.fbx": {
+   "sha256": "1a3eac962f0fcb2c5ce7f9358e149dd106e14e95d54c906189be30ef3047f3ee",
+   "bytes": 4923692
+  },
+  "R4X_FlyingDroneDeployer.glb": {
+   "sha256": "78d9b26b3f9873b4a4cb63830f2832028f45e89b8da7606263bc3630f1cf694d",
+   "bytes": 8637232
+  },
+  "R4X_FlyingDroneDeployer_LOD1.fbx": {
+   "sha256": "f43174b5d3dafb917618bdd1b0b2d05486761c69eafe7e512d722ec49a0ed4a1",
+   "bytes": 4866140
+  },
+  "R4X_FlyingDroneDeployer_LOD1.glb": {
+   "sha256": "5ca0740656d61b91dc751114ceb8421ce8ae4c7f38f2066f8535e5f160b494df",
+   "bytes": 8626168
+  }
+ },
+ "triangles": 1876,
+ "s_qa": 0.8,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}
