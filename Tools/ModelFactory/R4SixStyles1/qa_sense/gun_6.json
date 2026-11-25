@@ -1,0 +1,52 @@
+{
+ "mode": "MODEL",
+ "file": "<WORKDIR>\\R4_Six1\\f1\\models\\06_R41ModularTech\\R4W_Basic\\R4W_Basic.glb",
+ "cid": "R4W_Basic",
+ "islands": 1850,
+ "groups": 1,
+ "floating": [],
+ "collisions_worst": [],
+ "collision_frames": 0,
+ "function": {
+  "muzzle": [
+   {
+    "frame": 1,
+    "muzzle_ahead_mm": 40.0,
+    "muzzle_off_axis_mm": 0.5,
+    "line_of_fire": null
+   },
+   {
+    "frame": 51,
+    "muzzle_ahead_mm": 40.0,
+    "muzzle_off_axis_mm": 0.5,
+    "line_of_fire": null
+   },
+   {
+    "frame": 95,
+    "muzzle_ahead_mm": 40.0,
+    "muzzle_off_axis_mm": 0.5,
+    "line_of_fire": null
+   },
+   {
+    "frame": 104,
+    "muzzle_ahead_mm": 40.0,
+    "muzzle_off_axis_mm": 0.5,
+    "line_of_fire": null
+   },
+   {
+    "frame": 113,
+    "muzzle_ahead_mm": 40.0,
+    "muzzle_off_axis_mm": 0.5,
+    "line_of_fire": null
+   },
+   {
+    "frame": 128,
+    "muzzle_ahead_mm": 40.0,
+    "muzzle_off_axis_mm": 0.5,
+    "line_of_fire": null
+   }
+  ],
+  "issues": []
+ },
+ "status": "OK"
+}

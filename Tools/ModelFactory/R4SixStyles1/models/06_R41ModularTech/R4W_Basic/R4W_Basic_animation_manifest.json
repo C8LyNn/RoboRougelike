@@ -1,0 +1,61 @@
+{
+ "id": "R4W_Basic",
+ "kind": "R4WeaponKind.Basic",
+ "fps": 24,
+ "frame_range": [
+  1,
+  139
+ ],
+ "note": "One baked take in FBX/GLB (master timeline). Unity: split into clips by these frame ranges; loop=true clips are seamless.",
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true,
+   "desc": "rest hold, loopable"
+  },
+  {
+   "name": "AimYaw",
+   "start": 27,
+   "end": 75,
+   "loop": false,
+   "desc": "yaw 0 -> +90 -> -90 -> 0 about local Y (Unity)"
+  },
+  {
+   "name": "AimPitch",
+   "start": 77,
+   "end": 113,
+   "loop": false,
+   "desc": "pitch 0 -> +35.0 -> -10.0 -> 0 about local X (Unity)"
+  },
+  {
+   "name": "Fire",
+   "start": 115,
+   "end": 124,
+   "loop": false,
+   "desc": "one shot @0.38 s cadence: flash 2 f, recoil 45 mm, return"
+  },
+  {
+   "name": "Recoil",
+   "start": 126,
+   "end": 129,
+   "loop": false,
+   "desc": "barrel kick back 0 -> 45 mm (no flash)"
+  },
+  {
+   "name": "Return",
+   "start": 131,
+   "end": 139,
+   "loop": false,
+   "desc": "barrel run-out 45 mm -> 0"
+  }
+ ],
+ "animated_nodes": [
+  "MuzzleFlash",
+  "R4W_Basic_Barrel",
+  "R4W_Basic_Pitch",
+  "R4W_Basic_Yaw"
+ ],
+ "gameplay": "Animation is visual only: it adds no gameplay capability, shot count or timing authority."
+}

@@ -1,0 +1,204 @@
+{
+ "cid": "FlyingDrone",
+ "style": "3",
+ "label": "03_ArcadeLowPoly",
+ "size": 2048,
+ "construction": "Arcade Low-Poly drone - rebuilt after the moodboard review: a blocky toy helicopter (moodboard 03: modules read as cubes and wedges; ref. Trailmakers helicopter). A box cabin with a wedge nose, a hexagonal mast with TWO stacked two-blade rotors (coaxial, counter-rotating, so no tail rotor is needed), a tail boom ending in the big lime triangle fin, block skids. Family cue with the launcher: the hexagon (mast, roof plate) and the lime triangle. (The earlier gem tri-copter with ring guards read like the 06 quad in greyscale at 128 px - moodboard boundary 03 <-> 06.)",
+ "meta": {
+  "body_pivot": [
+   0,
+   0,
+   0.075
+  ],
+  "rotors": {
+   "Rotor_1": [
+    0.0,
+    0.0,
+    0.176
+   ],
+   "Rotor_2": [
+    0.0,
+    0.0,
+    0.206
+   ]
+  },
+  "muzzle": [
+   0,
+   -0.152,
+   0.06
+  ],
+  "dock_z": 0.0
+ },
+ "tris_hi": {
+  "Body": 200,
+  "Rotor_1": 44,
+  "Rotor_2": 44
+ },
+ "tris_lo": {
+  "Body": 200,
+  "Rotor_1": 44,
+  "Rotor_2": 44
+ },
+ "s_build": 0.1,
+ "violations": [],
+ "bounds": {
+  "Body": [
+   [
+    -0.07400000095367432,
+    -0.15199999511241913,
+    0.0
+   ],
+   [
+    0.07400000095367432,
+    0.20499999821186066,
+    0.21199999749660492
+   ]
+  ],
+  "Rotor_1": [
+   [
+    -0.21199999749660492,
+    -0.026000000536441803,
+    0.16899999976158142
+   ],
+   [
+    0.21199999749660492,
+    0.026000000536441803,
+    0.18299999833106995
+   ]
+  ],
+  "Rotor_2": [
+   [
+    -0.02250000089406967,
+    -0.19599999487400055,
+    0.19900000095367432
+   ],
+   [
+    0.02250000089406967,
+    0.19599999487400055,
+    0.21299999952316284
+   ]
+  ]
+ },
+ "s_bake": 36.2,
+ "s_skin": 64.5,
+ "animated_nodes": [
+  "FlyingDrone_Body",
+  "FlyingDrone_Rotor_1",
+  "FlyingDrone_Rotor_2"
+ ],
+ "clips": [
+  {
+   "name": "Docked",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "Launch",
+   "start": 27,
+   "end": 51,
+   "loop": false
+  },
+  {
+   "name": "Hover",
+   "start": 53,
+   "end": 77,
+   "loop": true
+  },
+  {
+   "name": "Fly",
+   "start": 79,
+   "end": 103,
+   "loop": true
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 288,
+  "of_lod0": 1.0
+ },
+ "tris_lod1": 288,
+ "s_export": 0.3,
+ "port_contact": [],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.02,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "FlyingDrone_03_ArcadeLowPoly"
+   ],
+   "textures": [
+    "FlyingDrone_3_base",
+    "FlyingDrone_3_base.png",
+    "FlyingDrone_3_emission",
+    "FlyingDrone_3_emission.png",
+    "FlyingDrone_3_normal",
+    "FlyingDrone_3_normal.png",
+    "FlyingDrone_3_orm",
+    "FlyingDrone_3_orm.png"
+   ],
+   "actions": 4,
+   "triangles": 288,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.02,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "FlyingDrone_03_ArcadeLowPoly"
+   ],
+   "textures": [
+    "FlyingDrone_3_base",
+    "FlyingDrone_3_base.png",
+    "FlyingDrone_3_base.png.001",
+    "FlyingDrone_3_emission",
+    "FlyingDrone_3_emission.png",
+    "FlyingDrone_3_emission.png.001",
+    "FlyingDrone_3_normal",
+    "FlyingDrone_3_normal.png",
+    "FlyingDrone_3_normal.png.001",
+    "FlyingDrone_3_orm",
+    "FlyingDrone_3_orm.png"
+   ],
+   "actions": 10,
+   "triangles": 288,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "FlyingDrone.fbx": {
+   "sha256": "b533a4a8b15abde490efe110bbfc63782a833443a7e18c08dd34ab19503647a6",
+   "bytes": 1281084
+  },
+  "FlyingDrone.glb": {
+   "sha256": "480d6965a7424043ff76a1e4d23768848392261091cd66f73e5721129f36cb87",
+   "bytes": 3607132
+  },
+  "FlyingDrone_LOD1.fbx": {
+   "sha256": "908e0f8bfeab343c043e87b45a49365e07507ef614e6e3c4c50ee056c719dd33",
+   "bytes": 1206124
+  },
+  "FlyingDrone_LOD1.glb": {
+   "sha256": "b7199acc45893347591dcf7c718045762b2d7ccc3316b123daab44e0df72b47d",
+   "bytes": 3597196
+  }
+ },
+ "triangles": 288,
+ "s_qa": 0.1,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

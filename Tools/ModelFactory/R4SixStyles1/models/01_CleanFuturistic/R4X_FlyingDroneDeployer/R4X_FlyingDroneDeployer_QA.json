@@ -1,0 +1,156 @@
+{
+ "cid": "R4X_FlyingDroneDeployer",
+ "style": "1",
+ "label": "01_CleanFuturistic",
+ "size": 2048,
+ "construction": "Clean Futuristic: low ceramic pod, the launch well is sunk flush into one calm shell (narrow seam, no frame around it); six thin iris shutters slide in a slot of the top skin; mechanism hidden; one cyan light ring at the bottom of the well and one along the front seam",
+ "meta": {
+  "dock_z": 0.023,
+  "family": "turned duct profile + thin cyan ring = launch-well rim",
+  "dock_z_note": "set from the sense check (s6sense PAIR: free drop / penetration of the docked drone)"
+ },
+ "tris_hi": {
+  "Body": 8832,
+  "Iris": 3576
+ },
+ "tris_lo": {
+  "Body": 2108,
+  "Iris": 888
+ },
+ "s_build": 0.8,
+ "violations": [],
+ "bounds": {
+  "Body": [
+   [
+    -0.25,
+    -0.25,
+    -0.25999999046325684
+   ],
+   [
+    0.25,
+    0.25,
+    0.03099999949336052
+   ]
+  ],
+  "Iris": [
+   [
+    -0.2078000009059906,
+    -0.2078000009059906,
+    0.031199999153614044
+   ],
+   [
+    0.2078000009059906,
+    0.2078000009059906,
+    0.04280000180006027
+   ]
+  ]
+ },
+ "s_bake": 227.2,
+ "s_skin": 533.7,
+ "animated_nodes": [
+  "R4X_FlyingDroneDeployer_Iris"
+ ],
+ "clips": [
+  {
+   "name": "Active",
+   "start": 1,
+   "end": 49,
+   "loop": true
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 1748,
+  "of_lod0": 0.583
+ },
+ "tris_lod1": 1748,
+ "s_export": 1.2,
+ "port_contact": [
+  {
+   "dir": "down",
+   "flush_pct": 100.0,
+   "PASS": true
+  }
+ ],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.02,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4X_FlyingDroneDeployer_01_CleanFuturistic"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_1_base",
+    "R4X_FlyingDroneDeployer_1_base.png",
+    "R4X_FlyingDroneDeployer_1_emission",
+    "R4X_FlyingDroneDeployer_1_emission.png",
+    "R4X_FlyingDroneDeployer_1_normal",
+    "R4X_FlyingDroneDeployer_1_normal.png",
+    "R4X_FlyingDroneDeployer_1_orm",
+    "R4X_FlyingDroneDeployer_1_orm.png"
+   ],
+   "actions": 2,
+   "triangles": 2996,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.02,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4X_FlyingDroneDeployer_01_CleanFuturistic"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_1_base",
+    "R4X_FlyingDroneDeployer_1_base.png",
+    "R4X_FlyingDroneDeployer_1_base.png.001",
+    "R4X_FlyingDroneDeployer_1_emission",
+    "R4X_FlyingDroneDeployer_1_emission.png",
+    "R4X_FlyingDroneDeployer_1_emission.png.001",
+    "R4X_FlyingDroneDeployer_1_normal",
+    "R4X_FlyingDroneDeployer_1_normal.png",
+    "R4X_FlyingDroneDeployer_1_normal.png.001",
+    "R4X_FlyingDroneDeployer_1_orm",
+    "R4X_FlyingDroneDeployer_1_orm.png"
+   ],
+   "actions": 8,
+   "triangles": 2996,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4X_FlyingDroneDeployer.fbx": {
+   "sha256": "f627c64c91cf7a2275e0cf5389cb351b60a66a109b91433827c5c7fced8d2657",
+   "bytes": 2478460
+  },
+  "R4X_FlyingDroneDeployer.glb": {
+   "sha256": "272839a044525de1f29850e8828d33209c18d7ac0367472c989b9ee71d367e4b",
+   "bytes": 4610796
+  },
+  "R4X_FlyingDroneDeployer_LOD1.fbx": {
+   "sha256": "c8a69a05d3cc818614f8975ac6c31357328f59ae529393e1512f8989084529ff",
+   "bytes": 2406540
+  },
+  "R4X_FlyingDroneDeployer_LOD1.glb": {
+   "sha256": "d774165ba1b556a7a71a463b1157397365bedc9840847fdfcb11c4daf5da9c43",
+   "bytes": 4565712
+  }
+ },
+ "triangles": 2996,
+ "s_qa": 0.8,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

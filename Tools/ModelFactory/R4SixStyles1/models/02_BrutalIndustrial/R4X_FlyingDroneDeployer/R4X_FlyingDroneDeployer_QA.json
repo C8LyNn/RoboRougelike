@@ -1,0 +1,155 @@
+{
+ "cid": "R4X_FlyingDroneDeployer",
+ "style": "2",
+ "label": "02_BrutalIndustrial",
+ "size": 2048,
+ "construction": "Brutal Industrial: a launch cradle - thick base plate, four heavy box columns with gussets carry a square ring beam; the square launch platform sits on two hydraulic rams that go straight down to the base (the load path is visible); a turntable with four clamp jaws holds the drone; yellow hazard border round the platform; armour cheeks between the columns",
+ "meta": {
+  "dock_z": 0.074,
+  "family": "square frame + hazard edges; 4 clamp jaws = 4 clamp lugs of the drone"
+ },
+ "tris_hi": {
+  "Body": 3876,
+  "Iris": 2016
+ },
+ "tris_lo": {
+  "Body": 1124,
+  "Iris": 608
+ },
+ "s_build": 0.3,
+ "violations": [],
+ "bounds": {
+  "Body": [
+   [
+    -0.25200000405311584,
+    -0.25200000405311584,
+    -0.25999999046325684
+   ],
+   [
+    0.25200000405311584,
+    0.25200000405311584,
+    0.15000000596046448
+   ]
+  ],
+  "Iris": [
+   [
+    -0.12600000202655792,
+    -0.12600000202655792,
+    0.05050000175833702
+   ],
+   [
+    0.12600000202655792,
+    0.12600000202655792,
+    0.10400000214576721
+   ]
+  ]
+ },
+ "s_bake": 346.9,
+ "s_skin": 408.8,
+ "animated_nodes": [
+  "R4X_FlyingDroneDeployer_Iris"
+ ],
+ "clips": [
+  {
+   "name": "Active",
+   "start": 1,
+   "end": 49,
+   "loop": true
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 1660,
+  "of_lod0": 0.958
+ },
+ "tris_lod1": 1660,
+ "s_export": 0.5,
+ "port_contact": [
+  {
+   "dir": "down",
+   "flush_pct": 100.0,
+   "PASS": true
+  }
+ ],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.0,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4X_FlyingDroneDeployer_02_BrutalIndustrial"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_2_base",
+    "R4X_FlyingDroneDeployer_2_base.png",
+    "R4X_FlyingDroneDeployer_2_emission",
+    "R4X_FlyingDroneDeployer_2_emission.png",
+    "R4X_FlyingDroneDeployer_2_normal",
+    "R4X_FlyingDroneDeployer_2_normal.png",
+    "R4X_FlyingDroneDeployer_2_orm",
+    "R4X_FlyingDroneDeployer_2_orm.png"
+   ],
+   "actions": 2,
+   "triangles": 1732,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.0,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4X_FlyingDroneDeployer_02_BrutalIndustrial"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_2_base",
+    "R4X_FlyingDroneDeployer_2_base.png",
+    "R4X_FlyingDroneDeployer_2_base.png.001",
+    "R4X_FlyingDroneDeployer_2_emission",
+    "R4X_FlyingDroneDeployer_2_emission.png",
+    "R4X_FlyingDroneDeployer_2_emission.png.001",
+    "R4X_FlyingDroneDeployer_2_normal",
+    "R4X_FlyingDroneDeployer_2_normal.png",
+    "R4X_FlyingDroneDeployer_2_normal.png.001",
+    "R4X_FlyingDroneDeployer_2_orm",
+    "R4X_FlyingDroneDeployer_2_orm.png"
+   ],
+   "actions": 8,
+   "triangles": 1732,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4X_FlyingDroneDeployer.fbx": {
+   "sha256": "6c09a0034d4e76e34ef771f5a013025bf586a244365563933062895c64df2657",
+   "bytes": 5148876
+  },
+  "R4X_FlyingDroneDeployer.glb": {
+   "sha256": "e0add246167f369012bf0ff627dadbe05d46014d2f967cfa59b6fefc5064771b",
+   "bytes": 9667244
+  },
+  "R4X_FlyingDroneDeployer_LOD1.fbx": {
+   "sha256": "ae84afb1bf47a7e555c5d676573464c59af22357d598f0e50dbd030a52eef7a7",
+   "bytes": 5095260
+  },
+  "R4X_FlyingDroneDeployer_LOD1.glb": {
+   "sha256": "fc75a6bee849c011c3e5de91085a09c7b68de93fd139bea91a6da21923a99113",
+   "bytes": 9661572
+  }
+ },
+ "triangles": 1732,
+ "s_qa": 0.4,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

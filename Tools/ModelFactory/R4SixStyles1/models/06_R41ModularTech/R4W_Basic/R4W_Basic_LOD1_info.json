@@ -1,0 +1,76 @@
+{
+ "cid": "R4W_Basic",
+ "source": "<WORKDIR>\\R4_Six1\\f2\\models\\06_R41ModularTech\\R4W_Basic\\R4W_Basic.glb",
+ "rule": "rest pose, MuzzleFlash and outline shell left out, joined, hlod.lod1 planar dissolve",
+ "lod1": {
+  "method": "DECIMATE collapse 0.50 (automatic, the rule of the original R4 model)",
+  "triangles": 6298,
+  "dropped_loose_details": []
+ },
+ "tris_lod1": 6298,
+ "source_bounds": [
+  [
+   -0.2565,
+   -0.62,
+   -0.26
+  ],
+  [
+   0.2565,
+   0.257,
+   0.236
+  ]
+ ],
+ "lod1_bounds": [
+  [
+   -0.25635,
+   -0.62,
+   -0.26
+  ],
+  [
+   0.25635,
+   0.257,
+   0.236
+  ]
+ ],
+ "reimport": {
+  ".glb": {
+   "objects": [
+    "R4W_Basic_LOD1"
+   ],
+   "tris": 6298,
+   "bounds_dev_mm": 0.0,
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Barrel_Heat",
+    "Energy_Hot",
+    "Hazard_Yellow",
+    "Sensor_Eye_Red",
+    "Steel_Light",
+    "TeamColor_Red"
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "objects": [
+    "R4W_Basic_LOD1"
+   ],
+   "tris": 6298,
+   "bounds_dev_mm": 0.0,
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Barrel_Heat",
+    "Energy_Hot",
+    "Hazard_Yellow",
+    "Sensor_Eye_Red",
+    "Steel_Light",
+    "TeamColor_Red"
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS"
+}

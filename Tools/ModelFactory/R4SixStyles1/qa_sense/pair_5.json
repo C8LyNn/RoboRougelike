@@ -1,0 +1,41 @@
+{
+ "mode": "PAIR",
+ "dep": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+ "drone": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\FlyingDrone\\FlyingDrone.glb",
+ "dock_z": 0.0345,
+ "drone_min_z_mm": 34.5,
+ "free_drop_mm": 0.5,
+ "touch_gap_mm": 0.5,
+ "overlap_tris": 0,
+ "overlap_at_mm": null,
+ "closest": [
+  [
+   0.5,
+   "FlyingDrone_Body",
+   "R4X_FlyingDroneDeployer_Iris"
+  ],
+  [
+   10.4,
+   "FlyingDrone_Body",
+   "R4X_FlyingDroneDeployer_Iris"
+  ],
+  [
+   10.4,
+   "FlyingDrone_Body",
+   "R4X_FlyingDroneDeployer_Iris"
+  ],
+  [
+   10.4,
+   "FlyingDrone_Body",
+   "R4X_FlyingDroneDeployer_Iris"
+  ],
+  [
+   61.8,
+   "FlyingDrone_Body",
+   "R4X_FlyingDroneDeployer_Body"
+  ]
+ ],
+ "launch_clip_cuts": [],
+ "straight_lift_cuts": [],
+ "status": "OK"
+}

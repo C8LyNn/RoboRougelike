@@ -1,0 +1,105 @@
+{
+ "cid": "R4W_Basic",
+ "source": "Pass 4 hero4 A_Sleek R4W_Basic.glb (PR #1294)",
+ "change": "sense repair of the kept model: 5 parts added / moved so every part holds on to the structure",
+ "ops": [
+  {
+   "node": "R4W_Basic_VentL",
+   "animation": "removed - the part now only follows its parent",
+   "why": "on Recoil the side vent swung 20 deg outwards on a hinge at its back edge and went 2 cm into the yoke arm: the vents are fixed now",
+   "op": "freeze"
+  },
+  {
+   "node": "R4W_Basic_VentR",
+   "animation": "removed - the part now only follows its parent",
+   "why": "on Recoil the side vent swung 20 deg outwards on a hinge at its back edge and went 2 cm into the yoke arm: the vents are fixed now",
+   "op": "freeze"
+  },
+  {
+   "node": "R4W_Basic_Yaw",
+   "faces": 64,
+   "donor_face": 616,
+   "centre_mm": [
+    -140,
+    0,
+    135
+   ],
+   "why": "the receiver hung 18 mm clear of both yoke arms on an invisible axis: bearing bosses from the yoke reach the receiver side (3 mm running clearance)",
+   "op": "tube"
+  },
+  {
+   "node": "R4W_Basic_Yaw",
+   "faces": 64,
+   "donor_face": 623,
+   "centre_mm": [
+    141,
+    0,
+    135
+   ],
+   "why": "the receiver hung 18 mm clear of both yoke arms on an invisible axis: bearing bosses from the yoke reach the receiver side (3 mm running clearance)",
+   "op": "tube"
+  },
+  {
+   "node": "R4W_Basic_Yaw",
+   "verts": 126,
+   "why": "at full elevation (+35 deg) the tail of the receiver went into the front of the counterweight: the counterweight block is 18 mm shorter at the front (back face kept)",
+   "op": "squash"
+  }
+ ],
+ "meshes_outlined": 0,
+ "gltf_animation_mode": "ACTIONS",
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "anim_pos_dev_mm": 0.0,
+   "frame_offset": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "anim_pos_dev_mm": 0.0,
+   "frame_offset": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4W_Basic.fbx": {
+   "sha256": "daf132bbd060f2664a570633a08629b7dd75369ecf5b8ff49f88d0af340c6712",
+   "bytes": 3074652
+  },
+  "R4W_Basic.glb": {
+   "sha256": "010863d2ae844d9f34d5881ebe764cbfde0399cc7f88121904a5fff456c01a14",
+   "bytes": 3794788
+  },
+  "R4W_Basic_LOD1.fbx": {
+   "sha256": "f481cf2d7cda206d046cae03956309eaf4994225af9793493cc192496690913c",
+   "bytes": 2905868
+  },
+  "R4W_Basic_LOD1.glb": {
+   "sha256": "4f1791ef548c3e6d5503aceb04c536b5389a89ae67471ba23c0f78d8e09d5695",
+   "bytes": 3762404
+  },
+  "R4W_Basic_SOURCE.blend": {
+   "sha256": "3dcf4b99d9009b832156a5ac1b9e5d4ad9bc5cc0b9b4b082e750b1f75275e588",
+   "bytes": 3683089
+  }
+ },
+ "lod1": "R4W_Basic_LOD1.glb / .fbx rebuilt from the repaired LOD0 (scripts/s6lod.py, method keep: the joined game mesh in the rest pose without MuzzleFlash; every planar dissolve 14/9/5 deg lifted a part off its neighbour in the LOD1 sense check) - details in R4W_Basic_LOD1_info.json; textures/ = the Pass 4 A_Sleek texture set; R4W_Basic_QA_source.json = QA of the Pass 4 source; the editable file of the repaired model is R4W_Basic_SOURCE.blend",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

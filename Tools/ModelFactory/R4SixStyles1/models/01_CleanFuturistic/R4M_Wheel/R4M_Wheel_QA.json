@@ -1,0 +1,170 @@
+{
+ "cid": "R4M_Wheel",
+ "style": "1",
+ "label": "01_CleanFuturistic",
+ "size": 2048,
+ "construction": "Clean Futuristic wheel - rebuilt after the moodboard review (rr-style-directions: one long smooth profile, panels hide the mechanism, 'light rims of the wheels run into thin fairing lines', test 128 px = slim body + light). Rotor: new - a smooth slick tyre with rounded shoulders, a closed ceramic disc with a cyan light ring at the rim and three narrow seams (spin cue). Mount: one smooth fairing from the plate down to an enclosed motor; a near full-width aero fender whose outer edge is a thin cyan line - the light ring continues in it. (The Pass 4 chevron rotor read exactly like the 02 wheel in greyscale - moodboard boundary 01 <-> 02.)",
+ "meta": {},
+ "tris_hi": {
+  "Rotor": 15840,
+  "Mount": 8912
+ },
+ "tris_lo": {
+  "Rotor": 1952,
+  "Mount": 1624
+ },
+ "s_build": 0.2,
+ "violations": [],
+ "bounds": {
+  "Rotor": [
+   [
+    -0.17000000178813934,
+    -0.39079999923706055,
+    -0.6507999897003174
+   ],
+   [
+    0.17599999904632568,
+    0.39079999923706055,
+    0.13079999387264252
+   ]
+  ],
+  "Mount": [
+   [
+    -0.25049999356269836,
+    -0.25,
+    -0.3100000023841858
+   ],
+   [
+    0.25,
+    0.25,
+    0.25999999046325684
+   ]
+  ]
+ },
+ "s_bake": 142.4,
+ "s_skin": 398.6,
+ "animated_nodes": [
+  "R4M_Wheel_Rotor"
+ ],
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "Roll",
+   "start": 27,
+   "end": 51,
+   "loop": true
+  },
+  {
+   "name": "Reverse",
+   "start": 53,
+   "end": 77,
+   "loop": true
+  },
+  {
+   "name": "Brake",
+   "start": 79,
+   "end": 103,
+   "loop": false
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 1720,
+  "of_lod0": 0.481
+ },
+ "tris_lod1": 1720,
+ "s_export": 1.3,
+ "port_contact": [
+  {
+   "dir": "up",
+   "flush_pct": 100.0,
+   "PASS": true
+  }
+ ],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.05,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4M_Wheel_01_CleanFuturistic"
+   ],
+   "textures": [
+    "R4M_Wheel_1_base",
+    "R4M_Wheel_1_base.png",
+    "R4M_Wheel_1_emission",
+    "R4M_Wheel_1_emission.png",
+    "R4M_Wheel_1_normal",
+    "R4M_Wheel_1_normal.png",
+    "R4M_Wheel_1_orm",
+    "R4M_Wheel_1_orm.png"
+   ],
+   "actions": 2,
+   "triangles": 3576,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.05,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4M_Wheel_01_CleanFuturistic"
+   ],
+   "textures": [
+    "R4M_Wheel_1_base",
+    "R4M_Wheel_1_base.png",
+    "R4M_Wheel_1_base.png.001",
+    "R4M_Wheel_1_emission",
+    "R4M_Wheel_1_emission.png",
+    "R4M_Wheel_1_emission.png.001",
+    "R4M_Wheel_1_normal",
+    "R4M_Wheel_1_normal.png",
+    "R4M_Wheel_1_normal.png.001",
+    "R4M_Wheel_1_orm",
+    "R4M_Wheel_1_orm.png"
+   ],
+   "actions": 8,
+   "triangles": 3576,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4M_Wheel.fbx": {
+   "sha256": "b72f06f74f02d5b0234ea88ebc860d27af325873b2353536c72d5f4ba87fb6ab",
+   "bytes": 2694716
+  },
+  "R4M_Wheel.glb": {
+   "sha256": "2c14f028148ae352c20db8fd64239cea61ee85eeeedf963eab349415d2161127",
+   "bytes": 5061272
+  },
+  "R4M_Wheel_LOD1.fbx": {
+   "sha256": "6fd57a123f3b6f4aea6413ef30344379f11da03aacbb22ab9226bd2f4d356600",
+   "bytes": 2593868
+  },
+  "R4M_Wheel_LOD1.glb": {
+   "sha256": "8639ffee316a2ccc869d9be3198d090652afac2b7abb4fa6feade45686ade226",
+   "bytes": 5006052
+  }
+ },
+ "triangles": 3576,
+ "s_qa": 0.9,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

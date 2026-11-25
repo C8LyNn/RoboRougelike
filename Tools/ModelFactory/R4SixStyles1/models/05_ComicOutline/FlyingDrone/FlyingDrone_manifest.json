@@ -1,0 +1,119 @@
+{
+ "id": "FlyingDrone",
+ "style": "05_ComicOutline",
+ "units": "metre 1:1",
+ "axes": "file/Unity +Z forward, +Y up (Blender -Y forward, Z up)",
+ "source_contract": "NEW - no drone model exists in the repository or in the game code (catalogue #57: 'wypuszcza drony latajace'). Contract = PROPOSAL.",
+ "hierarchy": {
+  "FlyingDrone_ROOT": null,
+  "FlyingDrone_Body": "FlyingDrone_ROOT",
+  "FlyingDrone_Rotor_1": "FlyingDrone_Body",
+  "FlyingDrone_Rotor_2": "FlyingDrone_Body",
+  "Socket_Dock": "FlyingDrone_ROOT",
+  "Muzzle": "FlyingDrone_Body"
+ },
+ "pivots": {
+  "FlyingDrone_Body": [
+   0.0,
+   0.0,
+   0.07400000095367432
+  ],
+  "FlyingDrone_Rotor_1": [
+   -0.12800000607967377,
+   0.009999999776482582,
+   0.15800000727176666
+  ],
+  "FlyingDrone_Rotor_2": [
+   0.12800000607967377,
+   0.009999999776482582,
+   0.15800000727176666
+  ]
+ },
+ "empties": {
+  "Socket_Dock": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  "Muzzle": {
+   "parent": "Body",
+   "loc": [
+    0.0,
+    -0.10000000149011612,
+    0.07599999755620956
+   ]
+  }
+ },
+ "clips": [
+  {
+   "name": "Docked",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "Launch",
+   "start": 27,
+   "end": 51,
+   "loop": false
+  },
+  {
+   "name": "Hover",
+   "start": 53,
+   "end": 77,
+   "loop": true
+  },
+  {
+   "name": "Fly",
+   "start": 79,
+   "end": 103,
+   "loop": true
+  }
+ ],
+ "fps": 24,
+ "animated_nodes": [
+  "FlyingDrone_Body",
+  "FlyingDrone_Rotor_1",
+  "FlyingDrone_Rotor_2"
+ ],
+ "materials": [
+  "FlyingDrone_05_ComicOutline",
+  "R4P_Outline"
+ ],
+ "textures": {
+  "base": "FlyingDrone_5_base.png",
+  "orm": "FlyingDrone_5_orm.png",
+  "normal": "FlyingDrone_5_normal.png",
+  "emission": "FlyingDrone_5_emission.png"
+ },
+ "construction": "Comic Outline drone: a bubble body with ONE huge eye (the same fat ring as the launcher's porthole), two oversized rotors on short stalks like ears (a bicopter), stubby fins; the function part - the eye and the rotors - is drawn bigger than it would be",
+ "meta": {
+  "body_pivot": [
+   0,
+   0,
+   0.074
+  ],
+  "rotors": {
+   "Rotor_1": [
+    -0.128,
+    0.01,
+    0.158
+   ],
+   "Rotor_2": [
+    0.128,
+    0.01,
+    0.158
+   ]
+  },
+  "muzzle": [
+   0,
+   -0.1,
+   0.076
+  ],
+  "dock_z": 0.0
+ },
+ "gameplay": "visual only: no gameplay capability, timing or collider is added"
+}

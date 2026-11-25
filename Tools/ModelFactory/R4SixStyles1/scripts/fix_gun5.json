@@ -1,0 +1,6 @@
+[
+ {"op": "squash", "node": "R4W_Basic_Pitch", "min": [-0.140, -0.185, 0.100], "max": [-0.1295, -0.030, 0.215], "axis": "x", "anchor": -0.1295, "factor": 0.3,
+  "why": "at full elevation (+35 deg, frame 83) the lower front corner of the left receiver side plate (x -137 mm) swept into the yoke cheek (inner face x -138 mm): the parts of the side plate and its trim strips that stand out past x -129.5 mm are pulled in to at most -132 mm (6 mm running clearance); the trunnion zone near the pitch axis is not touched"},
+ {"op": "squash", "node": "R4W_Basic_Pitch", "min": [0.1295, -0.185, 0.100], "max": [0.140, -0.030, 0.215], "axis": "x", "anchor": 0.1295, "factor": 0.3,
+  "why": "the same on the right side plate (the gun is mirror-symmetric)"}
+]

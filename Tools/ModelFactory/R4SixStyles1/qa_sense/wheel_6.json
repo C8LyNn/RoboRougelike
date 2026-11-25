@@ -1,0 +1,22 @@
+{
+ "mode": "MODEL",
+ "file": "<WORKDIR>\\R4_1232_pilot\\ref\\movement\\Tools\\ModelFactory\\R4Movement940\\R4M_Wheel\\R4M_Wheel.glb",
+ "cid": "R4M_Wheel",
+ "islands": 1429,
+ "groups": 1,
+ "floating": [],
+ "collisions_worst": [],
+ "collision_frames": 0,
+ "function": {
+  "ground_gap_mm": 0.0,
+  "rotor_centre_off_mm": [
+   0.0,
+   -0.0
+  ],
+  "roll_ground_var_mm": 0.0,
+  "roll_ground_gap_max_mm": 0.1,
+  "mount_clearance_mm": 338.0,
+  "issues": []
+ },
+ "status": "OK"
+}

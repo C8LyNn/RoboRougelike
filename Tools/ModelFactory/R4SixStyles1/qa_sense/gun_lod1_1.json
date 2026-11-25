@@ -1,0 +1,15 @@
+{
+ "mode": "MODEL",
+ "file": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\R4W_Basic\\R4W_Basic_LOD1.glb",
+ "cid": "R4W_Basic",
+ "islands": 558,
+ "groups": 1,
+ "floating": [],
+ "collisions_worst": [],
+ "collision_frames": 0,
+ "function": {
+  "static_lod1": true,
+  "issues": []
+ },
+ "status": "OK"
+}

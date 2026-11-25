@@ -1,0 +1,15 @@
+{
+ "mode": "MODEL",
+ "file": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+ "cid": "R4X_FlyingDroneDeployer",
+ "islands": 183,
+ "groups": 1,
+ "floating": [],
+ "collisions_worst": [],
+ "collision_frames": 0,
+ "function": {
+  "iris_centre_off_mm": 0.0,
+  "issues": []
+ },
+ "status": "OK"
+}

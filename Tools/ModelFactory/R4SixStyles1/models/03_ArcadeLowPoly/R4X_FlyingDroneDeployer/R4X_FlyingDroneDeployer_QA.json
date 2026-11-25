@@ -1,0 +1,155 @@
+{
+ "cid": "R4X_FlyingDroneDeployer",
+ "style": "3",
+ "label": "03_ArcadeLowPoly",
+ "size": 2048,
+ "construction": "Arcade Low-Poly: a hexagonal deck on three wedge legs with open gaps between them (light shows through), a square foot plate for the port; the pad is a sunk hexagon with ONE big lime triangle pointing forward (orange before the moodboard palette review); six wedge petals round the pad spin; every surface is a flat facet - no bevel smoothing, segment counts of 6",
+ "meta": {
+  "dock_z": 0.0245,
+  "family": "hexagon + big lime triangle"
+ },
+ "tris_hi": {
+  "Body": 188,
+  "Iris": 72
+ },
+ "tris_lo": {
+  "Body": 188,
+  "Iris": 72
+ },
+ "s_build": 0.1,
+ "violations": [],
+ "bounds": {
+  "Body": [
+   [
+    -0.25,
+    -0.25,
+    -0.25999999046325684
+   ],
+   [
+    0.25,
+    0.25,
+    0.03999999910593033
+   ]
+  ],
+  "Iris": [
+   [
+    -0.2232999950647354,
+    -0.22200000286102295,
+    0.04050000011920929
+   ],
+   [
+    0.2232999950647354,
+    0.22200000286102295,
+    0.06599999964237213
+   ]
+  ]
+ },
+ "s_bake": 53.6,
+ "s_skin": 116.0,
+ "animated_nodes": [
+  "R4X_FlyingDroneDeployer_Iris"
+ ],
+ "clips": [
+  {
+   "name": "Active",
+   "start": 1,
+   "end": 49,
+   "loop": true
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 260,
+  "of_lod0": 1.0
+ },
+ "tris_lod1": 260,
+ "s_export": 0.4,
+ "port_contact": [
+  {
+   "dir": "down",
+   "flush_pct": 99.3,
+   "PASS": true
+  }
+ ],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.04,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4X_FlyingDroneDeployer_03_ArcadeLowPoly"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_3_base",
+    "R4X_FlyingDroneDeployer_3_base.png",
+    "R4X_FlyingDroneDeployer_3_emission",
+    "R4X_FlyingDroneDeployer_3_emission.png",
+    "R4X_FlyingDroneDeployer_3_normal",
+    "R4X_FlyingDroneDeployer_3_normal.png",
+    "R4X_FlyingDroneDeployer_3_orm",
+    "R4X_FlyingDroneDeployer_3_orm.png"
+   ],
+   "actions": 2,
+   "triangles": 260,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.04,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4X_FlyingDroneDeployer_03_ArcadeLowPoly"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_3_base",
+    "R4X_FlyingDroneDeployer_3_base.png",
+    "R4X_FlyingDroneDeployer_3_base.png.001",
+    "R4X_FlyingDroneDeployer_3_emission",
+    "R4X_FlyingDroneDeployer_3_emission.png",
+    "R4X_FlyingDroneDeployer_3_emission.png.001",
+    "R4X_FlyingDroneDeployer_3_normal",
+    "R4X_FlyingDroneDeployer_3_normal.png",
+    "R4X_FlyingDroneDeployer_3_normal.png.001",
+    "R4X_FlyingDroneDeployer_3_orm",
+    "R4X_FlyingDroneDeployer_3_orm.png"
+   ],
+   "actions": 8,
+   "triangles": 260,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4X_FlyingDroneDeployer.fbx": {
+   "sha256": "7b81a775bb030694a1c6ee0a0aeedfb042bf7f833249d655e5a0537442f46c36",
+   "bytes": 1557724
+  },
+  "R4X_FlyingDroneDeployer.glb": {
+   "sha256": "7882c23e74fdb8470eebfd4330d224e8335d456bd54091889f9ed85eb30703d4",
+   "bytes": 4032184
+  },
+  "R4X_FlyingDroneDeployer_LOD1.fbx": {
+   "sha256": "929e63d412993ab32077e0412e5b2f5043c0331827b5f500bcfeed9f7d503535",
+   "bytes": 1503756
+  },
+  "R4X_FlyingDroneDeployer_LOD1.glb": {
+   "sha256": "33f6ac409dec9f39b60ddc1e579db3fe38202ba684fc93e087adec3a5878f0b3",
+   "bytes": 4029252
+  }
+ },
+ "triangles": 260,
+ "s_qa": 0.2,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

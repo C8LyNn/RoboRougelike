@@ -1,0 +1,45 @@
+{
+ "mode": "PAIR",
+ "dep": "<WORKDIR>\\R4_Six1\\f1\\models\\06_R41ModularTech\\R4X_FlyingDroneDeployer\\R4X_FlyingDroneDeployer.glb",
+ "drone": "<WORKDIR>\\R4_Six1\\f1\\models\\06_R41ModularTech\\FlyingDrone\\FlyingDrone.glb",
+ "dock_z": 0.066,
+ "drone_min_z_mm": 66.0,
+ "free_drop_mm": 0.0,
+ "touch_gap_mm": 0.0,
+ "overlap_tris": 2,
+ "overlap_at_mm": [
+  47,
+  -51,
+  66
+ ],
+ "closest": [
+  [
+   0.0,
+   "FlyingDrone_Body",
+   "R4X_FlyingDroneDeployer_Body"
+  ],
+  [
+   0.0,
+   "FlyingDrone_Body",
+   "R4X_FlyingDroneDeployer_Body"
+  ],
+  [
+   0.0,
+   "FlyingDrone_Body",
+   "R4X_FlyingDroneDeployer_Body"
+  ],
+  [
+   0.0,
+   "FlyingDrone_Body",
+   "R4X_FlyingDroneDeployer_Body"
+  ],
+  [
+   0.0,
+   "FlyingDrone_Body",
+   "R4X_FlyingDroneDeployer_Body"
+  ]
+ ],
+ "launch_clip_cuts": [],
+ "straight_lift_cuts": [],
+ "status": "OK"
+}

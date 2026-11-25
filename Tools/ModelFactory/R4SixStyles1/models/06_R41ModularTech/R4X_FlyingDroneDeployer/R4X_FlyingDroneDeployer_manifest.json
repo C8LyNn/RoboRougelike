@@ -1,0 +1,80 @@
+{
+ "id": "R4X_FlyingDroneDeployer",
+ "style": "06_R41ModularTech",
+ "units": "metre 1:1",
+ "axes": "file/Unity +Z forward, +Y up (Blender -Y forward, Z up)",
+ "source_contract": "Tools/ModelFactory/R4ModulesSleek1x1/modules/R4X_FlyingDroneDeployer (PR #1238) + atlas A-E (R4StyleAtlas5/atlas)",
+ "hierarchy": {
+  "R4X_FlyingDroneDeployer_ROOT": null,
+  "R4X_FlyingDroneDeployer_Body": "R4X_FlyingDroneDeployer_ROOT",
+  "R4X_FlyingDroneDeployer_Iris": "R4X_FlyingDroneDeployer_ROOT",
+  "Port_down_000": "R4X_FlyingDroneDeployer_ROOT",
+  "Socket_Mount": "R4X_FlyingDroneDeployer_ROOT",
+  "Deploy_Out": "R4X_FlyingDroneDeployer_ROOT"
+ },
+ "pivots": {
+  "R4X_FlyingDroneDeployer_Body": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "R4X_FlyingDroneDeployer_Iris": [
+   0.0,
+   0.0,
+   0.10000000149011612
+  ]
+ },
+ "empties": {
+  "Port_down_000": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.25999999046325684
+   ]
+  },
+  "Socket_Mount": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.25999999046325684
+   ]
+  },
+  "Deploy_Out": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    0.25999999046325684
+   ]
+  }
+ },
+ "clips": [
+  {
+   "name": "Active",
+   "start": 1,
+   "end": 49,
+   "loop": true
+  }
+ ],
+ "fps": 24,
+ "animated_nodes": [
+  "R4X_FlyingDroneDeployer_Iris"
+ ],
+ "materials": [
+  "R4X_FlyingDroneDeployer_06_R41ModularTech"
+ ],
+ "textures": {
+  "base": "R4X_FlyingDroneDeployer_6_base.png",
+  "orm": "R4X_FlyingDroneDeployer_6_orm.png",
+  "normal": "R4X_FlyingDroneDeployer_6_normal.png",
+  "emission": "R4X_FlyingDroneDeployer_6_emission.png"
+ },
+ "construction": "R41 Modular Tech: the R4.1 pedestal language applied to a launcher - black square plinth with corner tabs and hazard trim, a chamfered octagonal gunmetal skirt with louvres and the team-red band, an orange eye ring on the front face; on top a round landing pad with the light \"H\" plate (kept from the R4 1x1 deployer) and an orange guide ring with four short guide blocks (the four masts of the 1x1 model cut down so the pad stays visible from above)",
+ "meta": {
+  "dock_z": 0.066,
+  "family": "orange eye ring + team-red band + octagonal chamfered gunmetal"
+ },
+ "gameplay": "visual only: no gameplay capability, timing or collider is added"
+}

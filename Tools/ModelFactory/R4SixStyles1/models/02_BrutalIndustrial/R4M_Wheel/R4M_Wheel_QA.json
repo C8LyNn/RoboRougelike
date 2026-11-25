@@ -1,0 +1,178 @@
+{
+ "cid": "R4M_Wheel",
+ "style": "2",
+ "label": "02_BrutalIndustrial",
+ "size": 2048,
+ "construction": "Brutal Industrial wheel. Rotor: the Pass 4 Brutal rotor (tractor bars, bolted wheel-weight ring, cast hub) moved onto the axle. Mount: new - the load path is the shape: a thick plate, one massive box arm with two gussets straight down to a big axle boss, a coil-over damper beside it from plate to boss, a brake caliper on the inner disc, hazard bands on the arm",
+ "meta": {
+  "rotor_fit": {
+   "scale": 1.0097,
+   "tread_r": 0.39,
+   "turned_deg": 107.25,
+   "rolling_var_mm": 2.84,
+   "inlays_pushed_in": []
+  }
+ },
+ "tris_hi": {
+  "Rotor": 26760,
+  "Mount": 4936
+ },
+ "tris_lo": {
+  "Rotor": 4912,
+  "Mount": 1264
+ },
+ "s_build": 1.7,
+ "violations": [],
+ "bounds": {
+  "Rotor": [
+   [
+    -0.16899999976158142,
+    -0.3871999979019165,
+    -0.6499999761581421
+   ],
+   [
+    0.16899999976158142,
+    0.3871999979019165,
+    0.12999999523162842
+   ]
+  ],
+  "Mount": [
+   [
+    -0.2540000081062317,
+    -0.25,
+    -0.31200000643730164
+   ],
+   [
+    0.25,
+    0.25,
+    0.25999999046325684
+   ]
+  ]
+ },
+ "s_bake": 364.7,
+ "s_skin": 442.8,
+ "animated_nodes": [
+  "R4M_Wheel_Rotor"
+ ],
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "Roll",
+   "start": 27,
+   "end": 51,
+   "loop": true
+  },
+  {
+   "name": "Reverse",
+   "start": 53,
+   "end": 77,
+   "loop": true
+  },
+  {
+   "name": "Brake",
+   "start": 79,
+   "end": 103,
+   "loop": false
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 4658,
+  "of_lod0": 0.754
+ },
+ "tris_lod1": 4658,
+ "s_export": 0.6,
+ "port_contact": [
+  {
+   "dir": "up",
+   "flush_pct": 100.0,
+   "PASS": true
+  }
+ ],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.03,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4M_Wheel_02_BrutalIndustrial"
+   ],
+   "textures": [
+    "R4M_Wheel_2_base",
+    "R4M_Wheel_2_base.png",
+    "R4M_Wheel_2_emission",
+    "R4M_Wheel_2_emission.png",
+    "R4M_Wheel_2_normal",
+    "R4M_Wheel_2_normal.png",
+    "R4M_Wheel_2_orm",
+    "R4M_Wheel_2_orm.png"
+   ],
+   "actions": 2,
+   "triangles": 6176,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.03,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4M_Wheel_02_BrutalIndustrial"
+   ],
+   "textures": [
+    "R4M_Wheel_2_base",
+    "R4M_Wheel_2_base.png",
+    "R4M_Wheel_2_base.png.001",
+    "R4M_Wheel_2_emission",
+    "R4M_Wheel_2_emission.png",
+    "R4M_Wheel_2_emission.png.001",
+    "R4M_Wheel_2_normal",
+    "R4M_Wheel_2_normal.png",
+    "R4M_Wheel_2_normal.png.001",
+    "R4M_Wheel_2_orm",
+    "R4M_Wheel_2_orm.png"
+   ],
+   "actions": 8,
+   "triangles": 6176,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4M_Wheel.fbx": {
+   "sha256": "c4fd4c477746a94ce6ef5b4f70959b73a407b7c3c94dadad5b546c6d4d66d92b",
+   "bytes": 6307004
+  },
+  "R4M_Wheel.glb": {
+   "sha256": "156087b097b66bca535d7c24b5f74c474946cfb6a3a5675932b8bf8a86a636a2",
+   "bytes": 10214732
+  },
+  "R4M_Wheel_LOD1.fbx": {
+   "sha256": "ea9e7bcec8ec9beb067ff903534e133bb5e06e94ed76a6c33d4faf01f23b39fd",
+   "bytes": 6216044
+  },
+  "R4M_Wheel_LOD1.glb": {
+   "sha256": "855863d3fae956061627defc579248f53cda827889d1786dccf8b04b4877427c",
+   "bytes": 10154012
+  }
+ },
+ "triangles": 6176,
+ "s_qa": 0.5,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

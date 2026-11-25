@@ -1,0 +1,211 @@
+[
+ {
+  "op": "tube",
+  "node": "R4W_Basic_Barrel",
+  "axis": "y",
+  "c": [
+   0,
+   0,
+   0.135
+  ],
+  "r0": 0.019,
+  "r1": 0.029,
+  "t0": -0.553,
+  "t1": -0.543,
+  "seg": 10,
+  "why": "the welded muzzle cage hung 5 mm clear of the barrel: a collar ties its rear hoop to the barrel"
+ },
+ {
+  "op": "tube",
+  "node": "R4W_Basic_Pitch",
+  "axis": "y",
+  "c": [
+   0,
+   0,
+   0.135
+  ],
+  "r0": 0.044,
+  "r1": 0.052,
+  "t0": -0.192,
+  "t1": -0.156,
+  "seg": 12,
+  "why": "the heat shield ended 20 mm short of the receiver: a clamp ring carries it to the front cross plate"
+ },
+ {
+  "op": "box",
+  "node": "R4W_Basic_Pitch",
+  "min": [
+   -0.054,
+   -0.20600000000000002,
+   0.1
+  ],
+  "max": [
+   -0.044,
+   -0.194,
+   0.122
+  ],
+  "why": "the shield straps stopped below the heat-shield edge: risers join them"
+ },
+ {
+  "op": "box",
+  "node": "R4W_Basic_Pitch",
+  "min": [
+   0.044,
+   -0.20600000000000002,
+   0.1
+  ],
+  "max": [
+   0.054,
+   -0.194,
+   0.122
+  ],
+  "why": "the shield straps stopped below the heat-shield edge: risers join them"
+ },
+ {
+  "op": "box",
+  "node": "R4W_Basic_Pitch",
+  "min": [
+   -0.054,
+   -0.39,
+   0.1
+  ],
+  "max": [
+   -0.044,
+   -0.378,
+   0.122
+  ],
+  "why": "the shield straps stopped below the heat-shield edge: risers join them"
+ },
+ {
+  "op": "box",
+  "node": "R4W_Basic_Pitch",
+  "min": [
+   0.044,
+   -0.39,
+   0.1
+  ],
+  "max": [
+   0.054,
+   -0.378,
+   0.122
+  ],
+  "why": "the shield straps stopped below the heat-shield edge: risers join them"
+ },
+ {
+  "op": "box",
+  "node": "R4W_Basic_Pitch",
+  "min": [
+   0.076,
+   0.019999999999999997,
+   0.1
+  ],
+  "max": [
+   0.098,
+   0.04,
+   0.12
+  ],
+  "why": "the one-sided armour shield floated 18 mm off the frame rail: four spacer blocks under its rivets"
+ },
+ {
+  "op": "box",
+  "node": "R4W_Basic_Pitch",
+  "min": [
+   0.076,
+   0.019999999999999997,
+   0.175
+  ],
+  "max": [
+   0.098,
+   0.04,
+   0.195
+  ],
+  "why": "the one-sided armour shield floated 18 mm off the frame rail: four spacer blocks under its rivets"
+ },
+ {
+  "op": "box",
+  "node": "R4W_Basic_Pitch",
+  "min": [
+   0.076,
+   -0.16,
+   0.1
+  ],
+  "max": [
+   0.098,
+   -0.13999999999999999,
+   0.12
+  ],
+  "why": "the one-sided armour shield floated 18 mm off the frame rail: four spacer blocks under its rivets"
+ },
+ {
+  "op": "box",
+  "node": "R4W_Basic_Pitch",
+  "min": [
+   0.076,
+   -0.16,
+   0.175
+  ],
+  "max": [
+   0.098,
+   -0.13999999999999999,
+   0.195
+  ],
+  "why": "the one-sided armour shield floated 18 mm off the frame rail: four spacer blocks under its rivets"
+ },
+ {
+  "op": "box",
+  "node": "R4W_Basic_Yaw",
+  "min": [
+   -0.176,
+   -0.12,
+   0.04
+  ],
+  "max": [
+   -0.1,
+   0.15,
+   0.052
+  ],
+  "why": "the tall left bracket stood past the edge of the turntable: an angle foot like the right one"
+ },
+ {
+  "op": "move",
+  "node": "R4W_Basic_Rattle",
+  "d": [
+   0,
+   0,
+   -0.0035
+  ],
+  "why": "the loose cover rested 4 mm above the rails: it now lies on them (it still rattles on Fire)"
+ },
+ {
+  "op": "tube",
+  "node": "R4W_Basic_Yaw",
+  "axis": "x",
+  "c": [
+   0,
+   0,
+   0.135
+  ],
+  "r0": 0.0035,
+  "r1": 0.013,
+  "t0": 0.086,
+  "t1": 0.164,
+  "seg": 10,
+  "why": "the whole cradle hung 40-70 mm between the brackets with nothing on the pitch axis: an axle from each bracket into the breech pin"
+ },
+ {
+  "op": "tube",
+  "node": "R4W_Basic_Yaw",
+  "axis": "x",
+  "c": [
+   0,
+   0,
+   0.135
+  ],
+  "r0": 0.0035,
+  "r1": 0.013,
+  "t0": -0.164,
+  "t1": -0.086,
+  "seg": 10,
+  "why": "the whole cradle hung 40-70 mm between the brackets with nothing on the pitch axis: an axle from each bracket into the breech pin"
+ }
+]

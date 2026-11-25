@@ -1,0 +1,165 @@
+{
+ "cid": "R4X_FlyingDroneDeployer",
+ "style": "5",
+ "label": "05_ComicOutline",
+ "size": 2048,
+ "construction": "Comic Outline: exaggerated function - a squat rounded bun with a huge tilted launch porthole (fat navy bumper ring, oversized petal shutter that spins), a star badge on the front, stubby feet; proportions pushed: the porthole is almost the full width of the cell",
+ "meta": {
+  "dock_z": 0.0345,
+  "family": "fat navy bumper ring with orange inner band = the drone's eye ring",
+  "dock_z_note": "set from the sense check (s6sense PAIR: free drop / penetration of the docked drone)"
+ },
+ "tris_hi": {
+  "Body": 13056,
+  "Iris": 1660
+ },
+ "tris_lo": {
+  "Body": 2488,
+  "Iris": 304
+ },
+ "s_build": 0.1,
+ "violations": [],
+ "bounds": {
+  "Body": [
+   [
+    -0.24400000274181366,
+    -0.2460000067949295,
+    -0.25999999046325684
+   ],
+   [
+    0.24400000274181366,
+    0.24400000274181366,
+    0.03200000151991844
+   ]
+  ],
+  "Iris": [
+   [
+    -0.12849999964237213,
+    -0.13699999451637268,
+    -0.0020000000949949026
+   ],
+   [
+    0.13199999928474426,
+    0.13699999451637268,
+    0.03400000184774399
+   ]
+  ]
+ },
+ "s_bake": 84.1,
+ "outline": {
+  "method": "inverted hull in the node mesh, material R4P_Outline (back-face culled)",
+  "width_m": 0.012
+ },
+ "s_skin": 190.2,
+ "animated_nodes": [
+  "R4X_FlyingDroneDeployer_Iris"
+ ],
+ "clips": [
+  {
+   "name": "Active",
+   "start": 1,
+   "end": 49,
+   "loop": true
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 3668,
+  "of_lod0": 0.657
+ },
+ "tris_lod1": 3668,
+ "s_export": 0.7,
+ "port_contact": [
+  {
+   "dir": "down",
+   "flush_pct": 100.0,
+   "PASS": true
+  }
+ ],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.05,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4P_Outline",
+    "R4X_FlyingDroneDeployer_05_ComicOutline"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_5_base",
+    "R4X_FlyingDroneDeployer_5_base.png",
+    "R4X_FlyingDroneDeployer_5_emission",
+    "R4X_FlyingDroneDeployer_5_emission.png",
+    "R4X_FlyingDroneDeployer_5_normal",
+    "R4X_FlyingDroneDeployer_5_normal.png",
+    "R4X_FlyingDroneDeployer_5_orm",
+    "R4X_FlyingDroneDeployer_5_orm.png"
+   ],
+   "actions": 2,
+   "triangles": 5584,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.05,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4P_Outline",
+    "R4X_FlyingDroneDeployer_05_ComicOutline"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_5_base",
+    "R4X_FlyingDroneDeployer_5_base.png",
+    "R4X_FlyingDroneDeployer_5_base.png.001",
+    "R4X_FlyingDroneDeployer_5_emission",
+    "R4X_FlyingDroneDeployer_5_emission.png",
+    "R4X_FlyingDroneDeployer_5_emission.png.001",
+    "R4X_FlyingDroneDeployer_5_normal",
+    "R4X_FlyingDroneDeployer_5_normal.png",
+    "R4X_FlyingDroneDeployer_5_normal.png.001",
+    "R4X_FlyingDroneDeployer_5_orm",
+    "R4X_FlyingDroneDeployer_5_orm.png"
+   ],
+   "actions": 8,
+   "triangles": 5584,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4X_FlyingDroneDeployer.fbx": {
+   "sha256": "5275f130a0118aa617ab6f1975183b5be1bd95b16899548dbde109f4eff230f8",
+   "bytes": 3800540
+  },
+  "R4X_FlyingDroneDeployer.glb": {
+   "sha256": "c645e9a7d2bc3729d46b93702dc0db2b166646304c26b534b0570ab22ee95b09",
+   "bytes": 6160460
+  },
+  "R4X_FlyingDroneDeployer_LOD1.fbx": {
+   "sha256": "6a79b94e04cbe3f2554f7896ed3b472986646bb94982630b2364187463d3a699",
+   "bytes": 3723052
+  },
+  "R4X_FlyingDroneDeployer_LOD1.glb": {
+   "sha256": "54cb74d70ff56905e596d2b4b7716abb59b2bc9621b0309958673091819d9ae1",
+   "bytes": 6096052
+  }
+ },
+ "triangles": 2792,
+ "s_qa": 0.4,
+ "notes": [
+  "meta.dock_z 0.0305 -> 0.0345 after the function check v2: the drone 05 was lowered 4 mm onto its Socket_Dock (geometry of this launcher unchanged)"
+ ],
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

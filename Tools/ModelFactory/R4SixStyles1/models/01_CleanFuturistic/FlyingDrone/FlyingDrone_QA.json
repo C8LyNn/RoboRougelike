@@ -1,0 +1,244 @@
+{
+ "cid": "FlyingDrone",
+ "style": "1",
+ "label": "01_CleanFuturistic",
+ "size": 2048,
+ "construction": "Clean Futuristic drone: a blended flying wing - one calm rounded-square slab with the four fans sunk into it (no arms, nothing exposed), a low canopy with a cyan visor; every fan opening is rimmed with the same turned profile and cyan ring as the launch well of the deployer",
+ "meta": {
+  "body_pivot": [
+   0,
+   0,
+   0.04
+  ],
+  "rotors": {
+   "Rotor_1": [
+    -0.108,
+    -0.108,
+    0.04
+   ],
+   "Rotor_2": [
+    0.108,
+    -0.108,
+    0.04
+   ],
+   "Rotor_3": [
+    -0.108,
+    0.108,
+    0.04
+   ],
+   "Rotor_4": [
+    0.108,
+    0.108,
+    0.04
+   ]
+  },
+  "muzzle": [
+   0,
+   -0.216,
+   0.034
+  ],
+  "dock_z": 0.0
+ },
+ "tris_hi": {
+  "Body": 32396,
+  "Rotor_1": 152,
+  "Rotor_2": 152,
+  "Rotor_3": 152,
+  "Rotor_4": 152
+ },
+ "tris_lo": {
+  "Body": 4656,
+  "Rotor_1": 104,
+  "Rotor_2": 104,
+  "Rotor_3": 104,
+  "Rotor_4": 104
+ },
+ "s_build": 2.9,
+ "violations": [],
+ "bounds": {
+  "Body": [
+   [
+    -0.2021999955177307,
+    -0.20600000023841858,
+    0.0
+   ],
+   [
+    0.2021999955177307,
+    0.2021999955177307,
+    0.07999999821186066
+   ]
+  ],
+  "Rotor_1": [
+   [
+    -0.1679999977350235,
+    -0.16220000386238098,
+    0.03799999877810478
+   ],
+   [
+    -0.04699999839067459,
+    -0.045899998396635056,
+    0.04800000041723251
+   ]
+  ],
+  "Rotor_2": [
+   [
+    0.04800000041723251,
+    -0.16220000386238098,
+    0.03799999877810478
+   ],
+   [
+    0.16899999976158142,
+    -0.045899998396635056,
+    0.04800000041723251
+   ]
+  ],
+  "Rotor_3": [
+   [
+    -0.1679999977350235,
+    0.05380000174045563,
+    0.03799999877810478
+   ],
+   [
+    -0.04699999839067459,
+    0.17010000348091125,
+    0.04800000041723251
+   ]
+  ],
+  "Rotor_4": [
+   [
+    0.04800000041723251,
+    0.05380000174045563,
+    0.03799999877810478
+   ],
+   [
+    0.16899999976158142,
+    0.17010000348091125,
+    0.04800000041723251
+   ]
+  ]
+ },
+ "s_bake": 526.9,
+ "s_skin": 704.3,
+ "animated_nodes": [
+  "FlyingDrone_Body",
+  "FlyingDrone_Rotor_1",
+  "FlyingDrone_Rotor_2",
+  "FlyingDrone_Rotor_3",
+  "FlyingDrone_Rotor_4"
+ ],
+ "clips": [
+  {
+   "name": "Docked",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "Launch",
+   "start": 27,
+   "end": 51,
+   "loop": false
+  },
+  {
+   "name": "Hover",
+   "start": 53,
+   "end": 77,
+   "loop": true
+  },
+  {
+   "name": "Fly",
+   "start": 79,
+   "end": 103,
+   "loop": true
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 3438,
+  "of_lod0": 0.678
+ },
+ "tris_lod1": 3438,
+ "s_export": 1.1,
+ "port_contact": [],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.05,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "FlyingDrone_01_CleanFuturistic"
+   ],
+   "textures": [
+    "FlyingDrone_1_base",
+    "FlyingDrone_1_base.png",
+    "FlyingDrone_1_emission",
+    "FlyingDrone_1_emission.png",
+    "FlyingDrone_1_normal",
+    "FlyingDrone_1_normal.png",
+    "FlyingDrone_1_orm",
+    "FlyingDrone_1_orm.png"
+   ],
+   "actions": 6,
+   "triangles": 5072,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.05,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "FlyingDrone_01_CleanFuturistic"
+   ],
+   "textures": [
+    "FlyingDrone_1_base",
+    "FlyingDrone_1_base.png",
+    "FlyingDrone_1_base.png.001",
+    "FlyingDrone_1_emission",
+    "FlyingDrone_1_emission.png",
+    "FlyingDrone_1_emission.png.001",
+    "FlyingDrone_1_normal",
+    "FlyingDrone_1_normal.png",
+    "FlyingDrone_1_normal.png.001",
+    "FlyingDrone_1_orm",
+    "FlyingDrone_1_orm.png"
+   ],
+   "actions": 14,
+   "triangles": 5072,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "FlyingDrone.fbx": {
+   "sha256": "41c24230cb257bdb88144b002a8dcdb5845eb2cfb64b450d0db5de3f4a0322e6",
+   "bytes": 4745628
+  },
+  "FlyingDrone.glb": {
+   "sha256": "da9d78c55bc52d89f9ec1f879d78556bba38dc0a85957b38c6c764054e027883",
+   "bytes": 7668584
+  },
+  "FlyingDrone_LOD1.fbx": {
+   "sha256": "ac83bc43451893551e139345ebea9c86ead388418c8dc19cb092f45084420484",
+   "bytes": 4617212
+  },
+  "FlyingDrone_LOD1.glb": {
+   "sha256": "a604241c32c966008e5a91e3fb91444dd62355370f209da3af4d0f0e07103eb9",
+   "bytes": 7601384
+  }
+ },
+ "triangles": 5072,
+ "s_qa": 0.6,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

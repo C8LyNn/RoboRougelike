@@ -1,0 +1,229 @@
+{
+ "cid": "R4W_Basic",
+ "source": "Pass 4 hero4 D_Scrap R4W_Basic.glb (PR #1294)",
+ "change": "sense repair of the kept model: 14 parts added / moved so every part holds on to the structure",
+ "ops": [
+  {
+   "node": "R4W_Basic_Barrel",
+   "faces": 40,
+   "donor_face": 61,
+   "centre_mm": [
+    0,
+    -548,
+    135
+   ],
+   "why": "the welded muzzle cage hung 5 mm clear of the barrel: a collar ties its rear hoop to the barrel",
+   "op": "tube"
+  },
+  {
+   "node": "R4W_Basic_Pitch",
+   "faces": 48,
+   "donor_face": 339,
+   "centre_mm": [
+    0,
+    -174,
+    135
+   ],
+   "why": "the heat shield ended 20 mm short of the receiver: a clamp ring carries it to the front cross plate",
+   "op": "tube"
+  },
+  {
+   "node": "R4W_Basic_Pitch",
+   "faces": 6,
+   "donor_face": 258,
+   "centre_mm": [
+    -49,
+    -200,
+    111
+   ],
+   "why": "the shield straps stopped below the heat-shield edge: risers join them",
+   "op": "box"
+  },
+  {
+   "node": "R4W_Basic_Pitch",
+   "faces": 6,
+   "donor_face": 187,
+   "centre_mm": [
+    49,
+    -200,
+    111
+   ],
+   "why": "the shield straps stopped below the heat-shield edge: risers join them",
+   "op": "box"
+  },
+  {
+   "node": "R4W_Basic_Pitch",
+   "faces": 6,
+   "donor_face": 270,
+   "centre_mm": [
+    -49,
+    -384,
+    111
+   ],
+   "why": "the shield straps stopped below the heat-shield edge: risers join them",
+   "op": "box"
+  },
+  {
+   "node": "R4W_Basic_Pitch",
+   "faces": 6,
+   "donor_face": 186,
+   "centre_mm": [
+    49,
+    -384,
+    111
+   ],
+   "why": "the shield straps stopped below the heat-shield edge: risers join them",
+   "op": "box"
+  },
+  {
+   "node": "R4W_Basic_Pitch",
+   "faces": 6,
+   "donor_face": 17,
+   "centre_mm": [
+    87,
+    30,
+    110
+   ],
+   "why": "the one-sided armour shield floated 18 mm off the frame rail: four spacer blocks under its rivets",
+   "op": "box"
+  },
+  {
+   "node": "R4W_Basic_Pitch",
+   "faces": 6,
+   "donor_face": 16,
+   "centre_mm": [
+    87,
+    30,
+    185
+   ],
+   "why": "the one-sided armour shield floated 18 mm off the frame rail: four spacer blocks under its rivets",
+   "op": "box"
+  },
+  {
+   "node": "R4W_Basic_Pitch",
+   "faces": 6,
+   "donor_face": 17,
+   "centre_mm": [
+    87,
+    -150,
+    110
+   ],
+   "why": "the one-sided armour shield floated 18 mm off the frame rail: four spacer blocks under its rivets",
+   "op": "box"
+  },
+  {
+   "node": "R4W_Basic_Pitch",
+   "faces": 6,
+   "donor_face": 17,
+   "centre_mm": [
+    87,
+    -150,
+    185
+   ],
+   "why": "the one-sided armour shield floated 18 mm off the frame rail: four spacer blocks under its rivets",
+   "op": "box"
+  },
+  {
+   "node": "R4W_Basic_Yaw",
+   "faces": 6,
+   "donor_face": 228,
+   "centre_mm": [
+    -138,
+    15,
+    46
+   ],
+   "why": "the tall left bracket stood past the edge of the turntable: an angle foot like the right one",
+   "op": "box"
+  },
+  {
+   "node": "R4W_Basic_Rattle",
+   "local_d": [
+    0.0,
+    0.0,
+    -0.0035
+   ],
+   "why": "the loose cover rested 4 mm above the rails: it now lies on them (it still rattles on Fire)",
+   "op": "move"
+  },
+  {
+   "node": "R4W_Basic_Yaw",
+   "faces": 40,
+   "donor_face": 106,
+   "centre_mm": [
+    125,
+    0,
+    135
+   ],
+   "why": "the whole cradle hung 40-70 mm between the brackets with nothing on the pitch axis: an axle from each bracket into the breech pin",
+   "op": "tube"
+  },
+  {
+   "node": "R4W_Basic_Yaw",
+   "faces": 40,
+   "donor_face": 155,
+   "centre_mm": [
+    -125,
+    0,
+    135
+   ],
+   "why": "the whole cradle hung 40-70 mm between the brackets with nothing on the pitch axis: an axle from each bracket into the breech pin",
+   "op": "tube"
+  }
+ ],
+ "meshes_outlined": 0,
+ "gltf_animation_mode": "ACTIONS",
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "anim_pos_dev_mm": 0.0,
+   "frame_offset": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Wear"
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "anim_pos_dev_mm": 0.0,
+   "frame_offset": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Wear"
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4W_Basic.fbx": {
+   "sha256": "d74bf657bc0eba7eb1a3c062a44235aa244bdc76a49355f5018b8fcb8a87ebb9",
+   "bytes": 2087564
+  },
+  "R4W_Basic.glb": {
+   "sha256": "9f4a746387d936fd5112d1053a10b000952965b05a0f580908b086abf3fcd14f",
+   "bytes": 2776444
+  },
+  "R4W_Basic_LOD1.fbx": {
+   "sha256": "19a3099ae3669ca3bb742fed47490672c6efba4029788cbb99f6c0bec2bd0f7e",
+   "bytes": 1921036
+  },
+  "R4W_Basic_LOD1.glb": {
+   "sha256": "098f19dc2d096fdafc817346586cc00ad747c6384f44cf9e673c57eda110d6df",
+   "bytes": 2735480
+  },
+  "R4W_Basic_SOURCE.blend": {
+   "sha256": "a2b2e34170480a5966e7fe6a69424e378565c98ed6595e6997f82ecf54afc733",
+   "bytes": 2723402
+  }
+ },
+ "lod1": "R4W_Basic_LOD1.glb / .fbx rebuilt from the repaired LOD0 (scripts/s6lod.py, the generator rule: rest pose, joined, planar dissolve) - details in R4W_Basic_LOD1_info.json; textures/ = the Pass 4 D_Scrap texture set; R4W_Basic_QA_source.json = QA of the Pass 4 source; the editable file of the repaired model is R4W_Basic_SOURCE.blend",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

@@ -1,0 +1,95 @@
+{
+ "id": "R4M_Wheel",
+ "style": "01_CleanFuturistic",
+ "units": "metre 1:1",
+ "axes": "file/Unity +Z forward, +Y up (Blender -Y forward, Z up)",
+ "source_contract": "Tools/ModelFactory/R4Movement940/R4M_Wheel (PR #941, branch art/940-r4-movement-models)",
+ "hierarchy": {
+  "R4M_Wheel_ROOT": null,
+  "R4M_Wheel_Mount": "R4M_Wheel_ROOT",
+  "R4M_Wheel_Rotor": "R4M_Wheel_ROOT",
+  "Wheel_Axle": "R4M_Wheel_ROOT",
+  "Socket_Mount": "R4M_Wheel_ROOT",
+  "GroundProbe": "R4M_Wheel_ROOT"
+ },
+ "pivots": {
+  "R4M_Wheel_Mount": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "R4M_Wheel_Rotor": [
+   0.0,
+   0.0,
+   -0.25999999046325684
+  ]
+ },
+ "empties": {
+  "Wheel_Axle": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.25999999046325684
+   ]
+  },
+  "Socket_Mount": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    0.25999999046325684
+   ]
+  },
+  "GroundProbe": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.6499999761581421
+   ]
+  }
+ },
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "Roll",
+   "start": 27,
+   "end": 51,
+   "loop": true
+  },
+  {
+   "name": "Reverse",
+   "start": 53,
+   "end": 77,
+   "loop": true
+  },
+  {
+   "name": "Brake",
+   "start": 79,
+   "end": 103,
+   "loop": false
+  }
+ ],
+ "fps": 24,
+ "animated_nodes": [
+  "R4M_Wheel_Rotor"
+ ],
+ "materials": [
+  "R4M_Wheel_01_CleanFuturistic"
+ ],
+ "textures": {
+  "base": "R4M_Wheel_1_base.png",
+  "orm": "R4M_Wheel_1_orm.png",
+  "normal": "R4M_Wheel_1_normal.png",
+  "emission": "R4M_Wheel_1_emission.png"
+ },
+ "construction": "Clean Futuristic wheel - rebuilt after the moodboard review (rr-style-directions: one long smooth profile, panels hide the mechanism, 'light rims of the wheels run into thin fairing lines', test 128 px = slim body + light). Rotor: new - a smooth slick tyre with rounded shoulders, a closed ceramic disc with a cyan light ring at the rim and three narrow seams (spin cue). Mount: one smooth fairing from the plate down to an enclosed motor; a near full-width aero fender whose outer edge is a thin cyan line - the light ring continues in it. (The Pass 4 chevron rotor read exactly like the 02 wheel in greyscale - moodboard boundary 01 <-> 02.)",
+ "meta": {},
+ "gameplay": "visual only: no gameplay capability, timing or collider is added"
+}

@@ -1,0 +1,16 @@
+{
+ "mode": "MODEL",
+ "file": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\R4M_Wheel\\R4M_Wheel_LOD1.glb",
+ "cid": "R4M_Wheel",
+ "islands": 906,
+ "groups": 1,
+ "floating": [],
+ "collisions_worst": [],
+ "collision_frames": 0,
+ "function": {
+  "ground_gap_mm": 1.0,
+  "static_lod1": true,
+  "issues": []
+ },
+ "status": "OK"
+}

@@ -1,0 +1,66 @@
+{
+ "cid": "R4W_Basic",
+ "source": "<WORKDIR>\\R4_Six1\\f1\\models\\01_CleanFuturistic\\R4W_Basic\\R4W_Basic.glb",
+ "rule": "rest pose, MuzzleFlash and outline shell left out, joined, hlod.lod1 planar dissolve",
+ "lod1": {
+  "method": "game mesh kept as LOD1 (hlod fallback): every dissolve angle (14/9/5 deg) lifted a part of this model off its neighbour in the LOD1 sense check",
+  "triangles": 3212,
+  "dropped_loose_details": []
+ },
+ "tris_lod1": 3212,
+ "source_bounds": [
+  [
+   -0.25,
+   -0.618,
+   -0.26
+  ],
+  [
+   0.25,
+   0.25713,
+   0.235
+  ]
+ ],
+ "lod1_bounds": [
+  [
+   -0.25,
+   -0.618,
+   -0.26
+  ],
+  [
+   0.25,
+   0.25713,
+   0.235
+  ]
+ ],
+ "reimport": {
+  ".glb": {
+   "objects": [
+    "R4W_Basic_LOD1"
+   ],
+   "tris": 3212,
+   "bounds_dev_mm": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "objects": [
+    "R4W_Basic_LOD1"
+   ],
+   "tris": 3212,
+   "bounds_dev_mm": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS"
+}

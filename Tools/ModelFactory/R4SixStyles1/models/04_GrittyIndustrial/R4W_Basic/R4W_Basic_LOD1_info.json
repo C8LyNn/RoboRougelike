@@ -1,0 +1,68 @@
+{
+ "cid": "R4W_Basic",
+ "source": "<WORKDIR>\\R4_Six1\\f1\\models\\04_GrittyIndustrial\\R4W_Basic\\R4W_Basic.glb",
+ "rule": "rest pose, MuzzleFlash and outline shell left out, joined, hlod.lod1 planar dissolve",
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 1784,
+  "of_lod0": 0.99,
+  "dropped_loose_details": []
+ },
+ "tris_lod1": 1784,
+ "source_bounds": [
+  [
+   -0.25,
+   -0.618,
+   -0.26
+  ],
+  [
+   0.25,
+   0.25,
+   0.232
+  ]
+ ],
+ "lod1_bounds": [
+  [
+   -0.25,
+   -0.618,
+   -0.26
+  ],
+  [
+   0.25,
+   0.25,
+   0.232
+  ]
+ ],
+ "reimport": {
+  ".glb": {
+   "objects": [
+    "R4W_Basic_LOD1"
+   ],
+   "tris": 1784,
+   "bounds_dev_mm": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Wear"
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "objects": [
+    "R4W_Basic_LOD1"
+   ],
+   "tris": 1784,
+   "bounds_dev_mm": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Wear"
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS"
+}

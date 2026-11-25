@@ -1,0 +1,155 @@
+{
+ "cid": "R4X_FlyingDroneDeployer",
+ "style": "6",
+ "label": "06_R41ModularTech",
+ "size": 2048,
+ "construction": "R41 Modular Tech: the R4.1 pedestal language applied to a launcher - black square plinth with corner tabs and hazard trim, a chamfered octagonal gunmetal skirt with louvres and the team-red band, an orange eye ring on the front face; on top a round landing pad with the light \"H\" plate (kept from the R4 1x1 deployer) and an orange guide ring with four short guide blocks (the four masts of the 1x1 model cut down so the pad stays visible from above)",
+ "meta": {
+  "dock_z": 0.066,
+  "family": "orange eye ring + team-red band + octagonal chamfered gunmetal"
+ },
+ "tris_hi": {
+  "Body": 1844,
+  "Iris": 1440
+ },
+ "tris_lo": {
+  "Body": 732,
+  "Iris": 576
+ },
+ "s_build": 0.8,
+ "violations": [],
+ "bounds": {
+  "Body": [
+   [
+    -0.25200000405311584,
+    -0.2549999952316284,
+    -0.25999999046325684
+   ],
+   [
+    0.25200000405311584,
+    0.2549999952316284,
+    0.06599999964237213
+   ]
+  ],
+  "Iris": [
+   [
+    -0.1979999989271164,
+    -0.1979999989271164,
+    0.060499999672174454
+   ],
+   [
+    0.1979999989271164,
+    0.1979999989271164,
+    0.10300000011920929
+   ]
+  ]
+ },
+ "s_bake": 321.4,
+ "s_skin": 484.7,
+ "animated_nodes": [
+  "R4X_FlyingDroneDeployer_Iris"
+ ],
+ "clips": [
+  {
+   "name": "Active",
+   "start": 1,
+   "end": 49,
+   "loop": true
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 1288,
+  "of_lod0": 0.985
+ },
+ "tris_lod1": 1288,
+ "s_export": 0.8,
+ "port_contact": [
+  {
+   "dir": "down",
+   "flush_pct": 100.0,
+   "PASS": true
+  }
+ ],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.0,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4X_FlyingDroneDeployer_06_R41ModularTech"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_6_base",
+    "R4X_FlyingDroneDeployer_6_base.png",
+    "R4X_FlyingDroneDeployer_6_emission",
+    "R4X_FlyingDroneDeployer_6_emission.png",
+    "R4X_FlyingDroneDeployer_6_normal",
+    "R4X_FlyingDroneDeployer_6_normal.png",
+    "R4X_FlyingDroneDeployer_6_orm",
+    "R4X_FlyingDroneDeployer_6_orm.png"
+   ],
+   "actions": 2,
+   "triangles": 1308,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.0,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4X_FlyingDroneDeployer_06_R41ModularTech"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_6_base",
+    "R4X_FlyingDroneDeployer_6_base.png",
+    "R4X_FlyingDroneDeployer_6_base.png.001",
+    "R4X_FlyingDroneDeployer_6_emission",
+    "R4X_FlyingDroneDeployer_6_emission.png",
+    "R4X_FlyingDroneDeployer_6_emission.png.001",
+    "R4X_FlyingDroneDeployer_6_normal",
+    "R4X_FlyingDroneDeployer_6_normal.png",
+    "R4X_FlyingDroneDeployer_6_normal.png.001",
+    "R4X_FlyingDroneDeployer_6_orm",
+    "R4X_FlyingDroneDeployer_6_orm.png"
+   ],
+   "actions": 8,
+   "triangles": 1308,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4X_FlyingDroneDeployer.fbx": {
+   "sha256": "be4fcddb842db0b641513b5f936a394c945896d2314c4f9af91098657737bc6f",
+   "bytes": 2418140
+  },
+  "R4X_FlyingDroneDeployer.glb": {
+   "sha256": "7d7917d9814ecd1c1873e4042e447d0dacd4ca039cada38ae082b9acb922f8eb",
+   "bytes": 4879416
+  },
+  "R4X_FlyingDroneDeployer_LOD1.fbx": {
+   "sha256": "79ec1fca884cbfe4d08c60edc5913dbdf733beb6a473336327c94c039e6e8f83",
+   "bytes": 2366412
+  },
+  "R4X_FlyingDroneDeployer_LOD1.glb": {
+   "sha256": "76ea711fd7940a39c89f0f9e953cb25f524a699f7abf33129d16fe9a8f407da5",
+   "bytes": 4875184
+  }
+ },
+ "triangles": 1308,
+ "s_qa": 0.4,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

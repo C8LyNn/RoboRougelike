@@ -1,0 +1,77 @@
+{
+ "cid": "R4W_Basic",
+ "source": "Pass 4 hero4 E_Toon R4W_Basic.glb (PR #1294)",
+ "change": "sense repair of the Pass 4 model: the parts of both receiver side plates that stood out past x 129.5 mm are pulled in (2 squash ops) so the receiver clears the yoke cheeks at full elevation; Comic Outline contour added afterwards (inverted hull 0.0120 m, material R4P_Outline, back-face culled); rig and animation of the source kept",
+ "ops": [
+  {
+   "node": "R4W_Basic_Pitch",
+   "verts": 5,
+   "why": "at full elevation (+35 deg, frame 83) the lower front corner of the left receiver side plate (x -137 mm) swept into the yoke cheek (inner face x -138 mm): the parts of the side plate and its trim strips that stand out past x -129.5 mm are pulled in to at most -132 mm (6 mm running clearance); the trunnion zone near the pitch axis is not touched",
+   "op": "squash"
+  },
+  {
+   "node": "R4W_Basic_Pitch",
+   "verts": 5,
+   "why": "the same on the right side plate (the gun is mirror-symmetric)",
+   "op": "squash"
+  }
+ ],
+ "meshes_outlined": 6,
+ "gltf_animation_mode": "ACTIONS",
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "anim_pos_dev_mm": 0.0,
+   "frame_offset": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Outline",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "anim_pos_dev_mm": 0.0,
+   "frame_offset": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Outline",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4W_Basic.fbx": {
+   "sha256": "3e466e872fd785bacf8881d0d95b221dafff3a22f0e03aada1820e6de4d651a0",
+   "bytes": 3069708
+  },
+  "R4W_Basic.glb": {
+   "sha256": "a6ad414158ff0a2be0242f9045f5cf9fde34eae6b80c8ed4eaeaf860ce0159bd",
+   "bytes": 3480608
+  },
+  "R4W_Basic_LOD1.fbx": {
+   "sha256": "d787529d6eb366e96f5bab8754e9696535170fca3934d3fd0e0592f57b0345b1",
+   "bytes": 2785276
+  },
+  "R4W_Basic_LOD1.glb": {
+   "sha256": "9371d2f6c8d468b77abedf83d58b1d239b575f64f78c4d84329617001c27ef60",
+   "bytes": 3305692
+  },
+  "R4W_Basic_SOURCE.blend": {
+   "sha256": "b164df3666d9884746664bcdf0f3cb587712a5585bc5c25f05cd138e610e1dfa",
+   "bytes": 3402762
+  }
+ },
+ "lod1": "R4W_Basic_LOD1.glb / .fbx rebuilt from the repaired model WITHOUT the outline shell (scripts/s6lod.py, generator rule) - at LOD1 distance the line comes from the Unity outline pass; textures/ = the Pass 4 E_Toon texture set (the GLB and FBX of LOD0 embed their textures)",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

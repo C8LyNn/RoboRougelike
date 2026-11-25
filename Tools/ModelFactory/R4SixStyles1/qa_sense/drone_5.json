@@ -1,0 +1,29 @@
+{
+ "mode": "MODEL",
+ "file": "<WORKDIR>\\R4_Six1\\f1\\models\\05_ComicOutline\\FlyingDrone\\FlyingDrone.glb",
+ "cid": "FlyingDrone",
+ "islands": 144,
+ "groups": 1,
+ "floating": [],
+ "collisions_worst": [],
+ "collision_frames": 0,
+ "function": {
+  "stand_gap_mm": 0.0,
+  "muzzle_to_body_mm": 9.5,
+  "gun_behind_muzzle_mm": 9.5,
+  "line_of_fire": null,
+  "fire_through_rotor_disc": [],
+  "rotor_hubs": {
+   "Rotor_1": {
+    "off_mm": 0.0,
+    "axis_up": 1.0
+   },
+   "Rotor_2": {
+    "off_mm": 0.0,
+    "axis_up": 1.0
+   }
+  },
+  "issues": []
+ },
+ "status": "OK"
+}

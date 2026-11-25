@@ -1,0 +1,62 @@
+[
+ {
+  "op": "freeze",
+  "node": "R4W_Basic_VentL",
+  "why": "on Recoil the side vent swung 20 deg outwards on a hinge at its back edge and went 2 cm into the yoke arm: the vents are fixed now"
+ },
+ {
+  "op": "freeze",
+  "node": "R4W_Basic_VentR",
+  "why": "on Recoil the side vent swung 20 deg outwards on a hinge at its back edge and went 2 cm into the yoke arm: the vents are fixed now"
+ },
+ {
+  "op": "tube",
+  "node": "R4W_Basic_Yaw",
+  "axis": "x",
+  "c": [
+   0,
+   0,
+   0.135
+  ],
+  "r0": 0.004,
+  "r1": 0.03,
+  "t0": -0.15,
+  "t1": -0.131,
+  "seg": 16,
+  "why": "the receiver hung 18 mm clear of both yoke arms on an invisible axis: bearing bosses from the yoke reach the receiver side (3 mm running clearance)"
+ },
+ {
+  "op": "tube",
+  "node": "R4W_Basic_Yaw",
+  "axis": "x",
+  "c": [
+   0,
+   0,
+   0.135
+  ],
+  "r0": 0.004,
+  "r1": 0.03,
+  "t0": 0.131,
+  "t1": 0.15,
+  "seg": 16,
+  "why": "the receiver hung 18 mm clear of both yoke arms on an invisible axis: bearing bosses from the yoke reach the receiver side (3 mm running clearance)"
+ },
+ {
+  "op": "squash",
+  "node": "R4W_Basic_Yaw",
+  "min": [
+   -0.13,
+   0.08,
+   0.045
+  ],
+  "max": [
+   0.13,
+   0.262,
+   0.16
+  ],
+  "axis": "y",
+  "anchor": 0.26,
+  "factor": 0.8966,
+  "why": "at full elevation (+35 deg) the tail of the receiver went into the front of the counterweight: the counterweight block is 18 mm shorter at the front (back face kept)"
+ }
+]

@@ -1,0 +1,129 @@
+{
+ "id": "R4W_Basic",
+ "style": "03_ArcadeLowPoly",
+ "units": "metre 1:1",
+ "axes": "file/Unity +Z forward, +Y up (Blender -Y forward, Z up)",
+ "source_contract": "Tools/ModelFactory/R4Weapons938/R4W_Basic (PR #939, branch art/938-r4-weapon-models)",
+ "hierarchy": {
+  "R4W_Basic_ROOT": null,
+  "R4W_Basic_Base": "R4W_Basic_ROOT",
+  "GunPivot": "R4W_Basic_ROOT",
+  "Socket_Mount_Bottom": "R4W_Basic_ROOT",
+  "R4W_Basic_Yaw": "GunPivot",
+  "R4W_Basic_Pitch": "R4W_Basic_Yaw",
+  "R4W_Basic_Barrel": "R4W_Basic_Pitch",
+  "R4W_Basic_MuzzleFlash": "R4W_Basic_Pitch",
+  "Muzzle": "R4W_Basic_Pitch"
+ },
+ "pivots": {
+  "R4W_Basic_Base": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "R4W_Basic_Yaw": [
+   0.0,
+   0.0,
+   0.13500000536441803
+  ],
+  "R4W_Basic_Pitch": [
+   0.0,
+   0.0,
+   0.13500000536441803
+  ],
+  "R4W_Basic_Barrel": [
+   0.0,
+   0.0,
+   0.13500000536441803
+  ],
+  "R4W_Basic_MuzzleFlash": [
+   0.0,
+   -0.6240000128746033,
+   0.13500000536441803
+  ]
+ },
+ "empties": {
+  "GunPivot": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    0.13500000536441803
+   ]
+  },
+  "Socket_Mount_Bottom": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.25999999046325684
+   ]
+  },
+  "Muzzle": {
+   "parent": "Pitch",
+   "loc": [
+    0.0,
+    -0.6600000262260437,
+    0.13500000536441803
+   ]
+  }
+ },
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "AimYaw",
+   "start": 27,
+   "end": 75,
+   "loop": false
+  },
+  {
+   "name": "AimPitch",
+   "start": 77,
+   "end": 113,
+   "loop": false
+  },
+  {
+   "name": "Fire",
+   "start": 115,
+   "end": 124,
+   "loop": false
+  },
+  {
+   "name": "Recoil",
+   "start": 126,
+   "end": 129,
+   "loop": false
+  },
+  {
+   "name": "Return",
+   "start": 131,
+   "end": 139,
+   "loop": false
+  }
+ ],
+ "fps": 24,
+ "animated_nodes": [
+  "R4W_Basic_Yaw",
+  "R4W_Basic_Pitch",
+  "R4W_Basic_Barrel",
+  "R4W_Basic_MuzzleFlash"
+ ],
+ "materials": [
+  "R4P_Glow",
+  "R4W_Basic_03_ArcadeLowPoly"
+ ],
+ "textures": {
+  "base": "R4W_Basic_3_base.png",
+  "orm": "R4W_Basic_3_orm.png",
+  "normal": "R4W_Basic_3_normal.png",
+  "emission": "R4W_Basic_3_emission.png"
+ },
+ "construction": "Arcade Low-Poly gun - new from scratch (the Pass 4 Arcade gun is soft and rounded): a hexagonal stepped pedestal, two big wedge cheek plates on the yaw ring, a faceted receiver whose top is one orange triangle fin pointing forward, a hexagonal shroud and a hexagonal barrel with an orange muzzle cap. Few large flat facets; the aiming direction is the triangle",
+ "meta": {},
+ "gameplay": "visual only: no gameplay capability, timing or collider is added"
+}
