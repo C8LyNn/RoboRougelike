@@ -1,0 +1,47 @@
+{
+ "cid": "R4M_Wheel",
+ "status": "KEPT",
+ "note": "kept unchanged: original R4 model, PR #941 (branch art/940-r4-movement-models)",
+ "files": {
+  "R4M_Wheel.blend": {
+   "sha256": "64ebde092137adc54f0fa889d54472a7a1b2204d2a5d064cedde50e72fcb435e",
+   "bytes": 1654709
+  },
+  "R4M_Wheel.fbx": {
+   "sha256": "da8c8680cceed2915c29bc8ac24fe9882f0b450751e7fc8e7970b37c64621329",
+   "bytes": 529804
+  },
+  "R4M_Wheel.glb": {
+   "sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9",
+   "bytes": 551212
+  },
+  "R4M_Wheel_LOD1.fbx": {
+   "sha256": "268c5f0f61c03b2119325b0c133b8070184d5e372de2df9511d98356f72454a2",
+   "bytes": 275580
+  },
+  "R4M_Wheel_colliders.glb": {
+   "sha256": "010902f5f9093b9cb2d5370fcf810555a0a1a2d4b9984d55631d5d0586a0593d",
+   "bytes": 550252
+  }
+ },
+ "required_nodes_missing": [],
+ "node_bounds_violations": [],
+ "extra_mesh_nodes": [],
+ "actions": [
+  [
+   1.0,
+   103.0
+  ]
+ ],
+ "contract_ok": true,
+ "sha": {
+  "R4M_Wheel.blend": "64ebde092137adc5",
+  "R4M_Wheel.fbx": "da8c8680cceed291",
+  "R4M_Wheel.glb": "97aa6ded79f0388c",
+  "R4M_Wheel_LOD1.fbx": "268c5f0f61c03b21",
+  "R4M_Wheel_colliders.glb": "010902f5f9093b9c"
+ },
+ "unity": "UNITY_NOT_RUN",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files",
+ "sha_note": "hashes of the delivered copies; the FBX of the Pass 4 guns are the repository (path-scrubbed) versions, byte-identical to the files on art/1239-atlas5-hero4; R4W_Basic / R4M_Wheel of 06 are byte-identical to art/938 / art/940"
+}

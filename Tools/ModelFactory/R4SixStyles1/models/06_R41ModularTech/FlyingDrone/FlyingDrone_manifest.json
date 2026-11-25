@@ -1,0 +1,142 @@
+{
+ "id": "FlyingDrone",
+ "style": "06_R41ModularTech",
+ "units": "metre 1:1",
+ "axes": "file/Unity +Z forward, +Y up (Blender -Y forward, Z up)",
+ "source_contract": "NEW - no drone model exists in the repository or in the game code (catalogue #57: 'wypuszcza drony latajace'). Contract = PROPOSAL.",
+ "hierarchy": {
+  "FlyingDrone_ROOT": null,
+  "FlyingDrone_Body": "FlyingDrone_ROOT",
+  "FlyingDrone_Rotor_1": "FlyingDrone_Body",
+  "FlyingDrone_Rotor_2": "FlyingDrone_Body",
+  "FlyingDrone_Rotor_3": "FlyingDrone_Body",
+  "FlyingDrone_Rotor_4": "FlyingDrone_Body",
+  "Socket_Dock": "FlyingDrone_ROOT",
+  "Muzzle": "FlyingDrone_Body"
+ },
+ "pivots": {
+  "FlyingDrone_Body": [
+   0.0,
+   0.0,
+   0.057999998331069946
+  ],
+  "FlyingDrone_Rotor_1": [
+   -0.14499999582767487,
+   -0.14499999582767487,
+   0.07000000029802322
+  ],
+  "FlyingDrone_Rotor_2": [
+   0.14499999582767487,
+   -0.14499999582767487,
+   0.07000000029802322
+  ],
+  "FlyingDrone_Rotor_3": [
+   -0.14499999582767487,
+   0.14499999582767487,
+   0.07000000029802322
+  ],
+  "FlyingDrone_Rotor_4": [
+   0.14499999582767487,
+   0.14499999582767487,
+   0.07000000029802322
+  ]
+ },
+ "empties": {
+  "Socket_Dock": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  "Muzzle": {
+   "parent": "Body",
+   "loc": [
+    0.0,
+    -0.10400000214576721,
+    0.057999998331069946
+   ]
+  }
+ },
+ "clips": [
+  {
+   "name": "Docked",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "Launch",
+   "start": 27,
+   "end": 51,
+   "loop": false
+  },
+  {
+   "name": "Hover",
+   "start": 53,
+   "end": 77,
+   "loop": true
+  },
+  {
+   "name": "Fly",
+   "start": 79,
+   "end": 103,
+   "loop": true
+  }
+ ],
+ "fps": 24,
+ "animated_nodes": [
+  "FlyingDrone_Body",
+  "FlyingDrone_Rotor_1",
+  "FlyingDrone_Rotor_2",
+  "FlyingDrone_Rotor_3",
+  "FlyingDrone_Rotor_4"
+ ],
+ "materials": [
+  "FlyingDrone_06_R41ModularTech"
+ ],
+ "textures": {
+  "base": "FlyingDrone_6_base.png",
+  "orm": "FlyingDrone_6_orm.png",
+  "normal": "FlyingDrone_6_normal.png",
+  "emission": "FlyingDrone_6_emission.png"
+ },
+ "construction": "R41 Modular Tech drone: a flat octagonal chamfered gunmetal body (the turret-head shape of R41_Turret_v6.1 laid flat), team-red band, orange eye ring in front, four chamfered box arms, rotors inside eight-sided guard rings with yellow hazard tips, black skids",
+ "meta": {
+  "body_pivot": [
+   0,
+   0,
+   0.058
+  ],
+  "rotors": {
+   "Rotor_1": [
+    -0.145,
+    -0.145,
+    0.07
+   ],
+   "Rotor_2": [
+    0.145,
+    -0.145,
+    0.07
+   ],
+   "Rotor_3": [
+    -0.145,
+    0.145,
+    0.07
+   ],
+   "Rotor_4": [
+    0.145,
+    0.145,
+    0.07
+   ]
+  },
+  "muzzle": [
+   0,
+   -0.104,
+   0.058
+  ],
+  "dock_z": 0.0
+ },
+ "gameplay": "visual only: no gameplay capability, timing or collider is added"
+}

@@ -1,0 +1,155 @@
+{
+ "cid": "R4X_FlyingDroneDeployer",
+ "style": "6",
+ "label": "06_R41ModularTech",
+ "size": 2048,
+ "construction": "R41 Modular Tech: the R4.1 pedestal language applied to a launcher - black square plinth with corner tabs and hazard trim, a chamfered octagonal gunmetal skirt with louvres and the team-red band, an orange eye ring on the front face; on top a round landing pad with the light \"H\" plate (kept from the R4 1x1 deployer) and an orange guide ring with four short guide blocks (the four masts of the 1x1 model cut down so the pad stays visible from above)",
+ "meta": {
+  "dock_z": 0.066,
+  "family": "orange eye ring + team-red band + octagonal chamfered gunmetal"
+ },
+ "tris_hi": {
+  "Body": 1824,
+  "Iris": 1440
+ },
+ "tris_lo": {
+  "Body": 712,
+  "Iris": 576
+ },
+ "s_build": 0.7,
+ "violations": [],
+ "bounds": {
+  "Body": [
+   [
+    -0.25200000405311584,
+    -0.2549999952316284,
+    -0.25999999046325684
+   ],
+   [
+    0.25200000405311584,
+    0.2549999952316284,
+    0.06599999964237213
+   ]
+  ],
+  "Iris": [
+   [
+    -0.1979999989271164,
+    -0.1979999989271164,
+    0.0560000017285347
+   ],
+   [
+    0.1979999989271164,
+    0.1979999989271164,
+    0.11599999666213989
+   ]
+  ]
+ },
+ "s_bake": 328.9,
+ "s_skin": 579.5,
+ "animated_nodes": [
+  "R4X_FlyingDroneDeployer_Iris"
+ ],
+ "clips": [
+  {
+   "name": "Active",
+   "start": 1,
+   "end": 49,
+   "loop": true
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 1268,
+  "of_lod0": 0.984
+ },
+ "tris_lod1": 1268,
+ "s_export": 1.0,
+ "port_contact": [
+  {
+   "dir": "down",
+   "flush_pct": 100.0,
+   "PASS": true
+  }
+ ],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.0,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4X_FlyingDroneDeployer_06_R41ModularTech"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_6_base",
+    "R4X_FlyingDroneDeployer_6_base.png",
+    "R4X_FlyingDroneDeployer_6_emission",
+    "R4X_FlyingDroneDeployer_6_emission.png",
+    "R4X_FlyingDroneDeployer_6_normal",
+    "R4X_FlyingDroneDeployer_6_normal.png",
+    "R4X_FlyingDroneDeployer_6_orm",
+    "R4X_FlyingDroneDeployer_6_orm.png"
+   ],
+   "actions": 2,
+   "triangles": 1288,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.0,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4X_FlyingDroneDeployer_06_R41ModularTech"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_6_base",
+    "R4X_FlyingDroneDeployer_6_base.png",
+    "R4X_FlyingDroneDeployer_6_base.png.001",
+    "R4X_FlyingDroneDeployer_6_emission",
+    "R4X_FlyingDroneDeployer_6_emission.png",
+    "R4X_FlyingDroneDeployer_6_emission.png.001",
+    "R4X_FlyingDroneDeployer_6_normal",
+    "R4X_FlyingDroneDeployer_6_normal.png",
+    "R4X_FlyingDroneDeployer_6_normal.png.001",
+    "R4X_FlyingDroneDeployer_6_orm",
+    "R4X_FlyingDroneDeployer_6_orm.png"
+   ],
+   "actions": 8,
+   "triangles": 1288,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4X_FlyingDroneDeployer.fbx": {
+   "sha256": "ba39ff90982f02c118164218dd14295dd5374f8522261fb2df3b068957ebd1fc",
+   "bytes": 2435692
+  },
+  "R4X_FlyingDroneDeployer.glb": {
+   "sha256": "d414a60c3eca9bdcacf15f11c9cdb6aa785f4aae4e4ca57d7ee2a9cacc238351",
+   "bytes": 4916060
+  },
+  "R4X_FlyingDroneDeployer_LOD1.fbx": {
+   "sha256": "da03248402ae5b53d4d4a2aba1830353d03bff0cfe6519929f1a36012204bda4",
+   "bytes": 2384396
+  },
+  "R4X_FlyingDroneDeployer_LOD1.glb": {
+   "sha256": "1c363cb09174638f6b3c8e9cafcca795dc296affb53f46a44affb3668ad40aa4",
+   "bytes": 4914616
+  }
+ },
+ "triangles": 1288,
+ "s_qa": 0.5,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}
