@@ -1,0 +1,130 @@
+{
+ "gun": {
+  "1": {
+   "status": "ZACHOWANY",
+   "src": "Pass 4 hero4 R4W_Basic A_Sleek (PR #1294)",
+   "why": "spełnia kryteria 01: dopasowane skorupy, wąskie linie paneli, częściowo ukryty mechanizm"
+  },
+  "2": {
+   "status": "ZACHOWANY",
+   "src": "Pass 4 hero4 R4W_Basic B_Brutal (PR #1294)",
+   "why": "ciężar z konstrukcji, widoczna ścieżka obciążeń (kolumna, żebra)"
+  },
+  "3": {
+   "status": "NOWY",
+   "src": "nowa receptura gun_3 (s6defs.py)",
+   "why": "poprzedni C_Arcade był w szarości prawie identyczny z E_Toon (okrągłe skorupy, ta sama paleta) - zastąpiony heksagonalnym low-poly z klinami i szczelinami"
+  },
+  "4": {
+   "status": "ZACHOWANY",
+   "src": "Pass 4 hero4 R4W_Basic D_Scrap (PR #1294)",
+   "why": "czytelna historia: rama, łaty, zużycie w punktach serwisowych"
+  },
+  "5": {
+   "status": "PRZEROBIONY",
+   "src": "Pass 4 hero4 R4W_Basic E_Toon + kontur inverted hull (s6outline.py)",
+   "why": "dodany kontur 7,5 mm; geometria i animacje bez zmian"
+  },
+  "6": {
+   "status": "ZACHOWANY",
+   "src": "oryginał R4Weapons938/R4W_Basic (PR #939)",
+   "why": "rzeczywisty model R4 - wzorzec stylu 06"
+  }
+ },
+ "wheel": {
+  "1": {
+   "status": "PRZEROBIONY",
+   "src": "wirnik Pass 4 wheel_A przeniesiony na oś R4M_Wheel + nowe mocowanie, osłona piasty, błotnik",
+   "why": "Pass 4 to inna część (R4M_WheelM_Side_Offroad); piasta zamknięta pokrywą"
+  },
+  "2": {
+   "status": "PRZEROBIONY",
+   "src": "wirnik Pass 4 wheel_B + ciężka płyta, ramię skrzynkowe, amortyzator, błotnik żebrowany",
+   "why": "przeniesione na kontrakt R4M_Wheel"
+  },
+  "3": {
+   "status": "NOWY",
+   "src": "nowa receptura wheel_3 (12-kątna opona, szprychy, piasta heks)",
+   "why": "poprzedni C_Arcade był w szarości identyczny z E_Toon"
+  },
+  "4": {
+   "status": "PRZEROBIONY",
+   "src": "wirnik Pass 4 wheel_D + złomowa płyta, kątowniki, resor, łata naprawcza",
+   "why": "przeniesione na kontrakt R4M_Wheel"
+  },
+  "5": {
+   "status": "PRZEROBIONY",
+   "src": "wirnik Pass 4 wheel_E + zaokrąglona płyta, ramię rurowe, gruby błotnik, kontur",
+   "why": "przeniesione na kontrakt R4M_Wheel"
+  },
+  "6": {
+   "status": "ZACHOWANY",
+   "src": "oryginał R4Movement940/R4M_Wheel (PR #941)",
+   "why": "rzeczywisty model R4 - wzorzec stylu 06"
+  }
+ },
+ "dep": {
+  "1": {
+   "status": "NOWY",
+   "src": "nowa receptura dep_1 (s6defs.py)",
+   "why": "poprzednie warianty A-E to ta sama rama 1x1 z czterema słupkami różniąca się tylko kolorem"
+  },
+  "2": {
+   "status": "NOWY",
+   "src": "nowa receptura dep_2 (s6defs.py)",
+   "why": "poprzednie warianty A-E to ta sama rama 1x1 z czterema słupkami różniąca się tylko kolorem"
+  },
+  "3": {
+   "status": "NOWY",
+   "src": "nowa receptura dep_3 (s6defs.py)",
+   "why": "poprzednie warianty A-E to ta sama rama 1x1 z czterema słupkami różniąca się tylko kolorem"
+  },
+  "4": {
+   "status": "NOWY",
+   "src": "nowa receptura dep_4 (s6defs.py)",
+   "why": "poprzednie warianty A-E to ta sama rama 1x1 z czterema słupkami różniąca się tylko kolorem"
+  },
+  "5": {
+   "status": "NOWY",
+   "src": "nowa receptura dep_5 (s6defs.py)",
+   "why": "poprzednie warianty A-E to ta sama rama 1x1 z czterema słupkami różniąca się tylko kolorem"
+  },
+  "6": {
+   "status": "PRZEROBIONY",
+   "src": "dep_6: koncepcja lądowiska H i przysłony z R4ModulesSleek1x1 przeniesiona na cokół R4.1",
+   "why": "zachowana idea H-pada i Iris, nowa bryła w cechach R4.1"
+  }
+ },
+ "drone": {
+  "1": {
+   "status": "NOWY",
+   "src": "nowa receptura drone_1 (s6defs.py), kontrakt PROPOSAL",
+   "why": "dron nie istnieje w repozytorium ani w kodzie gry"
+  },
+  "2": {
+   "status": "NOWY",
+   "src": "nowa receptura drone_2 (s6defs.py), kontrakt PROPOSAL",
+   "why": "dron nie istnieje w repozytorium ani w kodzie gry"
+  },
+  "3": {
+   "status": "NOWY",
+   "src": "nowa receptura drone_3 (s6defs.py), kontrakt PROPOSAL",
+   "why": "dron nie istnieje w repozytorium ani w kodzie gry"
+  },
+  "4": {
+   "status": "NOWY",
+   "src": "nowa receptura drone_4 (s6defs.py), kontrakt PROPOSAL",
+   "why": "dron nie istnieje w repozytorium ani w kodzie gry"
+  },
+  "5": {
+   "status": "NOWY",
+   "src": "nowa receptura drone_5 (s6defs.py), kontrakt PROPOSAL",
+   "why": "dron nie istnieje w repozytorium ani w kodzie gry"
+  },
+  "6": {
+   "status": "NOWY",
+   "src": "nowa receptura drone_6 (s6defs.py), kontrakt PROPOSAL",
+   "why": "dron nie istnieje w repozytorium ani w kodzie gry"
+  }
+ }
+}
