@@ -7,13 +7,13 @@
  "meta": {},
  "tris_hi": {
   "Rotor": 540,
-  "Mount": 216
+  "Mount": 236
  },
  "tris_lo": {
   "Rotor": 540,
-  "Mount": 216
+  "Mount": 236
  },
- "s_build": 0.3,
+ "s_build": 0.1,
  "violations": [],
  "bounds": {
   "Rotor": [
@@ -41,8 +41,8 @@
    ]
   ]
  },
- "s_bake": 296.3,
- "s_skin": 430.1,
+ "s_bake": 371.7,
+ "s_skin": 642.5,
  "animated_nodes": [
   "R4M_Wheel_Rotor"
  ],
@@ -75,11 +75,11 @@
  "lod1": {
   "method": "planar dissolve",
   "angle_deg": 14.0,
-  "triangles": 680,
-  "of_lod0": 0.899
+  "triangles": 700,
+  "of_lod0": 0.902
  },
- "tris_lod1": 680,
- "s_export": 0.9,
+ "tris_lod1": 700,
+ "s_export": 1.3,
  "port_contact": [
   {
    "dir": "up",
@@ -108,7 +108,7 @@
     "R4M_Wheel_3_orm.png"
    ],
    "actions": 2,
-   "triangles": 756,
+   "triangles": 776,
    "scale": [
     1.0
    ],
@@ -137,7 +137,7 @@
     "R4M_Wheel_3_orm.png"
    ],
    "actions": 8,
-   "triangles": 756,
+   "triangles": 776,
    "scale": [
     1.0
    ],
@@ -148,23 +148,23 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4M_Wheel.fbx": {
-   "sha256": "be66b0e47a16c666c1520f5d8b28401f5a25aaff9099c19b01b5b73368ca4a7a",
-   "bytes": 2148108
+   "sha256": "422897ca36ebb69a3956c7be67ff4f5f751aca086fcd1a072081beac7e153304",
+   "bytes": 2075276
   },
   "R4M_Wheel.glb": {
-   "sha256": "5b38625b2cb8cf9becc559bbc4e178397930c3727d233ea995a8824306462ac9",
-   "bytes": 4972252
+   "sha256": "b1740d6faa6d46722e694c1a67edbcb06d285e0f35d02abc4e4a7808865ea34d",
+   "bytes": 4733104
   },
   "R4M_Wheel_LOD1.fbx": {
-   "sha256": "bf642e6a82171b9a0aff6af244027afe8cdc3d1944fbb3900c0c7563171199e5",
-   "bytes": 2078108
+   "sha256": "0e160f54575aeb990d93b065c6e144cdd030f14d535fbaf97389f7e5b9b2f7c0",
+   "bytes": 2005308
   },
   "R4M_Wheel_LOD1.glb": {
-   "sha256": "66ebb212e1a21596947bc1e9e4a8d1541579c6ad1201f7430e4b2203e5116558",
-   "bytes": 4963016
+   "sha256": "506b744a3acabce71be6279c8bf4bd1ddadba04c1683bfdc5630e94ad537c04e",
+   "bytes": 4723868
   }
  },
- "triangles": 756,
- "s_qa": 0.3,
+ "triangles": 776,
+ "s_qa": 0.5,
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

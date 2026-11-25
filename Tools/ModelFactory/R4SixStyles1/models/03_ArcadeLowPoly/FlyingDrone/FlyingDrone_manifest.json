@@ -9,7 +9,6 @@
   "FlyingDrone_Body": "FlyingDrone_ROOT",
   "FlyingDrone_Rotor_1": "FlyingDrone_Body",
   "FlyingDrone_Rotor_2": "FlyingDrone_Body",
-  "FlyingDrone_Rotor_3": "FlyingDrone_Body",
   "Socket_Dock": "FlyingDrone_ROOT",
   "Muzzle": "FlyingDrone_Body"
  },
@@ -17,22 +16,17 @@
   "FlyingDrone_Body": [
    0.0,
    0.0,
-   0.05999999865889549
+   0.07500000298023224
   ],
   "FlyingDrone_Rotor_1": [
-   9.184851394388759e-18,
-   0.15000000596046448,
-   0.07599999755620956
+   0.0,
+   0.0,
+   0.17599999904632568
   ],
   "FlyingDrone_Rotor_2": [
-   -0.12990380823612213,
-   -0.07500000298023224,
-   0.07599999755620956
-  ],
-  "FlyingDrone_Rotor_3": [
-   0.12990380823612213,
-   -0.07500000298023224,
-   0.07599999755620956
+   0.0,
+   0.0,
+   0.20600000023841858
   ]
  },
  "empties": {
@@ -48,7 +42,7 @@
    "parent": "Body",
    "loc": [
     0.0,
-    -0.09000000357627869,
+    -0.15199999511241913,
     0.05999999865889549
    ]
   }
@@ -83,8 +77,7 @@
  "animated_nodes": [
   "FlyingDrone_Body",
   "FlyingDrone_Rotor_1",
-  "FlyingDrone_Rotor_2",
-  "FlyingDrone_Rotor_3"
+  "FlyingDrone_Rotor_2"
  ],
  "materials": [
   "FlyingDrone_03_ArcadeLowPoly"
@@ -95,33 +88,28 @@
   "normal": "FlyingDrone_3_normal.png",
   "emission": "FlyingDrone_3_emission.png"
  },
- "construction": "Arcade Low-Poly drone: a faceted gem (hexagonal waist, pyramid top and bottom), three wedge arms at 120 degrees (a tri-copter - a different count from the other styles), three-blade flat props inside hexagonal guard rings, the same orange triangle on top",
+ "construction": "Arcade Low-Poly drone - rebuilt after the moodboard review: a blocky toy helicopter (moodboard 03: modules read as cubes and wedges; ref. Trailmakers helicopter). A box cabin with a wedge nose, a hexagonal mast with TWO stacked two-blade rotors (coaxial, counter-rotating, so no tail rotor is needed), a tail boom ending in the big lime triangle fin, block skids. Family cue with the launcher: the hexagon (mast, roof plate) and the lime triangle. (The earlier gem tri-copter with ring guards read like the 06 quad in greyscale at 128 px - moodboard boundary 03 <-> 06.)",
  "meta": {
   "body_pivot": [
    0,
    0,
-   0.06
+   0.075
   ],
   "rotors": {
    "Rotor_1": [
-    9.184850993605149e-18,
-    0.15,
-    0.076
+    0.0,
+    0.0,
+    0.176
    ],
    "Rotor_2": [
-    -0.1299038105676658,
-    -0.07499999999999996,
-    0.076
-   ],
-   "Rotor_3": [
-    0.12990381056766576,
-    -0.07500000000000007,
-    0.076
+    0.0,
+    0.0,
+    0.206
    ]
   },
   "muzzle": [
    0,
-   -0.09,
+   -0.152,
    0.06
   ],
   "dock_z": 0.0

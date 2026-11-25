@@ -71,10 +71,10 @@
   "normal": "R4X_FlyingDroneDeployer_3_normal.png",
   "emission": "R4X_FlyingDroneDeployer_3_emission.png"
  },
- "construction": "Arcade Low-Poly: a hexagonal deck on three wedge legs with open gaps between them (light shows through), a square foot plate for the port; the pad is a sunk hexagon with ONE big orange triangle pointing forward; six wedge petals round the pad spin; every surface is a flat facet - no bevel smoothing, segment counts of 6",
+ "construction": "Arcade Low-Poly: a hexagonal deck on three wedge legs with open gaps between them (light shows through), a square foot plate for the port; the pad is a sunk hexagon with ONE big lime triangle pointing forward (orange before the moodboard palette review); six wedge petals round the pad spin; every surface is a flat facet - no bevel smoothing, segment counts of 6",
  "meta": {
-  "dock_z": 0.031,
-  "family": "hexagon + big orange triangle"
+  "dock_z": 0.0245,
+  "family": "hexagon + big lime triangle"
  },
  "gameplay": "visual only: no gameplay capability, timing or collider is added"
 }

@@ -3,10 +3,10 @@
  "style": "3",
  "label": "03_ArcadeLowPoly",
  "size": 2048,
- "construction": "Arcade Low-Poly: a hexagonal deck on three wedge legs with open gaps between them (light shows through), a square foot plate for the port; the pad is a sunk hexagon with ONE big orange triangle pointing forward; six wedge petals round the pad spin; every surface is a flat facet - no bevel smoothing, segment counts of 6",
+ "construction": "Arcade Low-Poly: a hexagonal deck on three wedge legs with open gaps between them (light shows through), a square foot plate for the port; the pad is a sunk hexagon with ONE big lime triangle pointing forward (orange before the moodboard palette review); six wedge petals round the pad spin; every surface is a flat facet - no bevel smoothing, segment counts of 6",
  "meta": {
-  "dock_z": 0.031,
-  "family": "hexagon + big orange triangle"
+  "dock_z": 0.0245,
+  "family": "hexagon + big lime triangle"
  },
  "tris_hi": {
   "Body": 188,
@@ -35,7 +35,7 @@
    [
     -0.2232999950647354,
     -0.22200000286102295,
-    0.03999999910593033
+    0.04050000011920929
    ],
    [
     0.2232999950647354,
@@ -44,8 +44,8 @@
    ]
   ]
  },
- "s_bake": 126.5,
- "s_skin": 293.0,
+ "s_bake": 53.6,
+ "s_skin": 116.0,
  "animated_nodes": [
   "R4X_FlyingDroneDeployer_Iris"
  ],
@@ -64,7 +64,7 @@
   "of_lod0": 1.0
  },
  "tris_lod1": 260,
- "s_export": 1.0,
+ "s_export": 0.4,
  "port_contact": [
   {
    "dir": "down",
@@ -133,23 +133,23 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4X_FlyingDroneDeployer.fbx": {
-   "sha256": "ff763636ab858416b56fb1147b203b2c4e657caea720db426ce0f3eb98b26815",
-   "bytes": 1642508
+   "sha256": "7b81a775bb030694a1c6ee0a0aeedfb042bf7f833249d655e5a0537442f46c36",
+   "bytes": 1557724
   },
   "R4X_FlyingDroneDeployer.glb": {
-   "sha256": "3047d510763921d1b979f431007c0ed687746b3ec52164aae77766d400bd2d54",
-   "bytes": 4123828
+   "sha256": "7882c23e74fdb8470eebfd4330d224e8335d456bd54091889f9ed85eb30703d4",
+   "bytes": 4032184
   },
   "R4X_FlyingDroneDeployer_LOD1.fbx": {
-   "sha256": "a13e2117339e4477769ed0d74107eb92bce3078439e4dcdd4f78e0fec4960e92",
-   "bytes": 1588524
+   "sha256": "929e63d412993ab32077e0412e5b2f5043c0331827b5f500bcfeed9f7d503535",
+   "bytes": 1503756
   },
   "R4X_FlyingDroneDeployer_LOD1.glb": {
-   "sha256": "a66efc568523f5c8ffebf7db5bfab61eea391af5924569d0acc4976fcada9ded",
-   "bytes": 4120896
+   "sha256": "33f6ac409dec9f39b60ddc1e579db3fe38202ba684fc93e087adec3a5878f0b3",
+   "bytes": 4029252
   }
  },
  "triangles": 260,
- "s_qa": 0.3,
+ "s_qa": 0.2,
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

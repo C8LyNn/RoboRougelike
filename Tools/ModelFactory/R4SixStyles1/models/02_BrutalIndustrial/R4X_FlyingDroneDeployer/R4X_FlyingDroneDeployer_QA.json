@@ -16,7 +16,7 @@
   "Body": 1124,
   "Iris": 608
  },
- "s_build": 0.4,
+ "s_build": 0.3,
  "violations": [],
  "bounds": {
   "Body": [
@@ -33,19 +33,19 @@
   ],
   "Iris": [
    [
-    -0.11800000071525574,
-    -0.11800000071525574,
-    0.05400000140070915
+    -0.12600000202655792,
+    -0.12600000202655792,
+    0.05050000175833702
    ],
    [
-    0.11800000071525574,
-    0.11800000071525574,
+    0.12600000202655792,
+    0.12600000202655792,
     0.10400000214576721
    ]
   ]
  },
- "s_bake": 884.8,
- "s_skin": 1030.6,
+ "s_bake": 346.9,
+ "s_skin": 408.8,
  "animated_nodes": [
   "R4X_FlyingDroneDeployer_Iris"
  ],
@@ -60,11 +60,11 @@
  "lod1": {
   "method": "planar dissolve",
   "angle_deg": 14.0,
-  "triangles": 1648,
-  "of_lod0": 0.952
+  "triangles": 1660,
+  "of_lod0": 0.958
  },
- "tris_lod1": 1648,
- "s_export": 0.9,
+ "tris_lod1": 1660,
+ "s_export": 0.5,
  "port_contact": [
   {
    "dir": "down",
@@ -133,23 +133,23 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4X_FlyingDroneDeployer.fbx": {
-   "sha256": "7b0b070fc551db384d677a131252dbaa8a5acf8e1c11eb9bf2bf852f46f9f1c7",
-   "bytes": 5185644
+   "sha256": "6c09a0034d4e76e34ef771f5a013025bf586a244365563933062895c64df2657",
+   "bytes": 5148876
   },
   "R4X_FlyingDroneDeployer.glb": {
-   "sha256": "7fd733fdc7e44925530484fe7a40b9200abeedc32faf3a204fd3f2d2dab69507",
-   "bytes": 9731292
+   "sha256": "e0add246167f369012bf0ff627dadbe05d46014d2f967cfa59b6fefc5064771b",
+   "bytes": 9667244
   },
   "R4X_FlyingDroneDeployer_LOD1.fbx": {
-   "sha256": "244975b213e3391365ca6685f3f4711fb239c731f2d8c894c9eee2473cf28ac6",
-   "bytes": 5132076
+   "sha256": "ae84afb1bf47a7e555c5d676573464c59af22357d598f0e50dbd030a52eef7a7",
+   "bytes": 5095260
   },
   "R4X_FlyingDroneDeployer_LOD1.glb": {
-   "sha256": "c45bc6ec6473c52448967a2c5e3041b47690d0386c51558dccef798783f37457",
-   "bytes": 9725356
+   "sha256": "fc75a6bee849c011c3e5de91085a09c7b68de93fd139bea91a6da21923a99113",
+   "bytes": 9661572
   }
  },
  "triangles": 1732,
- "s_qa": 0.5,
+ "s_qa": 0.4,
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

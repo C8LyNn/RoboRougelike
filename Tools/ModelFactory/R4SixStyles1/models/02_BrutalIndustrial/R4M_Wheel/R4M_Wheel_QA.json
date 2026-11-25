@@ -6,14 +6,14 @@
  "construction": "Brutal Industrial wheel. Rotor: the Pass 4 Brutal rotor (tractor bars, bolted wheel-weight ring, cast hub) moved onto the axle. Mount: new - the load path is the shape: a thick plate, one massive box arm with two gussets straight down to a big axle boss, a coil-over damper beside it from plate to boss, a brake caliper on the inner disc, hazard bands on the arm",
  "meta": {},
  "tris_hi": {
-  "Rotor": 26636,
-  "Mount": 4876
+  "Rotor": 26760,
+  "Mount": 4936
  },
  "tris_lo": {
-  "Rotor": 4876,
-  "Mount": 1236
+  "Rotor": 4912,
+  "Mount": 1264
  },
- "s_build": 1.6,
+ "s_build": 0.7,
  "violations": [],
  "bounds": {
   "Rotor": [
@@ -41,8 +41,8 @@
    ]
   ]
  },
- "s_bake": 569.2,
- "s_skin": 642.0,
+ "s_bake": 906.2,
+ "s_skin": 975.0,
  "animated_nodes": [
   "R4M_Wheel_Rotor"
  ],
@@ -75,11 +75,11 @@
  "lod1": {
   "method": "planar dissolve",
   "angle_deg": 14.0,
-  "triangles": 4620,
-  "of_lod0": 0.756
+  "triangles": 4656,
+  "of_lod0": 0.754
  },
- "tris_lod1": 4620,
- "s_export": 0.6,
+ "tris_lod1": 4656,
+ "s_export": 0.7,
  "port_contact": [
   {
    "dir": "up",
@@ -108,7 +108,7 @@
     "R4M_Wheel_2_orm.png"
    ],
    "actions": 2,
-   "triangles": 6112,
+   "triangles": 6176,
    "scale": [
     1.0
    ],
@@ -137,7 +137,7 @@
     "R4M_Wheel_2_orm.png"
    ],
    "actions": 8,
-   "triangles": 6112,
+   "triangles": 6176,
    "scale": [
     1.0
    ],
@@ -148,23 +148,23 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4M_Wheel.fbx": {
-   "sha256": "e501502a6bc5c7620fe84b964996b07344d3d8f3f49633aa79df1e6bfa6cc2f9",
-   "bytes": 6270668
+   "sha256": "ec85e62ef5404c079234103ce944175a948e34e13af9168bccb359bc101d601d",
+   "bytes": 6311164
   },
   "R4M_Wheel.glb": {
-   "sha256": "643c8dd5da24a9e25f2c50c384e33243a78f92ae02c6d38ce0217470bfa4baf1",
-   "bytes": 10163452
+   "sha256": "965414aa731ef0a23e2abd9c84dc647dfe64d0b5dbcb89ae305b90e8b1371c18",
+   "bytes": 10209632
   },
   "R4M_Wheel_LOD1.fbx": {
-   "sha256": "fa85e6545b9f9f0ef61e86c446cb1853b8f0f6f9ea5521ae5fa7a594b06b9386",
-   "bytes": 6182940
+   "sha256": "b793e6bda84157f4e5a12274e3432fb4ac70ca8769d7696ce4942aac5fb5c608",
+   "bytes": 6222732
   },
   "R4M_Wheel_LOD1.glb": {
-   "sha256": "e32236545208b65f3753298e353d9c50fea3b105ff9fd8bb00909603a1b2ea37",
-   "bytes": 10104424
+   "sha256": "ef043f766cfc0e024b2866fa4b1966e595d79c53b78eba70d47ea866ccad4b03",
+   "bytes": 10150020
   }
  },
- "triangles": 6112,
- "s_qa": 0.5,
+ "triangles": 6176,
+ "s_qa": 0.4,
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }
