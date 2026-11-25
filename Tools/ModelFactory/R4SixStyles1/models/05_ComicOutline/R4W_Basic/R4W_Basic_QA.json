@@ -1,8 +1,23 @@
 {
  "cid": "R4W_Basic",
  "source": "Pass 4 hero4 E_Toon R4W_Basic.glb (PR #1294)",
- "change": "Comic Outline contour added (inverted hull 0.0120 m, material R4P_Outline, back-face culled); geometry, rig and animation of the source kept",
+ "change": "sense repair of the Pass 4 model: the parts of both receiver side plates that stood out past x 129.5 mm are pulled in (2 squash ops) so the receiver clears the yoke cheeks at full elevation; Comic Outline contour added afterwards (inverted hull 0.0120 m, material R4P_Outline, back-face culled); rig and animation of the source kept",
+ "ops": [
+  {
+   "node": "R4W_Basic_Pitch",
+   "verts": 5,
+   "why": "at full elevation (+35 deg, frame 83) the lower front corner of the left receiver side plate (x -137 mm) swept into the yoke cheek (inner face x -138 mm): the parts of the side plate and its trim strips that stand out past x -129.5 mm are pulled in to at most -132 mm (6 mm running clearance); the trunnion zone near the pitch axis is not touched",
+   "op": "squash"
+  },
+  {
+   "node": "R4W_Basic_Pitch",
+   "verts": 5,
+   "why": "the same on the right side plate (the gun is mirror-symmetric)",
+   "op": "squash"
+  }
+ ],
  "meshes_outlined": 6,
+ "gltf_animation_mode": "ACTIONS",
  "reimport": {
   ".glb": {
    "missing": [],
@@ -37,27 +52,26 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4W_Basic.fbx": {
-   "sha256": "217017821a56d171f22fc1daf660ff66f4380a6d3f8a172846f56386f34c3379",
-   "bytes": 3069692
+   "sha256": "3e466e872fd785bacf8881d0d95b221dafff3a22f0e03aada1820e6de4d651a0",
+   "bytes": 3069708
   },
   "R4W_Basic.glb": {
-   "sha256": "cf710aa82ae6a8ea8aa111b92a9f149cc7eacd45da49368d00db5ac68d70f3ba",
-   "bytes": 3480612
+   "sha256": "a6ad414158ff0a2be0242f9045f5cf9fde34eae6b80c8ed4eaeaf860ce0159bd",
+   "bytes": 3480608
   },
   "R4W_Basic_LOD1.fbx": {
-   "sha256": "9a43da6a339e730e04396db9d8a37aa07a27e740b71e29fa893adbac85f07331",
-   "bytes": 85180
+   "sha256": "d787529d6eb366e96f5bab8754e9696535170fca3934d3fd0e0592f57b0345b1",
+   "bytes": 2785276
   },
   "R4W_Basic_LOD1.glb": {
-   "sha256": "5e8ee48067c41e714594cbda3bbdab44dcfc7e29005c9ff14e9623835f824209",
-   "bytes": 396816
+   "sha256": "9371d2f6c8d468b77abedf83d58b1d239b575f64f78c4d84329617001c27ef60",
+   "bytes": 3305692
   },
   "R4W_Basic_SOURCE.blend": {
-   "sha256": "ad5307d6fed36e06ee391081687f9bd3e81c589099ac213c162e745a3d3c6de9",
-   "bytes": 3402753
+   "sha256": "b164df3666d9884746664bcdf0f3cb587712a5585bc5c25f05cd138e610e1dfa",
+   "bytes": 3402762
   }
  },
- "lod1": "R4W_Basic_LOD1.glb / .fbx copied unchanged from Pass 4 E_Toon (#1294), WITHOUT the outline shell - LOD1 is seen from a distance where the line is drawn by the Unity outline pass, not by the hull; textures/ = the Pass 4 E_Toon texture set (the GLB and FBX of LOD0 embed their textures)",
- "sense_note": "sense check: 4 polygons of the cheek plate brush the trunnion at frame 83 (pitch +35 deg) - inherited from Pass 4, left for decision",
+ "lod1": "R4W_Basic_LOD1.glb / .fbx rebuilt from the repaired model WITHOUT the outline shell (scripts/s6lod.py, generator rule) - at LOD1 distance the line comes from the Unity outline pass; textures/ = the Pass 4 E_Toon texture set (the GLB and FBX of LOD0 embed their textures)",
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

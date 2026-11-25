@@ -5,7 +5,7 @@
  "size": 2048,
  "construction": "Comic Outline: exaggerated function - a squat rounded bun with a huge tilted launch porthole (fat navy bumper ring, oversized petal shutter that spins), a star badge on the front, stubby feet; proportions pushed: the porthole is almost the full width of the cell",
  "meta": {
-  "dock_z": 0.0305,
+  "dock_z": 0.0345,
   "family": "fat navy bumper ring with orange inner band = the drone's eye ring",
   "dock_z_note": "set from the sense check (s6sense PAIR: free drop / penetration of the docked drone)"
  },
@@ -158,5 +158,8 @@
  },
  "triangles": 2792,
  "s_qa": 0.4,
+ "notes": [
+  "meta.dock_z 0.0305 -> 0.0345 after the function check v2: the drone 05 was lowered 4 mm onto its Socket_Dock (geometry of this launcher unchanged)"
+ ],
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

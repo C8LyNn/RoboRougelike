@@ -1,61 +1,102 @@
 {
  "cid": "R4W_Basic",
- "status": "KEPT",
- "note": "kept unchanged: original R4 model, PR #939 (branch art/938-r4-weapon-models), R41_Turret_v6.1 standard",
- "files": {
-  "R4W_Basic.blend": {
-   "sha256": "352a517534c4aaa9346a66ad6ba358bd0731913153e68f11f138539ee048c93f",
-   "bytes": 1809387
+ "source": "original R4Weapons938/R4W_Basic.glb (PR #939, branch art/938-r4-weapon-models - that original is unchanged)",
+ "change": "sense repair of a copy of the original R4 gun: 2 standoff rails added between the back plate and the striped hazard plate (it stood 16 mm behind the back plate with nothing holding it); geometry, rig and animation otherwise unchanged",
+ "ops": [
+  {
+   "node": "R4W_Basic_Yaw",
+   "faces": 6,
+   "donor_face": 2992,
+   "centre_mm": [
+    -55,
+    247,
+    58
+   ],
+   "why": "the striped hazard plate on the back of the turret head stood 16 mm behind the back plate and 10 mm from both side cheeks with nothing holding it: two standoff rails from the back plate carry it (left)",
+   "op": "box"
   },
+  {
+   "node": "R4W_Basic_Yaw",
+   "faces": 6,
+   "donor_face": 3388,
+   "centre_mm": [
+    55,
+    247,
+    58
+   ],
+   "why": "standoff rail (right)",
+   "op": "box"
+  }
+ ],
+ "meshes_outlined": 0,
+ "gltf_animation_mode": "ACTIONS",
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "anim_pos_dev_mm": 0.0,
+   "frame_offset": 0,
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Barrel_Heat",
+    "Energy_Hot",
+    "Hazard_Yellow",
+    "Muzzle_Flash",
+    "Sensor_Eye_Red",
+    "Steel_Light",
+    "TeamColor_Red"
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "anim_pos_dev_mm": 0.0,
+   "frame_offset": 1,
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Barrel_Heat",
+    "Energy_Hot",
+    "Hazard_Yellow",
+    "Muzzle_Flash",
+    "Sensor_Eye_Red",
+    "Steel_Light",
+    "TeamColor_Red"
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
   "R4W_Basic.fbx": {
-   "sha256": "4edd6d28e77a34dfc726c99c503799184e385743a5d189eb932f754855e714dd",
-   "bytes": 575404
+   "sha256": "324ba1c28df0131c8fcb54135e07027aeb71474d7011ff2080fb5d1969f3df5b",
+   "bytes": 599676
   },
   "R4W_Basic.glb": {
-   "sha256": "9535f7deb4e52b998e5d2f663d77807bddf295cdba014fafb6c38851d1262631",
-   "bytes": 620012
+   "sha256": "7d3dd1dfc99a5fb93b9d0e2a337f75805aed8e489f8c33bcf95e6c88a25bd721",
+   "bytes": 630652
   },
   "R4W_Basic_LOD1.fbx": {
-   "sha256": "4950a96aea197fca9d10e281511cc3a03409616cccc4fb098919f79fd05a1335",
-   "bytes": 289660
+   "sha256": "0490003c2c5a01b3b9c87348134fc18a1eb17c2c199d6765832206026fd34dd3",
+   "bytes": 289724
+  },
+  "R4W_Basic_LOD1.glb": {
+   "sha256": "184035d34fa828be4515bfe632b349d30962dd2fd8c4f1f5da7f95adb55f16f5",
+   "bytes": 425216
+  },
+  "R4W_Basic_SOURCE.blend": {
+   "sha256": "b1c81e9076a538bb73a7f8cf36294072fe3dde4fdf9c7b78b3b6afebf2ad3fb7",
+   "bytes": 540139
   },
   "R4W_Basic_colliders.glb": {
    "sha256": "cd0e5fec31a10927dfba6d408bc9ef2b9c53766c728a5c7fdd99c681ebdabbce",
    "bytes": 604784
   }
  },
- "required_nodes_missing": [],
- "node_bounds_violations": [],
- "extra_mesh_nodes": [
-  "MuzzleFlash"
- ],
- "actions": [
-  [
-   1.0,
-   139.0
-  ],
-  [
-   1.0,
-   139.0
-  ],
-  [
-   1.0,
-   139.0
-  ],
-  [
-   1.0,
-   139.0
-  ]
- ],
- "contract_ok": true,
- "sha": {
-  "R4W_Basic.blend": "352a517534c4aaa9",
-  "R4W_Basic.fbx": "4edd6d28e77a34df",
-  "R4W_Basic.glb": "9535f7deb4e52b99",
-  "R4W_Basic_LOD1.fbx": "4950a96aea197fca",
-  "R4W_Basic_colliders.glb": "cd0e5fec31a10927"
- },
- "unity": "UNITY_NOT_RUN",
- "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files",
- "sha_note": "hashes of the delivered copies; the FBX of the Pass 4 guns are the repository (path-scrubbed) versions, byte-identical to the files on art/1239-atlas5-hero4; R4W_Basic / R4M_Wheel of 06 are byte-identical to art/938 / art/940"
+ "lod1": "R4W_Basic_LOD1.glb / .fbx rebuilt from the repaired model with the rule of the original (DECIMATE collapse 0.5, automatic) - details in R4W_Basic_LOD1_info.json",
+ "kept_files": "R4W_Basic_QA_source.json, R4W_Basic_colliders.glb and the three manifests are the files of the original #939 (the colliders do not include the hazard plate and are unchanged; the manifests describe the original); the original R4W_Basic.blend is not copied, the editable file of the repaired model is R4W_Basic_SOURCE.blend",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

@@ -9,14 +9,14 @@
   "family": "orange eye ring + team-red band + octagonal chamfered gunmetal"
  },
  "tris_hi": {
-  "Body": 1824,
+  "Body": 1844,
   "Iris": 1440
  },
  "tris_lo": {
-  "Body": 712,
+  "Body": 732,
   "Iris": 576
  },
- "s_build": 0.3,
+ "s_build": 0.8,
  "violations": [],
  "bounds": {
   "Body": [
@@ -44,8 +44,8 @@
    ]
   ]
  },
- "s_bake": 51.0,
- "s_skin": 81.2,
+ "s_bake": 321.4,
+ "s_skin": 484.7,
  "animated_nodes": [
   "R4X_FlyingDroneDeployer_Iris"
  ],
@@ -60,11 +60,11 @@
  "lod1": {
   "method": "planar dissolve",
   "angle_deg": 14.0,
-  "triangles": 1268,
-  "of_lod0": 0.984
+  "triangles": 1288,
+  "of_lod0": 0.985
  },
- "tris_lod1": 1268,
- "s_export": 0.3,
+ "tris_lod1": 1288,
+ "s_export": 0.8,
  "port_contact": [
   {
    "dir": "down",
@@ -93,7 +93,7 @@
     "R4X_FlyingDroneDeployer_6_orm.png"
    ],
    "actions": 2,
-   "triangles": 1288,
+   "triangles": 1308,
    "scale": [
     1.0
    ],
@@ -122,7 +122,7 @@
     "R4X_FlyingDroneDeployer_6_orm.png"
    ],
    "actions": 8,
-   "triangles": 1288,
+   "triangles": 1308,
    "scale": [
     1.0
    ],
@@ -133,23 +133,23 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4X_FlyingDroneDeployer.fbx": {
-   "sha256": "cc2b45b1e6d6ca897abbd6665e5f8160fc89640fa2af95e558dc00b1fc77bca0",
-   "bytes": 2382364
+   "sha256": "be4fcddb842db0b641513b5f936a394c945896d2314c4f9af91098657737bc6f",
+   "bytes": 2418140
   },
   "R4X_FlyingDroneDeployer.glb": {
-   "sha256": "0aa580df810c73f34e6ed15c8eb74795c73976baad24b31b50c930c6c9425af0",
-   "bytes": 4845628
+   "sha256": "7d7917d9814ecd1c1873e4042e447d0dacd4ca039cada38ae082b9acb922f8eb",
+   "bytes": 4879416
   },
   "R4X_FlyingDroneDeployer_LOD1.fbx": {
-   "sha256": "d4c6acf9d4f8a1eaee152bf0c0e1ec8debf1c18372b54b0ca1a23f012928e664",
-   "bytes": 2330716
+   "sha256": "79ec1fca884cbfe4d08c60edc5913dbdf733beb6a473336327c94c039e6e8f83",
+   "bytes": 2366412
   },
   "R4X_FlyingDroneDeployer_LOD1.glb": {
-   "sha256": "e98c5a4f7c6d017962dd9ad1a19bf132fe5ad7566cc547867df6006194631819",
-   "bytes": 4841752
+   "sha256": "76ea711fd7940a39c89f0f9e953cb25f524a699f7abf33129d16fe9a8f407da5",
+   "bytes": 4875184
   }
  },
- "triangles": 1288,
- "s_qa": 0.2,
+ "triangles": 1308,
+ "s_qa": 0.4,
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

@@ -91,6 +91,14 @@
   "emission": "R4M_Wheel_5_emission.png"
  },
  "construction": "Comic Outline wheel. Rotor: the Pass 4 Heroic Toon rotor (balloon tyre with seven fat arrow lugs, orange bowl hub, raised star) moved onto the axle - the hub is the part that decides the function, and it stays oversized. Mount: new - a fat rounded arm curving down to a big round boss with a star cap, a rounded plate. The outline is checked on the hub and in the tyre gap at game distance",
- "meta": {},
+ "meta": {
+  "rotor_fit": {
+   "scale": 1.0138,
+   "tread_r": 0.39,
+   "turned_deg": 163.25,
+   "rolling_var_mm": 4.77,
+   "inlays_pushed_in": []
+  }
+ },
  "gameplay": "visual only: no gameplay capability, timing or collider is added"
 }

@@ -4,7 +4,15 @@
  "label": "05_ComicOutline",
  "size": 2048,
  "construction": "Comic Outline wheel. Rotor: the Pass 4 Heroic Toon rotor (balloon tyre with seven fat arrow lugs, orange bowl hub, raised star) moved onto the axle - the hub is the part that decides the function, and it stays oversized. Mount: new - a fat rounded arm curving down to a big round boss with a star cap, a rounded plate. The outline is checked on the hub and in the tyre gap at game distance",
- "meta": {},
+ "meta": {
+  "rotor_fit": {
+   "scale": 1.0138,
+   "tread_r": 0.39,
+   "turned_deg": 163.25,
+   "rolling_var_mm": 4.77,
+   "inlays_pushed_in": []
+  }
+ },
  "tris_hi": {
   "Rotor": 25648,
   "Mount": 4588
@@ -13,19 +21,19 @@
   "Rotor": 3528,
   "Mount": 812
  },
- "s_build": 0.3,
+ "s_build": 0.7,
  "violations": [],
  "bounds": {
   "Rotor": [
    [
     -0.1809999942779541,
-    -0.38440001010894775,
-    -0.6399999856948853
+    -0.38850000500679016,
+    -0.6499999761581421
    ],
    [
     0.1679999977350235,
-    0.3837999999523163,
-    0.11999999731779099
+    0.38850000500679016,
+    0.12999999523162842
    ]
   ],
   "Mount": [
@@ -41,12 +49,12 @@
    ]
   ]
  },
- "s_bake": 444.8,
+ "s_bake": 144.9,
  "outline": {
   "method": "inverted hull in the node mesh, material R4P_Outline (back-face culled)",
   "width_m": 0.012
  },
- "s_skin": 684.3,
+ "s_skin": 218.6,
  "animated_nodes": [
   "R4M_Wheel_Rotor"
  ],
@@ -79,11 +87,11 @@
  "lod1": {
   "method": "planar dissolve",
   "angle_deg": 14.0,
-  "triangles": 5248,
-  "of_lod0": 0.605
+  "triangles": 5200,
+  "of_lod0": 0.599
  },
- "tris_lod1": 5248,
- "s_export": 1.4,
+ "tris_lod1": 5200,
+ "s_export": 0.7,
  "port_contact": [
   {
    "dir": "up",
@@ -154,23 +162,23 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4M_Wheel.fbx": {
-   "sha256": "7e842108f347421eb20e96c009be527dde1162783be276cbe668ae567ebbf02a",
-   "bytes": 4770668
+   "sha256": "6cc1a529ac80e1b18941e1908f6ad7bccd8dbd180a48d54ee28442cff988750a",
+   "bytes": 4759340
   },
   "R4M_Wheel.glb": {
-   "sha256": "62ea625aff134707a38c7261a9551376c741656e13372e0a3e8ae606283c2072",
-   "bytes": 7693232
+   "sha256": "93e12880334d68eda60c9882198c174e2f2302e43aee9da71c333f0817291cff",
+   "bytes": 7683776
   },
   "R4M_Wheel_LOD1.fbx": {
-   "sha256": "1d3b4669dc72ad6bed8b2f7bb4ddd500256bb87f72963c0303030603736ce4bf",
-   "bytes": 4650844
+   "sha256": "da5a74e157bbe98d09f343a16f92d31473c6e495e3d79f1153415fd4462d0f0d",
+   "bytes": 4634876
   },
   "R4M_Wheel_LOD1.glb": {
-   "sha256": "b116ead468a022a7edfabd485c0488bfcde34158261301c2054e191faa219f18",
-   "bytes": 7582968
+   "sha256": "8d0e35321195b7a036b6b628f47af46c826fea3b7bd84e6866a1ae60a1ded99d",
+   "bytes": 7572648
   }
  },
  "triangles": 4340,
- "s_qa": 1.1,
+ "s_qa": 0.5,
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

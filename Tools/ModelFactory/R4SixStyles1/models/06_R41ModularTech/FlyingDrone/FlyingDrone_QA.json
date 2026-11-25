@@ -34,26 +34,26 @@
   },
   "muzzle": [
    0,
-   -0.104,
-   0.058
+   -0.122,
+   0.056
   ],
   "dock_z": 0.0
  },
  "tris_hi": {
-  "Body": 2824,
+  "Body": 2904,
   "Rotor_1": 96,
   "Rotor_2": 96,
   "Rotor_3": 96,
   "Rotor_4": 96
  },
  "tris_lo": {
-  "Body": 1400,
+  "Body": 1448,
   "Rotor_1": 64,
   "Rotor_2": 64,
   "Rotor_3": 64,
   "Rotor_4": 64
  },
- "s_build": 0.3,
+ "s_build": 0.5,
  "violations": [],
  "bounds": {
   "Body": [
@@ -65,7 +65,7 @@
    [
     0.2078000009059906,
     0.2078000009059906,
-    0.10199999809265137
+    0.10450000315904617
    ]
   ],
   "Rotor_1": [
@@ -117,8 +117,8 @@
    ]
   ]
  },
- "s_bake": 498.2,
- "s_skin": 727.9,
+ "s_bake": 185.9,
+ "s_skin": 336.5,
  "animated_nodes": [
   "FlyingDrone_Body",
   "FlyingDrone_Rotor_1",
@@ -155,10 +155,10 @@
  "lod1": {
   "method": "planar dissolve",
   "angle_deg": 14.0,
-  "triangles": 1600,
-  "of_lod0": 0.966
+  "triangles": 1672,
+  "of_lod0": 0.981
  },
- "tris_lod1": 1600,
+ "tris_lod1": 1672,
  "s_export": 1.2,
  "port_contact": [],
  "reimport": {
@@ -182,7 +182,7 @@
     "FlyingDrone_6_orm.png"
    ],
    "actions": 6,
-   "triangles": 1656,
+   "triangles": 1704,
    "scale": [
     1.0
    ],
@@ -211,7 +211,7 @@
     "FlyingDrone_6_orm.png"
    ],
    "actions": 14,
-   "triangles": 1656,
+   "triangles": 1704,
    "scale": [
     1.0
    ],
@@ -222,23 +222,23 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "FlyingDrone.fbx": {
-   "sha256": "c53fc132c8780dfca8f47738c73d0eab4fc9e73588e7ef155792e74dfa6aa7fb",
-   "bytes": 4017932
+   "sha256": "e28ffa909d28d12fd25dea1ee564a05d929652ad8f8d3201fa33c92773586422",
+   "bytes": 3968572
   },
   "FlyingDrone.glb": {
-   "sha256": "c6cb35f2b752d5ee80b3243534236eea2efbfbe63d512eb59df0cbf0ecd7fe63",
-   "bytes": 7072636
+   "sha256": "3b11d77db4444c23e2db547f2248924a2cf17f1339ce69b792570286fd5e4f3a",
+   "bytes": 7034824
   },
   "FlyingDrone_LOD1.fbx": {
-   "sha256": "9bef076de670e80811ec76954c07a0bea8cabe47c90a00271a743be4fe8fa400",
-   "bytes": 3914668
+   "sha256": "08b5e6852b1d9da324baac29c5c1c508c89cb6cc8fc331af81866ee9d649365d",
+   "bytes": 3865980
   },
   "FlyingDrone_LOD1.glb": {
-   "sha256": "c63cd6fb5bdd5c23567387f4823f59ec54ea3000e896b487fa5b8f8397b4ac27",
-   "bytes": 7059636
+   "sha256": "08e04d7a1936775fdc63d2dd4beb1e6db3c2eb7c161aff53e5adf51e86572dac",
+   "bytes": 7022912
   }
  },
- "triangles": 1656,
- "s_qa": 0.8,
+ "triangles": 1704,
+ "s_qa": 0.7,
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }
