@@ -1,0 +1,217 @@
+{
+ "cid": "R4W_Basic",
+ "style": "3",
+ "label": "03_ArcadeLowPoly",
+ "size": 2048,
+ "construction": "Arcade Low-Poly gun - new from scratch (the Pass 4 Arcade gun is soft and rounded): a hexagonal stepped pedestal, two big wedge cheek plates on the yaw ring, a faceted receiver whose top is one orange triangle fin pointing forward, a hexagonal shroud and a hexagonal barrel with an orange muzzle cap. Few large flat facets; the aiming direction is the triangle",
+ "meta": {},
+ "tris_hi": {
+  "Base": 100,
+  "Yaw": 80,
+  "Pitch": 60,
+  "Barrel": 40
+ },
+ "tris_lo": {
+  "Base": 100,
+  "Yaw": 80,
+  "Pitch": 60,
+  "Barrel": 40
+ },
+ "s_build": 0.2,
+ "violations": [],
+ "bounds": {
+  "Base": [
+   [
+    -0.25,
+    -0.25,
+    -0.25999999046325684
+   ],
+   [
+    0.25,
+    0.25,
+    0.014000000432133675
+   ]
+  ],
+  "Yaw": [
+   [
+    -0.19050000607967377,
+    -0.1720000058412552,
+    0.017999999225139618
+   ],
+   [
+    0.19050000607967377,
+    0.25,
+    0.2150000035762787
+   ]
+  ],
+  "Pitch": [
+   [
+    -0.12200000137090683,
+    -0.4000000059604645,
+    0.0917000025510788
+   ],
+   [
+    0.12200000137090683,
+    0.07000000029802322,
+    0.23499999940395355
+   ]
+  ],
+  "Barrel": [
+   [
+    -0.039000000804662704,
+    -0.6179999709129333,
+    0.10119999945163727
+   ],
+   [
+    0.039000000804662704,
+    -0.10000000149011612,
+    0.1687999963760376
+   ]
+  ]
+ },
+ "s_bake": 120.8,
+ "s_skin": 274.3,
+ "animated_nodes": [
+  "R4W_Basic_Yaw",
+  "R4W_Basic_Pitch",
+  "R4W_Basic_Barrel",
+  "R4W_Basic_MuzzleFlash"
+ ],
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "AimYaw",
+   "start": 27,
+   "end": 75,
+   "loop": false
+  },
+  {
+   "name": "AimPitch",
+   "start": 77,
+   "end": 113,
+   "loop": false
+  },
+  {
+   "name": "Fire",
+   "start": 115,
+   "end": 124,
+   "loop": false
+  },
+  {
+   "name": "Recoil",
+   "start": 126,
+   "end": 129,
+   "loop": false
+  },
+  {
+   "name": "Return",
+   "start": 131,
+   "end": 139,
+   "loop": false
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 268,
+  "of_lod0": 0.957
+ },
+ "tris_lod1": 268,
+ "s_export": 1.3,
+ "port_contact": [
+  {
+   "dir": "down",
+   "flush_pct": 99.3,
+   "PASS": true
+  }
+ ],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.05,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4P_Glow",
+    "R4W_Basic_03_ArcadeLowPoly"
+   ],
+   "textures": [
+    "R4W_Basic_3_base",
+    "R4W_Basic_3_base.png",
+    "R4W_Basic_3_emission",
+    "R4W_Basic_3_emission.png",
+    "R4W_Basic_3_normal",
+    "R4W_Basic_3_normal.png",
+    "R4W_Basic_3_orm",
+    "R4W_Basic_3_orm.png"
+   ],
+   "actions": 5,
+   "triangles": 300,
+   "scale": [
+    0.001,
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.05,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4P_Glow",
+    "R4W_Basic_03_ArcadeLowPoly"
+   ],
+   "textures": [
+    "R4W_Basic_3_base",
+    "R4W_Basic_3_base.png",
+    "R4W_Basic_3_base.png.001",
+    "R4W_Basic_3_emission",
+    "R4W_Basic_3_emission.png",
+    "R4W_Basic_3_emission.png.001",
+    "R4W_Basic_3_normal",
+    "R4W_Basic_3_normal.png",
+    "R4W_Basic_3_normal.png.001",
+    "R4W_Basic_3_orm",
+    "R4W_Basic_3_orm.png"
+   ],
+   "actions": 14,
+   "triangles": 300,
+   "scale": [
+    0.001,
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4W_Basic.fbx": {
+   "sha256": "ba8d7cfa76ce12d89d8969c8f8f5a27cc9ea3923927c40abf492226826bfd999",
+   "bytes": 1767340
+  },
+  "R4W_Basic.glb": {
+   "sha256": "9ce9a082b728b75ed3b049fc496a1821d1281c9a8232c937c5b547b3ef7832b2",
+   "bytes": 3957036
+  },
+  "R4W_Basic_LOD1.fbx": {
+   "sha256": "74ef1d3ad9c5ce34c11896c61dfb9cf36323dfe4949cd45719c938c3989e95d5",
+   "bytes": 1639916
+  },
+  "R4W_Basic_LOD1.glb": {
+   "sha256": "61de81f0ea92617693028fcfb9af7c268105f6cb533a81b0964a955e8a30c0b1",
+   "bytes": 3939740
+  }
+ },
+ "triangles": 280,
+ "s_qa": 0.4,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

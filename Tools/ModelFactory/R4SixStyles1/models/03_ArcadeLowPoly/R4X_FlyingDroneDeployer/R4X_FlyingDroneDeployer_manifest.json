@@ -1,0 +1,80 @@
+{
+ "id": "R4X_FlyingDroneDeployer",
+ "style": "03_ArcadeLowPoly",
+ "units": "metre 1:1",
+ "axes": "file/Unity +Z forward, +Y up (Blender -Y forward, Z up)",
+ "source_contract": "Tools/ModelFactory/R4ModulesSleek1x1/modules/R4X_FlyingDroneDeployer (PR #1238) + atlas A-E (R4StyleAtlas5/atlas)",
+ "hierarchy": {
+  "R4X_FlyingDroneDeployer_ROOT": null,
+  "R4X_FlyingDroneDeployer_Body": "R4X_FlyingDroneDeployer_ROOT",
+  "R4X_FlyingDroneDeployer_Iris": "R4X_FlyingDroneDeployer_ROOT",
+  "Port_down_000": "R4X_FlyingDroneDeployer_ROOT",
+  "Socket_Mount": "R4X_FlyingDroneDeployer_ROOT",
+  "Deploy_Out": "R4X_FlyingDroneDeployer_ROOT"
+ },
+ "pivots": {
+  "R4X_FlyingDroneDeployer_Body": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "R4X_FlyingDroneDeployer_Iris": [
+   0.0,
+   0.0,
+   0.10000000149011612
+  ]
+ },
+ "empties": {
+  "Port_down_000": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.25999999046325684
+   ]
+  },
+  "Socket_Mount": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.25999999046325684
+   ]
+  },
+  "Deploy_Out": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    0.25999999046325684
+   ]
+  }
+ },
+ "clips": [
+  {
+   "name": "Active",
+   "start": 1,
+   "end": 49,
+   "loop": true
+  }
+ ],
+ "fps": 24,
+ "animated_nodes": [
+  "R4X_FlyingDroneDeployer_Iris"
+ ],
+ "materials": [
+  "R4X_FlyingDroneDeployer_03_ArcadeLowPoly"
+ ],
+ "textures": {
+  "base": "R4X_FlyingDroneDeployer_3_base.png",
+  "orm": "R4X_FlyingDroneDeployer_3_orm.png",
+  "normal": "R4X_FlyingDroneDeployer_3_normal.png",
+  "emission": "R4X_FlyingDroneDeployer_3_emission.png"
+ },
+ "construction": "Arcade Low-Poly: a hexagonal deck on three wedge legs with open gaps between them (light shows through), a square foot plate for the port; the pad is a sunk hexagon with ONE big orange triangle pointing forward; six wedge petals round the pad spin; every surface is a flat facet - no bevel smoothing, segment counts of 6",
+ "meta": {
+  "dock_z": 0.031,
+  "family": "hexagon + big orange triangle"
+ },
+ "gameplay": "visual only: no gameplay capability, timing or collider is added"
+}

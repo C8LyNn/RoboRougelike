@@ -1,0 +1,170 @@
+{
+ "cid": "R4M_Wheel",
+ "style": "3",
+ "label": "03_ArcadeLowPoly",
+ "size": 2048,
+ "construction": "Arcade Low-Poly wheel - new from scratch (the Pass 4 Arcade rotor is round and soft, the opposite of this style): a twelve-sided tyre with twelve chunky trapezoid lugs, a white twelve-sided rim, six navy wedge spokes, a big orange hexagonal hub nut; the mount is one wedge arm with an orange stripe and a hexagonal boss. Flat facets only, every part readable at small size",
+ "meta": {},
+ "tris_hi": {
+  "Rotor": 540,
+  "Mount": 216
+ },
+ "tris_lo": {
+  "Rotor": 540,
+  "Mount": 216
+ },
+ "s_build": 0.3,
+ "violations": [],
+ "bounds": {
+  "Rotor": [
+   [
+    -0.15800000727176666,
+    -0.3889999985694885,
+    -0.6489999890327454
+   ],
+   [
+    0.17800000309944153,
+    0.3889999985694885,
+    0.1289999932050705
+   ]
+  ],
+  "Mount": [
+   [
+    -0.2540000081062317,
+    -0.25,
+    -0.31200000643730164
+   ],
+   [
+    0.25,
+    0.25,
+    0.25999999046325684
+   ]
+  ]
+ },
+ "s_bake": 296.3,
+ "s_skin": 430.1,
+ "animated_nodes": [
+  "R4M_Wheel_Rotor"
+ ],
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "Roll",
+   "start": 27,
+   "end": 51,
+   "loop": true
+  },
+  {
+   "name": "Reverse",
+   "start": 53,
+   "end": 77,
+   "loop": true
+  },
+  {
+   "name": "Brake",
+   "start": 79,
+   "end": 103,
+   "loop": false
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 680,
+  "of_lod0": 0.899
+ },
+ "tris_lod1": 680,
+ "s_export": 0.9,
+ "port_contact": [
+  {
+   "dir": "up",
+   "flush_pct": 99.3,
+   "PASS": true
+  }
+ ],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.04,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4M_Wheel_03_ArcadeLowPoly"
+   ],
+   "textures": [
+    "R4M_Wheel_3_base",
+    "R4M_Wheel_3_base.png",
+    "R4M_Wheel_3_emission",
+    "R4M_Wheel_3_emission.png",
+    "R4M_Wheel_3_normal",
+    "R4M_Wheel_3_normal.png",
+    "R4M_Wheel_3_orm",
+    "R4M_Wheel_3_orm.png"
+   ],
+   "actions": 2,
+   "triangles": 756,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.04,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4M_Wheel_03_ArcadeLowPoly"
+   ],
+   "textures": [
+    "R4M_Wheel_3_base",
+    "R4M_Wheel_3_base.png",
+    "R4M_Wheel_3_base.png.001",
+    "R4M_Wheel_3_emission",
+    "R4M_Wheel_3_emission.png",
+    "R4M_Wheel_3_emission.png.001",
+    "R4M_Wheel_3_normal",
+    "R4M_Wheel_3_normal.png",
+    "R4M_Wheel_3_normal.png.001",
+    "R4M_Wheel_3_orm",
+    "R4M_Wheel_3_orm.png"
+   ],
+   "actions": 8,
+   "triangles": 756,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4M_Wheel.fbx": {
+   "sha256": "be66b0e47a16c666c1520f5d8b28401f5a25aaff9099c19b01b5b73368ca4a7a",
+   "bytes": 2148108
+  },
+  "R4M_Wheel.glb": {
+   "sha256": "5b38625b2cb8cf9becc559bbc4e178397930c3727d233ea995a8824306462ac9",
+   "bytes": 4972252
+  },
+  "R4M_Wheel_LOD1.fbx": {
+   "sha256": "bf642e6a82171b9a0aff6af244027afe8cdc3d1944fbb3900c0c7563171199e5",
+   "bytes": 2078108
+  },
+  "R4M_Wheel_LOD1.glb": {
+   "sha256": "66ebb212e1a21596947bc1e9e4a8d1541579c6ad1201f7430e4b2203e5116558",
+   "bytes": 4963016
+  }
+ },
+ "triangles": 756,
+ "s_qa": 0.3,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}
