@@ -1,0 +1,161 @@
+{
+ "cid": "R4X_FlyingDroneDeployer",
+ "style": "5",
+ "label": "05_ComicOutline",
+ "size": 2048,
+ "construction": "Comic Outline: exaggerated function - a squat rounded bun with a huge tilted launch porthole (fat navy bumper ring, oversized petal shutter that spins), a star badge on the front, stubby feet; proportions pushed: the porthole is almost the full width of the cell",
+ "meta": {
+  "dock_z": 0.022,
+  "family": "fat navy bumper ring with orange inner band = the drone's eye ring"
+ },
+ "tris_hi": {
+  "Body": 13056,
+  "Iris": 1660
+ },
+ "tris_lo": {
+  "Body": 2488,
+  "Iris": 304
+ },
+ "s_build": 0.4,
+ "violations": [],
+ "bounds": {
+  "Body": [
+   [
+    -0.24400000274181366,
+    -0.2460000067949295,
+    -0.25999999046325684
+   ],
+   [
+    0.24400000274181366,
+    0.24400000274181366,
+    0.07680000364780426
+   ]
+  ],
+  "Iris": [
+   [
+    -0.1459999978542328,
+    -0.14010000228881836,
+    -0.037700001150369644
+   ],
+   [
+    0.15000000596046448,
+    0.1624000072479248,
+    0.05090000107884407
+   ]
+  ]
+ },
+ "s_bake": 168.9,
+ "outline": {
+  "method": "inverted hull in the node mesh, material R4P_Outline (back-face culled)",
+  "width_m": 0.0075
+ },
+ "s_skin": 428.7,
+ "animated_nodes": [
+  "R4X_FlyingDroneDeployer_Iris"
+ ],
+ "clips": [
+  {
+   "name": "Active",
+   "start": 1,
+   "end": 49,
+   "loop": true
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 3644,
+  "of_lod0": 0.653
+ },
+ "tris_lod1": 3644,
+ "s_export": 1.6,
+ "port_contact": [
+  {
+   "dir": "down",
+   "flush_pct": 100.0,
+   "PASS": true
+  }
+ ],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.05,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4P_Outline",
+    "R4X_FlyingDroneDeployer_05_ComicOutline"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_5_base",
+    "R4X_FlyingDroneDeployer_5_base.png",
+    "R4X_FlyingDroneDeployer_5_emission",
+    "R4X_FlyingDroneDeployer_5_emission.png",
+    "R4X_FlyingDroneDeployer_5_normal",
+    "R4X_FlyingDroneDeployer_5_normal.png",
+    "R4X_FlyingDroneDeployer_5_orm",
+    "R4X_FlyingDroneDeployer_5_orm.png"
+   ],
+   "actions": 2,
+   "triangles": 5584,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.05,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4P_Outline",
+    "R4X_FlyingDroneDeployer_05_ComicOutline"
+   ],
+   "textures": [
+    "R4X_FlyingDroneDeployer_5_base",
+    "R4X_FlyingDroneDeployer_5_base.png",
+    "R4X_FlyingDroneDeployer_5_base.png.001",
+    "R4X_FlyingDroneDeployer_5_emission",
+    "R4X_FlyingDroneDeployer_5_emission.png",
+    "R4X_FlyingDroneDeployer_5_emission.png.001",
+    "R4X_FlyingDroneDeployer_5_normal",
+    "R4X_FlyingDroneDeployer_5_normal.png",
+    "R4X_FlyingDroneDeployer_5_normal.png.001",
+    "R4X_FlyingDroneDeployer_5_orm",
+    "R4X_FlyingDroneDeployer_5_orm.png"
+   ],
+   "actions": 8,
+   "triangles": 5584,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4X_FlyingDroneDeployer.fbx": {
+   "sha256": "e9f27dc4ac855549f642a77deeffb0cabbc8e9666acee8dc36dda8b94565f4d9",
+   "bytes": 4024572
+  },
+  "R4X_FlyingDroneDeployer.glb": {
+   "sha256": "d85c5d8876e164dbe0695bd47131444f3f49644eb8ca0374b5e2c50ae1629100",
+   "bytes": 6574184
+  },
+  "R4X_FlyingDroneDeployer_LOD1.fbx": {
+   "sha256": "590c2207d7f07f0d48a8b2b46ba76c5980e926c5738a965f2bc02b96c8c3de2f",
+   "bytes": 3943212
+  },
+  "R4X_FlyingDroneDeployer_LOD1.glb": {
+   "sha256": "f84854243224f4799ede36c783ea1ed07d4b7a7087d24b0fe33108f6724c80f3",
+   "bytes": 6508136
+  }
+ },
+ "triangles": 2792,
+ "s_qa": 0.7,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

@@ -1,0 +1,62 @@
+{
+ "cid": "R4W_Basic",
+ "source": "Pass 4 hero4 E_Toon R4W_Basic.glb (PR #1294)",
+ "change": "Comic Outline contour added (inverted hull 0.0075 m, material R4P_Outline, back-face culled); geometry, rig and animation of the source kept",
+ "meshes_outlined": 6,
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "anim_pos_dev_mm": 0.0,
+   "frame_offset": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Outline",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "anim_pos_dev_mm": 0.0,
+   "frame_offset": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Outline",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4W_Basic.fbx": {
+   "sha256": "6dbf031b4552051b1ab7fddfe07b0bebf8e016c51e0c1d60a86359aabb15a81b",
+   "bytes": 3069292
+  },
+  "R4W_Basic.glb": {
+   "sha256": "cd174e5a8716b2a1d522b97093cf2e1acda53599d80e8525efa9f534e33d974f",
+   "bytes": 3479452
+  },
+  "R4W_Basic_LOD1.fbx": {
+   "sha256": "9a43da6a339e730e04396db9d8a37aa07a27e740b71e29fa893adbac85f07331",
+   "bytes": 85180
+  },
+  "R4W_Basic_LOD1.glb": {
+   "sha256": "5e8ee48067c41e714594cbda3bbdab44dcfc7e29005c9ff14e9623835f824209",
+   "bytes": 396816
+  },
+  "R4W_Basic_SOURCE.blend": {
+   "sha256": "a92ce23e4ad1326e770afd447790ec25643c22d51ac56dbffcdfe78cf36445eb",
+   "bytes": 3402667
+  }
+ },
+ "lod1": "R4W_Basic_LOD1.glb / .fbx copied unchanged from Pass 4 E_Toon (#1294), WITHOUT the outline shell - at LOD1 distance the 7.5 mm shell is under one pixel; textures/ = the Pass 4 E_Toon texture set (the GLB and FBX of LOD0 embed their textures)",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}

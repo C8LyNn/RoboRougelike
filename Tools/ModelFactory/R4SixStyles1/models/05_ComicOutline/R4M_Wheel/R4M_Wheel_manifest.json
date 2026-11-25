@@ -1,0 +1,96 @@
+{
+ "id": "R4M_Wheel",
+ "style": "05_ComicOutline",
+ "units": "metre 1:1",
+ "axes": "file/Unity +Z forward, +Y up (Blender -Y forward, Z up)",
+ "source_contract": "Tools/ModelFactory/R4Movement940/R4M_Wheel (PR #941, branch art/940-r4-movement-models)",
+ "hierarchy": {
+  "R4M_Wheel_ROOT": null,
+  "R4M_Wheel_Mount": "R4M_Wheel_ROOT",
+  "R4M_Wheel_Rotor": "R4M_Wheel_ROOT",
+  "Wheel_Axle": "R4M_Wheel_ROOT",
+  "Socket_Mount": "R4M_Wheel_ROOT",
+  "GroundProbe": "R4M_Wheel_ROOT"
+ },
+ "pivots": {
+  "R4M_Wheel_Mount": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "R4M_Wheel_Rotor": [
+   0.0,
+   0.0,
+   -0.25999999046325684
+  ]
+ },
+ "empties": {
+  "Wheel_Axle": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.25999999046325684
+   ]
+  },
+  "Socket_Mount": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    0.25999999046325684
+   ]
+  },
+  "GroundProbe": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.6499999761581421
+   ]
+  }
+ },
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "Roll",
+   "start": 27,
+   "end": 51,
+   "loop": true
+  },
+  {
+   "name": "Reverse",
+   "start": 53,
+   "end": 77,
+   "loop": true
+  },
+  {
+   "name": "Brake",
+   "start": 79,
+   "end": 103,
+   "loop": false
+  }
+ ],
+ "fps": 24,
+ "animated_nodes": [
+  "R4M_Wheel_Rotor"
+ ],
+ "materials": [
+  "R4M_Wheel_05_ComicOutline",
+  "R4P_Outline"
+ ],
+ "textures": {
+  "base": "R4M_Wheel_5_base.png",
+  "orm": "R4M_Wheel_5_orm.png",
+  "normal": "R4M_Wheel_5_normal.png",
+  "emission": "R4M_Wheel_5_emission.png"
+ },
+ "construction": "Comic Outline wheel. Rotor: the Pass 4 Heroic Toon rotor (balloon tyre with seven fat arrow lugs, orange bowl hub, raised star) moved onto the axle - the hub is the part that decides the function, and it stays oversized. Mount: new - a fat rounded arm curving down to a big round boss with a star cap, a rounded plate. The outline is checked on the hub and in the tyre gap at game distance",
+ "meta": {},
+ "gameplay": "visual only: no gameplay capability, timing or collider is added"
+}

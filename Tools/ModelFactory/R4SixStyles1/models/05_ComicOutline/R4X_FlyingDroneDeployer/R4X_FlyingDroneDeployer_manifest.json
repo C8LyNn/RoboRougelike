@@ -1,0 +1,81 @@
+{
+ "id": "R4X_FlyingDroneDeployer",
+ "style": "05_ComicOutline",
+ "units": "metre 1:1",
+ "axes": "file/Unity +Z forward, +Y up (Blender -Y forward, Z up)",
+ "source_contract": "Tools/ModelFactory/R4ModulesSleek1x1/modules/R4X_FlyingDroneDeployer (PR #1238) + atlas A-E (R4StyleAtlas5/atlas)",
+ "hierarchy": {
+  "R4X_FlyingDroneDeployer_ROOT": null,
+  "R4X_FlyingDroneDeployer_Body": "R4X_FlyingDroneDeployer_ROOT",
+  "R4X_FlyingDroneDeployer_Iris": "R4X_FlyingDroneDeployer_ROOT",
+  "Port_down_000": "R4X_FlyingDroneDeployer_ROOT",
+  "Socket_Mount": "R4X_FlyingDroneDeployer_ROOT",
+  "Deploy_Out": "R4X_FlyingDroneDeployer_ROOT"
+ },
+ "pivots": {
+  "R4X_FlyingDroneDeployer_Body": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "R4X_FlyingDroneDeployer_Iris": [
+   0.0,
+   0.0,
+   0.10000000149011612
+  ]
+ },
+ "empties": {
+  "Port_down_000": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.25999999046325684
+   ]
+  },
+  "Socket_Mount": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    -0.25999999046325684
+   ]
+  },
+  "Deploy_Out": {
+   "parent": "ROOT",
+   "loc": [
+    0.0,
+    0.0,
+    0.25999999046325684
+   ]
+  }
+ },
+ "clips": [
+  {
+   "name": "Active",
+   "start": 1,
+   "end": 49,
+   "loop": true
+  }
+ ],
+ "fps": 24,
+ "animated_nodes": [
+  "R4X_FlyingDroneDeployer_Iris"
+ ],
+ "materials": [
+  "R4P_Outline",
+  "R4X_FlyingDroneDeployer_05_ComicOutline"
+ ],
+ "textures": {
+  "base": "R4X_FlyingDroneDeployer_5_base.png",
+  "orm": "R4X_FlyingDroneDeployer_5_orm.png",
+  "normal": "R4X_FlyingDroneDeployer_5_normal.png",
+  "emission": "R4X_FlyingDroneDeployer_5_emission.png"
+ },
+ "construction": "Comic Outline: exaggerated function - a squat rounded bun with a huge tilted launch porthole (fat navy bumper ring, oversized petal shutter that spins), a star badge on the front, stubby feet; proportions pushed: the porthole is almost the full width of the cell",
+ "meta": {
+  "dock_z": 0.022,
+  "family": "fat navy bumper ring with orange inner band = the drone's eye ring"
+ },
+ "gameplay": "visual only: no gameplay capability, timing or collider is added"
+}

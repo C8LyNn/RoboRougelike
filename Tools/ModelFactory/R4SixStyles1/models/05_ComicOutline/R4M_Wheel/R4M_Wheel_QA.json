@@ -1,0 +1,176 @@
+{
+ "cid": "R4M_Wheel",
+ "style": "5",
+ "label": "05_ComicOutline",
+ "size": 2048,
+ "construction": "Comic Outline wheel. Rotor: the Pass 4 Heroic Toon rotor (balloon tyre with seven fat arrow lugs, orange bowl hub, raised star) moved onto the axle - the hub is the part that decides the function, and it stays oversized. Mount: new - a fat rounded arm curving down to a big round boss with a star cap, a rounded plate. The outline is checked on the hub and in the tyre gap at game distance",
+ "meta": {},
+ "tris_hi": {
+  "Rotor": 25524,
+  "Mount": 4588
+ },
+ "tris_lo": {
+  "Rotor": 3492,
+  "Mount": 812
+ },
+ "s_build": 0.5,
+ "violations": [],
+ "bounds": {
+  "Rotor": [
+   [
+    -0.16899999976158142,
+    -0.38440001010894775,
+    -0.6399999856948853
+   ],
+   [
+    0.1679999977350235,
+    0.3837999999523163,
+    0.11999999731779099
+   ]
+  ],
+  "Mount": [
+   [
+    -0.25600001215934753,
+    -0.25,
+    -0.3102000057697296
+   ],
+   [
+    0.25,
+    0.25,
+    0.25999999046325684
+   ]
+  ]
+ },
+ "s_bake": 308.9,
+ "outline": {
+  "method": "inverted hull in the node mesh, material R4P_Outline (back-face culled)",
+  "width_m": 0.0075
+ },
+ "s_skin": 420.6,
+ "animated_nodes": [
+  "R4M_Wheel_Rotor"
+ ],
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true
+  },
+  {
+   "name": "Roll",
+   "start": 27,
+   "end": 51,
+   "loop": true
+  },
+  {
+   "name": "Reverse",
+   "start": 53,
+   "end": 77,
+   "loop": true
+  },
+  {
+   "name": "Brake",
+   "start": 79,
+   "end": 103,
+   "loop": false
+  }
+ ],
+ "lod1": {
+  "method": "planar dissolve",
+  "angle_deg": 14.0,
+  "triangles": 4858,
+  "of_lod0": 0.564
+ },
+ "tris_lod1": 4858,
+ "s_export": 0.9,
+ "port_contact": [
+  {
+   "dir": "up",
+   "flush_pct": 100.0,
+   "PASS": true
+  }
+ ],
+ "reimport": {
+  ".glb": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.04,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4M_Wheel_05_ComicOutline",
+    "R4P_Outline"
+   ],
+   "textures": [
+    "R4M_Wheel_5_base",
+    "R4M_Wheel_5_base.png",
+    "R4M_Wheel_5_emission",
+    "R4M_Wheel_5_emission.png",
+    "R4M_Wheel_5_normal",
+    "R4M_Wheel_5_normal.png",
+    "R4M_Wheel_5_orm",
+    "R4M_Wheel_5_orm.png"
+   ],
+   "actions": 2,
+   "triangles": 8608,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  },
+  ".fbx": {
+   "missing": [],
+   "parents_ok": true,
+   "frame_offset": 0,
+   "bounds_dev_mm": 0.04,
+   "anim_pos_dev_mm": 0.0,
+   "materials": [
+    "R4M_Wheel_05_ComicOutline",
+    "R4P_Outline"
+   ],
+   "textures": [
+    "R4M_Wheel_5_base",
+    "R4M_Wheel_5_base.png",
+    "R4M_Wheel_5_base.png.001",
+    "R4M_Wheel_5_emission",
+    "R4M_Wheel_5_emission.png",
+    "R4M_Wheel_5_emission.png.001",
+    "R4M_Wheel_5_normal",
+    "R4M_Wheel_5_normal.png",
+    "R4M_Wheel_5_normal.png.001",
+    "R4M_Wheel_5_orm",
+    "R4M_Wheel_5_orm.png"
+   ],
+   "actions": 8,
+   "triangles": 8608,
+   "scale": [
+    1.0
+   ],
+   "PASS": true
+  }
+ },
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "files": {
+  "R4M_Wheel.fbx": {
+   "sha256": "2a19dd05525fdf73f8069eb01adca98a600d626199ed3273a83e562d56fc680c",
+   "bytes": 4763084
+  },
+  "R4M_Wheel.glb": {
+   "sha256": "87017f861707597d62eac3c4be39fe46f0503df1f2ab9bd0b388c5cff2b4264a",
+   "bytes": 7738396
+  },
+  "R4M_Wheel_LOD1.fbx": {
+   "sha256": "b51fca58867fe1efc39da6112a3609e7c40e0a6ed93d155f2066801a8de3027c",
+   "bytes": 4634076
+  },
+  "R4M_Wheel_LOD1.glb": {
+   "sha256": "1fe3601c40bd14bd60584be03994cf7dcc9175ce3ef69f334f3a08ea89e66c94",
+   "bytes": 7618644
+  }
+ },
+ "triangles": 4304,
+ "s_qa": 0.6,
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}
