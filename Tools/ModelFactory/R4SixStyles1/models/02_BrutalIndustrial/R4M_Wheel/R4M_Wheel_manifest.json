@@ -90,6 +90,14 @@
   "emission": "R4M_Wheel_2_emission.png"
  },
  "construction": "Brutal Industrial wheel. Rotor: the Pass 4 Brutal rotor (tractor bars, bolted wheel-weight ring, cast hub) moved onto the axle. Mount: new - the load path is the shape: a thick plate, one massive box arm with two gussets straight down to a big axle boss, a coil-over damper beside it from plate to boss, a brake caliper on the inner disc, hazard bands on the arm",
- "meta": {},
+ "meta": {
+  "rotor_fit": {
+   "scale": 1.0097,
+   "tread_r": 0.39,
+   "turned_deg": 107.25,
+   "rolling_var_mm": 2.84,
+   "inlays_pushed_in": []
+  }
+ },
  "gameplay": "visual only: no gameplay capability, timing or collider is added"
 }

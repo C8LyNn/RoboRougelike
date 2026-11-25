@@ -13,7 +13,7 @@
   "Rotor": 1952,
   "Mount": 1624
  },
- "s_build": 0.3,
+ "s_build": 0.2,
  "violations": [],
  "bounds": {
   "Rotor": [
@@ -41,8 +41,8 @@
    ]
   ]
  },
- "s_bake": 230.8,
- "s_skin": 508.9,
+ "s_bake": 142.4,
+ "s_skin": 398.6,
  "animated_nodes": [
   "R4M_Wheel_Rotor"
  ],
@@ -75,11 +75,11 @@
  "lod1": {
   "method": "planar dissolve",
   "angle_deg": 14.0,
-  "triangles": 1716,
-  "of_lod0": 0.48
+  "triangles": 1720,
+  "of_lod0": 0.481
  },
- "tris_lod1": 1716,
- "s_export": 1.4,
+ "tris_lod1": 1720,
+ "s_export": 1.3,
  "port_contact": [
   {
    "dir": "up",
@@ -148,23 +148,23 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "R4M_Wheel.fbx": {
-   "sha256": "07310fdce0b9c68a64e3cb0e3b9b1769b157cc4c69da81c8539d42d1866a0605",
-   "bytes": 2735260
+   "sha256": "b72f06f74f02d5b0234ea88ebc860d27af325873b2353536c72d5f4ba87fb6ab",
+   "bytes": 2694716
   },
   "R4M_Wheel.glb": {
-   "sha256": "4dcaca9656e1b063c17151d4cef582daf0b83ab4c733b6554ac72bb4803e2682",
-   "bytes": 5124128
+   "sha256": "2c14f028148ae352c20db8fd64239cea61ee85eeeedf963eab349415d2161127",
+   "bytes": 5061272
   },
   "R4M_Wheel_LOD1.fbx": {
-   "sha256": "b990935c9f6e37e15f705625f6527dea13086e7b66b74d23a7663923777e95a1",
-   "bytes": 2634044
+   "sha256": "6fd57a123f3b6f4aea6413ef30344379f11da03aacbb22ab9226bd2f4d356600",
+   "bytes": 2593868
   },
   "R4M_Wheel_LOD1.glb": {
-   "sha256": "82f74d94d349de93f1e2343ab22e55ae7be7df0c51b32d20ac278c9b3ec12bc6",
-   "bytes": 5068756
+   "sha256": "8639ffee316a2ccc869d9be3198d090652afac2b7abb4fa6feade45686ade226",
+   "bytes": 5006052
   }
  },
  "triangles": 3576,
- "s_qa": 0.6,
+ "s_qa": 0.9,
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

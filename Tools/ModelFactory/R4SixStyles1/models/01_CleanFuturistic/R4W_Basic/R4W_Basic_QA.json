@@ -88,18 +88,18 @@
    "bytes": 3794788
   },
   "R4W_Basic_LOD1.fbx": {
-   "sha256": "b6eecbdf02b560f7c361c9e573f7e32eaf3a03a860c2b32becfcb5475e0cde1e",
-   "bytes": 110508
+   "sha256": "f481cf2d7cda206d046cae03956309eaf4994225af9793493cc192496690913c",
+   "bytes": 2905868
   },
   "R4W_Basic_LOD1.glb": {
-   "sha256": "08471073aea7f530d1463fe9a4276f02780d5459c0cbc3796d60a1cd27900144",
-   "bytes": 507216
+   "sha256": "4f1791ef548c3e6d5503aceb04c536b5389a89ae67471ba23c0f78d8e09d5695",
+   "bytes": 3762404
   },
   "R4W_Basic_SOURCE.blend": {
    "sha256": "3dcf4b99d9009b832156a5ac1b9e5d4ad9bc5cc0b9b4b082e750b1f75275e588",
    "bytes": 3683089
   }
  },
- "lod1": "R4W_Basic_LOD1.glb / .fbx and textures/ are the Pass 4 files, NOT repaired (the sense fixes are in LOD0 only); R4W_Basic_QA_source.json = QA of the Pass 4 source; the Pass 4 R4W_Basic.blend is not copied here, the editable file of the repaired model is R4W_Basic_SOURCE.blend",
+ "lod1": "R4W_Basic_LOD1.glb / .fbx rebuilt from the repaired LOD0 (scripts/s6lod.py, method keep: the joined game mesh in the rest pose without MuzzleFlash; every planar dissolve 14/9/5 deg lifted a part off its neighbour in the LOD1 sense check) - details in R4W_Basic_LOD1_info.json; textures/ = the Pass 4 A_Sleek texture set; R4W_Basic_QA_source.json = QA of the Pass 4 source; the editable file of the repaired model is R4W_Basic_SOURCE.blend",
  "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
 }

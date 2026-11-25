@@ -54,8 +54,8 @@
    "parent": "Body",
    "loc": [
     0.0,
-    -0.1120000034570694,
-    0.05999999865889549
+    -0.18199999630451202,
+    0.041999999433755875
    ]
   }
  },
@@ -102,7 +102,7 @@
   "normal": "FlyingDrone_2_normal.png",
   "emission": "FlyingDrone_2_emission.png"
  },
- "construction": "Brutal Industrial drone: an H-frame heavy lifter - two thick box rails carry the four rotors at their ends, the armoured box hangs between the rails on two cross beams, four clamp lugs under the box (what the launcher's jaws hold), square guard frames with yellow hazard corners, a heavy sensor block in front",
+ "construction": "Brutal Industrial drone: an H-frame heavy lifter - two thick box rails carry the four rotors at their ends, the armoured box hangs between the rails on two cross beams, four clamp lugs under the box (what the launcher's jaws hold), square guard frames with yellow hazard corners, a heavy sensor block in front with a heavy barrel under its eye",
  "meta": {
   "body_pivot": [
    0,
@@ -133,8 +133,8 @@
   },
   "muzzle": [
    0,
-   -0.112,
-   0.06
+   -0.182,
+   0.042
   ],
   "dock_z": 0.0
  },

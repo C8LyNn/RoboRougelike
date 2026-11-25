@@ -34,8 +34,8 @@
   },
   "muzzle": [
    0,
-   -0.15,
-   0.04
+   -0.216,
+   0.034
   ],
   "dock_z": 0.0
  },
@@ -53,13 +53,13 @@
   "Rotor_3": 104,
   "Rotor_4": 104
  },
- "s_build": 3.3,
+ "s_build": 2.9,
  "violations": [],
  "bounds": {
   "Body": [
    [
     -0.2021999955177307,
-    -0.20399999618530273,
+    -0.20600000023841858,
     0.0
    ],
    [
@@ -117,8 +117,8 @@
    ]
   ]
  },
- "s_bake": 631.7,
- "s_skin": 802.2,
+ "s_bake": 526.9,
+ "s_skin": 704.3,
  "animated_nodes": [
   "FlyingDrone_Body",
   "FlyingDrone_Rotor_1",
@@ -222,20 +222,20 @@
  "unity": "UNITY_NOT_RUN",
  "files": {
   "FlyingDrone.fbx": {
-   "sha256": "d61ab82e4db408e7e847d7f1c122865b04b6517055401d7c0b64a76a1ec47b8b",
-   "bytes": 4716444
+   "sha256": "41c24230cb257bdb88144b002a8dcdb5845eb2cfb64b450d0db5de3f4a0322e6",
+   "bytes": 4745628
   },
   "FlyingDrone.glb": {
-   "sha256": "98bf507c732925e8bdaab1426272efe5aa1991cb8e6268211c4a84b80a9214d3",
-   "bytes": 7616232
+   "sha256": "da9d78c55bc52d89f9ec1f879d78556bba38dc0a85957b38c6c764054e027883",
+   "bytes": 7668584
   },
   "FlyingDrone_LOD1.fbx": {
-   "sha256": "400813955f28c5c8d8aa544e73fa354086839369410c171c662d5171c660dfb2",
-   "bytes": 4588172
+   "sha256": "ac83bc43451893551e139345ebea9c86ead388418c8dc19cb092f45084420484",
+   "bytes": 4617212
   },
   "FlyingDrone_LOD1.glb": {
-   "sha256": "35bda3daae80f9b09fac286d6e048ed1c1ac2ed3a08f993a1dbeab51e6a017b8",
-   "bytes": 7547536
+   "sha256": "a604241c32c966008e5a91e3fb91444dd62355370f209da3af4d0f0e07103eb9",
+   "bytes": 7601384
   }
  },
  "triangles": 5072,
